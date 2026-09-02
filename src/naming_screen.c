@@ -29,8 +29,13 @@
 #include "main.h"
 #include "decompress.h"
 #include "constants/event_objects.h"
+#include "korean.h"
 #include "constants/rgb.h"
 #include "nuzlocke.h"
+
+extern const u8 gNamingScreenRWindow_Gfx[];
+extern const u8 gNamingScreenPageButton_Gfx[];
+extern const u8 gNamingScreenROptions_Gfx[];
 
 enum {
     INPUT_NONE,
@@ -46,7 +51,18 @@ enum {
 };
 
 #define KBROW_COUNT 4
-#define KBCOL_COUNT 8
+#define KBCOL_COUNT 10
+
+enum
+{
+    KSTATE_NONE,
+    KSTATE_JAUM,
+    KSTATE_MOUM_MERGEABLE,
+    KSTATE_MOUM,
+    KSTATE_JAUM_2_MERGEABLE,
+    KSTATE_JAUM_2,
+    KSTATE_MERGED_JAUM,
+};
 
 enum {
     GFXTAG_BACK_BUTTON,
@@ -153,7 +169,7 @@ struct NamingScreenTemplate
     u8 iconFunction;
     u8 addGenderIcon;
     u8 initialPage;
-    u8 unused;
+    bool8 koreanEnabled;
     const u8 *title;
 };
 
@@ -162,9 +178,11 @@ struct NamingScreenData
     u8 tilemapBuffer1[0x800];
     u8 tilemapBuffer2[0x800];
     u8 tilemapBuffer3[0x800];
-    u8 textBuffer[16];
+    u8 textBuffer[40];
+    u8 backupBuffer[40];
     u8 tileBuffer[0x600];
     u8 state;
+    u8 koreanState;
     u8 windows[WIN_COUNT];
     u16 inputCharBaseXPos;
     u16 bg1vOffset;
@@ -295,36 +313,37 @@ static const struct WindowTemplate sWindowTemplates[WIN_COUNT + 1] =
 
 // This handles what characters get inserted when a key is pressed
 // The keys shown on the keyboard are handled separately by sNamingScreenKeyboardText
-static const u8 sKeyboardChars[KBPAGE_COUNT][KBROW_COUNT][KBCOL_COUNT] = {
-    [KEYBOARD_LETTERS_LOWER] = {
-        __("abcdef ."),
-        __("ghijkl ,"),
-        __("mnopqrs "),
-        __("tuvwxyz "),
+static const u8 sKeyboardChars[][4][20] =
+{
+    [KBPAGE_SYMBOLS] = {
+        _("1234567890"),
+        _("abcdefghij"),
+        _("klmnopqrst"),
+        _("uvwxyz♂♀-·"),
     },
-    [KEYBOARD_LETTERS_UPPER] = {
-        __("ABCDEF ."),
-        __("GHIJKL ,"),
-        __("MNOPQRS "),
-        __("TUVWXYZ "),
+    [KBPAGE_LETTERS_UPPER] = {
+        { 0x09, 0x0E, 0x05, 0x02, 0x0B, 0xAB, 0xAC, 0xAE, 0x17, 0x1B },
+        { 0x08, 0x0D, 0x04, 0x01, 0x0A, 0x20, 0x1A, 0x16, 0x15, 0x19 },
+        { 0x07, 0x03, 0x0C, 0x06, 0x13, 0x1C, 0x18, 0x14, 0x28, 0xBA },
+        { 0x10, 0x11, 0x0F, 0x12, 0x00, 0x25, 0x21, 0x26, 0xB8, 0xAD },
     },
-    [KEYBOARD_SYMBOLS] = {
-        __("01234   "),
-        __("56789   "),
-        __("!?♂♀/-  "),
-        __("…“”‘'   "),
+    [KBPAGE_LETTERS_LOWER] = {
+        _("1234567890"),
+        _("ABCDEFGHIJ"),
+        _("KLMNOPQRST"),
+        _("UVWXYZ‘'“”"),
     }
 };
 
-static const u8 sPageColumnCounts[KBPAGE_COUNT] = {
-    [KEYBOARD_LETTERS_LOWER] = KBCOL_COUNT,
-    [KEYBOARD_LETTERS_UPPER] = KBCOL_COUNT,
-    [KEYBOARD_SYMBOLS]       = 6
+static const u8 sPageColumnCounts[KBPAGE_COUNT] = { 
+    [KEYBOARD_LETTERS_LOWER] = KBCOL_COUNT, 
+    [KEYBOARD_LETTERS_UPPER] = KBCOL_COUNT, 
+    [KEYBOARD_SYMBOLS]       = KBCOL_COUNT 
 };
-static const u8 sPageColumnXPos[KBPAGE_COUNT][KBCOL_COUNT] = {
-    [KEYBOARD_LETTERS_LOWER] = {0, 12, 24, 56, 68, 80, 92, 123},
-    [KEYBOARD_LETTERS_UPPER] = {0, 12, 24, 56, 68, 80, 92, 123},
-    [KEYBOARD_SYMBOLS]       = {0, 22, 44, 66, 88, 110}
+static const u8 sPageColumnXPos[KBPAGE_COUNT * KBCOL_COUNT] = { 
+    0, 16, 32, 48, 64, 80, 96, 112, 128, 144,
+    0, 16, 32, 48, 64, 80, 96, 112, 128, 144,
+    0, 16, 32, 48, 64, 80, 96, 112, 128, 144 
 };
 
 static const struct NamingScreenTemplate *const sNamingScreenTemplates[];
@@ -414,9 +433,8 @@ static void ResetVHBlank(void);
 static void SetVBlank(void);
 static void VBlankCB_NamingScreen(void);
 static void NamingScreen_ShowBgs(void);
-static bool8 IsWideLetter(u8);
 
-static const u8 sText_MoveOkBack[] = _("{DPAD_NONE}MOVE  {A_BUTTON}OK  {B_BUTTON}BACK");
+static const u8 sText_MoveOkBack[] = _("{DPAD_NONE}이동  {A_BUTTON}결정  {B_BUTTON}취소");
 
 void DoNamingScreen(u8 templateNum, u8 *destBuffer, u16 monSpecies, u16 monGender, u32 monPersonality, bool8 isShiny, MainCallback returnCallback)
 {
@@ -490,9 +508,48 @@ static void CB2_LoadNamingScreen(void)
     }
 }
 
+static u8 *NamingScreen_StringCopyMultibyte(u8 *dest, const u8 *src)
+{
+    while (*src != EOS)
+    {
+        if (IsKoreanGlyph(*src))
+        {
+            *dest++ = *src++;
+            *dest++ = *src++;
+        }
+        else
+        {
+            *dest++ = 0;
+            *dest++ = *src++;
+        }
+    }
+    *dest = EOS;
+    return dest;
+}
+
+static u8 *NamingScreen_StringCopy(u8 *dest, const u8 *src)
+{
+    while (*src != EOS)
+    {
+        if (*src == 0)
+        {
+            *(dest++) = *(++src);
+            src++;
+        }
+        else
+        {
+            *dest++ = *src++;
+            *dest++ = *src++;
+        }
+    }
+    *dest = EOS;
+    return dest;
+}
+
 static void NamingScreen_Init(void)
 {
     sNamingScreen->state = STATE_FADE_IN;
+    sNamingScreen->koreanState = KSTATE_NONE;
     sNamingScreen->bg1vOffset = 0;
     sNamingScreen->bg2vOffset = 0;
     sNamingScreen->bg1Priority = BGCNT_PRIORITY(1);
@@ -500,14 +557,15 @@ static void NamingScreen_Init(void)
     sNamingScreen->bgToReveal = 0;
     sNamingScreen->bgToHide = 1;
     sNamingScreen->template = sNamingScreenTemplates[sNamingScreen->templateNum];
-    sNamingScreen->currentPage = sNamingScreen->template->initialPage;
-    sNamingScreen->inputCharBaseXPos = (DISPLAY_WIDTH - sNamingScreen->template->maxChars * 8) / 2 + 6;
+    sNamingScreen->currentPage = sNamingScreen->template->koreanEnabled ? KBPAGE_LETTERS_UPPER : KBPAGE_LETTERS_LOWER;
+    sNamingScreen->inputCharBaseXPos = (240 - sNamingScreen->template->maxChars * 8) / 2 + 6;
     if (sNamingScreen->templateNum == NAMING_SCREEN_WALDA)
         sNamingScreen->inputCharBaseXPos += 11;
     sNamingScreen->keyRepeatStartDelayCopy = gKeyRepeatStartDelay;
     memset(sNamingScreen->textBuffer, EOS, sizeof(sNamingScreen->textBuffer));
     if (sNamingScreen->template->copyExistingString)
-        StringCopy(sNamingScreen->textBuffer, sNamingScreen->destBuffer);
+        NamingScreen_StringCopyMultibyte(sNamingScreen->textBuffer, sNamingScreen->destBuffer);
+    NamingScreen_StringCopyMultibyte(sNamingScreen->backupBuffer, sNamingScreen->destBuffer);
     gKeyRepeatStartDelay = 16;
 }
 
@@ -1146,7 +1204,7 @@ static void CreateSprites(void)
 
 static void CreateCursorSprite(void)
 {
-    sNamingScreen->cursorSpriteId = CreateSprite(&sSpriteTemplate_Cursor, 38, 88, 1);
+    sNamingScreen->cursorSpriteId = CreateSprite(&sSpriteTemplate_Cursor, 27, 88, 1);
     SetCursorInvisibility(TRUE);
     gSprites[sNamingScreen->cursorSpriteId].oam.priority = 1;
     gSprites[sNamingScreen->cursorSpriteId].oam.objMode = ST_OAM_OBJ_BLEND;
@@ -1160,7 +1218,7 @@ static void SetCursorPos(s16 x, s16 y)
     struct Sprite *cursorSprite = &gSprites[sNamingScreen->cursorSpriteId];
 
     if (x < sPageColumnCounts[CurrentPageToKeyboardId()])
-        cursorSprite->x = sPageColumnXPos[CurrentPageToKeyboardId()][x] + 38;
+        cursorSprite->x = sPageColumnXPos[x + CurrentPageToKeyboardId() * KBCOL_COUNT] + 27;
     else
         cursorSprite->x = 0;
 
@@ -1383,7 +1441,7 @@ static void CreateTextEntrySprites(void)
     gSprites[spriteId].oam.priority = 3;
     gSprites[spriteId].invisible = TRUE;
     xPos = sNamingScreen->inputCharBaseXPos;
-    for (i = 0; i < sNamingScreen->template->maxChars; i++, xPos += 8)
+    for (i = 0; i < sNamingScreen->template->maxChars * 2; i += 2, xPos += 8)
     {
         spriteId = CreateSprite(&sSpriteTemplate_Underscore, xPos + 3, 60, 0);
         gSprites[spriteId].oam.priority = 3;
@@ -1960,23 +2018,21 @@ static u8 GetCharAtKeyboardPos(s16 x, s16 y)
 static u8 GetTextEntryPosition(void)
 {
     u8 i;
-
     for (i = 0; i < sNamingScreen->template->maxChars; i++)
     {
-        if (sNamingScreen->textBuffer[i] == EOS)
-            return i;
+        if (sNamingScreen->textBuffer[i * 2] == EOS)
+            return i * 2;
     }
-    return sNamingScreen->template->maxChars - 1;
+    return sNamingScreen->template->maxChars * 2;
 }
 
 static u8 GetPreviousTextCaretPosition(void)
 {
     s8 i;
-
     for (i = sNamingScreen->template->maxChars - 1; i > 0; i--)
     {
-        if (sNamingScreen->textBuffer[i] != EOS)
-            return i;
+        if (sNamingScreen->textBuffer[i * 2] != EOS)
+            return i * 2;
     }
     return 0;
 }
@@ -1984,73 +2040,351 @@ static u8 GetPreviousTextCaretPosition(void)
 static void DeleteTextCharacter(void)
 {
     u8 index;
-    u8 keyRole;
+    u8 keyRole, ch;
+    u16 korean;
 
     index = GetPreviousTextCaretPosition();
-    sNamingScreen->textBuffer[index] = 0;
-    DrawTextEntry();
-    CopyBgTilemapBufferToVram(3);
-    sNamingScreen->textBuffer[index] = EOS;
-    keyRole = GetKeyRoleAtCursorPos();
+    korean = (sNamingScreen->textBuffer[index] << 8) | sNamingScreen->textBuffer[index + 1];
 
-    // The below flashes the Back key once on delete
-    // It incorrectly leaves the Back key 1 shade lighter than its default
+    switch (sNamingScreen->koreanState)
+    {
+    case KSTATE_NONE:
+    case KSTATE_JAUM:
+        sNamingScreen->koreanState = KSTATE_NONE;
+        sNamingScreen->textBuffer[index] = EOS;
+        sNamingScreen->textBuffer[index + 1] = EOS;
+        break;
+
+    case KSTATE_MOUM:
+    case KSTATE_MOUM_MERGEABLE:
+        ch = GetJungByHangul(korean);
+        if (ch == 0x1d || ch == 0x1e || ch == 0x1f || ch == 0x22 || ch == 0x23 || ch == 0x24 || ch == 0x27)
+        {
+            sNamingScreen->koreanState = KSTATE_MOUM_MERGEABLE;
+            korean = AssembleHangul(GetCho(GetChoByHangul(korean)), SplitJung(GetJung(GetJungByHangul(korean)), 0), 0);
+            sNamingScreen->textBuffer[index] = (korean & 0xFF00) >> 8;
+            sNamingScreen->textBuffer[index + 1] = korean & 0x00FF;
+        }
+        else
+        {
+            sNamingScreen->koreanState = KSTATE_JAUM;
+            sNamingScreen->textBuffer[index] = 0x41;
+            sNamingScreen->textBuffer[index + 1] = GetChoByHangul(korean);
+        }
+        break;
+
+    case KSTATE_JAUM_2_MERGEABLE:
+    case KSTATE_JAUM_2:
+        ch = GetJungByHangul(korean);
+        if (ch == 0x1d || ch == 0x1e || ch == 0x1f || ch == 0x22 || ch == 0x23 || ch == 0x24 || ch == 0x27)
+            sNamingScreen->koreanState = KSTATE_MOUM;
+        else
+            sNamingScreen->koreanState = KSTATE_MOUM_MERGEABLE;
+
+        korean = AssembleHangul(GetCho(GetChoByHangul(korean)), GetJung(GetJungByHangul(korean)), 0);
+        sNamingScreen->textBuffer[index] = (korean & 0xFF00) >> 8;
+        sNamingScreen->textBuffer[index + 1] = korean & 0x00FF;
+        break;
+
+    case KSTATE_MERGED_JAUM:
+        sNamingScreen->koreanState = KSTATE_JAUM_2_MERGEABLE;
+        korean = AssembleHangul(GetCho(GetChoByHangul(korean)), GetJung(GetJungByHangul(korean)), SplitJong(GetJongIndexByHangul(korean), 0));
+        sNamingScreen->textBuffer[index] = (korean & 0xFF00) >> 8;
+        sNamingScreen->textBuffer[index + 1] = korean & 0x00FF;
+        break;
+    }
+
+    DrawTextEntry();
+    keyRole = GetKeyRoleAtCursorPos();
     if (keyRole == KEY_ROLE_CHAR || keyRole == KEY_ROLE_BACKSPACE)
         TryStartButtonFlash(BUTTON_BACK, FALSE, TRUE);
     PlaySE(SE_BALL);
 }
 
-// Returns TRUE if the text entry is now full
 static bool8 AddTextCharacter(void)
 {
-    s16 x;
-    s16 y;
-
+    s16 x, y;
     GetCursorPos(&x, &y);
     BufferCharacter(GetCharAtKeyboardPos(x, y));
     DrawTextEntry();
     CopyBgTilemapBufferToVram(3);
     PlaySE(SE_SELECT);
-
-    if (GetPreviousTextCaretPosition() != sNamingScreen->template->maxChars - 1)
-        return FALSE;
-    else
-        return TRUE;
+    return FALSE;
 }
 
 static void BufferCharacter(u8 ch)
 {
     u8 index = GetTextEntryPosition();
-    sNamingScreen->textBuffer[index] = ch;
+    u8 state = sNamingScreen->koreanState;
+    u16 koreanChar, prevChar = 0;
+
+    if (index >= 2)
+        prevChar = sNamingScreen->textBuffer[index - 2] << 8 | sNamingScreen->textBuffer[index - 1];
+
+    if (ch >= 0xa1 || ch == 0x00)
+    {
+        if (index == sNamingScreen->template->maxChars * 2) return;
+        sNamingScreen->textBuffer[index++] = 0;
+        sNamingScreen->textBuffer[index] = ch;
+        state = KSTATE_NONE;
+    }
+    else
+    {
+        switch (state)
+        {
+        case KSTATE_NONE:
+            if (index == sNamingScreen->template->maxChars * 2) return;
+            sNamingScreen->textBuffer[index++] = 0x41;
+            sNamingScreen->textBuffer[index] = ch;
+            if (IsJaum(ch)) state = KSTATE_JAUM;
+            break;
+
+        case KSTATE_JAUM:
+            if (IsMoum(ch))
+            {
+                koreanChar = AssembleHangul(GetCho(prevChar & 0xff), GetJung(ch), 0);
+                if (koreanChar == 0xffff)
+                {
+                    if (index == sNamingScreen->template->maxChars * 2) return;
+                    state = KSTATE_NONE;
+                    sNamingScreen->textBuffer[index++] = 0x41;
+                    sNamingScreen->textBuffer[index] = ch;
+                }
+                else
+                {
+                    index -= 2;
+                    sNamingScreen->textBuffer[index++] = (koreanChar & 0xff00) >> 8;
+                    sNamingScreen->textBuffer[index] = koreanChar & 0xff;
+                    if (ch == 0x1c || ch == 0x21 || ch == 0x26) state = KSTATE_MOUM_MERGEABLE;
+                    else state = KSTATE_MOUM;
+                }
+            }
+            else
+            {
+                if (index == sNamingScreen->template->maxChars * 2) return;
+                sNamingScreen->textBuffer[index++] = 0x41;
+                sNamingScreen->textBuffer[index] = ch;
+            }
+            break;
+
+        case KSTATE_MOUM_MERGEABLE:
+            if (IsMoum(ch))
+            {
+                if (!JoinMoum(GetJungByHangul(prevChar), ch))
+                {
+                    state = KSTATE_NONE;
+                    if (index == sNamingScreen->template->maxChars * 2) return;
+                    sNamingScreen->textBuffer[index++] = 0x41;
+                    sNamingScreen->textBuffer[index] = ch;
+                }
+                else
+                {
+                    koreanChar = AssembleHangul(GetCho(GetChoByHangul(prevChar)), GetJung(JoinMoum(GetJungByHangul(prevChar), ch)), 0);
+                    if (koreanChar == 0xffff)
+                    {
+                        if (index == sNamingScreen->template->maxChars * 2) return;
+                        state = KSTATE_NONE;
+                        sNamingScreen->textBuffer[index++] = 0x41;
+                        sNamingScreen->textBuffer[index] = ch;
+                    }
+                    else
+                    {
+                        index -= 2;
+                        sNamingScreen->textBuffer[index++] = (koreanChar & 0xff00) >> 8;
+                        sNamingScreen->textBuffer[index] = koreanChar & 0xff;
+                        state = KSTATE_MOUM;
+                    }
+                }
+            }
+            else
+            {
+                koreanChar = AssembleHangul(GetCho(GetChoByHangul(prevChar)), GetJung(GetJungByHangul(prevChar)), GetJong(ch));
+                if (koreanChar == 0xffff || GetJong(ch) == 0xff)
+                {
+                    if (index == sNamingScreen->template->maxChars * 2) return;
+                    state = KSTATE_JAUM;
+                    sNamingScreen->textBuffer[index++] = 0x41;
+                    sNamingScreen->textBuffer[index] = ch;
+                }
+                else
+                {
+                    index -= 2;
+                    sNamingScreen->textBuffer[index++] = (koreanChar & 0xff00) >> 8;
+                    sNamingScreen->textBuffer[index] = koreanChar & 0xff;
+                    state = KSTATE_JAUM_2;
+                }
+            }
+            break;
+
+        case KSTATE_MOUM:
+            if (IsMoum(ch))
+            {
+                if (index == sNamingScreen->template->maxChars * 2) return;
+                state = KSTATE_NONE;
+                sNamingScreen->textBuffer[index++] = 0x41;
+                sNamingScreen->textBuffer[index] = ch;
+            }
+            else
+            {
+                koreanChar = AssembleHangul(GetCho(GetChoByHangul(prevChar)), GetJung(GetJungByHangul(prevChar)), GetJong(ch));
+                if (koreanChar == 0xffff || GetJong(ch) == 0x00 || GetJong(ch) == 0xff)
+                {
+                    if (index == sNamingScreen->template->maxChars * 2) return;
+                    state = KSTATE_JAUM;
+                    sNamingScreen->textBuffer[index++] = 0x41;
+                    sNamingScreen->textBuffer[index] = ch;
+                }
+                else
+                {
+                    index -= 2;
+                    sNamingScreen->textBuffer[index++] = (koreanChar & 0xff00) >> 8;
+                    sNamingScreen->textBuffer[index] = koreanChar & 0xff;
+                    if (ch == 0x01 || ch == 0x03 || ch == 0x06 || ch == 0x08) state = KSTATE_JAUM_2_MERGEABLE;
+                    else state = KSTATE_JAUM_2;
+                }
+            }
+            break;
+
+        case KSTATE_JAUM_2_MERGEABLE:
+            if (IsJaum(ch))
+            {
+                if (!JoinJaum(GetJongByHangul(prevChar), ch))
+                {
+                    if (index == sNamingScreen->template->maxChars * 2) return;
+                    state = KSTATE_JAUM;
+                    sNamingScreen->textBuffer[index++] = 0x41;
+                    sNamingScreen->textBuffer[index] = ch;
+                }
+                else
+                {
+                    koreanChar = AssembleHangul(GetCho(GetChoByHangul(prevChar)), GetJung(GetJungByHangul(prevChar)), JoinJaum(GetJongByHangul(prevChar), ch));
+                    if (koreanChar == 0xffff)
+                    {
+                        state = KSTATE_JAUM;
+                        if (index == sNamingScreen->template->maxChars * 2) return;
+                        sNamingScreen->textBuffer[index++] = 0x41;
+                        sNamingScreen->textBuffer[index] = ch;
+                    }
+                    else
+                    {
+                        index -= 2;
+                        sNamingScreen->textBuffer[index++] = (koreanChar & 0xff00) >> 8;
+                        sNamingScreen->textBuffer[index] = koreanChar & 0xff;
+                        state = KSTATE_MERGED_JAUM;
+                    }
+                }
+            }
+            else
+            {
+                if (index == sNamingScreen->template->maxChars * 2) return;
+                koreanChar = AssembleHangul(GetCho(GetChoByHangul(prevChar)), GetJung(GetJungByHangul(prevChar)), 0);
+                index -= 2;
+                sNamingScreen->textBuffer[index++] = (koreanChar & 0xff00) >> 8;
+                sNamingScreen->textBuffer[index++] = koreanChar & 0xff;
+
+                koreanChar = AssembleHangul(GetCho(GetJongByHangul(prevChar)), GetJung(ch), 0);
+                if (koreanChar == 0xffff)
+                {
+                    state = KSTATE_NONE;
+                    sNamingScreen->textBuffer[index++] = 0x41;
+                    sNamingScreen->textBuffer[index] = ch;
+                }
+                else
+                {
+                    sNamingScreen->textBuffer[index++] = (koreanChar & 0xff00) >> 8;
+                    sNamingScreen->textBuffer[index] = koreanChar & 0xff;
+                    if (ch == 0x1c || ch == 0x21 || ch == 0x26) state = KSTATE_MOUM_MERGEABLE;
+                    else state = KSTATE_MOUM;
+                }
+            }
+            break;
+
+        case KSTATE_JAUM_2:
+            if (IsJaum(ch))
+            {
+                if (index == sNamingScreen->template->maxChars * 2) return;
+                state = KSTATE_JAUM;
+                sNamingScreen->textBuffer[index++] = 0x41;
+                sNamingScreen->textBuffer[index] = ch;
+            }
+            else
+            {
+                if (index == sNamingScreen->template->maxChars * 2) return;
+                koreanChar = AssembleHangul(GetCho(GetChoByHangul(prevChar)), GetJung(GetJungByHangul(prevChar)), 0);
+                index -= 2;
+                sNamingScreen->textBuffer[index++] = (koreanChar & 0xff00) >> 8;
+                sNamingScreen->textBuffer[index++] = koreanChar & 0xff;
+
+                koreanChar = AssembleHangul(GetCho(GetJongByHangul(prevChar)), GetJung(ch), 0);
+                if (koreanChar == 0xffff)
+                {
+                    state = KSTATE_NONE;
+                    sNamingScreen->textBuffer[index++] = 0x41;
+                    sNamingScreen->textBuffer[index] = ch;
+                }
+                else
+                {
+                    sNamingScreen->textBuffer[index++] = (koreanChar & 0xff00) >> 8;
+                    sNamingScreen->textBuffer[index] = koreanChar & 0xff;
+                    if (ch == 0x1c || ch == 0x21 || ch == 0x26) state = KSTATE_MOUM_MERGEABLE;
+                    else state = KSTATE_MOUM;
+                }
+            }
+            break;
+
+        case KSTATE_MERGED_JAUM:
+            if (IsJaum(ch))
+            {
+                if (index == sNamingScreen->template->maxChars * 2) return;
+                state = KSTATE_JAUM;
+                sNamingScreen->textBuffer[index++] = 0x41;
+                sNamingScreen->textBuffer[index] = ch;
+            }
+            else
+            {
+                if (index == sNamingScreen->template->maxChars * 2) return;
+                koreanChar = AssembleHangul(GetCho(GetChoByHangul(prevChar)), GetJung(GetJungByHangul(prevChar)), SplitJong(GetJongIndexByHangul(prevChar), 0));
+                index -= 2;
+                sNamingScreen->textBuffer[index++] = (koreanChar & 0xff00) >> 8;
+                sNamingScreen->textBuffer[index++] = koreanChar & 0xff;
+                
+                koreanChar = AssembleHangul(GetCho(ConvertJongToCho(SplitJong(GetJongIndexByHangul(prevChar), 1))), GetJung(ch), 0);
+                if (koreanChar == 0xffff)
+                {
+                    state = KSTATE_NONE;
+                    sNamingScreen->textBuffer[index++] = 0x41;
+                    sNamingScreen->textBuffer[index] = ch;
+                }
+                else
+                {
+                    sNamingScreen->textBuffer[index++] = (koreanChar & 0xff00) >> 8;
+                    sNamingScreen->textBuffer[index] = koreanChar & 0xff;
+                    if (ch == 0x1c || ch == 0x21 || ch == 0x26) state = KSTATE_MOUM_MERGEABLE;
+                    else state = KSTATE_MOUM;
+                }
+            }
+            break;
+        }
+    }
+    sNamingScreen->koreanState = state;
 }
 
 static bool8 IsInputTextWhitespace(void)
 {
     u8 i;
-
-    for (i = 0; i < sNamingScreen->template->maxChars; i++)
+    for (i = 0; i < sNamingScreen->template->maxChars * 2; i += 2)
     {
         if (sNamingScreen->textBuffer[i] != CHAR_SPACE && sNamingScreen->textBuffer[i] != EOS)
-        {
             return FALSE;
-        }
     }
-
     return TRUE;
 }
 
 static void SaveInputText(void)
 {
-    u8 i;
-
-    for (i = 0; i < sNamingScreen->template->maxChars; i++)
-    {
-        if (sNamingScreen->textBuffer[i] != CHAR_SPACE && sNamingScreen->textBuffer[i] != EOS)
-        {
-            StringCopyN(sNamingScreen->destBuffer, sNamingScreen->textBuffer, sNamingScreen->template->maxChars + 1);
-            break;
-        }
-    }
+    NamingScreen_StringCopy(sNamingScreen->destBuffer, sNamingScreen->textBuffer);
+    if (StringLength(sNamingScreen->destBuffer) == 0)
+        NamingScreen_StringCopy(sNamingScreen->destBuffer, sNamingScreen->backupBuffer);
 }
 
 static void LoadGfx(void)
@@ -2089,20 +2423,27 @@ static void NamingScreen_Dummy(u8 bg, u8 page)
 static void DrawTextEntry(void)
 {
     u8 i;
-    u8 temp[2];
-    u16 extraWidth;
-    u8 maxChars = sNamingScreen->template->maxChars;
+    u8 temp[3];
     u16 x = sNamingScreen->inputCharBaseXPos - 0x40;
 
     FillWindowPixelBuffer(sNamingScreen->windows[WIN_TEXT_ENTRY], PIXEL_FILL(1));
 
-    for (i = 0; i < maxChars; i++)
+    for (i = 0; i < sNamingScreen->template->maxChars * 2; i += 2)
     {
-        temp[0] = sNamingScreen->textBuffer[i];
-        temp[1] = gText_ExpandedPlaceholder_Empty[0];
-        extraWidth = (IsWideLetter(temp[0]) == TRUE) ? 2 : 0;
+        if (sNamingScreen->textBuffer[i] == 0)
+        {
+            temp[0] = sNamingScreen->textBuffer[i + 1];
+            temp[1] = gText_ExpandedPlaceholder_Empty[0];
+            temp[2] = gText_ExpandedPlaceholder_Empty[0];
+        }
+        else
+        {
+            temp[0] = sNamingScreen->textBuffer[i];
+            temp[1] = sNamingScreen->textBuffer[i + 1];
+            temp[2] = gText_ExpandedPlaceholder_Empty[0];
+        }
 
-        AddTextPrinterParameterized(sNamingScreen->windows[WIN_TEXT_ENTRY], FONT_NORMAL, temp, i * 8 + x + extraWidth, 1, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(sNamingScreen->windows[WIN_TEXT_ENTRY], FONT_NORMAL, temp, (i/2) * 8 + x, 1, TEXT_SKIP_DRAW, NULL);
     }
 
     TryDrawGenderIcon();
@@ -2143,7 +2484,7 @@ static void PrintKeyboardKeys(u8 window, u8 page)
     PutWindowTilemap(window);
 }
 
-static const u32 *const sNextKeyboardPageTilemaps[] =
+static const u8 *const sNextKeyboardPageTilemaps[] =
 {
     [KBPAGE_SYMBOLS] = gNamingScreenKeyboardUpper_Tilemap,
     [KBPAGE_LETTERS_UPPER] = gNamingScreenKeyboardLower_Tilemap, // lower
@@ -2184,9 +2525,9 @@ static void PrintControls(void)
     const u8 color[3] = { TEXT_DYNAMIC_COLOR_6, TEXT_COLOR_WHITE, TEXT_COLOR_DARK_GRAY };
 
     FillWindowPixelBuffer(sNamingScreen->windows[WIN_BANNER], PIXEL_FILL(15));
-    AddTextPrinterParameterized3(sNamingScreen->windows[WIN_BANNER], FONT_SMALL, 2, 1, color, 0, sText_MoveOkBack);
+    AddTextPrinterParameterized3(sNamingScreen->windows[WIN_BANNER], 0, 2, 1, color, 0, sText_MoveOkBack);
     PutWindowTilemap(sNamingScreen->windows[WIN_BANNER]);
-    CopyWindowToVram(sNamingScreen->windows[WIN_BANNER], COPYWIN_FULL);
+    CopyWindowToVram(sNamingScreen->windows[WIN_BANNER], 3); 
 }
 
 static void CB2_NamingScreen(void)
@@ -2229,19 +2570,6 @@ static void NamingScreen_ShowBgs(void)
     ShowBg(3);
 }
 
-// Always false (presumably for non-latin languages)
-static bool8 IsWideLetter(u8 character)
-{
-    u8 i;
-
-    for (i = 0; sText_AlphabetUpperLower[i] != EOS; i++)
-    {
-        if (character == sText_AlphabetUpperLower[i])
-            return FALSE;
-    }
-    return FALSE;
-}
-
 // Debug? Arguments aren't sensible for non-player screens.
 static void UNUSED Debug_NamingScreenPlayer(void)
 {
@@ -2276,67 +2604,27 @@ void NameRival(void)
 // Initial pages below are pointless, they're overwritten with KBPAGE_LETTERS_UPPER in MainState_FadeIn()
 static const struct NamingScreenTemplate sPlayerNamingScreenTemplate =
 {
-    .copyExistingString = FALSE,
-    .maxChars = PLAYER_NAME_LENGTH,
-    .iconFunction = 1,
-    .addGenderIcon = FALSE,
-    .initialPage = KBPAGE_LETTERS_UPPER,
-    .unused = 35,
-    .title = COMPOUND_STRING("YOUR NAME?"),
+    .copyExistingString = FALSE, .maxChars = 6, .iconFunction = 1, .addGenderIcon = FALSE, .initialPage = KBPAGE_LETTERS_UPPER, .koreanEnabled = TRUE, .title = COMPOUND_STRING("당신의 이름은?"),
 };
-
 static const struct NamingScreenTemplate sPCBoxNamingTemplate =
 {
-    .copyExistingString = FALSE,
-    .maxChars = BOX_NAME_LENGTH,
-    .iconFunction = 2,
-    .addGenderIcon = FALSE,
-    .initialPage = KBPAGE_LETTERS_UPPER,
-    .unused = 19,
-    .title = COMPOUND_STRING("BOX NAME?"),
+    .copyExistingString = FALSE, .maxChars = 6, .iconFunction = 2, .addGenderIcon = FALSE, .initialPage = KBPAGE_LETTERS_UPPER, .koreanEnabled = TRUE, .title = COMPOUND_STRING("박스의 이름은?"),
 };
-
 static const struct NamingScreenTemplate sMonNamingScreenTemplate =
 {
-    .copyExistingString = FALSE,
-    .maxChars = POKEMON_NAME_LENGTH,
-    .iconFunction = 3,
-    .addGenderIcon = TRUE,
-    .initialPage = KBPAGE_LETTERS_UPPER,
-    .unused = 35,
-    .title = COMPOUND_STRING("{STR_VAR_1}'s nickname?"),
+    .copyExistingString = FALSE, .maxChars = 6, .iconFunction = 3, .addGenderIcon = TRUE, .initialPage = KBPAGE_LETTERS_UPPER, .koreanEnabled = TRUE, .title = COMPOUND_STRING("{STR_VAR_1}의 이름은?"),
 };
-
 static const struct NamingScreenTemplate sWaldaWordsScreenTemplate =
 {
-    .copyExistingString = TRUE,
-    .maxChars = WALDA_PHRASE_LENGTH,
-    .iconFunction = 4,
-    .addGenderIcon = FALSE,
-    .initialPage = KBPAGE_LETTERS_UPPER,
-    .unused = 11,
-    .title = COMPOUND_STRING("Tell him the words."),
+    .copyExistingString = TRUE, .maxChars = WALDA_PHRASE_LENGTH, .iconFunction = 4, .addGenderIcon = FALSE, .initialPage = KBPAGE_LETTERS_UPPER, .koreanEnabled = FALSE, .title = COMPOUND_STRING("아저씨에게 말을 알려주자"),
 };
-
 static const struct NamingScreenTemplate sCodeScreenTemplate =
 {
-    .copyExistingString = FALSE,
-    .maxChars = CODE_NAME_LENGTH,
-    .iconFunction = 5,
-    .addGenderIcon = FALSE,
-    .initialPage = KBPAGE_LETTERS_UPPER,
-    .unused = 35,
-    .title = COMPOUND_STRING("Enter code:"),
+    .copyExistingString = FALSE, .maxChars = CODE_NAME_LENGTH, .iconFunction = 5, .addGenderIcon = FALSE, .initialPage = KBPAGE_LETTERS_UPPER, .koreanEnabled = FALSE, .title = COMPOUND_STRING("Enter code:"),
 };
-
 static const struct NamingScreenTemplate sRivalNamingScreenTemplate =
 {
-    .copyExistingString = FALSE,
-    .maxChars = PLAYER_NAME_LENGTH,
-    .iconFunction = 6,
-    .addGenderIcon = FALSE,
-    .initialPage = KBPAGE_LETTERS_UPPER,
-    .title = sText_RivalsName,
+    .copyExistingString = FALSE, .maxChars = 6, .iconFunction = 6, .addGenderIcon = FALSE, .initialPage = KBPAGE_LETTERS_UPPER, .koreanEnabled = TRUE, .title = sText_RivalsName,
 };
 
 static const struct NamingScreenTemplate *const sNamingScreenTemplates[] =
@@ -2786,18 +3074,18 @@ static const u8 *const sNamingScreenKeyboardText[KBPAGE_COUNT][KBROW_COUNT] =
 
 static const struct SpriteSheet sSpriteSheets[] =
 {
-    {gNamingScreenBackButton_Gfx,     0x1E0,  GFXTAG_BACK_BUTTON},
-    {gNamingScreenOKButton_Gfx,       0x1E0,  GFXTAG_OK_BUTTON},
-    {gNamingScreenPageSwapFrame_Gfx,  0x280,  GFXTAG_PAGE_SWAP_FRAME},
-    {gNamingScreenPageSwapButton_Gfx, 0x100,  GFXTAG_PAGE_SWAP_BUTTON},
-    {gNamingScreenPageSwapUpper_Gfx,  0x060,  GFXTAG_PAGE_SWAP_UPPER},
-    {gNamingScreenPageSwapLower_Gfx,  0x060,  GFXTAG_PAGE_SWAP_LOWER},
-    {gNamingScreenPageSwapOthers_Gfx, 0x060,  GFXTAG_PAGE_SWAP_OTHERS},
-    {gNamingScreenCursor_Gfx,         0x080,  GFXTAG_CURSOR},
-    {gNamingScreenCursorSquished_Gfx, 0x080,  GFXTAG_CURSOR_SQUISHED},
-    {gNamingScreenCursorFilled_Gfx,   0x080,  GFXTAG_CURSOR_FILLED},
-    {gNamingScreenInputArrow_Gfx,     0x020,  GFXTAG_INPUT_ARROW},
-    {gNamingScreenUnderscore_Gfx,     0x020,  GFXTAG_UNDERSCORE},
+    {gNamingScreenRWindow_Gfx + 0x280,          0x1E0,  GFXTAG_BACK_BUTTON},
+    {gNamingScreenRWindow_Gfx + 0x460,          0x1E0,  GFXTAG_OK_BUTTON},
+    {gNamingScreenRWindow_Gfx,                  0x280,  GFXTAG_PAGE_SWAP_FRAME},
+    {gNamingScreenPageButton_Gfx + 0x20,        0x100,  GFXTAG_PAGE_SWAP_BUTTON},
+    {gNamingScreenROptions_Gfx,                 0x060,  GFXTAG_PAGE_SWAP_UPPER},
+    {gNamingScreenROptions_Gfx + 0xA0,          0x060,  GFXTAG_PAGE_SWAP_LOWER},
+    {gNamingScreenROptions_Gfx + 0x140,         0x060,  GFXTAG_PAGE_SWAP_OTHERS},
+    {gNamingScreenCursor_Gfx,                   0x080,  GFXTAG_CURSOR},
+    {gNamingScreenCursor_Gfx + 0xA0,            0x080,  GFXTAG_CURSOR_SQUISHED},
+    {gNamingScreenCursor_Gfx + 0x140,           0x080,  GFXTAG_CURSOR_FILLED},
+    {gNamingScreenInputArrow_Gfx,               0x020,  GFXTAG_INPUT_ARROW},
+    {gNamingScreenUnderscore_Gfx,               0x020,  GFXTAG_UNDERSCORE},
     {}
 };
 

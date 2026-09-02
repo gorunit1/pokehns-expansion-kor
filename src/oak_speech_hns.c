@@ -206,11 +206,11 @@ static const struct MenuAction sMenuActions_Gender[] = {
 };
 
 static const u8 *const sMalePresetNames[] = {
-    COMPOUND_STRING("GOLD"),
+    COMPOUND_STRING("심향"),
 };
 
 static const u8 *const sFemalePresetNames[] = {
-    COMPOUND_STRING("KRIS"),
+    COMPOUND_STRING("크리스"),
 };
 
 #define NUM_PRESET_NAMES min(ARRAY_COUNT(sMalePresetNames), ARRAY_COUNT(sFemalePresetNames))
@@ -372,7 +372,7 @@ static void Task_NewGameHnsSpeechSub_InitPokeBall(u8 taskId)
     gSprites[spriteId].invisible = FALSE;
     gSprites[spriteId].data[0] = 0;
 
-    CreatePokeballSpriteToReleaseMon(spriteId, gSprites[spriteId].oam.paletteNum, 112, 58, 0, 0, 32, PALETTES_BG, SPECIES_WOOPER);
+    CreatePokeballSpriteToReleaseMon(spriteId, gSprites[spriteId].oam.paletteNum, 112, 58, 0, 0, 32, PALETTES_BG, SPECIES_MARILL);
     gTasks[taskId].func = Task_NewGameHnsSpeechSub_WaitForMon;
     gTasks[sHnsSpeechMainTaskId].tTimer = 0;
 }
@@ -573,7 +573,7 @@ static void Task_NewGameHnsSpeech_SlideInNewGenderSprite(u8 taskId)
 
 static void Task_NewGameHnsSpeech_ChallengeDisclaimer(u8 taskId)
 {
-    static const u8 sText_Disclaimer[] = _("What challenge are you\nexpecting?\p{COLOR RED}The following settings can be changed\nfrom the PC once you start the game.\lHowever, after starting the game, the\lnuzlocke, randomizer, difficulty and\lchallenge settings can only be made\leasier, not harder.");
+    static const u8 sText_Disclaimer[] = _("어떤 도전을\n기대하고 있는가?\p{COLOR RED}다음 설정은 게임을 시작한 뒤\nPC에서 언제든 변경할 수 있습니다\l단, 게임이 시작된 이후에는\l너즐록, 랜더마이저, 난이도, 챌린지 설정을\l더 쉽게만 변경할 수 있으며,\l어렵게는 변경할 수 없습니다");
     NewGameHnsSpeech_ClearWindow(0);
     StringCopy(gStringVar4, sText_Disclaimer);
     AddTextPrinterWithCustomSpeedForMessage(FALSE, 2);
@@ -1047,7 +1047,7 @@ static void SpriteCB_MovePlayerDownWhileShrinking(struct Sprite *sprite)
 
 static u8 NewGameHnsSpeech_CreateMonSprite(u8 x, u8 y)
 {
-    return CreateMonPicSprite_Affine(SPECIES_WOOPER, FALSE, 0, MON_PIC_AFFINE_FRONT, x, y, 14, TAG_NONE);
+    return CreateMonPicSprite_Affine(SPECIES_MARILL, FALSE, 0, MON_PIC_AFFINE_FRONT, x, y, 14, TAG_NONE);
 }
 
 static void AddHnsSpeechObjects(u8 taskId)

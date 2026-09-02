@@ -4830,7 +4830,7 @@ static void DebugAction_DestroyFollowerNPC(u8 taskId)
     X(SE_SUDOWOODO_SHAKE)
 
 // Create BGM list
-#define X(songId) static const u8 sBGMName_##songId[] = _(#songId);
+#define X(songId) static const u8 sBGMName_##songId[] = {0};
 SOUND_LIST_BGM
 #undef X
 
@@ -4842,7 +4842,7 @@ SOUND_LIST_BGM
 #undef X
 
 // Create SE list
-#define X(songId) static const u8 sSEName_##songId[] = _(#songId);
+#define X(songId) static const u8 sSEName_##songId[] = {0};
 SOUND_LIST_SE
 #undef X
 

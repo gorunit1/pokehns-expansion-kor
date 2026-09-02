@@ -269,6 +269,13 @@
 #define PLACEHOLDER_ID_KYOGRE        0xC
 #define PLACEHOLDER_ID_GROUDON       0xD
 #define PLACEHOLDER_ID_REGION        0xE
+#define PLACEHOLDER_ID_EUNNEUN       0xF
+#define PLACEHOLDER_ID_IGA           0x10
+#define PLACEHOLDER_ID_EULREUL       0x11
+#define PLACEHOLDER_ID_EU            0x12
+#define PLACEHOLDER_ID_I             0x13
+#define PLACEHOLDER_ID_WAGWA         0x14
+#define PLACEHOLDER_ID_AYA           0x15
 
 // battle placeholders are located in battle_message.h
 

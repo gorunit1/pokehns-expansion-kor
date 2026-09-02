@@ -256,25 +256,25 @@ static const u32 sBirchSpeechShadowGfx[] = INCBIN_U32("graphics/birch_speech/sha
 static const u32 sBirchSpeechBgMap[] = INCBIN_U32("graphics/birch_speech/map.bin.smolTM");
 static const u16 sBirchSpeechBgGradientPal[] = INCBIN_U16("graphics/birch_speech/bg2.gbapal");
 
-static const u8 gText_SaveFileCorrupted[] = _("The save file is corrupted. The\nprevious save file will be loaded.");
-static const u8 gText_SaveFileErased[] = _("The save file has been erased\ndue to corruption or damage.");
-static const u8 gJPText_No1MSubCircuit[] = _("1Mサブきばんが ささっていません！");
-static const u8 gText_BatteryRunDry[] = _("The internal battery has run dry.\nThe game can be played.\pHowever, clock-based events will\nno longer occur.");
+static const u8 gText_SaveFileCorrupted[] = _("리포트가 정확히 쓰여있지 않기 때문에\n전에 작성한 리포트를 읽겠습니다!");
+static const u8 gText_SaveFileErased[] = _("리포트의 내용이 사라졌다!");
+static const u8 gJPText_No1MSubCircuit[] = _("1M 서브보드가 꽂혀 있지 않습니다!");
+static const u8 gText_BatteryRunDry[] = _("전지가 다 되어서\n시계가 움직이지 않습니다\p시계와 관련된 이벤트는 일어나지 않지만\n게임은 계속 플레이할 수 있습니다");
 
-static const u8 gText_MainMenuNewGame[] = _("NEW GAME");
-static const u8 gText_MainMenuContinue[] = _("CONTINUE");
-static const u8 gText_MainMenuOption[] = _("OPTION");
-static const u8 gText_MainMenuMysteryGift[] = _("MYSTERY GIFT");
-static const u8 gText_MainMenuMysteryGift2[] = _("MYSTERY GIFT");
-static const u8 gText_MainMenuMysteryEvents[] = _("MYSTERY EVENTS");
-static const u8 gText_WirelessNotConnected[] = _("The Wireless Adapter is not\nconnected.");
-static const u8 gText_MysteryGiftCantUse[] = _("MYSTERY GIFT can't be used while\nthe Wireless Adapter is attached.");
-static const u8 gText_MysteryEventsCantUse[] = _("MYSTERY EVENTS can't be used while\nthe Wireless Adapter is attached.");
+static const u8 gText_MainMenuNewGame[] = _("새로운 모험을 시작한다");
+static const u8 gText_MainMenuContinue[] = _("모험을 계속한다");
+static const u8 gText_MainMenuOption[] = _("설정을 바꾼다");
+static const u8 gText_MainMenuMysteryGift[] = _("이상한 소포");
+static const u8 gText_MainMenuMysteryGift2[] = _("이상한 소포");
+static const u8 gText_MainMenuMysteryEvents[] = _("이상한 사건");
+static const u8 gText_WirelessNotConnected[] = _("무선어댑터가\n연결되어 있지 않습니다");
+static const u8 gText_MysteryGiftCantUse[] = _("무선어댑터를 꽂은 채로\n이상한 소포를 받을 수 없습니다");
+static const u8 gText_MysteryEventsCantUse[] = _("무선어댑터를 꽂은 채로\n이상한 사건을 받을 수 없습니다");
 
-static const u8 gText_ContinueMenuPlayer[] = _("PLAYER");
-static const u8 gText_ContinueMenuTime[] = _("TIME");
-static const u8 gText_ContinueMenuPokedex[] = _("POKéDEX");
-static const u8 gText_ContinueMenuBadges[] = _("BADGES");
+static const u8 gText_ContinueMenuPlayer[] = _("주인공");
+static const u8 gText_ContinueMenuTime[] = _("플레이 시간");
+static const u8 gText_ContinueMenuPokedex[] = _("포켓몬 도감");
+static const u8 gText_ContinueMenuBadges[] = _("가지고 있는 배지");
 
 #define MENU_LEFT 2
 #define MENU_TOP_WIN0 1
@@ -478,49 +478,49 @@ static const struct MenuAction sMenuActions_Gender[] = {
 };
 
 static const u8 *const sMalePresetNames[] = {
-    COMPOUND_STRING("STU"),
-    COMPOUND_STRING("MILTON"),
-    COMPOUND_STRING("TOM"),
-    COMPOUND_STRING("KENNY"),
-    COMPOUND_STRING("REID"),
-    COMPOUND_STRING("JUDE"),
-    COMPOUND_STRING("JAXSON"),
-    COMPOUND_STRING("EASTON"),
-    COMPOUND_STRING("WALKER"),
-    COMPOUND_STRING("TERU"),
-    COMPOUND_STRING("JOHNNY"),
-    COMPOUND_STRING("BRETT"),
-    COMPOUND_STRING("SETH"),
-    COMPOUND_STRING("TERRY"),
-    COMPOUND_STRING("CASEY"),
-    COMPOUND_STRING("DARREN"),
-    COMPOUND_STRING("LANDON"),
-    COMPOUND_STRING("COLLIN"),
-    COMPOUND_STRING("STANLEY"),
-    COMPOUND_STRING("QUINCY")
+    COMPOUND_STRING("심향"),
+    COMPOUND_STRING("하트"),
+    COMPOUND_STRING("소울"),
+    COMPOUND_STRING("지우"),
+    COMPOUND_STRING("캔"),
+    COMPOUND_STRING("호진"),
+    COMPOUND_STRING("상우"),
+    COMPOUND_STRING("쟝"),
+    COMPOUND_STRING("재범"),
+    COMPOUND_STRING("청운"),
+    COMPOUND_STRING("강산"),
+    COMPOUND_STRING("인철"),
+    COMPOUND_STRING("지겸"),
+    COMPOUND_STRING("숙호"),
+    COMPOUND_STRING("찬호"),
+    COMPOUND_STRING("지훈"),
+    COMPOUND_STRING("윤호"),
+    COMPOUND_STRING("캐인"),
+    COMPOUND_STRING("다인"),
+    COMPOUND_STRING("상현"),
 };
 
 static const u8 *const sFemalePresetNames[] = {
-    COMPOUND_STRING("KIMMY"),
-    COMPOUND_STRING("TIARA"),
-    COMPOUND_STRING("BELLA"),
-    COMPOUND_STRING("JAYLA"),
-    COMPOUND_STRING("ALLIE"),
-    COMPOUND_STRING("LIANNA"),
-    COMPOUND_STRING("SARA"),
-    COMPOUND_STRING("MONICA"),
-    COMPOUND_STRING("CAMILA"),
-    COMPOUND_STRING("AUBREE"),
-    COMPOUND_STRING("RUTHIE"),
-    COMPOUND_STRING("HAZEL"),
-    COMPOUND_STRING("NADINE"),
-    COMPOUND_STRING("TANJA"),
-    COMPOUND_STRING("YASMIN"),
-    COMPOUND_STRING("NICOLA"),
-    COMPOUND_STRING("LILLIE"),
-    COMPOUND_STRING("TERRA"),
-    COMPOUND_STRING("LUCY"),
-    COMPOUND_STRING("HALIE")
+    COMPOUND_STRING("크리스"),
+    COMPOUND_STRING("하트"),
+    COMPOUND_STRING("소울"),
+    COMPOUND_STRING("링링"),
+    COMPOUND_STRING("서연"),
+    COMPOUND_STRING("해나"),
+    COMPOUND_STRING("아라"),
+    COMPOUND_STRING("유경"),
+    COMPOUND_STRING("윤혜"),
+    COMPOUND_STRING("태희"),
+    COMPOUND_STRING("나정"),
+    COMPOUND_STRING("인희"),
+    COMPOUND_STRING("나영"),
+    COMPOUND_STRING("꽃님"),
+    COMPOUND_STRING("설아"),
+    COMPOUND_STRING("지나"),
+    COMPOUND_STRING("주얘"),
+    COMPOUND_STRING("사희"),
+    COMPOUND_STRING("미영"),
+    COMPOUND_STRING("은영"),
 };
 
 // The number of male vs. female names is assumed to be the same.

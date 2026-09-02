@@ -80,6 +80,17 @@ union TextColor {
     u32 asU32;
 };
 
+struct TextPrinterSubStruct
+{
+    u8 glyphId:4;  // 0x14
+    bool8 hasPrintBeenSpedUp:1;
+    u8 unk:3;
+    u8 downArrowDelay:5;
+    u8 downArrowYPosIdx:2;
+    bool8 hasGlyphIdBeenSet:1;
+    u8 autoScrollDelay;
+};
+
 struct TextPrinterTemplate
 {
     const u8 *currentChar;
@@ -116,6 +127,7 @@ struct TextPrinter
 
     void (*callback)(struct TextPrinterTemplate *, u16);
 
+    u8 subStructFields[7]; // always cast to struct TextPrinterSubStruct... so why bother
     u16 utilityCounter:13;
     u16 downArrowYPosIdx:2;
     bool16 hasFontIdBeenSet:1;
@@ -201,6 +213,17 @@ void DecompressGlyphTile(const void *src_, void *dest_);
 u32 CopyGlyphToVRAM(struct TextPrinter *textPrinter);
 void ClearTextSpan(struct TextPrinter *textPrinter, u32 width);
 
+u16 Font0Func(struct TextPrinter *textPrinter);
+u16 Font1Func(struct TextPrinter *textPrinter);
+u16 Font2Func(struct TextPrinter *textPrinter);
+u16 Font3Func(struct TextPrinter *textPrinter);
+u16 Font4Func(struct TextPrinter *textPrinter);
+u16 Font5Func(struct TextPrinter *textPrinter);
+u16 Font7Func(struct TextPrinter *textPrinter);
+u16 Font8Func(struct TextPrinter *textPrinter);
+u16 Font10Func(struct TextPrinter *textPrinter);
+u16 Font11Func(struct TextPrinter *textPrinter);
+
 void TextPrinterInitDownArrowCounters(struct TextPrinter *textPrinter);
 void TextPrinterDrawDownArrow(struct TextPrinter *textPrinter);
 void TextPrinterClearDownArrow(struct TextPrinter *textPrinter);
@@ -219,6 +242,21 @@ u8 GetKeypadIconHeight(u8 keypadIconId);
 void SetDefaultFontsPointer(void);
 u8 GetFontAttribute(u8 fontId, u8 attributeId);
 u8 GetMenuCursorDimensionByFont(u8 fontId, u8 whichDimension);
+void DecompressGlyphFont0(u16 glyphId, bool32 isJapanese);
+u32 GetGlyphWidthFont0(u16 glyphId, bool32 isJapanese);
+void DecompressGlyphFont7(u16 glyphId, bool32 isJapanese);
+u32 GetGlyphWidthFont7(u16 glyphId, bool32 isJapanese);
+void DecompressGlyphFont8(u16 glyphId, bool32 isJapanese);
+u32 GetGlyphWidthFont8(u16 glyphId, bool32 isJapanese);
+void DecompressGlyphFont10(u16 glyphId, bool32 isJapanese);
+u32 GetGlyphWidthFont10(u16 glyphId, bool32 isJapanese);
+void DecompressGlyphFont11(u16 glyphId, bool32 isJapanese);
+u32 GetGlyphWidthFont11(u16 glyphId, bool32 isJapanese);
+void DecompressGlyphFont2(u16 glyphId, bool32 isJapanese);
+u32 GetGlyphWidthFont2(u16 glyphId, bool32 isJapanese);
+void DecompressGlyphFont1(u16 glyphId, bool32 isJapanese);
+u32 GetGlyphWidthFont1(u16 glyphId, bool32 isJapanese);
+void DecompressGlyphFont9(u16 glyphId);
 
 // braille.c
 u16 FontFunc_Braille(struct TextPrinter *textPrinter);
