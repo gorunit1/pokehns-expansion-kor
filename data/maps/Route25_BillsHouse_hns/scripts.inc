@@ -264,6 +264,7 @@ Route25_BillsHouse_hns_CutsceneCleanup::
 	delay 60
 	callnative UpdateFollowingPokemon
 	fadescreen FADE_FROM_BLACK
+	setflag FLAG_USED_TELEPORTER
 	releaseall
 	end
 
@@ -613,8 +614,8 @@ Route25_BillsHouse_Text_ShownAll:
 	.string "cute POKéMON.\p"
 	.string "I really enjoyed myself. I'm\n"
 	.string "glad I've lived such a long life.\p"
-	.string "Feel free to use the GALARIAN\n"
-	.string "RECOMBINATOR whenever you like.$"
+	.string "Feel free to use the TELEPORTER\n"
+	.string "whenever you like.$"
 
 Route25_BillsHouse_Text_WrongPokemon:
 	.string "Hm?\p"
