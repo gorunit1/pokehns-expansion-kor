@@ -68,26 +68,33 @@
 #define B_TXT_PARTNER_CLASS 0x32
 #define B_TXT_PARTNER_NAME 0x33
 #define B_TXT_BUFF3 0x34
-#define B_TXT_ATK_TRAINER_NAME 0x35
-#define B_TXT_ATK_TRAINER_CLASS 0x36
-#define B_TXT_ATK_TEAM1 0x37 // Your/The opposing
-#define B_TXT_ATK_TEAM2 0x38 // your/the opposing
-#define B_TXT_DEF_NAME 0x39
-#define B_TXT_DEF_TEAM1 0x3A // Your/The opposing
-#define B_TXT_DEF_TEAM2 0x3B // your/the opposing
-#define B_TXT_DEF_PARTNER_NAME 0x3C
-// #define B_UNUSED_0x3D 0x3D
-#define B_TXT_ATK_NAME_WITH_PREFIX2 0x3E //lowercase
-#define B_TXT_DEF_NAME_WITH_PREFIX2 0x3F //lowercase
-#define B_TXT_EFF_NAME_WITH_PREFIX2 0x40 //lowercase
-#define B_TXT_SCR_ACTIVE_NAME_WITH_PREFIX2 0x41 //lowercase
-#define B_TXT_TRAINER1_NAME_WITH_CLASS 0x42
-#define B_TXT_TRAINER2_NAME_WITH_CLASS 0x43
-#define B_TXT_PARTNER_NAME_WITH_CLASS 0x44
-#define B_TXT_ATK_TRAINER_NAME_WITH_CLASS 0x45
-#define B_TXT_EFF_TEAM1 0x46
-#define B_TXT_EFF_TEAM2 0x47
-#define B_TXT_RIVAL_NAME 0x48
+#define B_TXT_EUNNEUN 0x35
+#define B_TXT_IGA 0x36
+#define B_TXT_EULREUL 0x37
+#define B_TXT_EU 0x38
+#define B_TXT_I 0x39
+#define B_TXT_WAGWA 0x3A
+#define B_TXT_AYA 0x3B
+#define B_TXT_ATK_TRAINER_NAME 0x3C
+#define B_TXT_ATK_TRAINER_CLASS 0x3D
+#define B_TXT_ATK_TEAM1 0x3E // Your/The opposing
+#define B_TXT_ATK_TEAM2 0x3F // your/the opposing
+#define B_TXT_DEF_NAME 0x40
+#define B_TXT_DEF_TEAM1 0x41 // Your/The opposing
+#define B_TXT_DEF_TEAM2 0x42 // your/the opposing
+#define B_TXT_DEF_PARTNER_NAME 0x43
+// #define B_UNUSED_0x44 0x44
+#define B_TXT_ATK_NAME_WITH_PREFIX2 0x45 //lowercase
+#define B_TXT_DEF_NAME_WITH_PREFIX2 0x46 //lowercase
+#define B_TXT_EFF_NAME_WITH_PREFIX2 0x47 //lowercase
+#define B_TXT_SCR_ACTIVE_NAME_WITH_PREFIX2 0x48 //lowercase
+#define B_TXT_TRAINER1_NAME_WITH_CLASS 0x49
+#define B_TXT_TRAINER2_NAME_WITH_CLASS 0x4A
+#define B_TXT_PARTNER_NAME_WITH_CLASS 0x4B
+#define B_TXT_ATK_TRAINER_NAME_WITH_CLASS 0x4C
+#define B_TXT_EFF_TEAM1 0x4D
+#define B_TXT_EFF_TEAM2 0x4E
+#define B_TXT_RIVAL_NAME 0x4F
 
 #define B_BUFF_STRING                       0
 #define B_BUFF_NUMBER                       1

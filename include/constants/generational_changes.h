@@ -133,6 +133,7 @@
     F(B_PURSUIT_TARGET,            pursuitTarget,           (u32, GEN_COUNT - 1)) /* TODO: use in tests */ \
     F(B_SKIP_RECHARGE,             skipRecharge,            (u32, GEN_COUNT - 1)) /* TODO: use in tests */ \
     F(B_ENCORE_TARGET,             encoreTarget,            (u32, GEN_COUNT - 1)) \
+    F(B_RAGE_FIST,                 rageFist,                (u32, GEN_COUNT - 1)) \
     F(B_TIME_OF_DAY_HEALING_MOVES, timeOfDayHealingMoves,   (u32, GEN_COUNT - 1)) \
     F(B_DREAM_EATER_LIQUID_OOZE,   dreamEaterLiquidOoze,    (u32, GEN_COUNT - 1)) \
     F(B_FOCUS_PUNCH_FAILURE,       focusPunchFailure,       (u32, GEN_COUNT - 1)) \
@@ -230,6 +231,11 @@
     F(POKERUS_INFECT_EGG,        pokerusInfectEgg,        (u32, TRUE))          \
     F(POKERUS_HERD_IMMUNITY,     pokerusHerdImmunity,     (u32, TRUE))          \
     F(POKERUS_WEAK_VARIANT,      pokerusWeakVariant,      (u32, TRUE))          \
+    F(BALL_INHERITANCE,           ballInheritance,         (u32, GEN_COUNT - 1)) \
+    F(MOVE_INHERITANCE,           moveInheritance,         (u32, GEN_COUNT - 1)) \
+    F(NATURE_INHERITANCE,         natureInheritance,       (u32, GEN_COUNT - 1)) \
+    F(ABILITY_INHERITANCE,        abilityInheritance,      (u32, GEN_COUNT - 1)) \
+    F(EGG_MOVE_TRANSFER,          eggMoveTransfer,         (u32, GEN_COUNT - 1)) \
 
 
 #define GET_CONFIG_MAXIMUM(_typeMaxValue, ...) INVOKE_WITH_B(GET_CONFIG_MAXIMUM_, _typeMaxValue)

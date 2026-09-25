@@ -26,6 +26,7 @@
 #include "random.h"
 #include "save.h"
 #include "scanline_effect.h"
+#include "rtc.h"
 #include "sound.h"
 #include "sprite.h"
 #include "strings.h"
@@ -37,6 +38,11 @@
 
 #if IS_HNS
 
+extern const u8 gText_Oak_LateNight[];
+extern const u8 gText_Oak_Morning[];
+extern const u8 gText_Oak_Day[];
+extern const u8 gText_Oak_Evening[];
+extern const u8 gText_Oak_Night[];
 extern const u8 gText_Oak_Welcome[];
 extern const u8 gText_Oak_MainSpeech[];
 extern const u8 gText_Oak_AndYouAre[];
@@ -48,17 +54,27 @@ extern const u8 gText_Oak_SoItsPlayer[];
 extern const u8 gText_Oak_YourePlayer[];
 extern const u8 gText_Oak_AreYouReady[];
 
+// SoulGold 스타일 동시 출력 좌표 및 밝기 설정
+#define NEW_GAME_SPEECH_BOY_X      145
+#define NEW_GAME_SPEECH_GIRL_X     205
+#define NEW_GAME_SPEECH_PLAYER_Y   80
+#define NEW_GAME_SPEECH_GENDER_DIM 8
+
 static EWRAM_DATA bool8 sStartedPokeBallTask = 0;
+static EWRAM_DATA u8 sOakSpeechPicTilemap[BG_SCREEN_SIZE / 2] = {0};
 
 static u8 sHnsSpeechMainTaskId;
 
 // Static function declarations
+static void Task_NewGameHnsSpeech_TimeIntro_Init(u8); // 추가
+static void Task_NewGameHnsSpeech_TimeIntro_Wait(u8); // 추가
+static void Task_NewGameHnsSpeech_TimeIntro_FadeInOak(u8 taskId); // 추가
 static void Task_NewGameHnsSpeech_Init(u8);
+static void InitHnsSpeechScene(u8);
 static void AddHnsSpeechObjects(u8);
-static void Task_NewGameHnsSpeech_WaitToShowProfessor(u8);
+static void LoadOakSpeechSceneGfx(void);
 static void NewGameHnsSpeech_StartFadeInTarget1OutTarget2(u8, u8);
 static void NewGameHnsSpeech_StartFadePlatformOut(u8, u8);
-static void Task_NewGameHnsSpeech_WaitForSpriteFadeInWelcome(u8);
 static void NewGameHnsSpeech_ClearWindow(u8);
 static void Task_NewGameHnsSpeech_ThisIsAPokemon(u8);
 static void Task_NewGameHnsSpeech_MainSpeech(u8);
@@ -81,8 +97,14 @@ static void Task_NewGameHnsSpeech_WaitDisclaimerText(u8);
 static void Task_NewGameHnsSpeech_WaitPressDisclaimer(u8);
 static void Task_NewGameHnsSpeech_ChallengeMenu(u8);
 static void Task_NewGameHnsSpeech_WhatsYourName(u8);
-static void Task_NewGameHnsSpeech_SlideOutOldGenderSprite(u8);
-static void Task_NewGameHnsSpeech_SlideInNewGenderSprite(u8);
+
+// 동시 출력을 위한 새로운 함수들
+static void NewGameHnsSpeech_UpdateGenderSprites(u8);
+static void NewGameHnsSpeech_StartGenderConfirmation(u8);
+static void Task_NewGameHnsSpeech_WaitForUnselectedGenderFadeOut(u8);
+static void NewGameHnsSpeech_HideUnselectedGenderSprite(u8);
+static void Task_NewGameHnsSpeech_WaitForPlayerFadeOutToGenderChoice(u8);
+
 static void Task_NewGameHnsSpeech_WaitForWhatsYourNameToPrint(u8);
 static void Task_NewGameHnsSpeech_WaitPressBeforeNameChoice(u8);
 static void Task_NewGameHnsSpeech_StartNamingScreen(u8);
@@ -97,8 +119,9 @@ static void Task_NewGameHnsSpeech_CreateNameYesNo(u8);
 static void Task_NewGameHnsSpeech_ProcessNameYesNoMenu(u8);
 static void Task_NewGameHnsSpeech_SlidePlatformAway2(u8);
 static void Task_NewGameHnsSpeech_ReshowProfessorMon(u8);
-static void Task_NewGameHnsSpeech_WaitForSpriteFadeInAndTextPrinter(u8);
-static void Task_NewGameHnsSpeech_AreYouReady(u8);
+static void Task_NewGameHnsSpeech_WaitForYourePlayerText(u8);
+static void Task_NewGameHnsSpeech_WaitForAreYouReadyText(u8);
+static void Task_NewGameHnsSpeech_FadeInPlayer(u8);
 static void Task_NewGameHnsSpeech_ShrinkPlayer(u8);
 static void Task_NewGameHnsSpeech_WaitForPlayerShrink(u8);
 static void Task_NewGameHnsSpeech_FadePlayerToWhite(u8);
@@ -118,14 +141,30 @@ static void DrawMainMenuWindowBorder(const struct WindowTemplate *, u16);
 
 // .rodata
 
-static const u16 sHnsSpeechBgPals[][16] = {
-    INCBIN_U16("graphics/oak_speech_hns/bg0_hns.gbapal"),
-    INCBIN_U16("graphics/oak_speech_hns/bg1_hns.gbapal")
-};
+static const u16 sOakSpeechBgPal[] = INCBIN_U16("graphics/oak_speech/oak_speech_bg.gbapal");
+static const u32 sOakSpeechBgGfx[] = INCBIN_U32("graphics/oak_speech/oak_speech_bg.4bpp.smol");
+static const u32 sOakSpeechBgMap[] = INCBIN_U32("graphics/oak_speech/oak_speech_bg.bin.smolTM");
+static const u16 sOakSpeechOakPal[] = INCBIN_U16("graphics/oak_speech/oak/pal.gbapal");
+static const u32 sOakSpeechOakGfx[] = INCBIN_U32("graphics/oak_speech/oak/pic.8bpp.smol");
 
-static const u32 sHnsSpeechShadowGfx[] = INCBIN_U32("graphics/oak_speech_hns/shadow_hns.4bpp.smol");
-static const u32 sHnsSpeechBgMap[] = INCBIN_U32("graphics/oak_speech_hns/map_hns.bin.smolTM");
-static const u16 sHnsSpeechBgGradientPal[] = INCBIN_U16("graphics/oak_speech_hns/bg2_hns.gbapal");
+#define OAK_SPEECH_PIC_WIDTH       8
+#define OAK_SPEECH_PIC_HEIGHT      12
+#define OAK_SPEECH_PIC_TILE_COUNT  (OAK_SPEECH_PIC_WIDTH * OAK_SPEECH_PIC_HEIGHT)
+#define OAK_SPEECH_BLANK_TILE      OAK_SPEECH_PIC_TILE_COUNT
+#define OAK_SPEECH_BG_PAL_NUM      3
+#define OAK_SPEECH_BG_BACKDROP     14
+#define OAK_SPEECH_BG_MAP_SIZE     (32 * 20)
+
+static const struct BgTemplate sOakSpeechPicBgTemplate =
+{
+    .bg = 2,
+    .charBaseIndex = 1,
+    .mapBaseIndex = 29,
+    .screenSize = 1,
+    .paletteMode = 1,
+    .priority = 0,
+    .baseTile = 0
+};
 
 static const struct WindowTemplate sNewGameHnsSpeechTextWindows[] =
 {
@@ -216,14 +255,14 @@ static const u8 *const sFemalePresetNames[] = {
 #define NUM_PRESET_NAMES min(ARRAY_COUNT(sMalePresetNames), ARRAY_COUNT(sFemalePresetNames))
 
 #define MAIN_MENU_BORDER_TILE   0x1D5
+#define HNS_MENU_BASE_TILE_NUM 0xF3
 #define HNS_DLG_BASE_TILE_NUM 0xFC
 
 // Task data defines
-#define tTimer            data[0]
-#define tBG1HOFS          data[1]
+#define tTimer        data[0]
+#define tBG1HOFS      data[1]
 #define tPlayerSpriteId   data[2]
 #define tPlayerGender     data[3]
-#define tProfessorSpriteId data[4]
 #define tMonSpriteId      data[5]
 #define tGoldSpriteId     data[6]
 #define tKrisSpriteId     data[7]
@@ -248,13 +287,20 @@ void StartNewGameSceneHns(void)
 {
     u8 taskId;
 
+    // A new game started over an existing save inherits that save's flags until
+    // ClearSav1 runs at the end of the speech, so the intro would play GBS tracks.
+    // Clearing it here also means GBS never drives NR50 during the speech; restore
+    // the PSG master volume in case it was left attenuated on the way in.
+    FlagClear(FLAG_SYS_GBS_ENABLED);
+    RestorePSGMasterVolume();
+
     SetVBlankCallback(NULL);
     ResetTasks();
     taskId = CreateTask(Task_NewGameHnsSpeech_Init, 0);
     gTasks[taskId].tBG1HOFS = 0;
     gTasks[taskId].tPlayerSpriteId = SPRITE_NONE;
     gTasks[taskId].data[3] = 0xFF;
-    gTasks[taskId].tTimer = 0xD8;
+    gTasks[taskId].tTimer = 80;
 
     SetVBlankCallback(VBlankCB_HnsMenu);
     SetMainCallback2(CB2_HnsMenu);
@@ -262,13 +308,31 @@ void StartNewGameSceneHns(void)
 
 static void Task_NewGameHnsSpeech_Init(u8 taskId)
 {
+    InitHnsSpeechScene(taskId);
+    sStartedPokeBallTask = FALSE;
+    PlayBGM(MUS_HG_NEW_GAME);
+    gTasks[taskId].func = Task_NewGameHnsSpeech_ChallengeDisclaimer;
+}
+
+// Initial setup and challenge-menu return both precede gender/name selection.
+static void InitHnsSpeechScene(u8 taskId)
+{
+    SetVBlankCallback(NULL);
+    ResetBgsAndClearDma3BusyFlags(0);
     SetGpuReg(REG_OFFSET_DISPCNT, 0);
     DmaFill16(3, 0, VRAM, VRAM_SIZE);
     DmaFill32(3, 0, OAM, OAM_SIZE);
     DmaFill16(3, 0, PLTT, PLTT_SIZE);
     ResetPaletteFade();
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
+    
+    InitBgsFromTemplates(0, sMainMenuBgTemplates, ARRAY_COUNT(sMainMenuBgTemplates));
     InitBgFromTemplate(&sHnsBgTemplate);
+    InitBgFromTemplate(&sOakSpeechPicBgTemplate);
+    SetBgMode(1);
+    SetBgTilemapBuffer(2, sOakSpeechPicTilemap);
+    SetBgAffine(2, 0, 0, 0, 0, 256, 256, 0);
+
     SetGpuReg(REG_OFFSET_WIN0H, 0);
     SetGpuReg(REG_OFFSET_WIN0V, 0);
     SetGpuReg(REG_OFFSET_WININ, 0);
@@ -277,66 +341,127 @@ static void Task_NewGameHnsSpeech_Init(u8 taskId)
     SetGpuReg(REG_OFFSET_BLDALPHA, 0);
     SetGpuReg(REG_OFFSET_BLDY, 0);
 
-    DecompressDataWithHeaderVram(sHnsSpeechShadowGfx, (void *)VRAM);
-    DecompressDataWithHeaderVram(sHnsSpeechBgMap, (void *)(BG_SCREEN_ADDR(7)));
-    LoadPalette(sHnsSpeechBgPals, BG_PLTT_ID(0), 2 * PLTT_SIZE_4BPP);
-    LoadPalette(&sHnsSpeechBgGradientPal[8], BG_PLTT_ID(0) + 1, PLTT_SIZEOF(8));
+    LoadOakSpeechSceneGfx();
+
     ScanlineEffect_Stop();
     ResetSpriteData();
     FreeAllSpritePalettes();
     ResetAllPicSprites();
     AddHnsSpeechObjects(taskId);
+
+    gTasks[taskId].tBG1HOFS = 0;
+    gTasks[taskId].tPlayerSpriteId = SPRITE_NONE;
+    gTasks[taskId].tPlayerGender = 0xFF;
+    SetGpuReg(REG_OFFSET_BG1HOFS, 0);
+    SetGpuReg(REG_OFFSET_BG1VOFS, 0);
+
+    InitWindows(sNewGameHnsSpeechTextWindows);
+    LoadMainMenuWindowFrameTiles(0, HNS_MENU_BASE_TILE_NUM);
+    LoadMessageBoxGfx(0, HNS_DLG_BASE_TILE_NUM, BG_PLTT_ID(15));
+    DrawDialogFrameWithCustomTile(0, TRUE, HNS_DLG_BASE_TILE_NUM);
+    PutWindowTilemap(0);
+    CopyWindowToVram(0, COPYWIN_FULL);
+
     BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
-    gTasks[taskId].func = Task_NewGameHnsSpeech_WaitToShowProfessor;
-    PlayBGM(MUS_HG_NEW_GAME);
     ShowBg(0);
     ShowBg(1);
+    HideBg(2);
+    SetVBlankCallback(VBlankCB_HnsMenu);
 }
 
-static void Task_NewGameHnsSpeech_WaitToShowProfessor(u8 taskId)
+static void LoadOakSpeechSceneGfx(void)
 {
-    u8 spriteId;
+    u32 i;
+    u16 *bgTilemap = (u16 *)BG_SCREEN_ADDR(7);
 
-    if (gTasks[taskId].tTimer)
+    DecompressDataWithHeaderVram(sOakSpeechBgGfx, (void *)VRAM);
+    DecompressDataWithHeaderVram(sOakSpeechBgMap, bgTilemap);
+    DecompressDataWithHeaderVram(sOakSpeechOakGfx, (void *)BG_CHAR_ADDR(1));
+    DmaFill32(3, 0, (void *)(BG_CHAR_ADDR(1) + OAK_SPEECH_BLANK_TILE * TILE_SIZE_8BPP), TILE_SIZE_8BPP);
+    LoadPalette(sOakSpeechOakPal, BG_PLTT_ID(0), sizeof(sOakSpeechOakPal));
+    LoadPalette(sOakSpeechBgPal, BG_PLTT_ID(OAK_SPEECH_BG_PAL_NUM), sizeof(sOakSpeechBgPal));
+    LoadPalette(&sOakSpeechBgPal[OAK_SPEECH_BG_BACKDROP], BG_PLTT_ID(0), PLTT_SIZEOF(1));
+
+    for (i = 0; i < OAK_SPEECH_BG_MAP_SIZE; i++)
+        bgTilemap[i] |= OAK_SPEECH_BG_PAL_NUM << 12;
+
+    for (i = 0; i < ARRAY_COUNT(sOakSpeechPicTilemap); i++)
+        sOakSpeechPicTilemap[i] = OAK_SPEECH_BLANK_TILE;
+    for (i = 0; i < OAK_SPEECH_PIC_TILE_COUNT; i++)
+        sOakSpeechPicTilemap[(i / OAK_SPEECH_PIC_WIDTH + 2) * 32 + (i % OAK_SPEECH_PIC_WIDTH) + 11] = i;
+    CopyBgTilemapBufferToVram(2);
+}
+
+static void Task_NewGameHnsSpeech_TimeIntro_Init(u8 taskId)
+{
+    const u8 *introText;
+
+    if (gPaletteFade.active)
+        return;
+
+    // Only the RTC introduction uses a black scene; keep the textbox visible.
+    HideBg(1);
+    HideBg(2);
+    gPlttBufferUnfaded[0] = RGB_BLACK;
+    gPlttBufferFaded[0] = RGB_BLACK;
+
+    // 현재 기기의 시간(RTC) 읽어오기
+    RtcCalcLocalTime();
+
+    // 5가지 시간대에 따른 대사 완벽 분기
+    if (gLocalTime.hours >= 4 && gLocalTime.hours < 10) // 아침
+        introText = gText_Oak_Morning;
+    else if (gLocalTime.hours >= 10 && gLocalTime.hours < 17) // 낮
+        introText = gText_Oak_Day;
+    else if (gLocalTime.hours >= 17 && gLocalTime.hours < 20) // 저녁
+        introText = gText_Oak_Evening;
+    else if (gLocalTime.hours >= 20 && gLocalTime.hours <= 23) // 밤
+        introText = gText_Oak_Night;
+    else // 심야
+        introText = gText_Oak_LateNight;
+
+    // 대사 출력
+    NewGameHnsSpeech_ClearWindow(0);
+    StringExpandPlaceholders(gStringVar4, introText);
+    AddTextPrinterForMessage(TRUE);
+
+    gTasks[taskId].func = Task_NewGameHnsSpeech_TimeIntro_Wait;
+}
+
+static void Task_NewGameHnsSpeech_TimeIntro_Wait(u8 taskId)
+{
+    // A버튼 입력을 대기 (\p 기호로 인해 한 번만 누르면 자연스럽게 넘어갑니다)
+    if (!RunTextPrintersAndIsPrinter0Active())
     {
-        gTasks[taskId].tTimer--;
-    }
-    else
-    {
-        spriteId = gTasks[taskId].tProfessorSpriteId;
-        gSprites[spriteId].x = 136;
-        gSprites[spriteId].y = 60;
-        gSprites[spriteId].invisible = FALSE;
-        gSprites[spriteId].oam.objMode = ST_OAM_OBJ_BLEND;
-        NewGameHnsSpeech_StartFadeInTarget1OutTarget2(taskId, 10);
-        NewGameHnsSpeech_StartFadePlatformOut(taskId, 20);
-        gTasks[taskId].tTimer = 80;
-        gTasks[taskId].func = Task_NewGameHnsSpeech_WaitForSpriteFadeInWelcome;
+        // 1. 텍스트 박스는 끄지 않고 유지! 덮어씌웠던 검정색을 풀고, 원래 배경색(주황색) 복구 준비
+        gPlttBufferUnfaded[0] = sOakSpeechBgPal[OAK_SPEECH_BG_BACKDROP];
+
+        // 2. 숨겨뒀던 오박사와 배경 다시 켜기 (화면은 페이드 때문에 아직 어두움)
+        ShowBg(1);
+        ShowBg(2);
+
+        PlayBGM(MUS_HG_ROUTE30); // 오박사 등장 브금 재생 시작!
+
+        // 3. 텍스트 박스(15번 팔레트)를 제외한 나머지 모든 화면을 부드럽게 페이드인!
+        // PALETTES_ALL에서 15번 팔레트를 비트 연산으로 제외시켜 텍스트만 둥둥 떠 있게 만듭니다.
+        BeginNormalPaletteFade(PALETTES_ALL & ~(1 << 15), 0, 16, 0, RGB_BLACK);
+
+        gTasks[taskId].func = Task_NewGameHnsSpeech_TimeIntro_FadeInOak;
     }
 }
 
-static void Task_NewGameHnsSpeech_WaitForSpriteFadeInWelcome(u8 taskId)
+static void Task_NewGameHnsSpeech_TimeIntro_FadeInOak(u8 taskId)
 {
-    if (gTasks[taskId].tIsDoneFadingSprites)
+    // 배경과 오박사 페이드인이 완전히 끝나면 실행
+    if (!gPaletteFade.active)
     {
-        gSprites[gTasks[taskId].tProfessorSpriteId].oam.objMode = ST_OAM_OBJ_NORMAL;
-        if (gTasks[taskId].tTimer)
-        {
-            gTasks[taskId].tTimer--;
-        }
-        else
-        {
-            InitWindows(sNewGameHnsSpeechTextWindows);
-            LoadMainMenuWindowFrameTiles(0, 0xF3);
-            LoadMessageBoxGfx(0, HNS_DLG_BASE_TILE_NUM, BG_PLTT_ID(15));
-            DrawDialogFrameWithCustomTile(0, TRUE, HNS_DLG_BASE_TILE_NUM);
-            PutWindowTilemap(0);
-            CopyWindowToVram(0, COPYWIN_GFX);
-            NewGameHnsSpeech_ClearWindow(0);
-            StringExpandPlaceholders(gStringVar4, gText_Oak_Welcome);
-            AddTextPrinterForMessage(TRUE);
-            gTasks[taskId].func = Task_NewGameHnsSpeech_ThisIsAPokemon;
-        }
+        // 유지되고 있던 시간대 대사를 이제 지우고, 새로운 오박사 환영 대사 출력
+        NewGameHnsSpeech_ClearWindow(0);
+        StringExpandPlaceholders(gStringVar4, gText_Oak_Welcome);
+        AddTextPrinterForMessage(TRUE);
+        
+        // 원래 인트로 본편으로 자연스럽게 연결
+        gTasks[taskId].func = Task_NewGameHnsSpeech_ThisIsAPokemon;
     }
 }
 
@@ -367,12 +492,12 @@ static void Task_NewGameHnsSpeechSub_InitPokeBall(u8 taskId)
 {
     u8 spriteId = gTasks[sHnsSpeechMainTaskId].tMonSpriteId;
 
-    gSprites[spriteId].x = 100;
-    gSprites[spriteId].y = 75;
+    gSprites[spriteId].x = 80;
+    gSprites[spriteId].y = 92;
     gSprites[spriteId].invisible = FALSE;
     gSprites[spriteId].data[0] = 0;
 
-    CreatePokeballSpriteToReleaseMon(spriteId, gSprites[spriteId].oam.paletteNum, 112, 58, 0, 0, 32, PALETTES_BG, SPECIES_MARILL);
+    CreatePokeballSpriteToReleaseMon(spriteId, gSprites[spriteId].oam.paletteNum, 104, 66, 0, 0, 32, PALETTES_BG, SPECIES_MARILL);
     gTasks[taskId].func = Task_NewGameHnsSpeechSub_WaitForMon;
     gTasks[sHnsSpeechMainTaskId].tTimer = 0;
 }
@@ -420,7 +545,6 @@ static void Task_NewGameHnsSpeech_StartProfessorMonPlatformFade(u8 taskId)
 {
     if (!RunTextPrintersAndIsPrinter0Active())
     {
-        gSprites[gTasks[taskId].tProfessorSpriteId].oam.objMode = ST_OAM_OBJ_BLEND;
         gSprites[gTasks[taskId].tMonSpriteId].oam.objMode = ST_OAM_OBJ_BLEND;
         NewGameHnsSpeech_StartFadeOutTarget1InTarget2(taskId, 2);
         NewGameHnsSpeech_StartFadePlatformIn(taskId, 1);
@@ -443,11 +567,12 @@ static void Task_NewGameHnsSpeech_SlidePlatformAway(u8 taskId)
     }
 }
 
+// 두 주인공이 동시에 나타나게 하는 코드
 static void Task_NewGameHnsSpeech_StartPlayerFadeIn(u8 taskId)
 {
     if (gTasks[taskId].tIsDoneFadingSprites)
     {
-        gSprites[gTasks[taskId].tProfessorSpriteId].invisible = TRUE;
+        HideBg(2);
         gSprites[gTasks[taskId].tMonSpriteId].invisible = TRUE;
         if (gTasks[taskId].tTimer)
         {
@@ -455,13 +580,20 @@ static void Task_NewGameHnsSpeech_StartPlayerFadeIn(u8 taskId)
         }
         else
         {
-            u8 spriteId = gTasks[taskId].tGoldSpriteId;
+            u8 goldSpriteId = gTasks[taskId].tGoldSpriteId;
+            u8 krisSpriteId = gTasks[taskId].tKrisSpriteId;
 
-            gSprites[spriteId].x = 180;
-            gSprites[spriteId].y = 60;
-            gSprites[spriteId].invisible = FALSE;
-            gSprites[spriteId].oam.objMode = ST_OAM_OBJ_BLEND;
-            gTasks[taskId].tPlayerSpriteId = spriteId;
+            gSprites[goldSpriteId].x = NEW_GAME_SPEECH_BOY_X;
+            gSprites[goldSpriteId].y = NEW_GAME_SPEECH_PLAYER_Y;
+            gSprites[goldSpriteId].invisible = FALSE;
+            gSprites[goldSpriteId].oam.objMode = ST_OAM_OBJ_BLEND;
+
+            gSprites[krisSpriteId].x = NEW_GAME_SPEECH_GIRL_X;
+            gSprites[krisSpriteId].y = NEW_GAME_SPEECH_PLAYER_Y;
+            gSprites[krisSpriteId].invisible = FALSE;
+            gSprites[krisSpriteId].oam.objMode = ST_OAM_OBJ_BLEND;
+
+            gTasks[taskId].tPlayerSpriteId = goldSpriteId;
             gTasks[taskId].tPlayerGender = MALE;
             NewGameHnsSpeech_StartFadeInTarget1OutTarget2(taskId, 2);
             NewGameHnsSpeech_StartFadePlatformOut(taskId, 1);
@@ -474,7 +606,9 @@ static void Task_NewGameHnsSpeech_WaitForPlayerFadeIn(u8 taskId)
 {
     if (gTasks[taskId].tIsDoneFadingSprites)
     {
-        gSprites[gTasks[taskId].tPlayerSpriteId].oam.objMode = ST_OAM_OBJ_NORMAL;
+        gSprites[gTasks[taskId].tGoldSpriteId].oam.objMode = ST_OAM_OBJ_NORMAL;
+        gSprites[gTasks[taskId].tKrisSpriteId].oam.objMode = ST_OAM_OBJ_NORMAL;
+        NewGameHnsSpeech_UpdateGenderSprites(taskId);
         gTasks[taskId].func = Task_NewGameHnsSpeech_BoyOrGirl;
     }
 }
@@ -496,84 +630,109 @@ static void Task_NewGameHnsSpeech_WaitToShowGenderMenu(u8 taskId)
     }
 }
 
+// 선택된 성별에 맞춰 스프라이트 밝기 조절하기
+static void NewGameHnsSpeech_UpdateGenderSprites(u8 taskId)
+{
+    u8 goldSpriteId = gTasks[taskId].tGoldSpriteId;
+    u8 krisSpriteId = gTasks[taskId].tKrisSpriteId;
+    bool8 isMale = gTasks[taskId].tPlayerGender == MALE;
+
+    BlendPalettes(1u << (16 + gSprites[goldSpriteId].oam.paletteNum),
+                  isMale ? 0 : NEW_GAME_SPEECH_GENDER_DIM, RGB_BLACK);
+    BlendPalettes(1u << (16 + gSprites[krisSpriteId].oam.paletteNum),
+                  isMale ? NEW_GAME_SPEECH_GENDER_DIM : 0, RGB_BLACK);
+    gTasks[taskId].tPlayerSpriteId = isMale ? goldSpriteId : krisSpriteId;
+}
+
+// 방향키로 성별 고르기 및 확정
 static void Task_NewGameHnsSpeech_ChooseGender(u8 taskId)
 {
     enum Gender gender = NewGameHnsSpeech_ProcessGenderMenuInput();
-    enum Gender gender2;
+    enum Gender highlightedGender;
 
     switch (gender)
     {
     case MALE:
-        PlaySE(SE_SELECT);
-        gSaveBlock2Ptr->playerGender = gender;
-        NewGameHnsSpeech_ClearGenderWindow(1, 1);
-        gTasks[taskId].func = Task_NewGameHnsSpeech_WhatsYourName;
-        break;
     case FEMALE:
         PlaySE(SE_SELECT);
         gSaveBlock2Ptr->playerGender = gender;
-        NewGameHnsSpeech_ClearGenderWindow(1, 1);
-        gTasks[taskId].func = Task_NewGameHnsSpeech_WhatsYourName;
-        break;
+        gTasks[taskId].tPlayerGender = gender;
+        NewGameHnsSpeech_StartGenderConfirmation(taskId);
+        return;
     default:
         break;
     }
-    gender2 = Menu_GetCursorPos();
-    if (gender2 != gTasks[taskId].tPlayerGender)
+
+    highlightedGender = Menu_GetCursorPos();
+    if (highlightedGender != gTasks[taskId].tPlayerGender)
     {
-        gTasks[taskId].tPlayerGender = gender2;
-        gSprites[gTasks[taskId].tPlayerSpriteId].oam.objMode = ST_OAM_OBJ_BLEND;
-        NewGameHnsSpeech_StartFadeOutTarget1InTarget2(taskId, 0);
-        gTasks[taskId].func = Task_NewGameHnsSpeech_SlideOutOldGenderSprite;
+        gTasks[taskId].tPlayerGender = highlightedGender;
+        NewGameHnsSpeech_UpdateGenderSprites(taskId);
     }
 }
 
-static void Task_NewGameHnsSpeech_SlideOutOldGenderSprite(u8 taskId)
+// 선택 완료 시, 선택받지 못한 스프라이트를 지우기 위해 페이드아웃
+static void NewGameHnsSpeech_StartGenderConfirmation(u8 taskId)
 {
-    u8 spriteId = gTasks[taskId].tPlayerSpriteId;
-    if (gTasks[taskId].tIsDoneFadingSprites == 0)
-    {
-        gSprites[spriteId].x += 4;
-    }
+    u8 unselectedSpriteId;
+
+    NewGameHnsSpeech_UpdateGenderSprites(taskId);
+    if (gTasks[taskId].tPlayerGender == MALE)
+        unselectedSpriteId = gTasks[taskId].tKrisSpriteId;
     else
+        unselectedSpriteId = gTasks[taskId].tGoldSpriteId;
+
+    gSprites[unselectedSpriteId].oam.objMode = ST_OAM_OBJ_BLEND;
+    NewGameHnsSpeech_StartFadeOutTarget1InTarget2(taskId, 2);
+    gTasks[taskId].func = Task_NewGameHnsSpeech_WaitForUnselectedGenderFadeOut;
+}
+
+// 선택한 주인공을 가운데로 스르륵 이동시키기
+static void Task_NewGameHnsSpeech_WaitForUnselectedGenderFadeOut(u8 taskId)
+{
+    struct Sprite *selectedSprite = &gSprites[gTasks[taskId].tPlayerSpriteId];
+
+    if (selectedSprite->x > 120)
     {
-        gSprites[spriteId].invisible = TRUE;
-        if (gTasks[taskId].tPlayerGender != MALE)
-            spriteId = gTasks[taskId].tKrisSpriteId;
-        else
-            spriteId = gTasks[taskId].tGoldSpriteId;
-        gSprites[spriteId].x = DISPLAY_WIDTH;
-        gSprites[spriteId].y = 60;
-        gSprites[spriteId].invisible = FALSE;
-        gTasks[taskId].tPlayerSpriteId = spriteId;
-        gSprites[spriteId].oam.objMode = ST_OAM_OBJ_BLEND;
-        NewGameHnsSpeech_StartFadeInTarget1OutTarget2(taskId, 0);
-        gTasks[taskId].func = Task_NewGameHnsSpeech_SlideInNewGenderSprite;
+        selectedSprite->x -= 2;
+        if (selectedSprite->x < 120) selectedSprite->x = 120;
+    }
+    else if (selectedSprite->x < 120)
+    {
+        selectedSprite->x += 2;
+        if (selectedSprite->x > 120) selectedSprite->x = 120;
+    }
+
+    if (gTasks[taskId].tIsDoneFadingSprites)
+    {
+        NewGameHnsSpeech_HideUnselectedGenderSprite(taskId);
+        NewGameHnsSpeech_ClearGenderWindow(1, 1);
+        gTasks[taskId].func = Task_NewGameHnsSpeech_WhatsYourName;
     }
 }
 
-static void Task_NewGameHnsSpeech_SlideInNewGenderSprite(u8 taskId)
+static void NewGameHnsSpeech_HideUnselectedGenderSprite(u8 taskId)
 {
-    u8 spriteId = gTasks[taskId].tPlayerSpriteId;
+    u8 goldSpriteId = gTasks[taskId].tGoldSpriteId;
+    u8 krisSpriteId = gTasks[taskId].tKrisSpriteId;
+    bool8 isMale = gTasks[taskId].tPlayerGender == MALE;
 
-    if (gSprites[spriteId].x > 180)
-    {
-        gSprites[spriteId].x -= 4;
-    }
-    else
-    {
-        gSprites[spriteId].x = 180;
-        if (gTasks[taskId].tIsDoneFadingSprites)
-        {
-            gSprites[spriteId].oam.objMode = ST_OAM_OBJ_NORMAL;
-            gTasks[taskId].func = Task_NewGameHnsSpeech_ChooseGender;
-        }
-    }
+    BlendPalettes(1u << (16 + gSprites[goldSpriteId].oam.paletteNum), 0, RGB_BLACK);
+    BlendPalettes(1u << (16 + gSprites[krisSpriteId].oam.paletteNum), 0, RGB_BLACK);
+    gSprites[goldSpriteId].oam.objMode = ST_OAM_OBJ_NORMAL;
+    gSprites[krisSpriteId].oam.objMode = ST_OAM_OBJ_NORMAL;
+    gSprites[goldSpriteId].invisible = !isMale;
+    gSprites[krisSpriteId].invisible = isMale;
+    gTasks[taskId].tPlayerSpriteId = isMale ? goldSpriteId : krisSpriteId;
+    gSprites[gTasks[taskId].tPlayerSpriteId].x = 120;
 }
 
 static void Task_NewGameHnsSpeech_ChallengeDisclaimer(u8 taskId)
 {
-    static const u8 sText_Disclaimer[] = _("어떤 도전을\n기대하고 있는가?\p{COLOR RED}다음 설정은 게임을 시작한 뒤\nPC에서 언제든 변경할 수 있습니다\l단, 게임이 시작된 이후에는\l너즐록, 랜더마이저, 난이도, 챌린지 설정을\l더 쉽게만 변경할 수 있으며,\l어렵게는 변경할 수 없습니다");
+    static const u8 sText_Disclaimer[] = _("먼저 어느 정도의 도전을\n원하는지 알려주십시오\p{COLOR RED}챌린지 설정은 게임을 시작한 뒤\nPC에서 언제든 변경할 수 있습니다\p단, 게임 시작 이후에는\n너즐록, 랜더마이저, 난이도, 챌린지 설정의 강도를\l더 낮출 수만 있으며\l더 높일 수는 없습니다");
+    if (gPaletteFade.active)
+        return;
+
     NewGameHnsSpeech_ClearWindow(0);
     StringCopy(gStringVar4, sText_Disclaimer);
     AddTextPrinterWithCustomSpeedForMessage(FALSE, 2);
@@ -603,6 +762,7 @@ static void Task_NewGameHnsSpeech_FadeOutToChallengeMenu(u8 taskId)
     if (!gPaletteFade.active)
     {
         struct ChallengeSettings savedOptions;
+        FreeAndDestroyMonPicSprite(gTasks[taskId].tMonSpriteId);
         FreeAllWindowBuffers();
         DestroyTask(taskId);
         savedOptions = gSaveBlock3Ptr->challengeSettings;
@@ -694,23 +854,58 @@ static void Task_NewGameHnsSpeech_CreateNameYesNo(u8 taskId)
 {
     if (!RunTextPrintersAndIsPrinter0Active())
     {
-        CreateYesNoMenuParameterized(2, 1, 0xF3, 0xDF, 2, 15);
+        CreateYesNoMenuParameterized(2, 1, HNS_MENU_BASE_TILE_NUM, 0xDF, 2, 15);
         gTasks[taskId].func = Task_NewGameHnsSpeech_ProcessNameYesNoMenu;
     }
 }
 
+// "아니오" 선택 시 다시 동시 출력 화면으로 돌아가기
 static void Task_NewGameHnsSpeech_ProcessNameYesNoMenu(u8 taskId)
 {
     switch (Menu_ProcessInputNoWrapClearOnChoose())
     {
     case 0:
         PlaySE(SE_SELECT);
-        gTasks[taskId].func = Task_NewGameHnsSpeech_ChallengeDisclaimer;
+        gSprites[gTasks[taskId].tPlayerSpriteId].oam.objMode = ST_OAM_OBJ_BLEND;
+        NewGameHnsSpeech_StartFadeOutTarget1InTarget2(taskId, 2);
+        NewGameHnsSpeech_StartFadePlatformIn(taskId, 1);
+        gTasks[taskId].func = Task_NewGameHnsSpeech_SlidePlatformAway2;
         break;
     case MENU_B_PRESSED:
     case 1:
         PlaySE(SE_SELECT);
-        gTasks[taskId].func = Task_NewGameHnsSpeech_BoyOrGirl;
+        gSprites[gTasks[taskId].tPlayerSpriteId].oam.objMode = ST_OAM_OBJ_BLEND;
+        NewGameHnsSpeech_StartFadeOutTarget1InTarget2(taskId, 2);
+        gTasks[taskId].func = Task_NewGameHnsSpeech_WaitForPlayerFadeOutToGenderChoice;
+    }
+}
+
+static void Task_NewGameHnsSpeech_WaitForPlayerFadeOutToGenderChoice(u8 taskId)
+{
+    if (gTasks[taskId].tIsDoneFadingSprites)
+    {
+        u8 goldSpriteId = gTasks[taskId].tGoldSpriteId;
+        u8 krisSpriteId = gTasks[taskId].tKrisSpriteId;
+
+        gSprites[goldSpriteId].x = NEW_GAME_SPEECH_BOY_X;
+        gSprites[goldSpriteId].y = NEW_GAME_SPEECH_PLAYER_Y;
+        gSprites[goldSpriteId].invisible = FALSE;
+        gSprites[goldSpriteId].oam.objMode = ST_OAM_OBJ_BLEND;
+
+        gSprites[krisSpriteId].x = NEW_GAME_SPEECH_GIRL_X;
+        gSprites[krisSpriteId].y = NEW_GAME_SPEECH_PLAYER_Y;
+        gSprites[krisSpriteId].invisible = FALSE;
+        gSprites[krisSpriteId].oam.objMode = ST_OAM_OBJ_BLEND;
+
+        gTasks[taskId].tPlayerGender = gSaveBlock2Ptr->playerGender;
+        gTasks[taskId].tPlayerSpriteId = gTasks[taskId].tPlayerGender == MALE ? goldSpriteId : krisSpriteId;
+        NewGameHnsSpeech_StartFadeInTarget1OutTarget2(taskId, 2);
+        
+        NewGameHnsSpeech_ClearWindow(0);
+        StringExpandPlaceholders(gStringVar4, gText_Oak_BoyOrGirl);
+        AddTextPrinterForMessage(TRUE);
+        
+        gTasks[taskId].func = Task_NewGameHnsSpeech_WaitForPlayerFadeIn;
     }
 }
 
@@ -735,69 +930,83 @@ static void Task_NewGameHnsSpeech_ReshowProfessorMon(u8 taskId)
     {
         gSprites[gTasks[taskId].tGoldSpriteId].invisible = TRUE;
         gSprites[gTasks[taskId].tKrisSpriteId].invisible = TRUE;
-        spriteId = gTasks[taskId].tProfessorSpriteId;
-        gSprites[spriteId].x = 136;
-        gSprites[spriteId].y = 60;
-        gSprites[spriteId].invisible = FALSE;
-        gSprites[spriteId].oam.objMode = ST_OAM_OBJ_BLEND;
+
         spriteId = gTasks[taskId].tMonSpriteId;
-        gSprites[spriteId].x = 100;
-        gSprites[spriteId].y = 75;
+        gSprites[spriteId].x = 80;
+        gSprites[spriteId].y = 92;
         gSprites[spriteId].invisible = FALSE;
         gSprites[spriteId].oam.objMode = ST_OAM_OBJ_BLEND;
+
         NewGameHnsSpeech_StartFadeInTarget1OutTarget2(taskId, 2);
-        NewGameHnsSpeech_StartFadePlatformOut(taskId, 1);
+        
         NewGameHnsSpeech_ClearWindow(0);
         StringExpandPlaceholders(gStringVar4, gText_Oak_YourePlayer);
         AddTextPrinterForMessage(TRUE);
-        gTasks[taskId].func = Task_NewGameHnsSpeech_WaitForSpriteFadeInAndTextPrinter;
+        
+        // Oak is BG2, not an OBJ sprite. Reveal it only after the fade and
+        // textbox are ready, so an intervening VBlank cannot show the old state.
+        ShowBg(2);
+        gTasks[taskId].func = Task_NewGameHnsSpeech_WaitForYourePlayerText;
     }
 }
 
-static void Task_NewGameHnsSpeech_WaitForSpriteFadeInAndTextPrinter(u8 taskId)
+static void Task_NewGameHnsSpeech_WaitForYourePlayerText(u8 taskId)
 {
     if (gTasks[taskId].tIsDoneFadingSprites)
     {
-        gSprites[gTasks[taskId].tProfessorSpriteId].oam.objMode = ST_OAM_OBJ_NORMAL;
         gSprites[gTasks[taskId].tMonSpriteId].oam.objMode = ST_OAM_OBJ_NORMAL;
-        if (!RunTextPrintersAndIsPrinter0Active())
+        
+        // "심향이로구나?" 텍스트가 끝나고 A버튼을 누르면
+        if (!RunTextPrintersAndIsPrinter0Active()) 
         {
-            gSprites[gTasks[taskId].tProfessorSpriteId].oam.objMode = ST_OAM_OBJ_BLEND;
-            gSprites[gTasks[taskId].tMonSpriteId].oam.objMode = ST_OAM_OBJ_BLEND;
-            NewGameHnsSpeech_StartFadeOutTarget1InTarget2(taskId, 2);
-            NewGameHnsSpeech_StartFadePlatformIn(taskId, 1);
-            gTasks[taskId].tTimer = 64;
-            gTasks[taskId].func = Task_NewGameHnsSpeech_AreYouReady;
+            NewGameHnsSpeech_ClearWindow(0);
+            StringExpandPlaceholders(gStringVar4, gText_Oak_AreYouReady); // "준비는 되었는가?" 출력
+            AddTextPrinterForMessage(TRUE);
+            gTasks[taskId].func = Task_NewGameHnsSpeech_WaitForAreYouReadyText;
         }
     }
 }
 
-static void Task_NewGameHnsSpeech_AreYouReady(u8 taskId)
+static void Task_NewGameHnsSpeech_WaitForAreYouReadyText(u8 taskId)
+{
+    // "준비는 되었는가?" 텍스트가 끝나고 A버튼을 누르면 오박사와 포켓몬이 먼저 퇴장!
+    if (!RunTextPrintersAndIsPrinter0Active()) 
+    {
+        gSprites[gTasks[taskId].tMonSpriteId].oam.objMode = ST_OAM_OBJ_BLEND;
+        NewGameHnsSpeech_StartFadeOutTarget1InTarget2(taskId, 2);
+        gTasks[taskId].tTimer = 30; // 약간의 딜레이
+        gTasks[taskId].func = Task_NewGameHnsSpeech_FadeInPlayer;
+    }
+}
+
+static void Task_NewGameHnsSpeech_FadeInPlayer(u8 taskId)
 {
     u8 spriteId;
 
-    if (gTasks[taskId].tIsDoneFadingSprites)
+    // 오박사와 포켓몬의 퇴장이 완전히 끝난 후에 주인공 등장!
+    if (gTasks[taskId].tIsDoneFadingSprites) 
     {
-        gSprites[gTasks[taskId].tProfessorSpriteId].invisible = TRUE;
+        HideBg(2); 
         gSprites[gTasks[taskId].tMonSpriteId].invisible = TRUE;
+
         if (gTasks[taskId].tTimer)
         {
             gTasks[taskId].tTimer--;
             return;
         }
+
         if (gSaveBlock2Ptr->playerGender != MALE)
             spriteId = gTasks[taskId].tKrisSpriteId;
         else
             spriteId = gTasks[taskId].tGoldSpriteId;
+
         gSprites[spriteId].x = 120;
-        gSprites[spriteId].y = 60;
+        gSprites[spriteId].y = 80; // 바닥에 맞게 주인공 Y좌표 80으로 고정
         gSprites[spriteId].invisible = FALSE;
         gSprites[spriteId].oam.objMode = ST_OAM_OBJ_BLEND;
         gTasks[taskId].tPlayerSpriteId = spriteId;
+
         NewGameHnsSpeech_StartFadeInTarget1OutTarget2(taskId, 2);
-        NewGameHnsSpeech_StartFadePlatformOut(taskId, 1);
-        StringExpandPlaceholders(gStringVar4, gText_Oak_AreYouReady);
-        AddTextPrinterForMessage(TRUE);
         gTasks[taskId].func = Task_NewGameHnsSpeech_ShrinkPlayer;
     }
 }
@@ -806,21 +1015,19 @@ static void Task_NewGameHnsSpeech_ShrinkPlayer(u8 taskId)
 {
     u8 spriteId;
 
-    if (gTasks[taskId].tIsDoneFadingSprites)
+    if (gTasks[taskId].tIsDoneFadingSprites) // 주인공 페이드인이 완전히 끝나면 화면 전환 시작
     {
         gSprites[gTasks[taskId].tPlayerSpriteId].oam.objMode = ST_OAM_OBJ_NORMAL;
-        if (!RunTextPrintersAndIsPrinter0Active())
-        {
-            spriteId = gTasks[taskId].tPlayerSpriteId;
-            gSprites[spriteId].oam.affineMode = ST_OAM_AFFINE_NORMAL;
-            gSprites[spriteId].affineAnims = sSpriteAffineAnimTable_PlayerShrink;
-            InitSpriteAffineAnim(&gSprites[spriteId]);
-            StartSpriteAffineAnim(&gSprites[spriteId], 0);
-            gSprites[spriteId].callback = SpriteCB_MovePlayerDownWhileShrinking;
-            BeginNormalPaletteFade(PALETTES_BG, 0, 0, 16, RGB_BLACK);
-            FadeOutBGM(4);
-            gTasks[taskId].func = Task_NewGameHnsSpeech_WaitForPlayerShrink;
-        }
+        
+        spriteId = gTasks[taskId].tPlayerSpriteId;
+        gSprites[spriteId].oam.affineMode = ST_OAM_AFFINE_NORMAL;
+        gSprites[spriteId].affineAnims = sSpriteAffineAnimTable_PlayerShrink;
+        InitSpriteAffineAnim(&gSprites[spriteId]);
+        StartSpriteAffineAnim(&gSprites[spriteId], 0);
+        gSprites[spriteId].callback = SpriteCB_MovePlayerDownWhileShrinking;
+        BeginNormalPaletteFade(PALETTES_BG, 0, 0, 16, RGB_BLACK);
+        FadeOutBGM(4);
+        gTasks[taskId].func = Task_NewGameHnsSpeech_WaitForPlayerShrink;
     }
 }
 
@@ -868,7 +1075,13 @@ static void CB2_NewGameHnsSpeech_ReturnFromNamingScreen(void)
     SetGpuReg(REG_OFFSET_DISPCNT, 0);
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
     InitBgsFromTemplates(0, sMainMenuBgTemplates, ARRAY_COUNT(sMainMenuBgTemplates));
+    
     InitBgFromTemplate(&sHnsBgTemplate);
+    InitBgFromTemplate(&sOakSpeechPicBgTemplate);
+    SetBgMode(1);
+    SetBgTilemapBuffer(2, sOakSpeechPicTilemap);
+    SetBgAffine(2, 0, 0, 0, 0, 256, 256, 0);
+
     SetVBlankCallback(NULL);
     SetGpuReg(REG_OFFSET_BG2CNT, 0);
     SetGpuReg(REG_OFFSET_BG1CNT, 0);
@@ -883,10 +1096,9 @@ static void CB2_NewGameHnsSpeech_ReturnFromNamingScreen(void)
     DmaFill32(3, 0, OAM, OAM_SIZE);
     DmaFill16(3, 0, PLTT, PLTT_SIZE);
     ResetPaletteFade();
-    DecompressDataWithHeaderVram(sHnsSpeechShadowGfx, (u8 *)VRAM);
-    DecompressDataWithHeaderVram(sHnsSpeechBgMap, (u8 *)(BG_SCREEN_ADDR(7)));
-    LoadPalette(sHnsSpeechBgPals, BG_PLTT_ID(0), 2 * PLTT_SIZE_4BPP);
-    LoadPalette(&sHnsSpeechBgGradientPal[1], BG_PLTT_ID(0) + 1, PLTT_SIZEOF(8));
+    
+    LoadOakSpeechSceneGfx();
+
     ResetTasks();
     taskId = CreateTask(Task_NewGameHnsSpeech_ReturnFromNamingScreenShowTextbox, 0);
     gTasks[taskId].tTimer = 5;
@@ -906,7 +1118,7 @@ static void CB2_NewGameHnsSpeech_ReturnFromNamingScreen(void)
         gTasks[taskId].tPlayerGender = MALE;
         spriteId = gTasks[taskId].tGoldSpriteId;
     }
-    gSprites[spriteId].x = 180;
+    gSprites[spriteId].x = 120;
     gSprites[spriteId].y = 60;
     gSprites[spriteId].invisible = FALSE;
     gTasks[taskId].tPlayerSpriteId = spriteId;
@@ -921,6 +1133,7 @@ static void CB2_NewGameHnsSpeech_ReturnFromNamingScreen(void)
     SetGpuReg(REG_OFFSET_BLDY, 0);
     ShowBg(0);
     ShowBg(1);
+    HideBg(2);
     savedIme = REG_IME;
     REG_IME = 0;
     REG_IE |= 1;
@@ -928,7 +1141,7 @@ static void CB2_NewGameHnsSpeech_ReturnFromNamingScreen(void)
     SetVBlankCallback(VBlankCB_HnsMenu);
     SetMainCallback2(CB2_HnsMenu);
     InitWindows(sNewGameHnsSpeechTextWindows);
-    LoadMainMenuWindowFrameTiles(0, 0xF3);
+    LoadMainMenuWindowFrameTiles(0, HNS_MENU_BASE_TILE_NUM);
     LoadMessageBoxGfx(0, HNS_DLG_BASE_TILE_NUM, BG_PLTT_ID(15));
     PutWindowTilemap(0);
     CopyWindowToVram(0, COPYWIN_FULL);
@@ -937,82 +1150,16 @@ static void CB2_NewGameHnsSpeech_ReturnFromNamingScreen(void)
 static void CB2_NewGameHnsSpeech_ReturnFromChallengeMenu(void)
 {
     u8 taskId;
-    u8 spriteId;
-    u16 savedIme;
 
-    ResetBgsAndClearDma3BusyFlags(0);
-    SetGpuReg(REG_OFFSET_DISPCNT, 0);
-    SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
-    InitBgsFromTemplates(0, sMainMenuBgTemplates, ARRAY_COUNT(sMainMenuBgTemplates));
-    InitBgFromTemplate(&sHnsBgTemplate);
-    SetVBlankCallback(NULL);
-    SetGpuReg(REG_OFFSET_BG2CNT, 0);
-    SetGpuReg(REG_OFFSET_BG1CNT, 0);
-    SetGpuReg(REG_OFFSET_BG0CNT, 0);
-    SetGpuReg(REG_OFFSET_BG2HOFS, 0);
-    SetGpuReg(REG_OFFSET_BG2VOFS, 0);
-    SetGpuReg(REG_OFFSET_BG1HOFS, 0);
-    SetGpuReg(REG_OFFSET_BG1VOFS, 0);
-    SetGpuReg(REG_OFFSET_BG0HOFS, 0);
-    SetGpuReg(REG_OFFSET_BG0VOFS, 0);
-    DmaFill16(3, 0, VRAM, VRAM_SIZE);
-    DmaFill32(3, 0, OAM, OAM_SIZE);
-    DmaFill16(3, 0, PLTT, PLTT_SIZE);
-    ResetPaletteFade();
-    DecompressDataWithHeaderVram(sHnsSpeechShadowGfx, (u8 *)VRAM);
-    DecompressDataWithHeaderVram(sHnsSpeechBgMap, (u8 *)(BG_SCREEN_ADDR(7)));
-    LoadPalette(sHnsSpeechBgPals, BG_PLTT_ID(0), 2 * PLTT_SIZE_4BPP);
-    LoadPalette(&sHnsSpeechBgGradientPal[1], BG_PLTT_ID(0) + 1, PLTT_SIZEOF(8));
     ResetTasks();
     taskId = CreateTask(Task_NewGameHnsSpeech_ReturnFromChallengeMenuShowTextbox, 0);
-    gTasks[taskId].tTimer = 5;
-    gTasks[taskId].tBG1HOFS = -60;
-    ScanlineEffect_Stop();
-    ResetSpriteData();
-    FreeAllSpritePalettes();
-    ResetAllPicSprites();
-    AddHnsSpeechObjects(taskId);
-    if (gSaveBlock2Ptr->playerGender != MALE)
-    {
-        gTasks[taskId].tPlayerGender = FEMALE;
-        spriteId = gTasks[taskId].tKrisSpriteId;
-    }
-    else
-    {
-        gTasks[taskId].tPlayerGender = MALE;
-        spriteId = gTasks[taskId].tGoldSpriteId;
-    }
-    gSprites[spriteId].x = 180;
-    gSprites[spriteId].y = 60;
-    gSprites[spriteId].invisible = FALSE;
-    gTasks[taskId].tPlayerSpriteId = spriteId;
-    SetGpuReg(REG_OFFSET_BG1HOFS, -60);
-    BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
-    SetGpuReg(REG_OFFSET_WIN0H, 0);
-    SetGpuReg(REG_OFFSET_WIN0V, 0);
-    SetGpuReg(REG_OFFSET_WININ, 0);
-    SetGpuReg(REG_OFFSET_WINOUT, 0);
-    SetGpuReg(REG_OFFSET_BLDCNT, 0);
-    SetGpuReg(REG_OFFSET_BLDALPHA, 0);
-    SetGpuReg(REG_OFFSET_BLDY, 0);
-    ShowBg(0);
-    ShowBg(1);
-    savedIme = REG_IME;
-    REG_IME = 0;
-    REG_IE |= 1;
-    REG_IME = savedIme;
-    SetVBlankCallback(VBlankCB_HnsMenu);
+    InitHnsSpeechScene(taskId);
     SetMainCallback2(CB2_HnsMenu);
-    InitWindows(sNewGameHnsSpeechTextWindows);
-    LoadMainMenuWindowFrameTiles(0, 0xF3);
-    LoadMessageBoxGfx(0, HNS_DLG_BASE_TILE_NUM, BG_PLTT_ID(15));
-    PutWindowTilemap(0);
-    CopyWindowToVram(0, COPYWIN_FULL);
 }
 
 static void Task_NewGameHnsSpeech_ReturnFromChallengeMenuShowTextbox(u8 taskId)
 {
-    if (gTasks[taskId].tTimer-- <= 0)
+    if (!gPaletteFade.active)
     {
         DrawDialogFrameWithCustomTile(0, TRUE, HNS_DLG_BASE_TILE_NUM);
         StringExpandPlaceholders(gStringVar4, gText_Oak_ChallengeSelected);
@@ -1025,10 +1172,9 @@ static void Task_NewGameHnsSpeech_WaitForTextAfterChallengeMenu(u8 taskId)
 {
     if (!RunTextPrintersAndIsPrinter0Active() && ((JOY_NEW(A_BUTTON)) || (JOY_NEW(B_BUTTON))))
     {
-        gSprites[gTasks[taskId].tPlayerSpriteId].oam.objMode = ST_OAM_OBJ_BLEND;
-        NewGameHnsSpeech_StartFadeOutTarget1InTarget2(taskId, 2);
-        NewGameHnsSpeech_StartFadePlatformIn(taskId, 1);
-        gTasks[taskId].func = Task_NewGameHnsSpeech_SlidePlatformAway2;
+        NewGameHnsSpeech_ClearWindow(0);
+        BeginNormalPaletteFade(PALETTES_ALL & ~(1 << 15), 0, 0, 16, RGB_BLACK);
+        gTasks[taskId].func = Task_NewGameHnsSpeech_TimeIntro_Init;
     }
 }
 
@@ -1052,17 +1198,11 @@ static u8 NewGameHnsSpeech_CreateMonSprite(u8 x, u8 y)
 
 static void AddHnsSpeechObjects(u8 taskId)
 {
-    u8 professorSpriteId;
     u8 monSpriteId;
     u8 goldSpriteId;
     u8 krisSpriteId;
 
-    professorSpriteId = AddNewGameOakObject(0x88, 0x3C, 1);
-    gSprites[professorSpriteId].callback = SpriteCB_Null;
-    gSprites[professorSpriteId].oam.priority = 0;
-    gSprites[professorSpriteId].invisible = TRUE;
-    gTasks[taskId].tProfessorSpriteId = professorSpriteId;
-    monSpriteId = NewGameHnsSpeech_CreateMonSprite(100, 0x4B);
+    monSpriteId = NewGameHnsSpeech_CreateMonSprite(80, 92);
     gSprites[monSpriteId].callback = SpriteCB_Null;
     gSprites[monSpriteId].oam.priority = 0;
     gSprites[monSpriteId].invisible = TRUE;
@@ -1082,7 +1222,6 @@ static void AddHnsSpeechObjects(u8 taskId)
 #undef tPlayerSpriteId
 #undef tBG1HOFS
 #undef tPlayerGender
-#undef tProfessorSpriteId
 #undef tMonSpriteId
 #undef tGoldSpriteId
 #undef tKrisSpriteId
@@ -1120,7 +1259,7 @@ static void NewGameHnsSpeech_StartFadeOutTarget1InTarget2(u8 taskId, u8 delay)
 {
     u8 taskId2;
 
-    SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_BG1 | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_OBJ);
+    SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_BG2 | BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_ALL);
     SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(16, 0));
     SetGpuReg(REG_OFFSET_BLDY, 0);
     gTasks[taskId].tIsDoneFadingSprites = 0;
@@ -1159,7 +1298,7 @@ static void NewGameHnsSpeech_StartFadeInTarget1OutTarget2(u8 taskId, u8 delay)
 {
     u8 taskId2;
 
-    SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_BG1 | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_OBJ);
+    SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_BG2 | BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_ALL);
     SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0, 16));
     SetGpuReg(REG_OFFSET_BLDY, 0);
     gTasks[taskId].tIsDoneFadingSprites = 0;
@@ -1203,7 +1342,6 @@ static void Task_NewGameHnsSpeech_FadePlatformIn(u8 taskId)
     {
         gTasks[taskId].tDelayTimer = gTasks[taskId].tDelay;
         gTasks[taskId].tPalIndex++;
-        LoadPalette(&sHnsSpeechBgGradientPal[gTasks[taskId].tPalIndex], BG_PLTT_ID(0) + 1, PLTT_SIZEOF(8));
     }
 }
 
@@ -1237,7 +1375,6 @@ static void Task_NewGameHnsSpeech_FadePlatformOut(u8 taskId)
     {
         gTasks[taskId].tDelayTimer = gTasks[taskId].tDelay;
         gTasks[taskId].tPalIndex--;
-        LoadPalette(&sHnsSpeechBgGradientPal[gTasks[taskId].tPalIndex], BG_PLTT_ID(0) + 1, PLTT_SIZEOF(8));
     }
 }
 
@@ -1261,7 +1398,7 @@ static void NewGameHnsSpeech_StartFadePlatformOut(u8 taskId, u8 delay)
 
 static void NewGameHnsSpeech_ShowGenderMenu(void)
 {
-    DrawMainMenuWindowBorder(&sNewGameHnsSpeechTextWindows[1], 0xF3);
+    DrawMainMenuWindowBorder(&sNewGameHnsSpeechTextWindows[1], HNS_MENU_BASE_TILE_NUM);
     FillWindowPixelBuffer(1, PIXEL_FILL(1));
     PrintMenuTable(1, ARRAY_COUNT(sMenuActions_Gender), sMenuActions_Gender);
     InitMenuInUpperLeftCornerNormal(1, ARRAY_COUNT(sMenuActions_Gender), 0);
@@ -1318,10 +1455,11 @@ static void Task_NewGameHnsSpeech_ReturnFromNamingScreenShowTextbox(u8 taskId)
     }
 }
 
+// 회색 표준 테두리(SoulGold 스타일)를 불러오기 위해 0번 윈도우 프레임을 고정으로 불러옵니다.
 static void LoadMainMenuWindowFrameTiles(u8 bgId, u16 tileOffset)
 {
-    LoadBgTiles(bgId, GetWindowFrameTilesPal(gSaveBlock2Ptr->optionsWindowFrameType)->tiles, 0x120, tileOffset);
-    LoadPalette(GetWindowFrameTilesPal(gSaveBlock2Ptr->optionsWindowFrameType)->pal, BG_PLTT_ID(2), PLTT_SIZE_4BPP);
+    LoadBgTiles(bgId, GetWindowFrameTilesPal(0)->tiles, 0x120, tileOffset);
+    LoadPalette(GetWindowFrameTilesPal(0)->pal, BG_PLTT_ID(2), PLTT_SIZE_4BPP);
 }
 
 static void DrawMainMenuWindowBorder(const struct WindowTemplate *template, u16 baseTileNum)

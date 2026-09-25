@@ -1,0 +1,11 @@
+대상: 도구가 없는 공격자에게 끈적끈적바늘이 전이되는 경로
+
+변경:
+- TryStickyBarbOnTargetHit()의 StealTargetItem() 호출은 유지했다.
+- BattleScript_StickyBarbTransfer에서 B_ANIM_ITEM_STEAL 애니메이션과 STRINGID_STICKYBARBTRANSFER 출력·대기를 제거했다.
+- 기존 removeitem BS_TARGET 및 전이 후 턴 종료 피해 경로는 유지했다.
+
+검증:
+- `NODEP=1 SETUP_PREREQS=0 timeout 180s make BUILD=hns TEST=1 build/hns-test/test/battle/hold_effect/sticky_barb.o -j1` 성공.
+- `GITHUB_ACTION=1 timeout 600s make --jobserver-style=pipe hns -j8` 전체 빌드·링크 성공. ROM 33,329,828바이트(99.33%).
+- 실제 HNS 화면 출력은 미검증.

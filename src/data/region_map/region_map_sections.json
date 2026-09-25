@@ -2,7 +2,7 @@
   "map_sections": [
     {
       "id": "MAPSEC_LITTLEROOT_TOWN",
-      "name": "LITTLEROOT TOWN",
+      "name": "미로마을",
       "x": 4,
       "y": 11,
       "width": 1,
@@ -10,7 +10,7 @@
     },
     {
       "id": "MAPSEC_OLDALE_TOWN",
-      "name": "OLDALE TOWN",
+      "name": "고도마을",
       "x": 4,
       "y": 9,
       "width": 1,
@@ -18,7 +18,7 @@
     },
     {
       "id": "MAPSEC_DEWFORD_TOWN",
-      "name": "DEWFORD TOWN",
+      "name": "무로마을",
       "x": 2,
       "y": 14,
       "width": 1,
@@ -26,7 +26,7 @@
     },
     {
       "id": "MAPSEC_LAVARIDGE_TOWN",
-      "name": "LAVARIDGE TOWN",
+      "name": "용암마을",
       "x": 5,
       "y": 3,
       "width": 1,
@@ -34,7 +34,7 @@
     },
     {
       "id": "MAPSEC_FALLARBOR_TOWN",
-      "name": "FALLARBOR TOWN",
+      "name": "단풍마을",
       "x": 3,
       "y": 0,
       "width": 1,
@@ -42,7 +42,7 @@
     },
     {
       "id": "MAPSEC_VERDANTURF_TOWN",
-      "name": "VERDANTURF TOWN",
+      "name": "잔디마을",
       "x": 4,
       "y": 6,
       "width": 1,
@@ -50,7 +50,7 @@
     },
     {
       "id": "MAPSEC_PACIFIDLOG_TOWN",
-      "name": "PACIFIDLOG TOWN",
+      "name": "황금마을",
       "x": 17,
       "y": 10,
       "width": 1,
@@ -58,7 +58,7 @@
     },
     {
       "id": "MAPSEC_PETALBURG_CITY",
-      "name": "PETALBURG CITY",
+      "name": "등화도시",
       "x": 1,
       "y": 9,
       "width": 1,
@@ -66,7 +66,7 @@
     },
     {
       "id": "MAPSEC_SLATEPORT_CITY",
-      "name": "SLATEPORT CITY",
+      "name": "잿빛도시",
       "x": 8,
       "y": 10,
       "width": 1,
@@ -74,7 +74,7 @@
     },
     {
       "id": "MAPSEC_MAUVILLE_CITY",
-      "name": "MAUVILLE CITY",
+      "name": "보라시티",
       "x": 8,
       "y": 6,
       "width": 2,
@@ -82,7 +82,7 @@
     },
     {
       "id": "MAPSEC_RUSTBORO_CITY",
-      "name": "RUSTBORO CITY",
+      "name": "금탄도시",
       "x": 0,
       "y": 5,
       "width": 1,
@@ -90,7 +90,7 @@
     },
     {
       "id": "MAPSEC_FORTREE_CITY",
-      "name": "FORTREE CITY",
+      "name": "검방울시티",
       "x": 12,
       "y": 0,
       "width": 1,
@@ -98,7 +98,7 @@
     },
     {
       "id": "MAPSEC_LILYCOVE_CITY",
-      "name": "LILYCOVE CITY",
+      "name": "해안시티",
       "x": 18,
       "y": 3,
       "width": 2,
@@ -107,7 +107,7 @@
     },
     {
       "id": "MAPSEC_MOSSDEEP_CITY",
-      "name": "MOSSDEEP CITY",
+      "name": "이끼시티",
       "x": 24,
       "y": 5,
       "width": 2,
@@ -115,7 +115,7 @@
     },
     {
       "id": "MAPSEC_SOOTOPOLIS_CITY",
-      "name": "SOOTOPOLIS CITY",
+      "name": "루네시티",
       "x": 21,
       "y": 7,
       "width": 1,
@@ -123,7 +123,7 @@
     },
     {
       "id": "MAPSEC_EVER_GRANDE_CITY",
-      "name": "EVER GRANDE CITY",
+      "name": "그랜드시티",
       "x": 27,
       "y": 8,
       "width": 1,
@@ -131,7 +131,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_101",
-      "name": "ROUTE 101",
+      "name": "101번 도로",
       "x": 4,
       "y": 10,
       "width": 1,
@@ -139,7 +139,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_102",
-      "name": "ROUTE 102",
+      "name": "102번 도로",
       "x": 2,
       "y": 9,
       "width": 2,
@@ -147,7 +147,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_103",
-      "name": "ROUTE 103",
+      "name": "103번 도로",
       "x": 4,
       "y": 8,
       "width": 4,
@@ -155,7 +155,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_104",
-      "name": "ROUTE 104",
+      "name": "104번 도로",
       "x": 0,
       "y": 7,
       "width": 1,
@@ -163,7 +163,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_105",
-      "name": "ROUTE 105",
+      "name": "105번 수로",
       "x": 0,
       "y": 10,
       "width": 1,
@@ -171,7 +171,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_106",
-      "name": "ROUTE 106",
+      "name": "106번 수로",
       "x": 0,
       "y": 13,
       "width": 2,
@@ -179,7 +179,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_107",
-      "name": "ROUTE 107",
+      "name": "107번 수로",
       "x": 3,
       "y": 14,
       "width": 3,
@@ -187,7 +187,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_108",
-      "name": "ROUTE 108",
+      "name": "108번 수로",
       "x": 6,
       "y": 14,
       "width": 2,
@@ -195,7 +195,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_109",
-      "name": "ROUTE 109",
+      "name": "109번 수로",
       "x": 8,
       "y": 12,
       "width": 1,
@@ -203,7 +203,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_110",
-      "name": "ROUTE 110",
+      "name": "110번 도로",
       "x": 8,
       "y": 7,
       "width": 1,
@@ -211,7 +211,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_111",
-      "name": "ROUTE 111",
+      "name": "111번 도로",
       "x": 8,
       "y": 0,
       "width": 1,
@@ -219,7 +219,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_112",
-      "name": "ROUTE 112",
+      "name": "112번 도로",
       "x": 6,
       "y": 3,
       "width": 2,
@@ -227,7 +227,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_113",
-      "name": "ROUTE 113",
+      "name": "113번 도로",
       "x": 4,
       "y": 0,
       "width": 4,
@@ -235,7 +235,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_114",
-      "name": "ROUTE 114",
+      "name": "114번 도로",
       "x": 1,
       "y": 0,
       "width": 2,
@@ -243,7 +243,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_115",
-      "name": "ROUTE 115",
+      "name": "115번 도로",
       "x": 0,
       "y": 2,
       "width": 1,
@@ -251,7 +251,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_116",
-      "name": "ROUTE 116",
+      "name": "116번 도로",
       "x": 1,
       "y": 5,
       "width": 4,
@@ -259,7 +259,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_117",
-      "name": "ROUTE 117",
+      "name": "117번 도로",
       "x": 5,
       "y": 6,
       "width": 3,
@@ -267,7 +267,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_118",
-      "name": "ROUTE 118",
+      "name": "118번 도로",
       "x": 10,
       "y": 6,
       "width": 2,
@@ -275,7 +275,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_119",
-      "name": "ROUTE 119",
+      "name": "119번 도로",
       "x": 11,
       "y": 0,
       "width": 1,
@@ -283,7 +283,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_120",
-      "name": "ROUTE 120",
+      "name": "120번 도로",
       "x": 13,
       "y": 0,
       "width": 1,
@@ -291,7 +291,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_121",
-      "name": "ROUTE 121",
+      "name": "121번 도로",
       "x": 14,
       "y": 3,
       "width": 4,
@@ -299,7 +299,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_122",
-      "name": "ROUTE 122",
+      "name": "122번 수로",
       "x": 16,
       "y": 4,
       "width": 1,
@@ -307,7 +307,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_123",
-      "name": "ROUTE 123",
+      "name": "123번 도로",
       "x": 12,
       "y": 6,
       "width": 5,
@@ -315,7 +315,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_124",
-      "name": "ROUTE 124",
+      "name": "124번 수로",
       "x": 20,
       "y": 3,
       "width": 4,
@@ -323,7 +323,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_125",
-      "name": "ROUTE 125",
+      "name": "125번 수로",
       "x": 24,
       "y": 3,
       "width": 2,
@@ -331,7 +331,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_126",
-      "name": "ROUTE 126",
+      "name": "126번 수로",
       "x": 20,
       "y": 6,
       "width": 3,
@@ -339,7 +339,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_127",
-      "name": "ROUTE 127",
+      "name": "127번 수로",
       "x": 23,
       "y": 6,
       "width": 3,
@@ -347,7 +347,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_128",
-      "name": "ROUTE 128",
+      "name": "128번 수로",
       "x": 23,
       "y": 9,
       "width": 4,
@@ -355,7 +355,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_129",
-      "name": "ROUTE 129",
+      "name": "129번 수로",
       "x": 24,
       "y": 10,
       "width": 2,
@@ -363,7 +363,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_130",
-      "name": "ROUTE 130",
+      "name": "130번 수로",
       "x": 21,
       "y": 10,
       "width": 3,
@@ -371,7 +371,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_131",
-      "name": "ROUTE 131",
+      "name": "131번 수로",
       "x": 18,
       "y": 10,
       "width": 3,
@@ -379,7 +379,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_132",
-      "name": "ROUTE 132",
+      "name": "132번 수로",
       "x": 15,
       "y": 10,
       "width": 2,
@@ -387,7 +387,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_133",
-      "name": "ROUTE 133",
+      "name": "133번 수로",
       "x": 12,
       "y": 10,
       "width": 3,
@@ -395,7 +395,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_134",
-      "name": "ROUTE 134",
+      "name": "134번 수로",
       "x": 9,
       "y": 10,
       "width": 3,
@@ -403,7 +403,7 @@
     },
     {
       "id": "MAPSEC_UNDERWATER_124",
-      "name": "UNDERWATER",
+      "name": "수중",
       "x": 20,
       "y": 3,
       "width": 4,
@@ -411,7 +411,7 @@
     },
     {
       "id": "MAPSEC_UNDERWATER_126",
-      "name": "UNDERWATER",
+      "name": "수중",
       "x": 20,
       "y": 6,
       "width": 3,
@@ -419,7 +419,7 @@
     },
     {
       "id": "MAPSEC_UNDERWATER_127",
-      "name": "UNDERWATER",
+      "name": "수중",
       "x": 23,
       "y": 6,
       "width": 3,
@@ -427,7 +427,7 @@
     },
     {
       "id": "MAPSEC_UNDERWATER_128",
-      "name": "UNDERWATER",
+      "name": "수중",
       "x": 23,
       "y": 9,
       "width": 4,
@@ -435,7 +435,7 @@
     },
     {
       "id": "MAPSEC_UNDERWATER_SOOTOPOLIS",
-      "name": "UNDERWATER",
+      "name": "수중",
       "x": 21,
       "y": 7,
       "width": 1,
@@ -443,7 +443,7 @@
     },
     {
       "id": "MAPSEC_GRANITE_CAVE",
-      "name": "GRANITE CAVE",
+      "name": "바위 동굴",
       "x": 1,
       "y": 13,
       "width": 1,
@@ -451,7 +451,7 @@
     },
     {
       "id": "MAPSEC_MT_CHIMNEY",
-      "name": "MT. CHIMNEY",
+      "name": "굴뚝산",
       "x": 6,
       "y": 2,
       "width": 1,
@@ -459,7 +459,7 @@
     },
     {
       "id": "MAPSEC_SAFARI_ZONE",
-      "name": "SAFARI ZONE",
+      "name": "사파리존",
       "x": 16,
       "y": 2,
       "width": 1,
@@ -468,7 +468,7 @@
     },
     {
       "id": "MAPSEC_BATTLE_FRONTIER",
-      "name": "BATTLE FRONTIER",
+      "name": "배틀프런티어",
       "x": 22,
       "y": 12,
       "width": 1,
@@ -477,7 +477,7 @@
     },
     {
       "id": "MAPSEC_PETALBURG_WOODS",
-      "name": "PETALBURG WOODS",
+      "name": "등화숲",
       "x": 0,
       "y": 8,
       "width": 1,
@@ -485,7 +485,7 @@
     },
     {
       "id": "MAPSEC_RUSTURF_TUNNEL",
-      "name": "RUSTURF TUNNEL",
+      "name": "금잔터널",
       "x": 2,
       "y": 5,
       "width": 1,
@@ -493,7 +493,7 @@
     },
     {
       "id": "MAPSEC_ABANDONED_SHIP",
-      "name": "ABANDONED SHIP",
+      "name": "버려진 배",
       "x": 6,
       "y": 14,
       "width": 1,
@@ -502,7 +502,7 @@
     },
     {
       "id": "MAPSEC_NEW_MAUVILLE",
-      "name": "NEW MAUVILLE",
+      "name": "뉴보라",
       "x": 8,
       "y": 7,
       "width": 1,
@@ -510,7 +510,7 @@
     },
     {
       "id": "MAPSEC_METEOR_FALLS",
-      "name": "METEOR FALLS",
+      "name": "유성의 폭포",
       "x": 0,
       "y": 3,
       "width": 1,
@@ -518,7 +518,7 @@
     },
     {
       "id": "MAPSEC_METEOR_FALLS2",
-      "name": "METEOR FALLS",
+      "name": "유성의 폭포",
       "x": 1,
       "y": 2,
       "width": 1,
@@ -526,7 +526,7 @@
     },
     {
       "id": "MAPSEC_MT_PYRE",
-      "name": "MT. PYRE",
+      "name": "송화산",
       "x": 16,
       "y": 4,
       "width": 1,
@@ -534,7 +534,7 @@
     },
     {
       "id": "MAPSEC_AQUA_HIDEOUT_OLD",
-      "name": "{AQUA} HIDEOUT",
+      "name": "{AQUA}단 아지트",
       "x": 19,
       "y": 3,
       "width": 1,
@@ -542,7 +542,7 @@
     },
     {
       "id": "MAPSEC_SHOAL_CAVE",
-      "name": "SHOAL CAVE",
+      "name": "여울의 동굴",
       "x": 24,
       "y": 4,
       "width": 1,
@@ -550,7 +550,7 @@
     },
     {
       "id": "MAPSEC_SEAFLOOR_CAVERN",
-      "name": "SEAFLOOR CAVERN",
+      "name": "해저동굴",
       "x": 24,
       "y": 9,
       "width": 1,
@@ -558,7 +558,7 @@
     },
     {
       "id": "MAPSEC_UNDERWATER_SEAFLOOR_CAVERN",
-      "name": "UNDERWATER",
+      "name": "수중",
       "x": 24,
       "y": 9,
       "width": 1,
@@ -566,7 +566,7 @@
     },
     {
       "id": "MAPSEC_VICTORY_ROAD",
-      "name": "VICTORY ROAD",
+      "name": "챔피언로드",
       "x": 27,
       "y": 9,
       "width": 1,
@@ -575,7 +575,7 @@
     },
     {
       "id": "MAPSEC_MIRAGE_ISLAND",
-      "name": "MIRAGE ISLAND",
+      "name": "환상섬",
       "x": 17,
       "y": 10,
       "width": 1,
@@ -583,7 +583,7 @@
     },
     {
       "id": "MAPSEC_CAVE_OF_ORIGIN",
-      "name": "CAVE OF ORIGIN",
+      "name": "각성의 사당",
       "x": 21,
       "y": 7,
       "width": 1,
@@ -591,7 +591,7 @@
     },
     {
       "id": "MAPSEC_SOUTHERN_ISLAND",
-      "name": "SOUTHERN ISLAND",
+      "name": "남쪽의 외딴섬",
       "x": 12,
       "y": 14,
       "width": 1,
@@ -600,7 +600,7 @@
     },
     {
       "id": "MAPSEC_FIERY_PATH",
-      "name": "FIERY PATH",
+      "name": "불꽃샛길",
       "x": 6,
       "y": 3,
       "width": 1,
@@ -608,7 +608,7 @@
     },
     {
       "id": "MAPSEC_FIERY_PATH2",
-      "name": "FIERY PATH",
+      "name": "불꽃샛길",
       "x": 7,
       "y": 3,
       "width": 1,
@@ -616,7 +616,7 @@
     },
     {
       "id": "MAPSEC_JAGGED_PASS",
-      "name": "JAGGED PASS",
+      "name": "울퉁불퉁 산길",
       "x": 6,
       "y": 3,
       "width": 1,
@@ -624,7 +624,7 @@
     },
     {
       "id": "MAPSEC_JAGGED_PASS2",
-      "name": "JAGGED PASS",
+      "name": "울퉁불퉁 산길",
       "x": 7,
       "y": 2,
       "width": 1,
@@ -632,7 +632,7 @@
     },
     {
       "id": "MAPSEC_SEALED_CHAMBER",
-      "name": "SEALED CHAMBER",
+      "name": "고시의 석실",
       "x": 11,
       "y": 10,
       "width": 1,
@@ -640,7 +640,7 @@
     },
     {
       "id": "MAPSEC_UNDERWATER_SEALED_CHAMBER",
-      "name": "UNDERWATER",
+      "name": "수중",
       "x": 11,
       "y": 10,
       "width": 1,
@@ -648,7 +648,7 @@
     },
     {
       "id": "MAPSEC_SCORCHED_SLAB",
-      "name": "SCORCHED SLAB",
+      "name": "가뭄의 암굴",
       "x": 13,
       "y": 0,
       "width": 1,
@@ -656,7 +656,7 @@
     },
     {
       "id": "MAPSEC_ISLAND_CAVE",
-      "name": "ISLAND CAVE",
+      "name": "작은 섬 옆굴",
       "x": 0,
       "y": 10,
       "width": 1,
@@ -664,7 +664,7 @@
     },
     {
       "id": "MAPSEC_DESERT_RUINS",
-      "name": "DESERT RUINS",
+      "name": "사막유적",
       "x": 8,
       "y": 3,
       "width": 1,
@@ -672,7 +672,7 @@
     },
     {
       "id": "MAPSEC_ANCIENT_TOMB",
-      "name": "ANCIENT TOMB",
+      "name": "고대의 무덤",
       "x": 13,
       "y": 2,
       "width": 1,
@@ -680,11 +680,11 @@
     },
     {
       "id": "MAPSEC_INSIDE_OF_TRUCK",
-      "name": "INSIDE OF TRUCK"
+      "name": "트럭 안"
     },
     {
       "id": "MAPSEC_SKY_PILLAR",
-      "name": "SKY PILLAR",
+      "name": "하늘기둥",
       "x": 19,
       "y": 10,
       "width": 1,
@@ -692,14 +692,14 @@
     },
     {
       "id": "MAPSEC_SECRET_BASE",
-      "name": "SECRET BASE"
+      "name": "비밀기지"
     },
     {
       "id": "MAPSEC_DYNAMIC"
     },
     {
       "id": "MAPSEC_PALLET_TOWN",
-      "name": "PALLET TOWN",
+      "name": "태초마을",
       "x": 4,
       "y": 11,
       "width": 1,
@@ -708,7 +708,7 @@
     },
     {
       "id": "MAPSEC_VIRIDIAN_CITY",
-      "name": "VIRIDIAN CITY",
+      "name": "상록시티",
       "x": 4,
       "y": 8,
       "width": 1,
@@ -717,7 +717,7 @@
     },
     {
       "id": "MAPSEC_PEWTER_CITY",
-      "name": "PEWTER CITY",
+      "name": "회색시티",
       "x": 4,
       "y": 4,
       "width": 1,
@@ -726,7 +726,7 @@
     },
     {
       "id": "MAPSEC_CERULEAN_CITY",
-      "name": "CERULEAN CITY",
+      "name": "블루시티",
       "x": 14,
       "y": 3,
       "width": 1,
@@ -735,7 +735,7 @@
     },
     {
       "id": "MAPSEC_LAVENDER_TOWN",
-      "name": "LAVENDER TOWN",
+      "name": "보라타운",
       "x": 18,
       "y": 6,
       "width": 1,
@@ -744,7 +744,7 @@
     },
     {
       "id": "MAPSEC_VERMILION_CITY",
-      "name": "VERMILION CITY",
+      "name": "갈색시티",
       "x": 14,
       "y": 9,
       "width": 1,
@@ -753,7 +753,7 @@
     },
     {
       "id": "MAPSEC_CELADON_CITY",
-      "name": "CELADON CITY",
+      "name": "무지개시티",
       "x": 11,
       "y": 6,
       "width": 1,
@@ -762,7 +762,7 @@
     },
     {
       "id": "MAPSEC_FUCHSIA_CITY",
-      "name": "FUCHSIA CITY",
+      "name": "연분홍시티",
       "x": 12,
       "y": 12,
       "width": 1,
@@ -771,7 +771,7 @@
     },
     {
       "id": "MAPSEC_CINNABAR_ISLAND",
-      "name": "CINNABAR ISLAND",
+      "name": "홍련섬",
       "x": 4,
       "y": 14,
       "width": 1,
@@ -780,7 +780,7 @@
     },
     {
       "id": "MAPSEC_INDIGO_PLATEAU",
-      "name": "INDIGO PLATEAU",
+      "name": "석영고원",
       "x": 2,
       "y": 3,
       "width": 1,
@@ -789,7 +789,7 @@
     },
     {
       "id": "MAPSEC_SAFFRON_CITY",
-      "name": "SAFFRON CITY",
+      "name": "노랑시티",
       "x": 14,
       "y": 6,
       "width": 1,
@@ -798,7 +798,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_4_POKECENTER",
-      "name": "ROUTE 4",
+      "name": "4번 도로",
       "x": 8,
       "y": 3,
       "width": 1,
@@ -806,7 +806,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_10_POKECENTER",
-      "name": "ROUTE 10",
+      "name": "10번 도로",
       "x": 18,
       "y": 3,
       "width": 1,
@@ -814,7 +814,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_1",
-      "name": "ROUTE 1",
+      "name": "1번 도로",
       "x": 4,
       "y": 9,
       "width": 1,
@@ -823,7 +823,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_2",
-      "name": "ROUTE 2",
+      "name": "2번 도로",
       "x": 4,
       "y": 5,
       "width": 1,
@@ -832,7 +832,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_3",
-      "name": "ROUTE 3",
+      "name": "3번 도로",
       "x": 5,
       "y": 4,
       "width": 4,
@@ -841,7 +841,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_4",
-      "name": "ROUTE 4",
+      "name": "4번 도로",
       "x": 8,
       "y": 3,
       "width": 6,
@@ -850,7 +850,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_5",
-      "name": "ROUTE 5",
+      "name": "5번 도로",
       "x": 14,
       "y": 4,
       "width": 1,
@@ -859,7 +859,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_6",
-      "name": "ROUTE 6",
+      "name": "6번 도로",
       "x": 14,
       "y": 7,
       "width": 1,
@@ -868,7 +868,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_7",
-      "name": "ROUTE 7",
+      "name": "7번 도로",
       "x": 12,
       "y": 6,
       "width": 2,
@@ -877,7 +877,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_8",
-      "name": "ROUTE 8",
+      "name": "8번 도로",
       "x": 15,
       "y": 6,
       "width": 3,
@@ -886,7 +886,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_9",
-      "name": "ROUTE 9",
+      "name": "9번 도로",
       "x": 15,
       "y": 3,
       "width": 3,
@@ -895,7 +895,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_10",
-      "name": "ROUTE 10",
+      "name": "10번 도로",
       "x": 18,
       "y": 3,
       "width": 1,
@@ -904,7 +904,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_11",
-      "name": "ROUTE 11",
+      "name": "11번 도로",
       "x": 15,
       "y": 9,
       "width": 3,
@@ -913,7 +913,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_12",
-      "name": "ROUTE 12",
+      "name": "12번 도로",
       "x": 18,
       "y": 7,
       "width": 1,
@@ -922,7 +922,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_13",
-      "name": "ROUTE 13",
+      "name": "13번 도로",
       "x": 16,
       "y": 11,
       "width": 2,
@@ -931,7 +931,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_14",
-      "name": "ROUTE 14",
+      "name": "14번 도로",
       "x": 15,
       "y": 11,
       "width": 1,
@@ -940,7 +940,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_15",
-      "name": "ROUTE 15",
+      "name": "15번 도로",
       "x": 13,
       "y": 12,
       "width": 2,
@@ -949,7 +949,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_16",
-      "name": "ROUTE 16",
+      "name": "16번 도로",
       "x": 7,
       "y": 6,
       "width": 4,
@@ -958,7 +958,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_17",
-      "name": "ROUTE 17",
+      "name": "17번 도로",
       "x": 7,
       "y": 7,
       "width": 1,
@@ -967,7 +967,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_18",
-      "name": "ROUTE 18",
+      "name": "18번 도로",
       "x": 7,
       "y": 12,
       "width": 5,
@@ -976,7 +976,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_19",
-      "name": "ROUTE 19",
+      "name": "19번 수로",
       "x": 12,
       "y": 13,
       "width": 1,
@@ -985,7 +985,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_20",
-      "name": "ROUTE 20",
+      "name": "20번 수로",
       "x": 5,
       "y": 14,
       "width": 7,
@@ -994,7 +994,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_21",
-      "name": "ROUTE 21",
+      "name": "21번 수로",
       "x": 4,
       "y": 12,
       "width": 1,
@@ -1003,7 +1003,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_22",
-      "name": "ROUTE 22",
+      "name": "22번 도로",
       "x": 2,
       "y": 8,
       "width": 2,
@@ -1012,7 +1012,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_23",
-      "name": "ROUTE 23",
+      "name": "23번 도로",
       "x": 2,
       "y": 4,
       "width": 1,
@@ -1020,7 +1020,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_24",
-      "name": "ROUTE 24",
+      "name": "24번 도로",
       "x": 14,
       "y": 1,
       "width": 1,
@@ -1029,7 +1029,7 @@
     },
     {
       "id": "MAPSEC_ROUTE_25",
-      "name": "ROUTE 25",
+      "name": "25번 도로",
       "x": 15,
       "y": 1,
       "width": 2,
@@ -1038,7 +1038,7 @@
     },
     {
       "id": "MAPSEC_VIRIDIAN_FOREST",
-      "name": "VIRIDIAN FOREST",
+      "name": "상록숲",
       "x": 4,
       "y": 6,
       "width": 1,
@@ -1047,7 +1047,7 @@
     },
     {
       "id": "MAPSEC_MT_MOON",
-      "name": "MT. MOON",
+      "name": "달맞이산",
       "x": 9,
       "y": 3,
       "width": 1,
@@ -1056,7 +1056,7 @@
     },
     {
       "id": "MAPSEC_S_S_ANNE",
-      "name": "S.S. ANNE",
+      "name": "상트앙느호",
       "x": 14,
       "y": 9,
       "width": 1,
@@ -1064,7 +1064,7 @@
     },
     {
       "id": "MAPSEC_UNDERGROUND_PATH",
-      "name": "UNDERGROUND PATH",
+      "name": "지하통로",
       "x": 14,
       "y": 7,
       "width": 1,
@@ -1072,7 +1072,7 @@
     },
     {
       "id": "MAPSEC_UNDERGROUND_PATH_2",
-      "name": "UNDERGROUND PATH",
+      "name": "지하통로",
       "x": 12,
       "y": 6,
       "width": 1,
@@ -1080,7 +1080,7 @@
     },
     {
       "id": "MAPSEC_DIGLETTS_CAVE",
-      "name": "DIGLETT'S CAVE",
+      "name": "디그다의 굴",
       "x": 15,
       "y": 9,
       "width": 1,
@@ -1089,7 +1089,7 @@
     },
     {
       "id": "MAPSEC_KANTO_VICTORY_ROAD",
-      "name": "VICTORY ROAD",
+      "name": "챔피언로드",
       "x": 2,
       "y": 4,
       "width": 1,
@@ -1097,7 +1097,7 @@
     },
     {
       "id": "MAPSEC_ROCKET_HIDEOUT",
-      "name": "ROCKET HIDEOUT",
+      "name": "로켓단아지트",
       "x": 11,
       "y": 6,
       "width": 1,
@@ -1106,7 +1106,7 @@
     },
     {
       "id": "MAPSEC_SILPH_CO",
-      "name": "SILPH CO.",
+      "name": "실프주식회사",
       "x": 14,
       "y": 6,
       "width": 1,
@@ -1114,7 +1114,7 @@
     },
     {
       "id": "MAPSEC_POKEMON_MANSION",
-      "name": "POKéMON MANSION",
+      "name": "포켓몬저택",
       "x": 4,
       "y": 14,
       "width": 1,
@@ -1122,7 +1122,7 @@
     },
     {
       "id": "MAPSEC_KANTO_SAFARI_ZONE",
-      "name": "SAFARI ZONE",
+      "name": "사파리존",
       "x": 12,
       "y": 12,
       "width": 1,
@@ -1130,7 +1130,7 @@
     },
     {
       "id": "MAPSEC_POKEMON_LEAGUE",
-      "name": "POKéMON LEAGUE",
+      "name": "포켓몬리그",
       "x": 2,
       "y": 3,
       "width": 1,
@@ -1138,7 +1138,7 @@
     },
     {
       "id": "MAPSEC_ROCK_TUNNEL",
-      "name": "ROCK TUNNEL",
+      "name": "돌산터널",
       "x": 18,
       "y": 5,
       "width": 1,
@@ -1147,7 +1147,7 @@
     },
     {
       "id": "MAPSEC_SEAFOAM_ISLANDS",
-      "name": "SEAFOAM ISLANDS",
+      "name": "쌍둥이섬",
       "x": 8,
       "y": 14,
       "width": 1,
@@ -1156,7 +1156,7 @@
     },
     {
       "id": "MAPSEC_POKEMON_TOWER",
-      "name": "POKéMON TOWER",
+      "name": "포켓몬타워",
       "x": 18,
       "y": 6,
       "width": 1,
@@ -1164,7 +1164,7 @@
     },
     {
       "id": "MAPSEC_CERULEAN_CAVE",
-      "name": "CERULEAN CAVE",
+      "name": "블루시티동굴",
       "x": 13,
       "y": 3,
       "width": 1,
@@ -1173,7 +1173,7 @@
     },
     {
       "id": "MAPSEC_POWER_PLANT",
-      "name": "POWER PLANT",
+      "name": "무인발전소",
       "x": 18,
       "y": 4,
       "width": 1,
@@ -1182,7 +1182,7 @@
     },
     {
       "id": "MAPSEC_ONE_ISLAND",
-      "name": "ONE ISLAND",
+      "name": "제1섬",
       "x": 1,
       "y": 8,
       "width": 1,
@@ -1190,7 +1190,7 @@
     },
     {
       "id": "MAPSEC_TWO_ISLAND",
-      "name": "TWO ISLAND",
+      "name": "제2섬",
       "x": 9,
       "y": 9,
       "width": 1,
@@ -1198,7 +1198,7 @@
     },
     {
       "id": "MAPSEC_THREE_ISLAND",
-      "name": "THREE ISLAND",
+      "name": "제3섬",
       "x": 18,
       "y": 12,
       "width": 1,
@@ -1206,7 +1206,7 @@
     },
     {
       "id": "MAPSEC_FOUR_ISLAND",
-      "name": "FOUR ISLAND",
+      "name": "제4섬",
       "x": 3,
       "y": 4,
       "width": 1,
@@ -1214,7 +1214,7 @@
     },
     {
       "id": "MAPSEC_FIVE_ISLAND",
-      "name": "FIVE ISLAND",
+      "name": "제5섬",
       "x": 16,
       "y": 11,
       "width": 1,
@@ -1222,7 +1222,7 @@
     },
     {
       "id": "MAPSEC_SEVEN_ISLAND",
-      "name": "SEVEN ISLAND",
+      "name": "제7섬",
       "x": 5,
       "y": 8,
       "width": 1,
@@ -1230,7 +1230,7 @@
     },
     {
       "id": "MAPSEC_SIX_ISLAND",
-      "name": "SIX ISLAND",
+      "name": "제6섬",
       "x": 17,
       "y": 5,
       "width": 1,
@@ -1238,7 +1238,7 @@
     },
     {
       "id": "MAPSEC_KINDLE_ROAD",
-      "name": "KINDLE ROAD",
+      "name": "저녁노을길",
       "x": 2,
       "y": 3,
       "width": 1,
@@ -1246,7 +1246,7 @@
     },
     {
       "id": "MAPSEC_TREASURE_BEACH",
-      "name": "TREASURE BEACH",
+      "name": "보물해변",
       "x": 1,
       "y": 9,
       "width": 1,
@@ -1254,7 +1254,7 @@
     },
     {
       "id": "MAPSEC_CAPE_BRINK",
-      "name": "CAPE BRINK",
+      "name": "가장자리곶",
       "x": 9,
       "y": 7,
       "width": 1,
@@ -1262,7 +1262,7 @@
     },
     {
       "id": "MAPSEC_BOND_BRIDGE",
-      "name": "BOND BRIDGE",
+      "name": "유대다리",
       "x": 13,
       "y": 12,
       "width": 4,
@@ -1270,7 +1270,7 @@
     },
     {
       "id": "MAPSEC_THREE_ISLE_PORT",
-      "name": "THREE ISLE PORT",
+      "name": "제3섬 항구",
       "x": 18,
       "y": 13,
       "width": 2,
@@ -1278,7 +1278,7 @@
     },
     {
       "id": "MAPSEC_RESORT_GORGEOUS",
-      "name": "RESORT GORGEOUS",
+      "name": "호화리조트",
       "x": 16,
       "y": 9,
       "width": 3,
@@ -1286,7 +1286,7 @@
     },
     {
       "id": "MAPSEC_WATER_LABYRINTH",
-      "name": "WATER LABYRINTH",
+      "name": "물의 미로",
       "x": 14,
       "y": 10,
       "width": 3,
@@ -1294,7 +1294,7 @@
     },
     {
       "id": "MAPSEC_FIVE_ISLE_MEADOW",
-      "name": "FIVE ISLE MEADOW",
+      "name": "제5섬 공터",
       "x": 17,
       "y": 10,
       "width": 1,
@@ -1302,7 +1302,7 @@
     },
     {
       "id": "MAPSEC_MEMORIAL_PILLAR",
-      "name": "MEMORIAL PILLAR",
+      "name": "추억탑",
       "x": 18,
       "y": 12,
       "width": 1,
@@ -1310,7 +1310,7 @@
     },
     {
       "id": "MAPSEC_OUTCAST_ISLAND",
-      "name": "OUTCAST ISLAND",
+      "name": "변두리의 섬",
       "x": 15,
       "y": 0,
       "width": 1,
@@ -1318,7 +1318,7 @@
     },
     {
       "id": "MAPSEC_GREEN_PATH",
-      "name": "GREEN PATH",
+      "name": "녹색산책길",
       "x": 15,
       "y": 3,
       "width": 3,
@@ -1326,7 +1326,7 @@
     },
     {
       "id": "MAPSEC_WATER_PATH",
-      "name": "WATER PATH",
+      "name": "물의 산책길",
       "x": 18,
       "y": 3,
       "width": 1,
@@ -1334,7 +1334,7 @@
     },
     {
       "id": "MAPSEC_RUIN_VALLEY",
-      "name": "RUIN VALLEY",
+      "name": "유적의 골짜기",
       "x": 16,
       "y": 7,
       "width": 2,
@@ -1342,7 +1342,7 @@
     },
     {
       "id": "MAPSEC_TRAINER_TOWER",
-      "name": "TRAINER TOWER",
+      "name": "트레이너타워",
       "x": 5,
       "y": 6,
       "width": 1,
@@ -1350,7 +1350,7 @@
     },
     {
       "id": "MAPSEC_CANYON_ENTRANCE",
-      "name": "CANYON ENTRANCE",
+      "name": "계곡입구",
       "x": 5,
       "y": 9,
       "width": 1,
@@ -1358,7 +1358,7 @@
     },
     {
       "id": "MAPSEC_SEVAULT_CANYON",
-      "name": "SEVAULT CANYON",
+      "name": "칠보계곡",
       "x": 6,
       "y": 9,
       "width": 1,
@@ -1366,7 +1366,7 @@
     },
     {
       "id": "MAPSEC_TANOBY_RUINS",
-      "name": "TANOBY RUINS",
+      "name": "옥포그리 유적",
       "x": 3,
       "y": 12,
       "width": 7,
@@ -1374,7 +1374,7 @@
     },
     {
       "id": "MAPSEC_SEVII_ISLE_22",
-      "name": "SEVII ISLE 22",
+      "name": "22번 일곱섬",
       "x": 9,
       "y": 12,
       "width": 1,
@@ -1382,7 +1382,7 @@
     },
     {
       "id": "MAPSEC_SEVII_ISLE_23",
-      "name": "SEVII ISLE 23",
+      "name": "23번 일곱섬",
       "x": 3,
       "y": 14,
       "width": 6,
@@ -1390,7 +1390,7 @@
     },
     {
       "id": "MAPSEC_SEVII_ISLE_24",
-      "name": "SEVII ISLE 24",
+      "name": "24번 일곱섬",
       "x": 2,
       "y": 12,
       "width": 1,
@@ -1398,7 +1398,7 @@
     },
     {
       "id": "MAPSEC_NAVEL_ROCK_FRLG",
-      "name": "NAVEL ROCK",
+      "name": "배꼽바위",
       "x": 10,
       "y": 8,
       "width": 1,
@@ -1406,7 +1406,7 @@
     },
     {
       "id": "MAPSEC_MT_EMBER",
-      "name": "MT. EMBER",
+      "name": "횃불산",
       "x": 2,
       "y": 3,
       "width": 1,
@@ -1414,7 +1414,7 @@
     },
     {
       "id": "MAPSEC_BERRY_FOREST",
-      "name": "BERRY FOREST",
+      "name": "나무열매숲",
       "x": 14,
       "y": 12,
       "width": 1,
@@ -1422,7 +1422,7 @@
     },
     {
       "id": "MAPSEC_ICEFALL_CAVE",
-      "name": "ICEFALL CAVE",
+      "name": "얼음폭포동굴",
       "x": 3,
       "y": 4,
       "width": 1,
@@ -1430,7 +1430,7 @@
     },
     {
       "id": "MAPSEC_ROCKET_WAREHOUSE",
-      "name": "ROCKET WAREHOUSE",
+      "name": "로켓단창고",
       "x": 17,
       "y": 11,
       "width": 1,
@@ -1438,7 +1438,7 @@
     },
     {
       "id": "MAPSEC_TRAINER_TOWER_2",
-      "name": "TRAINER TOWER",
+      "name": "트레이너타워",
       "x": 5,
       "y": 6,
       "width": 1,
@@ -1446,7 +1446,7 @@
     },
     {
       "id": "MAPSEC_DOTTED_HOLE",
-      "name": "DOTTED HOLE",
+      "name": "점의 굴",
       "x": 16,
       "y": 8,
       "width": 1,
@@ -1454,7 +1454,7 @@
     },
     {
       "id": "MAPSEC_LOST_CAVE",
-      "name": "LOST CAVE",
+      "name": "돌아올 수 없는 굴",
       "x": 18,
       "y": 9,
       "width": 1,
@@ -1462,7 +1462,7 @@
     },
     {
       "id": "MAPSEC_PATTERN_BUSH",
-      "name": "PATTERN BUSH",
+      "name": "증표숲",
       "x": 17,
       "y": 3,
       "width": 1,
@@ -1470,7 +1470,7 @@
     },
     {
       "id": "MAPSEC_ALTERING_CAVE_FRLG",
-      "name": "ALTERING CAVE",
+      "name": "변형동굴",
       "x": 15,
       "y": 0,
       "width": 1,
@@ -1478,7 +1478,7 @@
     },
     {
       "id": "MAPSEC_TANOBY_CHAMBERS",
-      "name": "TANOBY CHAMBERS",
+      "name": "옥포그리의 석실",
       "x": 9,
       "y": 12,
       "width": 1,
@@ -1486,7 +1486,7 @@
     },
     {
       "id": "MAPSEC_THREE_ISLE_PATH",
-      "name": "THREE ISLE PATH",
+      "name": "제3섬 통로",
       "x": 18,
       "y": 13,
       "width": 1,
@@ -1494,7 +1494,7 @@
     },
     {
       "id": "MAPSEC_TANOBY_KEY",
-      "name": "TANOBY KEY",
+      "name": "옥포그리의 열쇠",
       "x": 6,
       "y": 9,
       "width": 1,
@@ -1502,7 +1502,7 @@
     },
     {
       "id": "MAPSEC_BIRTH_ISLAND_FRLG",
-      "name": "BIRTH ISLAND",
+      "name": "탄생의 섬",
       "x": 18,
       "y": 13,
       "width": 1,
@@ -1510,7 +1510,7 @@
     },
     {
       "id": "MAPSEC_MONEAN_CHAMBER",
-      "name": "MONEAN CHAMBER",
+      "name": "이라님의 석실",
       "x": 9,
       "y": 12,
       "width": 1,
@@ -1518,7 +1518,7 @@
     },
     {
       "id": "MAPSEC_LIPTOO_CHAMBER",
-      "name": "LIPTOO CHAMBER",
+      "name": "이그레안의 석실",
       "x": 9,
       "y": 12,
       "width": 1,
@@ -1526,7 +1526,7 @@
     },
     {
       "id": "MAPSEC_WEEPTH_CHAMBER",
-      "name": "WEEPTH CHAMBER",
+      "name": "모스루프의 석실",
       "x": 9,
       "y": 12,
       "width": 1,
@@ -1534,7 +1534,7 @@
     },
     {
       "id": "MAPSEC_DILFORD_CHAMBER",
-      "name": "DILFORD CHAMBER",
+      "name": "톡크로에의 석실",
       "x": 9,
       "y": 12,
       "width": 1,
@@ -1542,7 +1542,7 @@
     },
     {
       "id": "MAPSEC_SCUFIB_CHAMBER",
-      "name": "SCUFIB CHAMBER",
+      "name": "루마네즈의 석실",
       "x": 9,
       "y": 12,
       "width": 1,
@@ -1550,7 +1550,7 @@
     },
     {
       "id": "MAPSEC_RIXY_CHAMBER",
-      "name": "RIXY CHAMBER",
+      "name": "우무누스의 석실",
       "x": 9,
       "y": 12,
       "width": 1,
@@ -1558,7 +1558,7 @@
     },
     {
       "id": "MAPSEC_VIAPOIS_CHAMBER",
-      "name": "VIAPOIS CHAMBER",
+      "name": "움노브리의 석실",
       "x": 9,
       "y": 12,
       "width": 1,
@@ -1566,15 +1566,15 @@
     },
     {
       "id": "MAPSEC_EMBER_SPA",
-      "name": "EMBER SPA"
+      "name": "횃불온천"
     },
     {
       "id": "MAPSEC_SPECIAL_AREA",
-      "name": "SPECIAL AREA"
+      "name": "레드 그린 특수"
     },
     {
       "id": "MAPSEC_AQUA_HIDEOUT",
-      "name": "AQUA HIDEOUT",
+      "name": "아쿠아단 아지트",
       "x": 19,
       "y": 3,
       "width": 1,
@@ -1582,7 +1582,7 @@
     },
     {
       "id": "MAPSEC_MAGMA_HIDEOUT",
-      "name": "MAGMA HIDEOUT",
+      "name": "마그마단 아지트",
       "x": 6,
       "y": 3,
       "width": 1,
@@ -1590,7 +1590,7 @@
     },
     {
       "id": "MAPSEC_MIRAGE_TOWER",
-      "name": "MIRAGE TOWER",
+      "name": "환영탑",
       "x": 8,
       "y": 2,
       "width": 1,
@@ -1598,17 +1598,17 @@
     },
     {
       "id": "MAPSEC_BIRTH_ISLAND",
-      "name": "BIRTH ISLAND",
+      "name": "탄생의 섬",
       "in_hns": true
     },
     {
       "id": "MAPSEC_FARAWAY_ISLAND",
-      "name": "FARAWAY ISLAND",
+      "name": "머나먼 고도",
       "in_hns": true
     },
     {
       "id": "MAPSEC_ARTISAN_CAVE",
-      "name": "ARTISAN CAVE",
+      "name": "아틀리에의 굴",
       "x": 22,
       "y": 12,
       "width": 1,
@@ -1616,19 +1616,19 @@
     },
     {
       "id": "MAPSEC_MARINE_CAVE",
-      "name": "MARINE CAVE"
+      "name": "바다 동굴"
     },
     {
       "id": "MAPSEC_UNDERWATER_MARINE_CAVE",
-      "name": "UNDERWATER"
+      "name": "수중"
     },
     {
       "id": "MAPSEC_TERRA_CAVE",
-      "name": "TERRA CAVE"
+      "name": "육지 동굴"
     },
     {
       "id": "MAPSEC_UNDERWATER_105",
-      "name": "UNDERWATER",
+      "name": "수중",
       "x": 0,
       "y": 10,
       "width": 1,
@@ -1636,7 +1636,7 @@
     },
     {
       "id": "MAPSEC_UNDERWATER_125",
-      "name": "UNDERWATER",
+      "name": "수중",
       "x": 24,
       "y": 3,
       "width": 2,
@@ -1644,7 +1644,7 @@
     },
     {
       "id": "MAPSEC_UNDERWATER_129",
-      "name": "UNDERWATER",
+      "name": "수중",
       "x": 24,
       "y": 10,
       "width": 2,
@@ -1652,7 +1652,7 @@
     },
     {
       "id": "MAPSEC_DESERT_UNDERPASS",
-      "name": "DESERT UNDERPASS",
+      "name": "사막의 지하도",
       "x": 2,
       "y": 0,
       "width": 1,
@@ -1660,7 +1660,7 @@
     },
     {
       "id": "MAPSEC_ALTERING_CAVE",
-      "name": "ALTERING CAVE",
+      "name": "변형동굴",
       "x": 6,
       "y": 8,
       "width": 1,
@@ -1668,62 +1668,62 @@
     },
     {
       "id": "MAPSEC_NAVEL_ROCK",
-      "name": "NAVEL ROCK"
+      "name": "배꼽바위"
     },
     {
       "id": "MAPSEC_MELEMELE_ISLAND",
-      "name": "MELEMELE ISLE",
+      "name": "멜레멜레섬",
       "in_hns": true,
       "region": "REGION_ALOLA"
     },
     {
       "id": "MAPSEC_AKALA_ISLAND",
-      "name": "AKALA ISLE",
+      "name": "아칼라섬",
       "in_hns": true
     },
     {
       "id": "MAPSEC_ULAULA_ISLAND",
-      "name": "ULA'ULA ISLE",
+      "name": "울라울라섬",
       "in_hns": true
     },
     {
       "id": "MAPSEC_PONI_ISLAND",
-      "name": "PONI ISLE",
+      "name": "포니섬",
       "in_hns": true
     },
     {
       "id": "MAPSEC_ALOLA_OCEAN",
-      "name": "MELMELE SEA",
+      "name": "멜레멜레해",
       "in_hns": true
     },
     {
       "id": "MAPSEC_AKALA_CAVE",
-      "name": "AKALA CAVE",
+      "name": "아칼라동굴",
       "in_hns": true
     },
     {
       "id": "MAPSEC_AKALA_FOREST",
-      "name": "AKALA FOREST",
+      "name": "아칼라숲",
       "in_hns": true
     },
     {
       "id": "MAPSEC_PONI_CAVE",
-      "name": "PONI CAVE",
+      "name": "포니동굴",
       "in_hns": true
     },
     {
       "id": "MAPSEC_ULAULA_CAVE",
-      "name": "MT. LANIKALA",
+      "name": "라나키라산",
       "in_hns": true
     },
     {
       "id": "MAPSEC_ULAULA_CAVE_2",
-      "name": "ULA'ULA CAVE",
+      "name": "울라울라동굴",
       "in_hns": true
     },
     {
       "id": "MAPSEC_TRAINER_HILL",
-      "name": "TRAINER HILL",
+      "name": "트레이너힐",
       "x": 8,
       "y": 4,
       "width": 1,
@@ -1735,7 +1735,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ABANDONED_SHIP",
-      "name": "ABANDONED SHIP",
+      "name": "버려진 배",
       "width": 1,
       "x": 6,
       "y": 14
@@ -1743,7 +1743,7 @@
     {
       "height": 1,
       "id": "MAPSEC_BATTLE_FRONTIER",
-      "name": "BATTLE FRONTIER",
+      "name": "배틀프런티어",
       "width": 1,
       "x": 22,
       "y": 12
@@ -1751,7 +1751,7 @@
     {
       "height": 1,
       "id": "MAPSEC_BIRTH_ISLAND",
-      "name": "BIRTH ISLAND",
+      "name": "탄생의 섬",
       "width": 1,
       "x": 0,
       "y": 0
@@ -1759,7 +1759,7 @@
     {
       "height": 1,
       "id": "MAPSEC_FARAWAY_ISLAND",
-      "name": "FARAWAY ISLAND",
+      "name": "머나먼 고도",
       "width": 1,
       "x": 0,
       "y": 0
@@ -1767,7 +1767,7 @@
     {
       "height": 1,
       "id": "MAPSEC_LILYCOVE_CITY",
-      "name": "LILYCOVE CITY",
+      "name": "해안시티",
       "width": 2,
       "x": 18,
       "y": 3
@@ -1775,7 +1775,7 @@
     {
       "height": 1,
       "id": "MAPSEC_SAFARI_ZONE",
-      "name": "SAFARI ZONE",
+      "name": "사파리존",
       "width": 1,
       "x": 2,
       "y": 9
@@ -1783,7 +1783,7 @@
     {
       "height": 1,
       "id": "MAPSEC_SOUTHERN_ISLAND",
-      "name": "SOUTHERN ISLAND",
+      "name": "남쪽의 외딴섬",
       "width": 1,
       "x": 12,
       "y": 14
@@ -1791,56 +1791,56 @@
     {
       "height": 1,
       "id": "MAPSEC_TRAINER_HILL",
-      "name": "TRAINER HILL",
+      "name": "트레이너힐",
       "width": 1,
       "x": 5,
       "y": 3
     },
     {
       "id": "MAPSEC_MELEMELE_ISLAND",
-      "name": "MELEMELE ISLE",
+      "name": "멜레멜레섬",
       "region": "REGION_ALOLA"
     },
     {
       "id": "MAPSEC_AKALA_ISLAND",
-      "name": "AKALA ISLE"
+      "name": "아칼라섬"
     },
     {
       "id": "MAPSEC_ULAULA_ISLAND",
-      "name": "ULA'ULA ISLE"
+      "name": "울라울라섬"
     },
     {
       "id": "MAPSEC_PONI_ISLAND",
-      "name": "PONI ISLE"
+      "name": "포니섬"
     },
     {
       "id": "MAPSEC_ALOLA_OCEAN",
-      "name": "MELEMELE SEA"
+      "name": "멜레멜레해"
     },
     {
       "id": "MAPSEC_AKALA_CAVE",
-      "name": "AKALA CAVE"
+      "name": "아칼라동굴"
     },
     {
       "id": "MAPSEC_AKALA_FOREST",
-      "name": "AKALA FOREST"
+      "name": "아칼라숲"
     },
     {
       "id": "MAPSEC_PONI_CAVE",
-      "name": "PONI CAVE"
+      "name": "포니동굴"
     },
     {
       "id": "MAPSEC_ULAULA_CAVE",
-      "name": "MT. LANIKALA"
+      "name": "라나키라산"
     },
     {
       "id": "MAPSEC_ULAULA_CAVE_2",
-      "name": "ULA'ULA CAVE"
+      "name": "울라울라동굴"
     },
     {
       "height": 1,
       "id": "MAPSEC_VICTORY_ROAD",
-      "name": "VICTORY ROAD",
+      "name": "챔피언로드",
       "width": 1,
       "x": 24,
       "y": 5
@@ -1848,7 +1848,7 @@
     {
       "height": 1,
       "id": "MAPSEC_PALLET_TOWN",
-      "name": "PALLET TOWN",
+      "name": "태초마을",
       "width": 1,
       "x": 4,
       "y": 11
@@ -1856,7 +1856,7 @@
     {
       "height": 1,
       "id": "MAPSEC_VIRIDIAN_CITY",
-      "name": "VIRIDIAN CITY",
+      "name": "상록시티",
       "width": 1,
       "x": 4,
       "y": 8
@@ -1864,7 +1864,7 @@
     {
       "height": 1,
       "id": "MAPSEC_PEWTER_CITY",
-      "name": "PEWTER CITY",
+      "name": "회색시티",
       "width": 1,
       "x": 4,
       "y": 4
@@ -1872,7 +1872,7 @@
     {
       "height": 1,
       "id": "MAPSEC_CERULEAN_CITY",
-      "name": "CERULEAN CITY",
+      "name": "블루시티",
       "width": 1,
       "x": 14,
       "y": 3
@@ -1880,7 +1880,7 @@
     {
       "height": 1,
       "id": "MAPSEC_LAVENDER_TOWN",
-      "name": "LAVENDER TOWN",
+      "name": "보라타운",
       "width": 1,
       "x": 18,
       "y": 6
@@ -1888,7 +1888,7 @@
     {
       "height": 1,
       "id": "MAPSEC_VERMILION_CITY",
-      "name": "VERMILION CITY",
+      "name": "갈색시티",
       "width": 1,
       "x": 14,
       "y": 9
@@ -1896,7 +1896,7 @@
     {
       "height": 1,
       "id": "MAPSEC_CELADON_CITY",
-      "name": "CELADON CITY",
+      "name": "무지개시티",
       "width": 1,
       "x": 11,
       "y": 6
@@ -1904,7 +1904,7 @@
     {
       "height": 1,
       "id": "MAPSEC_FUCHSIA_CITY",
-      "name": "FUCHSIA CITY",
+      "name": "연분홍시티",
       "width": 1,
       "x": 12,
       "y": 12
@@ -1912,7 +1912,7 @@
     {
       "height": 1,
       "id": "MAPSEC_CINNABAR_ISLAND",
-      "name": "CINNABAR ISLAND",
+      "name": "홍련섬",
       "width": 1,
       "x": 4,
       "y": 14
@@ -1920,7 +1920,7 @@
     {
       "height": 2,
       "id": "MAPSEC_INDIGO_PLATEAU",
-      "name": "INDIGO PLATEAU",
+      "name": "석영고원",
       "width": 1,
       "x": 24,
       "y": 3
@@ -1928,7 +1928,7 @@
     {
       "height": 1,
       "id": "MAPSEC_SAFFRON_CITY",
-      "name": "SAFFRON CITY",
+      "name": "노랑시티",
       "width": 1,
       "x": 14,
       "y": 6
@@ -1936,7 +1936,7 @@
     {
       "height": 2,
       "id": "MAPSEC_ROUTE_1",
-      "name": "ROUTE 1",
+      "name": "1번 도로",
       "width": 1,
       "x": 4,
       "y": 9
@@ -1944,7 +1944,7 @@
     {
       "height": 3,
       "id": "MAPSEC_ROUTE_2",
-      "name": "ROUTE 2",
+      "name": "2번 도로",
       "width": 1,
       "x": 4,
       "y": 5
@@ -1952,7 +1952,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_3",
-      "name": "ROUTE 3",
+      "name": "3번 도로",
       "width": 4,
       "x": 5,
       "y": 4
@@ -1960,7 +1960,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_4",
-      "name": "ROUTE 4",
+      "name": "4번 도로",
       "width": 6,
       "x": 8,
       "y": 3
@@ -1968,7 +1968,7 @@
     {
       "height": 2,
       "id": "MAPSEC_ROUTE_5",
-      "name": "ROUTE 5",
+      "name": "5번 도로",
       "width": 1,
       "x": 14,
       "y": 4
@@ -1976,7 +1976,7 @@
     {
       "height": 2,
       "id": "MAPSEC_ROUTE_6",
-      "name": "ROUTE 6",
+      "name": "6번 도로",
       "width": 1,
       "x": 14,
       "y": 7
@@ -1984,7 +1984,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_7",
-      "name": "ROUTE 7",
+      "name": "7번 도로",
       "width": 2,
       "x": 12,
       "y": 6
@@ -1992,7 +1992,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_8",
-      "name": "ROUTE 8",
+      "name": "8번 도로",
       "width": 3,
       "x": 15,
       "y": 6
@@ -2000,7 +2000,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_9",
-      "name": "ROUTE 9",
+      "name": "9번 도로",
       "width": 3,
       "x": 15,
       "y": 3
@@ -2008,7 +2008,7 @@
     {
       "height": 3,
       "id": "MAPSEC_ROUTE_10",
-      "name": "ROUTE 10",
+      "name": "10번 도로",
       "width": 1,
       "x": 18,
       "y": 3
@@ -2016,7 +2016,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_11",
-      "name": "ROUTE 11",
+      "name": "11번 도로",
       "width": 3,
       "x": 15,
       "y": 9
@@ -2024,7 +2024,7 @@
     {
       "height": 5,
       "id": "MAPSEC_ROUTE_12",
-      "name": "ROUTE 12",
+      "name": "12번 도로",
       "width": 1,
       "x": 18,
       "y": 7
@@ -2032,7 +2032,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_13",
-      "name": "ROUTE 13",
+      "name": "13번 도로",
       "width": 2,
       "x": 16,
       "y": 11
@@ -2040,7 +2040,7 @@
     {
       "height": 2,
       "id": "MAPSEC_ROUTE_14",
-      "name": "ROUTE 14",
+      "name": "14번 도로",
       "width": 1,
       "x": 15,
       "y": 11
@@ -2048,7 +2048,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_15",
-      "name": "ROUTE 15",
+      "name": "15번 도로",
       "width": 2,
       "x": 13,
       "y": 12
@@ -2056,7 +2056,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_16",
-      "name": "ROUTE 16",
+      "name": "16번 도로",
       "width": 4,
       "x": 7,
       "y": 6
@@ -2064,7 +2064,7 @@
     {
       "height": 5,
       "id": "MAPSEC_ROUTE_17",
-      "name": "ROUTE 17",
+      "name": "17번 도로",
       "width": 1,
       "x": 7,
       "y": 7
@@ -2072,7 +2072,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_18",
-      "name": "ROUTE 18",
+      "name": "18번 도로",
       "width": 5,
       "x": 7,
       "y": 12
@@ -2080,7 +2080,7 @@
     {
       "height": 2,
       "id": "MAPSEC_ROUTE_19",
-      "name": "ROUTE 19",
+      "name": "19번 수로",
       "width": 1,
       "x": 12,
       "y": 13
@@ -2088,7 +2088,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_20",
-      "name": "ROUTE 20",
+      "name": "20번 수로",
       "width": 7,
       "x": 5,
       "y": 14
@@ -2096,7 +2096,7 @@
     {
       "height": 2,
       "id": "MAPSEC_ROUTE_21",
-      "name": "ROUTE 21",
+      "name": "21번 수로",
       "width": 1,
       "x": 4,
       "y": 12
@@ -2104,7 +2104,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_22",
-      "name": "ROUTE 22",
+      "name": "22번 도로",
       "width": 2,
       "x": 2,
       "y": 8
@@ -2112,7 +2112,7 @@
     {
       "height": 2,
       "id": "MAPSEC_ROUTE_24",
-      "name": "ROUTE 24",
+      "name": "24번 도로",
       "width": 1,
       "x": 14,
       "y": 1
@@ -2120,7 +2120,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_25",
-      "name": "ROUTE 25",
+      "name": "25번 도로",
       "width": 2,
       "x": 15,
       "y": 1
@@ -2128,7 +2128,7 @@
     {
       "height": 1,
       "id": "MAPSEC_VIRIDIAN_FOREST",
-      "name": "VIRIDIAN FOREST",
+      "name": "상록숲",
       "width": 1,
       "x": 4,
       "y": 6
@@ -2136,7 +2136,7 @@
     {
       "height": 1,
       "id": "MAPSEC_MT_MOON",
-      "name": "MT. MOON",
+      "name": "달맞이산",
       "width": 1,
       "x": 9,
       "y": 3
@@ -2144,7 +2144,7 @@
     {
       "height": 1,
       "id": "MAPSEC_DIGLETTS_CAVE",
-      "name": "DIGLETT'S CAVE",
+      "name": "디그다의 굴",
       "width": 1,
       "x": 15,
       "y": 9
@@ -2152,7 +2152,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROCKET_HIDEOUT",
-      "name": "ROCKET HIDEOUT",
+      "name": "로켓단아지트",
       "width": 1,
       "x": 15,
       "y": 2
@@ -2160,7 +2160,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROCK_TUNNEL",
-      "name": "ROCK TUNNEL",
+      "name": "돌산터널",
       "width": 1,
       "x": 18,
       "y": 5
@@ -2168,7 +2168,7 @@
     {
       "height": 1,
       "id": "MAPSEC_SEAFOAM_ISLANDS",
-      "name": "SEAFOAM ISLANDS",
+      "name": "쌍둥이섬",
       "width": 1,
       "x": 8,
       "y": 14
@@ -2176,7 +2176,7 @@
     {
       "height": 1,
       "id": "MAPSEC_CERULEAN_CAVE",
-      "name": "CERULEAN CAVE",
+      "name": "블루시티동굴",
       "width": 1,
       "x": 13,
       "y": 3
@@ -2184,7 +2184,7 @@
     {
       "height": 1,
       "id": "MAPSEC_POWER_PLANT",
-      "name": "POWER PLANT",
+      "name": "무인발전소",
       "width": 1,
       "x": 18,
       "y": 4
@@ -2192,7 +2192,7 @@
     {
       "height": 1,
       "id": "MAPSEC_NEW_BARK_TOWN",
-      "name": "NEW BARK TOWN",
+      "name": "연두마을",
       "width": 1,
       "x": 19,
       "y": 10
@@ -2200,7 +2200,7 @@
     {
       "height": 1,
       "id": "MAPSEC_CHERRYGROVE_CITY",
-      "name": "CHERRYGROVE CITY",
+      "name": "무궁시티",
       "width": 1,
       "x": 14,
       "y": 10
@@ -2208,7 +2208,7 @@
     {
       "height": 1,
       "id": "MAPSEC_VIOLET_CITY",
-      "name": "VIOLET CITY",
+      "name": "도라지시티",
       "width": 1,
       "x": 12,
       "y": 4
@@ -2216,7 +2216,7 @@
     {
       "height": 1,
       "id": "MAPSEC_AZALEA_TOWN",
-      "name": "AZALEA TOWN",
+      "name": "고동마을",
       "width": 1,
       "x": 10,
       "y": 13
@@ -2224,7 +2224,7 @@
     {
       "height": 2,
       "id": "MAPSEC_GOLDENROD_CITY",
-      "name": "GOLDENROD CITY",
+      "name": "금빛시티",
       "width": 1,
       "x": 8,
       "y": 8
@@ -2232,7 +2232,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ECRUTEAK_CITY",
-      "name": "ECRUTEAK CITY",
+      "name": "인주시티",
       "width": 1,
       "x": 10,
       "y": 2
@@ -2240,7 +2240,7 @@
     {
       "height": 1,
       "id": "MAPSEC_OLIVINE_CITY",
-      "name": "OLIVINE CITY",
+      "name": "담청시티",
       "width": 1,
       "x": 6,
       "y": 4
@@ -2248,7 +2248,7 @@
     {
       "height": 1,
       "id": "MAPSEC_CIANWOOD_CITY",
-      "name": "CIANWOOD CITY",
+      "name": "진청시티",
       "width": 1,
       "x": 4,
       "y": 11
@@ -2256,7 +2256,7 @@
     {
       "height": 1,
       "id": "MAPSEC_MAHOGANY_TOWN",
-      "name": "MAHOGANY TOWN",
+      "name": "황토마을",
       "width": 1,
       "x": 15,
       "y": 2
@@ -2264,7 +2264,7 @@
     {
       "height": 1,
       "id": "MAPSEC_BLACKTHORN_CITY",
-      "name": "BLACKTHORN CITY",
+      "name": "검은먹시티",
       "width": 1,
       "x": 18,
       "y": 2
@@ -2272,7 +2272,7 @@
     {
       "height": 5,
       "id": "MAPSEC_ROUTE_26",
-      "name": "ROUTE 26",
+      "name": "26번 도로",
       "width": 1,
       "x": 24,
       "y": 6
@@ -2280,7 +2280,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_27",
-      "name": "ROUTE 27",
+      "name": "27번 도로",
       "width": 4,
       "x": 20,
       "y": 10
@@ -2288,7 +2288,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_28",
-      "name": "ROUTE 28",
+      "name": "28번 도로",
       "width": 3,
       "x": 21,
       "y": 5
@@ -2296,7 +2296,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_29",
-      "name": "ROUTE 29",
+      "name": "29번 도로",
       "width": 4,
       "x": 15,
       "y": 10
@@ -2304,7 +2304,7 @@
     {
       "height": 5,
       "id": "MAPSEC_ROUTE_30",
-      "name": "ROUTE 30",
+      "name": "30번 도로",
       "width": 1,
       "x": 14,
       "y": 5
@@ -2312,7 +2312,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_31",
-      "name": "ROUTE 31",
+      "name": "31번 도로",
       "width": 2,
       "x": 13,
       "y": 4
@@ -2320,7 +2320,7 @@
     {
       "height": 6,
       "id": "MAPSEC_ROUTE_32",
-      "name": "ROUTE 32",
+      "name": "32번 도로",
       "width": 1,
       "x": 12,
       "y": 5
@@ -2328,7 +2328,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_33",
-      "name": "ROUTE 33",
+      "name": "33번 도로",
       "width": 2,
       "x": 11,
       "y": 13
@@ -2336,7 +2336,7 @@
     {
       "height": 2,
       "id": "MAPSEC_ROUTE_34",
-      "name": "ROUTE 34",
+      "name": "34번 도로",
       "width": 1,
       "x": 8,
       "y": 10
@@ -2344,7 +2344,7 @@
     {
       "height": 3,
       "id": "MAPSEC_ROUTE_35",
-      "name": "ROUTE 35",
+      "name": "35번 도로",
       "width": 1,
       "x": 8,
       "y": 5
@@ -2352,7 +2352,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_36",
-      "name": "ROUTE 36",
+      "name": "36번 도로",
       "width": 3,
       "x": 9,
       "y": 4
@@ -2360,7 +2360,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_37",
-      "name": "ROUTE 37",
+      "name": "37번 도로",
       "width": 1,
       "x": 10,
       "y": 3
@@ -2368,7 +2368,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_38",
-      "name": "ROUTE 38",
+      "name": "38번 도로",
       "width": 3,
       "x": 7,
       "y": 2
@@ -2376,7 +2376,7 @@
     {
       "height": 2,
       "id": "MAPSEC_ROUTE_39",
-      "name": "ROUTE 39",
+      "name": "39번 도로",
       "width": 1,
       "x": 6,
       "y": 2
@@ -2384,7 +2384,7 @@
     {
       "height": 5,
       "id": "MAPSEC_ROUTE_40",
-      "name": "ROUTE 40",
+      "name": "40번 도로",
       "width": 1,
       "x": 5,
       "y": 4
@@ -2392,7 +2392,7 @@
     {
       "height": 3,
       "id": "MAPSEC_ROUTE_41",
-      "name": "ROUTE 41",
+      "name": "41번 도로",
       "width": 1,
       "x": 5,
       "y": 9
@@ -2400,7 +2400,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_42",
-      "name": "ROUTE 42",
+      "name": "42번 도로",
       "width": 4,
       "x": 11,
       "y": 2
@@ -2408,7 +2408,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_43",
-      "name": "ROUTE 43",
+      "name": "43번 도로",
       "width": 1,
       "x": 15,
       "y": 1
@@ -2416,7 +2416,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_44",
-      "name": "ROUTE 44",
+      "name": "44번 도로",
       "width": 2,
       "x": 16,
       "y": 2
@@ -2424,7 +2424,7 @@
     {
       "height": 4,
       "id": "MAPSEC_ROUTE_45",
-      "name": "ROUTE 45",
+      "name": "45번 도로",
       "width": 1,
       "x": 18,
       "y": 3
@@ -2432,7 +2432,7 @@
     {
       "height": 4,
       "id": "MAPSEC_ROUTE_46",
-      "name": "ROUTE 46",
+      "name": "46번 도로",
       "width": 1,
       "x": 17,
       "y": 6
@@ -2440,7 +2440,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_47",
-      "name": "ROUTE 47",
+      "name": "47번 도로",
       "width": 1,
       "x": 2,
       "y": 11
@@ -2448,7 +2448,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_48",
-      "name": "ROUTE 48",
+      "name": "48번 도로",
       "width": 1,
       "x": 2,
       "y": 10
@@ -2456,7 +2456,7 @@
     {
       "height": 1,
       "id": "MAPSEC_BURNED_TOWER",
-      "name": "BURNED TOWER",
+      "name": "불탄탑",
       "width": 1,
       "x": 9,
       "y": 1
@@ -2464,7 +2464,7 @@
     {
       "height": 1,
       "id": "MAPSEC_CLIFF_CAVE",
-      "name": "CLIFF CAVE",
+      "name": "낭떠러지동굴",
       "width": 1,
       "x": 3,
       "y": 11
@@ -2472,7 +2472,7 @@
     {
       "height": 2,
       "id": "MAPSEC_DARK_CAVE",
-      "name": "DARK CAVE",
+      "name": "어둠의 동굴",
       "width": 3,
       "x": 15,
       "y": 4
@@ -2480,7 +2480,7 @@
     {
       "height": 1,
       "id": "MAPSEC_DRAGONS_DEN",
-      "name": "DRAGON'S DEN",
+      "name": "용의 굴",
       "width": 1,
       "x": 18,
       "y": 1
@@ -2488,7 +2488,7 @@
     {
       "height": 2,
       "id": "MAPSEC_EMBEDDED_TOWER",
-      "name": "EMBEDDED TOWER",
+      "name": "매몰탑",
       "width": 1,
       "x": 1,
       "y": 10
@@ -2496,7 +2496,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ICE_PATH",
-      "name": "ICE PATH",
+      "name": "얼음샛길",
       "width": 1,
       "x": 17,
       "y": 1
@@ -2504,7 +2504,7 @@
     {
       "height": 2,
       "id": "MAPSEC_ILEX_FOREST",
-      "name": "ILEX FOREST",
+      "name": "너도밤나무숲",
       "width": 2,
       "x": 8,
       "y": 12
@@ -2512,7 +2512,7 @@
     {
       "height": 1,
       "id": "MAPSEC_LAKE_OF_RAGE",
-      "name": "LAKE OF RAGE",
+      "name": "분노의 호수",
       "width": 1,
       "x": 15,
       "y": 0
@@ -2520,7 +2520,7 @@
     {
       "height": 1,
       "id": "MAPSEC_MT_MORTAR",
-      "name": "MT. MORTAR",
+      "name": "절구산",
       "width": 1,
       "x": 12,
       "y": 1
@@ -2528,7 +2528,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROCKET_HIDEOUT_HNS",
-      "name": "ROCKET HIDEOUT",
+      "name": "로켓단아지트",
       "width": 1,
       "x": 15,
       "y": 2
@@ -2536,7 +2536,7 @@
     {
       "height": 4,
       "id": "MAPSEC_VICTORY_ROAD_HNS",
-      "name": "VICTORY ROAD",
+      "name": "챔피언로드",
       "width": 1,
       "x": 16,
       "y": 4
@@ -2544,7 +2544,7 @@
     {
       "height": 1,
       "id": "MAPSEC_MT_SILVER",
-      "name": "MT. SILVER",
+      "name": "은빛산",
       "width": 1,
       "x": 20,
       "y": 5
@@ -2552,7 +2552,7 @@
     {
       "height": 1,
       "id": "MAPSEC_SINJOH",
-      "name": "SINJOH",
+      "name": "신도",
       "width": 1,
       "x": 20,
       "y": 3
@@ -2560,7 +2560,7 @@
     {
       "height": 1,
       "id": "MAPSEC_SNOWSWEPT_CAVERN",
-      "name": "SNOWSWEPT CAVERN",
+      "name": "설원동굴",
       "width": 1,
       "x": 20,
       "y": 3
@@ -2568,7 +2568,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_49",
-      "name": "ROUTE 49",
+      "name": "49번 도로",
       "width": 1,
       "x": 20,
       "y": 3
@@ -2576,7 +2576,7 @@
     {
       "height": 1,
       "id": "MAPSEC_ROUTE_50",
-      "name": "ROUTE 50",
+      "name": "50번 도로",
       "width": 1,
       "x": 20,
       "y": 3
@@ -2584,7 +2584,7 @@
     {
       "height": 1,
       "id": "MAPSEC_NEW_SINJOH",
-      "name": "NEW SINJOH",
+      "name": "신도마을",
       "width": 1,
       "x": 20,
       "y": 3
@@ -2592,7 +2592,7 @@
     {
       "height": 1,
       "id": "MAPSEC_SINJOH_RUINS",
-      "name": "SINJOH RUINS",
+      "name": "신도유적",
       "width": 1,
       "x": 20,
       "y": 3
@@ -2600,7 +2600,7 @@
     {
       "height": 1,
       "id": "MAPSEC_NATIONAL_PARK",
-      "name": "NATIONAL PARK",
+      "name": "자연공원",
       "width": 1,
       "x": 8,
       "y": 4
@@ -2608,7 +2608,7 @@
     {
       "height": 1,
       "id": "MAPSEC_OLIVINE_LIGHTHOUSE",
-      "name": "OLIVINE LIGHTHOUSE",
+      "name": "빛남의 등대",
       "width": 1,
       "x": 7,
       "y": 4
@@ -2616,7 +2616,7 @@
     {
       "height": 2,
       "id": "MAPSEC_RUINS_OF_ALPH",
-      "name": "RUINS OF ALPH",
+      "name": "알프의 유적",
       "width": 2,
       "x": 10,
       "y": 5
@@ -2624,7 +2624,7 @@
     {
       "height": 1,
       "id": "MAPSEC_SAFARI_ZONE_GATE",
-      "name": "SAFARI ZONE GATE",
+      "name": "사파리존 게이트",
       "width": 1,
       "x": 2,
       "y": 9
@@ -2632,7 +2632,7 @@
     {
       "height": 1,
       "id": "MAPSEC_SLOWPOKE_WELL",
-      "name": "SLOWPOKE WELL",
+      "name": "야돈우물",
       "width": 1,
       "x": 10,
       "y": 12
@@ -2640,7 +2640,7 @@
     {
       "height": 1,
       "id": "MAPSEC_SPROUT_TOWER",
-      "name": "SPROUT TOWER",
+      "name": "모다피의 탑",
       "width": 1,
       "x": 12,
       "y": 3
@@ -2648,7 +2648,7 @@
     {
       "height": 1,
       "id": "MAPSEC_SS_AQUA",
-      "name": "S.S. AQUA",
+      "name": "쾌속선",
       "width": 10,
       "x": 14,
       "y": 14
@@ -2656,7 +2656,7 @@
     {
       "height": 1,
       "id": "MAPSEC_TIN_TOWER",
-      "name": "TIN TOWER",
+      "name": "방울탑",
       "width": 1,
       "x": 10,
       "y": 1
@@ -2664,7 +2664,7 @@
     {
       "height": 1,
       "id": "MAPSEC_TOHJO_FALLS",
-      "name": "TOHJO FALLS",
+      "name": "동성폭포",
       "width": 1,
       "x": 20,
       "y": 9
@@ -2672,7 +2672,7 @@
     {
       "height": 2,
       "id": "MAPSEC_UNION_CAVE",
-      "name": "UNION CAVE",
+      "name": "연결동굴",
       "width": 1,
       "x": 12,
       "y": 11
@@ -2680,7 +2680,7 @@
     {
       "height": 1,
       "id": "MAPSEC_WHIRL_ISLANDS",
-      "name": "WHIRL ISLANDS",
+      "name": "소용돌이섬",
       "width": 1,
       "x": 6,
       "y": 11

@@ -1,0 +1,22 @@
+대상: 배리어프리(Screen Cleaner) 발동 시 방벽 제거 메시지
+
+기존:
+- TryRemoveScreens()는 양쪽 진영의 방벽을 제거한 뒤 bool만 반환했다.
+- Screen Cleaner는 특성 팝업 뒤 STRINGID_SCREENCLEANERENTERS 범용 문구를 출력했다.
+
+현재:
+- TryRemoveScreens()가 실제 방벽 종류를 B_MSG_BREAK_REFLECT, B_MSG_BREAK_LIGHT_SCREEN, B_MSG_BREAK_AURORA_VEIL 비트마스크로 반환한다.
+- 특성 팝업 뒤 존재하는 방벽만 STRINGID_REFLECTWOREOFF, STRINGID_LIGHTSCREENWOREOFF, STRINGID_AURORAVEILWOREOFF 순서로 출력한다.
+- 문구의 기존 B_ATK_PREFIX1을 위해 특성 보유자를 임시 메시지 주체로 설정하고 출력 후 복원한다.
+- 방벽이 없으면 특성 팝업과 제거 문구가 출력되지 않는다.
+
+근거:
+- src/battle_util.c: ABILITY_SCREEN_CLEANER 분기, TryRemoveScreens()
+- data/battle_scripts_1.s: BattleScript_BreakScreensMessages, BattleScript_ScreenCleanerActivates
+- test/battle/ability/screen_cleaner.c: 교대·팝업·세 문구 순서 시나리오
+
+검증:
+- 기존 배리어프리 구현 대상 오브젝트 빌드 성공.
+- `NODEP=1 SETUP_PREREQS=0 timeout 180s make BUILD=hns TEST=1 build/hns-test/test/battle/ability/screen_cleaner.o -j1` 성공.
+- `GITHUB_ACTION=1 timeout 600s make --jobserver-style=pipe hns -j8` 전체 빌드·링크 성공. ROM 33,329,844바이트(99.33%).
+- 실제 HNS 화면 출력은 미검증.

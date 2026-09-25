@@ -5,6 +5,10 @@
 #include "save.h"
 #include "constants/pokemon.h"
 
+const static enum Ability sForceNatureAbilities[] = {ABILITY_SYNCHRONIZE, ABILITY_NONE};
+const static enum Ability sForceOppositeGenderAbilities[] = {ABILITY_CUTE_CHARM, ABILITY_NONE};
+const static enum Ability sIncreaseHatchingSpeedAbilities[] = {ABILITY_MAGMA_ARMOR, ABILITY_FLAME_BODY, ABILITY_STEAM_ENGINE, ABILITY_NONE};
+
 static UNUSED bool32 HasHalfChance(u32 species);
 static UNUSED bool32 HasTwoThirdsChance(u32 species);
 static UNUSED bool32 IsFalse(u32 species);
@@ -35,8 +39,8 @@ const static bool32 (*sSynchronizeModes[]) (u32) =
     [GIFTMON_ORIGIN] = IsTrue,
 #elif OW_SYNCHRONIZE_NATURE >= GEN_8
     [WILDMON_ORIGIN] = IsTrue,
-    [STATIC_WILDMON_ORIGIN] = IsFalse,
-    [ROAMER_ORIGIN] = IsTrue,
+    [STATIC_WILDMON_ORIGIN] = IsTrue,
+    [ROAMER_ORIGIN] = IsFalse,
     [GIFTMON_ORIGIN] = IsFalse,
 #else
     [WILDMON_ORIGIN] = IsFalse,
@@ -85,10 +89,33 @@ static bool32 IsSynchronizeActive(void)
         && GetMonAbility(&gPlayerParty[0]) == ABILITY_SYNCHRONIZE));
 }
 
-static bool32 IsCuteCharmActive(void)
+bool32 DoesLeadingMonHaveAbilityEffect(const enum Ability *abilityArray)
 {
-     return ((!GetMonData(&gPlayerParty[0], MON_DATA_SANITY_IS_EGG)
-        && GetMonAbility(&gPlayerParty[0]) == ABILITY_CUTE_CHARM));
+    if (GetMonData(&gPlayerParty[0], MON_DATA_SANITY_IS_EGG))
+        return FALSE;
+    enum Ability leadingMonAbility = GetMonAbility(&gPlayerParty[0]);
+    for (u32 i = 0; abilityArray[i] != ABILITY_NONE; i++)
+    {
+        if (leadingMonAbility == abilityArray[i])
+            return TRUE;
+    }
+    return FALSE;
+}
+
+bool32 DoesPartyMemberHaveAbilityEffect(const enum Ability *abilityArray)
+{
+    for (u32 j = 0; j < gPlayerPartyCount; j++)
+    {
+        if (GetMonData(&gPlayerParty[j], MON_DATA_SANITY_IS_EGG))
+            continue;
+        enum Ability monAbility = GetMonAbility(&gPlayerParty[j]);
+        for (u32 i = 0; abilityArray[i] != ABILITY_NONE; i++)
+        {
+            if (monAbility == abilityArray[i])
+                return TRUE;
+        }
+    }
+    return FALSE;
 }
 
 u32 GetSynchronizedNature(enum GeneratedMonOrigin origin, u32 species)
@@ -97,7 +124,7 @@ u32 GetSynchronizedNature(enum GeneratedMonOrigin origin, u32 species)
         return NATURE_RANDOM;
     if (gSaveBlock3Ptr->challengeSettings.tx_Mode_Synchronize == 0)
     {
-        if (origin != WILDMON_ORIGIN || !HasHalfChance(species))
+        if ((origin != WILDMON_ORIGIN && origin != STATIC_WILDMON_ORIGIN) || !HasHalfChance(species))
             return NATURE_RANDOM;
     }
     else if (!(sSynchronizeModes[origin](species)))
@@ -107,7 +134,7 @@ u32 GetSynchronizedNature(enum GeneratedMonOrigin origin, u32 species)
 
 u32 GetSynchronizedGender(enum GeneratedMonOrigin origin, u32 species)
 {
-    if (!IsCuteCharmActive())
+    if (!DoesLeadingMonHaveAbilityEffect(sForceOppositeGenderAbilities))
         return MON_GENDER_RANDOM;
     if (!(sCuteCharmModes[origin](species)))
         return MON_GENDER_RANDOM;
@@ -129,4 +156,9 @@ u32 GetSynchronizedGender(enum GeneratedMonOrigin origin, u32 species)
         return MON_MALE;
     else
         return MON_FEMALE;
+}
+
+bool32 DoesPartyHaveIncubatorMon(void)
+{
+    return DoesPartyMemberHaveAbilityEffect(sIncreaseHatchingSpeedAbilities);
 }

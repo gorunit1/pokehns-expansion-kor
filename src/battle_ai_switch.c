@@ -62,9 +62,17 @@ static enum Ability GetPartyMonAbilityForSwitchCalc(enum BattlerId battler, u32 
 static void InitializeSwitchinCandidate(enum BattlerId switchinBattler, u32 monIndex, struct Pokemon *mon)
 {
     u32 storeCurrBattlerPartyIndex = gBattlerPartyIndexes[switchinBattler]; // Rage Fist fix
+    u8 savedSupremeOverlordCounter = gBattleStruct->supremeOverlordCounter[switchinBattler];
     PokemonToBattleMon(mon, &gBattleMons[switchinBattler]);
     gBattlerPartyIndexes[switchinBattler] = monIndex;
     CopyMonAbilityAndTypesToBattleMon(switchinBattler, mon);
+    // Champions calculates Supreme Overlord for the hypothetical switch-in too.
+    // HNS stores the counter in BattleStruct rather than in BattleMon volatiles.
+    if (B_UPDATED_ABILITY_DATA >= GEN_CHAMPIONS && gBattleMons[switchinBattler].ability == ABILITY_SUPREME_OVERLORD)
+    {
+        u8 faintCounter = IsOnPlayerSide(switchinBattler) ? gBattleResults.playerFaintCounter : gBattleResults.opponentFaintCounter;
+        gBattleStruct->supremeOverlordCounter[switchinBattler] = min(5, faintCounter);
+    }
     // Setup switchin battler data
     gAiThinkingStruct->saved[switchinBattler].saved = TRUE;
     SetBattlerAiData(switchinBattler, gAiLogicData);
@@ -81,6 +89,7 @@ static void InitializeSwitchinCandidate(enum BattlerId switchinBattler, u32 monI
     }
 
     gAiLogicData->switchInCalc = FALSE;
+    gBattleStruct->supremeOverlordCounter[switchinBattler] = savedSupremeOverlordCounter;
     gBattlerPartyIndexes[switchinBattler] = storeCurrBattlerPartyIndex;
     gAiThinkingStruct->saved[switchinBattler].saved = FALSE;
 }
@@ -582,7 +591,12 @@ static bool32 FindMonThatAbsorbsOpponentsMove(enum BattlerId battler)
     enum Move aiMove;
     enum BattlerId opposingBattler = GetOppositeBattler(battler);
     enum Move incomingMove = GetIncomingMove(battler, opposingBattler, gAiLogicData);
-    enum Type incomingType = CheckDynamicMoveType(GetBattlerMon(opposingBattler), incomingMove, opposingBattler, MON_IN_BATTLE);
+    enum Type incomingType = GetDynamicMoveType(GetBattlerMon(opposingBattler), incomingMove, opposingBattler,
+                                                gAiLogicData->abilities[opposingBattler],
+                                                gAiLogicData->holdEffects[opposingBattler],
+                                                MON_IN_BATTLE);
+    if (incomingType == TYPE_NONE)
+        incomingType = GetMoveType(incomingMove);
 
     if (!(gAiThinkingStruct->aiFlags[battler] & AI_FLAG_SMART_SWITCHING))
         return FALSE;
@@ -594,7 +608,7 @@ static bool32 FindMonThatAbsorbsOpponentsMove(enum BattlerId battler)
         return FALSE;
     if (AreStatsRaised(battler))
         return FALSE;
-    if (IsMoldBreakerTypeAbility(opposingBattler, gAiLogicData->abilities[opposingBattler]))
+    if (IsMoldBreakerTypeAbility(opposingBattler, gAiLogicData->abilities[opposingBattler], incomingMove))
         return FALSE;
 
     // Don't switch if mon could OHKO
@@ -640,6 +654,7 @@ static bool32 FindMonThatAbsorbsOpponentsMove(enum BattlerId battler)
     {
         absorbingTypeAbilities[numAbsorbingAbilities++] = ABILITY_EARTH_EATER;
         absorbingTypeAbilities[numAbsorbingAbilities++] = ABILITY_LEVITATE;
+        absorbingTypeAbilities[numAbsorbingAbilities++] = ABILITY_EELEVATE;
     }
     if (IsSoundMove(incomingMove))
     {
@@ -865,7 +880,7 @@ static bool32 ShouldSwitchIfBadlyStatused(enum BattlerId battler)
     return FALSE;
 }
 
-static bool32 GetHitEscapeTransformState(enum BattlerId battlerAtk, enum Move move)
+static bool32 CanPalafinZeroSafelyUseHitEscape(enum BattlerId battlerAtk, enum Move move)
 {
     u32 moveIndex;
     bool32 hasValidTarget = FALSE;
@@ -979,21 +994,15 @@ static bool32 ShouldSwitchIfAbilityBenefit(enum BattlerId battler)
 
     case ABILITY_ZERO_TO_HERO:
     {
-        enum Move hitEscapeMove = MOVE_NONE;
+        u32 moveIndex;
 
-        for (u32 moveIndex = 0; moveIndex < MAX_MON_MOVES; moveIndex++)
-        {
-            enum Move move = gBattleMons[battler].moves[moveIndex];
+        if (gBattleMons[battler].species != SPECIES_PALAFIN_ZERO)
+            return FALSE;
 
-            if (move != MOVE_NONE && GetMoveEffect(move) == EFFECT_HIT_ESCAPE)
-            {
-                hitEscapeMove = move;
-                break;
-            }
-        }
+        moveIndex = GetBattlerMoveIndexWithEffect(battler, EFFECT_HIT_ESCAPE);
 
         // Prefer to use a hit escape move if Palafin will move first and can hit
-        if (hitEscapeMove != MOVE_NONE && GetHitEscapeTransformState(battler, hitEscapeMove))
+        if (moveIndex < MAX_MON_MOVES && CanPalafinZeroSafelyUseHitEscape(battler, gBattleMons[battler].moves[moveIndex]))
             return FALSE;
         break;
     }
@@ -1069,7 +1078,7 @@ static bool32 FindMonWithFlagsAndSuperEffective(enum BattlerId battler, u16 flag
         u16 species;
         enum Ability monAbility;
         uq4_12_t typeMultiplier;
-        u16 moveFlags = 0;
+        u32 moveFlags = 0;
 
         if (!IsValidForBattle(&party[monIndex]))
             continue;
@@ -1415,27 +1424,27 @@ bool32 ShouldSwitchIfAllScoresBad(enum BattlerId battler)
 
 bool32 ShouldStayInToUseMove(enum BattlerId battler)
 {
-    enum Move aiMove;
     u32 opposingBattler = GetOppositeBattler(battler);
-    enum BattleMoveEffects aiMoveEffect;
     for (u32 moveIndex = 0; moveIndex < MAX_MON_MOVES; moveIndex++)
     {
-        aiMove = gBattleMons[battler].moves[moveIndex];
-        aiMoveEffect = GetMoveEffect(aiMove);
-        if (aiMoveEffect == EFFECT_REVIVAL_BLESSING || IsSwitchOutEffect(aiMoveEffect))
-        {
-            // Palafin should not stay in for a hit escape move if it can't use it effectively (slower or no target)
-            if (gBattleMons[battler].species == SPECIES_PALAFIN_ZERO
-             && gAiLogicData->abilities[battler] == ABILITY_ZERO_TO_HERO
-             && aiMoveEffect == EFFECT_HIT_ESCAPE
-             && !GetHitEscapeTransformState(battler, aiMove))
-                continue;
+        enum Move move = gBattleMons[battler].moves[moveIndex];
+        enum BattleMoveEffects effect = GetMoveEffect(move);
 
-            if (gAiBattleData->finalScore[battler][opposingBattler][moveIndex] > AI_GOOD_SCORE_THRESHOLD
-                || (IsDoubleBattle() && gAiBattleData->finalScore[battler][BATTLE_PARTNER(opposingBattler)][moveIndex] > AI_GOOD_SCORE_THRESHOLD))
-                return TRUE;
-        }
+        if (effect != EFFECT_REVIVAL_BLESSING && !IsSwitchOutEffect(effect))
+            continue;
+
+        // An unsafe hit escape move must not override Palafin-Zero's hard-switch decision.
+        if (effect == EFFECT_HIT_ESCAPE
+         && gBattleMons[battler].species == SPECIES_PALAFIN_ZERO
+         && gAiLogicData->abilities[battler] == ABILITY_ZERO_TO_HERO
+         && !CanPalafinZeroSafelyUseHitEscape(battler, move))
+            continue;
+
+        if (gAiBattleData->finalScore[battler][opposingBattler][moveIndex] > AI_GOOD_SCORE_THRESHOLD
+         || (IsDoubleBattle() && gAiBattleData->finalScore[battler][BATTLE_PARTNER(opposingBattler)][moveIndex] > AI_GOOD_SCORE_THRESHOLD))
+            return TRUE;
     }
+
     return FALSE;
 }
 
@@ -1803,7 +1812,7 @@ static u32 GetSwitchinHitsToKO(s32 damageTaken, enum BattlerId battler, const st
     u8 weatherDuration = gBattleStruct->weatherDuration, holdEffectParam = GetItemHoldEffectParam(item);
     enum BattlerId opposingBattler = GetOppositeBattler(battler);
     enum Ability opposingAbility = gAiLogicData->abilities[opposingBattler], ability = gAiLogicData->abilities[battler];
-    bool32 usedSingleUseHealingItem = FALSE, opponentCanBreakMold = IsMoldBreakerTypeAbility(opposingBattler, opposingAbility);
+    bool32 usedSingleUseHealingItem = FALSE, opponentCanBreakMold = IsMoldBreakerTypeAbility(opposingBattler, opposingAbility, MOVE_NONE);
     s32 currentHP = startingHP, singleUseItemHeal = 0;
     bool32 applyWishNow = healInfo->healEndOfTurn && healInfo->wishCounter == 1;
 
@@ -1856,11 +1865,7 @@ static u32 GetSwitchinHitsToKO(s32 damageTaken, enum BattlerId battler, const st
                     }
                 }
                 break;
-            case HOLD_EFFECT_CONFUSE_SPICY:
-            case HOLD_EFFECT_CONFUSE_DRY:
-            case HOLD_EFFECT_CONFUSE_SWEET:
-            case HOLD_EFFECT_CONFUSE_BITTER:
-            case HOLD_EFFECT_CONFUSE_SOUR:
+            case HOLD_EFFECT_CONFUSE_FLAVOR:
                 if (currentHP < maxHP / CONFUSE_BERRY_HP_FRACTION)
                 {
                     singleUseItemHeal = maxHP / holdEffectParam;

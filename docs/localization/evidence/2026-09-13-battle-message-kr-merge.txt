@@ -1,0 +1,32 @@
+2026-09-13 — pokeemerald-kr battle_message.c text merge
+
+Source comparison:
+- KR: ../pokeemerald-kr/src/battle_message.c
+- HNS: src/battle_message.c
+- Changes: 62 same-name declarations, 311 STRINGID table literals, 5 Pokéblock flavor literals.
+- HNS-only report: docs/localization/BATTLE_MESSAGE_KR_COMPARE.md
+
+Structure/text checks:
+- /tmp/battle_message_hns.before.c vs src/battle_message.c
+- 4024 lines before/after; 916 C string literals before/after (the file also contains two quote pairs in a comment).
+- Masked source outside quoted literals: identical.
+- Changed literal interiors: 378.
+- All changed same-name declarations and common STRINGID entries match the KR value after the documented HNS token adaptations.
+- Placeholder brace syntax: 0 errors.
+- Unsupported aliases (B_ACTIVE_NAME_WITH_PREFIX, B_SCR_ACTIVE_NAME_WITH_PREFIX,
+  B_SCR_ACTIVE_ABILITY, DARK_GREY): none.
+- git diff --check -- src/battle_message.c: passed.
+
+Build:
+- Command: make hns -j8
+- Exit code: 0
+- ROM: 33,256,484 bytes (99.11%), EWRAM 248,844 bytes, IWRAM 25,704 bytes.
+- Output: pokehns.gba generated.
+- Full log: build/localization-logs/battle-message-kr-merge.log
+
+Runtime:
+- No emulator screen run in this environment. Dynamic message composition,
+  line wrapping, and window-width checks remain for manual game verification.
+- Korean particle token mappings in charmap.txt and the runtime battle-message
+  switch definitions are separate scope; the header was intentionally unchanged
+  because this task was limited to text literals.

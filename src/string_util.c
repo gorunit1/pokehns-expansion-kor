@@ -1,6 +1,7 @@
 #include "global.h"
 #include "string_util.h"
 #include "text.h"
+#include "korean.h"
 #include "strings.h"
 #include "union_room_chat.h"
 #include "event_data.h"
@@ -10,6 +11,8 @@ EWRAM_DATA u8 gStringVar2[0x100] = {0};
 EWRAM_DATA u8 gStringVar3[0x100] = {0};
 EWRAM_DATA u8 gStringVar4[0x3E8] = {0};
 EWRAM_DATA static u8 sUnknownStringVar[16] = {0};
+
+EWRAM_DATA u8 gJongCode = 0;
 
 static const u8 sDigits[] = __("0123456789ABCDEF");
 
@@ -362,11 +365,14 @@ u8 *StringExpandPlaceholders(u8 *dest, const u8 *src)
     {
         u8 c = *src++;
         u8 placeholderId;
+        u16 prevChar;
         const u8 *expandedString;
 
         switch (c)
         {
         case PLACEHOLDER_BEGIN:
+            prevChar = (*(dest - 2) << 8) | *(dest - 1);
+            gJongCode = GetJongCode(prevChar);
             placeholderId = *src++;
             expandedString = GetExpandedPlaceholder(placeholderId);
             dest = StringExpandPlaceholders(dest, expandedString);
@@ -539,6 +545,78 @@ static const u8 *ExpandPlaceholder_Region(void)
         return gText_Hoenn;
 }
 
+static const u8 *ExpandPlaceholder_BoyCall(void)
+{
+    if (gSaveBlock2Ptr->playerGender == MALE)
+        return gText_ExpandedPlaceholder_BoyCallMale;
+    else
+        return gText_ExpandedPlaceholder_BoyCallFemale;
+}
+
+static const u8 *ExpandPlaceholder_GirlCall(void)
+{
+    if (gSaveBlock2Ptr->playerGender == MALE)
+        return gText_ExpandedPlaceholder_GirlCallMale;
+    else
+        return gText_ExpandedPlaceholder_GirlCallFemale;
+}
+
+static const u8 *ExpandPlaceholder_EunNeun(void)
+{
+    if (gJongCode != 0)
+        return gText_ExpandedPlaceholder_Eun;
+    else
+        return gText_ExpandedPlaceholder_Neun;
+}
+
+static const u8 *ExpandPlaceholder_Iga(void)
+{
+    if (gJongCode != 0)
+        return gText_ExpandedPlaceholder_I;
+    else
+        return gText_ExpandedPlaceholder_Ga;
+}
+
+static const u8 *ExpandPlaceholder_EulReul(void)
+{
+    if (gJongCode != 0)
+        return gText_ExpandedPlaceholder_Eul;
+    else
+        return gText_ExpandedPlaceholder_Reul;
+}
+
+static const u8 *ExpandPlaceholder_Eu(void)
+{
+    if (gJongCode != 0 && gJongCode != 8)
+        return gText_ExpandedPlaceholder_Eu;
+    else
+        return gText_ExpandedPlaceholder_Empty;
+}
+
+static const u8 *ExpandPlaceholder_I(void)
+{
+    if (gJongCode != 0)
+        return gText_ExpandedPlaceholder_I;
+    else
+        return gText_ExpandedPlaceholder_Empty;
+}
+
+static const u8 *ExpandPlaceholder_WaGwa(void)
+{
+    if (gJongCode != 0)
+        return gText_ExpandedPlaceholder_Gwa;
+    else
+        return gText_ExpandedPlaceholder_Wa;
+}
+
+static const u8 *ExpandPlaceholder_Aya(void)
+{
+    if (gJongCode != 0)
+        return gText_ExpandedPlaceholder_A;
+    else
+        return gText_ExpandedPlaceholder_Ya;
+}
+
 const u8 *GetExpandedPlaceholder(u32 id)
 {
     typedef const u8 *(*ExpandPlaceholderFunc)(void);
@@ -560,12 +638,29 @@ const u8 *GetExpandedPlaceholder(u32 id)
         [PLACEHOLDER_ID_KYOGRE]       = ExpandPlaceholder_Kyogre,
         [PLACEHOLDER_ID_GROUDON]      = ExpandPlaceholder_Groudon,
         [PLACEHOLDER_ID_REGION]       = ExpandPlaceholder_Region,
+        [0x0E]                        = ExpandPlaceholder_BoyCall,
+        [0x0F]                        = ExpandPlaceholder_GirlCall,
+        [0x10]                        = ExpandPlaceholder_EunNeun,
+        [0x11]                        = ExpandPlaceholder_Iga,
+        [0x12]                        = ExpandPlaceholder_EulReul,
+        [0x13]                        = ExpandPlaceholder_Eu,
+        [0x14]                        = ExpandPlaceholder_I,
+        [0x15]                        = ExpandPlaceholder_WaGwa,
+        [0x16]                        = ExpandPlaceholder_Aya,
     };
 
     if (id >= ARRAY_COUNT(funcs))
+    {
+        if (id >= 0x35 && id <= 0x3b)
+            return funcs[id - 0x25]();
         return gText_ExpandedPlaceholder_Empty;
+    }
     else
+    {
+        if (funcs[id] == NULL)
+            return gText_ExpandedPlaceholder_Empty;
         return funcs[id]();
+    }
 }
 
 u8 *StringFill(u8 *dest, u8 c, u16 n)

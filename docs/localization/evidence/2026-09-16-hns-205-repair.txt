@@ -1,0 +1,50 @@
+HNS Release-v2.0.5 누락 복구 검증
+검증일: 2026-09-16 (KST)
+
+기준
+- 사용자 1.17.0 이식 질문 직전 체크포인트: 6da0a16d66d3d6a2691c775cc23780f994512ab5
+- 공식 비교 태그: Release-v2.0.4 (98574d291b5f...), Release-v2.0.5 (1f42b74dff...)
+- 공식 출처: https://github.com/PokemonHnS-Development/pokehns-expansion/releases/tag/Release-v2.0.5
+
+공식 릴리스 비교
+- Release-v2.0.4 -> Release-v2.0.5 변경 경로: 282
+- 2.0.4 바이트에서 공식 내용으로 직접 복구한 경로: 171
+- 현재 HNS와 3-way 병합한 경로: 29
+- 충돌 수동 검토 경로: 16
+- 이미 2.0.5와 일치하던 경로: 66
+- 이미 2.0.5와 일치하거나 병합되어 최종 일치한 경로: 241
+- HNS·한글 패치·1.17.0·메가진화 설정 보존으로 공식과 다른 경로: 41
+- 2.0.4 바이트 잔류: 0
+- 누락 파일: 0
+
+제목 화면
+- 2.0.4 press_start.png Git blob: 129f532acc0aa04e05cc9726c5360392292bdf0e (374 bytes)
+- 2.0.5 press_start.png Git blob: dd9231fd162a9e1ef6493e4ebe82f551520da052 (372 bytes)
+- 현재 파일: dd9231fd162a9e1ef6493e4ebe82f551520da052
+- 현재 SHA-256: 610d4cf1b9ffae966b5a7dd37062bcec3d6e377d23db371cb3d086625b2b3736
+- 현재 ROM 입력 `press_start.4bpp.smol` SHA-256: dac382fb3c1f057e7baa3c9409b543dd30064a90e9e28a1fe6cb41e55330e366
+- 2.0.4는 START, 2.0.5는 PRESS START 그래픽이다.
+
+보호한 의도적 차이(대표)
+- 한글: src/battle_message.c, src/strings.c, src/challenge_menu.c, src/oak_speech_hns.c
+- HNS/1.17.0 코드: include/battle_main.h, src/battle_ai_main.c, src/battle_main.c, src/daycare.c, src/nuzlocke.c 등
+- 설정: B_MOVE_DESCRIPTION_BUTTON=L_BUTTON, P_MEGA_EVOLUTIONS/P_PRIMAL_REVERSIONS=TRUE, P_MODIFIED_MEGA_CRIES=FALSE, CRY_MODE_HIGH_PITCH
+- Soulgold/Gold/Oak 그래픽 및 HNS 전용 맵 스크립트·상수
+
+빌드
+- 명령: make hns -j8
+- 결과: 종료 코드 0
+- 로그: build/localization-logs/hns-205-repair-20260916-r4.log
+- EWRAM: 249012/262144 (94.99%)
+- IWRAM: 25704/32768 (78.44%)
+- ROM 링크 사용량: 33324292/33554432 (99.31%)
+- pokehns.gba: 33554432 bytes (32 MiB)
+- 첫 실행에서 발생한 중복 IsNuzlockeCaptureSuspended 및 오래된 생성 이벤트 참조를 수정한 뒤, 공식 PNG 파생 `.4bpp`·`.smol`·`.gbapal`·지도 타일도 강제로 재생성하고 재빌드했다.
+
+1.17.0 이식 직전 체크포인트 전체 파일 감사
+- 체크포인트 트리에서 현재 작업 트리에 없는 경로: 0
+- 한글 핵심 파일과 배틀/포켓몬 설정 파일의 체크포인트 해시는 세션 시작 스냅샷과 모두 동일하다.
+- 재현 명령(공식 경로 분류): `git diff --name-only Release-v2.0.4 Release-v2.0.5`의 각 경로에 대해 `git hash-object`를 현재·두 태그와 비교했다.
+
+미검증
+- mGBA에서 제목·오박사/Gold/Soulgold 그래픽, 한글 조사·메뉴, 사파리·알 부화·리매치·배틀 UI의 실제 표시/동작은 아직 확인하지 않았다.

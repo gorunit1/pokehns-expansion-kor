@@ -1,0 +1,12 @@
+요청: STRINGID_POISONSPIKESSCATTERED 출력 검증
+
+정적 치환 검사:
+- {B_DEF_PREFIX1} = 상대 -> 상대의 발밑에\n독압정이 뿌려졌다!
+- {B_DEF_PREFIX1} = 우리 편 -> 우리 편의 발밑에\n독압정이 뿌려졌다!
+- 결과: PASS
+
+빌드 명령: make hns -j8
+이전 빌드 결과: 종료 코드 2
+이전 오류: 당시 src/battle_message.c:547의 {B_DEF_NAME_WITH_PREFIX} 닫는 } 누락으로 unexpected character '{' 및 후속 구문 오류
+최신 재시도: 547번 줄 수정 후 실행했으나 도구·생성 파일 선행 작업에서 시간 초과되어 ROM 링크 전 종료
+ROM 화면 출력 확인: 미실행

@@ -142,8 +142,6 @@ gBattleAnimMove_Roost::
 	createsprite gFallingFeatherSpriteTemplate, ANIM_ATTACKER, 0, 0, -16, 96, 2, 104, 11304, 32, 1
 	waitforvisualfinish
 	clearmonbg ANIM_ATTACKER
-	call HealingEffect
-	waitforvisualfinish
 	end
 
 gBattleAnimMove_Gravity::
@@ -24132,8 +24130,6 @@ gBattleAnimMove_Moonlight::
 	delay 20
 	createvisualtask AnimTask_MoonlightEndFade, 2
 	waitforvisualfinish
-	call HealingEffect
-	waitforvisualfinish
 	end
 
 gBattleAnimMove_ExtremeSpeed::
@@ -28421,7 +28417,6 @@ gBattleAnimMove_SoftBoiled::
 	setarg 7, 0xFFFF
 	waitforvisualfinish
 	clearmonbg ANIM_ATK_PARTNER
-	call HealingEffect2
 	end
 
 gBattleAnimMove_HealBell::
@@ -29034,7 +29029,6 @@ gBattleAnimMove_MorningSun::
 	createvisualtask AnimTask_BlendBattleAnimPal, 10, (F_PAL_BG | F_PAL_BATTLERS_2), 3, 12, 0, RGB_WHITE
 	waitforvisualfinish
 	waitsound
-	call HealingEffect
 	end
 MorningSunStar:
 	createsprite gGreenStarSpriteTemplate, ANIM_ATTACKER, 2, 30, 640
@@ -31537,6 +31531,7 @@ gBattleAnimGeneral_MegaEvolution::
 	playsewithpan SE_M_SOLAR_BEAM, SOUND_PAN_ATTACKER
 	createsprite gMegaStoneSpriteTemplate, ANIM_ATTACKER, 41, 0, 0, 0, 0
 	delay 20
+	createvisualtask AnimTask_BlendParticle, 5, ANIM_TAG_MEGA_STONE, 4, 0, 16, RGB_WHITEALPHA
 	createvisualtask AnimTask_BlendBattleAnimPalExclude, 5, 5, 2, 0, 16, RGB_WHITEALPHA
 	waitforvisualfinish
 	createvisualtask SoundTask_PlayNormalCry, 0
@@ -31763,6 +31758,7 @@ General_PrimalReversion_Alpha:
 	playsewithpan SE_M_SOLAR_BEAM, SOUND_PAN_ATTACKER
 	createsprite gAlphaStoneSpriteTemplate, ANIM_ATTACKER, 41, 0, 0, 0, 0
 	delay 20
+	createvisualtask AnimTask_BlendParticle, 5, ANIM_TAG_ALPHA_STONE, 4, 0, 16, RGB_WHITEALPHA
 	createvisualtask AnimTask_BlendBattleAnimPalExclude, 5, 5, 2, 0, 16, RGB_WHITEALPHA
 	waitforvisualfinish
 	createvisualtask AnimTask_HideSwapSprite, 2
@@ -31796,6 +31792,7 @@ General_PrimalReversion_Omega:
 	playsewithpan SE_M_SOLAR_BEAM, SOUND_PAN_ATTACKER
 	createsprite gOmegaStoneSpriteTemplate, ANIM_ATTACKER, 41, 0, 0, 0, 0
 	delay 20
+	createvisualtask AnimTask_BlendParticle, 5, ANIM_TAG_OMEGA_STONE, 4, 0, 16, RGB_WHITEALPHA
 	createvisualtask AnimTask_BlendBattleAnimPalExclude, 5, 5, 2, 0, 16, RGB_WHITEALPHA
 	waitforvisualfinish
 	createvisualtask AnimTask_HideSwapSprite, 2

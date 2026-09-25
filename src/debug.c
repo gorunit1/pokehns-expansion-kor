@@ -211,6 +211,8 @@ struct DebugMonData
 {
     u16 species;
     u8 level;
+    u32 genderPersonality;
+    u8 gender;
     bool8 isShiny:1;
     u8 nature:5;
     u8 abilityNum:2;
@@ -245,6 +247,7 @@ static u8 Debug_GenerateListMenuNames(void);
 static void Debug_DestroyMenu(u8 taskId);
 static void DebugAction_Cancel(u8 taskId);
 static void DebugAction_DestroyExtraWindow(u8 taskId);
+static void DebugAction_ReturnToSubMenu(u8 taskId, const struct DebugMenuOption *items, u8 listId);
 static void Debug_RefreshListMenu(u8 taskId);
 static u8 DebugNativeStep_CreateDebugWindow(void);
 static void DebugNativeStep_CloseDebugWindow(u8 taskId);
@@ -330,6 +333,7 @@ static void DebugAction_Give_PokemonComplex(u8 taskId);
 static void DebugAction_Give_NewEgg(u8 taskId);
 static void DebugAction_Give_Pokemon_SelectId(u8 taskId);
 static void DebugAction_Give_Pokemon_SelectLevel(u8 taskId);
+static void DebugAction_Give_Pokemon_SelectGender(u8 taskId);
 static void DebugAction_Give_Pokemon_SelectShiny(u8 taskId);
 static void DebugAction_Give_Pokemon_SelectNature(u8 taskId);
 static void DebugAction_Give_Pokemon_SelectAbility(u8 taskId);
@@ -361,6 +365,8 @@ static void DebugAction_BerryFunctions_Weeds(u8 taskId);
 static void DebugAction_Player_Name(u8 taskId);
 static void DebugAction_Player_Gender(u8 taskId);
 static void DebugAction_Player_Id(u8 taskId);
+static void Debug_Display_PokerusStrainInfo(s32 strain, u32 digit, u8 windowId);
+static void DebugNativeStep_Party_SetPokerusStrainSelect(u8 taskId);
 
 extern const u8 Debug_FlagsNotSetOverworldConfigMessage[];
 extern const u8 Debug_FlagsNotSetBattleConfigMessage[];
@@ -1008,6 +1014,20 @@ static void DebugAction_DestroyExtraWindow(u8 taskId)
     UnfreezeObjectEvents();
 }
 
+// Close a multi-step input window and reopen the submenu that launched it.
+// Keep the debug session active while moving back to the parent menu.
+static void DebugAction_ReturnToSubMenu(u8 taskId, const struct DebugMenuOption *items, u8 listId)
+{
+    ClearStdWindowAndFrame(gTasks[taskId].tSubWindowId, TRUE);
+    RemoveWindow(gTasks[taskId].tSubWindowId);
+    DestroyListMenuTask(gTasks[taskId].tMenuTaskId, NULL, NULL);
+
+    Debug_RemoveCallbackMenu();
+    DestroyTask(taskId);
+    sDebugMenuListData->listId = listId;
+    Debug_ShowMenu(DebugTask_HandleMenuInput_General, items);
+}
+
 static u8 DebugNativeStep_CreateDebugWindow(void)
 {
     u8 windowId;
@@ -1543,7 +1563,7 @@ static void DebugAction_Util_Warp_SelectMapGroup(u8 taskId)
     else if (JOY_NEW(B_BUTTON))
     {
         PlaySE(SE_SELECT);
-        DebugAction_DestroyExtraWindow(taskId);
+        DebugAction_ReturnToSubMenu(taskId, sDebugMenu_Actions_Utilities, 0);
     }
 }
 
@@ -1580,7 +1600,15 @@ static void DebugAction_Util_Warp_SelectMap(u8 taskId)
     else if (JOY_NEW(B_BUTTON))
     {
         PlaySE(SE_SELECT);
-        DebugAction_DestroyExtraWindow(taskId);
+        gTasks[taskId].tInput = gTasks[taskId].tMapGroup;
+        gTasks[taskId].tDigit = 0;
+        ConvertIntToDecimalStringN(gStringVar1, gTasks[taskId].tInput, STR_CONV_MODE_LEADING_ZEROS, 3);
+        ConvertIntToDecimalStringN(gStringVar2, LAST_MAP_GROUP, STR_CONV_MODE_LEADING_ZEROS, 3);
+        StringExpandPlaceholders(gStringVar1, sDebugText_Util_WarpToMap_SelMax);
+        StringCopy(gStringVar3, gText_DigitIndicator[gTasks[taskId].tDigit]);
+        StringExpandPlaceholders(gStringVar4, sDebugText_Util_WarpToMap_SelectMapGroup);
+        AddTextPrinterParameterized(gTasks[taskId].tSubWindowId, DEBUG_MENU_FONT, gStringVar4, 0, 0, 0, NULL);
+        gTasks[taskId].func = DebugAction_Util_Warp_SelectMapGroup;
     }
 }
 
@@ -1621,7 +1649,16 @@ static void DebugAction_Util_Warp_SelectWarp(u8 taskId)
     else if (JOY_NEW(B_BUTTON))
     {
         PlaySE(SE_SELECT);
-        DebugAction_DestroyExtraWindow(taskId);
+        gTasks[taskId].tInput = gTasks[taskId].tMapNum;
+        gTasks[taskId].tDigit = 0;
+        ConvertIntToDecimalStringN(gStringVar1, gTasks[taskId].tInput, STR_CONV_MODE_LEADING_ZEROS, (MAP_GROUP_COUNT[gTasks[taskId].tMapGroup] >= 100) ? 3 : 2);
+        ConvertIntToDecimalStringN(gStringVar2, MAP_GROUP_COUNT[gTasks[taskId].tMapGroup] - 1, STR_CONV_MODE_LEADING_ZEROS, (MAP_GROUP_COUNT[gTasks[taskId].tMapGroup] >= 100) ? 3 : 2);
+        StringExpandPlaceholders(gStringVar1, sDebugText_Util_WarpToMap_SelMax);
+        GetMapName(gStringVar2, Overworld_GetMapHeaderByGroupAndId(gTasks[taskId].tMapGroup, gTasks[taskId].tInput)->regionMapSectionId, 0);
+        StringCopy(gStringVar3, gText_DigitIndicator[gTasks[taskId].tDigit]);
+        StringExpandPlaceholders(gStringVar4, sDebugText_Util_WarpToMap_SelectMap);
+        AddTextPrinterParameterized(gTasks[taskId].tSubWindowId, DEBUG_MENU_FONT, gStringVar4, 0, 0, 0, NULL);
+        gTasks[taskId].func = DebugAction_Util_Warp_SelectMap;
     }
 }
 
@@ -1768,7 +1805,7 @@ static void DebugAction_Util_Weather_SelectId(u8 taskId)
     else if (JOY_NEW(B_BUTTON))
     {
         PlaySE(SE_SELECT);
-        DebugAction_DestroyExtraWindow(taskId);
+        DebugAction_ReturnToSubMenu(taskId, sDebugMenu_Actions_Utilities, 0);
     }
 }
 
@@ -2290,7 +2327,7 @@ static void DebugAction_FlagsVars_FlagsSelect(u8 taskId)
     else if (JOY_NEW(B_BUTTON))
     {
         PlaySE(SE_SELECT);
-        DebugAction_DestroyExtraWindow(taskId);
+        DebugAction_ReturnToSubMenu(taskId, sDebugMenu_Actions_Flags, 1);
         return;
     }
 
@@ -2383,7 +2420,7 @@ static void DebugAction_FlagsVars_Select(u8 taskId)
     else if (JOY_NEW(B_BUTTON))
     {
         PlaySE(SE_SELECT);
-        DebugAction_DestroyExtraWindow(taskId);
+        DebugAction_ReturnToSubMenu(taskId, sDebugMenu_Actions_Flags, 1);
         return;
     }
 }
@@ -2427,7 +2464,20 @@ static void DebugAction_FlagsVars_SetValue(u8 taskId)
     else if (JOY_NEW(B_BUTTON))
     {
         PlaySE(SE_SELECT);
-        DebugAction_DestroyExtraWindow(taskId);
+        gTasks[taskId].tDigit = 0;
+        if (VarGetIfExist(gTasks[taskId].tInput) == 0xFFFF)
+            gTasks[taskId].tVarValue = 0;
+        else
+            gTasks[taskId].tVarValue = VarGet(gTasks[taskId].tInput);
+        ConvertIntToDecimalStringN(gStringVar1, gTasks[taskId].tInput, STR_CONV_MODE_LEADING_ZEROS, DEBUG_NUMBER_DIGITS_VARIABLES);
+        ConvertIntToHexStringN(gStringVar2, gTasks[taskId].tInput, STR_CONV_MODE_LEFT_ALIGN, 4);
+        StringExpandPlaceholders(gStringVar1, sDebugText_FlagsVars_VariableHex);
+        ConvertIntToDecimalStringN(gStringVar3, gTasks[taskId].tVarValue, STR_CONV_MODE_LEADING_ZEROS, DEBUG_NUMBER_DIGITS_VARIABLES);
+        StringCopyPadded(gStringVar3, gStringVar3, CHAR_SPACE, 15);
+        StringCopy(gStringVar2, gText_DigitIndicator[gTasks[taskId].tDigit]);
+        StringExpandPlaceholders(gStringVar4, sDebugText_FlagsVars_Variable);
+        AddTextPrinterParameterized(gTasks[taskId].tSubWindowId, DEBUG_MENU_FONT, gStringVar4, 0, 0, 0, NULL);
+        gTasks[taskId].func = DebugAction_FlagsVars_Select;
         return;
     }
 
@@ -2785,7 +2835,7 @@ static void DebugAction_Give_Item_SelectId(u8 taskId)
         DestroyItemIcon(taskId);
 
         PlaySE(SE_SELECT);
-        DebugAction_DestroyExtraWindow(taskId);
+        DebugAction_ReturnToSubMenu(taskId, sDebugMenu_Actions_Give, 0);
     }
 }
 
@@ -2810,10 +2860,11 @@ static void DebugAction_Give_Item_SelectQuantity(u8 taskId)
     }
     else if (JOY_NEW(B_BUTTON))
     {
-        DestroyItemIcon(taskId);
-
         PlaySE(SE_SELECT);
-        DebugAction_DestroyExtraWindow(taskId);
+        gTasks[taskId].tInput = gTasks[taskId].tItemId;
+        gTasks[taskId].tDigit = 0;
+        Debug_Display_ItemInfo(gTasks[taskId].tInput, gTasks[taskId].tDigit, gTasks[taskId].tSubWindowId);
+        gTasks[taskId].func = DebugAction_Give_Item_SelectId;
     }
 }
 
@@ -2825,6 +2876,8 @@ static void ResetMonDataStruct(struct DebugMonData *sDebugMonData)
 {
     sDebugMonData->species          = 1;
     sDebugMonData->level            = MIN_LEVEL;
+    sDebugMonData->genderPersonality = 0;
+    sDebugMonData->gender           = MON_GENDER_RANDOM;
     sDebugMonData->isShiny          = FALSE;
     sDebugMonData->nature           = 0;
     sDebugMonData->abilityNum       = 0;
@@ -3047,7 +3100,7 @@ static void DebugAction_Give_Pokemon_SelectId(u8 taskId)
         Free(sDebugMonData);
         FreeMonIconPalettes();
         FreeAndDestroyMonIconSprite(&gSprites[gTasks[taskId].tSpriteId]);
-        DebugAction_DestroyExtraWindow(taskId);
+        DebugAction_ReturnToSubMenu(taskId, sDebugMenu_Actions_Give, 0);
     }
 }
 
@@ -3062,6 +3115,30 @@ static void Debug_Display_TrueFalse(bool32 value, u8 windowId, const u8 *titleSt
     AddTextPrinterParameterized(windowId, DEBUG_MENU_FONT, gStringVar4, 0, 0, 0, NULL);
 }
 
+static void Debug_Display_Gender(u16 species, u32 personality, u32 digit, u8 windowId)
+{
+    u8 gender = GetGenderFromSpeciesAndPersonality(species, personality);
+
+    switch (gender)
+    {
+    case MON_FEMALE:
+        StringCopy(gStringVar1, COMPOUND_STRING("FEMALE"));
+        break;
+    case MON_MALE:
+        StringCopy(gStringVar1, COMPOUND_STRING("MALE"));
+        break;
+    default:
+        StringCopy(gStringVar1, COMPOUND_STRING("GENDERLESS"));
+        break;
+    }
+
+    StringCopy(gStringVar2, gText_DigitIndicator[digit]);
+    ConvertIntToDecimalStringN(gStringVar3, personality, STR_CONV_MODE_LEADING_ZEROS, 3);
+    StringCopyPadded(gStringVar3, gStringVar3, CHAR_SPACE, 15);
+    StringExpandPlaceholders(gStringVar4, COMPOUND_STRING("Gender Value: {STR_VAR_3}{CLEAR_TO 90}\n{STR_VAR_1}{CLEAR_TO 90}\n{CLEAR_TO 90}\n{STR_VAR_2}{CLEAR_TO 90}"));
+    AddTextPrinterParameterized(windowId, DEBUG_MENU_FONT, gStringVar4, 0, 0, 0, NULL);
+}
+
 static void DebugAction_Give_Pokemon_SelectLevel(u8 taskId)
 {
     if (JOY_NEW(DPAD_ANY))
@@ -3073,10 +3150,10 @@ static void DebugAction_Give_Pokemon_SelectLevel(u8 taskId)
 
     if (JOY_NEW(A_BUTTON))
     {
-        FreeMonIconPalettes();
-        FreeAndDestroyMonIconSprite(&gSprites[gTasks[taskId].tSpriteId]);
         if (gTasks[taskId].tIsComplex == FALSE)
         {
+            FreeMonIconPalettes();
+            FreeAndDestroyMonIconSprite(&gSprites[gTasks[taskId].tSpriteId]);
             PlaySE(MUS_LEVEL_UP);
             ScriptGiveMon(sDebugMonData->species, gTasks[taskId].tInput, ITEM_NONE);
             // Set flag for user convenience
@@ -3089,17 +3166,45 @@ static void DebugAction_Give_Pokemon_SelectLevel(u8 taskId)
             sDebugMonData->level = gTasks[taskId].tInput;
             gTasks[taskId].tInput = 0;
             gTasks[taskId].tDigit = 0;
-            Debug_Display_TrueFalse(gTasks[taskId].tInput, gTasks[taskId].tSubWindowId, sDebugText_PokemonShiny);
-            gTasks[taskId].func = DebugAction_Give_Pokemon_SelectShiny;
+            Debug_Display_Gender(sDebugMonData->species, gTasks[taskId].tInput, gTasks[taskId].tDigit, gTasks[taskId].tSubWindowId);
+            gTasks[taskId].func = DebugAction_Give_Pokemon_SelectGender;
         }
     }
     else if (JOY_NEW(B_BUTTON))
     {
         PlaySE(SE_SELECT);
-        Free(sDebugMonData);
-        FreeMonIconPalettes();
-        FreeAndDestroyMonIconSprite(&gSprites[gTasks[taskId].tSpriteId]);
-        DebugAction_DestroyExtraWindow(taskId);
+        gTasks[taskId].tInput = sDebugMonData->species;
+        gTasks[taskId].tDigit = 0;
+        Debug_Display_SpeciesInfo(sDebugMonData->species, sDebugMonData->species, 0, gTasks[taskId].tSubWindowId);
+        gTasks[taskId].func = DebugAction_Give_Pokemon_SelectId;
+    }
+}
+
+static void DebugAction_Give_Pokemon_SelectGender(u8 taskId)
+{
+    if (JOY_NEW(DPAD_ANY))
+    {
+        PlaySE(SE_SELECT);
+        Debug_HandleInput_Numeric(taskId, 0, UINT8_MAX, 3);
+        Debug_Display_Gender(sDebugMonData->species, gTasks[taskId].tInput, gTasks[taskId].tDigit, gTasks[taskId].tSubWindowId);
+    }
+
+    if (JOY_NEW(A_BUTTON))
+    {
+        sDebugMonData->genderPersonality = gTasks[taskId].tInput;
+        sDebugMonData->gender = GetGenderFromSpeciesAndPersonality(sDebugMonData->species, sDebugMonData->genderPersonality);
+        gTasks[taskId].tInput = 0;
+        gTasks[taskId].tDigit = 0;
+        Debug_Display_TrueFalse(gTasks[taskId].tInput, gTasks[taskId].tSubWindowId, sDebugText_PokemonShiny);
+        gTasks[taskId].func = DebugAction_Give_Pokemon_SelectShiny;
+    }
+    else if (JOY_NEW(B_BUTTON))
+    {
+        PlaySE(SE_SELECT);
+        gTasks[taskId].tInput = sDebugMonData->level;
+        gTasks[taskId].tDigit = 0;
+        Debug_Display_Level(gTasks[taskId].tInput, gTasks[taskId].tDigit, gTasks[taskId].tSubWindowId);
+        gTasks[taskId].func = DebugAction_Give_Pokemon_SelectLevel;
     }
 }
 
@@ -3136,8 +3241,18 @@ static void DebugAction_Give_Pokemon_SelectShiny(u8 taskId)
     else if (JOY_NEW(B_BUTTON))
     {
         PlaySE(SE_SELECT);
-        Free(sDebugMonData);
-        DebugAction_DestroyExtraWindow(taskId);
+        if (gTasks[taskId].tIsComplex)
+        {
+            gTasks[taskId].tInput = sDebugMonData->genderPersonality;
+            gTasks[taskId].tDigit = 0;
+            Debug_Display_Gender(sDebugMonData->species, gTasks[taskId].tInput, gTasks[taskId].tDigit, gTasks[taskId].tSubWindowId);
+            gTasks[taskId].func = DebugAction_Give_Pokemon_SelectGender;
+        }
+        else
+        {
+            Free(sDebugMonData);
+            DebugAction_DestroyExtraWindow(taskId);
+        }
     }
 }
 
@@ -3191,8 +3306,10 @@ static void DebugAction_Give_Pokemon_SelectNature(u8 taskId)
     else if (JOY_NEW(B_BUTTON))
     {
         PlaySE(SE_SELECT);
-        Free(sDebugMonData);
-        DebugAction_DestroyExtraWindow(taskId);
+        gTasks[taskId].tInput = sDebugMonData->isShiny;
+        gTasks[taskId].tDigit = 0;
+        Debug_Display_TrueFalse(gTasks[taskId].tInput, gTasks[taskId].tSubWindowId, sDebugText_PokemonShiny);
+        gTasks[taskId].func = DebugAction_Give_Pokemon_SelectShiny;
     }
 }
 
@@ -3251,8 +3368,10 @@ static void DebugAction_Give_Pokemon_SelectAbility(u8 taskId)
     else if (JOY_NEW(B_BUTTON))
     {
         PlaySE(SE_SELECT);
-        Free(sDebugMonData);
-        DebugAction_DestroyExtraWindow(taskId);
+        gTasks[taskId].tInput = sDebugMonData->nature == NATURE_RANDOM ? 0 : sDebugMonData->nature + 1;
+        gTasks[taskId].tDigit = 0;
+        Debug_Display_Nature(gTasks[taskId].tInput, gTasks[taskId].tDigit, gTasks[taskId].tSubWindowId);
+        gTasks[taskId].func = DebugAction_Give_Pokemon_SelectNature;
     }
 }
 
@@ -3300,8 +3419,10 @@ static void DebugAction_Give_Pokemon_SelectTeraType(u8 taskId)
     else if (JOY_NEW(B_BUTTON))
     {
         PlaySE(SE_SELECT);
-        Free(sDebugMonData);
-        DebugAction_DestroyExtraWindow(taskId);
+        gTasks[taskId].tInput = sDebugMonData->abilityNum;
+        gTasks[taskId].tDigit = 0;
+        Debug_Display_Ability(gTasks[taskId].tInput, gTasks[taskId].tDigit, gTasks[taskId].tSubWindowId);
+        gTasks[taskId].func = DebugAction_Give_Pokemon_SelectAbility;
     }
 }
 
@@ -3330,10 +3451,10 @@ static void DebugAction_Give_Pokemon_SelectDynamaxLevel(u8 taskId)
     else if (JOY_NEW(B_BUTTON))
     {
         PlaySE(SE_SELECT);
-        Free(sDebugMonData);
-        FreeMonIconPalettes();
-        FreeAndDestroyMonIconSprite(&gSprites[gTasks[taskId].tSpriteId]);
-        DebugAction_DestroyExtraWindow(taskId);
+        gTasks[taskId].tInput = sDebugMonData->teraType;
+        gTasks[taskId].tDigit = 0;
+        Debug_Display_TeraType(gTasks[taskId].tInput, gTasks[taskId].tDigit, gTasks[taskId].tSubWindowId);
+        gTasks[taskId].func = DebugAction_Give_Pokemon_SelectTeraType;
     }
 }
 
@@ -3367,8 +3488,10 @@ static void DebugAction_Give_Pokemon_SelectGigantamaxFactor(u8 taskId)
     else if (JOY_NEW(B_BUTTON))
     {
         PlaySE(SE_SELECT);
-        Free(sDebugMonData);
-        DebugAction_DestroyExtraWindow(taskId);
+        gTasks[taskId].tInput = sDebugMonData->dynamaxLevel;
+        gTasks[taskId].tDigit = 0;
+        Debug_Display_DynamaxLevel(gTasks[taskId].tInput, gTasks[taskId].tDigit, gTasks[taskId].tSubWindowId);
+        gTasks[taskId].func = DebugAction_Give_Pokemon_SelectDynamaxLevel;
     }
 }
 
@@ -3410,8 +3533,20 @@ static void DebugAction_Give_Pokemon_SelectIVs(u8 taskId)
     else if (JOY_NEW(B_BUTTON))
     {
         PlaySE(SE_SELECT);
-        Free(sDebugMonData);
-        DebugAction_DestroyExtraWindow(taskId);
+        if (gTasks[taskId].tIterator > 0)
+        {
+            gTasks[taskId].tIterator--;
+            gTasks[taskId].tInput = sDebugMonData->monIVs[gTasks[taskId].tIterator];
+            gTasks[taskId].tDigit = 0;
+            Debug_Display_StatInfo(sDebugText_IVs, gTasks[taskId].tIterator, gTasks[taskId].tInput, gTasks[taskId].tDigit, gTasks[taskId].tSubWindowId, MAX_PER_STAT_IVS);
+        }
+        else
+        {
+            gTasks[taskId].tInput = sDebugMonData->gmaxFactor;
+            gTasks[taskId].tDigit = 0;
+            Debug_Display_GigantamaxFactor(gTasks[taskId].tInput, gTasks[taskId].tSubWindowId);
+            gTasks[taskId].func = DebugAction_Give_Pokemon_SelectGigantamaxFactor;
+        }
     }
 }
 
@@ -3500,8 +3635,21 @@ static void DebugAction_Give_Pokemon_SelectEVs(u8 taskId)
     else if (JOY_NEW(B_BUTTON))
     {
         PlaySE(SE_SELECT);
-        Free(sDebugMonData);
-        DebugAction_DestroyExtraWindow(taskId);
+        if (gTasks[taskId].tIterator > 0)
+        {
+            gTasks[taskId].tIterator--;
+            gTasks[taskId].tInput = sDebugMonData->monEVs[gTasks[taskId].tIterator];
+            gTasks[taskId].tDigit = 0;
+            Debug_Display_StatInfo(sDebugText_EVs, gTasks[taskId].tIterator, gTasks[taskId].tInput, gTasks[taskId].tDigit, gTasks[taskId].tSubWindowId, MAX_PER_STAT_EVS);
+        }
+        else
+        {
+            gTasks[taskId].tIterator = NUM_STATS - 1;
+            gTasks[taskId].tInput = sDebugMonData->monIVs[gTasks[taskId].tIterator];
+            gTasks[taskId].tDigit = 0;
+            Debug_Display_StatInfo(sDebugText_IVs, gTasks[taskId].tIterator, gTasks[taskId].tInput, gTasks[taskId].tDigit, gTasks[taskId].tSubWindowId, MAX_PER_STAT_IVS);
+            gTasks[taskId].func = DebugAction_Give_Pokemon_SelectIVs;
+        }
     }
 }
 
@@ -3548,8 +3696,21 @@ static void DebugAction_Give_Pokemon_Move(u8 taskId)
     else if (JOY_NEW(B_BUTTON))
     {
         PlaySE(SE_SELECT);
-        Free(sDebugMonData);
-        DebugAction_DestroyExtraWindow(taskId);
+        if (gTasks[taskId].tIterator > 0)
+        {
+            gTasks[taskId].tIterator--;
+            gTasks[taskId].tInput = sDebugMonData->monMoves[gTasks[taskId].tIterator];
+            gTasks[taskId].tDigit = 0;
+            Debug_Display_MoveInfo(gTasks[taskId].tInput, gTasks[taskId].tIterator, gTasks[taskId].tDigit, gTasks[taskId].tSubWindowId);
+        }
+        else
+        {
+            gTasks[taskId].tIterator = NUM_STATS - 1;
+            gTasks[taskId].tInput = sDebugMonData->monEVs[gTasks[taskId].tIterator];
+            gTasks[taskId].tDigit = 0;
+            Debug_Display_StatInfo(sDebugText_EVs, gTasks[taskId].tIterator, gTasks[taskId].tInput, gTasks[taskId].tDigit, gTasks[taskId].tSubWindowId, MAX_PER_STAT_EVS);
+            gTasks[taskId].func = DebugAction_Give_Pokemon_SelectEVs;
+        }
     }
 }
 
@@ -3581,7 +3742,7 @@ static void DebugAction_Give_Pokemon_ComplexCreateMon(u8 taskId) //https://githu
     }
 
     //Nature
-    u32 personality = GetMonPersonality(species, MON_GENDER_RANDOM, nature, RANDOM_UNOWN_LETTER);
+    u32 personality = GetMonPersonality(species, sDebugMonData->gender, nature, RANDOM_UNOWN_LETTER);
     CreateMon(&mon, species, level, personality, OTID_STRUCT_PLAYER_ID);
 
     //Shininess
@@ -3642,6 +3803,8 @@ static void DebugAction_Give_Pokemon_ComplexCreateMon(u8 taskId) //https://githu
     // Set flag for user convenience
     FlagSet(FLAG_SYS_POKEMON_GET);
 
+    FreeMonIconPalettes();
+    FreeAndDestroyMonIconSprite(&gSprites[gTasks[taskId].tSpriteId]);
     Free(sDebugMonData);
     DebugAction_DestroyExtraWindow(taskId); //return sentToPc;
 }
@@ -3710,7 +3873,7 @@ static void DebugAction_Give_Decoration_SelectId(u8 taskId)
 
     if (JOY_NEW(A_BUTTON))
     {
-        DestroyItemIcon(taskId);
+        DestroyDecorationIcon(taskId);
 
         PlaySE(MUS_LEVEL_UP);
         DecorationAdd(gTasks[taskId].tInput);
@@ -3721,7 +3884,7 @@ static void DebugAction_Give_Decoration_SelectId(u8 taskId)
         DestroyDecorationIcon(taskId);
 
         PlaySE(SE_SELECT);
-        DebugAction_DestroyExtraWindow(taskId);
+        DebugAction_ReturnToSubMenu(taskId, sDebugMenu_Actions_Give, 0);
     }
 }
 
@@ -4056,7 +4219,7 @@ static void DebugAction_Sound_SE_SelectId(u8 taskId)
     {
         PlaySE(SE_SELECT);
         m4aSongNumStop(gTasks[taskId].tCurrentSong, FlagGet(FLAG_SYS_GBS_ENABLED));
-        DebugAction_DestroyExtraWindow(taskId);
+        DebugAction_ReturnToSubMenu(taskId, sDebugMenu_Actions_Sound, 0);
     }
     else if (JOY_NEW(START_BUTTON))
     {
@@ -4117,7 +4280,7 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId)
     {
         PlaySE(SE_SELECT);
         // m4aSongNumStop(gTasks[taskId].tCurrentSong, FlagGet(FLAG_SYS_GBS_ENABLED));   //Uncomment if music should stop after leaving menu
-        DebugAction_DestroyExtraWindow(taskId);
+        DebugAction_ReturnToSubMenu(taskId, sDebugMenu_Actions_Sound, 0);
     }
     else if (JOY_NEW(START_BUTTON))
     {
@@ -5066,7 +5229,10 @@ static void DebugNativeStep_Party_SetPokerusDaysLeftSelect(u8 taskId)
     else if (JOY_NEW(B_BUTTON))
     {
         PlaySE(SE_SELECT);
-        DebugNativeStep_CloseDebugWindow(taskId);
+        gTasks[taskId].tInput = gTasks[taskId].tStrain;
+        gTasks[taskId].tDigit = 0;
+        Debug_Display_PokerusStrainInfo(gTasks[taskId].tInput, gTasks[taskId].tDigit, gTasks[taskId].tSubWindowId);
+        gTasks[taskId].func = DebugNativeStep_Party_SetPokerusStrainSelect;
         return;
     }
 

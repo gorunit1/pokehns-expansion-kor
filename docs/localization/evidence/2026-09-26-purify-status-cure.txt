@@ -1,0 +1,16 @@
+작업: 정화 상태별 회복 메시지 연결
+일자: 2026-09-26
+
+변경:
+- BattleScript_EffectPurify가 STRINGID_ATTACKERCUREDTARGETSTATUS 대신 gPurifyStatusCureStringIds를 선택한다.
+- 독·화상·마비·잠듦은 B_SCR 대상 지정 코드를 사용하는 새 문자열 ID를 추가했다.
+- 얼음·동상은 기존 대상 지정 문자열을 재사용했다.
+- 빌드 중 발견한 STRINGID_SYMBIOSISITEMPASS의 B_EFF_NAME_WITH_PREFIX2 토큰 닫는 중괄호 오탈자를 수정했다.
+
+검증:
+- timeout 180s make BUILD=hns build/hns/src/battle_message.o build/hns/data/battle_scripts_1.o -j2: 성공
+- GITHUB_ACTION=1 timeout 600s make --jobserver-style=pipe hns -j8: 성공
+- EWRAM 249016/262144 (94.99%)
+- IWRAM 25704/32768 (78.44%)
+- ROM 33329748/33554432 (99.33%)
+- 실제 HNS 화면 검증: 미완료

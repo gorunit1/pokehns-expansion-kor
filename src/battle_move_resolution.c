@@ -1006,7 +1006,7 @@ static enum CancelerResult CancelerPPDeduction(struct BattleContext *ctx)
             gBattleScripting.animTargetsHit = 0;
 
             // Possibly better to just move type setting and redirection to attackcanceler as a new case at this point
-            SetTypeBeforeUsingMove(ctx->move, ctx->battlerAtk);
+            SetTypeBeforeUsingMove(ctx->move, ctx->battlerAtk, ctx->abilityAtk, ctx->holdEffectAtk);
             ClearDamageCalcResults();
             gBattlescriptCurrInstr = GetMoveBattleScript(ctx->move);
             return CANCELER_RESULT_BREAK;
@@ -1200,9 +1200,20 @@ static enum CancelerResult CancelerMoveFailure(struct BattleContext *ctx)
         else if (gBattleMons[ctx->battlerAtk].hp == gBattleMons[ctx->battlerAtk].maxHP)
             battleScript = BattleScript_AlreadyAtFullHp;
         else if (ctx->abilityAtk == ABILITY_INSOMNIA
-              || ctx->abilityAtk == ABILITY_VITAL_SPIRIT
-              || ctx->abilityAtk == ABILITY_PURIFYING_SALT)
+              || ctx->abilityAtk == ABILITY_VITAL_SPIRIT)
+        {
+            gLastUsedAbility = ctx->abilityAtk;
+            gBattlerAbility = ctx->battlerAtk;
+            RecordAbilityBattle(ctx->battlerAtk, ctx->abilityAtk);
+            battleScript = BattleScript_StayedAwakeUsingAbility;
+        }
+        else if (ctx->abilityAtk == ABILITY_PURIFYING_SALT)
+        {
+            gLastUsedAbility = ctx->abilityAtk;
+            gBattlerAbility = ctx->battlerAtk;
+            RecordAbilityBattle(ctx->battlerAtk, ctx->abilityAtk);
             battleScript = BattleScript_InsomniaProtects;
+        }
         break;
     case EFFECT_SNORE:
         if (!(gBattleMons[ctx->battlerAtk].status1 & STATUS1_SLEEP)
@@ -1468,6 +1479,28 @@ static enum CancelerResult CancelerExplodingDamp(struct BattleContext *ctx)
     return CANCELER_RESULT_SUCCESS;
 }
 
+static bool32 CanTwoTurnMoveFireThisTurn(struct BattleContext *ctx, bool32 *showAbilityPopUp)
+{
+    enum BattleMoveEffects moveEffect = GetMoveEffect(ctx->move);
+    if (moveEffect == EFFECT_GEOMANCY || gBattleMoveEffects[moveEffect].semiInvulnerableEffect)
+        return FALSE;
+
+    u32 weather = GetBattleWeatherForEffects();
+    u32 attackerWeather = GetAttackerWeather(ctx->holdEffectAtk, ctx->abilityAtk, weather);
+    u32 moveWeather = GetMoveTwoTurnAttackWeather(ctx->move);
+
+    if (weather & moveWeather)
+        return TRUE;
+
+    if (attackerWeather & moveWeather)
+    {
+        *showAbilityPopUp = TRUE;
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
 static enum CancelerResult CancelerExplosion(struct BattleContext *ctx)
 {
     // KO user of Explosion; for Final Gambit doesn't happen if target is immune or if it missed
@@ -1479,15 +1512,6 @@ static enum CancelerResult CancelerExplosion(struct BattleContext *ctx)
     }
 
     return CANCELER_RESULT_SUCCESS;
-}
-
-static bool32 CanTwoTurnMoveFireThisTurn(struct BattleContext *ctx)
-{
-    if (gBattleMoveEffects[GetMoveEffect(ctx->move)].semiInvulnerableEffect
-     || GetMoveEffect(ctx->move) == EFFECT_GEOMANCY
-     || !IsBattlerWeatherAffected(ctx->battlerAtk, GetMoveTwoTurnAttackWeather(ctx->move)))
-        return FALSE;
-    return TRUE;
 }
 
 static enum CancelerResult HandleSkyDropResult(struct BattleContext *ctx)
@@ -1527,7 +1551,7 @@ static enum CancelerResult HandleSkyDropResult(struct BattleContext *ctx)
         gBattlescriptCurrInstr = BattleScript_ButItFailed;
         return CANCELER_RESULT_FAILURE;
     }
-    else if (GetBattlerWeight(gBattlerTarget) >= 2000)
+    else if (GetBattlerWeight(ctx->battlerDef, ctx->abilityDef, ctx->holdEffectDef) >= 2000)
     {
         gBattlescriptCurrInstr = BattleScript_SkyDropTargetTooHeavy;
         return CANCELER_RESULT_FAILURE;
@@ -1586,14 +1610,23 @@ static enum CancelerResult CancelerCharging(struct BattleContext *ctx)
     }
     else // Try move this turn. Otherwise use next turn
     {
-        if (CanTwoTurnMoveFireThisTurn(ctx))
+        bool32 showAbilityPopUp = FALSE;
+        if (CanTwoTurnMoveFireThisTurn(ctx, &showAbilityPopUp))
         {
             gBattleScripting.animTurn = 1;
             gBattleScripting.animTargetsHit = 0;
             gProtectStructs[ctx->battlerAtk].chargingTurn = FALSE;
             if (gBattleMoveEffects[GetMoveEffect(ctx->move)].semiInvulnerableEffect)
                 gBattleMons[ctx->battlerAtk].volatiles.semiInvulnerable = STATE_NONE;
-            result = CANCELER_RESULT_SUCCESS;
+            if (showAbilityPopUp)
+            {
+                BattleScriptCall(BattleScript_MegaSolActivatesTwoTurnMove);
+                result = CANCELER_RESULT_BREAK;
+            }
+            else
+            {
+                result = CANCELER_RESULT_SUCCESS;
+            }
         }
         else if (ctx->holdEffectAtk == HOLD_EFFECT_POWER_HERB)
         {
@@ -2089,7 +2122,7 @@ static enum MoveEndResult MoveEndProtectLikeEffect(void)
     }
 
     if (method != PROTECT_MAX_GUARD
-     && abilityAtk == ABILITY_UNSEEN_FIST
+     && (abilityAtk == ABILITY_UNSEEN_FIST || abilityAtk == ABILITY_PIERCING_DRILL)
      && IsMoveMakingContact(gBattlerAttacker, gBattlerTarget, abilityAtk, holdEffectAtk, gCurrentMove))
     {
         gBattleScripting.moveendState++;

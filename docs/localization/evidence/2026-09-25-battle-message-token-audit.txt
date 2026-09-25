@@ -1,0 +1,29 @@
+작업: battle_message.c 한글 문장의 B 토큰 연결 감사
+일자: 2026-09-25
+
+변경:
+- STRINGID_PKMNWASPARALYZEDBY: 첫 이름 토큰 B_SCR_NAME_WITH_PREFIX -> B_EFF_NAME_WITH_PREFIX
+- STRINGID_PKMNMOVEBOUNCED: 이름 토큰 B_DEF_NAME_WITH_PREFIX -> B_ATK_NAME_WITH_PREFIX
+
+근거:
+- pokeemerald-kr의 마비 문구 원문은 효과 대상 B_EFF와 특성 보유자 B_SCR를 분리한다.
+- BS_SetMagicCoatTarget()는 기존 공격자를 gBattleScripting.battler에 저장한 뒤 gBattlerAttacker/gBattlerTarget을 교환한다. 따라서 출력 시 반사자는 B_ATK다.
+- 현재 HNS의 gGotParalyzedStringIds[B_MSG_STATUSED_BY_ABILITY]는 일반 마비 ID를 선택하므로 PKMNWASPARALYZEDBY는 현재 런타임에서 사용되지 않는다. 토큰은 재사용 시 원문 의미가 유지되도록 수정했다.
+- 스위트베일 문구(PKMNSXMADEITINEFFECTIVE)는 B_SCR 이름·특성, 정신력 문구(PKMNSXPREVENTSFLINCHING)는 B_EFF 이름·특성이 호출부와 일치하여 수정하지 않았다.
+
+검증 명령:
+- git diff --check -- src/battle_message.c
+- make BUILD=hns build/hns/src/battle_message.o -j2
+
+결과:
+- 두 명령 모두 종료 코드 0.
+- 대상 오브젝트: build/hns/src/battle_message.o
+- 전체 ROM 빌드 및 실제 게임 화면 검증은 수행하지 않음.
+- 요청된 corpus/ScarletViolet/ko_common.txt, corpus/Champions/ko_ms.txt 및 champout는 작업 트리에 없어 로컬 pokeemerald-kr 원문과 HNS 호출부를 사용함.
+
+추가 작업: battle_message.c 최신 원문 대조 및 정화의소금 상태별 문구 연결
+- Champions `btl_set` 원문에서 상태 면역 문구를 확인했다: 독에 중독되지 않는다 / 화상을 입지 않는다 / 마비되지 않는다 / 얼지 않는다 / 잠들지 않는다.
+- SV 원문에서 날씨 시작 문구 `눈이 내리기 시작했다!`를 확인했다.
+- `STRINGID_SNOWWARNINGHAIL`은 위 SV 문구로 교체했다. `THUNDERCAGETRAPPED`, `PKMNITEMMELTED`, `HOSPITALITYRESTORATION`은 대상·차를 내온 주체에 맞게 조사 토큰을 사용하도록 정정했다.
+- `ABILITY_PURIFYING_SALT`는 이전에 모든 상태이상 실패를 `STRINGID_ITDOESNTAFFECT`로 보냈다. 상태별 StringID/선택 테이블과 `BattleScript_PurifyingSaltProtects`를 추가해 특성 팝업 다음에 Champions의 상태별 실패 문구가 나오도록 연결했다. `Rest`의 전용 경로도 수면 실패 문구를 사용한다.
+- 검증: `make BUILD=hns build/hns/src/battle_message.o build/hns/src/battle_util.o -j2`, `make BUILD=hns build/hns/data/battle_scripts_1.o -j1`, `make BUILD=hns build/hns/src/battle_move_resolution.o -j1` 종료 코드 0. 이어서 `GITHUB_ACTION=1 timeout 600s make --jobserver-style=pipe hns -j8` 전체 HNS 빌드·링크도 종료 코드 0, 최신 링크 보고 ROM 사용량 33,329,556바이트/32MiB(99.33%). 실제 화면 검증은 미실행.

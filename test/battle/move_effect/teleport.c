@@ -82,3 +82,27 @@ SINGLE_BATTLE_TEST("Teleport does not fail if the user is trapped")
         MESSAGE("2 sent out Wynaut!");
     }
 }
+
+WILD_BATTLE_TEST("Teleport used by a wild Pokémon ignores trapping Abilities (Gen 8+)")
+{
+    enum Ability ability;
+    u16 species;
+    PARAMETRIZE { ability = ABILITY_ARENA_TRAP;  species = SPECIES_WOBBUFFET; }
+    PARAMETRIZE { ability = ABILITY_SHADOW_TAG;  species = SPECIES_WOBBUFFET; }
+    PARAMETRIZE { ability = ABILITY_MAGNET_PULL; species = SPECIES_MAWILE; }
+    GIVEN {
+        WITH_CONFIG(B_TELEPORT_BEHAVIOR, GEN_8);
+        PLAYER(SPECIES_WOBBUFFET) { Ability(ability); Moves(MOVE_CELEBRATE); }
+        OPPONENT(species) { Ability(ABILITY_TELEPATHY); Moves(MOVE_TELEPORT); }
+    } WHEN {
+        TURN { MOVE(player, MOVE_CELEBRATE); MOVE(opponent, MOVE_TELEPORT); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_TELEPORT, opponent);
+        NONE_OF {
+            ABILITY_POPUP(player, ABILITY_ARENA_TRAP);
+            ABILITY_POPUP(player, ABILITY_SHADOW_TAG);
+            ABILITY_POPUP(player, ABILITY_MAGNET_PULL);
+            MESSAGE("But it failed!");
+        }
+    }
+}

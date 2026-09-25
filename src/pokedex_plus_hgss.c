@@ -2483,7 +2483,7 @@ static void CreatePokedexList(u8 dexMode, u8 order)
 #define temp_dexCount   vars[0]
 #define temp_isHoennDex vars[1]
 #define temp_dexNum     vars[2]
-    s16 i;
+    s16 i, r5, r10;
 
     sPokedexView->pokemonListCount = 0;
 
@@ -2511,28 +2511,30 @@ static void CreatePokedexList(u8 dexMode, u8 order)
     switch (order)
     {
     case ORDER_NUMERICAL:
-        if (temp_isHoennDex)
+        for (i = 0, r5 = 0, r10 = 0; i < temp_dexCount; i++)
         {
-            for (i = 0; i < temp_dexCount; i++)
+            if (temp_isHoennDex)
             {
                 temp_dexNum = RegionalToNationalOrder(i + 1);
-                sPokedexView->pokedexList[i].dexNum = temp_dexNum;
-                sPokedexView->pokedexList[i].seen = GetSetPokedexFlag(temp_dexNum, FLAG_GET_SEEN);
-                sPokedexView->pokedexList[i].owned = GetSetPokedexFlag(temp_dexNum, FLAG_GET_CAUGHT);
-                if (sPokedexView->pokedexList[i].seen)
-                    sPokedexView->pokemonListCount = i + 1;
             }
-        }
-        else
-        {
-            for (i = 0; i < temp_dexCount; i++)
+            else
             {
                 temp_dexNum = ObtainableToNationalOrder(i + 1);
-                sPokedexView->pokedexList[i].dexNum = temp_dexNum;
-                sPokedexView->pokedexList[i].seen = GetSetPokedexFlag(temp_dexNum, FLAG_GET_SEEN);
-                sPokedexView->pokedexList[i].owned = GetSetPokedexFlag(temp_dexNum, FLAG_GET_CAUGHT);
-                if (sPokedexView->pokedexList[i].seen)
-                    sPokedexView->pokemonListCount = i + 1;
+                if (GetSetPokedexFlag(temp_dexNum, FLAG_GET_SEEN))
+                    r10 = 1;
+            }
+
+            if (ShouldSkipPokedexListEntry(temp_dexNum))
+                continue;
+
+            if (r10 || temp_isHoennDex)
+            {
+                sPokedexView->pokedexList[r5].dexNum = temp_dexNum;
+                sPokedexView->pokedexList[r5].seen = GetSetPokedexFlag(temp_dexNum, FLAG_GET_SEEN);
+                sPokedexView->pokedexList[r5].owned = GetSetPokedexFlag(temp_dexNum, FLAG_GET_CAUGHT);
+                if (sPokedexView->pokedexList[r5].seen)
+                    sPokedexView->pokemonListCount = r5 + 1;
+                r5++;
             }
         }
         break;
@@ -2745,6 +2747,10 @@ static void CreateMonDexNum(u16 entryNum, u8 left, u8 top, u16 unused)
     text[offset++] = CHAR_0 + ((dexNum % 1000) % 100) / 10;
     text[offset++] = CHAR_0 + ((dexNum % 1000) % 100) % 10;
     text[offset++] = EOS;
+
+    if (P_SKIP_POKEDEX_GAPS == SKIP_GAPS_EXCEPT_ONE && !sPokedexView->pokedexList[entryNum].seen)
+        StringCopy(text, COMPOUND_STRING("----"));
+
     PrintMonDexNumAndName(0, FONT_NARROW, text, left, top);
 }
 
@@ -4685,6 +4691,7 @@ static u8 PrintCryScreenSpeciesName(u8 windowId, u16 num, u8 left, u8 top)
             str[i] = CHAR_HYPHEN;
         break;
     }
+    StringAppend(str, gText_CryOf1);
     PrintInfoSubMenuText(windowId, str, left, top);
     return i;
 }
@@ -5234,11 +5241,19 @@ static void PrintStatsScreen_DestroyMoveItemIcon(u8 taskId)
     DestroySprite(&gSprites[gTasks[taskId].data[3]]);       //Destroy item icon
 }
 
+static u32 CountSpeciesEggMoves(u16 species)
+{
+    u32 numEggMoves = 0;
+    const u16 *eggMoveLearnset = GetSpeciesEggMoves(species);
+    for (u32 i = 0; eggMoveLearnset[i] != MOVE_UNAVAILABLE; i++)
+        numEggMoves++;
+
+    return numEggMoves;
+}
+
 static bool8 CalculateMoves(void)
 {
     u16 species = NationalPokedexNumToSpeciesHGSS(sPokedexListItem->dexNum);
-
-    u16 statsMovesEgg[EGG_MOVES_ARRAY_COUNT] = {0};
 
     u32 numEggMoves = 0;
     u32 numLevelUpMoves = 0;
@@ -5251,18 +5266,9 @@ static bool8 CalculateMoves(void)
 
     // Egg moves
     if (HGSS_SHOW_EGG_MOVES_FOR_EVOS)
-    {
-        u16 preSpecies = species;
-        while (preSpecies != SPECIES_NONE)
-        {
-            numEggMoves = GetEggMovesBySpecies(preSpecies, statsMovesEgg);
-            preSpecies = GetSpeciesPreEvolution(preSpecies);
-        }
-    }
+        numEggMoves = CountSpeciesEggMoves(GetEggSpecies(species));
     else
-    {
-        numEggMoves = GetEggMovesBySpecies(species, statsMovesEgg);
-    }
+        numEggMoves = CountSpeciesEggMoves(species);
 
     // Level up moves
     const struct LevelUpMove *learnset = GetSpeciesLevelUpLearnset(species);
@@ -6364,7 +6370,7 @@ static void Task_HandleEvolutionScreenInput(u8 taskId)
     }
 }
 
-static void HandleTargetSpeciesPrintText(u32 targetSpecies, u32 base_x, u32 base_y, u32 base_y_offset, u32 base_i, u32 numLines)
+static void HandleTargetSpeciesPrintText(u16 targetSpecies, u32 base_x, u32 base_y, u32 base_y_offset, u32 base_i, u32 numLines)
 {
     bool32 seen = GetSetPokedexFlag(SpeciesToNationalPokedexNum(targetSpecies), FLAG_GET_SEEN);
     u32 fontId = GetSpeciesNameFontId(GetSpeciesNameWidthInChars(GetSpeciesName(targetSpecies)));
@@ -6374,7 +6380,7 @@ static void HandleTargetSpeciesPrintText(u32 targetSpecies, u32 base_x, u32 base
     else
         StringCopy(gStringVar3, gText_ThreeQuestionMarks); //show questionmarks instead of name
     StringExpandPlaceholders(gStringVar3, sText_EVO_Name); //evolution mon name
-    PrintInfoScreenTextSmall(gStringVar3, fontId, base_x, base_y + base_y_offset*base_i + numLines); //evolution mon name
+    PrintInfoScreenTextSmall(gStringVar3, fontId, base_x, base_y + base_y_offset * base_i + numLines); //evolution mon name
 }
 
 static void HandleTargetSpeciesPrintIcon(u8 taskId, u16 targetSpecies, u8 base_i, u8 iterations)
@@ -6698,6 +6704,10 @@ static void PrintEvolutionTargetSpeciesAndMethod(u8 taskId, u16 species, u8 dept
         u32 base_x_offset = speciesNameWidth + base_x + depth_offset; // for evo method info
         u32 maxScreenWidth = 230 - base_x_offset;
 
+        sPokedexView->sEvoScreenData.targetSpecies[*depth_i] = targetSpecies;
+        CreateCaughtBallEvolutionScreen(targetSpecies, base_x + depth_x*depth-9, base_y + base_y_offset*(*depth_i) + numLines, 0);
+        HandleTargetSpeciesPrintText(targetSpecies, base_x + depth_x*depth, base_y, base_y_offset, *depth_i, numLines); //evolution mon name
+
         for (u32 j = 0; j < MAX_EVOLUTION_ICONS; j++)
         {
             if (alreadyPrintedIcons[j] == targetSpecies)
@@ -6715,11 +6725,7 @@ static void PrintEvolutionTargetSpeciesAndMethod(u8 taskId, u16 species, u8 dept
         if (*totalLines >= MAX_EVO_METHOD_LINES || sPokedexView->sEvoScreenData.numAllEvolutions >= 10)
             continue;
 
-        sPokedexView->sEvoScreenData.targetSpecies[*depth_i] = targetSpecies;
         sPokedexView->sEvoScreenData.numAllEvolutions += 1;
-
-        CreateCaughtBallEvolutionScreen(targetSpecies, base_x + depth_x*depth-9, base_y + base_y_offset*(*depth_i) + numLines, 0);
-        HandleTargetSpeciesPrintText(targetSpecies, base_x + depth_x*depth, base_y, base_y_offset, *depth_i, numLines); //evolution mon name
 
         bool32 caught = GetSetPokedexFlag(SpeciesToNationalPokedexNum(targetSpecies), FLAG_GET_CAUGHT);
         if (HGSS_HIDE_UNOWNED_EVOLUTION_METHODS == TRUE && !caught)
@@ -6922,9 +6928,9 @@ static void PrintEvolutionTargetSpeciesAndMethod(u8 taskId, u16 species, u8 dept
                     case REGION_SINNOH: StringAppend(gStringVar4, COMPOUND_STRING("Sinnoh")); break;
                     case REGION_UNOVA: StringAppend(gStringVar4, COMPOUND_STRING("Unova")); break;
                     case REGION_KALOS: StringAppend(gStringVar4, COMPOUND_STRING("Kalos")); break;
-                    case REGION_ALOLA: StringAppend(gStringVar4, COMPOUND_STRING("Alola")); break;
+                    case REGION_ALOLA: StringAppend(gStringVar4, COMPOUND_STRING("Alola Isles")); break;
                     case REGION_GALAR: StringAppend(gStringVar4, COMPOUND_STRING("Galar")); break;
-                    case REGION_HISUI: StringAppend(gStringVar4, COMPOUND_STRING("Hisui")); break;
+                    case REGION_HISUI: StringAppend(gStringVar4, COMPOUND_STRING("Sinjoh")); break;
                     case REGION_PALDEA: StringAppend(gStringVar4, COMPOUND_STRING("Paldea")); break;
                     }
                     break;
@@ -7443,7 +7449,7 @@ static void Task_LoadCryScreen(u8 taskId)
         gMain.state++;
         break;
     case 4:
-        PrintInfoScreenText(gText_CryOf, 82, 33);
+        PrintInfoScreenText(gText_CryOf2, 82, 33);
         PrintCryScreenSpeciesName(0, sPokedexListItem->dexNum, 82, 49);
         gMain.state++;
         break;

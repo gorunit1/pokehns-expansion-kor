@@ -105,7 +105,7 @@ static void SpriteCB_MoveWildMonToRight(struct Sprite *sprite);
 static void SpriteCB_WildMonShowHealthbox(struct Sprite *sprite);
 static void SpriteCB_WildMonAnimate(struct Sprite *sprite);
 static void SpriteCB_AnimFaintOpponent(struct Sprite *sprite);
-static void SpriteCB_BlinkVisible(struct Sprite *sprite);
+void SpriteCB_BlinkVisible(struct Sprite *sprite);
 static void SpriteCB_Idle(struct Sprite *sprite);
 static void SpriteCB_BattleSpriteSlideLeft(struct Sprite *sprite);
 static void TurnValuesCleanUp(bool8 var0);
@@ -2909,13 +2909,27 @@ void SpriteCB_ShowAsMoveTarget(struct Sprite *sprite)
     sprite->callback = SpriteCB_BlinkVisible;
 }
 
-static void SpriteCB_BlinkVisible(struct Sprite *sprite)
+void SpriteCB_BlinkVisible(struct Sprite *sprite)
 {
     if (--sprite->data[3] == 0)
     {
         sprite->invisible ^= 1;
         sprite->data[3] = 8;
     }
+}
+
+// Only battlers that were actually made to blink as a move target may have their
+// visibility restored from data[4], otherwise e.g. the attacker of a spread move
+// that doesn't target itself would get its visibility set from stale sprite data.
+bool32 ShouldHideBattler(enum BattlerId battler)
+{
+    SpriteCallback callback;
+
+    if (!IsBattlerAlive(battler) || !gBattleSpritesDataPtr->healthBoxesData[battler].healthboxIsBouncing)
+        return FALSE;
+
+    callback = gSprites[gBattlerSpriteIds[battler]].callback;
+    return callback == SpriteCB_ShowAsMoveTarget || callback == SpriteCB_BlinkVisible;
 }
 
 void SpriteCB_HideAsMoveTarget(struct Sprite *sprite)
@@ -3254,7 +3268,11 @@ static void BattleStartClearSetData(void)
     gBattleStruct->runTries = 0;
     gBattleStruct->safariGoNearCounter = 0;
     gBattleStruct->safariPkblThrowCounter = 0;
+    // Species with a catch rate under 13 would truncate to a factor of 0, which
+    // zeroes the capture odds and leaves bait/rock unable to move it off 0.
     gBattleStruct->safariCatchFactor = gSpeciesInfo[GetMonData(&gEnemyParty[0], MON_DATA_SPECIES)].catchRate * 100 / 1275;
+    if (gBattleStruct->safariCatchFactor == 0)
+        gBattleStruct->safariCatchFactor = 1;
     gBattleStruct->safariEscapeFactor = 3;
     gBattleStruct->wildVictorySong = 0;
     // Amulet Coin applies as long as any party mon holds it, even if that mon never enters the battle.
@@ -3334,6 +3352,9 @@ void SwitchInClearSetData(enum BattlerId battler, struct Volatiles *volatilesCop
                 gBattleMons[i].volatiles.escapePrevention = FALSE;
         }
     }
+
+    if (GetConfig(B_RAGE_FIST) >= GEN_CHAMPIONS)
+        GetBattlerPartyState(battler)->timesGotHit = 0;
 
     // Clear volatiles - reapply some if Baton Pass was used
     memset(&gBattleMons[battler].volatiles, 0, sizeof(struct Volatiles));
@@ -3462,6 +3483,9 @@ const u8* FaintClearSetData(enum BattlerId battler)
     for (enum Stat i = 0; i < NUM_BATTLE_STATS; i++)
         gBattleMons[battler].statStages[i] = DEFAULT_STAT_STAGE;
 
+    if (GetConfig(B_RAGE_FIST) >= GEN_CHAMPIONS)
+        GetBattlerPartyState(battler)->timesGotHit = 0;
+
     bool32 keepGastroAcid = gBattleMons[battler].volatiles.gastroAcid;
     bool32 keepTransformed = gBattleMons[battler].volatiles.transformed;
     memset(&gBattleMons[battler].volatiles, 0, sizeof(struct Volatiles));
@@ -3519,7 +3543,6 @@ const u8* FaintClearSetData(enum BattlerId battler)
     gBattleStruct->palaceFlags &= ~(1u << battler);
     if (battler == gBattlerAttacker)
         gBattleStruct->moldBreakerActive = FALSE;
-
     ClearPursuitValuesIfSet(battler);
 
     if (gBattleStruct->battlerState[battler].commanderSpecies != SPECIES_NONE)
@@ -3814,6 +3837,18 @@ static void DoBattleIntro(void)
             if (runPressed)
             {
                 battler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
+                if (gBattleTypeFlags & BATTLE_TYPE_SAFARI)
+                {
+                    // The player has no battler in a Safari battle (its gBattleMons entry is
+                    // zeroed above), so the speed-based escape check can never succeed. Running
+                    // from the Safari Zone always works, exactly as HandleAction_SafariZoneRun does.
+                    gBattlerAttacker = battler;
+                    PlaySE(SE_FLEE);
+                    gCurrentTurnActionNumber = gBattlersCount;
+                    gBattleOutcome = B_OUTCOME_RAN;
+                    gBattleMainFunc = HandleEndTurn_RanFromBattle;
+                    return;
+                }
                 if (IsRunningFromBattleImpossible(battler) == BATTLE_RUN_SUCCESS && TryRunFromBattle(battler))
                 {
                     gBattleMainFunc = HandleEndTurn_RanFromBattle;
@@ -4205,7 +4240,7 @@ void BattleTurnPassed(void)
         BattleScriptExecute(BattleScript_ArenaTurnBeginning);
 }
 
-u8 IsRunningFromBattleImpossible(enum BattlerId battler)
+static u8 IsRunningFromBattleImpossibleInternal(enum BattlerId battler, bool32 checkAbilityPrevention)
 {
     enum HoldEffect holdEffect;
     u32 i;
@@ -4244,7 +4279,7 @@ u8 IsRunningFromBattleImpossible(enum BattlerId battler)
     if (GetBattlerAbility(battler) == ABILITY_RUN_AWAY)
         return BATTLE_RUN_SUCCESS;
 
-    if ((i = IsAbilityPreventingEscape(battler)))
+    if (checkAbilityPrevention && (i = IsAbilityPreventingEscape(battler)))
     {
         gBattleScripting.battler = i - 1;
         gLastUsedAbility = gBattleMons[i - 1].ability;
@@ -4258,6 +4293,17 @@ u8 IsRunningFromBattleImpossible(enum BattlerId battler)
         return BATTLE_RUN_FORBIDDEN;
     }
     return BATTLE_RUN_SUCCESS;
+}
+
+u8 IsRunningFromBattleImpossible(enum BattlerId battler)
+{
+    return IsRunningFromBattleImpossibleInternal(battler, TRUE);
+}
+
+u8 IsTeleportRunningFromBattleImpossible(enum BattlerId battler)
+{
+    // From Gen 8 onward, Teleport succeeds even if the user is trapped by an Ability.
+    return IsRunningFromBattleImpossibleInternal(battler, GetConfig(B_TELEPORT_BEHAVIOR) < GEN_8);
 }
 
 void SwitchTwoBattlersInParty(enum BattlerId battler, enum BattlerId battler2)
@@ -4325,9 +4371,12 @@ static void HandleTurnActionSelectionState(void)
 {
     s32 i;
 
+    gAiLogicData->reverseBattlerLogicOrder = RandomPercentage(RNG_AI_REVERSE_BATTLER_LOGIC_ORDER, AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE) && IsDoubleBattle();
+
     gBattleCommunication[ACTIONS_CONFIRMED_COUNT] = 0;
-    for (enum BattlerId battler = 0; battler < gBattlersCount; battler++)
+    for (enum BattlerId battlerIndex = 0; battlerIndex < gBattlersCount; battlerIndex++)
     {
+        enum BattlerId battler = gAiLogicData->reverseBattlerLogicOrder ? BATTLE_PARTNER(battlerIndex) : battlerIndex;
         enum BattlerPosition position = GetBattlerPosition(battler);
         switch (gBattleCommunication[battler])
         {
@@ -5578,18 +5627,28 @@ static void HandleEndTurn_BattleWon(void)
         BattleStopLowHpSound();
         gBattlescriptCurrInstr = BattleScript_FrontierTrainerBattleWon;
 
+        // This branch covers three things at once: the Battle Frontier, Trainer Hill, and
+        // the Battle Tents in Trainer Hill's courtyard (which set BATTLE_TYPE_PALACE/ARENA/
+        // FACTORY, all inside the BATTLE_TYPE_FRONTIER mask). The Frontier is a Hoenn
+        // institution and stays on the Emerald themes throughout; Trainer Hill and the Tents
+        // are Johto and take the HG ones, matching what GetBattleBGM gives them. They are
+        // told apart by map section, since the battle type flags do not separate the Tents
+        // from the Frontier proper.
         if (TRAINER_BATTLE_PARAM.opponentA == TRAINER_FRONTIER_BRAIN)
-        #if IS_HNS
-            PlayBGM(MUS_HG_VICTORY_FRONTIER_BRAIN);
-        #else
+        {
+            // Brains only ever appear in the Battle Frontier, so this is always Emerald.
             PlayBGM(MUS_VICTORY_GYM_LEADER);
-        #endif
-        else
-        #if IS_HNS
+        }
+    #if IS_HNS
+        else if (gMapHeader.regionMapSectionId == MAPSEC_TRAINER_HILL)
+        {
             PlayBGM(MUS_HG_VICTORY_TRAINER);
-        #else
+        }
+    #endif
+        else
+        {
             PlayBGM(MUS_VICTORY_TRAINER);
-        #endif
+        }
     }
     else if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && !(gBattleTypeFlags & BATTLE_TYPE_LINK))
     {
@@ -5600,8 +5659,26 @@ static void HandleEndTurn_BattleWon(void)
         {
         case TRAINER_CLASS_ELITE_FOUR:
         case TRAINER_CLASS_CHAMPION:
+        // HnS uses its own class constants for these, so without them the Johto/Kanto
+        // Elite Four and Champions fell through to the ordinary trainer victory theme.
+        case TRAINER_CLASS_ELITE_FOUR_HNS:
+        case TRAINER_CLASS_CHAMPION_HNS:
+        case TRAINER_CLASS_PKMN_TRAINER_1_HNS:
+        // Same for FR/LG, which has no separate league victory theme at all - its
+        // Elite Four and Champion share the Gym Leader one.
+        case TRAINER_CLASS_ELITE_FOUR_FRLG:
+        case TRAINER_CLASS_CHAMPION_FRLG:
         #if IS_HNS
-            PlayBGM(MUS_HG_VICTORY_GYM_LEADER);
+            // Steven is an Emerald guest, so he keeps the Emerald league victory theme
+            // to match the Emerald champion battle theme GetBattleBGM gives him. No
+            // facility check needed here, the Frontier and Trainer Hill are handled by
+            // the branch above, so opponentA is always a real gTrainers id at this point.
+            if (TRAINER_BATTLE_PARAM.opponentA == TRAINER_STEVEN_HNS)
+                PlayBGM(MUS_VICTORY_LEAGUE);
+            else
+                PlayBGM(MUS_HG_VICTORY_GYM_LEADER);
+        #elif IS_FRLG
+            PlayBGM(MUS_RG_VICTORY_GYM_LEADER);
         #else
             PlayBGM(MUS_VICTORY_LEAGUE);
         #endif
@@ -5615,8 +5692,13 @@ static void HandleEndTurn_BattleWon(void)
             PlayBGM(MUS_VICTORY_AQUA_MAGMA);
             break;
         case TRAINER_CLASS_LEADER:
+        case TRAINER_CLASS_LEADER_HNS:
+        case TRAINER_CLASS_LEADER_KANTO_HNS:
+        case TRAINER_CLASS_LEADER_FRLG:
         #if IS_HNS
             PlayBGM(MUS_HG_VICTORY_GYM_LEADER);
+        #elif IS_FRLG
+            PlayBGM(MUS_RG_VICTORY_GYM_LEADER);
         #else
             PlayBGM(MUS_VICTORY_GYM_LEADER);
         #endif
@@ -5872,7 +5954,10 @@ static void HandleEndTurn_FinishBattle(void)
             {
                 // An off-type mon under the One Type Challenge could never have been
                 // caught, so it must not burn the route's Nuzlocke encounter.
-                if (!NuzlockeIsSpeciesClauseActive && !OneTypeChallengeCaptureBlocked)
+                // The Safari Zone / Bug Contest suspend the one-encounter-per-zone
+                // rule, so a catch there must not burn the zone either.
+                if (!NuzlockeIsSpeciesClauseActive && !OneTypeChallengeCaptureBlocked
+                 && !IsNuzlockeCaptureSuspended())
                     NuzlockeFlagSet(NuzlockeGetCurrentRegionMapSectionId());
             }
             NuzlockeIsCaptureBlocked = FALSE;
@@ -6098,6 +6183,9 @@ enum Type TrySetAteType(enum Move move, enum BattlerId battlerAtk, enum Ability 
     case ABILITY_GALVANIZE:
         ateType = TYPE_ELECTRIC;
         break;
+    case ABILITY_DRAGONIZE:
+        ateType = TYPE_DRAGON;
+        break;
     default:
         ateType = TYPE_NONE;
         break;
@@ -6107,14 +6195,12 @@ enum Type TrySetAteType(enum Move move, enum BattlerId battlerAtk, enum Ability 
 }
 
 // Returns TYPE_NONE if type doesn't change.
-enum Type GetDynamicMoveType(struct Pokemon *mon, enum Move move, enum BattlerId battler, enum MonState state)
+enum Type GetDynamicMoveType(struct Pokemon *mon, enum Move move, enum BattlerId battler, enum Ability ability, enum HoldEffect holdEffect, enum MonState state)
 {
     enum Type moveType = GetMoveType(move);
     enum BattleMoveEffects moveEffect = GetMoveEffect(move);
     u32 species, heldItem;
     enum Type type1, type2, type3;
-    enum Ability ability;
-    enum HoldEffect holdEffect;
     enum Gimmick gimmick = GetActiveGimmick(battler);
 
     if (state == MON_IN_BATTLE)
@@ -6124,8 +6210,6 @@ enum Type GetDynamicMoveType(struct Pokemon *mon, enum Move move, enum BattlerId
 
         species = gBattleMons[battler].species;
         heldItem = gBattleMons[battler].item;
-        holdEffect = GetBattlerHoldEffect(battler);
-        ability = GetBattlerAbility(battler);
         type1 = gBattleMons[battler].types[0];
         type2 = gBattleMons[battler].types[1];
         type3 = gBattleMons[battler].types[2];
@@ -6146,22 +6230,22 @@ enum Type GetDynamicMoveType(struct Pokemon *mon, enum Move move, enum BattlerId
     case EFFECT_WEATHER_BALL:
         if (state == MON_IN_BATTLE)
         {
-            if (HasWeatherEffect())
-            {
-                if (gBattleWeather & B_WEATHER_RAIN && holdEffect != HOLD_EFFECT_UTILITY_UMBRELLA)
-                    return TYPE_WATER;
-                else if (gBattleWeather & B_WEATHER_SANDSTORM)
-                    return TYPE_ROCK;
-                else if (gBattleWeather & B_WEATHER_SUN && holdEffect != HOLD_EFFECT_UTILITY_UMBRELLA)
-                    return TYPE_FIRE;
-                else if (gBattleWeather & B_WEATHER_ICY_ANY)
-                    return TYPE_ICE;
-                else
-                    return moveType;
-            }
+            u32 weather = GetAttackerWeather(holdEffect, ability, GetBattleWeatherForEffects());
+            if (weather & B_WEATHER_SUN)
+                return TYPE_FIRE;
+            else if (weather & B_WEATHER_RAIN)
+                return TYPE_WATER;
+            else if (weather & B_WEATHER_SANDSTORM)
+                return TYPE_ROCK;
+            else if (weather & B_WEATHER_ICY_ANY)
+                return TYPE_ICE;
+            else
+                return moveType;
         }
         else
         {
+            if (ability == ABILITY_MEGA_SOL)
+                return TYPE_FIRE;
             switch (gWeatherPtr->currWeather)
             {
             case WEATHER_DROUGHT:
@@ -6349,11 +6433,10 @@ enum Type GetDynamicMoveType(struct Pokemon *mon, enum Move move, enum BattlerId
     return TYPE_NONE;
 }
 
-void SetTypeBeforeUsingMove(enum Move move, enum BattlerId battler)
+void SetTypeBeforeUsingMove(enum Move move, enum BattlerId battler, enum Ability ability, enum HoldEffect holdEffect)
 {
     enum Type moveType;
     u32 heldItem = gBattleMons[battler].item;
-    enum HoldEffect holdEffect = GetBattlerHoldEffect(battler);
 
     gBattleStruct->dynamicMoveType = 0;
     gBattleStruct->battlerState[battler].ateBoost = FALSE;
@@ -6362,6 +6445,8 @@ void SetTypeBeforeUsingMove(enum Move move, enum BattlerId battler)
     moveType = GetDynamicMoveType(GetBattlerMon(battler),
                                   move,
                                   battler,
+                                  ability,
+                                  holdEffect,
                                   MON_IN_BATTLE);
 
     if (moveType != TYPE_NONE)

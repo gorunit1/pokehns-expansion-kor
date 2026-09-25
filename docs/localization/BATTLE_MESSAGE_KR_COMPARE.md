@@ -1,0 +1,435 @@
+# battle_message.c 한글 텍스트 대조 보고서
+
+- 기준일: 2026-09-13
+- 원본: `../pokeemerald-kr/src/battle_message.c`
+- 대상: `src/battle_message.c`
+- 작업 방식: HNS 파일의 코드 구성·배열 순서·위치·주석은 유지하고 `_()`/`COMPOUND_STRING()` 문자열 리터럴 내부만 교체했다.
+- 후속 복구(2026-09-15): 아래 ‘대응 STRINGID가 없는 HNS 텍스트’ 목록 중 `src/battle_message.c:566-594`는 VS Code 서버 로컬 기록에서 확인한 실제 사용자 한글 원문으로 복원했다. 해당 목록의 영어 값은 복구 전 비교 기준이며, KR 원본에 대응 ID가 없다는 사실을 기록하기 위해 남겨 둔다.
+- 전체 원문 대조(2026-09-15): VS Code 서버 로컬 기록 `jHTf.c`와 현재 `src/battle_message.c`를 전체 비교한 결과 차이가 없었다. 566–594번 문자열뿐 아니라 메가진화 문구, 링크 상대 이름 처리, 조사 처리 코드, 배틀 메뉴 좌표까지 사용자의 기록 원문을 그대로 복원했다.
+
+## 적용 결과
+
+- 이름이 같은 선언에서 변경: 62개
+- `STRINGID`가 대응하는 테이블 문자열에서 변경: 311개
+- 포켓블록 맛 문자열에서 변경: 5개
+- 빌드 전 별칭 조정: `B_SCR_ACTIVE_NAME_WITH_PREFIX` → `B_SCR_NAME_WITH_PREFIX`, `B_SCR_ACTIVE_ABILITY` → `B_SCR_ABILITY`, `B_ACTIVE_NAME_WITH_PREFIX` → HNS 버퍼, `DARK_GREY` → `DARK_GRAY`.
+- `sText_AttackerUsedX`는 HNS가 기술명을 `B_BUFF3`에 채우므로 KR 문장 구조를 유지하면서 HNS 버퍼와 조사 토큰으로 조정했다.
+
+## pokeemerald-kr battle_message.c에 같은 선언명이 없는 HNS 텍스트
+
+아래 39개 선언은 pokeemerald-kr 파일에 같은 선언명이 없다. `gText_StatSharply`·`gText_StatFell`·`sText_WildPkmnPrefixLower`·`sText_FoePkmnPrefixLower`·`sText_SpAttack`·`sText_SpDefense`·`gText_Judgment`처럼 다른 선언명 또는 공통 `STRINGID`로 같은 텍스트가 존재하는 항목도 포함되므로, 이 목록 전체를 미번역으로 간주하지 않는다. 나머지는 KR 파일에서 직접 대응되는 고정 문자열을 찾지 못한 항목이다.
+
+- 이름만 다른 확인된 대응: `gText_StatSharply` → `sText_StatSharply`, `gText_StatFell` → `sText_StatFell`, `sText_WildPkmnPrefixLower` → `sText_WildPkmnPrefix`, `sText_FoePkmnPrefixLower` → `sText_FoePkmnPrefix`, `sText_SpAttack` → `sText_SpAtk2`, `sText_SpDefense` → `sText_SpDef2`, `gText_Judgment` → `gText_Judgement`.
+
+- `src/battle_message.c:76` `gText_StatSharply`: `크게 `
+- `src/battle_message.c:78` `gText_StatFell`: `떨어졌다!`
+- `src/battle_message.c:79` `gText_DefendersStatRose`: `{B_DEF_NAME_WITH_PREFIX}의\n{B_BUFF1}{B_TXT_IGA} {B_BUFF2}올라갔다!`
+- `src/battle_message.c:92` `sText_WildPkmnAppearedLR`: `Wild {B_OPPONENT_MON1_NAME} appeared!\nRun? {L_BUTTON}+{R_BUTTON}+{A_BUTTON}\p`
+- `src/battle_message.c:93` `sText_WildPkmnAppearedB`: `Wild {B_OPPONENT_MON1_NAME} appeared!\nRun? Press {B_BUTTON}.\p`
+- `src/battle_message.c:94` `sText_LegendaryPkmnAppeared`: `You encountered a wild {B_OPPONENT_MON1_NAME}!\p`
+- `src/battle_message.c:97` `sText_GhostAppearedCantId`: `The GHOST appeared!\pDarn!\nThe GHOST can't be ID'd!\p`
+- `src/battle_message.c:98` `sText_TheGhostAppeared`: `The GHOST appeared!\p`
+- `src/battle_message.c:106` `sText_LinkTrainer2SentOutPkmn2`: `{B_LINK_OPPONENT2_NAME} sent out {B_OPPONENT_MON2_NAME}!`
+- `src/battle_message.c:116` `sText_JustALittleMorePkmn`: `Just a little more! Hang in there, {B_BUFF1}!`
+- `src/battle_message.c:118` `sText_LinkPartnerSentOutPkmn1GoPkmn`: `{B_LINK_PARTNER_NAME} sent out {B_LINK_PLAYER_MON1_NAME}! Go! {B_LINK_PLAYER_MON2_NAME}!`
+- `src/battle_message.c:119` `sText_LinkPartnerSentOutPkmn2GoPkmn`: `{B_LINK_PARTNER_NAME} sent out {B_LINK_PLAYER_MON2_NAME}! Go! {B_LINK_PLAYER_MON1_NAME}!`
+- `src/battle_message.c:120` `sText_LinkPartnerSentOutPkmn1`: `{B_LINK_PARTNER_NAME} sent out {B_LINK_PLAYER_MON1_NAME}!`
+- `src/battle_message.c:121` `sText_LinkPartnerSentOutPkmn2`: `{B_LINK_PARTNER_NAME} sent out {B_LINK_PLAYER_MON2_NAME}!`
+- `src/battle_message.c:122` `sText_LinkPartnerWithdrewPkmn1`: `{B_LINK_PARTNER_NAME} withdrew {B_LINK_PLAYER_MON1_NAME}!`
+- `src/battle_message.c:123` `sText_LinkPartnerWithdrewPkmn2`: `{B_LINK_PARTNER_NAME} withdrew {B_LINK_PLAYER_MON2_NAME}!`
+- `src/battle_message.c:124` `sText_PkmnSwitchOut`: `{B_BUFF1}, switch out! Come back!`
+- `src/battle_message.c:130` `sText_Trainer2WithdrewPkmn`: `{B_TRAINER2_NAME_WITH_CLASS} withdrew {B_BUFF1}!`
+- `src/battle_message.c:135` `sText_WildPkmnPrefixLower`: `야생 `
+- `src/battle_message.c:136` `sText_FoePkmnPrefixLower`: `상대 `
+- `src/battle_message.c:154` `sText_SpAttack`: `특수공격`
+- `src/battle_message.c:155` `sText_SpDefense`: `특수방어`
+- `src/battle_message.c:181` `sText_Bills`: `BILL's`
+- `src/battle_message.c:189` `gText_drastically`: `drastically `
+- `src/battle_message.c:190` `gText_severely`: `severely `
+- `src/battle_message.c:191` `sText_TerrainReturnedToNormal`: `The terrain returned to normal!`
+- `src/battle_message.c:1427` `gText_SafariZoneMenuFrlg`: `{PALETTE 5}{COLOR_HIGHLIGHT_SHADOW 13 14 15}BALL{CLEAR_TO 56}BAIT\nROCK{CLEAR_TO 56}RUN`
+- `src/battle_message.c:1483` `gText_Judgment`: `{B_BUFF1}{CLEAR 13}판정{CLEAR 13}{B_BUFF2}`
+- `src/battle_message.c:1488` `sText_InGamePartnerSentOutNGoZ`: `{B_PARTNER_CLASS} {B_PARTNER_NAME}{B_TXT_EUNNEUN}\n{B_PLAYER_MON1_NAME}{B_TXT_EULREUL} 내보냈다!\l가랏! {B_PLAYER_MON2_NAME}!`
+- `src/battle_message.c:1489` `sText_InGamePartnerSentOutPkmn1`: `{B_PARTNER_NAME_WITH_CLASS}{B_TXT_EUNNEUN}\n{B_PLAYER_MON1_NAME}{B_TXT_EULREUL} 내보냈다!`
+- `src/battle_message.c:1490` `sText_InGamePartnerSentOutPkmn2`: `{B_PARTNER_NAME_WITH_CLASS}{B_TXT_EUNNEUN}\n{B_PLAYER_MON2_NAME}{B_TXT_EULREUL} 내보냈다!`
+- `src/battle_message.c:1491` `sText_InGamePartnerWithdrewPkmn1`: `{B_PARTNER_NAME_WITH_CLASS}{B_TXT_EUNNEUN}\n{B_PLAYER_MON1_NAME}{B_TXT_EULREUL} 넣어버렸다!`
+- `src/battle_message.c:1492` `sText_InGamePartnerWithdrewPkmn2`: `{B_PARTNER_NAME_WITH_CLASS}{B_TXT_EUNNEUN}\n{B_PLAYER_MON2_NAME}{B_TXT_EULREUL} 넣어버렸다!`
+- `src/battle_message.c:1514` `sText_Trainer1Fled`: `{PLAY_SE SE_FLEE}{B_TRAINER1_CLASS} {B_TRAINER1_NAME}{B_TXT_EUNNEUN}\n도망쳤다!`
+- `src/battle_message.c:1522` `sText_Your1`: `우리`
+- `src/battle_message.c:1523` `sText_Opposing1`: `상대`
+- `src/battle_message.c:1524` `sText_Your2`: `우리`
+- `src/battle_message.c:1525` `sText_Opposing2`: `상대`
+- `src/battle_message.c:1526` `sText_EmptyStatus`: `$$$$$$$`
+
+## pokeemerald-kr battle_message.c에 대응 STRINGID가 없는 HNS 텍스트
+
+아래 항목은 HNS 확장·최신 세대 배틀 메시지 등으로, KR 파일의 `gBattleStringsTable`에 같은 ID가 없다.
+
+- `src/battle_message.c:210` `STRINGID_SCR_ITDOESNTAFFECT`: `It doesn't affect {B_SCR_NAME_WITH_PREFIX2}…`
+- `src/battle_message.c:211` `STRINGID_BATTLERFAINTED`: `{B_SCR_NAME_WITH_PREFIX} fainted!\p`
+- `src/battle_message.c:214` `STRINGID_PLAYERWHITEOUT2_WILD`: `You panicked and dropped ¥{B_BUFF1}…`
+- `src/battle_message.c:215` `STRINGID_PLAYERWHITEOUT2_TRAINER`: `You gave ¥{B_BUFF1} to the winner…`
+- `src/battle_message.c:216` `STRINGID_PLAYERWHITEOUT3`: `You were overwhelmed by your defeat!`
+- `src/battle_message.c:298` `STRINGID_PLAYERPICKEDUPMONEY`: `You picked up ¥{B_BUFF1}!\p`
+- `src/battle_message.c:311` `STRINGID_PKMNGOTENCOREDMOVE`: `{B_SCR_NAME_WITH_PREFIX} can only use {B_CURRENT_MOVE}!\p`
+- `src/battle_message.c:383` `STRINGID_ATTACKERSSTATROSE`: `{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1} {B_BUFF2}rose!`
+- `src/battle_message.c:385` `STRINGID_SCRIPTINGSTATROSE`: `{B_SCR_NAME_WITH_PREFIX}'s {B_BUFF1} {B_BUFF2}rose!`
+- `src/battle_message.c:386` `STRINGID_ATTACKERSSTATFELL`: `{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1} {B_BUFF2}fell!`
+- `src/battle_message.c:387` `STRINGID_DEFENDERSSTATFELL`: `{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} {B_BUFF2}fell!`
+- `src/battle_message.c:437` `STRINGID_GOTCHAPKMNCAUGHTPLAYER`: `Gotcha! {B_DEF_NAME} was caught!{WAIT_SE}{PLAY_BGM MUS_CAUGHT}\p`
+- `src/battle_message.c:438` `STRINGID_GOTCHAPKMNCAUGHTWALLY`: `Gotcha! {B_DEF_NAME} was caught!{WAIT_SE}{PLAY_BGM MUS_CAUGHT}{PAUSE 127}`
+- `src/battle_message.c:492` `STRINGID_USINGITEMSTATOFPKMNROSE`: `Using {B_LAST_ITEM}, the {B_BUFF1} of {B_SCR_NAME_WITH_PREFIX2} {B_BUFF2}rose!`
+- `src/battle_message.c:493` `STRINGID_USINGITEMSTATOFPKMNFELL`: `Using {B_LAST_ITEM}, the {B_BUFF1} of {B_SCR_NAME_WITH_PREFIX2} {B_BUFF2}fell!`
+- `src/battle_message.c:543` `STRINGID_ENDUREDSTURDY`: `{B_DEF_NAME_WITH_PREFIX} endured the hit using {B_DEF_ABILITY}!`
+- `src/battle_message.c:544` `STRINGID_POWERHERB`: `{B_ATK_NAME_WITH_PREFIX} became fully charged due to its {B_LAST_ITEM}!`
+- `src/battle_message.c:545` `STRINGID_HURTBYITEM`: `{B_ATK_NAME_WITH_PREFIX} was hurt by the {B_LAST_ITEM}!`
+- `src/battle_message.c:546` `STRINGID_GRAVITYINTENSIFIED`: `Gravity intensified!`
+- `src/battle_message.c:547` `STRINGID_TARGETWOKEUP`: `{B_DEF_NAME_WITH_PREFIX} woke up!`
+- `src/battle_message.c:548` `STRINGID_TAILWINDBLEW`: `The Tailwind blew from behind {B_ATK_TEAM2} team!`
+- `src/battle_message.c:549` `STRINGID_PKMNWENTBACK`: `{B_ATK_NAME_WITH_PREFIX} went back to {B_ATK_TRAINER_NAME}!`
+- `src/battle_message.c:550` `STRINGID_PKMNCANTUSEITEMSANYMORE`: `{B_DEF_NAME_WITH_PREFIX} can't use items anymore!`
+- `src/battle_message.c:551` `STRINGID_PKMNFLUNG`: `{B_ATK_NAME_WITH_PREFIX} flung its {B_LAST_ITEM}!`
+- `src/battle_message.c:552` `STRINGID_PKMNPREVENTEDFROMHEALING`: `{B_DEF_NAME_WITH_PREFIX} was prevented from healing!`
+- `src/battle_message.c:553` `STRINGID_PKMNSWITCHEDATKANDDEF`: `{B_ATK_NAME_WITH_PREFIX} switched its ATTACK and DEFENSE!`
+- `src/battle_message.c:554` `STRINGID_PKMNSABILITYSUPPRESSED`: `{B_DEF_NAME_WITH_PREFIX}'s Ability was suppressed!`
+- `src/battle_message.c:555` `STRINGID_SHIELDEDFROMCRITICALHITS`: `Lucky Chant shielded {B_ATK_TEAM2} team from critical hits!`
+- `src/battle_message.c:556` `STRINGID_PKMNACQUIREDABILITY`: `{B_DEF_NAME_WITH_PREFIX} acquired {B_DEF_ABILITY}!`
+- `src/battle_message.c:557` `STRINGID_POISONSPIKESSCATTERED`: `Poison spikes were scattered on the ground all around {B_DEF_TEAM2} team!`
+- `src/battle_message.c:558` `STRINGID_PKMNSWITCHEDSTATCHANGES`: `{B_ATK_NAME_WITH_PREFIX} switched stat changes with its target!`
+- `src/battle_message.c:559` `STRINGID_PKMNSURROUNDEDWITHVEILOFWATER`: `{B_ATK_NAME_WITH_PREFIX} surrounded itself with a veil of water!`
+- `src/battle_message.c:560` `STRINGID_PKMNLEVITATEDONELECTROMAGNETISM`: `{B_ATK_NAME_WITH_PREFIX} levitated with electromagnetism!`
+- `src/battle_message.c:561` `STRINGID_PKMNTWISTEDDIMENSIONS`: `{B_ATK_NAME_WITH_PREFIX} twisted the dimensions!`
+- `src/battle_message.c:562` `STRINGID_POINTEDSTONESFLOAT`: `Pointed stones float in the air around {B_DEF_TEAM2} team!`
+- `src/battle_message.c:563` `STRINGID_TRAPPEDBYSWIRLINGMAGMA`: `{B_DEF_NAME_WITH_PREFIX} became trapped by swirling magma!`
+- `src/battle_message.c:564` `STRINGID_VANISHEDINSTANTLY`: `{B_ATK_NAME_WITH_PREFIX} vanished instantly!`
+- `src/battle_message.c:565` `STRINGID_PROTECTEDTEAM`: `{B_CURRENT_MOVE} protected {B_ATK_TEAM2} team!`
+- `src/battle_message.c:566` `STRINGID_SHAREDITSGUARD`: `{B_ATK_NAME_WITH_PREFIX} shared its guard with the target!`
+- `src/battle_message.c:567` `STRINGID_SHAREDITSPOWER`: `{B_ATK_NAME_WITH_PREFIX} shared its power with the target!`
+- `src/battle_message.c:568` `STRINGID_SWAPSDEFANDSPDEFOFALLPOKEMON`: `It created a bizarre area in which DEFENSE and SP. DEF stats are swapped!`
+- `src/battle_message.c:569` `STRINGID_BECAMENIMBLE`: `{B_ATK_NAME_WITH_PREFIX} became nimble!`
+- `src/battle_message.c:570` `STRINGID_HURLEDINTOTHEAIR`: `{B_DEF_NAME_WITH_PREFIX} was hurled into the air!`
+- `src/battle_message.c:571` `STRINGID_HELDITEMSLOSEEFFECTS`: `It created a bizarre area in which Pokémon's held items lose their effects!`
+- `src/battle_message.c:572` `STRINGID_FELLSTRAIGHTDOWN`: `{B_DEF_NAME_WITH_PREFIX} fell straight down!`
+- `src/battle_message.c:573` `STRINGID_TARGETCHANGEDTYPE`: `{B_DEF_NAME_WITH_PREFIX} transformed into the {B_BUFF1} type!`
+- `src/battle_message.c:574` `STRINGID_KINDOFFER`: `{B_DEF_NAME_WITH_PREFIX} took the kind offer!`
+- `src/battle_message.c:575` `STRINGID_RESETSTARGETSSTATLEVELS`: `{B_DEF_NAME_WITH_PREFIX}'s stat changes were removed!`
+- `src/battle_message.c:576` `STRINGID_ALLYSWITCHPOSITION`: `{B_ATK_NAME_WITH_PREFIX} and {B_SCR_NAME_WITH_PREFIX2} switched places!`
+- `src/battle_message.c:577` `STRINGID_REFLECTTARGETSTYPE`: `{B_ATK_NAME_WITH_PREFIX} became the same type as {B_DEF_NAME_WITH_PREFIX2}!`
+- `src/battle_message.c:578` `STRINGID_EMBARGOENDS`: `{B_ATK_NAME_WITH_PREFIX} can use items again!`
+- `src/battle_message.c:579` `STRINGID_ELECTROMAGNETISM`: `electromagnetism`
+- `src/battle_message.c:580` `STRINGID_BUFFERENDS`: `{B_SCR_NAME_WITH_PREFIX}'s {B_BUFF1} wore off!`
+- `src/battle_message.c:581` `STRINGID_TELEKINESISENDS`: `{B_ATK_NAME_WITH_PREFIX} was freed from the telekinesis!`
+- `src/battle_message.c:582` `STRINGID_TAILWINDENDS`: `{B_ATK_TEAM1} team's Tailwind petered out!`
+- `src/battle_message.c:583` `STRINGID_LUCKYCHANTENDS`: `{B_ATK_TEAM1} team's Lucky Chant wore off!`
+- `src/battle_message.c:584` `STRINGID_TRICKROOMENDS`: `The twisted dimensions returned to normal!`
+- `src/battle_message.c:585` `STRINGID_WONDERROOMENDS`: `Wonder Room wore off, and DEFENSE and SP. DEF stats returned to normal!`
+- `src/battle_message.c:586` `STRINGID_MAGICROOMENDS`: `Magic Room wore off, and held items' effects returned to normal!`
+- `src/battle_message.c:587` `STRINGID_MUDSPORTENDS`: `The effects of Mud Sport have faded.`
+- `src/battle_message.c:588` `STRINGID_WATERSPORTENDS`: `The effects of Water Sport have faded.`
+- `src/battle_message.c:589` `STRINGID_GRAVITYENDS`: `Gravity returned to normal!`
+- `src/battle_message.c:590` `STRINGID_AQUARINGHEAL`: `A veil of water restored {B_ATK_NAME_WITH_PREFIX2}'s HP!`
+- `src/battle_message.c:591` `STRINGID_ELECTRICTERRAINENDS`: `The electricity disappeared from the battlefield.`
+- `src/battle_message.c:592` `STRINGID_MISTYTERRAINENDS`: `The mist disappeared from the battlefield.`
+- `src/battle_message.c:593` `STRINGID_PSYCHICTERRAINENDS`: `The weirdness disappeared from the battlefield!`
+- `src/battle_message.c:594` `STRINGID_GRASSYTERRAINENDS`: `The grass disappeared from the battlefield.`
+- `src/battle_message.c:595` `STRINGID_TARGETABILITYSTATRAISE`: `{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} {B_BUFF2}raised its {B_BUFF1}!`
+- `src/battle_message.c:596` `STRINGID_TARGETSSTATWASMAXEDOUT`: `{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} maxed its {B_BUFF1}!`
+- `src/battle_message.c:597` `STRINGID_ATTACKERABILITYSTATRAISE`: `{B_ATK_NAME_WITH_PREFIX}'s {B_ATK_ABILITY} {B_BUFF2}raised its {B_BUFF1}!`
+- `src/battle_message.c:598` `STRINGID_POISONHEALHPUP`: `The poisoning healed {B_ATK_NAME_WITH_PREFIX2} a little bit!`
+- `src/battle_message.c:599` `STRINGID_BADDREAMSDMG`: `{B_DEF_NAME_WITH_PREFIX} is tormented!`
+- `src/battle_message.c:600` `STRINGID_MOLDBREAKERENTERS`: `{B_SCR_NAME_WITH_PREFIX} breaks the mold!`
+- `src/battle_message.c:601` `STRINGID_TERAVOLTENTERS`: `{B_SCR_NAME_WITH_PREFIX} is radiating a bursting aura!`
+- `src/battle_message.c:602` `STRINGID_TURBOBLAZEENTERS`: `{B_SCR_NAME_WITH_PREFIX} is radiating a blazing aura!`
+- `src/battle_message.c:603` `STRINGID_SLOWSTARTENTERS`: `{B_SCR_NAME_WITH_PREFIX} is slow to get going!`
+- `src/battle_message.c:604` `STRINGID_SLOWSTARTEND`: `{B_ATK_NAME_WITH_PREFIX} finally got its act together!`
+- `src/battle_message.c:605` `STRINGID_SOLARPOWERHPDROP`: `{B_ATK_NAME_WITH_PREFIX}'s {B_ATK_ABILITY} takes its toll!`
+- `src/battle_message.c:606` `STRINGID_AFTERMATHDMG`: `{B_ATK_NAME_WITH_PREFIX} was hurt!`
+- `src/battle_message.c:607` `STRINGID_ANTICIPATIONACTIVATES`: `{B_SCR_NAME_WITH_PREFIX} shuddered!`
+- `src/battle_message.c:608` `STRINGID_FOREWARNACTIVATES`: `{B_SCR_ABILITY} alerted {B_SCR_NAME_WITH_PREFIX2} to {B_EFF_NAME_WITH_PREFIX2}'s {B_BUFF1}!`
+- `src/battle_message.c:609` `STRINGID_ICEBODYHPGAIN`: `{B_ATK_NAME_WITH_PREFIX}'s {B_ATK_ABILITY} healed it a little bit!`
+- `src/battle_message.c:610` `STRINGID_SNOWWARNINGHAIL`: `It started to hail!`
+- `src/battle_message.c:611` `STRINGID_FRISKACTIVATES`: `{B_ATK_NAME_WITH_PREFIX} frisked {B_DEF_NAME_WITH_PREFIX2} and found its {B_LAST_ITEM}!`
+- `src/battle_message.c:612` `STRINGID_UNNERVEENTERS`: `{B_EFF_TEAM1} team is too nervous to eat Berries!`
+- `src/battle_message.c:613` `STRINGID_HARVESTBERRY`: `{B_ATK_NAME_WITH_PREFIX} harvested its {B_LAST_ITEM}!`
+- `src/battle_message.c:614` `STRINGID_PROTEANTYPECHANGE`: `{B_ATK_NAME_WITH_PREFIX}'s {B_ATK_ABILITY} transformed it into the {B_BUFF1} type!`
+- `src/battle_message.c:615` `STRINGID_SYMBIOSISITEMPASS`: `{B_SCR_NAME_WITH_PREFIX} passed its {B_LAST_ITEM} to {B_EFF_NAME_WITH_PREFIX2} through {B_LAST_ABILITY}!`
+- `src/battle_message.c:616` `STRINGID_STEALTHROCKDMG`: `Pointed stones dug into {B_SCR_NAME_WITH_PREFIX2}!`
+- `src/battle_message.c:617` `STRINGID_TOXICSPIKESABSORBED`: `The poison spikes disappeared from the ground around {B_EFF_TEAM2} team!`
+- `src/battle_message.c:618` `STRINGID_TOXICSPIKESPOISONED`: `{B_SCR_NAME_WITH_PREFIX} was poisoned!`
+- `src/battle_message.c:619` `STRINGID_TOXICSPIKESBADLYPOISONED`: `{B_SCR_NAME_WITH_PREFIX} was badly poisoned!`
+- `src/battle_message.c:620` `STRINGID_STICKYWEBSWITCHIN`: `{B_SCR_NAME_WITH_PREFIX} was caught in a sticky web!`
+- `src/battle_message.c:621` `STRINGID_HEALINGWISHCAMETRUE`: `The healing wish came true for {B_SCR_NAME_WITH_PREFIX2}!`
+- `src/battle_message.c:622` `STRINGID_HEALINGWISHHEALED`: `{B_SCR_NAME_WITH_PREFIX} regained health!`
+- `src/battle_message.c:623` `STRINGID_LUNARDANCECAMETRUE`: `{B_SCR_NAME_WITH_PREFIX} became cloaked in mystical moonlight!`
+- `src/battle_message.c:624` `STRINGID_CURSEDBODYDISABLED`: `{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1} was disabled by {B_DEF_NAME_WITH_PREFIX2}'s {B_DEF_ABILITY}!`
+- `src/battle_message.c:625` `STRINGID_ATTACKERACQUIREDABILITY`: `{B_ATK_NAME_WITH_PREFIX} acquired {B_ATK_ABILITY}!`
+- `src/battle_message.c:626` `STRINGID_TARGETABILITYSTATLOWER`: `{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} {B_BUFF2}lowered its {B_BUFF1}!`
+- `src/battle_message.c:627` `STRINGID_TARGETSTATWONTGOHIGHER`: `{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} won't go any higher!`
+- `src/battle_message.c:628` `STRINGID_PKMNMOVEBOUNCEDABILITY`: `{B_ATK_NAME_WITH_PREFIX}'s {B_CURRENT_MOVE} was bounced back by {B_DEF_NAME_WITH_PREFIX2}'s {B_DEF_ABILITY}!`
+- `src/battle_message.c:629` `STRINGID_IMPOSTERTRANSFORM`: `{B_ATK_NAME_WITH_PREFIX} transformed into {B_DEF_NAME_WITH_PREFIX2} using {B_LAST_ABILITY}!`
+- `src/battle_message.c:630` `STRINGID_ASSAULTVESTDOESNTALLOW`: `The effects of the {B_LAST_ITEM} prevent status moves from being used!\p`
+- `src/battle_message.c:631` `STRINGID_GRAVITYPREVENTSUSAGE`: `{B_ATK_NAME_WITH_PREFIX} can't use {B_CURRENT_MOVE} because of gravity!\p`
+- `src/battle_message.c:632` `STRINGID_HEALBLOCKPREVENTSUSAGE`: `{B_ATK_NAME_WITH_PREFIX} was prevented from healing!\p`
+- `src/battle_message.c:633` `STRINGID_NOTDONEYET`: `This move effect is not done yet!\p`
+- `src/battle_message.c:634` `STRINGID_STICKYWEBUSED`: `A sticky web has been laid out on the ground around {B_DEF_TEAM2} team!`
+- `src/battle_message.c:635` `STRINGID_QUASHSUCCESS`: `{B_DEF_NAME_WITH_PREFIX}'s move was postponed!`
+- `src/battle_message.c:636` `STRINGID_PKMNBLEWAWAYTOXICSPIKES`: `{B_ATK_NAME_WITH_PREFIX} blew away Toxic Spikes!`
+- `src/battle_message.c:637` `STRINGID_PKMNBLEWAWAYSTICKYWEB`: `{B_ATK_NAME_WITH_PREFIX} blew away Sticky Web!`
+- `src/battle_message.c:638` `STRINGID_PKMNBLEWAWAYSTEALTHROCK`: `{B_ATK_NAME_WITH_PREFIX} blew away Stealth Rock!`
+- `src/battle_message.c:639` `STRINGID_IONDELUGEON`: `A deluge of ions showers the battlefield!`
+- `src/battle_message.c:640` `STRINGID_TOPSYTURVYSWITCHEDSTATS`: `All stat changes on {B_DEF_NAME_WITH_PREFIX2} were inverted!`
+- `src/battle_message.c:641` `STRINGID_TERRAINBECOMESMISTY`: `Mist swirled around the battlefield!`
+- `src/battle_message.c:642` `STRINGID_TERRAINBECOMESGRASSY`: `Grass grew to cover the battlefield!`
+- `src/battle_message.c:643` `STRINGID_TERRAINBECOMESELECTRIC`: `An electric current ran across the battlefield!`
+- `src/battle_message.c:644` `STRINGID_TERRAINBECOMESPSYCHIC`: `The battlefield got weird!`
+- `src/battle_message.c:645` `STRINGID_TARGETELECTRIFIED`: `{B_DEF_NAME_WITH_PREFIX}'s moves have been electrified!`
+- `src/battle_message.c:646` `STRINGID_MEGAEVOREACTING`: `{B_ATK_NAME_WITH_PREFIX}'s {B_LAST_ITEM} is reacting to {B_ATK_TRAINER_NAME}'s Mega Ring!`
+- `src/battle_message.c:647` `STRINGID_MEGAEVOEVOLVED`: `{B_ATK_NAME_WITH_PREFIX} has Mega Evolved into Mega {B_BUFF1}!`
+- `src/battle_message.c:650` `STRINGID_INFESTATION`: `{B_DEF_NAME_WITH_PREFIX} has been afflicted with an infestation by {B_ATK_NAME_WITH_PREFIX2}!`
+- `src/battle_message.c:651` `STRINGID_NOEFFECTONTARGET`: `It won't have any effect on {B_DEF_NAME_WITH_PREFIX2}!`
+- `src/battle_message.c:652` `STRINGID_BURSTINGFLAMESHIT`: `The bursting flames hit {B_SCR_NAME_WITH_PREFIX2}!`
+- `src/battle_message.c:653` `STRINGID_BESTOWITEMGIVING`: `{B_DEF_NAME_WITH_PREFIX} received {B_LAST_ITEM} from {B_ATK_NAME_WITH_PREFIX2}!`
+- `src/battle_message.c:654` `STRINGID_THIRDTYPEADDED`: `{B_BUFF1} type was added to {B_DEF_NAME_WITH_PREFIX2}!`
+- `src/battle_message.c:655` `STRINGID_FELLFORFEINT`: `{B_DEF_NAME_WITH_PREFIX} fell for the feint!`
+- `src/battle_message.c:656` `STRINGID_POKEMONCANNOTUSEMOVE`: `{B_ATK_NAME_WITH_PREFIX} cannot use {B_CURRENT_MOVE}!`
+- `src/battle_message.c:657` `STRINGID_COVEREDINPOWDER`: `{B_DEF_NAME_WITH_PREFIX} is covered in powder!`
+- `src/battle_message.c:658` `STRINGID_POWDEREXPLODES`: `When the flame touched the powder on the Pokémon, it exploded!`
+- `src/battle_message.c:659` `STRINGID_BELCHCANTSELECT`: `{B_ATK_NAME_WITH_PREFIX} hasn't eaten any held Berries, so it can't possibly belch!\p`
+- `src/battle_message.c:660` `STRINGID_SPECTRALTHIEFSTEAL`: `{B_ATK_NAME_WITH_PREFIX} stole the target's boosted stats!`
+- `src/battle_message.c:661` `STRINGID_GRAVITYGROUNDING`: `{B_DEF_NAME_WITH_PREFIX} fell from the sky due to the gravity!`
+- `src/battle_message.c:662` `STRINGID_MISTYTERRAINPREVENTS`: `{B_DEF_NAME_WITH_PREFIX} surrounds itself with a protective mist!`
+- `src/battle_message.c:663` `STRINGID_GRASSYTERRAINHEALS`: `{B_ATK_NAME_WITH_PREFIX} is healed by the grassy terrain!`
+- `src/battle_message.c:664` `STRINGID_ELECTRICTERRAINPREVENTS`: `{B_DEF_NAME_WITH_PREFIX} surrounds itself with electrified terrain!`
+- `src/battle_message.c:665` `STRINGID_PSYCHICTERRAINPREVENTS`: `{B_SCR_NAME_WITH_PREFIX} is protected by the Psychic Terrain!`
+- `src/battle_message.c:666` `STRINGID_SAFETYGOGGLESPROTECTED`: `{B_SCR_NAME_WITH_PREFIX} is not affected thanks to its {B_LAST_ITEM}!`
+- `src/battle_message.c:667` `STRINGID_FLOWERVEILPROTECTED`: `{B_DEF_NAME_WITH_PREFIX} surrounded itself with a veil of petals!`
+- `src/battle_message.c:668` `STRINGID_AROMAVEILPROTECTED`: `{B_DEF_NAME_WITH_PREFIX} is protected by an aromatic veil!`
+- `src/battle_message.c:669` `STRINGID_CELEBRATEMESSAGE`: `Congratulations, {B_PLAYER_NAME}!`
+- `src/battle_message.c:670` `STRINGID_USEDINSTRUCTEDMOVE`: `{B_DEF_NAME_WITH_PREFIX} followed {B_ATK_NAME_WITH_PREFIX2}'s instructions!`
+- `src/battle_message.c:671` `STRINGID_THROATCHOPENDS`: `{B_ATK_NAME_WITH_PREFIX} can use sound-based moves again!`
+- `src/battle_message.c:672` `STRINGID_PKMNCANTUSEMOVETHROATCHOP`: `The effects of Throat Chop prevent {B_ATK_NAME_WITH_PREFIX2} from using certain moves!\p`
+- `src/battle_message.c:673` `STRINGID_LASERFOCUS`: `{B_ATK_NAME_WITH_PREFIX} concentrated intensely!`
+- `src/battle_message.c:674` `STRINGID_GEMACTIVATES`: `The {B_LAST_ITEM} strengthened {B_ATK_NAME_WITH_PREFIX2}'s power!`
+- `src/battle_message.c:675` `STRINGID_BERRYDMGREDUCES`: `The {B_LAST_ITEM} weakened the damage to {B_SCR_NAME_WITH_PREFIX2}!`
+- `src/battle_message.c:676` `STRINGID_AIRBALLOONFLOAT`: `{B_SCR_NAME_WITH_PREFIX} floats in the air with its Air Balloon!`
+- `src/battle_message.c:677` `STRINGID_AIRBALLOONPOP`: `{B_DEF_NAME_WITH_PREFIX}'s Air Balloon popped!`
+- `src/battle_message.c:678` `STRINGID_INCINERATEBURN`: `{B_EFF_NAME_WITH_PREFIX}'s {B_LAST_ITEM} was burnt up!`
+- `src/battle_message.c:679` `STRINGID_BUGBITE`: `{B_ATK_NAME_WITH_PREFIX} stole and ate its target's {B_LAST_ITEM}!`
+- `src/battle_message.c:680` `STRINGID_ILLUSIONWOREOFF`: `{B_SCR_NAME_WITH_PREFIX}'s illusion wore off!`
+- `src/battle_message.c:681` `STRINGID_ATTACKERCUREDTARGETSTATUS`: `{B_ATK_NAME_WITH_PREFIX} cured {B_DEF_NAME_WITH_PREFIX2}'s problem!`
+- `src/battle_message.c:682` `STRINGID_ATTACKERLOSTFIRETYPE`: `{B_ATK_NAME_WITH_PREFIX} burned itself out!`
+- `src/battle_message.c:683` `STRINGID_HEALERCURE`: `{B_ATK_NAME_WITH_PREFIX}'s {B_LAST_ABILITY} cured {B_SCR_NAME_WITH_PREFIX2}'s problem!`
+- `src/battle_message.c:684` `STRINGID_SCRIPTINGABILITYSTATRAISE`: `{B_SCR_NAME_WITH_PREFIX}'s {B_SCR_ABILITY} {B_BUFF2}raised its {B_BUFF1}!`
+- `src/battle_message.c:685` `STRINGID_RECEIVERABILITYTAKEOVER`: `{B_SCR_NAME_WITH_PREFIX}'s {B_SCR_ABILITY} was taken over!`
+- `src/battle_message.c:686` `STRINGID_PKNMABSORBINGPOWER`: `{B_ATK_NAME_WITH_PREFIX} is absorbing power!`
+- `src/battle_message.c:687` `STRINGID_NOONEWILLBEABLETORUNAWAY`: `No one will be able to run away during the next turn!`
+- `src/battle_message.c:688` `STRINGID_DESTINYKNOTACTIVATES`: `{B_DEF_NAME_WITH_PREFIX} fell in love because of the {B_LAST_ITEM}!`
+- `src/battle_message.c:689` `STRINGID_CLOAKEDINAFREEZINGLIGHT`: `{B_ATK_NAME_WITH_PREFIX} became cloaked in a freezing light!`
+- `src/battle_message.c:690` `STRINGID_CLEARAMULETWONTLOWERSTATS`: `The effects of the {B_LAST_ITEM} held by {B_SCR_NAME_WITH_PREFIX2} prevents its stats from being lowered!`
+- `src/battle_message.c:691` `STRINGID_FERVENTWISHREACHED`: `{B_ATK_TRAINER_NAME}'s fervent wish has reached {B_ATK_NAME_WITH_PREFIX2}!`
+- `src/battle_message.c:692` `STRINGID_AIRLOCKACTIVATES`: `The effects of the weather disappeared.`
+- `src/battle_message.c:693` `STRINGID_PRESSUREENTERS`: `{B_SCR_NAME_WITH_PREFIX} is exerting its pressure!`
+- `src/battle_message.c:694` `STRINGID_DARKAURAENTERS`: `{B_SCR_NAME_WITH_PREFIX} is radiating a dark aura!`
+- `src/battle_message.c:695` `STRINGID_FAIRYAURAENTERS`: `{B_SCR_NAME_WITH_PREFIX} is radiating a fairy aura!`
+- `src/battle_message.c:696` `STRINGID_AURABREAKENTERS`: `{B_SCR_NAME_WITH_PREFIX} reversed all other Pokémon's auras!`
+- `src/battle_message.c:697` `STRINGID_COMATOSEENTERS`: `{B_SCR_NAME_WITH_PREFIX} is drowsing!`
+- `src/battle_message.c:698` `STRINGID_SCREENCLEANERENTERS`: `All screens on the field were cleansed!`
+- `src/battle_message.c:699` `STRINGID_FETCHEDPOKEBALL`: `{B_SCR_NAME_WITH_PREFIX} found a {B_LAST_ITEM}!`
+- `src/battle_message.c:700` `STRINGID_ASANDSTORMKICKEDUP`: `A sandstorm kicked up!`
+- `src/battle_message.c:701` `STRINGID_PKMNSWILLPERISHIN3TURNS`: `Both Pokémon will perish in three turns!`
+- `src/battle_message.c:702` `STRINGID_AURAFLAREDTOLIFE`: `{B_DEF_NAME_WITH_PREFIX}'s aura flared to life!`
+- `src/battle_message.c:703` `STRINGID_ASONEENTERS`: `{B_SCR_NAME_WITH_PREFIX} has two Abilities!`
+- `src/battle_message.c:704` `STRINGID_CURIOUSMEDICINEENTERS`: `{B_EFF_NAME_WITH_PREFIX}'s stat changes were removed!`
+- `src/battle_message.c:705` `STRINGID_CANACTFASTERTHANKSTO`: `{B_ATK_NAME_WITH_PREFIX} can act faster than normal, thanks to its {B_BUFF1}!`
+- `src/battle_message.c:706` `STRINGID_MICLEBERRYACTIVATES`: `{B_SCR_NAME_WITH_PREFIX} boosted the accuracy of its next move using {B_LAST_ITEM}!`
+- `src/battle_message.c:707` `STRINGID_PKMNSHOOKOFFTHETAUNT`: `{B_SCR_NAME_WITH_PREFIX} shook off the taunt!`
+- `src/battle_message.c:708` `STRINGID_PKMNGOTOVERITSINFATUATION`: `{B_SCR_NAME_WITH_PREFIX} got over its infatuation!`
+- `src/battle_message.c:709` `STRINGID_ITEMCANNOTBEREMOVED`: `{B_ATK_NAME_WITH_PREFIX}'s item cannot be removed!`
+- `src/battle_message.c:710` `STRINGID_STICKYBARBTRANSFER`: `The {B_LAST_ITEM} attached itself to {B_ATK_NAME_WITH_PREFIX2}!`
+- `src/battle_message.c:711` `STRINGID_PKMNBURNHEALED`: `{B_DEF_NAME_WITH_PREFIX}'s burn was cured!`
+- `src/battle_message.c:712` `STRINGID_REDCARDACTIVATE`: `{B_SCR_NAME_WITH_PREFIX} held up its Red Card against {B_ATK_NAME_WITH_PREFIX2}!`
+- `src/battle_message.c:713` `STRINGID_EJECTBUTTONACTIVATE`: `{B_SCR_NAME_WITH_PREFIX} is switched out with the {B_LAST_ITEM}!`
+- `src/battle_message.c:714` `STRINGID_ATKGOTOVERINFATUATION`: `{B_SCR_NAME_WITH_PREFIX} got over its infatuation!`
+- `src/battle_message.c:715` `STRINGID_TORMENTEDNOMORE`: `{B_SCR_NAME_WITH_PREFIX} is no longer tormented!`
+- `src/battle_message.c:716` `STRINGID_HEALBLOCKEDNOMORE`: `{B_SCR_NAME_WITH_PREFIX} is cured of its heal block!`
+- `src/battle_message.c:717` `STRINGID_ATTACKERBECAMEFULLYCHARGED`: `{B_ATK_NAME_WITH_PREFIX} became fully charged due to its bond with its trainer!\p`
+- `src/battle_message.c:718` `STRINGID_ATTACKERBECAMEASHSPECIES`: `{B_ATK_NAME_WITH_PREFIX} became Ash-Greninja!\p`
+- `src/battle_message.c:719` `STRINGID_EXTREMELYHARSHSUNLIGHT`: `The sunlight turned extremely harsh!`
+- `src/battle_message.c:720` `STRINGID_EXTREMESUNLIGHTFADED`: `The extremely harsh sunlight faded!`
+- `src/battle_message.c:721` `STRINGID_MOVEEVAPORATEDINTHEHARSHSUNLIGHT`: `The Water-type attack evaporated in the extremely harsh sunlight!`
+- `src/battle_message.c:722` `STRINGID_EXTREMELYHARSHSUNLIGHTWASNOTLESSENED`: `The extremely harsh sunlight was not lessened at all!`
+- `src/battle_message.c:723` `STRINGID_HEAVYRAIN`: `A heavy rain began to fall!`
+- `src/battle_message.c:724` `STRINGID_HEAVYRAINLIFTED`: `The heavy rain has lifted!`
+- `src/battle_message.c:725` `STRINGID_MOVEFIZZLEDOUTINTHEHEAVYRAIN`: `The Fire-type attack fizzled out in the heavy rain!`
+- `src/battle_message.c:726` `STRINGID_NORELIEFROMHEAVYRAIN`: `There is no relief from this heavy rain!`
+- `src/battle_message.c:727` `STRINGID_MYSTERIOUSAIRCURRENT`: `Mysterious strong winds are protecting Flying-type Pokémon!`
+- `src/battle_message.c:728` `STRINGID_STRONGWINDSDISSIPATED`: `The mysterious strong winds have dissipated!`
+- `src/battle_message.c:729` `STRINGID_MYSTERIOUSAIRCURRENTBLOWSON`: `The mysterious strong winds blow on regardless!`
+- `src/battle_message.c:730` `STRINGID_ATTACKWEAKENEDBSTRONGWINDS`: `The mysterious strong winds weakened the attack!`
+- `src/battle_message.c:731` `STRINGID_STUFFCHEEKSCANTSELECT`: `It can't use the move because it doesn't have a Berry!\p`
+- `src/battle_message.c:732` `STRINGID_PKMNREVERTEDTOPRIMAL`: `{B_SCR_NAME_WITH_PREFIX}'s Primal Reversion! It reverted to its primal state!`
+- `src/battle_message.c:733` `STRINGID_BUTPOKEMONCANTUSETHEMOVE`: `But {B_ATK_NAME_WITH_PREFIX2} can't use the move!`
+- `src/battle_message.c:734` `STRINGID_BUTHOOPACANTUSEIT`: `But {B_ATK_NAME_WITH_PREFIX2} can't use it the way it is now!`
+- `src/battle_message.c:735` `STRINGID_BROKETHROUGHPROTECTION`: `It broke through {B_DEF_NAME_WITH_PREFIX2}'s protection!`
+- `src/battle_message.c:736` `STRINGID_ABILITYALLOWSONLYMOVE`: `{B_ATK_ABILITY} only allows the use of {B_CURRENT_MOVE}!\p`
+- `src/battle_message.c:737` `STRINGID_SWAPPEDABILITIES`: `{B_DEF_NAME_WITH_PREFIX} swapped Abilities with its target!`
+- `src/battle_message.c:738` `STRINGID_PASTELVEILENTERS`: `{B_DEF_NAME_WITH_PREFIX} was cured of its poisoning!`
+- `src/battle_message.c:739` `STRINGID_BATTLERTYPECHANGEDTO`: `{B_SCR_NAME_WITH_PREFIX}'s type changed to {B_BUFF1}!`
+- `src/battle_message.c:740` `STRINGID_BOTHCANNOLONGERESCAPE`: `Neither Pokémon can run away!`
+- `src/battle_message.c:741` `STRINGID_CANTESCAPEDUETOUSEDMOVE`: `{B_ATK_NAME_WITH_PREFIX} can no longer escape because it used No Retreat!`
+- `src/battle_message.c:742` `STRINGID_PKMNBECAMEWEAKERTOFIRE`: `{B_DEF_NAME_WITH_PREFIX} became weaker to fire!`
+- `src/battle_message.c:743` `STRINGID_ABOUTTOUSEPOLTERGEIST`: `{B_DEF_NAME_WITH_PREFIX} is about to be attacked by its {B_BUFF1}!`
+- `src/battle_message.c:744` `STRINGID_CANTESCAPEBECAUSEOFCURRENTMOVE`: `{B_DEF_NAME_WITH_PREFIX} can no longer escape because of Octolock!`
+- `src/battle_message.c:745` `STRINGID_NEUTRALIZINGGASENTERS`: `Neutralizing gas filled the area!`
+- `src/battle_message.c:746` `STRINGID_NEUTRALIZINGGASOVER`: `The effects of the neutralizing gas wore off!`
+- `src/battle_message.c:747` `STRINGID_TARGETTOOHEAVY`: `{B_DEF_NAME_WITH_PREFIX} is too heavy to be lifted!`
+- `src/battle_message.c:748` `STRINGID_PKMNTOOKTARGETHIGH`: `{B_ATK_NAME_WITH_PREFIX} took {B_DEF_NAME_WITH_PREFIX2} into the sky!`
+- `src/battle_message.c:749` `STRINGID_PKMNINSNAPTRAP`: `{B_DEF_NAME_WITH_PREFIX} got trapped by a snap trap!`
+- `src/battle_message.c:750` `STRINGID_METEORBEAMCHARGING`: `{B_ATK_NAME_WITH_PREFIX} is overflowing with space power!`
+- `src/battle_message.c:751` `STRINGID_HEATUPBEAK`: `{B_ATK_NAME_WITH_PREFIX} started heating up its beak!`
+- `src/battle_message.c:752` `STRINGID_COURTCHANGE`: `{B_ATK_NAME_WITH_PREFIX} swapped the battle effects affecting each side of the field!`
+- `src/battle_message.c:753` `STRINGID_ZPOWERSURROUNDS`: `{B_ATK_NAME_WITH_PREFIX} surrounded itself with its Z-Power!`
+- `src/battle_message.c:754` `STRINGID_ZMOVEUNLEASHED`: `{B_ATK_NAME_WITH_PREFIX} unleashes its full-force Z-Move!`
+- `src/battle_message.c:755` `STRINGID_ZMOVERESETSSTATS`: `{B_SCR_NAME_WITH_PREFIX} returned its decreased stats to normal using its Z-Power!`
+- `src/battle_message.c:756` `STRINGID_ZMOVEALLSTATSUP`: `{B_SCR_NAME_WITH_PREFIX} boosted its stats using its Z-Power!`
+- `src/battle_message.c:757` `STRINGID_ZMOVEZBOOSTCRIT`: `{B_SCR_NAME_WITH_PREFIX} boosted its critical-hit ratio using its Z-Power!`
+- `src/battle_message.c:758` `STRINGID_ZMOVERESTOREHP`: `{B_SCR_NAME_WITH_PREFIX} restored its HP using its Z-Power!`
+- `src/battle_message.c:759` `STRINGID_ZMOVESTATUP`: `{B_SCR_NAME_WITH_PREFIX} boosted its stats using its Z-Power!`
+- `src/battle_message.c:760` `STRINGID_ZMOVEHPTRAP`: `{B_SCR_NAME_WITH_PREFIX}'s HP was restored by the Z-Power!`
+- `src/battle_message.c:761` `STRINGID_ATTACKEREXPELLEDTHEPOISON`: `{B_ATK_NAME_WITH_PREFIX} managed to expel the poison so you wouldn't worry!`
+- `src/battle_message.c:762` `STRINGID_ATTACKERSHOOKITSELFAWAKE`: `{B_ATK_NAME_WITH_PREFIX} shook itself awake so you wouldn't worry!`
+- `src/battle_message.c:763` `STRINGID_ATTACKERBROKETHROUGHPARALYSIS`: `{B_ATK_NAME_WITH_PREFIX} gathered all its energy to break through its paralysis so you wouldn't worry!`
+- `src/battle_message.c:764` `STRINGID_ATTACKERHEALEDITSBURN`: `{B_ATK_NAME_WITH_PREFIX} cured its burn through sheer determination so you wouldn't worry!`
+- `src/battle_message.c:765` `STRINGID_ATTACKERMELTEDTHEICE`: `{B_ATK_NAME_WITH_PREFIX} melted the ice with its fiery determination so you wouldn't worry!`
+- `src/battle_message.c:766` `STRINGID_TARGETTOUGHEDITOUT`: `{B_DEF_NAME_WITH_PREFIX} toughed it out so you wouldn't feel sad!`
+- `src/battle_message.c:767` `STRINGID_ATTACKERLOSTELECTRICTYPE`: `{B_ATK_NAME_WITH_PREFIX} used up all its electricity!`
+- `src/battle_message.c:768` `STRINGID_ATTACKERSWITCHEDSTATWITHTARGET`: `{B_ATK_NAME_WITH_PREFIX} switched {B_BUFF1} with its target!`
+- `src/battle_message.c:769` `STRINGID_BEINGHITCHARGEDPKMNWITHPOWER`: `Being hit by {B_CURRENT_MOVE} charged {B_DEF_NAME_WITH_PREFIX2} with power!`
+- `src/battle_message.c:770` `STRINGID_SUNLIGHTACTIVATEDABILITY`: `The harsh sunlight activated {B_SCR_NAME_WITH_PREFIX2}'s Protosynthesis!`
+- `src/battle_message.c:771` `STRINGID_STATWASHEIGHTENED`: `{B_SCR_NAME_WITH_PREFIX}'s {B_BUFF1} was heightened!`
+- `src/battle_message.c:772` `STRINGID_ELECTRICTERRAINACTIVATEDABILITY`: `The Electric Terrain activated {B_SCR_NAME_WITH_PREFIX2}'s Quark Drive!`
+- `src/battle_message.c:773` `STRINGID_ABILITYWEAKENEDSURROUNDINGMONSSTAT`: `{B_SCR_NAME_WITH_PREFIX}'s {B_SCR_ABILITY} weakened the {B_BUFF1} of all surrounding Pokémon!\p`
+- `src/battle_message.c:774` `STRINGID_ATTACKERGAINEDSTRENGTHFROMTHEFALLEN`: `{B_SCR_NAME_WITH_PREFIX} gained strength from the fallen!`
+- `src/battle_message.c:775` `STRINGID_PKMNSABILITYPREVENTSABILITY`: `{B_SCR_NAME_WITH_PREFIX}'s {B_SCR_ABILITY} prevents {B_DEF_NAME_WITH_PREFIX2}'s {B_DEF_ABILITY} from working!`
+- `src/battle_message.c:776` `STRINGID_PREPARESHELLTRAP`: `{B_ATK_NAME_WITH_PREFIX} set a shell trap!`
+- `src/battle_message.c:777` `STRINGID_SHELLTRAPDIDNTWORK`: `{B_ATK_NAME_WITH_PREFIX}'s shell trap didn't work!`
+- `src/battle_message.c:778` `STRINGID_SPIKESDISAPPEAREDFROMTEAM`: `The spikes disappeared from the ground around {B_ATK_TEAM2} team!`
+- `src/battle_message.c:779` `STRINGID_TOXICSPIKESDISAPPEAREDFROMTEAM`: `The poison spikes disappeared from the ground around {B_ATK_TEAM2} team!`
+- `src/battle_message.c:780` `STRINGID_STICKYWEBDISAPPEAREDFROMTEAM`: `The sticky web has disappeared from the ground around {B_ATK_TEAM2} team!`
+- `src/battle_message.c:781` `STRINGID_STEALTHROCKDISAPPEAREDFROMTEAM`: `The pointed stones disappeared from around {B_ATK_TEAM2} team!`
+- `src/battle_message.c:782` `STRINGID_COULDNTFULLYPROTECT`: `{B_DEF_NAME_WITH_PREFIX} couldn't fully protect itself and got hurt!`
+- `src/battle_message.c:783` `STRINGID_STOCKPILEDEFFECTWOREOFF`: `{B_ATK_NAME_WITH_PREFIX}'s stockpiled effect wore off!`
+- `src/battle_message.c:784` `STRINGID_PKMNREVIVEDREADYTOFIGHT`: `{B_BUFF1} was revived and is ready to fight again!`
+- `src/battle_message.c:785` `STRINGID_ITEMRESTOREDSPECIESHEALTH`: `{B_BUFF1} had its HP restored.`
+- `src/battle_message.c:786` `STRINGID_ITEMCUREDSPECIESSTATUS`: `{B_BUFF1} had its status healed!`
+- `src/battle_message.c:787` `STRINGID_ITEMRESTOREDSPECIESPP`: `{B_BUFF1} had its PP restored!`
+- `src/battle_message.c:788` `STRINGID_THUNDERCAGETRAPPED`: `{B_ATK_NAME_WITH_PREFIX} trapped {B_DEF_NAME_WITH_PREFIX2}!`
+- `src/battle_message.c:789` `STRINGID_PKMNHURTBYFROSTBITE`: `{B_ATK_NAME_WITH_PREFIX} was hurt by its frostbite!`
+- `src/battle_message.c:790` `STRINGID_PKMNGOTFROSTBITE`: `{B_EFF_NAME_WITH_PREFIX} got frostbite!`
+- `src/battle_message.c:791` `STRINGID_PKMNSITEMHEALEDFROSTBITE`: `{B_SCR_NAME_WITH_PREFIX}'s {B_LAST_ITEM} cured its frostbite!`
+- `src/battle_message.c:792` `STRINGID_ATTACKERHEALEDITSFROSTBITE`: `{B_ATK_NAME_WITH_PREFIX} cured its frostbite through sheer determination so you wouldn't worry!`
+- `src/battle_message.c:793` `STRINGID_PKMNFROSTBITEHEALED`: `{B_SCR_NAME_WITH_PREFIX}'s frostbite was cured!`
+- `src/battle_message.c:794` `STRINGID_PKMNFROSTBITEHEALEDBY`: `{B_SCR_NAME_WITH_PREFIX}'s {B_CURRENT_MOVE} cured its frostbite!`
+- `src/battle_message.c:795` `STRINGID_MIRRORHERBCOPIED`: `{B_SCR_NAME_WITH_PREFIX} used its Mirror Herb to mirror its opponent's stat changes!`
+- `src/battle_message.c:796` `STRINGID_STARTEDSNOW`: `It started to snow!`
+- `src/battle_message.c:797` `STRINGID_SNOWCONTINUES`: `Snow continues to fall.`
+- `src/battle_message.c:798` `STRINGID_SNOWSTOPPED`: `The snow stopped.`
+- `src/battle_message.c:799` `STRINGID_SNOWWARNINGSNOW`: `It started to snow!`
+- `src/battle_message.c:800` `STRINGID_PKMNITEMMELTED`: `{B_ATK_NAME_WITH_PREFIX} corroded {B_DEF_NAME_WITH_PREFIX2}'s {B_LAST_ITEM}!`
+- `src/battle_message.c:801` `STRINGID_ULTRABURSTREACTING`: `Bright light is about to burst out of {B_ATK_NAME_WITH_PREFIX2}!`
+- `src/battle_message.c:802` `STRINGID_ULTRABURSTCOMPLETED`: `{B_ATK_NAME_WITH_PREFIX} regained its true power through Ultra Burst!`
+- `src/battle_message.c:803` `STRINGID_TEAMGAINEDEXP`: `The rest of your team gained Exp. Points thanks to the Exp. Share!\p`
+- `src/battle_message.c:804` `STRINGID_CURRENTMOVECANTSELECT`: `{B_BUFF1} cannot be used!\p`
+- `src/battle_message.c:805` `STRINGID_TARGETISBEINGSALTCURED`: `{B_DEF_NAME_WITH_PREFIX} is being salt cured!`
+- `src/battle_message.c:806` `STRINGID_TARGETISHURTBYSALTCURE`: `{B_ATK_NAME_WITH_PREFIX} is hurt by {B_BUFF1}!`
+- `src/battle_message.c:807` `STRINGID_TARGETCOVEREDINSTICKYCANDYSYRUP`: `{B_DEF_NAME_WITH_PREFIX} got covered in sticky candy syrup!`
+- `src/battle_message.c:808` `STRINGID_SHARPSTEELFLOATS`: `Sharp-pointed pieces of steel started floating around {B_DEF_TEAM2} Pokémon!`
+- `src/battle_message.c:809` `STRINGID_SHARPSTEELDMG`: `The sharp steel bit into {B_DEF_NAME_WITH_PREFIX2}!`
+- `src/battle_message.c:810` `STRINGID_PKMNBLEWAWAYSHARPSTEEL`: `{B_ATK_NAME_WITH_PREFIX} blew away sharp steel!`
+- `src/battle_message.c:811` `STRINGID_SHARPSTEELDISAPPEAREDFROMTEAM`: `The pieces of steel surrounding {B_ATK_TEAM2} Pokémon disappeared!`
+- `src/battle_message.c:812` `STRINGID_TEAMTRAPPEDWITHVINES`: `{B_DEF_TEAM1} Pokémon got trapped with vines!`
+- `src/battle_message.c:813` `STRINGID_PKMNHURTBYVINES`: `{B_ATK_NAME_WITH_PREFIX} is hurt by G-Max Vine Lash's ferocious beating!`
+- `src/battle_message.c:814` `STRINGID_TEAMCAUGHTINVORTEX`: `{B_DEF_TEAM1} Pokémon got caught in a vortex of water!`
+- `src/battle_message.c:815` `STRINGID_PKMNHURTBYVORTEX`: `{B_ATK_NAME_WITH_PREFIX} is hurt by G-Max Cannonade's vortex!`
+- `src/battle_message.c:816` `STRINGID_TEAMSURROUNDEDBYFIRE`: `{B_DEF_TEAM1} Pokémon were surrounded by fire!`
+- `src/battle_message.c:817` `STRINGID_PKMNBURNINGUP`: `{B_ATK_NAME_WITH_PREFIX} is burning up within G-Max Wildfire's flames!`
+- `src/battle_message.c:818` `STRINGID_TEAMSURROUNDEDBYROCKS`: `{B_DEF_TEAM1} Pokémon became surrounded by rocks!`
+- `src/battle_message.c:819` `STRINGID_PKMNHURTBYROCKSTHROWN`: `{B_ATK_NAME_WITH_PREFIX} is hurt by rocks thrown out by G-Max Volcalith!`
+- `src/battle_message.c:820` `STRINGID_MOVEBLOCKEDBYDYNAMAX`: `The move was blocked by the power of Dynamax!`
+- `src/battle_message.c:821` `STRINGID_ZEROTOHEROTRANSFORMATION`: `{B_SCR_NAME_WITH_PREFIX} underwent a heroic transformation!`
+- `src/battle_message.c:822` `STRINGID_THETWOMOVESBECOMEONE`: `The two moves have become one! It's a combined move!{PAUSE 16}`
+- `src/battle_message.c:823` `STRINGID_ARAINBOWAPPEAREDONSIDE`: `A rainbow appeared in the sky on {B_ATK_TEAM2} team's side!`
+- `src/battle_message.c:824` `STRINGID_THERAINBOWDISAPPEARED`: `The rainbow on {B_ATK_TEAM2} team's side disappeared!`
+- `src/battle_message.c:825` `STRINGID_WAITINGFORPARTNERSMOVE`: `{B_ATK_NAME_WITH_PREFIX} is waiting for {B_ATK_PARTNER_NAME}'s move…{PAUSE 16}`
+- `src/battle_message.c:826` `STRINGID_SEAOFFIREENVELOPEDSIDE`: `A sea of fire enveloped {B_DEF_TEAM2} team!`
+- `src/battle_message.c:827` `STRINGID_HURTBYTHESEAOFFIRE`: `{B_ATK_NAME_WITH_PREFIX} was hurt by the sea of fire!`
+- `src/battle_message.c:828` `STRINGID_THESEAOFFIREDISAPPEARED`: `The sea of fire around {B_ATK_TEAM2} team disappeared!`
+- `src/battle_message.c:829` `STRINGID_SWAMPENVELOPEDSIDE`: `A swamp enveloped {B_DEF_TEAM2} team!`
+- `src/battle_message.c:830` `STRINGID_THESWAMPDISAPPEARED`: `The swamp around {B_ATK_TEAM2} team disappeared!`
+- `src/battle_message.c:831` `STRINGID_PKMNTELLCHILLINGRECEPTIONJOKE`: `{B_ATK_NAME_WITH_PREFIX} is preparing to tell a chillingly bad joke!`
+- `src/battle_message.c:832` `STRINGID_HOSPITALITYRESTORATION`: `{B_EFF_NAME_WITH_PREFIX} drank down all the matcha that {B_SCR_NAME_WITH_PREFIX2} made!`
+- `src/battle_message.c:833` `STRINGID_ELECTROSHOTCHARGING`: `{B_ATK_NAME_WITH_PREFIX} absorbed electricity!`
+- `src/battle_message.c:834` `STRINGID_ITEMWASUSEDUP`: `The {B_LAST_ITEM} was used up…`
+- `src/battle_message.c:835` `STRINGID_ATTACKERLOSTITSTYPE`: `{B_ATK_NAME_WITH_PREFIX} lost its {B_BUFF1} type!`
+- `src/battle_message.c:836` `STRINGID_SHEDITSTAIL`: `{B_ATK_NAME_WITH_PREFIX} shed its tail to create a decoy!`
+- `src/battle_message.c:837` `STRINGID_CLOAKEDINAHARSHLIGHT`: `{B_ATK_NAME_WITH_PREFIX} became cloaked in a harsh light!`
+- `src/battle_message.c:838` `STRINGID_SUPERSWEETAROMAWAFTS`: `A supersweet aroma is wafting from the syrup covering {B_ATK_NAME_WITH_PREFIX2}!`
+- `src/battle_message.c:839` `STRINGID_DIMENSIONSWERETWISTED`: `The dimensions were twisted!`
+- `src/battle_message.c:840` `STRINGID_BIZARREARENACREATED`: `A bizarre area was created in which Pokémon's held items lose their effects!`
+- `src/battle_message.c:841` `STRINGID_BIZARREAREACREATED`: `A bizarre area was created in which DEFENSE and SP. DEF stats are swapped!`
+- `src/battle_message.c:842` `STRINGID_TIDYINGUPCOMPLETE`: `Tidying up complete!`
+- `src/battle_message.c:843` `STRINGID_PKMNTERASTALLIZEDINTO`: `{B_ATK_NAME_WITH_PREFIX} terastallized into the {B_BUFF1} type!`
+- `src/battle_message.c:844` `STRINGID_BOOSTERENERGYACTIVATES`: `{B_SCR_NAME_WITH_PREFIX} used its {B_LAST_ITEM} to activate {B_SCR_ABILITY}!`
+- `src/battle_message.c:845` `STRINGID_FOGCREPTUP`: `Fog crept up as thick as soup!`
+- `src/battle_message.c:846` `STRINGID_FOGISDEEP`: `The fog is deep…`
+- `src/battle_message.c:847` `STRINGID_FOGLIFTED`: `The fog lifted.`
+- `src/battle_message.c:848` `STRINGID_PKMNMADESHELLGLEAM`: `{B_DEF_NAME_WITH_PREFIX} made its shell gleam! It's distorting type matchups!`
+- `src/battle_message.c:849` `STRINGID_FICKLEBEAMDOUBLED`: `{B_ATK_NAME_WITH_PREFIX} is going all out for this attack!`
+- `src/battle_message.c:850` `STRINGID_COMMANDERACTIVATES`: `{B_SCR_NAME_WITH_PREFIX} was swallowed by Dondozo and became Dondozo's commander!`
+- `src/battle_message.c:851` `STRINGID_POKEFLUTECATCHY`: `{B_PLAYER_NAME} played the {B_LAST_ITEM}.\pNow, that's a catchy tune!`
+- `src/battle_message.c:852` `STRINGID_POKEFLUTE`: `{B_PLAYER_NAME} played the {B_LAST_ITEM}.`
+- `src/battle_message.c:853` `STRINGID_MONHEARINGFLUTEAWOKE`: `The Pokémon hearing the flute awoke!`
+- `src/battle_message.c:854` `STRINGID_SUNLIGHTISHARSH`: `The sunlight is harsh!`
+- `src/battle_message.c:855` `STRINGID_ITISHAILING`: `It's hailing!`
+- `src/battle_message.c:856` `STRINGID_ITISSNOWING`: `It's snowing!`
+- `src/battle_message.c:857` `STRINGID_ISCOVEREDWITHGRASS`: `The battlefield is covered with grass!`
+- `src/battle_message.c:858` `STRINGID_MISTSWIRLSAROUND`: `Mist swirls around the battlefield!`
+- `src/battle_message.c:859` `STRINGID_ELECTRICCURRENTISRUNNING`: `An electric current is running across the battlefield!`
+- `src/battle_message.c:860` `STRINGID_SEEMSWEIRD`: `The battlefield seems weird!`
+- `src/battle_message.c:861` `STRINGID_WAGGLINGAFINGER`: `Waggling a finger let it use {B_CURRENT_MOVE}!`
+- `src/battle_message.c:862` `STRINGID_BLOCKEDBYSLEEPCLAUSE`: `Sleep Clause kept {B_DEF_NAME_WITH_PREFIX2} awake!`
+- `src/battle_message.c:863` `STRINGID_SUPEREFFECTIVETWOFOES`: `It's super effective on {B_DEF_NAME_WITH_PREFIX2} and {B_DEF_PARTNER_NAME}!`
+- `src/battle_message.c:864` `STRINGID_NOTVERYEFFECTIVETWOFOES`: `It's not very effective on {B_DEF_NAME_WITH_PREFIX2} and {B_DEF_PARTNER_NAME}!`
+- `src/battle_message.c:865` `STRINGID_ITDOESNTAFFECTTWOFOES`: `It doesn't affect {B_DEF_NAME_WITH_PREFIX2} and {B_DEF_PARTNER_NAME}…`
+- `src/battle_message.c:866` `STRINGID_SENDCAUGHTMONPARTYORBOX`: `Add {B_DEF_NAME} to your party?`
+- `src/battle_message.c:868` `STRINGID_PKMNDYNAMAXED`: `{B_ATK_NAME_WITH_PREFIX} grew huge into its Dynamax form!`
+- `src/battle_message.c:869` `STRINGID_PKMNGIGANTAMAXED`: `{B_ATK_NAME_WITH_PREFIX} grew huge into its Gigantamax form!`
+- `src/battle_message.c:870` `STRINGID_TIMETODYNAMAX`: `Time to Dynamax!`
+- `src/battle_message.c:871` `STRINGID_TIMETOGIGANTAMAX`: `Time to Gigantamax!`
+- `src/battle_message.c:872` `STRINGID_QUESTIONFORFEITBATTLE`: `Would you like to give up on this battle and quit now? Quitting the battle is the same as losing the battle.`
+- `src/battle_message.c:873` `STRINGID_POWERCONSTRUCTPRESENCEOFMANY`: `You sense the presence of many!`
+- `src/battle_message.c:874` `STRINGID_POWERCONSTRUCTTRANSFORM`: `{B_ATK_NAME_WITH_PREFIX} transformed into its Complete Forme!`
+- `src/battle_message.c:875` `STRINGID_ABILITYSHIELDPROTECTS`: `{B_ATK_NAME_WITH_PREFIX}'s Ability is protected by the effects of its {B_LAST_ITEM}!`
+- `src/battle_message.c:876` `STRINGID_MONTOOSCAREDTOMOVE`: `{B_ATK_NAME_WITH_PREFIX} is too scared to move!`
+- `src/battle_message.c:877` `STRINGID_GHOSTGETOUTGETOUT`: `GHOST: Get out…… Get out……`
+- `src/battle_message.c:878` `STRINGID_SILPHSCOPEUNVEILED`: `SILPH SCOPE unveiled the GHOST's\nidentity!`
+- `src/battle_message.c:879` `STRINGID_GHOSTWASMAROWAK`: `The GHOST was MAROWAK!\p\n`
+- `src/battle_message.c:880` `STRINGID_TRAINER1MON1COMEBACK`: `{B_TRAINER1_NAME}: {B_OPPONENT_MON1_NAME}, come back!`
+- `src/battle_message.c:881` `STRINGID_THREWROCK`: `{B_PLAYER_NAME} threw a ROCK\nat the {B_OPPONENT_MON1_NAME}!`
+- `src/battle_message.c:882` `STRINGID_THREWBAIT`: `{B_PLAYER_NAME} threw some BAIT\nat the {B_OPPONENT_MON1_NAME}!`
+- `src/battle_message.c:883` `STRINGID_PKMNANGRY`: `{B_OPPONENT_MON1_NAME} is angry!`
+- `src/battle_message.c:884` `STRINGID_PKMNEATING`: `{B_OPPONENT_MON1_NAME} is eating!`
+- `src/battle_message.c:885` `STRINGID_PKMNDISGUISEWASBUSTED`: `{B_SCR_NAME_WITH_PREFIX}'s disguise was busted!`
+- `src/battle_message.c:886` `STRINGID_ZENMODETRIGGERED`: `{B_SCR_ABILITY} triggered!`
+- `src/battle_message.c:887` `STRINGID_ZENMODEENDED`: `{B_SCR_ABILITY} ended!`
+- `src/battle_message.c:888` `STRINGID_WILDPKMNDROPPEDITEM`: `The wild Pokémon dropped\nits {B_LAST_ITEM}!\p`
+- `src/battle_message.c:889` `STRINGID_DROPPEDITEMBAGFULL`: `The wild Pokémon dropped an item,\nbut your Bag is full!\p`
+
+## KR 파일에서 외부 텍스트를 참조하는 공통 ID
+
+- 없음
+
+## 검증 메모
+
+- 보고서 생성 후 HNS 빌드와 토큰·구조 검사를 완료했다. `make hns -j8` 종료 코드는 0이며, 구조·플레이스홀더·미지원 별칭·공백 검사를 통과했다.
+- 실제 에뮬레이터 화면에서 모든 동적 배틀 메시지를 전수 확인한 결과는 아니다. 특히 조사 토큰의 `charmap.txt` 값과 런타임 분기 정의(`include/battle_message.h`)는 별도 영역이므로, 동적 조사 조합은 화면에서 확인해야 한다.

@@ -160,7 +160,7 @@ static const u8 sText_GetsAPokeBlockQuestion[] = _(" gets a {POKEBLOCK}?");
 static const u8 sText_WasEnhanced[] = _("was enhanced!");
 static const u8 sText_NothingChanged[] = _("Nothing changed!");
 static const u8 sText_WontEatAnymore[] = _("It won't eat anymore…");
-static const u8 sText_NatureSlash[] = _("NATURE/");
+static const u8 sText_NatureSlash[] = _("성격");
 
 extern const u16 gConditionGraphData_Pal[];
 extern const u16 gConditionText_Pal[];
@@ -1393,8 +1393,9 @@ static void UpdateMonInfoText(u16 loadId, bool8 firstPrint)
         AddTextPrinterParameterized(WIN_NAME, FONT_NORMAL, sMenu->monNameStrings[loadId], 0, 1, 0, NULL);
         partyIndex = GetPartyIdFromSelectionId(sMenu->info.curSelection);
         nature = GetNature(&gPlayerParty[partyIndex]);
-        str = StringCopy(sMenu->info.natureText, sText_NatureSlash);
-        str = StringCopy(str, gNaturesInfo[nature].name);
+        str = StringCopy(sMenu->info.natureText, gNaturesInfo[nature].name);
+        str = StringCopy(str, COMPOUND_STRING(" "));
+        str = StringCopy(str, sText_NatureSlash);
         AddTextPrinterParameterized3(WIN_NATURE, FONT_NORMAL, 2, 1, sNatureTextColors, 0, sMenu->info.natureText);
     }
 

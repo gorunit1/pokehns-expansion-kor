@@ -3629,4 +3629,14 @@ extern const u16 gBattleIcons_Pal2[];
 extern const u32 gGhostFrontPic[];
 extern const u16 gGhostPalette[];
 
+// Additional battle artwork for existing HNS species.
+extern const u16 gMonPalette_EeveeStarter[];
+extern const u16 gMonPalette_GarchompMegaZ[];
+extern const u16 gMonShinyPalette_EeveeStarter[];
+extern const u16 gMonShinyPalette_GarchompMegaZ[];
+extern const u32 gMonBackPic_EeveeStarter[];
+extern const u32 gMonBackPic_GarchompMegaZ[];
+extern const u32 gMonFrontPic_EeveeStarter[];
+extern const u32 gMonFrontPic_GarchompMegaZ[];
+
 #endif //GUARD_GRAPHICS_H

@@ -186,6 +186,7 @@ static void DestroyTrainerCardMonIcons(void);
 static const u32 sTrainerCardStickers_Gfx[]      = INCBIN_U32("graphics/trainer_card/frlg/stickers.4bpp.smol");
 static const u16 sUnused_Pal[]                   = INCBIN_U16("graphics/trainer_card/unused.gbapal");
 #if IS_HNS
+static const u8 sText_Won[] = _("원");
 static const u16 sHnsTrainerCardBronze_Pal[]   = INCBIN_U16("graphics/trainer_card/hns/bronze.gbapal");
 static const u16 sHnsTrainerCardCopper_Pal[]   = INCBIN_U16("graphics/trainer_card/hns/copper.gbapal");
 static const u16 sHnsTrainerCardSilver_Pal[]   = INCBIN_U16("graphics/trainer_card/hns/silver.gbapal");
@@ -732,7 +733,7 @@ static u8 GetHnSTrainerStars(struct TrainerCard *trainerCard)
         stars++;
     if (trainerCard->caughtAllHoenn)
         stars++;
-    if (FlagGet(TRAINER_FLAGS_START + TRAINER_RED_2_HNS))
+    if (FlagGet(TRAINER_FLAGS_START + TRAINER_RED_HNS))
         stars++;
     if (FlagGet(FLAG_IS_KANTO_CHAMPION))
         stars++;
@@ -803,6 +804,7 @@ static void SetPlayerCardData(struct TrainerCard *trainerCard, u8 cardType)
     switch (cardType)
     {
     case CARD_TYPE_EMERALD:
+    case CARD_TYPE_HNS:
         trainerCard->battleTowerWins = 0;
         trainerCard->battleTowerStraightWins = 0;
     // Seems like GF got CARD_TYPE_FRLG and CARD_TYPE_RS wrong.
@@ -876,6 +878,7 @@ void CopyTrainerCardData(struct TrainerCard *dst, struct TrainerCard *src, u8 ga
         memcpy(dst, src, 0x38);
         break;
     case CARD_TYPE_EMERALD:
+    case CARD_TYPE_HNS:
         memcpy(dst, src, 0x60);
         dst->linkPoints.frontier = 0;
         dst->hasAllFrontierSymbols = src->linkHasAllFrontierSymbols;
@@ -1126,6 +1129,7 @@ static void PrintMoneyOnCard(void)
         *ptr++ = CHAR_SLASH;
         ConvertIntToDecimalStringN(gStringVar2, Mom_GetBalance(), STR_CONV_MODE_LEFT_ALIGN, 6);
         StringCopy(ptr, gStringVar2);
+        StringAppend(gStringVar4, sText_Won);
     }
 #else
     StringExpandPlaceholders(gStringVar4, gText_PokedollarVar1);
@@ -1295,7 +1299,8 @@ static const u8 *const sLinkBattleTexts[] =
 {
     [CARD_TYPE_FRLG]    = gText_LinkBattles,
     [CARD_TYPE_RS]      = gText_LinkCableBattles,
-    [CARD_TYPE_EMERALD] = gText_LinkBattles
+    [CARD_TYPE_EMERALD] = gText_LinkBattles,
+    [CARD_TYPE_HNS] = gText_LinkBattles
 };
 
 static void BufferLinkBattleResults(void)
@@ -1395,6 +1400,7 @@ static void BufferBattleFacilityStats(void)
         }
         break;
     case CARD_TYPE_EMERALD:
+    // case CARD_TYPE_HNS: // Enabling this currently conflicts with the mon display
         if (sData->trainerCard.frontierBP)
         {
             ConvertIntToDecimalStringN(gStringVar1, sData->trainerCard.frontierBP, STR_CONV_MODE_RIGHT_ALIGN, 5);
@@ -1402,6 +1408,7 @@ static void BufferBattleFacilityStats(void)
         }
         break;
     case CARD_TYPE_FRLG:
+    case CARD_TYPE_HNS:
         break;
     }
 }
@@ -1415,10 +1422,12 @@ static void PrintBattleFacilityStringOnCard(void)
             PrintStatOnBackOfCard(5, gText_BattleTower, sData->textBattleFacilityStat, sTrainerCardTextColors);
         break;
     case CARD_TYPE_EMERALD:
+    // case CARD_TYPE_HNS: // Enabling this currently conflicts with the mon display
         if (sData->trainerCard.frontierBP)
             PrintStatOnBackOfCard(5, gText_BattlePtsWon, sData->textBattleFacilityStat, sTrainerCardStatColors);
         break;
     case CARD_TYPE_FRLG:
+    case CARD_TYPE_HNS:
         break;
     }
 }
@@ -2037,7 +2046,13 @@ static u8 VersionToCardType(enum GameVersion version)
     if (version == VERSION_FIRE_RED || version == VERSION_LEAF_GREEN)
         return CARD_TYPE_FRLG;
     else if (version == VERSION_EMERALD)
+    {
+#if IS_HNS
+        return CARD_TYPE_HNS;
+#else
         return CARD_TYPE_EMERALD;
+#endif
+    }
     else
         return CARD_TYPE_RS;
 }

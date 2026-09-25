@@ -248,7 +248,7 @@ static bool32 HandleEndTurnFutureSight(enum BattlerId battler)
         gBattleStruct->eventState.atkCanceler = CANCELER_TARGET_FAILURE;
 
         if (!IsFutureSightAttackerInParty(gBattlerAttacker, gBattlerTarget, gCurrentMove))
-            SetTypeBeforeUsingMove(gCurrentMove, gBattlerAttacker);
+            SetTypeBeforeUsingMove(gCurrentMove, gBattlerAttacker, GetBattlerAbility(gBattlerAttacker), GetBattlerHoldEffect(gBattlerAttacker));
 
         BattleScriptExecute(BattleScript_MonTookFutureAttack);
         effect = TRUE;
@@ -867,6 +867,7 @@ static bool32 HandleEndTurnYawn(enum BattlerId battler)
         gBattleMons[battler].volatiles.yawn--;
         if (!gBattleMons[battler].volatiles.yawn
          && !(gBattleMons[battler].status1 & STATUS1_ANY)
+         && ability != ABILITY_COMATOSE
          && ability != ABILITY_VITAL_SPIRIT
          && ability != ABILITY_INSOMNIA
          && !UproarWakeUpCheck(battler)
@@ -894,11 +895,13 @@ static bool32 HandleEndTurnYawn(enum BattlerId battler)
                 gLastUsedAbility = ABILITY_SWEET_VEIL;
                 gBattlerAbility = gBattleScripting.battler;
                 RecordAbilityBattle(gBattleScripting.battler, ABILITY_SWEET_VEIL);
-                BattleScriptExecute(BattleScript_ImmunityProtectedEnd2);
+                BattleScriptExecute(BattleScript_AbilityMadeIneffectiveEnd2);
             }
             else
             {
-                if (B_SLEEP_TURNS >= GEN_5)
+                if (B_SLEEP_TURNS >= GEN_CHAMPIONS)
+                    gBattleMons[battler].status1 |= (RandomWeighted(RNG_SLEEP_TURNS, 0, 0, 1, 2));
+                else if (B_SLEEP_TURNS >= GEN_5)
                     gBattleMons[battler].status1 |= (RandomUniform(RNG_SLEEP_TURNS, 2, 4));
                 else if (B_SLEEP_TURNS >= GEN_3)
                     gBattleMons[battler].status1 |= (RandomUniform(RNG_SLEEP_TURNS, 2, 5));
@@ -969,7 +972,7 @@ static bool32 HandleEndTurnSecondEventBlock(enum BattlerId battler)
         {
             gBattlerAttacker = GetBattlerSideForMessage(side);
             gSideStatuses[side] &= ~SIDE_STATUS_REFLECT;
-            BattleScriptExecute(BattleScript_SideStatusWoreOff);
+            BattleScriptExecute(BattleScript_ReflectWoreOff);
             gBattleCommunication[MULTISTRING_CHOOSER] = side;
             PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_REFLECT);
             effect = TRUE;
@@ -981,7 +984,7 @@ static bool32 HandleEndTurnSecondEventBlock(enum BattlerId battler)
         {
             gBattlerAttacker = GetBattlerSideForMessage(side);
             gSideStatuses[side] &= ~SIDE_STATUS_LIGHTSCREEN;
-            BattleScriptExecute(BattleScript_SideStatusWoreOff);
+            BattleScriptExecute(BattleScript_LightScreenWoreOff);
             gBattleCommunication[MULTISTRING_CHOOSER] = side;
             PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_LIGHT_SCREEN);
             effect = TRUE;
@@ -1003,7 +1006,7 @@ static bool32 HandleEndTurnSecondEventBlock(enum BattlerId battler)
         {
             gBattlerAttacker = GetBattlerSideForMessage(side);
             gSideStatuses[side] &= ~SIDE_STATUS_MIST;
-            BattleScriptExecute(BattleScript_SideStatusWoreOff);
+            BattleScriptExecute(BattleScript_MistWoreOff);
             gBattleCommunication[MULTISTRING_CHOOSER] = side;
             PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_MIST);
             effect = TRUE;
@@ -1064,7 +1067,7 @@ static bool32 HandleEndTurnSecondEventBlock(enum BattlerId battler)
         {
             gBattlerAttacker = GetBattlerSideForMessage(side);
             gSideStatuses[side] &= ~SIDE_STATUS_AURORA_VEIL;
-            BattleScriptExecute(BattleScript_SideStatusWoreOff);
+            BattleScriptExecute(BattleScript_AuroraVeilWoreOff);
             gBattleCommunication[MULTISTRING_CHOOSER] = side;
             PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_AURORA_VEIL);
             effect = TRUE;

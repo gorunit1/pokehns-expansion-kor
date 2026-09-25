@@ -1,0 +1,17 @@
+HNS regression repair verification (2026-09-16 KST)
+
+Reference checkpoint: 6da0a16d66d3d6a2691c775cc23780f994512ab5
+Command: make hns -j8
+Result: exit code 0
+EWRAM: 249012 / 262144 (94.99%)
+IWRAM: 25704 / 32768 (78.44%)
+ROM: 33322644 / 33554432 (99.31%)
+Output: pokehns.gba (33554432 bytes, 32 MiB)
+Log: build/localization-logs/hns-regression-repair-20260916.log
+
+Oak generated assets were regenerated from the restored checkpoint sources;
+palette, compressed Oak graphics, compressed background graphics, and tilemap
+all match a fresh conversion of the checkpoint sources byte-for-byte.
+
+Korean josa expansion and the separate Pokédex cry-title/suffix strings were
+compiled successfully with the restored call sites.

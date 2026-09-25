@@ -2,6 +2,7 @@
 #include "battle.h"
 #include "battle_anim.h"
 #include "battle_controllers.h"
+#include "battle_gfx_sfx_util.h"
 #include "battle_interface.h"
 #include "battle_gimmick.h"
 #include "battle_z_move.h"
@@ -109,18 +110,32 @@ void SetGimmickAsActivated(enum BattlerId battler, enum Gimmick gimmick)
         gBattleStruct->gimmick.activated[BATTLE_PARTNER(battler)][gimmick] = TRUE;
 }
 
-#define SINGLES_GIMMICK_TRIGGER_POS_X_OPTIMAL (30)
-#define SINGLES_GIMMICK_TRIGGER_POS_X_PRIORITY (31)
-#define SINGLES_GIMMICK_TRIGGER_POS_X_SLIDE (15)
-#define SINGLES_GIMMICK_TRIGGER_POS_Y_DIFF (-11)
+struct GimmickTriggerPosition
+{
+    s8 xSlide;
+    s8 xPriority;
+    s8 xOptimal;
+    s8 yDiff;
+};
 
-#define DOUBLES_GIMMICK_TRIGGER_POS_X_OPTIMAL (30)
-#define DOUBLES_GIMMICK_TRIGGER_POS_X_PRIORITY (31)
-#define DOUBLES_GIMMICK_TRIGGER_POS_X_SLIDE (15)
-#define DOUBLES_GIMMICK_TRIGGER_POS_Y_DIFF (-4)
+static const struct GimmickTriggerPosition sSinglesGimmickTriggerPosition = {15, 31, 30, -11};
+static const struct GimmickTriggerPosition sDoublesGimmickTriggerPosition = {15, 31, 30, -4};
+static const struct GimmickTriggerPosition sSinglesMegaTriggerPositionGen4 = {16, 36, 34, -7};
+static const struct GimmickTriggerPosition sDoublesMegaTriggerPositionGen4 = {16, 36, 34, -3};
 
 #define tBattler    data[0]
 #define tHide       data[1]
+
+static const struct GimmickTriggerPosition *GetGimmickTriggerPosition(enum BattlerId battler)
+{
+    bool32 useGen4MegaTriggerPosition = UseGen4BattleUI()
+                                      && gBattleStruct->gimmick.usableGimmick[battler] == GIMMICK_MEGA;
+
+    if (GetBattlerCoordsIndex(battler) == BATTLE_COORDS_DOUBLES)
+        return useGen4MegaTriggerPosition ? &sDoublesMegaTriggerPositionGen4 : &sDoublesGimmickTriggerPosition;
+    else
+        return useGen4MegaTriggerPosition ? &sSinglesMegaTriggerPositionGen4 : &sSinglesGimmickTriggerPosition;
+}
 
 void ChangeGimmickTriggerSprite(u32 spriteId, u32 animId)
 {
@@ -129,32 +144,37 @@ void ChangeGimmickTriggerSprite(u32 spriteId, u32 animId)
 
 void CreateGimmickTriggerSprite(enum BattlerId battler)
 {
-    const struct GimmickInfo * gimmick = &gGimmicksInfo[gBattleStruct->gimmick.usableGimmick[battler]];
+    enum Gimmick usableGimmick = gBattleStruct->gimmick.usableGimmick[battler];
+    const struct GimmickInfo *gimmick = &gGimmicksInfo[usableGimmick];
+    const struct SpritePalette *triggerPal = gimmick->triggerPal;
+    const struct SpriteSheet *triggerSheet = gimmick->triggerSheet;
+    const struct GimmickTriggerPosition *position;
 
     // Exit if there shouldn't be a sprite produced.
     if (!IsOnPlayerSide(battler)
-     || gBattleStruct->gimmick.usableGimmick[battler] == GIMMICK_NONE
+     || usableGimmick == GIMMICK_NONE
      || gimmick->triggerSheet == NULL
-     || HasTrainerUsedGimmick(battler, gBattleStruct->gimmick.usableGimmick[battler]))
+     || HasTrainerUsedGimmick(battler, usableGimmick))
     {
         return;
     }
 
-    LoadSpritePalette(gimmick->triggerPal);
+    if (usableGimmick == GIMMICK_MEGA && UseGen4BattleUI())
+    {
+        triggerPal = &sSpritePalette_MegaTriggerGen4;
+        triggerSheet = &sSpriteSheet_MegaTriggerGen4;
+    }
+
+    position = GetGimmickTriggerPosition(battler);
+
+    LoadSpritePalette(triggerPal);
     if (GetSpriteTileStartByTag(TAG_GIMMICK_TRIGGER_TILE) == 0xFFFF)
-        LoadSpriteSheet(gimmick->triggerSheet);
+        LoadSpriteSheet(triggerSheet);
 
     if (gBattleStruct->gimmick.triggerSpriteId == 0xFF)
-    {
-        if (GetBattlerCoordsIndex(battler) == BATTLE_COORDS_DOUBLES)
-            gBattleStruct->gimmick.triggerSpriteId = CreateSprite(gimmick->triggerTemplate,
-                                                                  gSprites[gHealthboxSpriteIds[battler]].x - DOUBLES_GIMMICK_TRIGGER_POS_X_SLIDE,
-                                                                  gSprites[gHealthboxSpriteIds[battler]].y - DOUBLES_GIMMICK_TRIGGER_POS_Y_DIFF, 0);
-        else
-            gBattleStruct->gimmick.triggerSpriteId = CreateSprite(gimmick->triggerTemplate,
-                                                                  gSprites[gHealthboxSpriteIds[battler]].x - SINGLES_GIMMICK_TRIGGER_POS_X_SLIDE,
-                                                                  gSprites[gHealthboxSpriteIds[battler]].y - SINGLES_GIMMICK_TRIGGER_POS_Y_DIFF, 0);
-    }
+        gBattleStruct->gimmick.triggerSpriteId = CreateSprite(gimmick->triggerTemplate,
+                                                              gSprites[gHealthboxSpriteIds[battler]].x - position->xSlide,
+                                                              gSprites[gHealthboxSpriteIds[battler]].y - position->yDiff, 0);
 
     gSprites[gBattleStruct->gimmick.triggerSpriteId].tBattler = battler;
     gSprites[gBattleStruct->gimmick.triggerSpriteId].tHide = FALSE;
@@ -199,56 +219,40 @@ void DestroyGimmickTriggerSprite(void)
 
 static void SpriteCb_GimmickTrigger(struct Sprite *sprite)
 {
-    s32 xSlide, xPriority, xOptimal;
-    s32 yDiff;
+    const struct GimmickTriggerPosition *position = GetGimmickTriggerPosition(sprite->tBattler);
     s32 xHealthbox = gSprites[gHealthboxSpriteIds[sprite->tBattler]].x;
-
-    if (GetBattlerCoordsIndex(sprite->tBattler) == BATTLE_COORDS_DOUBLES)
-    {
-        xSlide = DOUBLES_GIMMICK_TRIGGER_POS_X_SLIDE;
-        xPriority = DOUBLES_GIMMICK_TRIGGER_POS_X_PRIORITY;
-        xOptimal = DOUBLES_GIMMICK_TRIGGER_POS_X_OPTIMAL;
-        yDiff = DOUBLES_GIMMICK_TRIGGER_POS_Y_DIFF;
-    }
-    else
-    {
-        xSlide = SINGLES_GIMMICK_TRIGGER_POS_X_SLIDE;
-        xPriority = SINGLES_GIMMICK_TRIGGER_POS_X_PRIORITY;
-        xOptimal = SINGLES_GIMMICK_TRIGGER_POS_X_OPTIMAL;
-        yDiff = SINGLES_GIMMICK_TRIGGER_POS_Y_DIFF;
-    }
 
     if (sprite->tHide)
     {
-        if (sprite->x < xHealthbox - xSlide)
+        if (sprite->x < xHealthbox - position->xSlide)
             sprite->x++;
 
-        if (sprite->x >= xHealthbox - xPriority)
+        if (sprite->x >= xHealthbox - position->xPriority)
             sprite->oam.priority = 2;
         else
             sprite->oam.priority = 1;
 
-        sprite->y = gSprites[gHealthboxSpriteIds[sprite->tBattler]].y - yDiff;
-        sprite->y2 = gSprites[gHealthboxSpriteIds[sprite->tBattler]].y2 - yDiff;
-        if (sprite->x == xHealthbox - xSlide)
+        sprite->y = gSprites[gHealthboxSpriteIds[sprite->tBattler]].y - position->yDiff;
+        sprite->y2 = gSprites[gHealthboxSpriteIds[sprite->tBattler]].y2 - position->yDiff;
+        if (sprite->x == xHealthbox - position->xSlide)
             DestroyGimmickTriggerSprite();
     }
     else
     {
         // Edge case: in doubles, if selecting move and next mon's action too fast, the second battler's gimmick icon uses the x from the first battler's gimmick icon
-        if (sprite->y != gSprites[gHealthboxSpriteIds[sprite->tBattler]].y - yDiff)
-            sprite->x = xHealthbox - xSlide;
+        if (sprite->y != gSprites[gHealthboxSpriteIds[sprite->tBattler]].y - position->yDiff)
+            sprite->x = xHealthbox - position->xSlide;
 
-        if (sprite->x > xHealthbox - xOptimal)
+        if (sprite->x > xHealthbox - position->xOptimal)
             sprite->x--;
 
-        if (sprite->x >= xHealthbox - xPriority)
+        if (sprite->x >= xHealthbox - position->xPriority)
             sprite->oam.priority = 2;
         else
             sprite->oam.priority = 1;
 
-        sprite->y = gSprites[gHealthboxSpriteIds[sprite->tBattler]].y - yDiff;
-        sprite->y2 = gSprites[gHealthboxSpriteIds[sprite->tBattler]].y2 - yDiff;
+        sprite->y = gSprites[gHealthboxSpriteIds[sprite->tBattler]].y - position->yDiff;
+        sprite->y2 = gSprites[gHealthboxSpriteIds[sprite->tBattler]].y2 - position->yDiff;
     }
 }
 

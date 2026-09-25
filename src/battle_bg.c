@@ -1445,4 +1445,3 @@ void DrawTerrainTypeBattleBackground(void)
         break;
     }
 }
-

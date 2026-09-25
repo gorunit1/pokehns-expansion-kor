@@ -1,0 +1,11 @@
+python3 tools/learnset_helpers/make_teaching_types.py tools/learnset_helpers/build/all_teaching_types.json
+tools/scaninc/scaninc -M build/hns/src/pokemon.d -I include -I tools/agbcc/include src/pokemon.c
+/usr/lib/gcc/arm-none-eabi/14.2.1/cc1 -quiet <flags> -o build/hns/src/pokemon.o src/pokemon.c
+Memory region         Used Size  Region Size  %age Used
+           EWRAM:      248844 B       256 KB     94.93%
+           IWRAM:       25704 B        32 KB     78.44%
+             ROM:    33256180 B        32 MB     99.11%
+cd build/hns && arm-none-eabi-ld -Map ../../pokehns.map --print-memory-usage --gc-sections -T ../../ld_script_modern.ld -o ../../pokehns.elf <objs> <libs> | cat
+tools/gbafix/gbafix pokehns.elf -t"POKEMON HNS" -cBPEE -m01 -r0 --silent
+arm-none-eabi-objcopy -O binary pokehns.elf pokehns.gba
+tools/gbafix/gbafix pokehns.gba -p --silent

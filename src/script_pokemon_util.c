@@ -34,6 +34,7 @@
 #include "tv.h"
 #include "wild_encounter.h"
 #include "constants/abilities.h"
+#include "constants/pokemon.h"
 #include "constants/items.h"
 #include "constants/battle_frontier.h"
 
@@ -165,12 +166,22 @@ void CreateScriptedWildMon(u16 species, u8 level, enum Item item)
         SetMonData(&gEnemyParty[0], MON_DATA_HELD_ITEM, heldItem);
     }
 }
-static u32 GenerateShinyPersonalityForOtId(u32 otId)
+// Builds a shiny personality that also honors Synchronize/Cute Charm. Rerolling blindly
+// until a personality is both shiny and the right nature would take ~200k tries, so the
+// upper half is derived from the lower half instead: every candidate is shiny by
+// construction and only the nature/gender constraints have to be rerolled.
+static u32 GenerateShinyPersonalityForOtId(u32 otId, u16 species, u8 gender, u8 nature)
 {
+    u32 otXor = HIHALF(otId) ^ LOHALF(otId);
     u32 personality;
+
     do {
-        personality = Random32();
-    } while ((HIHALF(otId) ^ LOHALF(otId) ^ HIHALF(personality) ^ LOHALF(personality)) >= 8);
+        u32 lo = Random();
+        u32 hi = (otXor ^ lo ^ (Random() % SHINY_ODDS)) & 0xFFFF;
+        personality = (hi << 16) | lo;
+    } while ((nature != NATURE_RANDOM && nature != GetNatureFromPersonality(personality))
+          || (gender != MON_GENDER_RANDOM && gender != GetGenderFromSpeciesAndPersonality(species, personality)));
+
     return personality;
 }
 
@@ -192,7 +203,9 @@ void CreateShinyScriptedMon(u16 species, u8 level, enum Item item)
              | (gSaveBlock2Ptr->playerTrainerId[2] << 16)
              | (gSaveBlock2Ptr->playerTrainerId[3] << 24);
 
-    u32 shinyPersonality = GenerateShinyPersonalityForOtId(otId);
+    u32 shinyPersonality = GenerateShinyPersonalityForOtId(otId, species,
+        GetSynchronizedGender(STATIC_WILDMON_ORIGIN, species),
+        GetSynchronizedNature(STATIC_WILDMON_ORIGIN, species));
 
     CreateMonWithIVs(&gEnemyParty[0], species, level, shinyPersonality, OTID_STRUCT_PLAYER_ID, USE_RANDOM_IVS);
     GiveMonInitialMoveset(&gEnemyParty[0]);
@@ -520,7 +533,7 @@ void SetTeraType(struct ScriptContext *ctx)
  * if side/slot are assigned, it will create the mon at the assigned party location
  * if slot == PARTY_SIZE, it will give the mon to first available party or storage slot
  */
-static u32 ScriptGiveMonParameterized(u8 side, u8 slot, u16 species, u8 level, enum Item item, enum PokeBall ball, u8 nature, u8 abilityNum, u8 gender, u16 *evs, u16 *ivs, enum Move *moves, enum ShinyMode shinyMode, bool8 gmaxFactor, enum Type teraType, u8 dmaxLevel)
+static u32 ScriptGiveMonParameterized(u8 side, u8 slot, u16 species, u8 level, enum Item item, enum PokeBall ball, u8 nature, u8 abilityNum, u8 gender, u16 *evs, u16 *ivs, enum Move *moves, enum ShinyMode shinyMode, bool8 gmaxFactor, enum Type teraType, u8 dmaxLevel, bool8 isEgg)
 {
     struct Pokemon mon;
     u32 i;
@@ -538,6 +551,8 @@ static u32 ScriptGiveMonParameterized(u8 side, u8 slot, u16 species, u8 level, e
         isShiny = GetMonData(&mon, MON_DATA_IS_SHINY);
 
     SetMonData(&mon, MON_DATA_IS_SHINY, &isShiny);
+
+    SetMonData(&mon, MON_DATA_IS_EGG, &isEgg);
 
     // gigantamax factor
     SetMonData(&mon, MON_DATA_GIGANTAMAX_FACTOR, &gmaxFactor);
@@ -755,6 +770,7 @@ void ScrCmd_createmon(struct ScriptContext *ctx)
     bool8 gmaxFactor         = PARSE_FLAG(22, FALSE);
     enum Type teraType       = PARSE_FLAG(23, NUMBER_OF_MON_TYPES);
     u8 dmaxLevel             = PARSE_FLAG(24, 0);
+    bool8 isEgg              = PARSE_FLAG(25, FALSE);
 
     enum Move moves[MAX_MON_MOVES];
     for (i = 0; i < MAX_MON_MOVES; i++)
@@ -796,7 +812,7 @@ void ScrCmd_createmon(struct ScriptContext *ctx)
     if (nature == NATURE_MAY_SYNCHRONIZE)
         nature = GetSynchronizedNature(origin, species);
 
-    gSpecialVar_Result = ScriptGiveMonParameterized(side, slot, species, level, item, ball, nature, abilityNum, gender, evs, ivs, moves, shinyMode, gmaxFactor, teraType, dmaxLevel);
+    gSpecialVar_Result = ScriptGiveMonParameterized(side, slot, species, level, item, ball, nature, abilityNum, gender, evs, ivs, moves, shinyMode, gmaxFactor, teraType, dmaxLevel, isEgg);
 }
 
 #undef PARSE_FLAG
