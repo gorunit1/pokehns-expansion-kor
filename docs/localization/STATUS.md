@@ -1,5 +1,11 @@
 # 현재 인수인계 상태
 
+## 2026-09-26 — 친구 작업 지시서 폴더 추가 (현재)
+
+- 요청/범위: 친구에게 맡길 작업 지시와 완료 조건을 GitHub에서 한곳에 관리할 수 있도록 `docs/friend-handoff/`를 추가한다.
+- 구현: `docs/friend-handoff/README.md`에 필수 문서 링크, 작업 목록, 작업 지시서 양식과 검증·인수인계 항목을 작성했다.
+- 다음 실행: 친구에게 맡길 구체적인 작업마다 이 폴더 안에 별도 Markdown 파일을 추가하고, 완료 후 결과를 기록한다.
+
 ## 2026-09-26 — `pokehns-expansion-kor` 업로드 범위 정정 (현재)
 
 - 요청/범위: 현재 HNS 작업 상태를 `PokemonHnS-Development/pokehns-expansion`의 `pokehns-expansion-kor` 브랜치로 업로드한다.

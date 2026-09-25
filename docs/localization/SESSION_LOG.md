@@ -2,6 +2,12 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-09-26 — 친구 작업 지시서 폴더 추가
+
+- 요청: 친구에게 맡길 작업 지시사항을 GitHub에서 한곳에 관리할 폴더를 만든다.
+- 구현: `docs/friend-handoff/README.md`를 추가하고 현재 상태·작업 절차·세션 기록 링크와 작업 지시서 양식을 넣었다.
+- 다음 작업: 친구에게 맡길 항목별 Markdown 파일을 `docs/friend-handoff/` 아래에 추가한다.
+
 ### 2026-09-26 — `pokehns-expansion-kor` 업로드 범위 정정
 
 - 요청: 현재 HNS를 `pokehns-expansion` 저장소의 `pokehns-expansion-kor` 브랜치로 업로드한다.
