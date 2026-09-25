@@ -4,6 +4,7 @@
 
 ## 작업 시작 전에 읽을 문서
 
+- [`CURRENT_HNS_HANDOFF.md`](CURRENT_HNS_HANDOFF.md) — 현재 브랜치·보존 대상·핵심 기능 상태 요약
 - [`docs/localization/STATUS.md`](../localization/STATUS.md) — 현재 작업 상태와 남은 문제
 - [`docs/localization/WORKFLOW.md`](../localization/WORKFLOW.md) — 작업·검증·인수인계 절차
 - [`docs/localization/SESSION_LOG.md`](../localization/SESSION_LOG.md) — 최근 작업 기록
@@ -12,6 +13,7 @@
 
 구체적인 지시는 작업별 Markdown 파일로 추가합니다.
 
+- [x] [현재 HNS 작업 인수인계](CURRENT_HNS_HANDOFF.md)
 - [ ] [pokeemerald-expansion 1.17.0 안전 업데이트](POKEEMERALD_EXPANSION_1.17.0_UPDATE.md)
 - [ ] 작업 제목과 목표 작성
 - [ ] 수정 대상 파일과 변경 범위 작성

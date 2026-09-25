@@ -1,25 +1,34 @@
 # 현재 인수인계 상태
 
+## 2026-09-26 — 포켓몬피리 입수 경로·테라스탈 상태 및 인수인계 정리 (현재)
+
+- 요청/범위: 배틀 중 포켓몬피리 사용이 실제 HNS 플레이에서 가능한지와 아이템 입수 경로를 확인하고, 이전 기록의 GitHub 업로드 상태를 정정해 친구가 바로 읽을 수 있는 인수인계를 정리한다.
+- 포켓몬피리 결론: `ITEM_POKE_FLUTE`와 `BattleScript_UsePokeFlute`가 있어, 아이템을 보유한 상태라면 배틀 중 사용 가능하다. 그러나 HNS 활성 맵에는 이를 지급하는 이벤트가 없다. FRLG 호환용 `LavenderTown_VolunteerPokemonHouse_Frlg` 스크립트의 Mr. Fuji 지급 코드는 남아 있지만 HNS의 `headers.inc`·`groups.inc`에 이 맵이 등록되지 않았고 HNS의 `FLAG_GOT_POKE_FLUTE`도 `0`이다.
+- 실제 HNS 스토리: 관동에서는 기계 부품을 발전소에 돌려준 뒤 보라타운 라디오타워에서 확장 카드를 받아 `FLAG_KANTO_RADIO_GOT`을 세우고, 포케기어의 포켓몬피리 라디오 채널로 갈색시티 잠만보를 깨운다. 이는 아이템 포켓몬피리 지급이 아니다.
+- 테라스탈 결론: 엔진과 테라스탈오브는 존재하지만 `B_FLAG_TERA_ORB_CHARGED`·`B_FLAG_TERA_ORB_NO_COST`가 모두 `0`이라 일반 플레이어 배틀에서는 사용할 수 없다. 테스트 환경의 우회와 실제 플레이 허용을 혼동하지 않는다.
+- 인수인계: `docs/friend-handoff/CURRENT_HNS_HANDOFF.md`를 추가하고, 친구용 폴더 색인에서 현재 브랜치·보존 규칙·포켓몬피리·테라스탈·검증 상태를 바로 확인할 수 있게 연결했다.
+- GitHub 상태 정정: 현재 로컬 `pokehns-expansion-kor`는 `origin/pokehns-expansion-kor`의 커밋 `791876da59`를 추적하며, 이 시점까지의 친구용 문서와 전체 작업 트리 업로드 커밋은 Fork에 반영되어 있다. 아래의 과거 “푸시 대기” 기록은 당시 상태를 남긴 이력이며, 현재 상태로 해석하지 않는다.
+- 검증: 지급 이벤트·맵 등록·플래그·라디오·배틀 스크립트를 정적으로 대조했다. 소스·ROM은 수정하지 않았고, HNS 전체 빌드 및 실제 게임 화면 검증은 이번 확인에서 실행하지 않았다.
+- 다음 시작점: 포켓몬피리 아이템을 실제 획득 가능하게 할지, 테라스탈을 일반 플레이에서 활성화할지 사용자가 결정하면 각각 별도 이벤트·플래그·UI·배틀 검증 작업으로 진행한다.
+
 ## 2026-09-26 — 친구용 1.17.0 안전 업데이트 작업 지시서 추가 (현재)
 
 - 요청/범위: 친구가 1.15.1 이후 `pokeemerald-expansion` 변경을 `expansion/1.17.0`까지 HNS에 안전하게 이식할 수 있도록 작업 지시서를 작성한다.
 - 구현: `docs/friend-handoff/POKEEMERALD_EXPANSION_1.17.0_UPDATE.md`에 기준 태그·이미 선별 이식된 항목·HNS/한글/배틀 메시지 보존 규칙·충돌 보고 형식·검증·결과 보고 양식을 기록했다.
 - 핵심 원칙: upstream 전체 덮어쓰기/일괄 병합은 금지하며, HNS와 한글화·배틀 메시지 최신화 코드가 upstream과 다르면 HNS를 우선하고 충돌은 사용자 결정 전 보류한다.
-- 다음 실행: 이 문서 변경을 포함한 로컬 커밋을 사용자 인증 터미널에서 `git push`해 Fork의 `pokehns-expansion-kor` 브랜치에 반영한다.
+- 현재 상태 정정: 이 문서와 관련 커밋은 이후 `origin/pokehns-expansion-kor`에 푸시되었다. 실제 작업 시작 전에는 현재 브랜치와 `git status --short --branch`를 다시 확인한다.
 
 ## 2026-09-26 — 친구 작업 지시서 폴더 추가 (현재)
 
 - 요청/범위: 친구에게 맡길 작업 지시와 완료 조건을 GitHub에서 한곳에 관리할 수 있도록 `docs/friend-handoff/`를 추가한다.
 - 구현: `docs/friend-handoff/README.md`에 필수 문서 링크, 작업 목록, 작업 지시서 양식과 검증·인수인계 항목을 작성했다.
-- 현재 상태: 폴더와 기록은 로컬 커밋 `b977946ae7`에 포함되었지만, 이 실행 환경의 HTTPS 인증 정보가 없어 원격 푸시는 대기 중이다.
-- 다음 실행: 사용자 터미널에서 `git push`를 실행한 뒤, 친구에게 맡길 구체적인 작업마다 이 폴더 안에 별도 Markdown 파일을 추가하고 결과를 기록한다.
+- 현재 상태 정정: 폴더·작업 지시서·현재 인수인계 문서는 이후 `origin/pokehns-expansion-kor`에 푸시되었다. 친구에게 맡길 새 작업은 이 폴더에 별도 Markdown 파일로 추가하고 결과를 기록한다.
 
 ## 2026-09-26 — `pokehns-expansion-kor` 업로드 범위 정정 (현재)
 
 - 요청/범위: 현재 HNS 작업 상태를 `PokemonHnS-Development/pokehns-expansion`의 `pokehns-expansion-kor` 브랜치로 업로드한다.
 - 확인: Fork `gorunit1/pokehns-expansion-kor`의 `pokehns-expansion-kor` 브랜치와 로컬 추적 브랜치가 생성되었고, 기존 커밋에 더해 전체 작업 트리 991개 파일을 `1821fd6749`로 커밋했다.
-- 현재 상태: 전체 작업 트리 변경은 로컬 커밋에 포함되었지만, 이 실행 환경의 HTTPS 인증 정보가 없어 원격 푸시는 실패했다. 원격에는 기존 3개 커밋만 있고 `1821fd6749`는 아직 업로드되지 않았다.
-- 다음 실행: 인증된 사용자 터미널에서 `git push -u origin pokehns-expansion-kor`를 실행한다. 푸시 후 GitHub 파일 화면에서 최신 커밋과 한국어 변경을 확인한다.
+- 현재 상태 정정: `1821fd6749`와 후속 인수인계 문서는 이후 `origin/pokehns-expansion-kor`에 푸시되었다. 현재 정확한 기준 커밋·원격 상태는 상단의 최신 항목과 `git branch -vv`로 확인한다.
 
 ## 2026-09-26 — 끈적끈적바늘 전이 연출 제거 (현재)
 
