@@ -2,6 +2,41 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-09-26 — 화염·맹독구슬, 메가찌르호크, 영원의꽃 플라엣테 오류 수정
+
+- 구슬: 최상위 실행되는 화염구슬·맹독구슬 스크립트에만 `BattleScript_UpdateEffectStatusIconEnd2`를 추가·연결했다. 상태 아이콘 갱신·상태 폼 트리거·텍스트 정리 뒤 `end2`로 끝나므로 빈 스택 `return` assertf가 발생하지 않는다. 기존 `return` 공용 꼬리는 다른 하위 스크립트용으로 유지했다.
+- 메가찌르호크: `SPECIES_STARAPTOR_MEGA`의 주석 처리돼 있던 `gMonIcon_StaraptorMega`와 팔레트 0 연결을 복구했다.
+- 영원의꽃 플라엣테: `sFloetteEternalFormChangeTable`의 기절·배틀 종료 복원 대상을 일반 플라엣테에서 `SPECIES_FLOETTE_ETERNAL`로 변경했다. 메가진화 후에도 원래 영원의꽃 폼으로 돌아간다.
+- 검증: 변경 범위 `git diff --check` 통과. 배틀 스크립트 오브젝트는 재컴파일됐다. 이 세션의 `src/pokemon.c` 대형 종 테이블 컴파일은 실행 환경 문제로 출력 없이 종료돼 새 ROM 전체 링크는 미완료다. 기존 ROM은 수정 전 것이므로 실제 검증에 사용하지 않는다.
+
+### 2026-09-26 — 메가찌르호크 파티 아이콘·영원의꽃 플라엣테 배틀 종료 폼 진단
+
+- 메가찌르호크: `SPECIES_STARAPTOR_MEGA`의 아이콘 파일·심볼은 존재하지만 `src/data/pokemon/species_info/gen_4_families.h`에서 `.iconSprite = gMonIcon_StaraptorMega`와 `.iconPalIndex = 0`가 주석 처리돼 있다. 아이콘 선택 함수는 NULL일 때 물음표 아이콘으로 폴백하므로, 보고된 파티 물음표의 직접 원인이다.
+- 영원의꽃 플라엣테: `sFloetteEternalFormChangeTable`의 메가진화 대상은 올바르게 `SPECIES_FLOETTE_MEGA`지만, 기절·배틀 종료 복원 대상이 `SPECIES_FLOETTE`로 잘못 지정돼 있다. 이 표는 영원의꽃과 메가플라엣테가 함께 사용하며, 명시적 대상이 배틀 시작 종 기록보다 우선하므로 일반 플라엣테로 저장된다.
+- 필요한 수정: 메가찌르호크 종 정보에서 기존 아이콘 심볼을 연결하고, 영원의꽃 표의 `FORM_CHANGE_FAINT`/`FORM_CHANGE_END_BATTLE` 대상을 `SPECIES_FLOETTE_ETERNAL`로 바꾼다. 이번 요청은 원인 조사이므로 소스·ROM은 수정하지 않았다.
+
+### 2026-09-26 — 화염구슬·맹독구슬 assertf 및 PC 압축 해제/충돌 보고 진단
+
+- 실제 보고: 화염구슬·맹독구슬 발동 시 `src/battle_script_commands.c:5034`의 빈 배틀 스크립트 스택 `return` assertf가 재현된다. PC에서 `Move Pokémon`을 선택하면 압축 해제 실패가 나오며, START로 계속할 경우 그래픽이 깨진 뒤 mGBA가 `Jumped to invalid address: 0451C220`으로 중단된다.
+- 확정 원인(구슬): `TryToxicOrb()`·`TryFlameOrb()`는 `BattleScriptExecute()`로 스크립트를 최상위 실행한다. `1821fd6749`에서 두 스크립트가 아이템 팝업과 상태 메시지를 거친 뒤 `BattleScript_UpdateEffectStatusIconRet`로 분기하도록 바뀌었지만, 이 꼬리는 `return`이다. 최상위 스크립트에 복귀 주소는 없으므로 정확히 이 `return`에서 assertf가 난다. 이전 버전의 두 스크립트는 `end2`로 끝났다.
+- PC 경로: 오류의 입력 주소 `0x08041000`은 압축 데이터가 아니라 ROM 코드 영역이고, `IN: 0x0810E3B9`/`0x0810E5FF`는 각각 `DecompressDataWithHeaderWram()`/`DecompressionError()`에 대응한다. `gStorageSystemMenu_Gfx`와 메가플라엣테 front pic은 ROM에서 정상 SMOL 헤더를 확인했다. 따라서 PC 오류는 런타임의 잘못된 압축 입력 포인터이며, 정확한 호출자는 아직 미확정이다.
+- 조치: 진단 요청 범위이므로 소스는 수정하지 않았다. 이후에는 assertf 화면에서 계속하지 말고 리셋하고, 오류가 전혀 발생하지 않은 게임 내 저장에서 PC를 먼저 열어 독립 재현 여부를 확인한다. 재현 시 mGBA 디버거의 `DecompressionError` 호출자와 첫 인수를 확보한다.
+
+### 2026-09-26 — 메가플라엣테 교체 후 배틀 스크립트 `return` assertf 보고
+
+- 실제 보고: 디버그로 만든 메가플라엣테를 야생 부우부전에서 리아코로 일반 교체하자마자, `src/battle_script_commands.c:5034: return used with nothing to return to` assertf 화면이 표시됐다.
+- 의미: `Cmd_return()`이 빈 `battleScriptsStack`에서 실행됐다. 호출된 하위 배틀 스크립트가 반환할 호출자를 잃었거나, 최상위 스크립트가 잘못 `return`한 상태다.
+- 정적 대조: 해당 수동 교체는 `BattleScript_DoSwitchOut`의 `switchineffects`·`switchinevents`로 이어진다. 메가플라엣테는 페어리오라, 리아코는 급류/우격다짐이라 이 두 종의 알려진 교체 특성 스크립트만으로는 오류를 설명하지 못했다. `battle_message.c`의 주석 변경은 실행 바이트코드를 바꾸지 않는다.
+- 주의: 화면의 `:5`와 줄바꿈 뒤 `034:`는 하나의 `:5034`이며, 현재 소스의 assert 위치와 일치한다. 과거 빌드 ROM 혼용으로 단정하지 않는다. 다만 세이브 스테이트는 ROM 코드 주소를 보존하므로 새 ROM과 혼용하지 않고, 게임 내 저장만 사용해 먼저 재현한다.
+- 다음 시작점: 세이브 스테이트 없는 새 배틀에서 일반 포켓몬 → 리아코, 메가플라엣테 → 다른 포켓몬, 메가플라엣테 → 리아코를 비교 재현한다. 재현되면 교체 직전의 출력·배틀 형식·도구·특성 정보를 기준으로 `switchinevents` 하위 호출을 추적한다.
+
+### 2026-09-26 — 현재 `pokehns-expansion-kor` HNS ROM 전체 빌드
+
+- 요청: 현재 작업 상태로 HNS ROM을 빌드한다.
+- 기준: `6e807edbbd` (`Document battle message status and handoff`)이며, 로컬 브랜치와 `origin/pokehns-expansion-kor`가 같은 커밋을 가리키는 상태에서 실행했다.
+- 검증: `GITHUB_ACTION=1 timeout 600s make --jobserver-style=pipe hns -j8` 성공. `pokehns.gba`가 33,554,432바이트(32MiB)로 생성됐고 파일 시각은 2026-09-26 02:42 KST다.
+- 범위: 컴파일·링크 검증만 수행했다. 자동 테스트와 실제 HNS 화면/플레이 검증은 하지 않았으며, 소스 문자열·배틀 로직은 변경하지 않았다.
+
 ### 2026-09-26 — 포켓몬피리 입수 경로·테라스탈 상태 및 인수인계 정리
 
 - 요청: 배틀 포켓몬피리의 실제 HNS 입수 가능 여부와 방법을 확인하고, 이전 대화부터의 인수인계 문서가 누락되지 않도록 정리한다.

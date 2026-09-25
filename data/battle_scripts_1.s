@@ -5981,6 +5981,13 @@ BattleScript_UpdateEffectStatusIconRet::
 	flushtextbox
 	return
 
+BattleScript_UpdateEffectStatusIconEnd2::
+	updatestatusicon BS_EFFECT_BATTLER
+	waitstate
+	trytriggerstatusform
+	flushtextbox
+	end2
+
 BattleScript_YawnMakesAsleepEnd2::
 	statusanimation BS_EFFECT_BATTLER
 	printstring STRINGID_PKMNFELLASLEEP
@@ -6016,7 +6023,7 @@ BattleScript_ToxicOrb::
 	statusanimation BS_EFFECT_BATTLER
 	printstring STRINGID_PKMNPOISONEDBY
 	waitmessage B_WAIT_TIME_LONG
-	goto BattleScript_UpdateEffectStatusIconRet
+	goto BattleScript_UpdateEffectStatusIconEnd2
 
 BattleScript_FlameOrb::
 	call BattleScript_ItemPopUp_Scripting
@@ -6024,7 +6031,7 @@ BattleScript_FlameOrb::
 	statusanimation BS_EFFECT_BATTLER
 	printstring STRINGID_PKMNBURNEDBY
 	waitmessage B_WAIT_TIME_LONG
-	goto BattleScript_UpdateEffectStatusIconRet
+	goto BattleScript_UpdateEffectStatusIconEnd2
 
 BattleScript_MoveEffectPoison::
 	statusanimation BS_EFFECT_BATTLER
