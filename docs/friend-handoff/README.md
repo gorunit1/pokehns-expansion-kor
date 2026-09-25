@@ -12,6 +12,7 @@
 
 구체적인 지시는 작업별 Markdown 파일로 추가합니다.
 
+- [ ] [pokeemerald-expansion 1.17.0 안전 업데이트](POKEEMERALD_EXPANSION_1.17.0_UPDATE.md)
 - [ ] 작업 제목과 목표 작성
 - [ ] 수정 대상 파일과 변경 범위 작성
 - [ ] 재현·검증 방법 작성
