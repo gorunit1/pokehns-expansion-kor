@@ -3,9 +3,9 @@
 ## 2026-09-26 — `pokehns-expansion-kor` 업로드 범위 정정 (현재)
 
 - 요청/범위: 현재 HNS 작업 상태를 `PokemonHnS-Development/pokehns-expansion`의 `pokehns-expansion-kor` 브랜치로 업로드한다.
-- 확인: Fork `gorunit1/pokehns-expansion-kor`의 `pokehns-expansion-kor` 브랜치와 로컬 추적 브랜치가 생성되었고, 커밋된 3개 커밋은 원격에 업로드되었다.
-- 정정: 현재 작업 트리에는 `src/battle_message.c`를 포함한 다수의 추적 파일 수정과 새 파일이 남아 있다. 이 미커밋 변경은 원격 브랜치에 포함되지 않았다. `src/battle_message.c`의 한국어 줄은 Git에서 `Not Committed Yet`로 확인된다.
-- 다음 실행: 업로드 범위를 정한 뒤 필요한 파일만 커밋하고 `git push`한다. 현재 상태에서 일괄 `git add .`는 사용하지 않는다.
+- 확인: Fork `gorunit1/pokehns-expansion-kor`의 `pokehns-expansion-kor` 브랜치와 로컬 추적 브랜치가 생성되었고, 기존 커밋에 더해 전체 작업 트리 991개 파일을 `1821fd6749`로 커밋했다.
+- 현재 상태: 전체 작업 트리 변경은 로컬 커밋에 포함되었지만, 이 실행 환경의 HTTPS 인증 정보가 없어 원격 푸시는 실패했다. 원격에는 기존 3개 커밋만 있고 `1821fd6749`는 아직 업로드되지 않았다.
+- 다음 실행: 인증된 사용자 터미널에서 `git push -u origin pokehns-expansion-kor`를 실행한다. 푸시 후 GitHub 파일 화면에서 최신 커밋과 한국어 변경을 확인한다.
 
 ## 2026-09-26 — 끈적끈적바늘 전이 연출 제거 (현재)
 

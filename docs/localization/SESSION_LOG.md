@@ -5,9 +5,9 @@
 ### 2026-09-26 — `pokehns-expansion-kor` 업로드 범위 정정
 
 - 요청: 현재 HNS를 `pokehns-expansion` 저장소의 `pokehns-expansion-kor` 브랜치로 업로드한다.
-- 확인: Fork `gorunit1/pokehns-expansion-kor`의 `pokehns-expansion-kor` 브랜치로 커밋된 3개 커밋은 푸시되었다.
-- 정정: 실제 작업 트리에는 `src/battle_message.c`를 포함한 다수의 미커밋 수정·새 파일이 남아 있다. 따라서 GitHub의 파일 화면에 현재 로컬 번역이 모두 보이지 않는 것이 정상이다.
-- 인수인계: 미커밋 변경 전체를 올릴지 battle/localization 관련 파일만 올릴지 범위를 먼저 정한 뒤, 필요한 파일만 커밋하고 `git push`한다.
+- 확인: Fork `gorunit1/pokehns-expansion-kor`의 `pokehns-expansion-kor` 브랜치로 기존 커밋된 3개 커밋은 푸시되었다.
+- 정정: 전체 작업 트리의 991개 변경·새 파일을 `1821fd6749` 커밋으로 기록했다. 이 커밋은 사용자 터미널의 인증과 실행 환경이 분리되어 있어 자동 푸시되지 않았다.
+- 인수인계: 사용자 터미널에서 `git push -u origin pokehns-expansion-kor`를 실행하면 기존 3개 커밋과 `1821fd6749`가 함께 Fork에 업로드된다.
 
 ### 2026-09-26 — 끈적끈적바늘 전이 연출 제거
 
