@@ -1,5 +1,49 @@
 # 현재 인수인계 상태
 
+## 2026-09-26 — `pokemon_storage_system.c` HGSS 원문 번역 감사 (현재)
+
+- 요청/범위: 현재 한글화된 `src/pokemon_storage_system.c`의 런타임 PC 문자열을 Poké Corpus의 HGSS 한국어 원문 Text File 24·25 및 원래 영문 호출 의미와 대조했다. 이번 작업은 검증·권장 목록만 작성했으며 소스 문자열은 바꾸지 않았다.
+- 이미 일치: 기본 박스명·파티 가득 참·박스 메인 메뉴의 네 기능/설명, `박스를 종료하겠습니까?`, `정말 놓아주겠습니까?`, `바이바이`, `싸울 포켓몬이 없어집니다!`, 박스/가방 가득 참, 알 방출 불가, 계속 조작, 되돌아옴, 걱정, 메일 제거, `벽지`·`이름`, 숲~하늘, `포켓센`, `심플`은 HGSS의 같은 PC 문구 또는 같은 벽지명과 일치한다. `MENU_INFO = 정보`도 실제 도구 설명 창을 여는 기능에 맞다.
+- 명확한 권장: 아직 영문인 `gPCText_Give`는 두 개의 도구 주기 메뉴에서 실제 출력되므로 `지니게 한다`가 적절하다. `MSG_ITEM_IS_HELD`는 원문과 HGSS의 `[도구] 지니게 했다!`에 맞춰 `"{DYNAMIC 0} 지니게 했다!"`가 맞고, 현재 `…을 맡겼다!`는 도구를 맡긴 것으로 의미가 바뀐다. `MSG_CHANGED_TO_ITEM`은 HGSS에 같은 결과 문장이 없다. 따라서 현재 `{K_WAGWA}`(와/과)가 문법에 맞지 않고 `"{DYNAMIC 0}{K_EU}로 바꾸었다!"`가 원본 `Changed to [item].`의 자연스러운 복원이라는 판단은 가능하지만, 이를 HGSS 직결 원문이라고 주장하지 않는다.
+- 공식 표현 권장: HGSS 직결 문구는 선택된 대상의 `"{DYNAMIC 0} 어떻게 할까?"`, 방출 결과의 `"{DYNAMIC 0} 밖에 놓아주었다."`, 파티에서 꺼낼 대상의 `"어느 포켓몬을 데리고 갈까?"`다. 현재 문장도 기능은 전달하지만 위 문구가 HGSS 원문과 같다. `MSG_SURPRISE`도 원문/HGSS 표기는 `… … … … !`이며 현재의 `..... ..... .....!`와 다르다(한글 charmap에는 `…`가 있다). `MSG_HOLDING_POKE`는 HGSS에 직접 대응하는 버튼 안내가 없어 현재 `쥐고`를 공식 근거로 바꿀 수는 없으며, HNS 원문 의미상 자연스러운 대안은 `포켓몬을 잡고 있습니다!`다.
+- 벽지 주의: HGSS의 `MACHINE`은 `금속`이므로 현재 `기계`보다 `금속`이 직접 대응한다. 반면 HNS의 `POLKA-DOT`, `SCENERY 1`~`3`, `ETCETERA`, Walda 해금 벽지 `FRIENDS`는 HGSS에 같은 메뉴/자산이 없다. 따라서 `물방울`, `풍경1`~`3`, `etc.`, `애호가`는 HGSS 공식 문구라고 확정할 수 없다. 특히 `FRIENDS`는 Walda 전용 벽지 항목이므로 `애호가`로 의역할 근거가 없다.
+- 별도 기능: `MENU_SELECT = 선택한다`는 HGSS에 없는 upstream `ChooseBoxMon` 전용 명령이다. 기존 조사대로 포켓몬을 고르는 행동에는 짧은 메뉴명 `선택`이 적합하며, HGSS 대조로 이를 `결정` 또는 설명문으로 바꿀 근거는 없다.
+- 근거: Poké Corpus [HGSS 한국어 원문](https://raw.githubusercontent.com/abcboy101/poke-corpus/main/corpus/HeartGoldSoulSilver/ko_msg.txt) Text File 24·25(확인일 2026-09-26), `src/pokemon_storage_system.c`의 각 `MSG_*` 및 `sMenuTexts` 호출부. 정적 문자열/호출부 대조만 완료했으며, ROM 빌드·실기 화면 검증은 실행하지 않았다.
+- 다음 시작점: 사용자가 승인하면 위의 명확한 3개 도구 문자열과 `GIVE`·`MACHINE`부터 별도 패치하고, HGSS에 직접 대응하지 않는 Walda/Polka-dot 벽지명은 기존 `pokeemerald-kr` 또는 실제 한국판 GBA 자료를 확보한 뒤 결정한다.
+
+## 2026-09-26 — PC `MENU_SELECT` 번역 근거 확인 (현재)
+
+- 확인: `MENU_SELECT`는 일반 PC의 이동/맡기기 명령이 아니라 2025년 upstream `ChooseBoxMon` 추가 기능의 전용 항목이다. 선택한 박스 포켓몬을 호출 스크립트로 반환하는 동작이므로 영문 `SELECT`의 의미는 버튼명 `SELECT`가 아니라 동사 명령 `select`다.
+- 원문 대조: `pokeemerald-kr`의 `gText_Select`는 영문 `SELECT`가 남은 미사용 문자열이라 근거가 되지 않는다. Poké Corpus HGSS와 XY의 공식 한국어 UI는 포켓몬을 고르는 동작을 `포켓몬을 선택하고 결정`으로, 확정 동작을 `결정`으로 구분한다. 이 항목은 포켓몬을 고르는 단계이므로 `결정`이 아니라 `선택`이 맞다.
+- 권장 변경: `[MENU_SELECT] = COMPOUND_STRING("선택")`. 메뉴 폭에 맞는 명사형/명령형 단문이며, 이미 있는 `MSG_PKMN_IS_SELECTED` 등의 `선택` 용례와도 일치한다. 이번 확인에서는 소스 문자열을 변경하지 않았다.
+- 실제 표시 조건: 플레이어가 평상시 PC의 `박스를 정리한다`를 열었을 때는 표시되지 않는다. 이벤트 스크립트가 `chooseboxmon`을 호출할 때만 PC가 선택 전용 모드로 열리며, 유효한 포켓몬 위에서 A를 누르면 메뉴 첫 항목으로 `선택`·`요약`·`마킹`·`취소`가 나타난다. `선택`을 누르면 PC를 닫고 해당 포켓몬의 파티/박스 위치를 스크립트에 반환한다. 현재 HNS에서는 기술 가르침/기술 되새김/기술 지우기, 이름 감정, 특정 종을 보여 주는 NPC·교환 등에서 쓰인다.
+
+## 2026-09-26 — PC `MENU_INFO` 번역 근거 확인 (현재)
+
+- 실제 동작: 지닌물건 정리에서 도구를 지닌 포켓몬에 A를 누르면 `TAKE`·`BAG`·`INFO`·`CANCEL` 중 하나로 표시되며, `MENU_INFO`는 `Task_ShowItemInfo()`를 통해 그 도구의 설명 창을 연다.
+- 원문 대조: Poké Corpus HGSS에서 영문 `INFO`라는 메뉴 라벨은 공식 한국어판에서 `정보`로 표기된다. `설명을 듣는다`는 시설·미니게임 규칙을 NPC가 설명하는 별도 선택지의 표기이고, `설명을 읽는다`는 이상한 카드의 글을 읽는 동작이다. 도구 설명 창을 여는 짧은 `INFO` 메뉴에는 양쪽 모두 맞지 않는다.
+- 권장 변경: `[MENU_INFO] = COMPOUND_STRING("정보")`. 이번 확인에서는 소스 문자열을 변경하지 않았다.
+
+## 2026-09-26 — `pokemon_storage_system.c` 미번역 UI 문자열 점검 (현재)
+
+- 확인 범위: 이 파일의 `_()`·`COMPOUND_STRING()` 런타임 문자열을 전수 대조했다. 박스 메인 메뉴·확인 메시지·가방/도구 메시지·너즐록 메시지와 기본 박스명 `gText_Box`는 현재 한글이다.
+- 미번역 문자열: `sMenuTexts`와 `gPCText_Give`에 PC 조작 메뉴 `GIVE`, `CANCEL`, `STORE`, `WITHDRAW`, `MOVE`, `SHIFT`, `PLACE`, `SUMMARY`, `RELEASE`, `MARK`, `JUMP`, `WALLPAPER`, `NAME`, `TAKE`, `SWITCH`, `BAG`, `INFO`, `SELECT`가 영문으로 남아 있다.
+- 미번역 벽지 메뉴: 같은 표의 `SCENERY 1`~`3`, `ETCETERA`, `FRIENDS`, `FOREST`, `CITY`, `DESERT`, `SAVANNA`, `CRAG`, `VOLCANO`, `SNOW`, `CAVE`, `BEACH`, `SEAFLOOR`, `RIVER`, `SKY`, `POLKA-DOT`, `POKéCENTER`, `MACHINE`, `SIMPLE`도 영문이다.
+- 제외: `"/30"`은 수량 표기이고, 주석·파일 경로·그래픽 바이너리 안의 영문은 C 문자열 번역 범위가 아니다. 이번 점검에서는 문자열을 변경하지 않았다.
+
+## 2026-09-26 — PC 압축 해제 오류 추가 조사 (현재)
+
+- 재현 상태: 화염구슬·맹독구슬 `end2` 수정과 메가찌르호크/영원의꽃 플라엣테 데이터 수정 뒤에도, 기존 게임 내 저장에서 PC의 `Move Pokémon`을 선택할 때 압축 해제 오류가 계속 보고됐다. 사용자는 savestate를 사용한 적이 없으며, 새 게임 내 저장에서는 현재 PC 오류가 재현되지 않는다. 따라서 이 문제는 앞선 배틀 스크립트 오류의 후속 손상이나 PC 공통 리소스 문제가 아니라, 기존 저장의 파티 또는 박스 데이터와 결합된 문제로 좁혀진다.
+- 확정된 범위: 오류 입력 `0x08041000`은 현재 ROM의 `AnimTask_NightShadeClone` 직전 배틀 애니메이션 코드 영역이다. `gStorageSystemMenu_Gfx`, `sDisplayMenu_Tilemap`, `gStorageSystemPartyMenu_Tilemap`, 영원의꽃/메가 플라엣테 및 메가찌르호크의 앞면 그림은 모두 ROM 데이터 영역의 정상 압축 리소스를 가리킨다. `pokehns.gba` 전체에서 `0x08041000` 포인터 값도 발견되지 않았다.
+- 해석: 정적 PC/종/아이템 그래픽 테이블에 잘못된 리소스 주소가 박혀 있는 문제가 아니라, PC 초기화 중 어떤 호출자가 런타임에 코드 주소를 압축 입력 포인터로 전달하는 문제다. PC는 초기화 중 현재 커서의 박스/파티 포켓몬에 `LoadSpecialPokePicIsEgg()`를 호출하므로, 저장된 포켓몬 데이터 또는 해당 호출 이전의 RAM 손상도 후보이다.
+- 디버그 포켓몬 확인: 사용자가 디버그 메뉴로 추가한 글라이온(레벨 100, 경험치 1,059,860)과 리자몽(레벨 4)의 요약 화면상 종·경험치·능력치·기술 PP는 유효한 범위다. 글라이온의 경험치는 느림 성장 그룹 레벨 100의 정상값이다. 디버그 메뉴의 일반/상세 생성 경로도 모두 `CreateMon()`으로 정상 구조체를 만든 뒤 파티에 넣으므로, 화면에 보인 능력치 설정 자체는 손상 근거가 아니다.
+- PC 읽기 범위 정정: `OPTION_MOVE_MONS`의 최초 진입은 커서를 현재 박스 0번 칸에 두고, 현재 박스의 30칸 아이콘을 먼저 만든다. 따라서 글라이온·리자몽이 아직 파티에만 있다면 이 둘은 최초 PC 진입 오류의 직접 원인이 아니다. 둘 중 누군가가 현재 박스에 있거나, 현재 박스의 다른 포켓몬이 문제인지가 다음 확인 대상이다.
+- 빈 박스 추가 보고/수정: 사용자는 현재 박스에 포켓몬이 전혀 없다고 확인했다. 이 경우 포켓몬 그림은 원인이 될 수 없고, 빈 박스에서도 즉시 읽는 `currentBox` 및 `boxWallpapers[currentBox]` 저장 메타데이터가 가장 유력하다. `StorageGetCurrentBox()`가 범위 밖 값을 0번 박스로 복구하고, `GetBoxWallpaper()`가 범위 밖 벽지 ID를 감지하면 복구 함수를 실행하도록 수정했다. 기존에는 유효성 검사 없이 `sWallpapers[wallpaperId]`를 참조했으므로 잘못된 벽지 ID가 코드 주소를 압축 입력 포인터로 만들 수 있었다.
+- 메타데이터 손상 확인/복구 범위: 충돌 방지 수정 뒤 기존 저장에서 박스 2부터 제목이 중복되고 일부 제목 정렬·14번 제목·벽지가 비정상으로 표시됐다. 이는 벽지 ID 하나가 아닌 `boxNames[14]`·`boxWallpapers[14]` 배열의 저장값이 현재 구조와 맞지 않음을 뜻한다. 범위 밖 박스/벽지 값이 한 번이라도 감지되면 `RepairPokemonStorageMetadata()`가 14개 제목을 `BOX 1`~`BOX 14`로, 벽지를 초기 기본 순서로 되돌린다. 박스 속 포켓몬, 파티, 퓨전 저장 데이터는 전혀 변경하지 않는다.
+- 금지 조치: 오류 화면에서 START로 계속하지 않는다. 잘못된 데이터를 풀어 그래픽과 실행 흐름을 추가로 손상시키므로, 발생 즉시 mGBA를 완전히 리셋한다. 새 ROM에 과거 ROM의 savestate를 불러오지 말고 게임 내 저장만 사용한다.
+- 다음 분기: 기존 `.sav`를 복사해 보관하고, 기존 저장에서 PC가 처음 선택하는 박스 칸/파티의 포켓몬부터 어떤 종·폼·지닌도구가 오류를 유발하는지 분리한다. 필요하면 mGBA 디버거에서 실행 중단점 `0x0810E5E8` (`DecompressionError`)을 설정해 재현하고, 멈춘 시점의 `r0`(입력 포인터), `lr`(호출자 복귀 주소), Call Stack을 기록한다. `lr - 4`를 `arm-none-eabi-addr2line -e pokehns.elf <주소>`로 소스 행에 연결한 뒤 그 호출자만 수정한다.
+- 검증/다음: 소스 변경 후 HNS 빌드로 새 ROM을 만들고 기존 `.sav`에서 PC를 연다. 정상 진입하면 저장 과정에서 올바른 박스/벽지 값이 다시 기록된다. 여전히 오류가 나면 mGBA 중단점으로 `DecompressionError` 호출자를 확보하며, PC 그래픽 교체나 압축 오류 무시는 하지 않는다.
+
 ## 2026-09-26 — 화염·맹독구슬, 메가찌르호크, 영원의꽃 플라엣테 오류 수정 (현재)
 
 - 구현: `BattleScript_ToxicOrb`·`BattleScript_FlameOrb`가 기존 아이템 팝업·상태 애니메이션·문구를 유지한 채 새 `BattleScript_UpdateEffectStatusIconEnd2`로 끝나게 했다. 이 전용 꼬리는 상태 아이콘 갱신 후 `end2`로 종료하므로 최상위 `BattleScriptExecute()`에서 빈 스크립트 스택 `return`을 실행하지 않는다. 기존 `BattleScript_UpdateEffectStatusIconRet`는 하위 호출자가 사용하는 `return` 경로로 그대로 유지했다.
