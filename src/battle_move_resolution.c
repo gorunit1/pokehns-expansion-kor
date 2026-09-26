@@ -3175,7 +3175,7 @@ static enum MoveEndResult MoveEndMoveBlock(void)
         {
             gBattleMons[gBattlerTarget].volatiles.smackDown = TRUE;
             gBattleMons[gBattlerTarget].volatiles.telekinesis = FALSE;
-            gBattleMons[gBattlerTarget].volatiles.magnetRise = FALSE;
+            gBattleMons[gBattlerTarget].volatiles.magnetRiseTimer = 0;
             gBattleMons[gBattlerTarget].volatiles.semiInvulnerable = STATE_NONE;
             BattleScriptCall(BattleScript_MoveEffectSmackDown);
             result = MOVEEND_RESULT_RUN_SCRIPT;

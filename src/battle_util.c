@@ -6071,7 +6071,7 @@ static bool32 IsBattlerUngroundedByAbilityItemOrEffect(enum BattlerId battler, e
 {
     if (gBattleMons[battler].volatiles.telekinesis)
         return TRUE;
-    if (gBattleMons[battler].volatiles.magnetRise)
+    if (gBattleMons[battler].volatiles.magnetRiseTimer > 0)
         return TRUE;
     if (holdEffect == HOLD_EFFECT_AIR_BALLOON)
         return TRUE;
@@ -8138,7 +8138,7 @@ s32 CalcCritChanceStage(struct BattleContext *ctx)
     {
         critChance = CRITICAL_HIT_BLOCKED;
     }
-    else if (gBattleMons[ctx->battlerAtk].volatiles.laserFocus
+    else if (gBattleMons[ctx->battlerAtk].volatiles.laserFocusTimer > 0
           || MoveAlwaysCrits(ctx->move)
           || (ctx->abilityAtk == ABILITY_MERCILESS && gBattleMons[ctx->battlerDef].status1 & STATUS1_PSN_ANY))
     {
@@ -8216,7 +8216,7 @@ s32 CalcCritChanceStageGen1(struct BattleContext *ctx)
             RecordAbilityBattle(ctx->battlerDef, ctx->abilityDef);
         critChance = CRITICAL_HIT_BLOCKED;
     }
-    else if (gBattleMons[ctx->battlerAtk].volatiles.laserFocus
+    else if (gBattleMons[ctx->battlerAtk].volatiles.laserFocusTimer > 0
           || MoveAlwaysCrits(ctx->move)
           || (ctx->abilityAtk == ABILITY_MERCILESS && gBattleMons[ctx->battlerDef].status1 & STATUS1_PSN_ANY))
     {

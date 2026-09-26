@@ -2137,7 +2137,7 @@ static s32 AI_CheckBadMove(enum BattlerId battlerAtk, enum BattlerId battlerDef,
             ADJUST_SCORE(-10);
         else if (gBattleMons[battlerAtk].volatiles.substitute
               || gBattleMons[battlerAtk].volatiles.powerTrick
-              || gBattleMons[battlerAtk].volatiles.magnetRise
+              || gBattleMons[battlerAtk].volatiles.magnetRiseTimer > 0
               || gBattleMons[battlerAtk].volatiles.aquaRing
               || gBattleMons[battlerAtk].volatiles.root
               || AnyStatIsRaised(battlerAtk))
@@ -2412,7 +2412,7 @@ static s32 AI_CheckBadMove(enum BattlerId battlerAtk, enum BattlerId battlerDef,
             ADJUST_SCORE(-10);
         break;
     case EFFECT_LASER_FOCUS:
-        if (gBattleMons[battlerDef].volatiles.laserFocus)
+        if (gBattleMons[battlerDef].volatiles.laserFocusTimer > 0)
             ADJUST_SCORE(-10);
         else if (aiData->abilities[battlerDef] == ABILITY_SHELL_ARMOR || aiData->abilities[battlerDef] == ABILITY_BATTLE_ARMOR)
             ADJUST_SCORE(-8);
@@ -3032,7 +3032,6 @@ static s32 AI_CheckBadMove(enum BattlerId battlerAtk, enum BattlerId battlerDef,
           || aiData->holdEffects[battlerAtk] == HOLD_EFFECT_IRON_BALL
           || gBattleMons[battlerAtk].volatiles.smackDown
           || gBattleMons[battlerAtk].volatiles.root
-          || gBattleMons[battlerAtk].volatiles.magnetRise
           || !AI_IsBattlerGrounded(battlerAtk))
             ADJUST_SCORE(-10);
         break;
@@ -4898,7 +4897,7 @@ static s32 AI_CalcMoveEffectScore(enum BattlerId battlerAtk, enum BattlerId batt
     case EFFECT_BATON_PASS:
         if ((aiData->shouldSwitch & (1u << battlerAtk)) && (gBattleMons[battlerAtk].volatiles.substitute
           || gBattleMons[battlerAtk].volatiles.powerTrick
-          || gBattleMons[battlerAtk].volatiles.magnetRise
+          || gBattleMons[battlerAtk].volatiles.magnetRiseTimer > 0
           || gBattleMons[battlerAtk].volatiles.aquaRing
           || gBattleMons[battlerAtk].volatiles.root
           || AnyStatIsRaised(battlerAtk)))
