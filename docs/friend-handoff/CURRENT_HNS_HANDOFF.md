@@ -8,6 +8,7 @@
 - 개인 Fork 원격: `origin` → `https://github.com/gorunit1/pokehns-expansion-kor.git`
 - HNS 원본 원격: `upstream` → `https://github.com/PokemonHnS-Development/pokehns-expansion`
 - 이 문서 작성 시점의 현재 커밋: `791876da59` (`Add 1.17.0 update handoff`)
+- 이후 작업(2026-09-26, 빌드 복구·1.17.0 인벤토리·묶음 A 35개 PR 이식)은 [`HANDBACK_2026-09-26.md`](HANDBACK_2026-09-26.md)를 먼저 본다.
 - 위 커밋은 `origin/pokehns-expansion-kor`에 반영되어 있다. 이 브랜치에서 생성했던 upstream Pull Request #36은 닫혔으며 병합되지 않았다.
 
 작업을 시작할 때에는 먼저 `git status --short --branch`를 실행한다. 작업 트리에 변경이 있으면 그것은 이전 작업 또는 사용자의 변경일 수 있으므로 되돌리거나 일괄 추가하지 않는다.
