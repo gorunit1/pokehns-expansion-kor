@@ -8,7 +8,7 @@
 |---|---|
 | 1. 사전 상태 기록 | 완료 |
 | 2. upstream 변경 인벤토리 | 완료 (코드 대조 기준, 빌드·실기 미검증) |
-| 3. 작은 단위 이식 | 시작 전. 아래 "이식 계획"을 사용자가 승인한 뒤 진행 |
+| 3. 작은 단위 이식 | 진행 중. 묶음 A 완료(35개), B 이후 대기 |
 | 4. 충돌 보고 | 1차 목록 작성, 사용자 결정 대기 |
 | 5·6. 검증·문서화 | 이식 단위마다 진행 예정 |
 
@@ -172,4 +172,65 @@ HnS는 `GEN_LATEST = GEN_CHAMPIONS`다. upstream 기본값을 그대로 들이�
 
 ## 적용 단위 기록
 
-(이식을 시작하면 지시서의 "결과 보고 양식"으로 여기에 추가한다.)
+PR별 상세(지시서 결과 보고 양식)는 [`1.17.0-port/batch-a-battle.md`](1.17.0-port/batch-a-battle.md)와 [`1.17.0-port/batch-a-ai-field.md`](1.17.0-port/batch-a-ai-field.md)에 있다.
+
+### 묶음 A (2026-09-26) — 35개 PR 적용, 보류 0
+
+- 두 worktree(`port/a-battle`, `port/a-ai-field`)에서 PR마다 `git diff --check`와 `make hns -j6`를 통과시킨 뒤 1커밋씩 만들었다. 메인 브랜치에는 fast-forward와 cherry-pick으로 합쳤고 충돌은 없었다.
+- 통합 빌드 `make hns -j12`: 성공.
+  - ROM **33,327,220 B**(기준 대비 +736 B, 99.32%)
+  - EWRAM·IWRAM 변화 없음
+  - SHA1 `ac6df9a5d50a32edea8dd5a8e4e34d1d5332b18d`
+  - 새 컴파일 경고 없음(변경 파일 기준)
+- 한글 문자열·STRINGID·`{B_...}`·배틀 메시지 순서·config·`test/**` 변경 없음(diff 전수 확인).
+- 부분 적용:
+  - #10132: 웨더볼만. 회복기 부분은 이미 반영되어 있었다.
+  - #10342: 지정한 AI 버그 5개만.
+  - #10247: `!isEgg`만.
+  - #10344: 잭열매·로플열매·저주받은바디만.
+  - #10180: Sky Drop hunk 제외.
+- 자동 테스트·실기 검증은 하지 않았다. 특히 바톤터치 전자부유, 메가진화 뒤 허브류, 접근 트레이너, 동반 포켓몬 스프라이트는 실기 확인이 필요하다.
+
+| PR | 영역 | 메인 커밋 | worktree 커밋 | 제목 |
+|---|---|---|---|---|
+| #10406 | 배틀 | `51cc80bf74` | (동일) | Intrepid and Dauntless futureproofing |
+| #10318 | 배틀 | `be5123a300` | (동일) | Remove redundant Magnet Rise / Laser Focus flags |
+| #10093 | 배틀 | `455c2c0b7a` | (동일) | Fixes Random Move from disobedience |
+| #10213 | 배틀 | `e2c65a3b47` | (동일) | Fixes Smack Down not clearing correct values |
+| #10228 | 배틀 | `0ed3b6440b` | (동일) | Fix dynamic Fire-type moves not thawing frozen targets |
+| #10207 | 배틀 | `07f6879d21` | (동일) | Fix Bad Dreams leaving ABILITY_POPUP stuck open |
+| #10132 | 배틀 | `0108ca38ba` | (동일) | Weather Ball power under Strong Winds |
+| #10514 | 배틀 | `0ae8ecbe78` | (동일) | Fix Rage Fist Hit counter overflow |
+| #10476 | 배틀 | `5030d382da` | (동일) | Fix Court Change hazard count swapping |
+| #10543 | 배틀 | `c2eec58645` | (동일) | Fix Regenerator/Natural Cure applying to the wrong party slot |
+| #10554 | 배틀 | `91be750f79` | (동일) | Fix Hunger Switch Persisting on Ability pop up |
+| #10622 | 배틀 | `cbeac58035` | (동일) | Fix Flying Press using its secondary type for damage modifiers |
+| #10475 | 배틀 | `06a9eeafdf` | (동일) | Fix Sheer Cold move type check and rename flag |
+| #10675 | 배틀 | `6a16bb059f` | (동일) | Fix Solar Beam, Solar Blade and Electro Shot skipping their charging turn with Utility Umbrella |
+| #10344 | 배틀 | `26afbae484` | (동일) | Fix Future Sight triggering reactive items and abilities |
+| #10180 | 배틀 | `f2d3008825` | (동일) | Add Effect activation after Mega Evolution |
+| #10342 | AI·필드·일반 | `ea3b2d9955` | `bc2903faf8` | Fix reversed AI battlerAtk and battlerDef usage |
+| #10412 | AI·필드·일반 | `9f426274d3` | `e5a39d6b14` | Reset move data between switch-in calculations |
+| #10302 | AI·필드·일반 | `d12fd065c8` | `bdfd13fe9f` | Fix AI partner seeing all moves bad on dead adjacent foe |
+| #10425 | AI·필드·일반 | `1b0339910a` | `2f6cf4e90d` | Fix AI Focus Punch checks on Present and Fixed HP moves |
+| #10409 | AI·필드·일반 | `f1902b64d5` | `7345201ae4` | Fix AI target filtering and debug score highlighting |
+| #10411 | AI·필드·일반 | `58e6231efa` | `ee4e42c910` | Avoid rewarding Levitate ally immunity |
+| #10006 | AI·필드·일반 | `aa88736d74` | `50867ebb87` | Fix AI partner flags set to Battler1 instead of Battler2 |
+| #9985 | AI·필드·일반 | `369aebb5f1` | `4ba9e18670` | Remove Defiant and Competitive from partner ability check |
+| #10191 | AI·필드·일반 | `ff34dcb902` | `5df45529d7` | Fix event mon stat calculate without IVs |
+| #10242 | AI·필드·일반 | `95ee322687` | `e2d48d8b1a` | Check hold effect instead of item id for HOLD_EFFECT_REPEL |
+| #10247 | AI·필드·일반 | `6480a48924` | `5f3058a3db` | Do not draw Spinda spots on eggs |
+| #10551 | AI·필드·일반 | `5f6e897080` | `1746ed266b` | Fix follower crashing when interrupting spin movement |
+| #10329 | AI·필드·일반 | `496d653ef8` | `92844b787b` | Fix SEE_ALL_DIRECTIONS trainers not facing player |
+| #10529 | AI·필드·일반 | `c52c18075e` | `34b18c3cd5` | Fix movement type playing between trainer move and player face |
+| #10015 | AI·필드·일반 | `40d1661079` | `3fadb3c31b` | Fix wrong action handler after rearranging moves in first battle |
+| #9963 | AI·필드·일반 | `d489ca10ec` | `46c226ad6f` | Fix double battle rematches being single battles |
+| #10241 | AI·필드·일반 | `a18477c727` | `703282acfd` | Fix off by one error in RandomWeightedIndex |
+| #9990 | AI·필드·일반 | `e0baafe8fd` | `08d2efebed` | Various follower sprite fixes from issue #5135 |
+| #9608 | AI·필드·일반 | `100c0c6a53` | `cb82d098e2` | Remove DecompressTrainerBackPic |
+
+#### 묶음 A 사용자 결정 대기
+
+1. #10529: upstream 그대로면 거리 1에서 발견한 트레이너가 "플레이어 쪽 바라보기"로 고정되지 않는다. 전투 후 맵을 다시 읽으면 원래 이동 타입으로 돌아간다. 이식 전 HnS와 바닐라는 고정했다. 권장은 `TrainerTurnToFacePlayer`의 range-0 분기에 3줄을 추가해 기존 동작을 유지하는 것이다.
+2. #10015: upstream은 교체 확정 경로만 고쳤지만 취소 경로에도 같은 조건을 넣었다. 같은 버그이므로 유지를 권장한다.
+3. #10344: 레드카드·탈출버튼 조건은 넣지 않았다. HnS의 `BattleScript_FutureAttackEnd`는 `MOVEEND_CARD_BUTTON`을 실행하지 않아 지금도 발동하지 않는다. 방어용 추가는 동작 변화 없이 ROM만 늘리므로 미적용을 권장한다.
