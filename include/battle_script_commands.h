@@ -70,7 +70,7 @@ void SaveBattlerTarget(enum BattlerId battler);
 void SaveBattlerAttacker(enum BattlerId battler);
 bool32 CanBurnHitThaw(enum Move move);
 bool32 CanMoveThawTarget(enum Ability abilityAtk, enum Move move);
-bool32 CanFireMoveThawTarget(enum Move move);
+bool32 CanFireMoveThawTarget(enum Move move, enum Type moveType);
 
 extern void (*const gBattleScriptingCommandsTable[])(void);
 extern const struct StatFractions gAccuracyStageRatios[];
