@@ -525,6 +525,10 @@ static bool32 ShouldSwitchIfAllMovesBad(enum BattlerId battler)
                 ctx.holdEffectDef = gAiLogicData->holdEffects[ctx.battlerDef];
                 if (!IsMoveBad(&ctx, moveIndex))
                     return FALSE;
+                // Restore opposing battler for next move check
+                ctx.battlerDef = opposingBattler;
+                ctx.abilityDef = gAiLogicData->abilities[ctx.battlerDef];
+                ctx.holdEffectDef = gAiLogicData->holdEffects[ctx.battlerDef];
             }
         }
     }
