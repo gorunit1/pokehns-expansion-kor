@@ -1,5 +1,28 @@
 # 현재 인수인계 상태
 
+## 2026-09-27 — PC 포켓몬 데이터 waveform 문제 해결 확인
+
+- 사용자 확인: 박스에서 선택할 포켓몬이 없어 `포켓몬 데이터` 제목이 어둡고 양옆 waveform 애니메이션이 나오지 않았던 것이 원인이었다.
+- 결론: `UpdateWaveformAnimation()`의 `SPECIES_NONE` 분기는 의도된 동작이며, 코드·그래픽 수정 없이 해결됐다.
+- 상태: PC 포켓몬 데이터 제목과 waveform 애니메이션 문제 해결. 추가 빌드는 필요하지 않다.
+
+## 2026-09-27 — PC 포켓몬 데이터 옆 번개형 waveform 애니메이션 확인
+
+- 확인: 번개처럼 보이는 양옆 그래픽은 `graphics/pokemon_storage/waveform.png`에서 생성되는 `waveform.4bpp` 스프라이트다. `src/pokemon_storage_system.c`의 `CreateWaveformSprites()`가 두 개를 만들고, `UpdateWaveformAnimation()`이 포켓몬 데이터 표시 상태에 따라 애니메이션을 선택한다.
+- 현재 화면 해석: 사용자가 올린 화면은 왼쪽 포켓몬 데이터 패널이 비어 있고 `포켓몬 데이터` 제목도 회색이다. 이 상태는 현재 커서가 유효한 포켓몬을 표시하지 않아 `sStorage->displayMonSpecies == SPECIES_NONE`인 경우다. 코드는 이때 `StartSpriteAnim(..., i * 2)`로 정지 프레임을 사용하고 제목을 회색 타일맵으로 바꾼다.
+- 유효 포켓몬 선택 시: `displayMonSpecies != SPECIES_NONE`이면 `StartSpriteAnimIfDifferent(..., i * 2 + 1)`로 양쪽 waveform의 3프레임 애니메이션을 시작하고 `포켓몬 데이터`를 색상 상태로 바꾼다.
+- 비교: 현재 HNS와 `master` 사이에 waveform 선언·생성·팔레트 로드·애니메이션 코드 및 waveform 원본 그래픽 변경은 없다. 따라서 한글화 때문에 애니메이션 코드가 사라진 것이 아니다.
+- 다음: 박스에서 실제 포켓몬이 들어 있는 칸에 커서를 두고 왼쪽 데이터 패널에 포켓몬 정보가 표시되는 상태에서 번개가 움직이는지 확인한다. 그 상태에서도 보이지 않으면 새로 빌드한 `pokehns.gba`를 완전히 다시 로드한 뒤 런타임 문제를 추가 조사한다.
+
+## 2026-09-27 — PC 포켓몬 데이터 화면의 어두운 색상 원인 확인
+
+- 확인: 현재 `include/config/pokemon.h:47`은 이미 `P_GBA_STYLE_SPECIES_GFX FALSE`다. 별도의 작업 트리 변경은 없으며, 요청한 `FALSE` 상태로 유지했다.
+- 원인: `src/data/graphics/pokemon.h`에서 `FALSE`는 `anim_front.4bpp.smol`·`normal.gbapal` 등 최신 Gen4/5 계열 그래픽·팔레트를 선택한다. `TRUE`일 때만 `anim_front_gba.4bpp.smol`·`normal_gba.gbapal` 등 GBA 스타일 리소스를 선택한다.
+- 비교 근거: 현재 HNS 브랜치의 `1821fd6749` 커밋이 `P_GBA_STYLE_SPECIES_GFX`를 `TRUE`에서 `FALSE`로 바꿨다. `master`에는 `TRUE`가 남아 있다. 따라서 한글 문자열 자체가 포켓몬 팔레트를 어둡게 만든 것이 아니라, HNS 브랜치의 그래픽 스타일 설정 차이가 화면 차이를 만든 것이다.
+- 추가 확인: `1821fd6749` 이후 현재 HEAD까지 앞면 포켓몬 그래픽·팔레트 파일 변경은 확인되지 않았다. `src/pokemon_storage_system.c`의 한글화도 표시 문자열과 조사 처리 변경이며, 포켓몬 팔레트 로딩 코드는 건드리지 않았다.
+- 주의: 이전 HNS/`pokeemerald-kr`과 같은 GBA 색상을 목표로 한다면 설정은 `FALSE`가 아니라 `TRUE`여야 한다. `FALSE`를 유지하면 현재의 어두운 최신 스타일이 의도된 동작이다. 이번 확인에서는 `TRUE`로 되돌리지 않았고 ROM도 새로 빌드하지 않았다.
+- 다음: GBA 색상 일치를 원하면 사용자의 승인 후 `P_GBA_STYLE_SPECIES_GFX TRUE`로 변경하고 HNS 전체 빌드한다. 이 설정은 PC뿐 아니라 배틀·파티·상태 화면·진화 화면의 종 그래픽에도 적용된다.
+
 ## 2026-09-27 — PC 동적 이름·도구명 뒤 한국어 조사 확장 수정
 
 - 수정: `src/pokemon_storage_system.c`의 `PrintMessage()`를 두 단계로 바꿨다. 먼저 `DynamicPlaceholderTextUtil_ExpandPlaceholders()`로 `{DYNAMIC n}`을 실제 이름·도구명으로 치환하고, 임시 버퍼의 결과를 `StringExpandPlaceholders()`로 처리해 한국어 조사 placeholder를 확장한다.
@@ -1736,3 +1759,11 @@
 - 현재 호출되는 경우는 도발 타이머 종료(`도발`), 전자부유 타이머 종료(`전자부유`), 회복봉인 타이머 종료(`회복봉인`)다. 현재 본문이 영문이므로 의도된 출력 예시는 각각 `상대 팬텀's 도발 wore off!`, `야생 구구's 전자부유 wore off!`, `팬텀's 회복봉인 wore off!`처럼 표시된다. 트레이너 상대는 `상대 `, 야생 포켓몬은 `야생 ` 접두사가 붙고, 플레이어 포켓몬은 접두사가 없다.
 - 전자부유 종료 처리에는 `gBattleScripting.battler = battler` 대입이 없어 `B_SCR_NAME_WITH_PREFIX`가 이전 값의 영향을 받을 가능성이 있다. 전자부유 종료 화면에서 이름이 잘못 나오면 이 부분을 우선 점검한다. 다른 두 호출(도발·회복봉인)은 해당 대입을 수행한다.
 - 수정/검증: 소스는 수정하지 않았고 공통 종료 스크립트, 세 가지 호출부, 버퍼에 들어가는 기술·문자열 ID와 이름 접두사 처리를 정적으로 확인했다. 빌드는 실행하지 않았다.
+
+### 2026-09-27 — PC 저장 시스템 `menu.png` 변환 및 HNS 빌드
+
+- 요청/범위: 사용자가 수정한 `graphics/pokemon_storage/menu.png`를 GBA 그래픽 산출물로 변환하고 HNS ROM에 반영되는지 확인했다.
+- 변환: generic Make 규칙과 동일하게 `tools/gbagfx/gbagfx`로 `menu.4bpp`를 재생성하고, `tools/compresSmol/compresSmol -w`로 `menu.4bpp.smol`을 재생성했다. 압축 파일을 다시 풀어 생성된 `menu.4bpp`와 `cmp`한 결과가 일치했다.
+- 연결: `src/graphics.c`의 `gStorageSystemMenu_Gfx`가 `graphics/pokemon_storage/menu.4bpp.smol`을 `INCBIN_U32`로 포함하며, PC 초기화 경로가 이를 압축 해제해 배경 그래픽으로 로드한다.
+- 검증: `make BUILD=hns build/hns/src/graphics.o -j2`와 `GITHUB_ACTION=1 timeout 600s make --jobserver-style=pipe hns -j8`가 모두 성공했다. 링크 사용량은 EWRAM `249016/262144`(94.99%), IWRAM `25704/32768`(78.44%), ROM `33330900/33554432`(99.33%)이며, `pokehns.gba`는 2026-09-27 05:00:30 KST에 갱신됐다. ROM SHA-1은 `d7ec91b5504e54209da1e0c409a412688e35430d`다.
+- 한계/다음: 이 환경에서는 mGBA를 실행할 수 없어 실제 PC 화면의 런타임 확인은 하지 않았다. mGBA를 완전히 종료한 뒤 저장소 최상단의 새 `pokehns.gba`를 다시 열어 PC 메뉴 화면을 확인한다.

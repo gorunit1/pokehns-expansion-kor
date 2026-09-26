@@ -2254,3 +2254,33 @@
 - 후속 수정: `PrintMessage()`에 `dynamicExpandedText` 임시 버퍼를 두고, dynamic 치환 뒤 `StringExpandPlaceholders()`를 실행하도록 변경했다. 해당 함수는 `{K_EULREUL}`·`{K_IGA}`·`{K_WAGWA}` 모두 처리하므로 PC `sMessages`의 모든 조사 경로가 적용 범위다.
 - 검증: `NODEP=1 SETUP_PREREQS=0 make BUILD=hns build/hns/src/pokemon_storage_system.o -j2` 종료 코드 0, 변경 파일 `git diff --check` 통과. 이어 HNS 전체 링크 산출물 `pokehns.gba`가 2026-09-27 02:40:14 KST에 생성됐고 SHA-1은 `bd293daf4dce22d8889d9733ca1b032142a3153c`이다. `온`의 charmap 값 `0x3D0A`는 `GetJongCode()`에서 받침 코드 4가 되어 `{K_EULREUL}`은 `을`을 선택한다.
 - 실행 확인 주의: mGBA는 빌드로 덮어쓴 ROM을 실행 중인 메모리에 자동 반영하지 않는다. 완전히 종료 후 저장소 최상단 `pokehns.gba`를 다시 열어야 수정 전 ROM을 계속 보는 일을 막을 수 있다.
+
+### 2026-09-27 — PC 저장 시스템 `menu.png` 변환 및 HNS 빌드
+
+- 요청/범위: 사용자가 수정한 `graphics/pokemon_storage/menu.png`를 GBA 그래픽 산출물로 변환하고 HNS ROM에 반영되는지 확인했다.
+- 변환: `tools/gbagfx/gbagfx`로 `menu.4bpp`를 재생성하고 `tools/compresSmol/compresSmol -w`로 `menu.4bpp.smol`을 재생성했다. 압축 파일을 다시 풀어 생성된 `menu.4bpp`와 `cmp`한 결과가 일치했다.
+- 연결: `src/graphics.c`의 `gStorageSystemMenu_Gfx`가 `graphics/pokemon_storage/menu.4bpp.smol`을 `INCBIN_U32`로 포함하며, PC 초기화 경로가 이를 압축 해제해 배경 그래픽으로 로드한다.
+- 검증: `make BUILD=hns build/hns/src/graphics.o -j2`와 `GITHUB_ACTION=1 timeout 600s make --jobserver-style=pipe hns -j8`가 모두 성공했다. 링크 사용량은 EWRAM `249016/262144`(94.99%), IWRAM `25704/32768`(78.44%), ROM `33330900/33554432`(99.33%)이며, `pokehns.gba`는 2026-09-27 05:00:30 KST에 갱신됐다. ROM SHA-1은 `d7ec91b5504e54209da1e0c409a412688e35430d`다.
+- 한계/다음: 이 환경에서는 mGBA를 실행할 수 없어 실제 PC 화면의 런타임 확인은 하지 않았다. mGBA를 완전히 종료한 뒤 저장소 최상단의 새 `pokehns.gba`를 다시 열어 PC 메뉴 화면을 확인한다.
+
+### 2026-09-27 — PC 포켓몬 데이터 화면의 어두운 색상 원인 확인
+- 요청/범위: 한글화 전 HNS/에메랄드와 비교해 현재 HNS의 PC 포켓몬 데이터 스프라이트가 어두운 원인을 확인하고 `P_GBA_STYLE_SPECIES_GFX`를 `FALSE`로 유지한다.
+- 확인: 현재 소스의 `include/config/pokemon.h:47`은 이미 `FALSE`이며 작업 트리 변경은 없다. `src/data/graphics/pokemon.h`의 `FALSE` 분기는 `anim_front.4bpp.smol`·`normal.gbapal`, `TRUE` 분기는 `anim_front_gba.4bpp.smol`·`normal_gba.gbapal`을 사용한다.
+- 근거: 현재 HNS 브랜치의 `1821fd6749`가 `P_GBA_STYLE_SPECIES_GFX`를 `TRUE`에서 `FALSE`로 변경했고, `master`에는 `TRUE`가 남아 있다. `1821fd6749` 이후 현재 HEAD까지 앞면 종 그래픽·팔레트 변경은 없으며, 한글화된 `src/pokemon_storage_system.c`의 변경도 포켓몬 팔레트 로딩부가 아니다.
+- 결론: 한글 텍스트가 색상을 바꾼 것이 아니라 GBA 스타일 설정 차이 때문이다. 이전 HNS/`pokeemerald-kr`과 같은 색상을 원하면 `TRUE`가 필요하고, `FALSE`를 유지하면 최신 Gen4/5 스타일의 어두운 색상이 선택된다.
+- 검증: `git diff master..HEAD -- include/config/pokemon.h`, `git show 1821fd6749 -- include/config/pokemon.h`, `src/data/graphics/pokemon.h` 조건부 리소스, `src/pokemon.c` 팔레트 선택부를 대조했다. 소스 변경 및 새 ROM 빌드는 하지 않았다.
+- 남은 문제: GBA 색상 일치를 선택하면 `P_GBA_STYLE_SPECIES_GFX TRUE`로 변경 후 HNS 전체 빌드와 PC/배틀/파티 화면 검증이 필요하다.
+- 다음 시작점: 사용자가 GBA 색상 일치를 승인하면 `include/config/pokemon.h:47`을 `TRUE`로 변경하고 `GITHUB_ACTION=1 timeout 600s make --jobserver-style=pipe hns -j8`를 실행한다.
+
+### 2026-09-27 — PC 포켓몬 데이터 옆 waveform 애니메이션 확인
+- 요청/범위: PC의 `포켓몬 데이터` 글자 양옆에서 움직이는 번개형 그래픽이 현재 HNS에서 보이지 않는 원인을 확인했다.
+- 확인: `src/pokemon_storage_system.c`는 `waveform.4bpp`를 `sSpriteSheet_Waveform`으로 로드하고, `CreateWaveformSprites()`에서 양쪽 스프라이트를 생성한다. `UpdateWaveformAnimation()`은 `displayMonSpecies != SPECIES_NONE`일 때만 활성 애니메이션(`i * 2 + 1`)을 선택하고, 포켓몬이 없을 때는 정지 프레임(`i * 2`)과 회색 `pkmn_data` 타일맵을 선택한다.
+- 화면 근거: 제보 화면의 왼쪽 포켓몬 데이터 패널이 비어 있고 제목이 회색이므로, 현재 커서가 포켓몬을 표시하지 않는 `SPECIES_NONE` 상태로 해석된다. 박스 안에 다른 칸의 아이콘이 있어도 현재 선택 칸에 포켓몬 데이터가 표시되지 않으면 waveform은 활성화되지 않는다.
+- 비교: 현재 HNS와 `master`의 저장 시스템 코드·waveform 원본 그래픽을 대조했으며 해당 애니메이션 구현 삭제나 한글화에 의한 변경은 발견하지 않았다.
+- 검증: `rg`로 waveform 선언/호출부와 `UpdateWaveformAnimation()` 조건을 확인하고 `git diff master..HEAD`에서 관련 코드·원본 그래픽 변경이 없음을 확인했다. 소스·데이터·ROM은 변경하지 않았고 빌드도 실행하지 않았다.
+- 다음: 유효한 포켓몬이 있는 박스 칸에 커서를 두어 왼쪽 데이터 패널을 먼저 띄운 뒤 waveform이 움직이는지 확인한다. 그 상태에서도 없으면 새 ROM을 완전히 다시 로드하고 그래픽·팔레트 로딩을 추가 조사한다.
+
+### 2026-09-27 — PC 포켓몬 데이터 waveform 문제 해결 확인
+- 사용자 재확인: 현재 박스에 선택할 포켓몬이 없어서 제목이 어둡고 waveform 애니메이션이 나오지 않았던 것이 원인이었다.
+- 결과: 포켓몬을 선택하면 의도한 동작이 확인되어 문제를 해결된 것으로 종결했다. 코드·그래픽·ROM은 추가로 변경하지 않았다.
+- 다음: 별도 후속 작업 없음.
