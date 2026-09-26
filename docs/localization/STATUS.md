@@ -1,5 +1,11 @@
 # 현재 인수인계 상태
 
+## 2026-09-26 — 1.17.0 업데이트 1단계 인벤토리 완료 (현재)
+
+- upstream PR 629개 판정 완료(코드 대조 기준): 이미 적용 73, 부분 17, 이식 가능 225, 선행 필요 105, 충돌 39, 무관 170. 보고서는 `docs/friend-handoff/results/pokeemerald-expansion-1.17.0-update-report.md`.
+- HnS는 upstream master 1.15.2 개발 계열(merge-base `3efb836f72`)이다. upcoming 대형 리팩터가 없어 전체 1.17.0이 아니라 선별 이식이 현실적 범위다.
+- 소스 변경 없음. 다음: 보고서 9절의 사용자 결정 → 묶음 A(현존 버그 수정)부터 이식.
+
 ## 2026-09-26 — 새 clone 기준 빌드 복구 (현재)
 
 - 새 clone에서 `make hns`가 이름 입력 화면 PNG 3개 누락과 한글화 폰트 생성 규칙 누락으로 실패했다. PNG는 `pokeemerald-kr` 원본으로 추가하고 `graphics_file_rules.mk`에 폰트 규칙 16개를 추가했다. 문자열·코드 변경은 없다.

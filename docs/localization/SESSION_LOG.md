@@ -2,6 +2,19 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-09-26 — pokeemerald-expansion 1.17.0 업데이트 1단계 인벤토리
+
+- 요청/범위: `docs/friend-handoff/POKEEMERALD_EXPANSION_1.17.0_UPDATE.md`의 사전 상태 기록과 upstream 변경 인벤토리. 소스 코드는 변경하지 않았다.
+- 방법: upstream을 HnS와 별도로 clone하고, HnS 브랜치를 fetch해 계보를 비교했다. merge-base는 `3efb836f72`(#9875)이며, HnS는 master 1.15.2 개발 계열이고 upcoming 리팩터는 없다. changelog 1.15.2~1.17.0의 PR 694개 가운데 계보 포함 65개를 제외한 629개에 대해 분리된 스냅샷에서 `git apply --check`/`-R --check`를 실행했다. 그 뒤 6개 영역으로 나눠 HnS 코드와 대조했다.
+- 결과: 이미 적용 73, 부분 적용 17, 이식 가능 225, 선행 필요 105, 충돌 39, 무관 170. 상세는 `docs/friend-handoff/results/pokeemerald-expansion-1.17.0-update-report.md`와 `docs/friend-handoff/results/1.17.0-inventory/`에 있다.
+- 주요 발견:
+  - 현재 HnS 버그를 코드로 확인했다. 불요의검·불굴의방패 `== GEN_9` 비교(`src/battle_util.c:3497`, `:3511`), AI `GetMovePower(playerMove != 0)`(`src/battle_ai_main.c:679`), 앵콜 검사 뒤 세미콜론(`src/battle_ai_util.c:5202`).
+  - #10429는 `0x3A`가 한글 바이트와 겹쳐 적용 금지다.
+  - `make hns`는 `LTO ?= 0`이다.
+- 기록 정정: #10426은 구조 미적용이다. "#10561 아이콘"은 실제로는 #10346 일부다. #10124는 코드에 적용되어 있다.
+- 검증: 코드 대조만 했다. 빌드·자동 테스트·실기 검증은 하지 않았다.
+- 다음 시작점: 결과 보고서 9절의 사용자 결정(이식 범위, 충돌 처리, config, LTO)을 받은 뒤 4절 묶음 A부터 PR 1개 단위로 이식한다.
+
 ### 2026-09-26 — 새 clone 빌드 실패(누락 자산·폰트 규칙) 복구
 
 - 요청/범위: 친구 인수인계 후 새 clone(`496bca3475`)에서 1.17.0 작업 전 기준 빌드를 확인했다.
