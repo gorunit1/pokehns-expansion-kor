@@ -14171,6 +14171,38 @@ void BS_SwitchinAbilities(void)
         return;
 }
 
+void BS_EffectsAfterFormChange(void)
+{
+    NATIVE_ARGS();
+
+    // HnS has no gBattlersByRawSpeed; use battler order like MoveEndWhiteHerb / MoveEndOpportunist / MoveEndMirrorHerb
+    for (enum BattlerId battler = 0; battler < gBattlersCount; battler++)
+    {
+        if (IsBattlerAlive(battler)
+         && ItemBattleEffects(battler, 0, GetBattlerHoldEffect(battler), IsWhiteHerbActivation))
+            return;
+    }
+
+    for (enum BattlerId battler = 0; battler < gBattlersCount; battler++)
+    {
+        if (IsBattlerAlive(battler)
+         && AbilityBattleEffects(ABILITYEFFECT_OPPORTUNIST, battler, GetBattlerAbility(battler), 0, TRUE))
+            return;
+    }
+
+    for (enum BattlerId battler = 0; battler < gBattlersCount; battler++)
+    {
+        if (IsBattlerAlive(battler)
+         && ItemBattleEffects(battler, 0, GetBattlerHoldEffect(battler), IsMirrorHerbActivation))
+            return;
+    }
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+
+    if (TrySwitchInEjectPack(START_OF_TURN))
+        return;
+}
+
 void BS_InstantHpDrop(void)
 {
     NATIVE_ARGS();
