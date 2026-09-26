@@ -3169,15 +3169,26 @@ static enum MoveEndResult MoveEndMoveBlock(void)
         }
         break;
     case EFFECT_SMACK_DOWN:
-        if (!IsBattlerGrounded(gBattlerTarget, GetBattlerAbility(gBattlerTarget), GetBattlerHoldEffect(gBattlerTarget))
+        if (IsBattlerAlive(gBattlerTarget)
          && IsBattlerTurnDamaged(gBattlerTarget, EXCLUDING_SUBSTITUTES)
-         && IsBattlerAlive(gBattlerTarget)
-         && !DoesSubstituteBlockMove(gBattlerAttacker, gBattlerTarget, gCurrentMove))
+         && gBattleMons[gBattlerTarget].volatiles.semiInvulnerable != STATE_SKY_DROP // Sky Drop target
+         && gBattleStruct->skyDropTargets[gBattlerTarget] == SKY_DROP_NO_TARGET)    // Sky Drop attacker
         {
+            bool32 onAir = gBattleMons[gBattlerTarget].volatiles.semiInvulnerable == STATE_ON_AIR;
+
+            if (IsBattlerGrounded(gBattlerTarget, GetBattlerAbility(gBattlerTarget), GetBattlerHoldEffect(gBattlerTarget)) && !onAir)
+                break;
+
             gBattleMons[gBattlerTarget].volatiles.smackDown = TRUE;
             gBattleMons[gBattlerTarget].volatiles.telekinesis = FALSE;
             gBattleMons[gBattlerTarget].volatiles.magnetRiseTimer = 0;
-            gBattleMons[gBattlerTarget].volatiles.semiInvulnerable = STATE_NONE;
+
+            if (onAir)
+            {
+                gBattleMons[gBattlerTarget].volatiles.semiInvulnerable = STATE_NONE;
+                gBattleMons[gBattlerTarget].volatiles.multipleTurns = FALSE;
+            }
+
             BattleScriptCall(BattleScript_MoveEffectSmackDown);
             result = MOVEEND_RESULT_RUN_SCRIPT;
         }
