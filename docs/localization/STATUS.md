@@ -1,5 +1,11 @@
 # 현재 인수인계 상태
 
+## 2026-09-26 — 새 clone 기준 빌드 복구 (현재)
+
+- 새 clone에서 `make hns`가 이름 입력 화면 PNG 3개 누락과 한글화 폰트 생성 규칙 누락으로 실패했다. PNG는 `pokeemerald-kr` 원본으로 추가하고 `graphics_file_rules.mk`에 폰트 규칙 16개를 추가했다. 문자열·코드 변경은 없다.
+- 기준 빌드: `make hns -j12` 성공, `pokehns.gba` SHA1 `7f3f85c7dce5402d388abf369c3e60574b854973`, ROM 99.32%(여유 약 223 KB), EWRAM 94.99%. 실기 검증 없음.
+- 다음: pokeemerald-expansion 1.17.0 업데이트 1단계 인벤토리. 상세는 `SESSION_LOG.md` 같은 날짜 항목.
+
 ## 2026-09-26 — `pokemon_storage_system.c` HGSS 원문 번역 감사 (현재)
 
 - 요청/범위: 현재 한글화된 `src/pokemon_storage_system.c`의 런타임 PC 문자열을 Poké Corpus의 HGSS 한국어 원문 Text File 24·25 및 원래 영문 호출 의미와 대조했다. 이번 작업은 검증·권장 목록만 작성했으며 소스 문자열은 바꾸지 않았다.

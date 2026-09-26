@@ -272,6 +272,56 @@ $(FONTGFXDIR)/frlg_male.fwjpnfont: $(FONTGFXDIR)/japanese_frlg_male.png
 $(FONTGFXDIR)/frlg_female.fwjpnfont: $(FONTGFXDIR)/japanese_frlg_female.png
 	$(GFX) $< $@
 
+# Korean localization fonts (data/fonts.s, src/text.c), from pokeemerald-kr
+
+$(FONTGFXDIR)/font0.latfont: $(FONTGFXDIR)/font0_latin.png
+	$(GFX) $< $@
+
+$(FONTGFXDIR)/font1.latfont: $(FONTGFXDIR)/font1_latin.png
+	$(GFX) $< $@
+
+$(FONTGFXDIR)/font2.latfont: $(FONTGFXDIR)/font2_latin.png
+	$(GFX) $< $@
+
+$(FONTGFXDIR)/font7.latfont: $(FONTGFXDIR)/font7_latin.png
+	$(GFX) $< $@
+
+$(FONTGFXDIR)/font8.latfont: $(FONTGFXDIR)/font8_latin.png
+	$(GFX) $< $@
+
+$(FONTGFXDIR)/font0.hwjpnfont: $(FONTGFXDIR)/font0_japanese.png
+	$(GFX) $< $@
+
+$(FONTGFXDIR)/font1.hwjpnfont: $(FONTGFXDIR)/font1_japanese.png
+	$(GFX) $< $@
+
+$(FONTGFXDIR)/font9.hwjpnfont: $(FONTGFXDIR)/font9_japanese.png
+	$(GFX) $< $@
+
+$(FONTGFXDIR)/font2.fwjpnfont: $(FONTGFXDIR)/font2_japanese.png
+	$(GFX) $< $@
+
+$(FONTGFXDIR)/unused_frlg_male.fwjpnfont: $(FONTGFXDIR)/unused_japanese_frlg_male_font.png
+	$(GFX) $< $@
+
+$(FONTGFXDIR)/unused_frlg_female.fwjpnfont: $(FONTGFXDIR)/unused_japanese_frlg_female_font.png
+	$(GFX) $< $@
+
+$(FONTGFXDIR)/font0_korean.latfont: $(FONTGFXDIR)/font0_korean.png
+	$(GFX) $< $@
+
+$(FONTGFXDIR)/font1_korean.latfont: $(FONTGFXDIR)/font1_korean.png
+	$(GFX) $< $@
+
+$(FONTGFXDIR)/font2_korean.latfont: $(FONTGFXDIR)/font2_korean.png
+	$(GFX) $< $@
+
+$(FONTGFXDIR)/font7_korean.latfont: $(FONTGFXDIR)/font7_korean.png
+	$(GFX) $< $@
+
+$(FONTGFXDIR)/font8_korean.latfont: $(FONTGFXDIR)/font8_korean.png
+	$(GFX) $< $@
+
 
 ### Miscellaneous ###
 

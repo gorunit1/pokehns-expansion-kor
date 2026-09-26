@@ -2,6 +2,15 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-09-26 — 새 clone 빌드 실패(누락 자산·폰트 규칙) 복구
+
+- 요청/범위: 친구 인수인계 후 새 clone(`496bca3475`)에서 1.17.0 작업 전 기준 빌드를 확인했다.
+- 원인: 한글화 브랜치의 `src/graphics.c`가 참조하는 `graphics/naming_screen/rwindow.png`·`roptions.png`·`page_button.png`가 커밋되지 않았다. 또 `data/fonts.s`·`src/text.c`가 읽는 `font{0,1,2,7,8}.latfont`, `font{0,1,2,7,8}_korean.latfont`, `font{0,1,9}.hwjpnfont`, `font2.fwjpnfont`, `unused_frlg_{male,female}.fwjpnfont`의 생성 규칙이 `graphics_file_rules.mk`에 없었다. 생성물은 `.gitignore` 대상이라 기존 로컬 작업 트리에서만 빌드가 성공했던 것으로 보인다.
+- 수정: 세 PNG를 `poketony/pokeemerald-kr`(원 출처)에서 그대로 추가했다. `graphics_file_rules.mk`에 pokeemerald-kr과 같은 16개 폰트 규칙(`$(GFX) $< $@`)을 추가했다. 기존 폰트 PNG·한글 문자열·소스 코드는 변경하지 않았다.
+- 검증: 생성 폰트·`.4bpp`와 `fonts.o`·`text.o`·`graphics.o`를 지운 뒤 `make hns -j12` 종료 코드 0. 새 규칙으로 16개 폰트와 3개 `.4bpp`가 모두 재생성됐다. 수동 생성본으로 빌드한 ROM과 SHA1 `7f3f85c7dce5402d388abf369c3e60574b854973`이 같다. 메모리: ROM 33,326,484 B/32 MB(99.32%), EWRAM 94.99%, IWRAM 78.37%. 실기 화면 검증은 하지 않았다.
+- 주의: 원작업자가 세 PNG를 로컬에서 따로 수정했다면 이름 입력 화면이 다를 수 있다. 확인되면 원작업자 파일로 교체한다.
+- 다음 시작점: `docs/friend-handoff/POKEEMERALD_EXPANSION_1.17.0_UPDATE.md`의 1단계 upstream 인벤토리. ROM 여유가 약 223 KB뿐이므로 이식 항목마다 용량을 기록한다.
+
 ### 2026-09-26 — `pokemon_storage_system.c` HGSS 기준 번역 검증
 
 - 요청/범위: 현재 한글화된 PC 보관 시스템의 모든 런타임 문자열을 HGSS 공식 한국어 원문과 원래 영문 의미·실제 메뉴 호출부에 대조하고, 더 정확한 공식 표현만 보고한다.
