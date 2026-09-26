@@ -1,5 +1,25 @@
 # 현재 인수인계 상태
 
+## 2026-09-27 — PC 동적 이름·도구명 뒤 한국어 조사 확장 수정
+
+- 수정: `src/pokemon_storage_system.c`의 `PrintMessage()`를 두 단계로 바꿨다. 먼저 `DynamicPlaceholderTextUtil_ExpandPlaceholders()`로 `{DYNAMIC n}`을 실제 이름·도구명으로 치환하고, 임시 버퍼의 결과를 `StringExpandPlaceholders()`로 처리해 한국어 조사 placeholder를 확장한다.
+- 적용 범위: PC의 선택·박스에 맡김·놓아주기·되돌아오기·가방에 넣기·도구 지니게 하기·도구 교체 메시지에 있는 `{K_EULREUL}`, `{K_IGA}`, `{K_WAGWA}`가 모두 처리된다. 받침이 있는 `글라이온`은 `을/이/과`, 받침이 없는 `피카츄`는 `를/가/와`를 선택한다.
+- 검증: 수정 대상 오브젝트 `build/hns/src/pokemon_storage_system.o`를 `NODEP=1 SETUP_PREREQS=0 make BUILD=hns build/hns/src/pokemon_storage_system.o -j2`로 컴파일했고 종료 코드 0이었다. 이어 HNS 전체 링크 산출물 `pokehns.gba`가 2026-09-27 02:40:14 KST에 새로 생성됐으며, SHA-1은 `bd293daf4dce22d8889d9733ca1b032142a3153c`이다. 변경 파일 `git diff --check`도 통과했다.
+- 실행 주의: mGBA는 이미 실행 중인 ROM 파일을 자동으로 다시 읽지 않는다. 새 코드를 확인할 때는 mGBA를 완전히 종료한 뒤 이 저장소 최상단의 `pokehns.gba`를 다시 열거나, `파일 → ROM 불러오기`로 다시 로드해야 한다.
+
+## 2026-09-27 — PC 동적 포켓몬 이름 뒤 목적격 조사 누락 원인
+
+- 현상: PC의 파티 포켓몬 선택 메뉴에서 `글라이온` 뒤에 목적격 조사 `을`이 표시되지 않아, 의도된 `글라이온을 어떻게 할까?`가 되지 않는다.
+- 원인: `src/pokemon_storage_system.c:1052`의 원문에는 `{DYNAMIC 0}{K_EULREUL}`가 정확히 들어 있다. 그러나 `PrintMessage()`는 `DynamicPlaceholderTextUtil_ExpandPlaceholders()`만 호출한다. 이 확장기는 `{DYNAMIC 0}`만 실제 이름으로 복사하고 `{K_EULREUL}`(내부 placeholder)는 처리하지 않는다. 이어지는 텍스트 프린터는 미확장 placeholder를 건너뛰므로 조사가 화면에 남지 않는다.
+- 조치 상태: 위 두 단계 확장으로 수정했다. 임시 버퍼를 사용하므로 `sStorage->messageText`를 입력·출력으로 동시에 쓰지 않는다.
+
+## 2026-09-27 — 친구 묶음 A 및 전체 동기화 지시서 상태 HNS ROM 빌드
+
+- 기준: 친구의 묶음 A 원격 팁 `500f3634b4` 위에 전체 엔진 동기화 지시서 커밋 `84835a32d2`가 있는 `pokehns-expansion-kor` 브랜치.
+- 빌드: 도구 사전 빌드(`make -f make_tools.mk`)와 history 검사 성공 뒤 `NODEP=1 SETUP_PREREQS=0 make hns -j8`로 전체 HNS 컴파일·링크를 실행했다. 현재 `pokehns.elf`는 45,217,964 bytes, 패딩된 `pokehns.gba`는 33,554,432 bytes(32MiB)이며 생성 시각은 2026-09-27 02:15:58 KST다.
+- 산출물: `pokehns.gba` SHA-1은 `c1b94d256e7e2ea7fa48ca971a329b9c86ba645f`다.
+- 구분: 컴파일·링크 산출물 확인만 완료했다. 자동 테스트와 mGBA 실제 플레이 검증은 하지 않았다. 일반 `make -q hns`는 맵 JSON 생성 규칙이 항상 재실행 대상으로 잡혀 종료 코드 1을 반환하므로, 이를 빌드 실패로 해석하지 않는다.
+
 ## 2026-09-26 — 1.17.0 묶음 A 이식 완료 (현재)
 
 - 현존 버그 수정 35개 PR을 이식했다. 불요의검·불굴의방패, 바톤터치 전자부유, AI 괄호·세미콜론, 정적 조우 능력치, 동반 포켓몬 크래시 등이다. `make hns` 성공, ROM +736 B(99.32%). 실기 검증은 하지 않았다.

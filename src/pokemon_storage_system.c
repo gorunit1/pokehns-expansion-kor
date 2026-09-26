@@ -4389,6 +4389,7 @@ static void InitPokeStorageBg0(void)
 
 static void PrintMessage(u8 id)
 {
+    u8 dynamicExpandedText[sizeof(sStorage->messageText)];
     u8 *txtPtr;
 
     DynamicPlaceholderTextUtil_Reset();
@@ -4420,7 +4421,10 @@ static void PrintMessage(u8 id)
         break;
     }
 
-    DynamicPlaceholderTextUtil_ExpandPlaceholders(sStorage->messageText, sMessages[id].text);
+    // Dynamic placeholders are expanded first so Korean postfix placeholders can
+    // inspect the final character of a dynamically inserted name or item.
+    DynamicPlaceholderTextUtil_ExpandPlaceholders(dynamicExpandedText, sMessages[id].text);
+    StringExpandPlaceholders(sStorage->messageText, dynamicExpandedText);
     FillWindowPixelBuffer(WIN_MESSAGE, PIXEL_FILL(1));
     AddTextPrinterParameterized(WIN_MESSAGE, FONT_NORMAL, sStorage->messageText, 0, 1, TEXT_SKIP_DRAW, NULL);
     DrawTextBorderOuter(WIN_MESSAGE, 2, 14);

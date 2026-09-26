@@ -2238,3 +2238,19 @@
 - 구현: `docs/friend-handoff/POKEEMERALD_EXPANSION_1.17.0_FULL_ENGINE_SYNC.md`를 추가하고 friend-handoff README에 링크했다. 문서는 모든 PR의 현재 코드 기준 재판정, 의존성 순서 이식, 배틀 메시지/한글화 보존, 저장·ROM 영향 검사, 단위별·전체 HNS 빌드와 실기 검증, 결과 기록을 완료 기준으로 지정한다.
 - 원칙: 전체 동기화는 upstream 전체 merge나 파일 덮어쓰기가 아니다. 기존 한글 문장과 HNS 배틀 메시지 최신화 동작을 보존하며, 단순 코드 충돌은 정확한 HNS 적응으로 해결한다. 사용자 지정 동작의 선택이 필요한 경우에만 근거·영향·선택지를 보고한다.
 - 검증: 문서 변경 `git diff --check` 통과. 소스·데이터·ROM 변경과 빌드는 하지 않았다.
+
+### 2026-09-27 — 친구 묶음 A 상태 HNS ROM 빌드
+
+- 기준: 친구의 1.17.0 묶음 A와 전체 동기화 지시서가 반영된 `84835a32d2`.
+- 빌드: `make -f make_tools.mk` 및 `check_history.sh` 성공 뒤 `NODEP=1 SETUP_PREREQS=0 make hns -j8`로 전체 컴파일·링크를 완료했다.
+- 결과: `pokehns.gba` 32MiB, 생성 시각 02:15:58 KST, SHA-1 `c1b94d256e7e2ea7fa48ca971a329b9c86ba645f`; `pokehns.elf` 45,217,964 bytes.
+- 한계: 자동 테스트와 실제 ROM 플레이는 실행하지 않았다. `make -q hns`는 강제 실행되는 mapjson 생성 규칙 때문에 최신 산출물이 있어도 1을 돌려줄 수 있으므로 빌드 실패 근거가 아니다.
+
+### 2026-09-27 — PC `{DYNAMIC}` 이름 뒤 `{K_EULREUL}` 미출력 조사
+
+- 사용자 제보 화면의 `글라이온` 선택 메시지는 `src/pokemon_storage_system.c:1052`의 `gText_PkmnIsSelected`이며, 문자열 자체에는 `{DYNAMIC 0}{K_EULREUL} 어떻게 할까?`가 들어 있다.
+- `PrintMessage()`(`src/pokemon_storage_system.c:4390-4425`)는 이름을 dynamic placeholder 0에 넣고 `DynamicPlaceholderTextUtil_ExpandPlaceholders()`만 실행한다. 해당 유틸리티(`src/dynamic_placeholder_text_util.c:31-50`)는 `CHAR_DYNAMIC`만 확장하고 `PLACEHOLDER_BEGIN`을 일반 바이트로 복사한다.
+- 일반 조사 처리는 `StringExpandPlaceholders()`(`src/string_util.c:362-403`)가 담당하지만 PC 경로에서는 호출되지 않는다. 텍스트 프린터(`src/text.c:1383-1385`)는 남은 placeholder를 건너뛰므로 `을`이 보이지 않는다.
+- 후속 수정: `PrintMessage()`에 `dynamicExpandedText` 임시 버퍼를 두고, dynamic 치환 뒤 `StringExpandPlaceholders()`를 실행하도록 변경했다. 해당 함수는 `{K_EULREUL}`·`{K_IGA}`·`{K_WAGWA}` 모두 처리하므로 PC `sMessages`의 모든 조사 경로가 적용 범위다.
+- 검증: `NODEP=1 SETUP_PREREQS=0 make BUILD=hns build/hns/src/pokemon_storage_system.o -j2` 종료 코드 0, 변경 파일 `git diff --check` 통과. 이어 HNS 전체 링크 산출물 `pokehns.gba`가 2026-09-27 02:40:14 KST에 생성됐고 SHA-1은 `bd293daf4dce22d8889d9733ca1b032142a3153c`이다. `온`의 charmap 값 `0x3D0A`는 `GetJongCode()`에서 받침 코드 4가 되어 `{K_EULREUL}`은 `을`을 선택한다.
+- 실행 확인 주의: mGBA는 빌드로 덮어쓴 ROM을 실행 중인 메모리에 자동 반영하지 않는다. 완전히 종료 후 저장소 최상단 `pokehns.gba`를 다시 열어야 수정 전 ROM을 계속 보는 일을 막을 수 있다.
