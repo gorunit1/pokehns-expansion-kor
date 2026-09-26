@@ -1490,7 +1490,8 @@ static bool32 CanTwoTurnMoveFireThisTurn(struct BattleContext *ctx, bool32 *show
     u32 attackerWeather = GetAttackerWeather(ctx->holdEffectAtk, ctx->abilityAtk, weather);
     u32 moveWeather = GetMoveTwoTurnAttackWeather(ctx->move);
 
-    if (weather & moveWeather)
+    // Actual weather without Mega Sol; Utility Umbrella blocks sun and rain
+    if (GetAttackerWeather(ctx->holdEffectAtk, ABILITY_NONE, weather) & moveWeather)
         return TRUE;
 
     if (attackerWeather & moveWeather)
