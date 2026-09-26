@@ -1172,7 +1172,7 @@ void LoadSpecialPokePicIsEgg(void *dest, s32 species, u32 personality, bool8 isF
             DecompressDataWithHeaderWram(gSpeciesInfo[SPECIES_NONE].backPic, dest);
     }
 
-    if (species == SPECIES_SPINDA && isFrontPic)
+    if (species == SPECIES_SPINDA && isFrontPic && !isEgg)
     {
         DrawSpindaSpots(personality, dest, FALSE);
         DrawSpindaSpots(personality, dest, TRUE);
