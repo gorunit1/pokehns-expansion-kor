@@ -1,66 +1,66 @@
 version	section	sub	pr	history	commits	title	fwd	rev	nfiles	ins	dels	sens	files
-1.15.2	General	Changed	9672	in-hns-history	2efd699200	docs: codify position on LLM usage							
-1.15.2	General	Changed	9679	in-hns-history	9e96698045	ci: Do not install recommended packages							
-1.15.2	General	Changed	9409	in-hns-history	9cdc01fa92	Change gBattlerCount assertion to MAX_BATTLERS_COUNT							
-1.15.2	General	Changed	9752	in-hns-history	15f00c8dbd	Allow STR_VAR_# arguments in `bufferlivemonnickname`							
-1.15.2	General	Changed	9743	in-hns-history	d083b017e6	Missing enums in inline battler, side, and move functions							
-1.15.2	General	Changed	9766	in-hns-history	aa6d3b3366	Add errorf to sprite creation when at MAX_SPRITES							
-1.15.2	General	Changed	9823	in-hns-history	3faa2e0fe4	Add helper function to find what function a reported address from assertf corresponds to							
-1.15.2	General	Fixed	9666	in-hns-history	29291bbbb0	Fix issue when looking at invalid value for no bag var in debug menu							
-1.15.2	General	Fixed	9653	in-hns-history	b51495964d	Fixed debug warping allowing player movement in the middle of warp							
-1.15.2	General	Fixed	9702	in-hns-history	053652b177	fix(makefile): use correct OBJ_DIR_NAME for tidydebug							
-1.15.2	General	Fixed	9723	in-hns-history	8e5bc0da4d	Remove test-specific CFLAGS							
-1.15.2	General	Fixed	9749	in-hns-history	dbce4df2f6	Revert erroneous changes to trainer pic handling in historical migration scripts							
-1.15.2	General	Fixed	9822	in-hns-history	06332649ce	Fix frlg intro trying to create too many sprites							
-1.15.2	Overworld	Changed	9792	in-hns-history	a5ea34b2b0	Add every missing asymmetrical overworld sprite for gens 1 - 7							
-1.15.2	Overworld	Changed	9727	in-hns-history	ef38442a36	Fix area screen data having dependence on player's current location, rather than the map header							
-1.15.2	Overworld	Fixed	9673	in-hns-history	6781a99425	Fix player gain control during warp							
-1.15.2	Overworld	Fixed	9760	in-hns-history	52e91111d6	Fix Bead and Dream Mail							
-1.15.2	Overworld	Fixed	9775	in-hns-history	fe1d7eb152	Fix Dexnav `assertf`s							
-1.15.2	Overworld	Fixed	9803	in-hns-history	7f4b2c1108	Fix missing string buffer in the ingame_trade macro							
-1.15.2	Overworld	Fixed	9842	in-hns-history	2a5af6a895	Fix forced shiny eggs losing shininess on hatch							
-1.15.2	Overworld	Fixed	9844	in-hns-history	e598049a38	Fix egg from daycare not receiving default moveset							
-1.15.2	Overworld	Fixed	9848	in-hns-history	1721877a64	Fix wrong param getting passed							
-1.15.2	Pokémon	Changed	8919	in-hns-history	fc46108a56	resample, add, and fix cries							
-1.15.2	Pokémon	Changed	9705	in-hns-history	b9cf75c75a	PokeCommunity sprites batch (April 2026)							
-1.15.2	Battle General	Changed	9669	in-hns-history	ebe4467ed2	Align Rock Blast Bulletproof ballistic flag threshold to Gen 7							
-1.15.2	Battle General	Fixed	9670	in-hns-history	0424ad9056	Fix Rest failing behavior under Sweet Veil							
-1.15.2	Battle General	Fixed	9684	in-hns-history	ca17c6a3d4	Fix weight modifier order							
-1.15.2	Battle General	Fixed	9685	in-hns-history	699315a1ec	Fix Parental Bond handling for OHKO moves and Uproar							
-1.15.2	Battle General	Fixed	9683	in-hns-history	1c58bdc3b1	Fix Slow Start applying to special moves							
-1.15.2	Battle General	Fixed	9691	in-hns-history	840513ad91	Fix Disguise HP bar desync on double spread moves							
-1.15.2	Battle General	Fixed	9699	in-hns-history	4c130aa336	Fix Neutralizing Gas exit reactivating abilities for fainted battlers							
-1.15.2	Battle General	Fixed	9698	in-hns-history	ed817d9d6a	Fix Power Herb semi-invulnerable moves remaining untargetable							
-1.15.2	Battle General	Fixed	9701	in-hns-history	4f5c3bec68	Fix Seed Sower not activating when the user faints from an attack							
-1.15.2	Battle General	Fixed	9726	in-hns-history	d0c01c7d0a	Fix Unburden activation and reset when items are recycled							
-1.15.2	Battle General	Fixed	9750	in-hns-history	d0d742deaa	Fix Sturdy incorrectly taking priority over OHKO level check in Gen 5+							
-1.15.2	Battle General	Fixed	9758	in-hns-history	b2a0842822	Fix Defiant/Competitive forcing positive stat changes to use single stat anims							
-1.15.2	Battle General	Fixed	9778	in-hns-history	c6782e58ac	Fix gBattlerAttacker usage							
-1.15.2	Battle General	Fixed	9772	in-hns-history	3227c49260	Fix Ring Target interactions with Ground immunity and grounded status							
-1.15.2	Battle General	Fixed	9776	in-hns-history	7b97776d8b	Fix Sand Spit falling under B_ABILITY_WEATHER							
-1.15.2	Battle General	Fixed	9782	in-hns-history	91a2ea03af	Fix Fling using White Herb or Mental Herb incorrectly removing the target’s held item							
-1.15.2	Battle General	Fixed	9783	in-hns-history	2e001bf750	Fix Zoom Lens and Core Enforcer affecting switch-in targets							
-1.15.2	Battle General	Fixed	9756	in-hns-history	0e584bfa9a	Fix Synchronize status immunity ability check							
-1.15.2	Battle General	Fixed	9790	in-hns-history	69b1891140	Fix Blunder Policy activation for OHKO and multi-hit moves							
-1.15.2	Battle General	Fixed	9791	in-hns-history	bbd8da4589	Fix Effect Spore RNG trigger order for non-contact turns							
-1.15.2	Battle General	Fixed	9802	in-hns-history	1865522e29	Fix Toxic Spikes falsely applying Corrosion during switch-in poison checks							
-1.15.2	Battle General	Fixed	9682	in-hns-history	1d902eaa58	Fix Sheer Force incorrectly suppressing recoil damage							
-1.15.2	Battle General	Fixed	9773	in-hns-history	1d87c8b6d7	Fix Embody Aspect incorrectly reactivating after Neutralizing Gas ends							
-1.15.2	Battle General	Fixed	9715	in-hns-history	ef4220be66	Fix Shield Dust/Covert Cloak interactions for Poison Touch, Toxic Chain, and Stench							
-1.15.2	Battle General	Fixed	9817	in-hns-history	ed56a8eec5	Fix action order when Stall and Lagging Tail both apply							
-1.15.2	Battle General	Fixed	9828	in-hns-history	fd072d5dfb	Fix Synchronize incorrectly activating when the holder inflicts status with its own move							
-1.15.2	Battle General	Fixed	9849	in-hns-history	ed642adc64	Fix Lucky Chant side status lookup in `IsCriticalHit`							
-1.15.2	Battle General	Fixed	9829	in-hns-history	4b8a6accab	Fix Neutralizing Gas end-of-effect handling for Core Enforcer and Baton Pass Gastro Acid transfer							
-1.15.2	Battle General	Fixed	9818	in-hns-history	5cd36f241d	Fix Magician target selection priority for spread moves							
-1.15.2	Battle General	Fixed	9798	in-hns-history	e01d5a9352	Fix Moody not activating on the switch-in turn end							
-1.15.2	Battle General	Fixed	9854	in-hns-history	e5ad623b0a	Change order of enduring damage effects							
-1.15.2	Abilities	Fixed	8842	in-hns-history	a26484881c	Update and fix Ability flags							
-1.15.2	Abilities	Fixed	9754	in-hns-history	4945268440	Honor forced illegal bench abilities during AI switch evaluation							
-1.15.2	Battle AI	Changed	9592	in-hns-history	72f4343ec5	AI frame count tests							
-1.15.2	Battle AI	Fixed	9718	in-hns-history	c2d370f2c0	Fix AI weather evaluation and switch in logic							
-1.15.2	Battle AI	Fixed	9763	in-hns-history	8ebb827b47	Fix erroneous fall-through in CanLowerStat and Teleport							
-1.15.2	Other Cleanup		9728	in-hns-history	f4b3598030	how_to_testing_system.html: Change player species from Oddish to Wobbuffet							
-1.15.2	Test Runner	Fixed	9719	in-hns-history	4a7bebe2b2	Zigzagoon is not an ability							
-1.15.2	Test Runner	Fixed	9567	in-hns-history	10eabf5a59	Allow no explicit target setting in AI multi tests							
-1.15.2	Test Runner	Fixed	9869	in-hns-history	9651c26b43	Fix rare labelling issues with RUN_OVERWORLD_SCRIPT							
-1.15.2	Documentation		9831	in-hns-history	96d810edc8	Adjust documentation for poke balls in trainer parties							
+1.15.2	General	Changed	9672	in-hns-history	2efd699200	docs: codify position on LLM usage	-	-	-	-	-	-	-
+1.15.2	General	Changed	9679	in-hns-history	9e96698045	ci: Do not install recommended packages	-	-	-	-	-	-	-
+1.15.2	General	Changed	9409	in-hns-history	9cdc01fa92	Change gBattlerCount assertion to MAX_BATTLERS_COUNT	-	-	-	-	-	-	-
+1.15.2	General	Changed	9752	in-hns-history	15f00c8dbd	Allow STR_VAR_# arguments in `bufferlivemonnickname`	-	-	-	-	-	-	-
+1.15.2	General	Changed	9743	in-hns-history	d083b017e6	Missing enums in inline battler, side, and move functions	-	-	-	-	-	-	-
+1.15.2	General	Changed	9766	in-hns-history	aa6d3b3366	Add errorf to sprite creation when at MAX_SPRITES	-	-	-	-	-	-	-
+1.15.2	General	Changed	9823	in-hns-history	3faa2e0fe4	Add helper function to find what function a reported address from assertf corresponds to	-	-	-	-	-	-	-
+1.15.2	General	Fixed	9666	in-hns-history	29291bbbb0	Fix issue when looking at invalid value for no bag var in debug menu	-	-	-	-	-	-	-
+1.15.2	General	Fixed	9653	in-hns-history	b51495964d	Fixed debug warping allowing player movement in the middle of warp	-	-	-	-	-	-	-
+1.15.2	General	Fixed	9702	in-hns-history	053652b177	fix(makefile): use correct OBJ_DIR_NAME for tidydebug	-	-	-	-	-	-	-
+1.15.2	General	Fixed	9723	in-hns-history	8e5bc0da4d	Remove test-specific CFLAGS	-	-	-	-	-	-	-
+1.15.2	General	Fixed	9749	in-hns-history	dbce4df2f6	Revert erroneous changes to trainer pic handling in historical migration scripts	-	-	-	-	-	-	-
+1.15.2	General	Fixed	9822	in-hns-history	06332649ce	Fix frlg intro trying to create too many sprites	-	-	-	-	-	-	-
+1.15.2	Overworld	Changed	9792	in-hns-history	a5ea34b2b0	Add every missing asymmetrical overworld sprite for gens 1 - 7	-	-	-	-	-	-	-
+1.15.2	Overworld	Changed	9727	in-hns-history	ef38442a36	Fix area screen data having dependence on player's current location, rather than the map header	-	-	-	-	-	-	-
+1.15.2	Overworld	Fixed	9673	in-hns-history	6781a99425	Fix player gain control during warp	-	-	-	-	-	-	-
+1.15.2	Overworld	Fixed	9760	in-hns-history	52e91111d6	Fix Bead and Dream Mail	-	-	-	-	-	-	-
+1.15.2	Overworld	Fixed	9775	in-hns-history	fe1d7eb152	Fix Dexnav `assertf`s	-	-	-	-	-	-	-
+1.15.2	Overworld	Fixed	9803	in-hns-history	7f4b2c1108	Fix missing string buffer in the ingame_trade macro	-	-	-	-	-	-	-
+1.15.2	Overworld	Fixed	9842	in-hns-history	2a5af6a895	Fix forced shiny eggs losing shininess on hatch	-	-	-	-	-	-	-
+1.15.2	Overworld	Fixed	9844	in-hns-history	e598049a38	Fix egg from daycare not receiving default moveset	-	-	-	-	-	-	-
+1.15.2	Overworld	Fixed	9848	in-hns-history	1721877a64	Fix wrong param getting passed	-	-	-	-	-	-	-
+1.15.2	Pokémon	Changed	8919	in-hns-history	fc46108a56	resample, add, and fix cries	-	-	-	-	-	-	-
+1.15.2	Pokémon	Changed	9705	in-hns-history	b9cf75c75a	PokeCommunity sprites batch (April 2026)	-	-	-	-	-	-	-
+1.15.2	Battle General	Changed	9669	in-hns-history	ebe4467ed2	Align Rock Blast Bulletproof ballistic flag threshold to Gen 7	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9670	in-hns-history	0424ad9056	Fix Rest failing behavior under Sweet Veil	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9684	in-hns-history	ca17c6a3d4	Fix weight modifier order	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9685	in-hns-history	699315a1ec	Fix Parental Bond handling for OHKO moves and Uproar	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9683	in-hns-history	1c58bdc3b1	Fix Slow Start applying to special moves	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9691	in-hns-history	840513ad91	Fix Disguise HP bar desync on double spread moves	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9699	in-hns-history	4c130aa336	Fix Neutralizing Gas exit reactivating abilities for fainted battlers	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9698	in-hns-history	ed817d9d6a	Fix Power Herb semi-invulnerable moves remaining untargetable	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9701	in-hns-history	4f5c3bec68	Fix Seed Sower not activating when the user faints from an attack	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9726	in-hns-history	d0c01c7d0a	Fix Unburden activation and reset when items are recycled	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9750	in-hns-history	d0d742deaa	Fix Sturdy incorrectly taking priority over OHKO level check in Gen 5+	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9758	in-hns-history	b2a0842822	Fix Defiant/Competitive forcing positive stat changes to use single stat anims	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9778	in-hns-history	c6782e58ac	Fix gBattlerAttacker usage	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9772	in-hns-history	3227c49260	Fix Ring Target interactions with Ground immunity and grounded status	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9776	in-hns-history	7b97776d8b	Fix Sand Spit falling under B_ABILITY_WEATHER	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9782	in-hns-history	91a2ea03af	Fix Fling using White Herb or Mental Herb incorrectly removing the target’s held item	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9783	in-hns-history	2e001bf750	Fix Zoom Lens and Core Enforcer affecting switch-in targets	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9756	in-hns-history	0e584bfa9a	Fix Synchronize status immunity ability check	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9790	in-hns-history	69b1891140	Fix Blunder Policy activation for OHKO and multi-hit moves	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9791	in-hns-history	bbd8da4589	Fix Effect Spore RNG trigger order for non-contact turns	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9802	in-hns-history	1865522e29	Fix Toxic Spikes falsely applying Corrosion during switch-in poison checks	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9682	in-hns-history	1d902eaa58	Fix Sheer Force incorrectly suppressing recoil damage	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9773	in-hns-history	1d87c8b6d7	Fix Embody Aspect incorrectly reactivating after Neutralizing Gas ends	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9715	in-hns-history	ef4220be66	Fix Shield Dust/Covert Cloak interactions for Poison Touch, Toxic Chain, and Stench	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9817	in-hns-history	ed56a8eec5	Fix action order when Stall and Lagging Tail both apply	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9828	in-hns-history	fd072d5dfb	Fix Synchronize incorrectly activating when the holder inflicts status with its own move	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9849	in-hns-history	ed642adc64	Fix Lucky Chant side status lookup in `IsCriticalHit`	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9829	in-hns-history	4b8a6accab	Fix Neutralizing Gas end-of-effect handling for Core Enforcer and Baton Pass Gastro Acid transfer	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9818	in-hns-history	5cd36f241d	Fix Magician target selection priority for spread moves	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9798	in-hns-history	e01d5a9352	Fix Moody not activating on the switch-in turn end	-	-	-	-	-	-	-
+1.15.2	Battle General	Fixed	9854	in-hns-history	e5ad623b0a	Change order of enduring damage effects	-	-	-	-	-	-	-
+1.15.2	Abilities	Fixed	8842	in-hns-history	a26484881c	Update and fix Ability flags	-	-	-	-	-	-	-
+1.15.2	Abilities	Fixed	9754	in-hns-history	4945268440	Honor forced illegal bench abilities during AI switch evaluation	-	-	-	-	-	-	-
+1.15.2	Battle AI	Changed	9592	in-hns-history	72f4343ec5	AI frame count tests	-	-	-	-	-	-	-
+1.15.2	Battle AI	Fixed	9718	in-hns-history	c2d370f2c0	Fix AI weather evaluation and switch in logic	-	-	-	-	-	-	-
+1.15.2	Battle AI	Fixed	9763	in-hns-history	8ebb827b47	Fix erroneous fall-through in CanLowerStat and Teleport	-	-	-	-	-	-	-
+1.15.2	Other Cleanup	-	9728	in-hns-history	f4b3598030	how_to_testing_system.html: Change player species from Oddish to Wobbuffet	-	-	-	-	-	-	-
+1.15.2	Test Runner	Fixed	9719	in-hns-history	4a7bebe2b2	Zigzagoon is not an ability	-	-	-	-	-	-	-
+1.15.2	Test Runner	Fixed	9567	in-hns-history	10eabf5a59	Allow no explicit target setting in AI multi tests	-	-	-	-	-	-	-
+1.15.2	Test Runner	Fixed	9869	in-hns-history	9651c26b43	Fix rare labelling issues with RUN_OVERWORLD_SCRIPT	-	-	-	-	-	-	-
+1.15.2	Documentation	-	9831	in-hns-history	96d810edc8	Adjust documentation for poke balls in trainer parties	-	-	-	-	-	-	-

@@ -2,6 +2,15 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-09-27 — 1.17.0 전체 엔진 동기화 0단계 (시작 상태·묶음 A 재검증)
+
+- 기준: `pokehns-expansion-kor` `84835a32d2`(친구의 FULL_ENGINE_SYNC 지시서 커밋)를 fast-forward로 받았다. 작업 트리는 깨끗했다. upstream merge-base는 `3efb836f72`, 목표 태그는 `expansion/1.17.0`(`e8bd1cd7b0`)이다.
+- 묶음 A: `496bca3475..HEAD`에 `Port upstream #` 커밋 35개가 모두 존재한다.
+- TSV 정리: `results/1.17.0-inventory/all_prs_checked.tsv`·`already_in_history.tsv`의 빈 칸을 `-`로 채워 후행 탭을 없앴다. 모든 행이 14열을 유지하며 판정 값은 바꾸지 않았다. `git diff --check 496bca3475`가 통과한다.
+- 기준 빌드: `GITHUB_ACTION=1 make hns -j8`(이 환경의 GNU Make 4.3은 `--jobserver-style`을 지원하지 않는다) 종료 코드 0. ROM 33,327,220 B(99.32%), EWRAM 249,016 B, IWRAM 25,680 B, SHA1 `ac6df9a5d50a32edea8dd5a8e4e34d1d5332b18d`.
+- 수치 차이 해석: 친구 환경의 ROM 33,330,740 B·IWRAM 25,704 B와 다르다. `GITHUB_ACTION`은 `check_history.sh`만 건너뛰므로 원인이 아니다. 이 환경은 Ubuntu `gcc-arm-none-eabi` 13.2.1과 newlib 4.4.0이므로 툴체인 차이로 본다. 같은 환경에서는 수치가 재현된다.
+- 다음: 1단계 인벤토리 재확정(4개 판정으로 재분류하고 의존성 순서로 계획) 및 ROM 여유 확보 방안.
+
 ### 2026-09-26 — 1.17.0 묶음 A 이식 (현존 버그 수정 35개)
 
 - 요청/범위: 사용자가 결과 보고서 9절 권장안을 승인했다(선별 이식, 충돌 미이식, config 유지, LTO는 이후 검토). 묶음 A를 배틀 엔진과 AI·필드·일반 두 worktree로 나눠 PR 1개 단위로 이식했다.
