@@ -9,12 +9,16 @@
 - [`docs/localization/WORKFLOW.md`](../localization/WORKFLOW.md) — 작업·검증·인수인계 절차
 - [`docs/localization/SESSION_LOG.md`](../localization/SESSION_LOG.md) — 최근 작업 기록
 
+## 작업 회신
+
+- [2026-09-26 작업 회신](HANDBACK_2026-09-26.md) — 빌드 복구, 1.17.0 인벤토리, 묶음 A 35개 PR 이식
+
 ## 작업 목록
 
 구체적인 지시는 작업별 Markdown 파일로 추가합니다.
 
 - [x] [현재 HNS 작업 인수인계](CURRENT_HNS_HANDOFF.md)
-- [ ] [pokeemerald-expansion 1.17.0 안전 업데이트](POKEEMERALD_EXPANSION_1.17.0_UPDATE.md)
+- [ ] [pokeemerald-expansion 1.17.0 안전 업데이트](POKEEMERALD_EXPANSION_1.17.0_UPDATE.md) — 진행 중: 인벤토리·묶음 A 완료, [결과 보고서](results/pokeemerald-expansion-1.17.0-update-report.md)
 - [ ] 작업 제목과 목표 작성
 - [ ] 수정 대상 파일과 변경 범위 작성
 - [ ] 재현·검증 방법 작성
