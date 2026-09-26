@@ -17,6 +17,24 @@
 - 기준 빌드: `make hns -j12` 성공, `pokehns.gba` SHA1 `7f3f85c7dce5402d388abf369c3e60574b854973`, ROM 99.32%(여유 약 223 KB), EWRAM 94.99%. 실기 검증 없음.
 - 다음: pokeemerald-expansion 1.17.0 업데이트 1단계 인벤토리. 상세는 `SESSION_LOG.md` 같은 날짜 항목.
 
+## 2026-09-27 — 친구용 1.17.0 전체 엔진 동기화 지시서 추가
+
+- 요청: 2026-09-26의 안전한 묶음 A 35개 선별 이식에서 멈추지 않고, HNS 한글화·커스텀과 공존하는 `pokeemerald-expansion` 1.17.0 전체 엔진 동기화를 친구에게 지시한다.
+- 구현: `docs/friend-handoff/POKEEMERALD_EXPANSION_1.17.0_FULL_ENGINE_SYNC.md`를 추가하고 `README.md` 작업 목록에서 연결했다. 문서는 694개 upstream PR의 현재 코드 기준 재판정, 남은 engine-relevant 변경의 의존성 순서 이식, HNS 적응 충돌 처리, 배틀 메시지 보존, 저장/ROM 검증, 결과·Git 규칙을 작업자가 바로 실행할 수 있게 명시한다.
+- 중요: 전체 동기화는 upstream 전체 merge·파일 덮어쓰기가 아니다. 기존 한글 문장·`{B_...}`·조사·특성 팝업·사용자 지정 배틀 메시지 출력과 HNS 고유 데이터는 보존한다. 단순 충돌은 보류로 방치하지 않고 HNS 구조에 맞춰 해결하며, 사용자 지정 동작 자체를 바꿔야 하는 경우에만 근거·선택지를 보고한다.
+- 검증: 새 문서와 README의 `git diff --check`를 통과했다. 코드·데이터·ROM은 수정하거나 빌드하지 않았다.
+- 다음: 이 문서를 Fork의 `pokehns-expansion-kor` 브랜치에 반영한 뒤, 친구는 묶음 A 재검증·TSV 후행 탭 정리·전체 인벤토리 재확정부터 시작한다.
+
+## 2026-09-27 — 친구의 2026-09-26 upstream 선별 이식 검토 (미병합 원격 브랜치)
+
+- 대상: Fork `gorunit1/pokehns-expansion-kor`의 `origin/pokehns-expansion-kor` 원격 팁 `500f3634b4300ee412dfcef142ca6fc9d4059165`를, 현재 로컬 기준 `496bca3475`와 대조했다. 로컬 `pokehns-expansion-kor`는 이 원격보다 40커밋 뒤이며, 이 검토에서 merge/rebase/switch는 하지 않았다.
+- 작업 내용: 친구는 1.15.2~1.17.0 upstream 694 PR을 인벤토리화한 뒤 35개를 선별 이식했다. 배틀 타이머·동적 불꽃 해동·메가/테라 폼 변경 뒤 효과·AI·오버월드/추종자·저장/유틸리티 수정과, 새 클론에서 누락되던 naming screen PNG 3개 및 한글 폰트 생성 규칙이 포함된다. 상세 범위는 원격의 `docs/friend-handoff/HANDBACK_2026-09-26.md`와 `results/1.17.0-inventory/`에 있다.
+- 보존 확인: 변경 경로에 `src/battle_message.c`, `include/constants/battle_string_ids.h`, `include/config/battle.h`가 없고, `docs/`를 제외한 패치에 새 한글 문자열도 없다. 따라서 사용자 한글 문장, `{B_...}` 치환, 배틀 메시지 출력 최신화 변경을 덮어쓰지 않는다.
+- 정적 검토: `CanFireMoveThawTarget(move, moveType)` 선언·AI·전투 호출부가 함께 바뀌었고, 폼 변경 뒤 효과는 White Herb → Opportunist → Mirror Herb → Eject Pack 순으로 처리한다. HNS에 없는 `gBattlersByRawSpeed`는 기존 HNS의 battler 순서 처리로 의도적으로 대체했다. 즉시 차단할 코드 충돌·빌드 오류는 찾지 못했다.
+- 빌드 검증: 원격 팁을 분리 worktree에서 `GITHUB_ACTION=1 timeout 600s make --jobserver-style=pipe hns -j8`로 전체 컴파일·링크했고 종료 코드 0이었다. 링크 사용량은 EWRAM `249,016/262,144`, IWRAM `25,704/32,768`, ROM `33,330,740/33,554,432` bytes다. 실기/mGBA 동작 검증은 하지 않았다.
+- 보완 필요: 전체 범위의 `git diff --check`는 `docs/friend-handoff/results/1.17.0-inventory/all_prs_checked.tsv`와 `already_in_history.tsv`의 빈 열 후행 탭 때문에 실패한다. 코드 문제가 아닌 문서 TSV 형식 문제지만, 병합 전 친구가 제거해야 한다. 친구 보고서의 ROM 사용 바이트(`33,327,220`)도 이 환경의 재빌드 값과 일치하지 않으므로, 정확한 수치 대신 빌드 성공만 재현된 것으로 취급한다.
+- 병합 전 실제 확인: (1) 전자부유/록온 지속 턴 및 Baton Pass, (2) 메가·테라 변신 뒤 White Herb·편승·미러허브·탈출팩, (3) Future Sight/상호작용 도구, (4) AI·더블배틀·추종자·재대결을 새 ROM/게임 내 저장에서 재현한다. 확인 뒤에만 원격 40커밋을 병합할지 결정한다.
+
 ## 2026-09-26 — `pokemon_storage_system.c` HGSS 원문 번역 감사 (현재)
 
 - 요청/범위: 현재 한글화된 `src/pokemon_storage_system.c`의 런타임 PC 문자열을 Poké Corpus의 HGSS 한국어 원문 Text File 24·25 및 원래 영문 호출 의미와 대조했다. 이번 작업은 검증·권장 목록만 작성했으며 소스 문자열은 바꾸지 않았다.

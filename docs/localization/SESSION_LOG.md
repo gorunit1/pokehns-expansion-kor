@@ -2222,3 +2222,19 @@
 
 - 요청/범위: PC 지닌물건 정리의 `MENU_INFO`를 HGSS 한국어 원문 기준으로 `설명을 읽는다`·`설명을 듣는다`·`정보` 중 어느 것으로 옮길지 확인했다.
 - 결론: `COMPOUND_STRING("정보")`을 사용한다. 현재 코드는 이 항목을 누르면 `Task_ShowItemInfo()`에서 도구 설명 창을 열지만, 메뉴 원문 자체는 짧은 `INFO`다. HGSS에서 `INFO` 메뉴 라벨은 `정보`이고, `설명을 듣는다`는 시설/미니게임 설명을 NPC에게 듣는 별도 항목, `설명을 읽는다`는 이상한 카드의 본문을 읽는 별도 항목이다. 조사만 했고 소스는 변경하지 않았다.
+
+### 2026-09-27 — 친구의 2026-09-26 upstream 선별 이식 검토
+
+- 대상: `origin/pokehns-expansion-kor`의 `500f3634b4`(jinmo, 2026-09-26 23:38 KST)와 현재 로컬 `496bca3475`를 대조했다. 원격은 40커밋 앞서며 로컬만의 커밋은 없다. 로컬 브랜치를 이동·병합하지 않았다.
+- 확인: 35개 upstream 선별 이식, 1.17.0 PR 인벤토리·인수인계 문서, naming screen PNG 3개, 한글 폰트 생성 make 규칙이 추가됐다. `src/battle_message.c`·문자열 ID·배틀 config 및 사용자가 번역한 한글 코드 문자열은 변경되지 않았다.
+- 정적 검토: 동적 타입을 받는 불꽃 해동 함수의 선언/모든 호출부가 일치하며, 새 폼 변경 후 효과 명령은 현재 HNS 구조에 맞춰 battler 순서로 White Herb·편승·미러허브·탈출팩을 처리한다. 즉시 중단할 충돌은 발견하지 못했다.
+- 빌드: `/tmp/pokehns-friend-review-20260926` 분리 worktree에서 `GITHUB_ACTION=1 timeout 600s make --jobserver-style=pipe hns -j8` 종료 코드 0. 컴파일·링크만 검증했으며 런타임/실기는 미검증이다.
+- 발견 사항: `git diff --check 496bca3475..origin/pokehns-expansion-kor`는 inventory TSV 2개(`all_prs_checked.tsv`, `already_in_history.tsv`)의 후행 탭 때문에 실패한다. 코드가 아닌 문서 형식 문제이지만, 병합 전 제거가 필요하다. 친구의 보고 ROM 사용량은 이 환경의 재빌드와 정확히 같지 않아, 수치 재현까지 통과한 것은 아니다.
+- 다음: 친구에게 TSV 후행 탭 제거를 요청하고, 전자부유/록온·Baton Pass, 변신 뒤 반응 도구, Future Sight 상호작용, AI/더블/추종자/재대결을 실제 ROM에서 확인한 뒤 병합 여부를 결정한다.
+
+### 2026-09-27 — 친구용 1.17.0 전체 엔진 동기화 지시서
+
+- 요청: 묶음 A의 35개 선별 이식만으로 끝내지 않고, 남은 upstream 변경을 HNS 커스텀·한글화와 충돌 없이 이식해 `pokeemerald-expansion` 1.17.0 엔진 전체 동기화를 진행하도록 친구에게 지시한다.
+- 구현: `docs/friend-handoff/POKEEMERALD_EXPANSION_1.17.0_FULL_ENGINE_SYNC.md`를 추가하고 friend-handoff README에 링크했다. 문서는 모든 PR의 현재 코드 기준 재판정, 의존성 순서 이식, 배틀 메시지/한글화 보존, 저장·ROM 영향 검사, 단위별·전체 HNS 빌드와 실기 검증, 결과 기록을 완료 기준으로 지정한다.
+- 원칙: 전체 동기화는 upstream 전체 merge나 파일 덮어쓰기가 아니다. 기존 한글 문장과 HNS 배틀 메시지 최신화 동작을 보존하며, 단순 코드 충돌은 정확한 HNS 적응으로 해결한다. 사용자 지정 동작의 선택이 필요한 경우에만 근거·영향·선택지를 보고한다.
+- 검증: 문서 변경 `git diff --check` 통과. 소스·데이터·ROM 변경과 빌드는 하지 않았다.
