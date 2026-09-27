@@ -2604,7 +2604,7 @@ void NameRival(void)
 // Initial pages below are pointless, they're overwritten with KBPAGE_LETTERS_UPPER in MainState_FadeIn()
 static const struct NamingScreenTemplate sPlayerNamingScreenTemplate =
 {
-    .copyExistingString = FALSE, .maxChars = 6, .iconFunction = 1, .addGenderIcon = FALSE, .initialPage = KBPAGE_LETTERS_UPPER, .koreanEnabled = TRUE, .title = COMPOUND_STRING("당신의 이름은?"),
+    .copyExistingString = FALSE, .maxChars = 3, .iconFunction = 1, .addGenderIcon = FALSE, .initialPage = KBPAGE_LETTERS_UPPER, .koreanEnabled = TRUE, .title = COMPOUND_STRING("당신의 이름은?"),
 };
 static const struct NamingScreenTemplate sPCBoxNamingTemplate =
 {

@@ -2,6 +2,14 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-09-28 — 포케기어 헤더 위·아래 띠 정정 및 주인공 이름 제한 복원
+
+- 사용자가 계속 깨진 상단 글자를 보고해 이전 51×12 패킹을 원본 타일 시트와 다시 대조했다. 이전 적용은 위 2px에 `(16,6)`, 아래 2px에 `(128,0)`을 사용해 두 띠를 역순으로 넣은 것이 원인이었다. 실제 선택 영역의 내용은 위 `(128,0,51,2)`, 가운데 `(64,0,51,8)`, 아래 `(16,6,51,2)`이며, 런타임 타일맵의 화면 위치는 각각 `y=6..7`, `8..15`, `16..17`이다.
+- `graphics/pokenav/hns/header.4bpp`, `header.png`, `header.bin`을 다시 생성하고 `header.4bpp.smol`·`header.bin.smolTM`을 갱신했다. 제목 타일에 기존 20번 구분선 타일을 덮어쓰지 않도록 미사용 41번 타일을 추가 슬롯으로 사용했다. `gbagfx` 역렌더 결과의 `x=16..66,y=6..18` 51×12 영역은 원본 세 띠를 위→가운데→아래로 이어 붙인 결과와 612픽셀 전부 일치했고, PNG를 다시 4bpp로 변환한 결과도 원본과 일치했다.
+- `src/naming_screen.c:2607`의 주인공 작명 템플릿 `.maxChars`를 6에서 3으로 변경했다. `PLAYER_NAME_LENGTH=7`은 저장/링크 버퍼 상수라 유지했으며, 박스·포켓몬 닉네임·라이벌 입력 템플릿의 6은 별도 동작이므로 유지했다.
+- 이력 조사: 현재 6은 `361f1e4a77`(2026-09-02 23:24:31 +0900)의 한글 패치에서 네 템플릿에 도입됐다. `1821fd6749`(2026-09-26 03:26:03 +0900)의 전체 worktree 업로드에는 maxChars 변경이 없었고, 모든 refs의 maxChars 3 검색 및 현재 인수인계 문서 검색에서도 추적 가능한 3글자 커밋/기록은 발견되지 않았다. 따라서 예전 3글자가 미커밋 작업이었다면 업로드 전후 유실 시점만 추정할 수 있으며, 별도의 유사 회귀 코드는 확인되지 않았다.
+- 검증: `build/hns/src/graphics.o`를 강제 재생성한 뒤 `GITHUB_ACTION=1 timeout 600s make --jobserver-style=pipe hns -j8`가 `BUILD_EXIT=0`으로 완료됐다. `pokehns.gba`는 33,554,432바이트, SHA-1 `0c3b4c596c198ac1cd6e8eb314625867e6774f4a`다. mGBA 실제 화면 검증은 아직 하지 않았으므로, 기존 ROM을 완전히 닫고 새 ROM을 다시 불러와 상단 헤더와 주인공 이름 입력 제한을 확인해야 한다.
+
 ### 2026-09-26 — 1.17.0 묶음 A 이식 (현존 버그 수정 35개)
 
 - 요청/범위: 사용자가 결과 보고서 9절 권장안을 승인했다(선별 이식, 충돌 미이식, config 유지, LTO는 이후 검토). 묶음 A를 배틀 엔진과 AI·필드·일반 두 worktree로 나눠 PR 1개 단위로 이식했다.
@@ -2284,3 +2292,74 @@
 - 사용자 재확인: 현재 박스에 선택할 포켓몬이 없어서 제목이 어둡고 waveform 애니메이션이 나오지 않았던 것이 원인이었다.
 - 결과: 포켓몬을 선택하면 의도한 동작이 확인되어 문제를 해결된 것으로 종결했다. 코드·그래픽·ROM은 추가로 변경하지 않았다.
 - 다음: 별도 후속 작업 없음.
+### 2026-09-27 — NPC 대화 외 잔여 텍스트 인벤토리
+
+- 요청/범위: NPC·트레이너의 맵 대사가 아닌, 메뉴·시스템·배틀·도감·시설·그래픽에 남은 한글화 대상을 실제 현재 HNS 작업 트리에서 찾고 다음 작업 단위로 정리했다.
+- 수정 파일: `docs/localization/NON_NPC_TEXT_AUDIT.md`, `docs/localization/STATUS.md`, `docs/localization/SESSION_LOG.md`.
+- 변경과 결정 이유: 새 인벤토리에 P0(플레이어 PC/가방/필드 도구·시스템 메시지·HGSS 도감/DexNav·포케기어·배틀 UI), P1(설명문·열매/굿즈·랜드마크·교환/유니언룸), P2(이지챗·시설/미니게임), 대용량 서사성 텍스트를 분리했다. 아이템/기술 설명 필드는 920/947개, 특성 설명은 321개, 이지챗은 1,030개, 열매 설명은 204개, 굿즈명은 121개라는 검색 기준 수치와 대표 경로·주의사항을 함께 기록했다.
+- 실제 상태 확인: 과거 PC 감사의 영문 메뉴 목록은 현행 파일에 적용되지 않는다. `src/pokemon_storage_system.c`의 `gPCText_Give`, 메뉴와 도구 결과 문구는 한글이며, 이 파일의 확인된 영문 메뉴는 `MENU_ETCETERA`의 `etc.`만 남아 있다. `src/battle_message.c`의 Symbiosis·눈·안개·강철서지 제거는 한글이고, 멸망의바디·테라스탈 후속·FRLG 포켓몬피리/유령/사파리·Sleep Clause는 영문 잔여 후보로 남아 있다.
+- 그래픽: `graphics/pokenav/hns/options/{hoenn_map,match_call,radio}.png`와 `graphics/pokenav/hns/left_headers/match_call.png`, 공용 옵션/헤더/도시 확대 PNG를 시각 확인했다. HNS 옵션·헤더의 `MAP`/`CALL`/`RAD` 및 공용 `CONDITION`/`SWITCH OFF`/`MAIN MENU`/`CITY ZOOM` 픽셀 텍스트가 남아 있으며 `src/graphics.c:1989-2044`가 이 리소스를 포함한다.
+- 제외: `data/maps/**/scripts.inc`, `data/text/trainers*.inc`, `data/text/match_call*.inc`와 Match Call 통화 본문은 NPC 대사로 제외했다. TV·뉴스·Fame Checker·이벤트 티켓은 NPC 대사는 아니나 대용량 서사성 콘텐츠라 별도 사용자 범위로 보류했다. 버튼/단위 약어, 디버그·미사용 문자열, 교환 OT/닉네임은 자동 번역하지 않는다.
+- 검증: `rg`로 런타임 문자열·호출부·`INCBIN`을 확인하고 대상 PNG 8개를 시각 대조했다. 시작·종료 `git status --short`는 비어 있었고 `git diff --check`를 통과했다. 문서만 수정했으므로 HNS 빌드·ROM·게임 화면 검증은 수행하지 않았다.
+- 다음 시작점: `docs/localization/NON_NPC_TEXT_AUDIT.md` P0의 1단계인 `src/player_pc.c`, `src/item_menu.c`, `src/item_use.c`, `src/party_menu.c`와 `data/text/{pc,pc_transfer,save,obtain_item,surf,check_furniture,record_mix,mart_clerk,abnormal_weather}.inc`를 화면 단위로 번역한다. 제어 코드·버퍼 폭을 점검하고 `make hns -j8` 및 실제 메뉴 화면을 검증한다.
+
+### 2026-09-27 — 잔여 텍스트 중 직접 그래픽 스프라이트 분류
+
+- 요청/범위: NPC 대화 외 잔여 텍스트 인벤토리에서 C 문자열이 아니라 PNG 픽셀을 직접 고쳐야 하는 항목을 현재 HNS 사용 경로별로 분리했다.
+- 직접 수정 P0: `POKEDEX_PLUS_HGSS=TRUE`인 도감의 `tileset_interface_hns.png`, `tileset_menu_list.png`, `tileset_menu1.png`~`tileset_menu3.png`, `tileset_menu_search.png`에 `SELECT`·`SEARCH`·`SEEN`·`OWN`·`MODE`·`TYPE` 등 고정 영문 라벨이 남아 있다. `area_unknown.png`의 `AREA UNKNOWN`도 HGSS 도감 서식 화면이 `DisplayPokedexAreaScreen()`을 호출하므로 실제 표시 가능하다. 포케기어는 HNS 옵션의 `MAP`·`CALL`·`RAD`, 공용 옵션/헤더의 `CONDITION`·`SWITCH OFF`·`MAIN MENU` 등, 도시 확대의 시설명과 `CANCEL`이 실제 로드되는 픽셀 글자다. 작명 화면은 개별 `back_button.png`·`ok_button.png`가 아니라 `rwindow.png`와 `roptions.png`를 `src/naming_screen.c`가 오프셋으로 사용하므로 그 두 원본이 직접 수정 대상이다.
+- P1/정책: `union_room_chat/r_button_labels.png`는 `FREE_UNION_ROOM_CHAT=FALSE`에서 실제 로드되는 영문 버튼 라벨이다. HNS 타이틀의 `press_start.png`는 실제 `PRESS START` 원본이나, 포켓몬/하트골드 로고는 브랜드 표기로 유지하고 시작 안내만 한글화할지 먼저 결정한다.
+- 수정 불필요/조건부: 배틀 기술 정보 L/R 및 Gen4 L/R은 모두 `기술 / 정보`, 메뉴 정보·PC 저장 시스템·배틀돔 버튼도 한글이다. 이지챗의 `START`/`SELECT`는 버튼명 유지로 분류했다. START 기술정보, DECA 도감 타일셋은 현재 설정에서 미사용이고, `DEXNAV_ENABLED=FALSE`의 DexNav `captured_all.png`·`no_data.png`는 이름과 달리 글자가 아닌 아이콘/표식이다.
+- 검증: `src/graphics.c`, `src/pokedex_plus_hgss.c`, `src/pokedex_area_screen.c`, `src/naming_screen.c`, `src/battle_interface.c`, `src/union_room_chat.c` 및 설정 헤더의 실제 로드 조건을 `rg`/`sed`로 대조하고 대상 PNG를 시각 확인했다. 문서만 수정했으므로 HNS 빌드·ROM·실기 검증은 하지 않았다.
+- 다음: `NON_NPC_TEXT_AUDIT.md`의 새 표를 기준으로 런타임 문자열과 원본 PNG를 혼동하지 않는다. PNG 작업은 타일 수·팔레트·순서를 보존하고 `.4bpp`/`.smol`을 재생성한 뒤 `make hns -j8`과 실제 화면 검증을 수행한다.
+
+### 2026-09-27 — 포케기어 HNS 옵션 PNG의 분할 표시 구조 확인
+
+- 질문/범위: `graphics/pokenav/hns/options`의 32×64 PNG가 정적인 이미지로 보면 잘려 보이는데 실제 포케기어 메뉴에서 어떤 방식으로 온전한 라벨이 표시되는지 확인했다.
+- 구조: 각 옵션 PNG는 1,024바이트(32×64, 4bpp)다. `sOamData_MenuOption`은 32×16 OAM이고, `CreateMenuOptionSprites()`가 라벨마다 네 스프라이트를 만든 뒤 `x2 = 32 * j`로 가로 배치한다. `DrawOptionLabelGfx()`는 시작 타일에서 `8 * j`씩 건너뛰며 네 조각을 지정한다. 그러므로 PNG에서는 32×16 조각 네 개가 세로로 쌓여 보이지만, 화면에서는 128×16 라벨 하나가 된다.
+- HNS 결합 순서: `graphics/pokenav/hns/options/options.4bpp`(0x3800)는 지도(HNS)→컨디션→통화(HNS)→리본→전원→파티→검색→쿨→뷰티→큐트→스마트→터프→취소→라디오(HNS)의 14개 0x400 바이트 `.4bpp`를 연결한 결과와 `cmp`로 일치했다. `sOptionsLabelGfx_*`의 시작 타일 `0x000`~`0x1A0`도 이 순서를 가리킨다.
+- 재생성 주의(정정): `options.4bpp`에 대응하는 단일 `options.png`는 없지만, `graphics_file_rules.mk:702-716`에 14개 개별 `.4bpp`를 위 순서로 연결하는 HNS 전용 Make 규칙이 있다. 원본 PNG와 개별 생성물이 존재하면 `make hns`가 결합 시트와 `.smol`을 자동 갱신한다. 원본이 삭제된 채 옛 `.4bpp`만 남은 경우에는 증분 빌드가 낡은 결과를 재사용할 수 있으므로 원본 존재 여부도 확인해야 한다. `options.bin`은 이 라벨 스프라이트를 가로 배치하는 파일이 아니다.
+- 검증: `src/pokenav_menu_handler_gfx.c:368-405,891-905,928-943`의 OAM·스프라이트·타일 대입을 확인하고, HNS 통합 `.4bpp`와 14개 조각을 바이트 대조했다. 당시에는 문서만 수정했으므로 HNS 빌드·ROM·실기 검증은 하지 않았다.
+
+## 2026-09-27 — 포케기어 PNG 변환과 `포켓기어` 헤더 타일맵 수정
+
+- 요청: `graphics/pokenav`에서 사용자가 한글화한 PNG들을 변환·테스트하고, HNS 포케기어 화면 왼쪽 위의 `POKéMON GEAR`를 새 `포켓기어` 픽셀 그림대로 표시한다.
+- 원인: `graphics/pokenav/hns/header.png`는 424×8 크기의 완성 헤더가 아니라 53개 8×8 타일을 가로로 저장한 시트다. `header.bin`은 영문 로고의 반복 타일 ID를 계속 가리키고 있어서 PNG만 바꾸면 한글 획 조각이 영문 배치대로 반복되어 깨졌다.
+- 수정: `graphics/pokenav/hns/header.bin`의 화면 상단 3개 타일 행을 새 한글 타일 2~22번과 왼쪽 2타일 여백에 맞춰 재배치했다. 세 번째 행의 빈 영역에는 구분선을 포함한 배경 타일을 사용해 기존 가로선을 보존했다. 나머지 타일맵은 건드리지 않아 오른쪽 아래 작은 `포켓기어`도 유지했다.
+- 변환: 수정된 컨디션 그래프/취소, HNS 헤더·통화 헤더·지도/통화 옵션·라디오 UI, 공용 좌측 헤더 12개, 도시 확대 텍스트를 `.4bpp`로 다시 만들었다. 빌드 과정에서 관련 `.smol`, 팔레트, `header.bin.smolTM`도 갱신됐다. HNS 옵션 합성물은 지도(HNS)→컨디션→통화(HNS)→리본→전원→파티→검색→쿨→뷰티→큐트→스마트→터프→취소→라디오(HNS) 연결 결과와 `cmp`가 일치했다.
+- 정적 시각 검증: 새 `header.4bpp`·`header.gbapal`·`header.bin`을 `gbagfx`로 역렌더링했다. 왼쪽 위 큰 `포켓기어` 네 글자가 올바르게 연결되고, 상단 구분선과 오른쪽 아래 작은 `포켓기어`가 유지되는 것을 확인했다.
+- 빌드: 첫 `make hns -j8`은 전체 소스 재컴파일 도중 600초 제한으로 종료됐다. 변환 산출물을 확인한 뒤 같은 HNS 전체 빌드를 재실행했고 `BUILD_EXIT=0`으로 컴파일·링크·ROM 생성을 완료했다. ROM 사용량은 EWRAM 249,016/262,144 bytes, IWRAM 25,704/32,768 bytes, ROM 33,315,908/33,554,432 bytes다. `pokehns.gba` SHA-1은 `872956ba1b350325d17b26aa4bcf172e01d6f5ea`다.
+- 미완료/주의: 공용 메인 옵션 원본 `graphics/pokenav/options/{beauty,cancel,condition,cool,cute,hoenn_map,match_call,party,ribbons,search,smart,switch_off,tough}.png` 13개는 작업 트리에서 삭제 상태다. 기존 `.4bpp`가 남아 있어 증분 빌드는 성공했지만 이 부분의 번역은 반영됐다고 판정할 수 없고, 깨끗한 빌드도 재현할 수 없다. `graphics/pokenav/hns/options/radio.png` 역시 `RAD` 그대로다. 이 원본들을 복구·한글화한 뒤 다시 빌드해야 한다.
+- 실행 검증 구분: 현재 환경에서 `mgba-qt`, `mgba`, `mgba-sdl` 명령을 찾지 못해 실제 게임 화면은 실행하지 않았다. 새 `pokehns.gba`를 mGBA에서 완전히 다시 불러온 뒤 포케기어 메인 메뉴와 각 하위 화면을 확인해야 한다.
+
+## 2026-09-28 — 복구된 포케기어 PNG 전체 변환과 큰 헤더 재수정
+
+- 요청: 다시 추가·수정한 공용 옵션 PNG, `city_zoom_text.png`, HNS `radio.png`·`ui_tiles.png`를 변환하고, 여전히 깨져 보이던 화면 상단 큰 `포켓기어`를 사용자가 제시한 스프라이트 모양으로 바로잡는다.
+- 원본 상태: 이전에 삭제 상태였던 `graphics/pokenav/options/{beauty,cancel,condition,cool,cute,hoenn_map,match_call,party,ribbons,search,smart,switch_off,tough}.png` 13개가 모두 수정 파일로 복구됐다. 각 옵션과 HNS 라디오는 32×64, 라디오 UI는 128×32, 도시 확대 텍스트는 64×64 규격이다.
+- 헤더 원인/수정: 이전 타일맵은 `header.png`의 한글 상·중·하단을 모두 x=2에 놓아 가운데와 아래 획이 오른쪽으로 밀렸다. 큰 제목은 실제로 6·8·7타일 폭의 세 띠이므로 `header.bin`에서 위쪽 타일 2~7은 x=2, 가운데 8~15와 아래 16~22는 x=1부터 배치했다. 아래 행의 나머지는 구분선 배경 타일로 채우고 다른 행은 보존했다.
+- 정적 시각 검증: 갱신한 `header.4bpp`·팔레트·타일맵으로 256×256 헤더를 역렌더링하고 제목 부분을 최근접 확대했다. 큰 `포켓기어`의 네 글자 획이 사용자가 제시한 오른쪽 스프라이트와 같은 형태이고, 구분선 및 오른쪽 아래 작은 제목도 유지되는 것을 확인했다.
+- 변환/합성 검증: 수정된 `graphics/pokenav` PNG 전부를 `.4bpp`로 강제 재변환했다. 공용 13개 옵션 합성물과 HNS 14개 옵션 합성물을 각 Make 규칙의 순서대로 `cat`한 임시 스트림과 `cmp`했으며 둘 다 종료 코드 0이었다. 전체 빌드가 관련 `.smol`, `header.bin.smolTM`, 라디오 UI 및 도시 확대 압축물도 갱신했다.
+- HNS 빌드: `GITHUB_ACTION=1 timeout 600s make --jobserver-style=pipe hns -j8`가 `BUILD_EXIT=0`으로 성공했다. EWRAM은 249,016/262,144 bytes, IWRAM은 25,704/32,768 bytes, ROM은 33,316,276/33,554,432 bytes다. 생성된 `pokehns.gba` SHA-1은 `251f8e38a680ca0f85a1453d386e02635f30284a`다.
+- 실행 검증 구분: 현재 환경에 mGBA 명령이 없어 실제 메뉴 입력 검증은 하지 않았다. mGBA를 완전히 종료한 뒤 새 ROM을 다시 열어 메인 메뉴의 지도/컨디션/전화/리본/전원/파티/검색/다섯 능력/취소/라디오, 라디오 화면, 도시 확대 및 큰 헤더를 확인한다.
+
+## 2026-09-28 — Aseprite 선택 영역 기준 큰 `포켓기어` 헤더 재패킹
+
+- 재요청/정정: 앞선 수정은 상·중·하단 타일 띠 자체를 좌우 이동했기 때문에 사용자가 지정한 스프라이트 영역 밖의 여백까지 섞였다. 사용자가 새 Aseprite 화면으로 지정한 실제 구성은 동일한 50픽셀 폭의 위 2px, 가운데 8px, 아래 2px를 세로로 결합한 50×12 그림이다.
+- 추출: 현행 헤더 타일에서 위 조각은 타일 2~7의 마지막 2행(48px 뒤 배경 2px), 가운데 조각은 타일 8~15의 8행 중 선택된 x=7~56, 아래 조각은 타일 16~22의 첫 2행 중 선택된 x=5~54로 읽었다. 결합 결과의 첫 글자는 상단 가로획, 가운데 `ㅍ`, 하단 `ㅗ`가 정확히 연결된다.
+- 재패킹: 완성된 50×12 팔레트 인덱스를 화면상의 56×24(7×3타일) 영역에 넣고 구분선 행을 보존했다. 21개 위치의 중복 패턴을 제거해 고유 타일 18개를 `header.png`의 타일 2~19에 기록하고, `header.bin`이 새 타일 ID 배열을 x=2부터 참조하도록 바꿨다. 기존 타일 20의 빈 구분선 배경과 타일 23 이후의 작은 제목/기타 헤더는 유지했다.
+- 정확성 검증: 새 `header.png`를 다시 `.4bpp`로 변환한 결과가 임시 재패킹 데이터와 `cmp`로 일치했다. 이어 최종 `header.4bpp`와 `header.bin`에서 화면의 50×12 픽셀을 역추출해 세 선택 조각의 결합 원본과 비교했으며 `FINAL_50X12_MATCH=True`였다. 이번 검증은 글자를 눈대중으로 판정한 것이 아니라 팔레트 인덱스 600개가 모두 같은지 확인한 것이다.
+- 빌드: `header.4bpp.smol`과 `header.bin.smolTM`을 재생성한 뒤 `GITHUB_ACTION=1 timeout 600s make --jobserver-style=pipe hns -j8`를 실행했고 `BUILD_EXIT=0`으로 성공했다. EWRAM 249,016/262,144 bytes, IWRAM 25,704/32,768 bytes, ROM 33,316,276/33,554,432 bytes이며 `pokehns.gba` SHA-1은 `26159eedba9d17edae529fb0efae8ef95dd96c10`이다.
+- 실행 확인: 현재 환경에는 mGBA 명령이 없으므로 실제 화면은 사용자가 새 ROM을 완전히 다시 불러 확인해야 한다. 이전 SHA-1 ROM이 열린 상태라면 이번 재패킹은 반영되지 않는다.
+
+## 2026-09-28 — 재편집한 Aseprite 51×12 선택 영역으로 큰 `포켓기어` 헤더 갱신
+
+- 요청/입력: 사용자가 `graphics/pokenav/hns/header.png`를 다시 편집하고, 위 2px·가운데 8px·아래 2px의 각 선택 영역을 같은 51×12 완성 그림으로 결합해 출력하도록 요청했다.
+- 추출/재패킹: 원본 타일 데이터에서 위쪽은 타일 2~7 마지막 2행(48px 뒤 팔레트 인덱스 4의 배경 3px), 가운데는 타일 8~15의 x=7~57, 아래는 타일 16~22의 x=4~54를 읽었다. 612개 팔레트 인덱스를 7×3 타일 영역으로 패킹할 때 고유 타일이 20개여서 2~19 및 화면에서 기존에 미사용인 21·22번을 사용했다. 구분선용 20번과 작은 제목/기타 헤더의 23~52번은 그대로 보존했다. 16비트 BG 타일맵 엔트리의 화면 x=2~8, y=0~2만 새 타일 ID로 갱신했다.
+- 정적 검증: 생성한 `header.png`를 다시 `header.4bpp`로 변환한 결과가 패킹 데이터와 `cmp` 일치했다. 최종 `header.4bpp`·`header.bin`으로부터 화면의 51×12를 역추출해 선택 조각 결합 원본과 비교했고 `FINAL_51X12_MATCH=True`(612/612 픽셀)였다. 타일 20 및 23~52 보존도 바이트 비교로 확인했다. 대상 변환으로 `header.4bpp.smol`과 `header.bin.smolTM`도 갱신했다.
+- ROM/한계: HNS 전체 빌드는 새 ROM 링크까지 진행되어 `pokehns.gba` 생성 시각과 SHA-1이 `5476f96067b6a4829c6f28ea53672b770d2dd27c`으로 갱신됐다. 그러나 이 환경의 셸 실행 제한이 빌드 프로세스의 최종 종료 코드 기록보다 먼저 적용돼 `BUILD_EXIT=0`은 아직 확보하지 못했다. 실제 mGBA도 이 환경에 없으므로, 다음 세션은 `GITHUB_ACTION=1 timeout 600s make --jobserver-style=pipe hns -j8`의 종료 코드를 먼저 재확인한 뒤 새 ROM을 완전히 다시 불러 큰 `포켓기어`를 확인한다.
+
+## 2026-09-28 — 51×12 선택 공백 보존 재패킹 및 ROM 재링크
+
+- 정정: 직전 재패킹은 이전 50px 작업의 가운데·아래 X 보정을 그대로 적용해, 새 선택 영역의 앞쪽 공백을 제거했다. 따라서 글자 획을 왼쪽으로 밀어 실제 완성 스프라이트와 다르게 만들었다.
+- 최종 추출: 원본 타일 시트 백업에서 위 `(16,6,51,2)`, 가운데 `(64,0,51,8)`, 아래 `(128,0,51,2)`를 그대로 결합했다. 선택 안의 배경 인덱스 4도 데이터로 보존했다. 20개 고유 타일을 2~19, 21~22에 배치하고 20번 구분선 및 23~52번 작은 제목/기타 헤더 타일은 보존했다.
+- 검증: 완성 `header.4bpp`와 16비트 BG `header.bin`에서 화면상의 51×12를 역추출해 원본 선택 조합과 비교했고 `FINAL_51X12_MATCH=True`(612/612 픽셀)였다. `.4bpp` 변환 결과도 패킹 데이터와 `cmp` 일치했다.
+- 빌드: 그래픽 바이너리의 의존성 누락을 피하기 위해 `build/hns/src/graphics.o`를 재컴파일(1,276,908 bytes)한 뒤 HNS ROM을 재링크했다. 새 `pokehns.gba` SHA-1은 `0e374d5e4f5a6498bc3f64a5799255dbe06eaa01`이다. 현재 환경에는 mGBA가 없으므로, 다음 확인은 이 SHA-1의 ROM을 완전히 다시 로드해 큰 `포켓기어`가 사용자 완성 스프라이트와 같은지 실제 화면에서 보는 것이다.
