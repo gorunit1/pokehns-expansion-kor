@@ -2608,7 +2608,7 @@ static const struct NamingScreenTemplate sPlayerNamingScreenTemplate =
 };
 static const struct NamingScreenTemplate sPCBoxNamingTemplate =
 {
-    .copyExistingString = FALSE, .maxChars = 6, .iconFunction = 2, .addGenderIcon = FALSE, .initialPage = KBPAGE_LETTERS_UPPER, .koreanEnabled = TRUE, .title = COMPOUND_STRING("박스의 이름은?"),
+    .copyExistingString = FALSE, .maxChars = 8, .iconFunction = 2, .addGenderIcon = FALSE, .initialPage = KBPAGE_LETTERS_UPPER, .koreanEnabled = TRUE, .title = COMPOUND_STRING("박스의 이름은?"),
 };
 static const struct NamingScreenTemplate sMonNamingScreenTemplate =
 {
@@ -2624,7 +2624,7 @@ static const struct NamingScreenTemplate sCodeScreenTemplate =
 };
 static const struct NamingScreenTemplate sRivalNamingScreenTemplate =
 {
-    .copyExistingString = FALSE, .maxChars = 6, .iconFunction = 6, .addGenderIcon = FALSE, .initialPage = KBPAGE_LETTERS_UPPER, .koreanEnabled = TRUE, .title = sText_RivalsName,
+    .copyExistingString = FALSE, .maxChars = 3, .iconFunction = 6, .addGenderIcon = FALSE, .initialPage = KBPAGE_LETTERS_UPPER, .koreanEnabled = TRUE, .title = sText_RivalsName,
 };
 
 static const struct NamingScreenTemplate *const sNamingScreenTemplates[] =
