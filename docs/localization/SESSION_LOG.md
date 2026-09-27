@@ -2,6 +2,18 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-09-27 — 전체 엔진 동기화: ROM 여유 확보, 묶음 A 결정 반영
+
+- 사용자 결정: 1·2단계 진행을 승인했고, 묶음 A 결정 3건은 권장대로 한다(#10529 기존 동작 유지, #10015 유지, #10344 레드카드·탈출버튼 미적용). push는 작업 후 판단해 진행하도록 위임받았다.
+- ROM 여유 확보(`7e7c38ab10`):
+  - LTO=0 빌드에도 `-ffunction-sections -fdata-sections`를 추가했다. `Makefile`의 LTO 분기이며 TEST 빌드는 제외했다.
+  - 링커 스크립트가 이미 `KEEP(.text.header_*)`·`.text.consts`와 `*(.rodata*)` 같은 와일드카드를 쓰고 있어 섹션 배치가 동일하다.
+  - ROM 33,327,220 → 32,734,692 B(-579 KB, 97.56%, 여유 약 820 KB). EWRAM 249,000 B, IWRAM 25,636 B. `.text` -49 KB, `.rodata` -540 KB.
+  - 기존 빌드 트리는 `rm -rf build/hns` 후 다시 빌드해야 효과가 난다.
+- #10529 후속(`cdd2d096fa`): 인접(거리 0) 트레이너는 `TrainerMoveToPlayer`를 건너뛴다. 그래서 `PlayerFaceApproachingTrainer`에서 트레이너의 돌아보기가 끝난 뒤 이동 타입을 고정하도록 이전 동작을 복원했다.
+- 검증: `git diff --check` 통과. `GITHUB_ACTION=1 make hns -j8` 종료 코드 0. ROM 32,734,772 B(97.56%), SHA1 `3cf27146177a561532d59a4429c5724fa7024c0e`. 실기 검증은 하지 않았다. 실기 스모크 테스트가 필요하다: 타이틀, 새 게임, 기존 게임 내 저장 로드·저장, 배틀 1회, PC, 인접 트레이너 발견.
+- 다음: 1단계 인벤토리 재확정(6개 그룹 병렬, 읽기 전용) 결과를 종합해 의존성 순서 이식 계획을 만든다.
+
 ### 2026-09-27 — 1.17.0 전체 엔진 동기화 0단계 (시작 상태·묶음 A 재검증)
 
 - 기준: `pokehns-expansion-kor` `84835a32d2`(친구의 FULL_ENGINE_SYNC 지시서 커밋)를 fast-forward로 받았다. 작업 트리는 깨끗했다. upstream merge-base는 `3efb836f72`, 목표 태그는 `expansion/1.17.0`(`e8bd1cd7b0`)이다.
