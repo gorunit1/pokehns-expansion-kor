@@ -871,6 +871,18 @@ static bool8 PlayerFaceApproachingTrainer(u8 taskId, struct Task *task, struct O
 {
     struct ObjectEvent *playerObj;
 
+    // HnS: adjacent trainers skip TrainerMoveToPlayer, so lock their facing here as before #10529
+    if (task->tTrainerRange == 0)
+    {
+        if (ObjectEventIsMovementOverridden(trainerObj) && !ObjectEventClearHeldMovementIfFinished(trainerObj))
+            return FALSE;
+
+        SetTrainerMovementType(trainerObj, GetTrainerFacingDirectionMovementType(trainerObj->facingDirection));
+        TryOverrideTemplateCoordsForObjectEvent(trainerObj, GetTrainerFacingDirectionMovementType(trainerObj->facingDirection));
+        OverrideTemplateCoordsForObjectEvent(trainerObj);
+        task->tTrainerRange = -1;
+    }
+
     playerObj = &gObjectEvents[gPlayerAvatar.objectEventId];
     if (ObjectEventIsMovementOverridden(playerObj) && !ObjectEventClearHeldMovementIfFinished(playerObj))
         return FALSE;
