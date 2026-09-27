@@ -182,6 +182,9 @@ ifneq ($(LTO),0)
   ifneq ($(TEST),1)
     override CFLAGS += -flto=auto -fno-fat-lto-objects -fno-asynchronous-unwind-tables -ffunction-sections -fdata-sections
   endif
+else ifneq ($(TEST),1)
+  # HnS: let --gc-sections drop unreferenced functions/data without LTO (about 579 KB of ROM)
+  override CFLAGS += -ffunction-sections -fdata-sections
 endif
 
 ifeq ($(ANALYZE),1)
