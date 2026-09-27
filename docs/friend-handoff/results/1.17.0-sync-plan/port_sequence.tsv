@@ -1,0 +1,519 @@
+seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	title
+1	testrunner	-1	-	g4_ai_tests_pokemon_sprites	U-testrunner-fix	-	S	build	N	N	~0(게임 ROM 불변, 테스트 ELF만)	U-testrunner-fix
+2	9870	6	1.15.2	g5_general_cleanup_docs	U-9870	-	M	tool	N	N	~0	Improve error handling of smol compressor
+3	9858	7	1.15.2	g1_battle_fixed_a	U-9858	-	M	fix	N	N	+120B	Fix Innards Out multihit damage basis and Core Enforcer suppression on fainted targets
+4	9855	8	1.15.2	g5_general_cleanup_docs	U-9855	-	S	fix	N	N	~0	Move animation fixes
+5	9883	9	1.15.2	g6_overworld_refactors	U-9883	-	S	fix	N	N	~0	Move follower check before trainer hill check whene selecting script
+6	9880	10	1.15.2	g1_battle_fixed_a	U-ruin-9880	-	M	fix	N	N	+150B	Fixes Ruin abilities / gastro acid interaction
+7	9888	11	1.15.2	g5_general_cleanup_docs	U-9888	-	S	build	N	N	~0	Fix compiling with -O0
+8	9882	12	1.15.2	g5_general_cleanup_docs	U-safari-9882	-	S	fix	N	N	~0	Safari fixes
+9	9872	15	1.15.3	g5_general_cleanup_docs	U-9872	-	S	fix	N	N	~0	fix(debug_menu): fix flicker when used when map pop-up active
+10	9905	16	1.15.3	g6_overworld_refactors	U-namebox-9905	-	M	fix	N	N	~+0.2KB	fix (namebox): back 2 back namebox no longer flickers
+11	9901	17	1.15.3	g1_battle_fixed_a	U-ruin-9880	9880	S	fix	N	N	~0	Fix Ruin abilities respecting each other even if deactivated
+12	9913	20	1.15.3	g5_general_cleanup_docs	U-9913	-	S	fix	N	N	~0	Cleanup of Dexnav checks
+13	9912	21	1.15.3	g5_general_cleanup_docs	U-safari-9882	9882	S	fix	N	N	~0	Fix font shadow not being cleared in safari healthbox
+14	9921	23	1.15.3	g1_battle_fixed_a	U-9921	-	S	fix	Y	N	+60B	Fix Aroma Veil not blocking Destiny Knot infatuation
+15	9917	24	1.15.3	g1_battle_fixed_a	U-9917	-	M	fix	N	N	+40B	Fix incorrect ability battle history recording
+16	9925	25	1.15.3	g6_overworld_refactors	U-9925	-	S	fix	N	N	~0	Prevent reflection tag palette collisions
+17	9929	26	1.15.3	g1_battle_fixed_a	U-9929	-	S	fix	Y	N	+40B	Correct status move miss messaging
+18	9930	27	1.15.3	g6_overworld_refactors	U-9930	-	S	fix	N	N	~0	Fix FRLG player sprite glitch when fishing after surfing
+19	9943	28	1.15.3	g1_battle_fixed_a	U-airballoon-9943	-	S	fix	N	N	~0	Fix Air Balloon not popping when damaging moves hit a Substitute
+20	9946	29	1.15.3	g1_battle_fixed_a	U-9946	-	S	fix	N	N	~0	Fix Eject Pack switch when the holder is trapped
+21	9951	31	1.15.3	g1_battle_fixed_a	U-9951	-	S	fix	Y	N	~0	Fix Fling Berry effects not being blocked by Covert Cloak and Shield Dust
+22	9952	32	1.15.3	g1_battle_fixed_a	U-airballoon-9943	9943	S	fix	N	N	~0	Fix Air Balloon not popping when holder faints from a damaging hit
+23	9937	34	1.15.3	g1_battle_fixed_a	U-9937	-	S	fix	N	N	~0	Fix stale hit state after multihit moves miss mid-sequence
+24	7360	35	1.15.3	g4_ai_tests_pokemon_sprites	U-7360	-	M	fix	N	N	+0.1KB	Add EFFECTIVENESS_SE for tests
+25	9942	37	1.15.3	g1_battle_fixed_a	U-futuresight-9942	-	M	fix	N	N	-150B	Future Sight fixes and tests
+26	9954	40	1.15.3	g1_battle_fixed_a	U-9954	-	S	fix	N	N	+80B	Fix Guard Dog activating when Intimidate is blocked or cannot lower Attack
+27	9977	41	1.15.3	g4_ai_tests_pokemon_sprites	U-9977	-	S	test	Y	N	~0	Fix failing Dream Eater test when target is behind Substitute (Gen 5+)
+28	9976	42	1.15.3	g1_battle_fixed_a	U-9976	-	S	fix	N	N	~0	Fix Red Card activating when attacker faints
+29	9991	44	1.15.3	g6_overworld_refactors	U-9991	-	S	fix	N	N	~0	Bug fix: On-step scripts now only happen once the FNPC out of door task is complete
+30	10000	63	1.15.3	g4_ai_tests_pokemon_sprites	U-10000	-	S	test	N	N	~0	Add test for Curse + Baton Pass interaction
+31	9973	64	1.15.3	g5_general_cleanup_docs	U-fillsprite-9973	-	S	fix	N	N	~0	Fix `FillSpriteRect` wrongly triggering an assert
+32	10002	65	1.15.3	g1_battle_fixed_a	U-10002	-	S	fix	N	N	~0	Fix Toxic Debris checking Toxic Spikes cap on the wrong side
+33	10004	66	1.15.3	g4_ai_tests_pokemon_sprites	U-10004	-	S	fix	N	N	~0	Fix reverse-cry off-by-one if Porygon disabled
+34	9995	67	1.15.3	g5_general_cleanup_docs	U-9995	-	S	fix	N	N	~0	Prevent error in title screen cinematic if Kyogre/Groudon are disabled
+35	10007	69	1.15.3	g1_battle_fixed_a	U-10007	-	S	fix	N	N	~0	Fix Infiltrator bypassing ally Safeguard for confusion effects
+36	10017	70	1.15.3	g4_ai_tests_pokemon_sprites	U-10017	-	S	test	N	N	~0	Set higher HP in Gem Damage calculation test fixing gen5 config result
+37	10021	72	1.15.3	g4_ai_tests_pokemon_sprites	U-10021	-	S	test	N	N	~0	Fix Electrify status move test expectations
+38	10011	73	1.15.3	g3_battle_changes_moves_abilities_items	U-10011	-	S	data	N	N	~0	Align outdated move descriptions with current mechanics
+39	10028	75	1.15.3	g1_battle_fixed_a	U-10028	-	S	fix	N	N	~0	Fix King’s Rock flinch chance with Serene Grace and rainbow
+40	10003	76	1.15.3	g1_battle_fixed_a	U-10003	-	S	fix	N	N	~0	Fix incorrect Loaded Dice priority over Skill Link for Population Bomb
+41	10035	78	1.15.3	g1_battle_fixed_a	U-10035	-	S	fix	N	N	~0	Fix Strength Sap activation on miss
+42	9949	79	1.15.3	g5_general_cleanup_docs	U-mapjson-9949	-	M	tool	N	N	~0	mapjson assume undefined layout and maps match the compiled version
+43	10047	81	1.15.3	g1_battle_fixed_a	U-10047	-	S	fix	N	N	+30B	Fix Poison Puppeteer target tracking
+44	10040	82	1.15.3	g1_battle_fixed_a	U-10040	-	M	fix	N	N	+100B	Fix Teraform activations timing
+45	10042	83	1.15.3	g1_battle_fixed_a	U-10042	-	S	fix	Y	N	~0	Fix Syrup Bomb end-turn stat drop source for Defiant and Competitive
+46	10038	84	1.15.3	g1_battle_fixed_a	U-10038	-	S	fix	N	N	~0	Fix Symbiosis triggering after Eject items consumed
+47	10030	85	1.15.3	g1_battle_fixed_a	U-10030	-	S	fix	N	N	~0	Fix Illusion reveal on fainting without attack damage
+48	9974	86	1.15.3	g4_ai_tests_pokemon_sprites	U-gen7anim-sprites	-	M	gfx	N	N	+0.2KB	Updated Gen VII animations
+49	10029	87	1.15.3	g1_battle_fixed_a	U-10029	-	S	fix	N	N	~0	Fix end-turn form changes for fainted battlers
+50	10016	88	1.15.3	g3_battle_changes_moves_abilities_items	U-10016	-	S	fix	N	N	~0	Align wind move flags with current mechanics
+51	10071	95	1.15.3	g4_ai_tests_pokemon_sprites	U-10071	-	S	refactor	N	N	~0	BoxPokemon: Less error-prone "static asserts"
+52	9207	98	1.16.0	g5_general_cleanup_docs	U-ram-9231	-	S	refactor	N	N	EWRAM -6B	Remove unnecessary EWRAM allocation for cable car animation
+53	9360	100	1.16.0	g4_ai_tests_pokemon_sprites	U-9360	-	S	feature	N	N	+0.1KB	AI considers Defense‑boosting moves before using Body Press
+54	9359	101	1.16.0	g4_ai_tests_pokemon_sprites	U-9359	-	M	test	N	N	~0	AI uses Beat Up on allies to power up Rage Fist in doubles
+55	9358	102	1.16.0	g4_ai_tests_pokemon_sprites	U-9358	-	M	feature	N	N	+0.2KB	AI avoids bad moves when a faster foe is predicted to go semi-invulnerable
+56	9349	103	1.16.0	g4_ai_tests_pokemon_sprites	U-9349	-	S	feature	N	N	+0.1KB	Improve Rest sleep AI logic with cleanup and tests
+57	9116	104	1.16.0	g4_ai_tests_pokemon_sprites	U-9116	-	M	refactor	N	N	~0	Adds bridge between battle engine and ai calcs
+58	9063	105	1.16.0	g3_battle_changes_moves_abilities_items	U-9063	-	S	gfx	N	N	~0	Made moves' animation's AbsorbEffects more consistent
+59	9176	108	1.16.0	g6_overworld_refactors	U-fling-9176	-	M	refactor	Y	N	~0	Fling Refactor
+60	8816	109	1.16.0	g5_general_cleanup_docs	U-8816	-	M	refactor	N	N	~0	Cleaned up Match Call
+61	9231	111	1.16.0	g5_general_cleanup_docs	U-ram-9231	-	M	refactor	N	N	EWRAM 약 -230B, IWRAM 약 -100B	Random EWRAM and IWRAM savings
+62	9173	112	1.16.0	g4_ai_tests_pokemon_sprites	U-9173	-	M	refactor	N	N	~0	Separate Perfect IV Logic Into New Function
+63	9066	113	1.16.0	g5_general_cleanup_docs	U-enum-9066	-	L	refactor	N	Y	~0	Typeless enums for OBJ_EVENT_GFX, Multichoice Ids, and Facility Classes
+64	9121	114	1.16.0	g3_battle_changes_moves_abilities_items	U-heap-9121	-	S	fix	N	N	~0	Reduce heap usage in battle
+65	9086	115	1.16.0	g5_general_cleanup_docs	U-cstring-9086	-	M	build	Y	N	-3~4KB(추정)	preproc: (shared) COMPOUND_STRING
+66	9420	116	1.16.0	g5_general_cleanup_docs	U-9420	-	S	refactor	N	N	~0	Removes unused files
+67	9410	117	1.16.0	g5_general_cleanup_docs	U-9410	-	M	refactor	N	N	~0	pr adding telekinesis ban list to species data
+68	9388	118	1.16.0	g3_battle_changes_moves_abilities_items	U-9388	-	S	refactor	N	N	~0	update poparraywithBattlers Arg to prevent warning
+69	9107	119	1.16.0	g4_ai_tests_pokemon_sprites	U-9107	-	S	feature	N	N	+0.1KB	AI scores Order Up stat boosts under Commander
+70	9407	120	1.16.0	g6_overworld_refactors	U-fade-9407	-	M	feature	N	N	~0	Fade background and sprites simulatneously
+71	9417	121	1.16.0	g3_battle_changes_moves_abilities_items	U-9417	-	M	refactor	N	N	~0	Minor dancer clean up/consolidation
+72	9446	122	1.16.0	g6_overworld_refactors	U-synchronize-9446	9176,9417	M	refactor	Y	N	~0	Refactor synchronize and cure berry timing
+73	9463	123	1.16.0	g5_general_cleanup_docs	U-cstring-9086	9086	S	tool	N	N	~0	Use PRIu64 to print appropriate variable length in preproc
+74	8664	124	1.16.0	g4_ai_tests_pokemon_sprites	U-8664	-	M	feature	N	N	+0.8KB	Smarter Doubles Fake Out AI + EFFECT_FIRST_TURN_ONLY tests
+75	9142	125	1.16.0	g3_battle_changes_moves_abilities_items	U-animcall-9142	-	M	refactor	N	N	-1KB	Create functions for repeated move animations
+76	9474	126	1.16.0	g3_battle_changes_moves_abilities_items	U-heap-9121	9121	S	fix	N	N	~0	Fix Substitute breaking when used by opponentRight in double battles
+77	9451	127	1.16.0	g4_ai_tests_pokemon_sprites	U-9451	-	M	feature	N	N	+0.3KB	Allow both AI opponents in doubles to switch out on the same turn
+78	9473	128	1.16.0	g3_battle_changes_moves_abilities_items	U-animcall-9142	9142	S	fix	N	N	~0	Move animation call depth increase
+79	9467	129	1.16.0	g5_general_cleanup_docs	U-9467	-	S	refactor	N	N	~0	Change `TrainersMon`'s ball from `u8` to `enum PokeBall`
+80	9249	130	1.16.0	g6_overworld_refactors	U-skydrop-9249	9358,9446	L	refactor	Y	N	~0	Refactor Sky Drop and rampage confusion
+81	9051	131	1.16.0	g5_general_cleanup_docs	U-strings-9051	-	M	refactor	Y	N	~0	Converted script_menu.h strings to COMPOUND_STRINGs
+82	9505	132	1.16.0	g5_general_cleanup_docs	U-9505	-	S	fix	Y	N	~0	fix: battle message assert no longer calls for gText_Blank
+83	8497	133	1.16.0	g6_overworld_refactors	U-anim-8497	9142,9473	XL	refactor	N	N	-8KB(추정)	📜 Remove loadspritegfx
+84	9376	134	1.16.0	g5_general_cleanup_docs	U-cleanup-9376	-	M	refactor	N	N	~0	Clean up boolean comparisons
+85	9466	135	1.16.0	g5_general_cleanup_docs	U-cleanup-9376	-	L	refactor	N	N	~0	Fix enum usage
+86	9510	136	1.16.0	g6_overworld_refactors	U-9510	-	M	refactor	N	N	~0	Minor IsBattlerWeatherAffected refactor
+87	9135	137	1.16.0	g4_ai_tests_pokemon_sprites	U-9135	-	S	feature	N	N	~0	Allow other species to have Shedinja HP handling
+88	9460	138	1.16.0	g4_ai_tests_pokemon_sprites	U-aiconfig-9460	-	S	refactor	N	N	~0	Add AI internal config support
+89	9514	139	1.16.0	g3_battle_changes_moves_abilities_items	U-9514	9176,9446,9249	L	refactor	Y	N	~0	SetMoveEffect cleanup
+90	9539	140	1.16.0	g5_general_cleanup_docs	U-9539	-	S	refactor	N	N	~0	Some bool cleanup
+91	9507	141	1.16.0	g4_ai_tests_pokemon_sprites	U-species-enum-9507	-	XL	refactor	N	N	~0	Add Species enum
+92	9429	142	1.16.0	g3_battle_changes_moves_abilities_items	U-9429	-	M	feature	N	N	+0.1KB	Add Gen 2-3 and Gen 4 Encore timers
+93	9558	143	1.16.0	g4_ai_tests_pokemon_sprites	U-species-enum-9507	9507	S	refactor	N	N	~0	feat: Add some constants nudging users where to put their custom species
+94	9549	144	1.16.0	g6_overworld_refactors	U-fade-9407	9407	S	fix	N	N	~0	Fix blend-immune sprite not fading properly
+95	9542	145	1.16.0	g5_general_cleanup_docs	U-9542	-	S	refactor	N	N	~0	Replace MAX_GIFT_RIBBONS with NUM_GIFT_RIBBONS
+96	9525	146	1.16.0	g3_battle_changes_moves_abilities_items	U-9525	-	S	data	N	N	+0.1KB	Fill out missing type info
+97	9562	147	1.16.0	g5_general_cleanup_docs	U-9562	-	S	refactor	N	N	~-0.1KB	Remove PARTNER_DUMMY need by adding additional difficulty when TESTING
+98	9564	148	1.16.0	g3_battle_changes_moves_abilities_items	U-animcall-9142	9142	S	fix	N	N	~0	Fixed Stuff Cheeks animation
+99	9124	149	1.16.0	g4_ai_tests_pokemon_sprites	U-9124	-	L	feature	N	N	+2.5KB	Switch AI sees stat, volatile, status, and HP changes on switchin in calcs
+100	9548	150	1.16.0	g4_ai_tests_pokemon_sprites	U-aicalc-9548	-	M	feature	N	N	+0.3KB	Adds ai calcs for Bolt Beak, Payback and Analytic
+101	9529	151	1.16.0	g5_general_cleanup_docs	U-genconfig-9529	-	M	refactor	N	N	~0	`GenConfig` naming cleanup
+102	9172	153	1.16.0	g3_battle_changes_moves_abilities_items	U-9172	9142,8497	XL	refactor	N	N	~0	Converts move animation hex numbers to decimal
+103	9568	154	1.16.0	g4_ai_tests_pokemon_sprites	U-aiconfig-9460	9460,9529	M	feature	N	N	+0.6KB	Add AI contextual damage roll configs
+104	9551	155	1.16.0	g4_ai_tests_pokemon_sprites	U-9551	9124	M	feature	N	N	+0.8KB	Add Intimidate cycling logic for ai switching
+105	9579	156	1.16.0	g5_general_cleanup_docs	U-aiswitch-9124	9124	S	fix	N	N	~0	Fix upcoming compile
+106	8213	157	1.16.0	g5_general_cleanup_docs	U-8213	-	S	refactor	N	N	~0	Remove leftover DebugPrintfs
+107	7305	158	1.16.0	g6_overworld_refactors	U-berries-7305	-	XL	refactor	N	Y	+1KB(추정)	gBerries refactor + untangling berry indices from item IDs
+108	9537	160	1.16.0	g5_general_cleanup_docs	U-frlggfx-9537	-	M	gfx	N	N	~0	Fix Kanto object event graphic names
+109	9241	161	1.16.0	g5_general_cleanup_docs	U-9241	-	M	refactor	N	N	~0	Consolidated Battle Tower classes and object events
+110	9595	162	1.16.0	g3_battle_changes_moves_abilities_items	U-anim-8497	8497	S	fix	N	N	~0	Fix move anim pal blending being discarded
+111	9610	164	1.16.0	g6_overworld_refactors	U-9610	9176	M	refactor	Y	N	~0	Makes Poltergeist and Fling messages into a pre attack effect
+112	9587	166	1.16.0	g4_ai_tests_pokemon_sprites	U-9587	-	S	refactor	N	N	~0	Use precalculated speedStats for AI speed comparison
+113	9596	167	1.16.0	g4_ai_tests_pokemon_sprites	U-aicalc-9548	9548	S	fix	N	N	~0	Fix frame counter in multi battles
+114	9532	168	1.16.0	g1_battle_fixed_a	U-bide-9532	-	M	refactor	Y	N	-100B	Bide Refactor
+115	9494	169	1.16.0	g6_overworld_refactors	U-queuedswitch-9494	9176,9417,9249	L	refactor	Y	N	~+0.5KB	Adds queued switches for Move End switches
+116	9557	170	1.16.0	g6_overworld_refactors	U-9557	-	M	feature	N	N	~0	Improved FRLG Map Previews
+117	9578	171	1.16.0	g5_general_cleanup_docs	U-9578	-	S	refactor	Y	N	~-0.1KB	identified deprecated values
+118	9630	172	1.16.0	g4_ai_tests_pokemon_sprites	U-9630	9568	S	refactor	N	N	+0.1KB	Damage roll speed wizardry
+119	9634	173	1.16.0	g5_general_cleanup_docs	U-9634	-	S	refactor	Y	N	~0	Removed STRINGID_PKMNISGLOWING
+120	9657	191	1.16.0	g3_battle_changes_moves_abilities_items	U-calcvalues-9657	9116,9176,9417,9249,9610,9532,9494	XL	refactor	N	N	~0	BattleCalcValues usage and rename BattleContext back to DamageContext
+121	9594	192	1.16.0	g4_ai_tests_pokemon_sprites	U-spots-9594	-	M	refactor	N	N	+0.1KB	refactor(graphics): make spinda spots generic
+122	9425	193	1.16.0	g6_overworld_refactors	U-shop-9425	-	L	feature	N	N	+3.8KB	feat (shopMenu): conditional item appearances
+123	9624	194	1.16.0	g5_general_cleanup_docs	U-9624	-	L	data	N	N	~0	📜 Consolidate decoration values
+124	9667	195	1.16.0	g5_general_cleanup_docs	U-cstring-9086	9086	M	refactor	N	N	~0(9086 뒤)	Convert move description variables into COMPOUND_STRINGs
+125	9616	202	1.16.0	g3_battle_changes_moves_abilities_items	U-9616	-	M	feature	Y	N	+0.3KB	Gen 5+ Uproar with config
+126	9668	203	1.16.0	g5_general_cleanup_docs	U-frlggfx-9537	9537	S	build	N	N	~0	Fix spritesheet_rules.mk for renamed FRLG objects
+127	9655	204	1.16.0	g6_overworld_refactors	U-battlemsg-9655	9514	XL	refactor	Y	N	+1KB(추정)	Refactor Battle Messages
+128	9475	205	1.16.0	g6_overworld_refactors	U-trainerpic-9475	-	XL	refactor	N	N	~0	Refactor/trainer pic info
+129	9674	206	1.16.0	g6_overworld_refactors	U-magicbounce-9674	9176,9657,9655	L	refactor	Y	N	~0	Magic Bounce / Magic Coat/ Snatch refactor
+130	9575	207	1.16.0	g6_overworld_refactors	U-9575	9596	M	refactor	N	N	~0	Unify AI prediction handling
+131	9462	208	1.16.0	g4_ai_tests_pokemon_sprites	U-aiconfig-9460	9460	M	refactor	N	N	~0	Config to randomize the order AI mons compute logic in double battles
+132	9680	211	1.16.0	g6_overworld_refactors	U-endturn-9680	9249,9610,9494,9616,9655	XL	refactor	Y	N	~0	Make End Turn events use BattleScriptCall (return instead of end2)
+133	9006	212	1.16.0	g6_overworld_refactors	U-relearner-9006	-	L	refactor	Y	N	-2KB(추정)	Move relearner refactor
+134	9903	19	1.15.3	g6_overworld_refactors	U-relearner-9006	9006	S	fix	N	N	~0	Fix move relearner from summary screen from pc
+135	9709	213	1.16.0	g4_ai_tests_pokemon_sprites	U-9709	-	S	refactor	N	N	~0	Improve AI calc speed with affection hearts
+136	9711	214	1.16.0	g5_general_cleanup_docs	U-9711	-	S	refactor	N	N	~0	Remove hex values from BattlePokemon
+137	9713	215	1.16.0	g5_general_cleanup_docs	U-9713	-	M	feature	N	N	~+0.3KB	Support non-contiguous SE/MUS IDs in debug menu
+138	9707	217	1.16.0	g6_overworld_refactors	U-fade-9407	9407	S	fix	N	N	~0	Reset objPaletteToggle after Software Fade
+139	9714	218	1.16.0	g3_battle_changes_moves_abilities_items	U-9714	9655,9680	L	refactor	Y	N	~0	Slight restructure for Defog and Tidy Up
+140	9725	219	1.16.0	g5_general_cleanup_docs	U-12v12-8943	-	S	fix	N	N	~0	Fix multi_do multiple-definition error
+141	9729	221	1.16.0	g1_battle_fixed_a	U-12v12-8943	-	S	fix	N	N	~0	Fix wild doubles only having 1 mon
+142	8930	222	1.16.0	g6_overworld_refactors	U-dexorder-8930	-	L	refactor	N	N	-3KB(추정)	Automate regional Pokedex orders
+143	9721	224	1.16.0	g5_general_cleanup_docs	U-9721	-	S	build	N	N	~0	Learnset Helper: Remove unnecessary order-only dependencies
+144	7573	225	1.16.0	g6_overworld_refactors	U-7573	9006	M	feature	N	N	~0	Reworked event evolution `tryspecialevo`
+145	8472	226	1.16.0	g4_ai_tests_pokemon_sprites	U-8472	9124,9551	M	feature	N	N	+0.5KB	Implement Wish Passing in ShouldSwitch
+146	9735	227	1.16.0	g3_battle_changes_moves_abilities_items	U-9735	-	S	fix	N	N	~0	Mega Sol and Dragonize
+147	9761	229	1.16.0	g5_general_cleanup_docs	U-9761	-	M	refactor	Y	N	~0	Fix spaces, spelling, and grammar
+148	9690	230	1.16.0	g4_ai_tests_pokemon_sprites	U-9690	-	S	fix	N	N	~0	fix: Modernize the conversion formula for imperial weights
+149	9461	231	1.16.0	g6_overworld_refactors	U-mapheader-9461	-	M	feature	Y	N	~+0.3KB	Show floor number in map popup
+150	9717	232	1.16.0	g6_overworld_refactors	U-queuedswitch-9717	9494,9680	L	refactor	Y	N	~+0.3KB	Adds queued switches for EndTurn switches
+151	9755	233	1.16.0	g4_ai_tests_pokemon_sprites	U-9755	-	S	refactor	N	N	~0	Remove reundant weather check in IsDamageMoveUnusable
+152	9757	234	1.16.0	g4_ai_tests_pokemon_sprites	U-9757	-	S	refactor	N	N	~0	Remove redundant SetBattlerAiData call in GetMostSuitableMonToSwitchInto
+153	9710	235	1.16.0	g4_ai_tests_pokemon_sprites	U-damagecontext-9710	9657	XL	refactor	Y	N	~0	Use `ctx` in `GetDefenderPartnerAbilitiesModifier`
+154	9779	236	1.16.0	g4_ai_tests_pokemon_sprites	U-9779	-	M	test	N	N	0	Isolate AI thinking time tests
+155	9780	237	1.16.0	g5_general_cleanup_docs	U-9761	-	S	refactor	N	N	~0	Revert an overzealous find-replace
+156	9774	238	1.16.0	g6_overworld_refactors	U-relearner-9006	9006	S	fix	N	N	~0	Properly cancel move relearner NPC after refusing to learn a move
+157	8628	239	1.16.0	g6_overworld_refactors	U-8628	-	S	feature	N	N	~+0.1KB	Add setmetatileinrange Script Command
+158	9765	240	1.16.0	g6_overworld_refactors	U-9765	-	S	refactor	N	N	-5KB	Remove template abstraction for pokedex area map
+159	9786	241	1.16.0	g3_battle_changes_moves_abilities_items	U-9786	-	M	refactor	N	N	~0	Clarify isFirstTurn usage with wrappers
+160	9762	244	1.16.0	g6_overworld_refactors	U-9762	-	S	refactor	N	N	~0	Clean mail-related duplicate code
+161	9168	245	1.16.0	g3_battle_changes_moves_abilities_items	U-berryanim-9168	9655	L	feature	Y	N	+0.3KB	Add Held Berry Animation
+162	9693	246	1.16.0	g6_overworld_refactors	U-relearner-9006	9006	M	refactor	N	N	-1KB	Remove relearner from party menu
+163	9796	247	1.16.0	g4_ai_tests_pokemon_sprites	U-spots-9594	9594	S	fix	N	N	~0	Add Spot Coord Limits
+164	9811	248	1.16.0	g1_battle_fixed_a	U-12v12-8943	-	S	fix	N	N	~0	Use GetBattlerTrainer instead of GetBattlerSide in GetBattlerPartyState
+165	9813	249	1.16.0	g5_general_cleanup_docs	U-fillsprite-9973	9973	S	fix	N	N	~0	Improve `FillSpriteRect` performance
+166	9784	250	1.16.0	g1_battle_fixed_a	U-queuedswitch-9494	9494,9717	L	refactor	N	N	+200B EWRAM+4B	Adjustments for Eject Items / Mirror Herb / White Herb
+167	9819	251	1.16.0	g6_overworld_refactors	U-fieldmove-9819	-	S	refactor	N	N	~0	Refactor rock climb and defog to be defined at all times
+168	9832	252	1.16.0	g3_battle_changes_moves_abilities_items	U-eject-9784	9494,9784	S	refactor	N	N	~0	Clean up for eject item changes
+169	9835	253	1.16.0	g5_general_cleanup_docs	U-9835	-	S	build	N	N	~0	Fix declaration after label
+170	9751	254	1.16.0	g6_overworld_refactors	U-12v12-8943	-	S	test	N	N	~0	Adds AreMultiPartiesFullTeams and Test_BattlersShareParty handling to tests
+171	9799	256	1.16.0	g1_battle_fixed_a	U-12v12-8943	9655	M	fix	Y	N	+150B	Adds tests for switch battle messages and switch AI bugfix
+172	9850	257	1.16.0	g6_overworld_refactors	U-owabilities-9850	-	S	refactor	N	N	~0	Cleanup and tests for ow_abilities.c
+173	9847	259	1.16.0	g6_overworld_refactors	U-aiswitch-9847	9451,9460,9124,9568,9551,9657,9575,9462,8472	L	refactor	N	N	-1KB	Shouldswitch refactor to use `SwitchContext`
+174	9856	260	1.16.0	g1_battle_fixed_a	U-battlemsg-9655	9655	S	fix	Y	N	-8B	Fix contact damage message printing
+175	8434	262	1.16.0	g6_overworld_refactors	U-owe-8434	-	XL	feature	N	N	+10KB(추정)	Overworld Encounters
+176	9864	263	1.16.0	g1_battle_fixed_a	U-queuedswitch-9494	9494	S	fix	N	N	~0	Make healthbox invisible for previous mon after opening party screen
+177	9879	265	1.16.0	g5_general_cleanup_docs	U-wildcfg-9879	9529,8434	M	refactor	N	N	~0	Move wild encounter related config to `wild_encounter` config file
+178	9911	267	1.16.0	g5_general_cleanup_docs	U-9911	-	S	refactor	N	N	~0	Remove two unused functions from src/event_object_movement.c
+179	9906	268	1.16.0	g5_general_cleanup_docs	U-heap-9906	-	M	fix	N	N	~0(힙 피크 -12KB)	Reduce battle heap usge outside main battle screen
+180	9843	269	1.16.0	g1_battle_fixed_a	U-12v12-8943	-	S	fix	N	N	~0	Fix in-battle summary preserving battle party order
+181	9730	270	1.16.0	g6_overworld_refactors	U-statchange-9730	9176,9446,9249,9514,9610,9532,9494,9657,9655,9674,9680,9717,9786,9168	XL	refactor	Y	N	-8KB(추정)	Stat Change Refactor
+182	9865	271	1.16.0	g5_general_cleanup_docs	U-9865	-	L	fix	N	N	~0	Mega Sol test adjustments
+183	9928	272	1.16.0	g3_battle_changes_moves_abilities_items	U-statchange-9730	9730	M	refactor	N	N	~0	Rename follow up for Stat Change Refactor
+184	9857	273	1.16.0	g4_ai_tests_pokemon_sprites	U-9857	9358,9575,9847	L	refactor	N	N	~0	Incoming and predicted move function cleanup
+185	9910	276	1.16.0	g6_overworld_refactors	U-owe-8434	8434	S	refactor	N	N	~0	Modify GetAvailableObjectEventId  to return objectEventId by value instead of by reference
+186	9890	278	1.16.0	g5_general_cleanup_docs	U-debug-9890	-	L	refactor	N	N	~0	Refactor a more generic way to handle complex debug menu actions
+187	9877	279	1.16.0	g6_overworld_refactors	U-dailyseed-9920	-	M	feature	N	Y	~+0.5KB	Add Dynamic Weather Option
+188	9918	280	1.16.0	g6_overworld_refactors	U-pledge-9918	9176,9446,9514,9494,9657,9674,9730	L	refactor	Y	N	~0	Customizeable Pledge Moves
+189	9805	282	1.16.0	g4_ai_tests_pokemon_sprites	U-9805	-	M	test	Y	N	~0(1B)	Adds Ghost battle tests
+190	9968	284	1.16.0	g6_overworld_refactors	U-owe-8434	8434,9879,9910	S	fix	N	N	~0	Bugfix: OWEs set not to despawn can now be set not to despawn as a result of movement type
+191	9896	285	1.16.0	g6_overworld_refactors	U-randommon-9896	-	L	feature	N	N	+4KB(추정)	Random Mon Generation
+192	9965	286	1.16.0	g5_general_cleanup_docs	U-wildcfg-9879	9879	S	refactor	N	N	~0	config/wild_encounter.h cleanup
+193	9957	287	1.16.0	g1_battle_fixed_a	U-statchange-9730	9784,9730	M	fix	N	N	+150B	Fixes Guard Dog
+194	9972	288	1.16.0	g1_battle_fixed_a	U-statchange-9730	9730	S	fix	N	N	~0	Fix geomancy being a two turn move
+195	9989	292	1.16.0	g3_battle_changes_moves_abilities_items	U-statchange-9730	9730	S	fix	N	N	~0	Small Dome updates
+196	9988	293	1.16.0	g1_battle_fixed_a	U-dancer-9988	9417,9784	L	fix	N	N	+150B	Dancer activation order config + upcoming bugfixes
+197	9861	294	1.16.0	g5_general_cleanup_docs	U-9861	-	M	fix	N	N	~0	Fix Dynamic Summary Screen Type
+198	10014	295	1.16.0	g5_general_cleanup_docs	U-heap-9906	9906	S	fix	N	N	~0	Fix battle debug not properly freeing some tilemaps
+199	10020	296	1.16.0	g6_overworld_refactors	U-owe-8434	9991,8434	S	fix	N	N	~0	Re-add `DetermineFollowerNPCDirection` same coord check
+200	10024	297	1.16.0	g1_battle_fixed_a	U-dancer-9988	9988	S	fix	N	N	~0	Fixes Trace not activating when reobtained after activation
+201	10032	298	1.16.0	g1_battle_fixed_a	U-statchange-9730	9730	S	fix	N	N	~0	Fixes Swagger into Own Tempo target softlock
+202	10050	300	1.16.0	g5_general_cleanup_docs	U-dailyseed-9920	-	S	fix	N	N	~0	Set daily seed on new game
+203	10057	301	1.16.0	g3_battle_changes_moves_abilities_items	U-statchange-9730	9730,9928	S	refactor	N	N	~0	Further stat change refactor clean up
+204	10051	302	1.16.0	g5_general_cleanup_docs	U-12v12-8943	-	XL	refactor	N	N	~0	Give enum BattleTrainer more user friendly entry names
+205	9885	303	1.16.0	g5_general_cleanup_docs	U-12v12-8943	-	M	refactor	N	N	+~0.2KB	Adds deprecation warnings to old party and party count globals
+206	10064	304	1.16.0	g1_battle_fixed_a	U-battlemsg-9655	9655	S	fix	Y	N	~0	Fix already-status messages using the wrong battler
+207	10059	305	1.16.0	g1_battle_fixed_a	U-12v12-8943	10051	M	fix	N	N	+80B	Fix 12v12 partner party menu slot ptr
+208	10066	306	1.16.0	g6_overworld_refactors	U-owe-8434	8434,9910,9968	S	fix	N	N	~0	Fix Generated OWEs Accessing Garbage Data
+209	10039	308	1.16.0	g1_battle_fixed_a	U-12v12-8943	10051,10059	M	fix	N	N	+100B	Fixed NoAliveMonsForPlayer for multibattles
+210	10074	310	1.16.0	g1_battle_fixed_a	U-statchange-9730	9730	S	fix	Y	N	+60B	Fix erroneous failure message for stat change moves
+211	10077	311	1.16.0	g1_battle_fixed_a	U-statchange-9730	9730	S	fix	Y	N	+20B	Fix Competetive, Defiant and Adrenaline Orb triggering when at min stat
+212	10088	315	1.16.1	g1_battle_fixed_a	U-statchange-9730	9657,9730	M	fix	N	N	+80B	Fixes stat change queue having erroneous stats stored
+213	10091	316	1.16.1	g1_battle_fixed_a	U-statchange-9730	9730	M	fix	N	N	+40B	Fixes Acupressure timeout in doubles
+214	10100	318	1.16.1	g6_overworld_refactors	U-10100	-	S	fix	N	N	~0	Fix colosseum warps frlg
+215	10102	319	1.16.1	g1_battle_fixed_a	U-12v12-8943	10051	S	fix	N	N	~0	Fix link singles and doubles using incorrect parties
+216	10104	320	1.16.1	g3_battle_changes_moves_abilities_items	U-10104	-	S	data	N	N	~0	Add missing item sort types
+217	10106	321	1.16.1	g3_battle_changes_moves_abilities_items	U-10106	-	S	refactor	N	N	~0	Use values from `enum PokeBall` for Poké Balls
+218	10110	322	1.16.1	g5_general_cleanup_docs	U-10110	-	S	refactor	N	N	~0	Cleanup 'message 0x0'
+219	10109	323	1.16.1	g3_battle_changes_moves_abilities_items	U-10109	-	S	fix	N	N	~0	SanitizeBagItemId, TryTakeMonItemResult
+220	10129	336	1.16.1	g3_battle_changes_moves_abilities_items	U-10129	-	S	gfx	N	N	~0	feat (battle): improve gimmick triggers' graphics
+221	10111	337	1.16.1	g6_overworld_refactors	U-10111	-	S	fix	N	N	~0	assertf for NULL goto/call
+222	10131	338	1.16.1	g5_general_cleanup_docs	U-10131	-	S	refactor	N	N	~0	Remove deprecated ``HQ_RANDOM`` config
+223	10103	339	1.16.1	g5_general_cleanup_docs	U-10103	7360	S	test	N	N	~0	Fix Beat Up typeless damage test effectiveness check
+224	10130	365	1.16.1	g5_general_cleanup_docs	U-10130	-	S	refactor	N	N	~0	Add `if_comptime`
+225	10139	366	1.16.1	g4_ai_tests_pokemon_sprites	U-aiselftarget-10046	-	M	test	N	N	~0	Prevent AI illegally targeting itself in doubles
+226	10147	369	1.16.1	g5_general_cleanup_docs	U-10147	-	S	fix	N	N	~0	Fix HGSS Dex Form Strings
+227	10141	372	1.16.2	g4_ai_tests_pokemon_sprites	U-gen7anim-sprites	-	M	gfx	N	N	+4.0KB	More Gen VII animation data added
+228	10161	375	1.16.2	g1_battle_fixed_a	U-10161	9942,9494,9730	L	fix	N	N	+150B EWRAM+4B(이전 이식 시)	Fixes Future Sight attacker in party issues
+229	10169	377	1.16.2	g1_battle_fixed_a	U-10169	-	M	fix	N	N	+40B	Fixes Toxic Poison counter not being incremented on Poison Heal
+230	9642	378	1.16.2	g4_ai_tests_pokemon_sprites	U-9642	-	M	test	N	N	~0(비테스트 빌드에서 if (TESTING) 블록 제거)	Add test support for inventory management in battle
+231	10186	383	1.16.2	g1_battle_fixed_a	U-10186	-	M	fix	N	N	+60B heap+4B	Fixes Supreme Overlord and Last Respects wrong faint counter
+232	10194	385	1.16.2	g5_general_cleanup_docs	U-debug-9890	-	S	fix	N	N	~0	Check if species is disabled when filling pc boxes
+233	10210	386	1.16.2	g5_general_cleanup_docs	U-10210	9991,9730	S	build	N	N	~0	Fix declaration after label errors
+234	10216	390	1.16.2	g1_battle_fixed_a	U-statchange-9730	9730	S	fix	N	N	~0	Fixes Curse wrong animation being played
+235	10208	391	1.16.2	g4_ai_tests_pokemon_sprites	U-gen7anim-sprites	10141	S	gfx	N	N	-0.04KB	More Gen VII Animation Data
+236	10198	392	1.16.2	g5_general_cleanup_docs	U-mapjson-9949	9949	S	tool	N	N	~0	Changes to mapjson.cpp and how_to_frlg.md
+237	10225	393	1.16.2	g3_battle_changes_moves_abilities_items	U-10225	-	S	gfx	N	N	+1.9KB	Remove the preproc around Strange Ball OW graphic
+238	10227	394	1.16.2	g1_battle_fixed_a	U-10227	-	S	fix	N	N	~0	Fix Sea of Fire damage immunities
+239	10229	396	1.16.2	g1_battle_fixed_a	U-10229	-	S	fix	N	N	~0	Fix OHKO moves ignoring Glaive Rush accuracy bypass
+240	10226	397	1.16.2	g1_battle_fixed_a	U-10226	9446	M	fix	Y	N	+120B	Fix Psycho Shift status transfer interactions
+241	10231	398	1.16.2	g1_battle_fixed_a	U-10231	10169	M	fix	N	N	+40B	Fix Emergency Exit being skipped after Shell Bell recovery
+242	10219	403	1.16.2	g1_battle_fixed_a	U-10219	-	S	fix	N	N	~0	Fix incorrect style flagging for Battle Factory
+243	10185	404	1.16.2	g1_battle_fixed_a	U-statchange-9730	9784,9730	M	fix	N	N	+60B	Fixes Mirror Herb erroneous activations
+244	10263	405	1.16.2	g1_battle_fixed_a	U-10263	-	M	fix	N	N	+40B	Fixes TARGET_FIELD moves failing when partner is not on the field
+245	10272	406	1.16.2	g1_battle_fixed_a	U-10272	-	S	data	N	N	-12B	Fix Mimikyu Busted and Eiscue Noice reverting when revived
+246	10262	407	1.16.2	g3_battle_changes_moves_abilities_items	U-10262	-	S	fix	N	N	~0	Fix Trick Room animation playing on wrong battler
+247	10287	408	1.16.2	g1_battle_fixed_a	U-statchange-9730	9730	M	fix	Y	N	~0	Fixes Totem aura message mentioning wrong battler
+248	10289	409	1.16.2	g1_battle_fixed_a	U-10289	-	M	fix	N	N	~0	Fixes Binding Band no longer affecting bound battler's hp decrease when nullified
+249	10288	410	1.16.2	g1_battle_fixed_a	U-10288	10231	M	fix	N	N	~0	Fixes Pursuit activating Eject Button on switching foe
+250	10281	411	1.16.2	g6_overworld_refactors	U-10281	9537	S	gfx	N	N	~0	Bugfix: Added missing spritesheet rules to frlg maniac ow
+251	10278	412	1.16.2	g1_battle_fixed_a	U-10278	9858	M	fix	N	N	~0	Fix Incinerate item handling and Core Enforcer targeting
+252	10175	413	1.16.2	g1_battle_fixed_a	U-statchange-9730	9730	S	fix	N	N	~0	Fix Target Failure for Ally
+253	10306	416	1.16.2	g1_battle_fixed_a	U-10306	-	M	fix	Y	N	+30B	Fix Eerie Spell PP reduction for Max Moves
+254	10307	417	1.16.2	g1_battle_fixed_a	U-10307	-	M	fix	N	N	~0	Fix Mental Herb leaving volatile status timers uncleared
+255	10295	418	1.16.2	g1_battle_fixed_a	U-10295	10231,10288	M	fix	N	N	+80B	Fix Commander simultaneous switch and unintended Dondozo switch-outs
+256	10309	419	1.16.2	g2_battle_fixed_b	U-10309	-	S	fix	N	N	~0	Fix moveanim being played after hitanim and healthbarupdate
+257	10315	420	1.16.2	g2_battle_fixed_b	U-10315	-	M	fix	Y	N	~0	Fixes Dragon Darts after hit messages
+258	10285	422	1.16.2	g4_ai_tests_pokemon_sprites	U-statchange-9730	9730,10057	S	fix	N	N	~0	Fix move effect ai stat change check
+259	10322	423	1.16.2	g6_overworld_refactors	U-10322	-	S	fix	N	N	~0	fix(sprite): handle weather blending for BLEND_IMMUNE_FLAG
+260	10332	424	1.16.2	g5_general_cleanup_docs	U-10332	-	S	refactor	N	N	~0	Fix excessive indentation in trainer_pools.c
+261	10325	425	1.16.2	g2_battle_fixed_b	U-10325	-	M	fix	Y	N	+40B	Fix Symbiosis not triggering after Cheek Pouch
+262	10354	431	1.16.2	g2_battle_fixed_b	U-10354	-	L	fix	Y	N	+300B	Fix Thousand Arrows not grounding both targets
+263	10357	432	1.16.2	g2_battle_fixed_b	U-10357	-	S	data	N	N	~0	Fix Commander suppression and overwrite flags
+264	10358	433	1.16.2	g4_ai_tests_pokemon_sprites	U-10358	-	S	test	N	N	~0	Fix incorrect Mummy and Doodle ability tests
+265	10345	434	1.16.2	g3_battle_changes_moves_abilities_items	U-anim-8497	8497	S	fix	N	N	~0	fix(battle-anim): fix gust colour cycling animation
+266	10350	437	1.16.3	g2_battle_fixed_b	U-statchange-9730	9730	M	fix	N	N	+100B	Fix some Mirror Armor issues
+267	10317	438	1.16.3	g2_battle_fixed_b	U-commander-10295	10295	M	fix	N	N	+80B	Fix Commander edge cases with Multi Battles, switching, and gimmicks
+268	10368	439	1.16.3	g4_ai_tests_pokemon_sprites	U-relearner-9006	9006	S	fix	N	N	~0	Fix duplicate CANCEL entry in move relearner list after replacing a move
+269	10369	444	1.16.3	g2_battle_fixed_b	U-10369	-	S	fix	N	N	~0	Fix single-target moves hitting all foes in the shared shadow animation
+270	10366	445	1.16.3	g2_battle_fixed_b	U-10366	-	S	data	N	N	~0	Fix Orichalcum Pulse and Hadron Engine Ability Flags
+271	10323	446	1.16.3	g5_general_cleanup_docs	U-10323	-	M	refactor	N	N	~0	refactor: unified trainer slide and script comparison operators
+272	10199	447	1.16.3	g5_general_cleanup_docs	U-dynmulti-10199	-	S	refactor	N	N	~0	Dynamic Multichoice Tutorial
+273	10349	448	1.16.3	g5_general_cleanup_docs	U-fillsprite-9973	9813	S	fix	N	N	~0	Fix sprite fill function
+274	10386	449	1.16.3	g2_battle_fixed_b	U-magicbounce-9674	9674	M	fix	N	N	+100B, EWRAM(힙) +16B	Fixes bounced moves not activating some effects
+275	10392	450	1.16.3	g5_general_cleanup_docs	U-fillsprite-9973	10349	S	fix	N	N	~0	Fix sprite fills being broken in some cases
+276	10389	451	1.16.3	g2_battle_fixed_b	U-10389	-	S	fix	N	N	~0	Fix Unseen Fist / Mummy interaction
+277	10387	453	1.16.3	g4_ai_tests_pokemon_sprites	U-10387	-	S	tool	N	N	~0	Remove text encoding error in `za.json`
+278	10385	454	1.16.3	g5_general_cleanup_docs	U-10385	-	S	data	N	N	~0	Fix FRLG Magikarp and Heracross size units
+279	10382	455	1.16.3	g6_overworld_refactors	U-10382	-	S	fix	N	N	~0	Fix debug time scripts leaving followers frozen
+280	10381	456	1.16.3	g4_ai_tests_pokemon_sprites	U-10381	9730	M	test	N	N	0	Renaming + reworking Can Use All Moves to Values Moves Over Splash.
+281	10395	457	1.16.3	g3_battle_changes_moves_abilities_items	U-weather-10170	-	M	fix	Y	N	+0.3KB	Fix Orichalcum Pulse and Hadron Engine Activation Messages
+282	10379	458	1.16.3	g4_ai_tests_pokemon_sprites	U-10379	7360	S	test	N	N	~0	Fix inverse battle matchup parametrization
+283	10270	460	1.16.3	g4_ai_tests_pokemon_sprites	U-gen7anim-sprites	-	M	gfx	Y	N	+0.05KB	Even More Gen VII Animation Data + Gen VIII Clean Up
+284	10399	461	1.16.3	g4_ai_tests_pokemon_sprites	U-10399	-	S	fix	N	N	+0.1KB	Fix invalid switch in if ace flag is present
+285	10343	463	1.16.3	g6_overworld_refactors	U-10343	-	S	fix	N	N	~0	fix(overworld): fix tod blend settings getting updated every frame
+286	10424	467	1.16.3	g4_ai_tests_pokemon_sprites	U-10424	10289	S	fix	N	N	~0	Fix AI Binding Band check for Wrap damage
+287	10415	470	1.16.3	g2_battle_fixed_b	U-12v12-8943	-	S	fix	N	N	-60B	Fix Illusion party search range for two-opponent trainers
+288	10410	471	1.16.3	g6_overworld_refactors	U-10410	-	S	fix	N	N	~0	assert trainer script that needs an object event
+289	10301	472	1.16.3	g5_general_cleanup_docs	U-10301	-	S	fix	Y	N	~0	Fix buffer overrun in ReformatItemDescription
+290	10432	473	1.16.3	g2_battle_fixed_b	U-10432	-	S	fix	Y	N	~0	Fix frlg old man text
+291	10429	474	1.16.3	g5_general_cleanup_docs	U-zws-10429	-	M	fix	Y	N	~0	Add Zero-Width-Space and fix some line break handling
+292	10298	475	1.16.3	g2_battle_fixed_b	U-transform-10298	-	M	feature	N	N	+150B	New config for transformed pokemon properties
+293	10428	476	1.16.3	g3_battle_changes_moves_abilities_items	U-10428	9730	S	fix	N	N	~0	Fix outdated move data
+294	10436	477	1.16.3	g2_battle_fixed_b	U-10436	-	S	fix	Y	N	-20B	Fix send mon text in frlg first battle
+295	10437	478	1.16.3	g5_general_cleanup_docs	U-10437	-	S	refactor	N	N	~0	cleanup: remove comment with incorrect time labels
+296	10442	479	1.16.3	g5_general_cleanup_docs	U-10442	-	S	refactor	N	N	~0	fix(cleanup): remove unused variables
+297	10441	480	1.16.3	g2_battle_fixed_b	U-transform-10298	10298	S	fix	N	N	~0	Fix in which gens B_TRANSFORM_BATTLE_REWARDS effects apply
+298	10445	481	1.16.3	g6_overworld_refactors	U-relearner-9006	9006	S	fix	N	N	~0	Fix Box ID Var not being updated when opening Move Relearner from Summary Screen
+299	10448	482	1.16.3	g2_battle_fixed_b	U-10448	-	S	fix	N	N	+16B	Fix Struggle recoil damage not using standard rounding
+300	10397	483	1.16.3	g4_ai_tests_pokemon_sprites	U-10397	-	S	fix	N	N	~0	Fix ANIM_RAPID_H_HOPS freezing the game when opponent is wild shiny
+301	10346	484	1.16.3	g4_ai_tests_pokemon_sprites	U-10346	-	S	gfx	Y	N	-0.06KB	PokeCommunity sprites batch (June 2026)
+302	10414	485	1.16.3	g4_ai_tests_pokemon_sprites	U-gen7anim-sprites	-	M	gfx	N	N	+0.05KB	Alolan and Mega Form Animation Frames
+303	10433	488	1.16.3	g2_battle_fixed_b	U-10433	9730,10185	M	fix	N	N	+200B	Fix Opportunist and Mirror Herb not triggering during the end turn
+304	10477	489	1.16.3	g2_battle_fixed_b	U-ctx-9710	9710	S	fix	N	N	~0	Fix Misty Terrain grounding check
+305	10535	492	1.16.3	g4_ai_tests_pokemon_sprites	U-10535	-	S	data	N	N	~0	update mega magearna pokedex entry
+306	10527	495	1.16.4	g5_general_cleanup_docs	U-10527	-	M	fix	N	N	~0	Fix FRLG Trainer Card Setup
+307	10536	496	1.16.4	g2_battle_fixed_b	U-12v12-8943	-	M	fix	Y	N	-100B	Multiple xp bugfixes
+308	10539	497	1.16.4	g2_battle_fixed_b	U-10539	-	S	fix	N	N	~0	Fix pokemon shadow reverting to species_none shadow size for one frame
+309	10547	498	1.16.4	g2_battle_fixed_b	U-10547	-	S	fix	N	N	~0	Adds alive check to CanTargetBattler
+310	10550	500	1.16.4	g6_overworld_refactors	U-10550	-	S	feature	N	N	~0	Restore singmsg and normalmsg functionality
+311	10542	545	1.16.4	g2_battle_fixed_b	U-10542	-	XL	refactor	Y	N	+2~4KB	Remove BATTLE_PARTNER and BATTLE_OPPOSITE macros
+312	9448	546	1.16.4	g4_ai_tests_pokemon_sprites	U-9448	9460,9462	M	test	N	N	~0	Prevent Protect AI from blocking ally beneficial-hit setups in doubles
+313	10483	547	1.16.4	g2_battle_fixed_b	U-10483	10325,10354	M	fix	N	N	~0	Fix Symbiosis activation after Knock Off removed and item
+314	10569	548	1.16.4	g2_battle_fixed_b	U-statchange-9730	9730,9928	S	fix	Y	N	+20B	Fix freeze when a stat-change move follows Own Tempo-blocked Swagger or No Retreat
+315	10568	549	1.16.4	g2_battle_fixed_b	U-partydefeat-10568	10039	M	refactor	N	N	-200B	simplify party defeat functions
+316	10572	550	1.16.4	g2_battle_fixed_b	U-10572	-	S	fix	N	N	-40B	Fix trainer slide activating for player in multi battle
+317	10571	551	1.16.4	g2_battle_fixed_b	U-trainerslide-9211	-	M	fix	Y	N	+100B	Fix trainer slide form change
+318	10577	552	1.16.4	g2_battle_fixed_b	U-10483	10483	S	fix	N	N	~0	Fix restore item regression
+319	10573	553	1.16.4	g6_overworld_refactors	U-fade-9407	9407,9549,9707	M	refactor	N	N	~+0.3KB	Rework simultaneous palette fade
+320	10590	556	1.16.4	g3_battle_changes_moves_abilities_items	U-10590	9655,9730	S	test	N	N	~0	Change Howl Soundproof test to prevent user from blocking with Soundproof
+321	10589	557	1.16.4	g3_battle_changes_moves_abilities_items	U-anim-8497	8497	S	fix	N	N	~0	Fix out-of-bounds palette writes in certain move animations
+322	10557	559	1.16.4	g6_overworld_refactors	U-10557	-	S	fix	N	N	~0	fix bard text speed
+323	10608	562	1.16.4	g2_battle_fixed_b	U-12v12-8943	-	M	fix	N	N	+100B	Fix sleep clause in Multibattles + test
+324	10464	564	1.16.4	g4_ai_tests_pokemon_sprites	U-statchange-9730	9730	S	fix	N	N	~0	Fix AI scoring for stat-changing move effects
+325	10616	566	1.16.4	g2_battle_fixed_b	U-10616	9657	L	fix	N	N	+300B	Fix Z-Move and Dmax moves incorrect dmg calcs
+326	10631	567	1.16.4	g2_battle_fixed_b	U-statchange-9730	9730	S	fix	N	N	~0	Fix stat change move accuracy
+327	10636	569	1.16.4	g2_battle_fixed_b	U-acupressure-10636	-	S	fix	N	N	+20B	Fix Acupressure targetting opposing mon
+328	10639	570	1.16.4	g2_battle_fixed_b	U-10639	-	S	fix	N	N	+8B	Fix Cursed Body triggering on Max Moves
+329	10647	572	1.16.4	g2_battle_fixed_b	U-futuresight-9942	9942	S	fix	N	N	+8B	Fix Future Sight not restoring previous battler mon
+330	10648	573	1.16.4	g2_battle_fixed_b	U-skydrop-9249	9249	S	fix	N	N	+60B	Fixes Sky Drop hitting replacement when original target fainted
+331	10626	574	1.16.4	g4_ai_tests_pokemon_sprites	U-10626	-	M	test	N	N	~0	Fix Palafin-Hero repeatedly switching to activate Zero to Hero
+332	10645	575	1.16.4	g2_battle_fixed_b	U-acupressure-10636	10263,10636	M	fix	N	N	-100B	Fix Acupressure targetting opposing mon
+333	10654	579	1.16.4	g2_battle_fixed_b	U-10654	-	S	fix	N	N	~0	Fix Copycat failing to copy a move that fainted its target
+334	10653	580	1.16.4	g2_battle_fixed_b	U-10653	-	S	fix	N	N	+4B	Fix Symbiosis items being consumed as resistance Berries by spread moves
+335	10540	582	1.16.4	g6_overworld_refactors	U-namebox-9905	9905	S	fix	N	N	~0	Fix trying to remove non existing speaker box
+336	10657	583	1.16.4	g2_battle_fixed_b	U-10657	10616	M	fix	N	N	+60B	Fix Z-Moves being blocked by move restrictions at selection
+337	10661	584	1.16.4	g2_battle_fixed_b	U-10661	-	S	fix	N	N	~0	Fix Metronome-called spread moves hitting the user’s partner
+338	10666	585	1.16.4	g3_battle_changes_moves_abilities_items	U-statchange-9730	9730	S	refactor	N	N	~0	Added clarification for BattleScript_IntimidateActivates
+339	10669	586	1.16.4	g4_ai_tests_pokemon_sprites	U-10669	-	M	test	N	N	~0	Fix Mind Reader and Lock-On spam in double battles
+340	10674	587	1.16.4	g2_battle_fixed_b	U-partydefeat-10568	10568	S	fix	N	N	~0	Fix out-of-bounds read of gSelectedOrderFromParty
+341	10671	588	1.16.4	g2_battle_fixed_b	U-10671	-	S	fix	N	N	+12B	Prevent Red Card from allowing Z-Move reuse
+342	10662	589	1.16.4	g2_battle_fixed_b	U-12v12-8943	-	S	fix	N	N	~0	Fixed the Multi Battle party-slot collision
+343	10683	591	1.16.4	g2_battle_fixed_b	U-10683	-	S	fix	N	N	+40B	Recalculate Ash-Greninja's stats after Battle Bond activates
+344	10687	592	1.16.4	g2_battle_fixed_b	U-statchange-9730	9730	S	fix	Y	N	~0	Fix multi-target stat move miss messages
+345	10682	593	1.16.4	g2_battle_fixed_b	U-10682	-	S	fix	N	N	+60B	Fix Shell Trap being delayed after a spread move hit
+346	10700	595	1.16.4	g4_ai_tests_pokemon_sprites	U-10700	-	S	test	N	N	~0	Fix AI not calcing crit when high enough crit stage
+347	10707	598	1.16.4	g2_battle_fixed_b	U-statchange-9730	9730	S	data	N	N	~0	Fixes G-Max Tartness additional effect
+348	10711	599	1.16.4	g2_battle_fixed_b	U-12v12-8943	-	S	fix	N	N	+80B	Fix full team multi battles with follower NPCs
+349	10656	600	1.16.4	g5_general_cleanup_docs	U-10656	-	L	fix	N	N	~+0.3KB	(Joint with Syreldar) Fix Underutilisation of CreateSpriteUnchecked meaning a fatal assertf triggers needlessly
+350	10652	601	1.16.4	g6_overworld_refactors	U-10652	-	S	fix	N	N	~0	Fix talking to buried movement npc
+351	9927	610	1.17.0	g6_overworld_refactors	U-outbreak-9927	9713,8434,9890,10051	XL	feature	N	Y	+6KB(추정)	Mass outbreak
+352	9688	611	1.17.0	g3_battle_changes_moves_abilities_items	U-9688	-	S	feature	N	N	~0	Add B_TERA_ORB_ALWAYS_CHARGED
+353	10089	612	1.17.0	g6_overworld_refactors	U-outbreak-9927	9927	S	fix	N	N	~0	Fix debug trainer and flags vars submenu
+354	10046	613	1.17.0	g4_ai_tests_pokemon_sprites	U-aiselftarget-10046	9779	S	test	N	N	~0	Make doubles AI skip scoring on itself
+355	9008	614	1.17.0	g3_battle_changes_moves_abilities_items	U-9008	-	L	feature	Y	N	+2.5KB	Adds Victory Catch
+356	10027	615	1.17.0	g3_battle_changes_moves_abilities_items	U-10027	8497	M	gfx	N	N	+0.4KB	Add Item Icon to Knock Off, Covet, and Thief animations
+357	10108	616	1.17.0	g5_general_cleanup_docs	U-10108	-	S	refactor	N	N	~0	Cleanup battle factory screen constants
+358	7975	617	1.17.0	g6_overworld_refactors	U-mapheader-9461	9461	S	feature	N	N	~0	Add map header flag to make writing special var count as a script effect
+359	10012	618	1.17.0	g6_overworld_refactors	U-dailyseed-9920	10050,9927	S	feature	N	N	~+0.3KB	Adds a new debug menu action "Redo daily Events"
+360	10119	619	1.17.0	g5_general_cleanup_docs	U-10108	-	S	refactor	N	N	~0	Cleanup hard-coded values from battle room scripts
+361	9211	620	1.17.0	g6_overworld_refactors	U-trainerslide-9211	9680,9717	L	feature	N	N	+170KB	Additional trainer slides
+362	10133	622	1.17.0	g4_ai_tests_pokemon_sprites	U-10133	-	S	test	N	N	~0	Remove explicit targets from opponent in Trainer Slide tests
+363	10096	623	1.17.0	g6_overworld_refactors	U-owe-8434	9537,8434	M	refactor	N	N	-3KB(추정)	Use `overworld_ascending_frames` in picture tables
+364	10142	626	1.17.0	g5_general_cleanup_docs	U-outbreak-9927	9927	S	fix	N	N	~0	Fix Debug Menu's `Fly to map` not working immediately
+365	8678	627	1.17.0	g5_general_cleanup_docs	U-8678	-	XL	feature	N	N	+2~4KB	Dynamic trainerbattle Scripts
+366	10080	628	1.17.0	g6_overworld_refactors	U-9557	9557	S	feature	N	N	~0	Add the Ability to Disable Map Name in Map Preview Screen
+367	9878	629	1.17.0	g6_overworld_refactors	U-egg-9878	10051	M	refactor	N	N	~0	Rework egg creation and hatching mechanisms
+368	9955	630	1.17.0	g6_overworld_refactors	U-dailyseed-9920	10050	S	feature	N	N	~0	Add config to use daily seed for lottery tickets and mirage island
+369	9966	631	1.17.0	g6_overworld_refactors	U-owe-8434	8434	S	refactor	N	N	-1KB	Do not set overworld var species for vanilla ow mons
+370	10076	632	1.17.0	g6_overworld_refactors	U-owe-8434	8434	S	refactor	N	N	~0	Use `GetDirectionToFace` in `DetermineObjectEventDirectionFromObject`
+371	9080	633	1.17.0	g6_overworld_refactors	U-mapheader-9461	9461,7975	M	feature	N	N	+3KB(맵 헤더당 2B, #10159에서 회수)	Add support for night music
+372	10127	634	1.17.0	g5_general_cleanup_docs	U-enum-10127	9466	XL	refactor	N	N	~0	Even more enums
+373	10152	636	1.17.0	g5_general_cleanup_docs	U-unused-10179	-	M	refactor	N	N	~0	Clean up unused variables and functions
+374	10167	637	1.17.0	g6_overworld_refactors	U-mapheader-9461	9080	S	refactor	N	N	~0	rename NightSong to night_music to match json style
+375	10166	638	1.17.0	g5_general_cleanup_docs	U-10166	-	S	refactor	N	N	~0	Remove obsolete MAX_LEVEL_UP_MOVES
+376	8893	641	1.17.0	g3_battle_changes_moves_abilities_items	U-8893	10011,9429,9667,9730,10428	XL	data	N	N	+1KB	The big grammar update
+377	10176	642	1.17.0	g6_overworld_refactors	U-mapheader-9461	9080	S	fix	N	N	~0	Remove clock-based music transition
+378	10162	643	1.17.0	g5_general_cleanup_docs	U-enum-10127	9466	M	refactor	N	N	~0	A smidge of enums and type checking additions
+379	10178	644	1.17.0	g5_general_cleanup_docs	U-enum-10127	-	S	refactor	N	N	~0	Clean up header files
+380	10170	645	1.17.0	g3_battle_changes_moves_abilities_items	U-weather-10170	-	M	feature	N	N	+0.3KB	Starting Status for Weather
+381	10181	646	1.17.0	g5_general_cleanup_docs	U-enum-10127	10127	XL	refactor	N	N	~0	Type checking paradise
+382	9147	647	1.17.0	g6_overworld_refactors	U-door-9147	-	L	refactor	N	N	~0	Door Size Refactor
+383	10145	648	1.17.0	g3_battle_changes_moves_abilities_items	U-10145	9124	S	refactor	N	N	~0	Improve AI thinking time by removing direct ability calls in calc dmg
+384	10211	652	1.17.0	g5_general_cleanup_docs	U-debug-9890	9890	S	fix	N	N	~0	fix(debug): incorrect use of const
+385	10214	653	1.17.0	g4_ai_tests_pokemon_sprites	U-startstatus-10170	10170	M	fix	Y	N	+0.1KB	Fix Starting Status messages not printing at start of battle
+386	10217	654	1.17.0	g2_battle_fixed_b	U-10217	9494,10354	L	fix	Y	N	+400B	Fixes Pickpocket activation when the original attacker isn't on the field
+387	10206	655	1.17.0	g4_ai_tests_pokemon_sprites	U-10206	-	S	gfx	N	N	+0.4KB	Add second front frames to Tadbulb and Bellibolt
+388	10117	656	1.17.0	g6_overworld_refactors	U-relearner-9006	9006	S	feature	N	N	~0	Config to hide Contest Data in Summary Screen and Move Relearner
+389	10233	657	1.17.0	g6_overworld_refactors	U-trainerbattle-8678	8678	S	fix	N	N	~0	fix dynamic trainer script regression
+390	10223	659	1.17.0	g6_overworld_refactors	U-relearner-9006	9006,10117	M	feature	N	N	~0	Move relearner selection inside move relearner scene
+391	10124	661	1.17.0	g4_ai_tests_pokemon_sprites	U-10124	9359	M	test	N	N	~0	AI triggers ally's Spicy Spray when burn is beneficial
+392	10243	663	1.17.0	g4_ai_tests_pokemon_sprites	U-10243	-	M	test	N	N	~0	Modular AI Omniscience Flags
+393	10253	666	1.17.0	g3_battle_changes_moves_abilities_items	U-10253	-	S	refactor	N	N	-0.1KB	Remove redundant Sub checks
+394	10268	668	1.17.0	g2_battle_fixed_b	U-10268	-	M	fix	Y	N	+250B	Champions Battle Messages post-mortem fixes
+395	10265	669	1.17.0	g3_battle_changes_moves_abilities_items	U-statchange-9730	9168,9730	S	fix	Y	N	~0	Fix stat change berries showing held item anim twice
+396	10258	671	1.17.0	g4_ai_tests_pokemon_sprites	U-10258	-	S	test	N	N	~0	AI avoids self-KOs with recoil
+397	9969	672	1.17.0	g6_overworld_refactors	U-randommon-9896	9896,9927	M	feature	N	N	+2KB(디버그)	Add debug menu actions to quickly test randomizer results
+398	10274	674	1.17.0	g5_general_cleanup_docs	U-10274	-	M	test	N	N	~0	Fix anim tests
+399	9265	675	1.17.0	g3_battle_changes_moves_abilities_items	U-9265	-	S	test	N	N	~0	New tests: Eviolite, Charge, Grassy Terrain & Misty Terrain
+400	9440	676	1.17.0	g6_overworld_refactors	U-trainergen-9440	9562,10051,10059	L	refactor	N	N	~0	Use a single function for FillPartnerParty and CreateNPCTrainerPartyFromTrainer
+401	10179	678	1.17.0	g5_general_cleanup_docs	U-unused-10179	-	L	refactor	N	N	~0	Remove unused functions
+402	10286	679	1.17.0	g2_battle_fixed_b	U-trainerbattle-8678	8678	S	fix	N	N	~0	fix no continue script after early rival battle
+403	9970	680	1.17.0	g6_overworld_refactors	U-randommon-9896	8434,9879,9896,10051,8678	L	refactor	N	N	~0	More mon generation cleanup
+404	10294	681	1.17.0	g2_battle_fixed_b	U-berryanim-9168	9168	S	fix	Y	N	~0	Fix Item Heal Animation showing recovery on the wrong target
+405	10299	682	1.17.0	g6_overworld_refactors	U-10299	9514,9730,9918	S	refactor	N	N	~0	Adds `MOVE_EFFECT_RANDOM_FROM_LIST` to replace Tri Attack and Dire Claw
+406	9987	683	1.17.0	g4_ai_tests_pokemon_sprites	U-9987	-	S	data	N	N	~0	Better quality Legends Z-A cries
+407	10293	684	1.17.0	g5_general_cleanup_docs	U-10293	-	M	feature	N	N	~+0.1KB	refactor(sprite): add sprite flag to create OBJWIN copies of oams
+408	10310	685	1.17.0	g3_battle_changes_moves_abilities_items	U-10310	-	S	test	N	N	~0	Tests for Victory Star not being ignored by Ally
+409	10314	686	1.17.0	g5_general_cleanup_docs	U-10314	-	M	refactor	Y	N	~-0.2KB	Replaced original sprite print behavior with actual sprite printer
+410	10320	687	1.17.0	g6_overworld_refactors	U-randommon-9896	9970	S	fix	N	N	~0	fix givemon not setting pp
+411	10297	689	1.17.0	g3_battle_changes_moves_abilities_items	U-10297	-	S	fix	N	N	~0	New Knock Off cases
+412	10328	691	1.17.0	g5_general_cleanup_docs	U-10328	-	M	refactor	N	N	~0	refactor(string): consolidate stringvar arrays with getter function
+413	10321	692	1.17.0	g4_ai_tests_pokemon_sprites	U-10321	7360,9642	M	test	N	N	~0(비테스트 빌드는 gTestRunnerEnabled=const FALSE)	feat(test-runner): add support for item popups
+414	10338	694	1.17.0	g3_battle_changes_moves_abilities_items	U-10338	9249,9494,9864	M	refactor	N	N	-0.2KB	Consolidate switch in and faint clear/set data
+415	10336	696	1.17.0	g5_general_cleanup_docs	U-10336	-	M	refactor	N	N	~0	Consolidate Battle Frontier streak appearance lists
+416	10335	697	1.17.0	g5_general_cleanup_docs	U-strings-9051	9051	M	refactor	Y	N	~0	Migrated Pokedex strings
+417	9335	700	1.17.0	g6_overworld_refactors	U-coins-9335	-	M	refactor	N	N	~0	📜 Coins and money script commands update
+418	10361	703	1.17.0	g3_battle_changes_moves_abilities_items	U-10361	-	S	gfx	N	N	~0	Updated Sticky Web to call StringShotThread
+419	10384	704	1.17.0	g3_battle_changes_moves_abilities_items	U-10384	9657,9918	S	refactor	N	N	~0	Make GetSameTypeAttackBonusModifier a little more readable
+420	10383	705	1.17.0	g6_overworld_refactors	U-dailyseed-9920	9877	S	refactor	N	Y	~0	Adds overworld weather enum
+421	10339	709	1.17.0	g6_overworld_refactors	U-trainerbattle-8678	8678	S	fix	N	N	~0	fix(trainerbattle): fix trainerbattle always checking the trainerflag
+422	10407	710	1.17.0	g6_overworld_refactors	U-coins-9335	9335	S	fix	N	N	~0	Make updatemoneybox actually a one-byte opcode
+423	10404	711	1.17.0	g5_general_cleanup_docs	U-statchange-9730	9730	M	refactor	N	N	~0	Fix argument field taking to much space in moves info
+424	10408	712	1.17.0	g6_overworld_refactors	U-randommon-9896	9955,9970	S	feature	N	N	~0	Add options to ignore total EV check
+425	10421	715	1.17.0	g3_battle_changes_moves_abilities_items	U-10421	9172	M	refactor	N	N	~0	Updated `battle_anim_new.c` to match style guide
+426	10236	717	1.17.0	g4_ai_tests_pokemon_sprites	U-10236	-	M	test	N	N	~0	Adds Dragon Darts Ai
+427	10434	720	1.17.0	g2_battle_fixed_b	U-10434	10389	S	fix	N	N	+30B	Fix failed contact moves activating contact effects of protect moves
+428	10416	721	1.17.0	g3_battle_changes_moves_abilities_items	U-10416	-	S	gfx	N	N	~0	Add Ability Pop-Ups to Mega Sol
+429	10252	722	1.17.0	g4_ai_tests_pokemon_sprites	U-10252	-	S	gfx	N	N	+1.2KB	Scorbunny line front anim
+430	10277	723	1.17.0	g4_ai_tests_pokemon_sprites	U-9779	9779	S	test	N	N	~0	Ai thinking time and accuracy improvements
+431	10453	724	1.17.0	g4_ai_tests_pokemon_sprites	U-aicalc-9548	9548	S	refactor	N	N	~0	Tidy up AI_CalcDamage signature with a struct
+432	10440	725	1.17.0	g2_battle_fixed_b	U-moveargs-10404	10404	M	fix	N	N	+100B	Fix Solar Beam/Electro Shot not working in Primal Weather
+433	10282	726	1.17.0	g4_ai_tests_pokemon_sprites	U-10282	-	M	test	Y	N	+0.1KB	Fix failing tests using GEN_CHAMPIONS
+434	8647	727	1.17.0	g4_ai_tests_pokemon_sprites	U-aicalc-9548	9460,9548,9462,9710,9779,10381	M	refactor	N	N	-0.1KB	Adds Round / Pledge combo attack
+435	10462	729	1.17.0	g6_overworld_refactors	U-trainerbattle-8678	8678	S	fix	N	N	~0	fix facing player snippet not checking face player param
+436	10466	730	1.17.0	g2_battle_fixed_b	U-moveargs-10404	10404,10440	S	fix	N	N	~0	Fix two-turn moves firing during any weather
+437	10452	731	1.17.0	g6_overworld_refactors	U-10452	-	M	feature	N	N	+1KB	Show Pokémon Icons in Dynamic Multichoice
+438	10463	732	1.17.0	g2_battle_fixed_b	U-10463	9440	M	refactor	N	N	-50B, EWRAM(힙) -2B	ShouldTrainerBattlerUseGimmick rework
+439	10443	734	1.17.0	g2_battle_fixed_b	U-10443	-	L	fix	Y	N	+400B	Fixed Beak Blast, Focus Punch, and Shell Trap's incorrect interactions
+440	10471	735	1.17.0	g3_battle_changes_moves_abilities_items	U-10471	9730	M	refactor	Y	N	~0	Remove infiniteConfusion flag
+441	10467	737	1.17.0	g2_battle_fixed_b	U-10467	-	M	fix	N	N	+300B	Add Protect animation + bug fixes
+442	10523	738	1.17.0	g5_general_cleanup_docs	U-partnergen-9440	9440	S	fix	N	N	~0	Fix smartTera assignment in MakePartnerGenerator
+443	10531	739	1.17.0	g5_general_cleanup_docs	U-10531	-	S	refactor	N	N	~0	Rename sBattleWeatherInfo to  gBattleWeatherInfo
+444	10521	741	1.17.0	g6_overworld_refactors	U-10521	-	S	feature	Y	N	~0	FontIdToFit: move and ability descriptions
+445	10499	742	1.17.0	g5_general_cleanup_docs	U-10499	-	S	refactor	N	N	~0	Remove empty file from repo
+446	10548	744	1.17.0	g6_overworld_refactors	U-fieldmove-9819	9819	M	refactor	N	N	~0	Minor field move fixes (upcoming)
+447	10459	746	1.17.0	g3_battle_changes_moves_abilities_items	U-absent-10459	-	M	refactor	N	N	~0	Replaced / Removed some battlerAbsent checks in favor of IsBattlerAlive
+448	10025	749	1.17.0	g3_battle_changes_moves_abilities_items	U-10025	-	M	gfx	N	N	+1KB	Implement opponent HP percentage display
+449	10121	750	1.17.0	g6_overworld_refactors	U-debugmenu-10121	8434,9879,9890,9896,9927,9969,9970,10408	L	refactor	N	N	+3KB(디버그)	Another debug menu refactor
+450	10610	758	1.17.0	g4_ai_tests_pokemon_sprites	U-10610	-	S	test	N	N	0	Minor battle_util.c fixes
+451	10619	764	1.17.0	g5_general_cleanup_docs	U-10619	-	S	test	N	N	~0	Fix test summary alignment for FAILED
+452	10634	765	1.17.0	g3_battle_changes_moves_abilities_items	U-absent-10459	10542,10459	S	fix	N	N	~0	Partially reversion of gAbsentBattler pr
+453	10624	766	1.17.0	g2_battle_fixed_b	U-trainerslide-9211	10571,9211	M	fix	Y	N	-1KB	Fix gimmick slides
+454	10618	767	1.17.0	g2_battle_fixed_b	U-victorycatch-9008	9906,9008	S	fix	N	N	-4B	fix(battle): fix memory leak when opening bag in battle
+455	10621	769	1.17.0	g2_battle_fixed_b	U-hpdisplay-10025	10025	M	gfx	N	N	+150B	fix(healthbar): fix hp bar elements being shown when they shouldn't be
+456	10665	770	1.17.0	g4_ai_tests_pokemon_sprites	U-10665	-	S	test	N	N	~0(테스트 ELF만)	upcoming: Clear callbacks between tests
+457	10688	771	1.17.0	g4_ai_tests_pokemon_sprites	U-10688	8647	S	test	N	N	0	upcoming: Fix Fusion Move AI turn-order checks
+458	10659	772	1.17.0	g5_general_cleanup_docs	U-10659	-	M	fix	N	N	~0	Unify default move targeting between tests and in-game
+459	10690	773	1.17.0	g2_battle_fixed_b	U-10690	-	M	fix	N	N	+60B	Split move target selection and resolution
+460	10070	1000000	1.16.0	g5_general_cleanup_docs	U-10070	-	S	refactor	N	N	~0	28//05/26 Master to upcoming merge
+461	10113	1000000	1.16.1	g5_general_cleanup_docs	U-10113	-	M	refactor	Y	N	~0	1st of June, 2026 in [#10113](https://github.com/rh-hideout/pokeemerald-expansion/pull/10113)
+462	10159	1000000	1.17.0	g6_overworld_refactors	U-mapheader-9461	9461,7975,9080	S	refactor	N	N	-3KB	Optimize map header structure
+463	10556	1000000	1.16.4	g2_battle_fixed_b	U-statchange-9730	9730	S	fix	N	N	-600B	X items fix
+464	10721	1000000	1.16.4	g5_general_cleanup_docs	U-pret-10721	-	M	fix	N	N	~0	Pret merge (31st of August, 2026)
+465	9408	1000000	1.16.0	g3_battle_changes_moves_abilities_items	U-9408	-	M	refactor	N	N	~0	Simplify Scale Shot effect activation
+466	9859	261	1.16.0	g6_overworld_refactors	U-calcvalue-9859	9176,9417,9249,9494,9657,9674,9784,9408	L	refactor	N	N	~0	Adds CalcValue struct to MoveEnd
+467	9841	255	1.16.0	g5_general_cleanup_docs	U-9841	9859	S	test	N	N	~0	Remove known failing for Blunder Policy/Darts interaction
+468	9898	264	1.16.0	g3_battle_changes_moves_abilities_items	U-9898	9784,9859	M	fix	N	N	~0	IsAnyTargetAffected and GetDynamicMoveType changes
+469	9916	274	1.16.0	g3_battle_changes_moves_abilities_items	U-9916	9532,9494,9859	M	refactor	Y	N	-0.2KB	Minor Battle Struct clean up and script clean up
+470	9939	281	1.16.0	g3_battle_changes_moves_abilities_items	U-accuracy-9939	9176,9514,9610,9494,9657,9655,9859,9730	XL	refactor	Y	N	+0.5KB	Integrate accuracy check into canceler
+471	9983	291	1.16.0	g1_battle_fixed_a	U-accuracy-9939	9657,9939	M	fix	Y	N	+60B	Fix multi hit result message
+472	10034	299	1.16.0	g1_battle_fixed_a	U-statchange-9730	10035,9859,9730	S	fix	Y	N	~0	Fix Strength Sap activation on miss and buffer correct stat
+473	10388	452	1.16.3	g2_battle_fixed_b	U-10388	9898,10175	S	data	N	N	~0	Fix Aromatherapy not being blocked by Sap Sipper
+474	10606	563	1.16.4	g2_battle_fixed_b	U-accuracy-9939	9939	S	fix	N	N	~0	Fix Dragon Darts checking the same target multiple times
+475	9777	664	1.17.0	g3_battle_changes_moves_abilities_items	U-champmsg-9777	9655,9859,9730,9939	L	feature	Y	N	+1KB	Battle Messages from Pokémon Champions
+476	10220	667	1.17.0	g6_overworld_refactors	U-canceler-10220	9249,9610,9532,9657,9674,9717,9730,9918,9939,9008,9211	L	refactor	N	N	~0	Move pre attack effects and damage calc to canceler
+477	10311	688	1.17.0	g6_overworld_refactors	U-end2-10311	9674,9680,9008,9777,10220	M	refactor	Y	N	-0.5KB	Remove end2 (merge end and end2)
+478	10300	695	1.17.0	g6_overworld_refactors	U-10300	9176,9657,9918,9983,10220	M	refactor	N	N	~0	Refactor dynamic move category and remove Present script
+479	10330	701	1.17.0	g6_overworld_refactors	U-10330	9657,9674,9730,9939,9211,10220	M	refactor	N	N	~0	Adjust TargetFailure to be slightly more accurate
+480	10365	702	1.17.0	g2_battle_fixed_b	U-category-10300	10300	S	fix	N	N	+4B	Fixes off by one error for category icons
+481	10326	706	1.17.0	g6_overworld_refactors	U-terrain-10326	9446,9124,9680,9847,9730,9928,9777,10220,10311	L	refactor	N	N	-2KB(추정)	Battle Terrain Refactor
+482	10362	708	1.17.0	g6_overworld_refactors	U-canceler-10362	9610,9655,9730,9939,9777,10220,10300,10330	L	refactor	Y	N	~0	Adds moveanim, sound, hitanim and hpupdate to Canceler
+483	10431	714	1.17.0	g2_battle_fixed_b	U-canceler-10362	10268,10362	M	fix	Y	N	+150B	Fixes Resist Berry order
+484	10426	716	1.17.0	g6_overworld_refactors	U-absorb-10426	9176,9514,9680,9717,9730,9918,10220,10299,10311	M	refactor	Y	N	~0	Refactor absorb and change SetMoveEffect signature
+485	10488	740	1.17.0	g2_battle_fixed_b	U-10488	10362	L	fix	Y	N	+80B	Fixes Assurance inconsistencies
+486	10566	747	1.17.0	g2_battle_fixed_b	U-canceler-10362	9730,9939,10362	M	fix	Y	N	+150B	Fix HP bars emitting for non-present battlers and extraneous result battle messages
+487	10586	753	1.17.0	g2_battle_fixed_b	U-terrain-10326	10326	S	fix	N	N	~0	Fix terrain not being reset before battle background load
+488	10595	754	1.17.0	g3_battle_changes_moves_abilities_items	U-accuracy-9939	9657,9859,9730,9939,10220,10362,10426	L	refactor	Y	N	-0.3KB	Move Substitute check to move resolution and remove acc check in scripts
+489	10600	755	1.17.0	g2_battle_fixed_b	U-10600	9657,10220	M	fix	N	N	+80B	Fix Scrappy not bypassing Ghosts types if ability was changed
+490	10593	756	1.17.0	g3_battle_changes_moves_abilities_items	U-setmoveeffect-10593	9176,9514,9657,9859,9730,9918,10220,10299,10326,10426	XL	refactor	Y	N	+0.5KB	Change SetMoveEffect into a function table and move to a new file
+491	10630	763	1.17.0	g3_battle_changes_moves_abilities_items	U-10630	10593	M	refactor	N	N	~0	Remove redundant embargo and heal block flags
+492	10640	768	1.17.0	g3_battle_changes_moves_abilities_items	U-10640	9939	S	refactor	Y	N	~0	Add MSG_DISPLAY constants and helper function for strings with wait
+493	10714	776	1.17.0	g2_battle_fixed_b	U-canceler-10362	10362	S	fix	N	N	+60B	Fix moveanim regression
+494	9641	1000000	1.16.0	g5_general_cleanup_docs	U-9641	-	M	feature	N	N	+~0.5KB	feat(debug): add quickstart from titlescreen
+495	9677	1000000	1.16.0	g5_general_cleanup_docs	U-9677	-	M	refactor	N	N	~0	Converted move animation magic numbers to defines
+496	9676	243	1.16.0	g3_battle_changes_moves_abilities_items	U-9676	9172,9677	M	refactor	N	N	~0	Created macros for fist and foot animations
+497	9924	677	1.17.0	g3_battle_changes_moves_abilities_items	U-animcommon-9924	9142,9172,9676,9677	XL	refactor	N	N	-2KB	Added more common anim functions
+498	10374	707	1.17.0	g3_battle_changes_moves_abilities_items	U-10374	9142,9172,9924	M	refactor	N	N	~0	Cleaned up some move animations
+499	10401	718	1.17.0	g3_battle_changes_moves_abilities_items	U-10401	9142,9172,9924	S	fix	N	N	~0	Set Leafage and Seed Flare's `target_both` to FALSE
+500	9881	1000000	1.15.2	g5_general_cleanup_docs	U-incgfx-9881	-	XL	build	Y	N	~0	Merge pret#2283
+501	10036	307	1.16.0	g5_general_cleanup_docs	U-incgfx-9881	9881	L	gfx	N	N	~0	Describe compressed tilemaps with INCGFX
+502	10116	325	1.16.1	g4_ai_tests_pokemon_sprites	U-incgfx-9881	9881	S	build	N	N	~0	Fix missing incgfx for Mega Garchomp Z
+503	10561	544	1.16.4	g4_ai_tests_pokemon_sprites	U-incgfx-9881	9881	S	build	N	N	~0	Converted Mega Staraptor's icon to INCGFX_U8
+504	9518	624	1.17.0	g6_overworld_refactors	U-pokedex-9518	10116,9881	XL	refactor	Y	N	-10KB(추정)	Consolidation of Pokédex Files
+505	10184	649	1.17.0	g5_general_cleanup_docs	U-incgfx-9881	9881	S	gfx	N	N	~0	remove unused tilesets graphics
+506	10172	673	1.17.0	g6_overworld_refactors	U-pokedex-9518	9518	M	refactor	N	N	~0	Remove functions and variable common to both pokedex from the general pokedex interface to their own file
+507	10334	699	1.17.0	g5_general_cleanup_docs	U-incgfx-9881	9881	M	refactor	N	N	~0	Consolidate contest values
+508	9892	1000000	1.16.1	g5_general_cleanup_docs	U-assert-9892	9529,9881	L	fix	N	N	+~0.5KB	Misc Fixes/Cleanups
+509	10156	376	1.16.2	g5_general_cleanup_docs	U-assert-9892	9892	M	feature	N	N	+~1KB	fatal_assertf
+510	10155	379	1.16.2	g4_ai_tests_pokemon_sprites	U-runnerinfra-10155	9642,9892	L	tool	N	N	~0(테스트 ELF·hydra 도구만)	Test Runner: Replace :L hack
+511	9807	387	1.16.2	g4_ai_tests_pokemon_sprites	U-runnerinfra-10155	9642,10155	M	test	N	N	~0(테스트 ELF만)	Battle Test: Failure Suggestions
+512	10390	459	1.16.3	g4_ai_tests_pokemon_sprites	U-runnerinfra-10155	9807,9892	S	test	N	N	+0.05KB(assertf %c/%C)	Fix Known Fails Passing showing `and 0 more` + add additional print modes
+513	10537	501	1.16.4	g4_ai_tests_pokemon_sprites	U-runnerinfra-10155	9805,9642,9807	S	test	N	N	~0(테스트 ELF만)	Move ResetTestInventory to fix flaky error
+514	9900	1000000	1.15.3	g5_general_cleanup_docs	U-9900	-	S	build	N	N	~0	Expansion 1.15.2 release
+515	9914	1000000	1.16.0	g5_general_cleanup_docs	U-berryanim-9168	9168	S	refactor	N	N	~0	Fix stray tab in C file
+516	9986	1000000	1.15.3	g5_general_cleanup_docs	U-waitstate-9986	9881	XL	build	N	N	~0	15th of May, 2026 in [#9986](https://github.com/rh-hideout/pokeemerald-expansion/pull/9986)
+517	10061	1000000	1.15.3	g5_general_cleanup_docs	U-waitstate-9986	9986	M	build	N	N	~0	📜 Migration script for pret#2200
+518	10555	1000000	1.16.4	g5_general_cleanup_docs	U-pret-10555	10323,9881,9986	XL	refactor	Y	N	~0	Pret merge (30th of July 2026)

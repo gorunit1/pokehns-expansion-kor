@@ -12,6 +12,7 @@
 ## 작업 회신
 
 - [2026-09-26 작업 회신](HANDBACK_2026-09-26.md) — 빌드 복구, 1.17.0 인벤토리, 묶음 A 35개 PR 이식
+- [2026-09-28 작업 회신](HANDBACK_2026-09-28.md) — 전체 엔진 동기화 0~1단계: ROM 여유 확보, 인벤토리 재확정·이식 계획
 
 ## 작업 목록
 
@@ -19,7 +20,7 @@
 
 - [x] [현재 HNS 작업 인수인계](CURRENT_HNS_HANDOFF.md)
 - [ ] [pokeemerald-expansion 1.17.0 안전 업데이트](POKEEMERALD_EXPANSION_1.17.0_UPDATE.md) — 진행 중: 인벤토리·묶음 A 완료, [결과 보고서](results/pokeemerald-expansion-1.17.0-update-report.md)
-- [ ] [pokeemerald-expansion 1.17.0 전체 엔진 동기화](POKEEMERALD_EXPANSION_1.17.0_FULL_ENGINE_SYNC.md) — 묶음 A 이후 남은 engine-relevant upstream 변경을 HNS 한글화·커스텀과 공존하도록 끝까지 이식
+- [ ] [pokeemerald-expansion 1.17.0 전체 엔진 동기화](POKEEMERALD_EXPANSION_1.17.0_FULL_ENGINE_SYNC.md) — 묶음 A 이후 남은 engine-relevant upstream 변경을 HNS 한글화·커스텀과 공존하도록 끝까지 이식 — 진행 중: 0~1단계 완료, [이식 계획](results/pokeemerald-expansion-1.17.0-full-sync-plan.md)
 - [ ] 작업 제목과 목표 작성
 - [ ] 수정 대상 파일과 변경 범위 작성
 - [ ] 재현·검증 방법 작성
