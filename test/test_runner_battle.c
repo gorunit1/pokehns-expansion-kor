@@ -14,6 +14,7 @@
 #include "party_menu.h"
 #include "random.h"
 #include "test/battle.h"
+#include "text.h"
 #include "trainer_pools.h"
 #include "window.h"
 #include "constants/characters.h"
@@ -1798,6 +1799,12 @@ static void TearDownBattle(void)
         gBattlerBattleController[i] = BATTLE_CONTROLLER_NONE;
     }
 
+    // Text printers live on the heap, but the list head is a static that
+    // survives InitHeap between tests. Free any printer still running when
+    // the battle stops (e.g. the turn-start blank message on B_WIN_MSG, or a
+    // message cut off by a failed test) so the next test does not Free a
+    // stale pointer.
+    DeactivateAllTextPrinters();
     FreeMonSpritesGfx();
     FreeBattleSpritesData();
     FreeBattleResources();
@@ -1807,6 +1814,9 @@ static void TearDownBattle(void)
 
 static void CB2_BattleTest_NextParameter(void)
 {
+    // See TearDownBattle: CB2_QuitRecordedBattle stops running text
+    // printers, so one can still be pending when the battle returns here.
+    DeactivateAllTextPrinters();
     TestRunner_CheckMemory();
     if (++STATE->runParameter >= STATE->parameters)
     {
