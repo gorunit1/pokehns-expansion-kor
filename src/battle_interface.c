@@ -2192,7 +2192,7 @@ static void UpdateLeftNoOfBallsTextOnHealthbox(u8 healthboxSpriteId)
         gSprites[healthboxSpriteId].data[1] = healthboxSpriteId2;
         gSprites[healthboxSpriteId2].data[1] = SPRITE_NONE;
 
-        FillSpriteRectColor(healthboxSpriteId, 55, 19, 31, 12, HEALTHBOX_BG_INDEX);
+        FillSpriteRectColor(healthboxSpriteId, 55, 19, 39, 12, HEALTHBOX_BG_INDEX);
         AddSpriteTextPrinterParameterized6(healthboxSpriteId, FONT_SMALL, 55, 19, 0, 0, sHealthBoxTextColor, 0, text);
 
         gSprites[healthboxSpriteId].data[1] = savedValue1;
