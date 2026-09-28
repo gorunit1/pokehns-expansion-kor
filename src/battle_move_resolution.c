@@ -2253,7 +2253,7 @@ static enum MoveEndResult MoveEndAbsorb(void)
     switch (moveEffect)
     {
     case EFFECT_STRENGTH_SAP:
-        if (gBattleStruct->passiveHpUpdate[gBattlerAttacker] > 0)
+        if (gBattleStruct->passiveHpUpdate[gBattlerAttacker] > 0 && !IsBattlerUnaffectedByMove(gBattlerTarget))
         {
             s32 healAmount = gBattleStruct->passiveHpUpdate[gBattlerAttacker];
             SetHealScript(healAmount);
