@@ -1,5 +1,13 @@
 # 현재 인수인계 상태
 
+## 2026-09-29 — full-sync port seq 1~62 완료, 테스트 러너 복구 (현재)
+
+- **다음 시작 seq: 63** (#9066 `U-enum-9066`, L). seq 329(#10647)는 이미 적용됐다(#9942와 함께).
+- 빌드: ROM 32,739,220 B(97.57%), EWRAM 248,892 B(94.94%), IWRAM 25,516 B(77.87%). 한글 문자열 변경 0.
+- 테스트: `make check BUILD=hns`를 쓸 수 있다. 기준값은 PASS 2,283 / FAIL 2,218 / TOTAL 5,175(assertion·crash 0)이고, 기준 목록은 `docs/friend-handoff/results/1.17.0-port/test-baseline-seq062.txt`다. 판정은 이식 전후 비교로 한다(`PORT_INSTRUCTIONS.md` "테스트" 절).
+- 규칙·프롬프트: `docs/friend-handoff/results/1.17.0-port/PORT_INSTRUCTIONS.md`, `NEW_SESSION_PROMPTS.md`
+- 실기 대기: `docs/friend-handoff/HANDBACK_2026-09-29_PORT_PROGRESS.md`의 친구 mGBA 확인 목록
+
 ## 2026-09-28 — 포케기어 헤더 51×12 조각 좌표·상단 1px 정렬 최종 보정
 
 - 기존 기록의 좌표 판정은 잘못됐다. 사용자 Aseprite 원본 기준 선택 영역은 위 `(16,6,51×2)`, 가운데 `(69,0,51×8)`, 아래 `(133,0,51×2)`이며, 앞서 기록한 가운데 `x=64`·아래 `x=128` 및 위·아래 반전 설명은 폐기한다.

@@ -15,6 +15,7 @@
 - [2026-09-28 작업 회신](HANDBACK_2026-09-28.md) — 전체 엔진 동기화 0~1단계: ROM 여유 확보, 인벤토리 재확정·이식 계획
 - [2026-09-29 full-sync port 시작 인수인계](HANDBACK_2026-09-29_FULL_SYNC_PORT_START.md) — 로컬 통합·선행 이식·확정 결정을 반영한 517개 실제 port 시작점
 - [Claude full-sync 실행 지시문](CLAUDE_FULL_SYNC_PORT_PROMPT.md) — 친구가 Claude Code/Claude에 전달해 실제 port를 시작할 완성 지시문
+- [2026-09-29 port 진행 회신](HANDBACK_2026-09-29_PORT_PROGRESS.md) — full-sync seq 1~62 이식, 테스트 러너 복구, 다음 seq 63
 
 ## 작업 목록
 

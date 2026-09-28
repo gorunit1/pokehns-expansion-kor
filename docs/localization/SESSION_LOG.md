@@ -2,6 +2,24 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-09-29 — full-sync 실제 port seq 1~62, 테스트 러너 복구
+
+- 기준: 친구 인수인계 `88d72d436e`(HANDBACK_2026-09-29_FULL_SYNC_PORT_START, CLAUDE_FULL_SYNC_PORT_PROMPT). 브랜치가 깨끗한 것을 확인하고 fast-forward pull했다.
+- port:
+  - seq 1 `733543267f`: 테스트 러너 include 순서
+  - seq 2~62: 에이전트가 PR별 1커밋으로 이식했다(`d037d758c8`~`670f578e53`, 결과 문서 `6ede50ee77`). #10647(seq 329)은 #9942 unit과 함께 적용했다.
+  - 상세 기록: `docs/friend-handoff/results/1.17.0-port/full-sync-seq-001-062.md`
+- 메인 검증:
+  - `git diff --check 733543267f..HEAD` 통과
+  - docs 밖 소스에서 한글이 들어간 줄 변경 0
+  - `battle_message.c`는 include 1줄만 변경
+  - config 변경 없음
+- 테스트 러너 힙 문제: 별도 worktree에서 원인을 찾아 `7df90335e4`·`a04eae0499`로 고쳤다(test/ 전용, ROM 불변). `3a4a1f9fd5`로 merge했다. 원인은 `results/1.17.0-port/TEST_RUNNER_FIX.md`에 있다.
+- 빌드(`3a4a1f9fd5`, `GITHUB_ACTION=1 make hns -j8`): 종료 코드 0. ROM 32,739,220 B(97.57%), EWRAM 248,892 B, IWRAM 25,516 B, SHA1 `879f6333d0b32e9fa309551e5511f24173279292`.
+- 전체 테스트(`make check BUILD=hns -j6`): PASS 2,283 / FAIL 2,218 / KNOWN_FAILING 8 / ASSUMPTIONS_FAILED 38 / TO_DO 622 / EXPECT_FAILING 6 / TOTAL 5,175. assertion 0, illegal opcode 0. 테스트별 기준 목록은 `results/1.17.0-port/test-baseline-seq062.txt`에 있다.
+- 실기: 하지 않았다. 친구 확인 목록은 `docs/friend-handoff/HANDBACK_2026-09-29_PORT_PROGRESS.md`에 있다.
+- 다음 시작점: **seq 63 (#9066, `U-enum-9066`, L)**. 새 세션에서는 `results/1.17.0-port/NEW_SESSION_PROMPTS.md`의 1번→2번 프롬프트로 재개한다.
+
 ### 2026-09-28 — 포케기어 헤더 실제 조각 좌표 및 상단 1px 정렬 보정
 
 - 사용자 확인으로 올바른 원본 선택 영역을 위 `(16,6,51×2)`, 가운데 `(69,0,51×8)`, 아래 `(133,0,51×2)`로 재확정했다. 이전 작업의 가운데 `x=64`, 아래 `x=128` 판정과 위·아래 반전 기록은 잘못된 것이므로 이 항목으로 대체한다.
