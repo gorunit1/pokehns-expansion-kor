@@ -14265,6 +14265,16 @@ void BS_SwitchinAbilities(void)
         return;
 }
 
+void BS_AbilityOnFormChange(void)
+{
+    NATIVE_ARGS(u8 battler);
+    enum BattlerId battler = GetBattlerForBattleScript(cmd->battler);
+    enum Ability ability = GetBattlerAbility(battler);
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    if (AbilityBattleEffects(ABILITYEFFECT_ON_FORM_CHANGE, battler, ability, MOVE_NONE, TRUE))
+        return;
+}
+
 void BS_EffectsAfterFormChange(void)
 {
     NATIVE_ARGS();
