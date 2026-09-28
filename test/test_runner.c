@@ -195,11 +195,18 @@ void TestRunner_CheckMemory(void)
     }
 }
 
+// Must match ONE_TYPE_OFF in src/challenge_menu.c.
+#define TEST_ONE_TYPE_OFF 31
+
 static void ClearSaveBlocks(void)
 {
     ClearSav1();
     ClearSav2();
     ClearSav3();
+    // HnS: a zeroed One Type Challenge means "TYPE_NONE only", not "off".
+    // Caught mons would then go to the uninitialized PC boxes, whose names
+    // have no EOS, and the box-name StringCopy overruns EWRAM.
+    gSaveBlock3Ptr->challengeSettings.tx_Challenges_OneTypeChallenge = TEST_ONE_TYPE_OFF;
 }
 
 void CB2_TestRunner(void)
