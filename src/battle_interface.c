@@ -914,8 +914,13 @@ static void UpdateLvlInHealthbox(u8 healthboxSpriteId, u8 lvl)
         u8 *windowTileData;
         u8 *objVram;
         u8 *endPtr = ConvertIntToDecimalStringN(text + 2, lvl, STR_CONV_MODE_LEFT_ALIGN, 3);
-        u32 xPos = 5 * (3 - (endPtr - (text + 2)));
-        if (GetIndicatorPalTag(battler) != TAG_NONE)
+        u32 levelDigits = endPtr - (text + 2);
+        u32 xPos = 5 * (3 - levelDigits);
+        // SoulGold shifts the indicator left for Lv. 100. For shorter levels,
+        // shift the text left instead to keep the indicator and level apart.
+        // Do not subtract from xPos for three-digit levels: it is already 0,
+        // and an unsigned underflow would place the text outside the window.
+        if (GetIndicatorPalTag(battler) != TAG_NONE && levelDigits < 3)
             xPos -= 5;
 
         windowTileData = AddTextPrinterAndCreateWindowOnHealthbox(text, xPos, 3, 2, &windowId, FALSE);

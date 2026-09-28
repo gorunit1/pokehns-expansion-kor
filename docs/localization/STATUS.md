@@ -1,5 +1,18 @@
 # 현재 인수인계 상태
 
+## 2026-09-28 — 포케기어 헤더 51×12 조각 좌표·상단 1px 정렬 최종 보정
+
+- 기존 기록의 좌표 판정은 잘못됐다. 사용자 Aseprite 원본 기준 선택 영역은 위 `(16,6,51×2)`, 가운데 `(69,0,51×8)`, 아래 `(133,0,51×2)`이며, 앞서 기록한 가운데 `x=64`·아래 `x=128` 및 위·아래 반전 설명은 폐기한다.
+- `graphics/pokenav/hns/header.png`에서 세 영역을 먼저 추출한 뒤 런타임 타일 2~19·21·22·41에 다시 패킹했다. 위 2행은 가운데 획과 맞도록 합성 위치만 1px 왼쪽으로 보정했다. 구분선용 20번 타일과 `header.bin`의 41번 참조는 보존했으며, 검은 사각형을 만들었던 41→1 임시 변경은 제거됐다.
+- 정적 검증: 런타임 역렌더에서 `포켓기어` 51×12 형상을 확인했고, 흰색 구분선은 실제 GBA 표시 폭 0~239px에서 연속이다. 빌드가 생성한 `header.4bpp`와 검증본, `header.bin`과 정상 타일맵이 각각 `cmp` 일치한다.
+- 빌드: `build/hns/src/graphics.o`를 강제 재생성한 뒤 `GITHUB_ACTION=1 timeout 600s make --jobserver-style=pipe hns -j8` 성공. ROM 32,723,652 B(97.52%), EWRAM 249,112 B(95.03%), IWRAM 25,644 B(78.26%). mGBA 실제 화면은 아직 확인하지 않았다.
+
+## 2026-09-28 — Gen4 배틀 메가진화 아이콘과 레벨 100 겹침 수정
+
+- 원인: `src/battle_interface.c:917`의 Gen4 체력박스 레벨 복사 경로가 메가 아이콘 여백을 위해 `xPos -= 5`를 항상 수행했다. 세 자리 레벨에서는 기본 `xPos`가 0이라 unsigned underflow가 발생해 레벨 타일이 잘못된 위치로 복사됐다.
+- 조치: 레벨 자릿수가 3자리 미만일 때만 레벨 텍스트를 5px 왼쪽으로 이동하고, 레벨 100은 SoulGold와 같이 `UpdateIndicatorLevelData()`의 아이콘 -4px 보정만 적용하도록 수정했다. SoulGold의 아이콘 기준 좌표(`sIndicatorPositions`)와 자릿수별 보정 동작은 유지했다.
+- 검증: `build/hns/src/battle_interface.o` 컴파일 및 `make hns -j8` 성공(`BUILD_EXIT=0`). ROM 32,723,668 B(97.52%), EWRAM 249,112 B(95.03%), IWRAM 25,644 B(78.26%). 기존 미사용 함수·변수 경고 17건 외에 수정 파일의 새 경고는 없다. 레벨 1·10·99·100 화면은 mGBA에서 직접 확인해야 한다.
+
 ## 2026-09-28 — 전체 엔진 동기화 1단계 완료: 이식 계획 확정 (현재)
 
 - 남은 594개 PR의 판정: 이식 517(+테스트 러너 복구), 동등 56, 무관 15, 외부결정 6. 이식 순서는 `docs/friend-handoff/results/1.17.0-sync-plan/port_sequence.tsv`, 요약은 `results/pokeemerald-expansion-1.17.0-full-sync-plan.md`에 있다.
