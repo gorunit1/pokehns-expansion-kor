@@ -702,6 +702,15 @@ void clean_heal_locations(vector<string> &valid_map_ids)
     write_text_file("src/data/heal_locations.json", new_json.str());
 }
 
+// Upstream #9949 assumes undefined maps/layouts match the compiled version.
+// HnS gates on game_version instead of region/layout_version, and hns builds
+// keep treating undefined entries as emerald so only explicit "hns" data is used.
+static string get_default_game_version(void) {
+    if (version == "firered")
+        return "frlg";
+    return "emerald";
+}
+
 // Output paths are directories with trailing path separators
 void process_groups(string groups_filepath, vector<string> &map_filepaths, string output_asm, string output_c) {
     output_asm = strip_trailing_separator(output_asm); // Remove separator if existing.
@@ -721,7 +730,7 @@ void process_groups(string groups_filepath, vector<string> &map_filepaths, strin
 
         string game_ver = json_to_string(map_data, "game_version", true);
         if (game_ver.empty())
-            game_ver = "emerald";
+            game_ver = get_default_game_version();
 
         string map_name = json_to_string(map_data, "name");
 
@@ -753,8 +762,14 @@ void process_groups(string groups_filepath, vector<string> &map_filepaths, strin
 
 bool layout_matches_version(const Json &layout) {
     string game_ver = json_to_string(layout, "game_version", true);
-    if (game_ver.empty())
-        game_ver = "emerald";
+    if (game_ver.empty()) {
+        // Layouts without game_version but with an explicit emerald/frlg layout_version keep that version.
+        string layout_ver = json_to_string(layout, "layout_version", true);
+        if (layout_ver == "emerald" || layout_ver == "frlg")
+            game_ver = layout_ver;
+        else
+            game_ver = get_default_game_version();
+    }
     string expected = version;
     if (expected == "firered")
         expected = "frlg";
@@ -774,7 +789,7 @@ string generate_layout_headers_text(Json layouts_data) {
             continue;
         string layout_version = json_to_string(layout, "layout_version", true);
         if (layout_version.empty())
-            layout_version = "emerald";
+            layout_version = get_default_game_version();
         string layoutName = json_to_string(layout, "name");
         string border_label = layoutName + "_Border";
         string blockdata_label = layoutName + "_Blockdata";
