@@ -1359,8 +1359,20 @@ static u16 RenderText(struct TextPrinter *textPrinter)
         else
             textPrinter->delayCounter = textPrinter->textSpeed;
 
-        currChar = *textPrinter->printerTemplate.currentChar;
-        textPrinter->printerTemplate.currentChar++;
+        while (TRUE)
+        {
+            currChar = *textPrinter->printerTemplate.currentChar;
+            textPrinter->printerTemplate.currentChar++;
+
+            if (!textPrinter->japanese && IsKoreanGlyph(currChar))
+            {
+                currChar = (currChar << 8) | *textPrinter->printerTemplate.currentChar;
+                textPrinter->printerTemplate.currentChar++;
+                break;
+            }
+            if (textPrinter->japanese || currChar != CHAR_ZWS)
+                break;
+        }
 
         switch (currChar)
         {
@@ -1584,12 +1596,6 @@ static u16 RenderText(struct TextPrinter *textPrinter)
             return RENDER_FINISH;
         }
        
-        if (!textPrinter->japanese && IsKoreanGlyph(currChar))
-        {
-            currChar = (currChar << 8) | *textPrinter->printerTemplate.currentChar;
-            textPrinter->printerTemplate.currentChar++;
-        }
-
         switch (textPrinter->fontId)
         {
         case FONT_SMALL:
@@ -1814,6 +1820,9 @@ static u32 (*GetFontWidthFunc(u8 fontId))(u16, bool32)
 
 s32 GetGlyphWidth(u16 glyphId, bool32 isJapanese, u8 fontId)
 {
+    if (!isJapanese && glyphId == CHAR_ZWS)
+        return 0;
+
     u32 (*func)(u16 fontId, bool32 isJapanese);
 
     func = GetFontWidthFunc(fontId);
@@ -1832,6 +1841,7 @@ s32 GetStringWidth(u8 fontId, const u8 *str, s16 letterSpacing)
     const u8 *bufferPointer;
     int glyphWidth;
     s32 width;
+    u16 glyphId;
 
     isJapanese = 0;
     minGlyphWidth = 0;
@@ -1878,7 +1888,12 @@ s32 GetStringWidth(u8 fontId, const u8 *str, s16 letterSpacing)
                 bufferPointer = DynamicPlaceholderTextUtil_GetPlaceholderPtr(*++str);
             while (*bufferPointer != EOS)
             {
-                glyphWidth = func(*bufferPointer++, isJapanese);
+                glyphId = *bufferPointer++;
+                if (!isJapanese && IsKoreanGlyph(glyphId))
+                    bufferPointer++;
+                if (!isJapanese && glyphId == CHAR_ZWS)
+                    continue;
+                glyphWidth = func(glyphId, isJapanese);
                 if (minGlyphWidth > 0)
                 {
                     if (glyphWidth < minGlyphWidth)
@@ -1975,9 +1990,12 @@ s32 GetStringWidth(u8 fontId, const u8 *str, s16 letterSpacing)
         case CHAR_PROMPT_CLEAR:
             break;
         default:
-            glyphWidth = func(*str, isJapanese);
-            if (IsKoreanGlyph(*str))
+            glyphId = *str;
+            if (!isJapanese && IsKoreanGlyph(glyphId))
                 str++;
+            if (!isJapanese && glyphId == CHAR_ZWS)
+                break;
+            glyphWidth = func(glyphId, isJapanese);
             if (minGlyphWidth > 0)
             {
                 if (glyphWidth < minGlyphWidth)

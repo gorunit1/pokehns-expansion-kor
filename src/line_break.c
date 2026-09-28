@@ -2,14 +2,56 @@
 #include "line_break.h"
 #include "text.h"
 #include "malloc.h"
+#include "korean.h"
+
+static u32 GetSubstringWidth(const u8 *src, u32 length, u8 fontId)
+{
+    u32 width = 0;
+    u32 index = 0;
+
+    while (index < length)
+    {
+        u16 glyph = src[index];
+        if (IsKoreanGlyph(glyph) && index + 1 < length)
+        {
+            index += 2;
+        }
+        else
+        {
+            index++;
+        }
+        width += GetGlyphWidth(glyph, FALSE, fontId);
+    }
+    return width;
+}
+
+static u32 GetWordSeparatorWidth(const u8 *src, const struct StringWord *word, u8 fontId)
+{
+    if (word->startIndex == 0)
+        return 0;
+    return GetGlyphWidth(src[word->startIndex - 1], FALSE, fontId);
+}
 
 void StripLineBreaks(u8 *src)
 {
     u32 currIndex = 0;
+    u16 prevChar = EOS;
     while (src[currIndex] != EOS)
     {
+        if (IsKoreanGlyph(src[currIndex]) && src[currIndex + 1] != EOS)
+        {
+            prevChar = (src[currIndex] << 8) | src[currIndex + 1];
+            currIndex += 2;
+            continue;
+        }
         if (src[currIndex] == CHAR_PROMPT_SCROLL || src[currIndex] == CHAR_NEWLINE)
-            src[currIndex] = CHAR_SPACE;
+        {
+            if (prevChar == CHAR_HYPHEN)
+                src[currIndex] = CHAR_ZWS;
+            else
+                src[currIndex] = CHAR_SPACE;
+        }
+        prevChar = src[currIndex];
         currIndex++;
     }
 }
@@ -122,18 +164,14 @@ void BreakSubStringNaive(u8 *src, u32 maxWidth, u32 screenLines, u8 fontId, enum
 
     //  Fill in individual word widths
     for (u32 i = 0; i < numWords; i++)
-    {
-        for (u32 j = 0; j < allWords[i].length; j++)
-            allWords[i].width += GetGlyphWidth(src[allWords[i].startIndex + j], FALSE, fontId);
-    }
+        allWords[i].width = GetSubstringWidth(&src[allWords[i].startIndex], allWords[i].length, fontId);
 
     //  Step 1: Does it all fit one one line? Then no break
     //  Step 2: Try to split across minimum number of lines
-    u32 spaceWidth = GetGlyphWidth(CHAR_SPACE, FALSE, fontId);
     u32 totalWidth = allWords[0].width;
     //  Calculate total widths without any line breaks
     for (u32 i = 1; i < numWords; i++)
-        totalWidth += allWords[i].width + spaceWidth;
+        totalWidth += allWords[i].width + GetWordSeparatorWidth(src, &allWords[i], fontId);
 
     //  If it doesn't fit on 1 line, do line breaks
     if (totalWidth > maxWidth)
@@ -143,23 +181,25 @@ void BreakSubStringNaive(u8 *src, u32 maxWidth, u32 screenLines, u8 fontId, enum
         u32 currWords = 1;
         for (u32 wordIndex = 0; wordIndex < numWords; wordIndex++)
         {
+            u32 separatorWidth = (currWords == 1) ? 0 : GetWordSeparatorWidth(src, &allWords[wordIndex], fontId);
             currWidth += allWords[wordIndex].width;
             if (numBreaks == screenLines - 1)
             {
-                if (SCROLL_PROMPT_WIDTH + currWidth + (currWords - 1) * spaceWidth > maxWidth)
+                if (SCROLL_PROMPT_WIDTH + currWidth + separatorWidth > maxWidth)
                 {
                     src[allWords[wordIndex].startIndex - 1] = CHAR_PROMPT_SCROLL;
-                    currWidth = allWords[wordIndex].length;
+                    currWidth = allWords[wordIndex].width;
                     currWords = 1;
                 }
                 else
                 {
+                    currWidth += separatorWidth;
                     currWords++;
                 }
             }
             else
             {
-                if (currWidth + (currWords - 1) * spaceWidth > maxWidth)
+                if (currWidth + separatorWidth > maxWidth)
                 {
                     src[allWords[wordIndex].startIndex - 1] = CHAR_NEWLINE;
                     currWidth = allWords[wordIndex].width;
@@ -168,6 +208,7 @@ void BreakSubStringNaive(u8 *src, u32 maxWidth, u32 screenLines, u8 fontId, enum
                 }
                 else
                 {
+                    currWidth += separatorWidth;
                     currWords++;
                 }
             }
@@ -232,10 +273,7 @@ void BreakSubStringAutomatic(u8 *src, u32 maxWidth, u32 screenLines, u8 fontId, 
 
     //  Fill in individual word widths
     for (u32 i = 0; i < numWords; i++)
-    {
-        for (u32 j = 0; j < allWords[i].length; j++)
-            allWords[i].width += GetGlyphWidth(src[allWords[i].startIndex + j], FALSE, fontId);
-    }
+        allWords[i].width = GetSubstringWidth(&src[allWords[i].startIndex], allWords[i].length, fontId);
 
     //  Step 1: Does it all fit one one line? Then no break
     //  Step 2: Try to split across minimum number of lines
@@ -243,7 +281,7 @@ void BreakSubStringAutomatic(u8 *src, u32 maxWidth, u32 screenLines, u8 fontId, 
     u32 totalWidth = allWords[0].width;
     //  Calculate total widths without any line breaks
     for (u32 i = 1; i < numWords; i++)
-        totalWidth += allWords[i].width + spaceWidth;
+        totalWidth += allWords[i].width + GetWordSeparatorWidth(src, &allWords[i], fontId);
 
     if (toggleScrollPrompt == SHOW_SCROLL_PROMPT)
         totalWidth += SCROLL_PROMPT_WIDTH;
@@ -258,16 +296,17 @@ void BreakSubStringAutomatic(u8 *src, u32 maxWidth, u32 screenLines, u8 fontId, 
         bool32 shouldTryAgain;
         for (currWordIndex = 0; currWordIndex < numWords; currWordIndex++)
         {
+            u32 separatorWidth = currLineWidth == 0 ? 0 : GetWordSeparatorWidth(src, &allWords[currWordIndex], fontId);
             if (toggleScrollPrompt == SHOW_SCROLL_PROMPT && currWordIndex + 1 == numWords)
                 currLineWidth += SCROLL_PROMPT_WIDTH;
-            if (currLineWidth + allWords[currWordIndex].length > maxWidth)
+            if (currLineWidth + separatorWidth + allWords[currWordIndex].width > maxWidth)
             {
                 totalLines++;
                 currLineWidth = allWords[currWordIndex].width;
             }
             else
             {
-                currLineWidth += allWords[currWordIndex].width + spaceWidth;
+                currLineWidth += separatorWidth + allWords[currWordIndex].width;
             }
         }
 
@@ -295,7 +334,8 @@ void BreakSubStringAutomatic(u8 *src, u32 maxWidth, u32 screenLines, u8 fontId, 
             currWordIndex++;
             while (currWordIndex < numWords)
             {
-                if (currLineWidth + spaceWidth + allWords[currWordIndex].width + ((toggleScrollPrompt == SHOW_SCROLL_PROMPT) ? SCROLL_PROMPT_WIDTH : 0) > maxWidth)
+                u32 separatorWidth = GetWordSeparatorWidth(src, &allWords[currWordIndex], fontId);
+                if (currLineWidth + separatorWidth + allWords[currWordIndex].width + ((toggleScrollPrompt == SHOW_SCROLL_PROMPT) ? SCROLL_PROMPT_WIDTH : 0) > maxWidth)
                 {
                     //  go to next line
                     currLineIndex++;
@@ -330,8 +370,8 @@ void BreakSubStringAutomatic(u8 *src, u32 maxWidth, u32 screenLines, u8 fontId, 
                 else
                 {
                     //  continue on current line
-                    //  add word and space width
-                    currLineWidth += spaceWidth + allWords[currWordIndex].width;
+                    //  add word and its separator width
+                    currLineWidth += separatorWidth + allWords[currWordIndex].width;
                     stringLines[currLineIndex].numWords++;
                     currWordIndex++;
                 }
@@ -348,8 +388,12 @@ void BreakSubStringAutomatic(u8 *src, u32 maxWidth, u32 screenLines, u8 fontId, 
 //  Only allow word splitting on allowed chars
 bool32 IsWordSplittingChar(const u8 *src, u32 index)
 {
+    if (index > 0 && IsKoreanGlyph(src[index - 1]))
+        return FALSE;
+
     switch (src[index])
     {
+    case CHAR_ZWS:
     case CHAR_SPACE:
         return TRUE;
     default:
