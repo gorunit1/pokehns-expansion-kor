@@ -21,6 +21,7 @@
 | 고속스핀·킬러스핀이 바인드 계열을 해제 | `STRINGID_PKMNGOTFREE` | `STRINGID_PKMNFREEDFROM` | `BattleScript_WrapFree`의 출력 ID 변경 |
 | 0.5배 미만 또는 2배 초과 상성(Champions 이식) | 기존 0.5배·2배 단계 문구에만 수렴 | `STRINGID_MOSTLYINEFFECTIVE`·`STRINGID_EXTREMELYEFFECTIVE` 및 단일/복수 대상 전용 ID | 효과 배율 플래그와 결과 메시지 분기 추가 |
 | 방어 측 대상명을 넣는 급소·상성 메시지(Champions 이식) | 대상별 전용 문구 없음 | `STRINGID_CRITICALHITONDEF`와 `...ONDEF`·`...TWOFOES` 계열 | 결과 메시지 선택·대상별 출력 경로 추가 |
+| 명중 판정이 있는 변화기가 빗나감(`accuracycheck BattleScript_ButItFailed` 사용 기술, upstream #9929 이식) | `STRINGID_BUTITFAILED` (`그러나 실패하고 말았다!`) | `gMissStringIds[B_MSG_AVOIDED_ATK]` = `STRINGID_PKMNAVOIDEDATTACK` (`…에게는 맞지 않았다!`) | `AccuracyCheck()`가 실패 경로가 `BattleScript_ButItFailed`일 때 새 `BattleScript_TargetAvoidsAttackEnd`로 이동 |
 
 ## 상태이상·회복·잠자기
 
