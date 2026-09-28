@@ -1417,7 +1417,9 @@ static inline bool32 DoesBattlerNegateDamage(enum BattlerId battler)
     return FALSE;
 }
 
-static u32 UpdateEffectivenessResultFlagsForDoubleSpreadMoves(u32 resultFlags)
+// HnS: Cmd_attackanimation keeps the pre-#7360 "best result" selection to decide whether the
+// animation plays, until the canceler refactor (#10362) replaces that path.
+static u32 GetBestResultFlagsForDoubleSpreadMoveAnimation(u32 resultFlags)
 {
     // Only play the "best" sound
     for (u32 sound = 0; sound < 3; sound++)
@@ -1447,6 +1449,26 @@ static u32 UpdateEffectivenessResultFlagsForDoubleSpreadMoves(u32 resultFlags)
         }
     }
 
+    return resultFlags;
+}
+
+static u32 UpdateEffectivenessResultFlagsForDoubleSpreadMoves(void)
+{
+    u32 resultFlags = 0;
+    for (enum BattlerId battlerDef = 0; battlerDef < gBattlersCount; battlerDef++)
+    {
+        if (IsBattlerInvalidForSpreadMove(gBattlerAttacker, battlerDef))
+            continue;
+        if (DoesBattlerNegateDamage(battlerDef))
+            continue;
+
+        resultFlags |= gBattleStruct->moveResultFlags[battlerDef];
+
+        if (!(gBattleStruct->moveResultFlags[battlerDef] & MOVE_RESULT_LOW_EFFECTIVENESS))
+            resultFlags &= ~MOVE_RESULT_NOT_VERY_EFFECTIVE; // any battler with 1x or better effectiveness removes NVE sound
+        if (gBattleStruct->moveResultFlags[battlerDef] & MOVE_RESULT_HIGH_EFFECTIVENESS)
+            resultFlags |= MOVE_RESULT_SUPER_EFFECTIVE; // any super effective result will play SE_SUPER_EFFECTIVE
+    }
     return resultFlags;
 }
 
@@ -1552,7 +1574,7 @@ static void Cmd_attackanimation(void)
     enum BattleMoveEffects effect = GetMoveEffect(gCurrentMove);
 
     if (IsDoubleSpreadMove())
-        moveResultFlags = UpdateEffectivenessResultFlagsForDoubleSpreadMoves(gBattleStruct->moveResultFlags[gBattlerTarget]);
+        moveResultFlags = GetBestResultFlagsForDoubleSpreadMoveAnimation(gBattleStruct->moveResultFlags[gBattlerTarget]);
 
     bool32 isAnimDisabled = (gHitMarker & (HITMARKER_NO_ANIMATIONS | HITMARKER_DISABLE_ANIMATION)
                           || gBattleStruct->attackAnimPlayed);
@@ -1928,7 +1950,7 @@ static void Cmd_effectivenesssound(void)
             gBattlescriptCurrInstr = cmd->nextInstr;
             return;
         }
-        moveResultFlags = UpdateEffectivenessResultFlagsForDoubleSpreadMoves(gBattleStruct->moveResultFlags[gBattlerTarget]);
+        moveResultFlags = UpdateEffectivenessResultFlagsForDoubleSpreadMoves();
     }
     else if (!IsBattlerUnaffectedByMove(gBattlerTarget) && DoesBattlerNegateDamage(gBattlerTarget))
         moveResultFlags = 0;
@@ -1939,11 +1961,19 @@ static void Cmd_effectivenesssound(void)
         {
         case MOVE_RESULT_SUPER_EFFECTIVE:
         case MOVE_RESULT_EXTREMELY_EFFECTIVE:
+            #if TESTING
+            if (gTestRunnerEnabled)
+                TestRunner_Battle_RecordEffectivenessSound(gBattlerTarget, SE_SUPER_EFFECTIVE);
+            #endif
             BtlController_EmitPlaySE(gBattlerTarget, B_COMM_TO_CONTROLLER, SE_SUPER_EFFECTIVE);
             MarkBattlerForControllerExec(gBattlerTarget);
             break;
         case MOVE_RESULT_NOT_VERY_EFFECTIVE:
         case MOVE_RESULT_MOSTLY_INEFFECTIVE:
+            #if TESTING
+            if (gTestRunnerEnabled)
+                TestRunner_Battle_RecordEffectivenessSound(gBattlerTarget, SE_NOT_EFFECTIVE);
+            #endif
             BtlController_EmitPlaySE(gBattlerTarget, B_COMM_TO_CONTROLLER, SE_NOT_EFFECTIVE);
             MarkBattlerForControllerExec(gBattlerTarget);
             break;
@@ -1958,16 +1988,28 @@ static void Cmd_effectivenesssound(void)
         default:
             if (moveResultFlags & MOVE_RESULT_HIGH_EFFECTIVENESS)
             {
+                #if TESTING
+                if (gTestRunnerEnabled)
+                    TestRunner_Battle_RecordEffectivenessSound(gBattlerTarget, SE_SUPER_EFFECTIVE);
+                #endif
                 BtlController_EmitPlaySE(gBattlerTarget, B_COMM_TO_CONTROLLER, SE_SUPER_EFFECTIVE);
                 MarkBattlerForControllerExec(gBattlerTarget);
             }
             else if (moveResultFlags & MOVE_RESULT_LOW_EFFECTIVENESS)
             {
+                #if TESTING
+                if (gTestRunnerEnabled)
+                    TestRunner_Battle_RecordEffectivenessSound(gBattlerTarget, SE_NOT_EFFECTIVE);
+                #endif
                 BtlController_EmitPlaySE(gBattlerTarget, B_COMM_TO_CONTROLLER, SE_NOT_EFFECTIVE);
                 MarkBattlerForControllerExec(gBattlerTarget);
             }
             else if (!(moveResultFlags & (MOVE_RESULT_DOESNT_AFFECT_FOE | MOVE_RESULT_FAILED)))
             {
+                #if TESTING
+                if (gTestRunnerEnabled)
+                    TestRunner_Battle_RecordEffectivenessSound(gBattlerTarget, SE_EFFECTIVE);
+                #endif
                 BtlController_EmitPlaySE(gBattlerTarget, B_COMM_TO_CONTROLLER, SE_EFFECTIVE);
                 MarkBattlerForControllerExec(gBattlerTarget);
             }
