@@ -3346,6 +3346,7 @@ static enum MoveEndResult MoveEndKeeMarangaHpThresholdItemTarget(void)
 static bool32 TryRedCard(enum BattlerId battlerAtk, enum BattlerId redCardBattler, enum Move move)
 {
     if (!IsBattlerAlive(redCardBattler)
+     || !IsBattlerAlive(battlerAtk)
      || !IsBattlerTurnDamaged(redCardBattler, EXCLUDING_SUBSTITUTES)
      || DoesSubstituteBlockMove(battlerAtk, redCardBattler, move)
      || !CanBattlerSwitch(battlerAtk))
