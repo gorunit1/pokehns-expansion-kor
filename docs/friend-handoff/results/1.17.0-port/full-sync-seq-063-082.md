@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 63~82
 
-진행 중: 마지막 완료 seq 71 (#9417), 다음 seq 72 (#9446). seq 76 #9474는 seq 64 커밋에 포함(이미 적용).
+진행 중: 마지막 완료 seq 72 (#9446), 다음 seq 73 (#9463). seq 76 #9474는 seq 64 커밋에 포함(이미 적용).
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `72f40563ad`
@@ -215,3 +215,26 @@
   - 자동 테스트(기준 대비 변화 없음): `ability/dancer.c` 35건(PASS 22, FAIL 13 = `Unmatched MESSAGE` 12 + 확률 테스트 1, 모두 기준과 같음), `move_effect/instruct.c` 20건(PASS 15, FAIL 4 `Unmatched MESSAGE`, TO_DO 1), `first_turn_only.c` TO_DO 4, `mat_block.c` TO_DO 1.
   - 실기 확인: 선택(더블배틀 춤추기 연쇄, 지시(Instruct) 뒤 대상 복원, 속이다·마룻바닥세워막기 첫 턴 판정)
 - 남은 위험: 낮음
+
+## 동기화 단위: seq 72 #9446 `U-synchronize-9446` Refactor synchronize and cure berry timing
+
+- 현재 판정: 적용(HnS 적응)
+- 커밋: `c1afbb563d`
+- upstream 근거: `0c20d91508`
+- 해결한 의존성: #9176(seq 59), #9417(seq 71) 뒤. #9532(UNUSED_33)·#9249(`B_SCR_OP_TRY_CONFUSION_AFTER_SKY_DROP`)의 opcode 번호 전제.
+- 수정 파일: `asm/macros/battle_script.inc`, `data/battle_scripts_1.s`, `include/battle.h`, `include/battle_move_resolution.h`, `include/battle_util.h`, `include/constants/battle_move_resolution.h`, `include/constants/battle_script_commands.h`, `src/battle_move_resolution.c`, `src/battle_script_commands.c`, `src/battle_util.c`, `test/battle/ability/synchronize.c`, `docs/localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md`
+- HNS 적응과 보존한 한글화/배틀 메시지 동작:
+  - 헤더 6개와 `battle_move_resolution.c`는 그대로 적용(오프셋만). `battle_scripts_1.s`·`battle_script_commands.c`·`battle_util.c`·테스트는 HnS 문맥 차이로 의미 단위 수동 이식.
+  - `movevaluescleanup`(스크립트 3곳: 티타임·플라워가드·중력)·`setmultihit`·`decrementmultihit`와 `MoveValuesCleanUp()`을 없애고, opcode 자리는 upstream처럼 끝의 `B_SCR_OP_UNUSED_31/32`로 채워 이후 PR과 번호를 맞췄다. `B_SCR_OP_TRY_SYNCHRONIZE`는 `TRYOVERWRITEABILITY` 뒤. HnS `include/constants/battle_script_commands.h`는 upstream 부모와 같아 결과도 upstream과 같다.
+  - `SetNonVolatileStatus`에 `battlerAtk` 인자를 추가하고 호출처 7곳을 upstream대로 바꿨다. 끝에서 `TrySynchronizeActivation()`이 상태를 받은 쪽의 싱크로를 예약하고, `BattleScript_UpdateEffectStatusIconRet`의 `trysynchronize`가 발동, 이어서 `tryactivateitem BS_EFFECT_BATTLER, ACTIVATION_ON_STATUS_CHANGE`가 상태 치료 열매를 확인한다. `Cmd_tryactivateitem`은 발동해도 다음 명령으로 진행한다(upstream).
+  - 삭제한 HnS `ABILITYEFFECT_(ATK_)SYNCHRONIZE`에는 #9828(2026-09-26 선별 이식)의 `gEffectBattler == gBattlerTarget/Attacker` 조건이 있었다. 새 `TrySynchronizeActivation`의 `battlerAtk == effectBattler` 반환과 "상태를 받은 쪽 특성이 싱크로" 검사가 같은 경우를 막는다(1.17.0도 같은 구조). #9828 테스트 "Synchronize does not trigger when holder inflicts status with its own move"가 계속 PASS.
+  - HnS `B_MSG_STATUSED_BY_ABILITY` 선택(특성으로 건 상태 문구), `poisonPuppeteer` 표시, 필드 싱크로(`ow_abilities.c` `IsSynchronizeActive`)는 그대로. 문자열·STRINGID 변화 없음.
+  - **출력 순서 변화(upstream 유래):** 싱크로 팝업·되돌린 상태 문구와 상태 치료 열매 발동이 move end에서 상태 문구 직후로 앞당겨진다. 광역기는 대상마다 싱크로가 반응한다. `docs/localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md` "특성·도구·도주" 표에 1행 추가(plan 지시).
+- 저장·ROM·그래픽 영향: ROM −240 B(32,716,292 → 32,716,052). `BattleStruct`에서 `u16 synchronizeMoveEffect`가 빠지고 3비트 `synchronizeState`가 기존 `unused:3` 자리에 들어갔다(힙). 세이브 무관.
+- 검증:
+  - 옛 심볼 사용처 0건(`synchronizeMoveEffect`, `MoveValuesCleanUp`, `movevaluescleanup`, `setmultihit`, `decrementmultihit`, `ABILITYEFFECT_(ATK_)SYNCHRONIZE`, `MOVEEND_SYNCHRONIZE_*`)
+  - `git diff --check`: 통과. 비ASCII 소스 줄 변경 0건.
+  - `make hns -j8`: 종료 코드 0, ROM 32,716,052 B / EWRAM 248,876 B / IWRAM 25,516 B, 새 경고 없음
+  - 자동 테스트(기준 대비 PASS→FAIL 0): `ability/synchronize.c` 9건 PASS 8(새 테스트 2개 "Synchronize will trigger on both targets", "…can trigger again during the same attack if user cured it's status" PASS 포함), FAIL 1(기준에서도 FAIL인 "…Toxic Orb or Flame Orb 2/2", `Task_FreeAbilityPopUpGfx` task not freed). `hold_effect/cure_status.c` 14건(PASS 2, FAIL 12), `move_effect/teatime.c` 12건 FAIL(`Unmatched MESSAGE`), `flower_shield.c`(PASS 3, FAIL 1), `gravity.c`(PASS 1, FAIL 1, TO_DO 3), `psycho_shift.c` TO_DO 1, `ability/poison_touch.c`·`static.c`·`flame_body.c`·`effect_spore.c`·`poison_point.c`(FAIL은 `Unmatched MESSAGE`와 기존 확률 테스트) — 모두 기준과 같은 상태.
+  - 실기 확인: **필요.** 싱크로(독·마비·화상) 되돌리기와 팝업 순서, 광역 독 공격에 두 싱크로 포켓몬, 리샘열매·복숭열매 등 상태 치료 열매 발동 시점과 한글 문구·아이템 팝업, 독수(Poison Touch)+싱크로+리샘열매 조합, 티타임·플라워가드·중력.
+- 남은 위험: 중간(배틀 스크립트 흐름 변경). 자동 테스트로 핵심 경로는 확인.
