@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 92~101
 
-진행 중: 마지막 완료 seq 99, 다음 seq 100.
+진행 중: 마지막 완료 seq 100, 다음 seq 101.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 사전 분석: PR마다 병렬 분석 에이전트가 쓴 이식 계획(`hns-sync-work/chunk-092-101/seq<N>-<PR>.md`, 저장소 밖)을 따랐다.
@@ -156,3 +156,24 @@
   - 자동 테스트(9개 파일): `ai/ai_switching.c` 123개(PASS 104 / FAIL 16 / KNOWN_FAILING 1, 기준 목록 밖 INVALID 1·ASSUMPTION_FAIL 1은 위 공통 사항), `ai_flag_predict_switch.c` 11(PASS 11), `ai_double_ace.c` 4(3/1), `ai_doubles.c` 50(43/3), `ai_multi.c` 11(11), `ai_flag_sequence_switching.c` 4(2/2), `ai/ai.c` 75(PASS 58 / FAIL 14, 같은 이름 1쌍, `First Impression …` ASSUMPTION_FAIL 2건은 이전 전체 로그에도 있음), `ability/download.c` 4(FAIL 4, 모두 `Unmatched MESSAGE`), `ability/supreme_overlord.c` 5(1/4, FAIL은 모두 `Unmatched MESSAGE`). 기존 테스트는 기준 목록과 같고(회귀 0), **새 테스트 4개(`AI_FLAG_SMART_MON_CHOICES: AI sees stat stage / status / volate / HP changes …`) 모두 PASS**.
   - 실기 확인: **필요**(아래 "실기 확인 필요").
 - 남은 위험(upstream과 같은 한계, 원문대로 둠): 스탯 단계·HP 변화가 다른 배틀러마다 반복 적용된다(더블에서 끈적끈적네트 −3, 장판 대미지 3배, 파트너에게도 위협). 위협·감미로운꿀로 낮춘 상대 스탯 단계가 같은 선택 과정의 다음 후보 평가에 누적된다(`FreeRestoreBattleMons`에서만 복원). 장판 대미지가 `SetBattlerHPChangeForSwitch`와 `GetSwitchinHitsToKO`에서 두 번 빠진다. 상대가 +6일 때 오기/승기 +2가 붙으면 스탯 단계 표 범위를 넘는다(드묾). 뒤 PR(seq 104 #9551, 112 #9587, 145 #8472, 173 #9847, 383 #10145, 481 #10326)이 이 함수들을 다시 바꾼다(아래 "후속 행 메모").
+
+## 동기화 단위: seq 100 #9548 `U-aicalc-9548` Adds ai calcs for Bolt Beak, Payback and Analytic
+
+- 현재 판정: 적용(1.17.0 최종형, 원 커밋 hunk 4개 제외)
+- 커밋: `3c09c95b2a`
+- upstream 근거: `f6a838e1d8`(원형). 최종형 근거: #9596 `b9a1dcfbde` → #10453 `2f7029e124` → #8647 `64c5044083`(= 1.17.0).
+- 해결한 의존성: seq 99 #9124 뒤에 적용(같은 `battle_util.c`, 함수 겹침 없음). HnS에는 `AI_SetBattlerTurnOrder`가 이미 공개 함수로 있어(`battle_ai_util.h`, 1.17.0 본문과 같음) 중간 단계 없이 최종형을 넣었다.
+- 수정 파일(2): `src/battle_util.c`, `test/battle/ai/ai.c`
+- 적용 방법:
+  - `src/battle_util.c`: `IsLastMonToMove` 뒤에 `GetAiTurnOrder`·`Ai_AttackerMovesAfterTarget(battlerAtk, battlerDef)`·`Ai_AttackerMovesLast(battlerAtk)`(호출할 때 `AI_SetBattlerTurnOrder`로 로컬 순서 계산). 세 함수는 1.17.0 `battle_util.c`와 글자까지 같다. `CalcMoveBasePower`의 `EFFECT_PAYBACK`·`EFFECT_BOLT_BEAK`, `CalcMoveBasePowerAfterModifiers`의 `ABILITY_ANALYTIC`에 `ctx->aiCalc` 분기를 넣었다. 1.17.0과 다른 줄은 실전(else) 분기의 `gBattleStruct->battlerState[battlerDef].isFirstTurn`(1.17.0은 #9786 `BattlerJustSwitchedIn`, seq 159 몫) 2줄뿐이고 들여쓰기는 #9786 hunk가 그대로 붙도록 upstream과 같게 뒀다.
+  - `test/battle/ai/ai.c`: upstream hunk 그대로(`TURN { ` 끝 공백 제거 1줄 + Bolt Beak AI 테스트 2개). 새 테스트는 1.17.0과 같다.
+  - **제외 hunk(4):** `include/battle_util.h`의 `BattleContext.aiTurnOrder` 필드(최종형에 없음, #9596이 제거), `src/battle_ai_util.c`의 `static void AI_SetBattlerTurnOrder` 선언·정의(HnS 공개 함수와 충돌)와 `AI_CalcDamage` 안의 호출(원형의 프레임 회귀 원인, #9596·#10453이 바꿈).
+- 동작 변화(의도된 AI 개선): AI 대미지 계산에서만 보복(공격자가 늦으면 ×2)·전격부리/아가미물기(공격자가 빠르면 ×2)·애널라이즈(살아 있는 배틀러 중 마지막이면 ×1.3, 미래예지 제외)를 AI 예측 속도 순서로 판정한다. 이전에는 지난 턴의 행동 기록으로 판정했다. 실전 대미지·메시지 경로(`aiCalc == FALSE`)는 식이 그대로다. HnS 트레이너 중 해당: 블루 마기라스(보복), 아칼라 수영선수 아쿠스타·조이(해방 후) 자포코일(애널라이즈)(사전 분석 기준).
+- HNS 보존: 한글·STRINGID·메시지 변화 없음(비ASCII 변경 줄 0). `AI_SetBattlerTurnOrder`·HnS `AI_CalcDamage`(Nature Power 분기)·`GetDamageCalcAbility` 가드 수정 없음. `BattleContext` 크기 그대로.
+- 저장·ROM·그래픽 영향: 세이브 영향 없음.
+- 검증:
+  - `git diff --check`: 통과. 파일 모드 유지.
+  - `make hns -j8`: 종료 코드 0, **ROM 32,714,948 B(+432 B) / EWRAM 248,924 B(0) / IWRAM 25,516 B(0)**. 새 경고 0. 섹션 변화: `Ai_AttackerMovesAfterTarget` +96(나머지 둘은 인라인), `CalcMoveBasePower` +120, `DoMoveDamageCalcVars` +208(애널라이즈 분기 인라인), `BattleScriptPush` +4(`assertf`의 `__LINE__` 1264 → 1301이 즉치값으로 표현되지 않아 리터럴로).
+  - 자동 테스트: 코드 넣기 전 테스트만 먼저 넣고 돌리면 새 테스트 2개가 FAIL(`Bolt Beak … (singles) 2/2`는 `Unmatched EXPECT_MOVE`, `(doubles)`는 `Unmatched SCORE_EQ_VAL`)이었고, 코드를 넣은 뒤 둘 다 PASS. `ai/ai.c` 77개(PASS 60 / FAIL 14, 기준 대비 새 PASS 2, 나머지 같음), `bolt_beak.c`(PASS 2), `payback.c`(TO_DO 1), `analytic.c`(PASS 3 / TO_DO 2), `sheer_force.c`(30/1), `ai/ai_doubles.c`(43/3) — 기준 목록과 같다(회귀 0).
+  - 실기 확인: 권장(필수 아님). 아래 "실기 확인 필요".
+- 남은 위험(upstream과 같은 한계): AI 순서 계산이 우선도·교체 예측을 보지 않는다. `Ai_AttackerMovesLast`는 살아 있는 수만 세지만 정렬에는 쓰러진 칸도 들어가 더블에서 ×1.3을 잘못 줄 수 있다. `Ai_AttackerMoves*` 호출마다 `AI_WhoStrikesFirst`를 16번 부른다(1.17.0과 같은 비용).
