@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 63~82
 
-진행 중: 마지막 완료 seq 67 (#9410), 다음 seq 68 (#9388). seq 76 #9474는 seq 64 커밋에 포함(이미 적용).
+진행 중: 마지막 완료 seq 68 (#9388), 다음 seq 69 (#9107). seq 76 #9474는 seq 64 커밋에 포함(이미 적용).
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `72f40563ad`
@@ -113,4 +113,19 @@
   - `make hns -j8`: 종료 코드 0, ROM 32,715,748 B / EWRAM 248,892 B / IWRAM 25,516 B, 새 경고 없음
   - 자동 테스트: `test/battle/move_effect/telekinesis.c` 5건 — FAIL 3(모두 `Unmatched MESSAGE`), TO_DO 2. 기준과 같음.
   - 실기 확인: 불필요(동작 동일, 목록 동일)
+- 남은 위험: 없음
+
+## 동기화 단위: seq 68 #9388 `U-9388` update poparraywithBattlers Arg to prevent warning
+
+- 현재 판정: 적용
+- 커밋: `6cd587e185`
+- upstream 근거: `d20d14a15d`
+- 수정 파일: `src/battle_main.c`(`PopulateArrayWithBattlers(u8 *)` → `(enum BattlerId *)`)
+- HNS 적응과 보존한 한글화/배틀 메시지 동작: 그대로 적용. 호출처 2곳은 이미 `enum BattlerId battlers[MAX_BATTLERS_COUNT]`를 넘기고, `enum BattlerId`는 `__attribute__((packed))`(1바이트)라 원소 크기가 같다.
+- 저장·ROM·그래픽 영향: 없음
+- 검증:
+  - `git diff --check`: 통과
+  - `make hns -j8`: 종료 코드 0, ROM 32,715,748 B / EWRAM 248,892 B / IWRAM 25,516 B, 새 경고 없음
+  - 자동 테스트: 해당 없음
+  - 실기 확인: 불필요
 - 남은 위험: 없음
