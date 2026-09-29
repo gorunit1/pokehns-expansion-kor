@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 84~90
 
-진행 중: 마지막 완료 seq 89, 다음 seq 90
+진행 중: 마지막 완료 seq 90, 다음 구간 끝 전체 테스트
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `79af946ddf`
@@ -199,3 +199,20 @@
   - 자동 테스트: L 크기라 전체 실행(11분 47초). 목록 5,128행이 이식 전(#9510 직후 전체 실행 = `test-baseline-seq083.txt`)과 **바이트 동일**, CRASH/INVALID 줄도 같음. #9514가 건드린 테스트 6파일과 관련 파일(`test/battle/move_effect_secondary/*.c` 전체, `move_effect/` 방벽·오로라베일·중력·씨뿌리기·코어퍼니셔·내던지기·원한·소란·수면·마비·독, `gimmick/dynamax.c`, `sleep_clause.c`) 52파일 319건: 전후 모두 PASS 100 / FAIL 196 / KNOWN_FAILING 1 / TO_DO 22. upstream 테스트 hunk(`ASSUME(MoveHasAdditionalEffect…)` → `MoveHasAdditionalEffectSelf`, 14줄)는 그대로 이식했다(영문 `MESSAGE` 기대값 변경은 이 PR에 없음).
   - 실기 확인: 권장. 조이기 계열 10개(Bind·Wrap·Fire Spin·Clamp·Whirlpool·Sand Tomb·Magma Storm·Infestation·Snap Trap·Thunder Cage) 문장의 두 이름과 조사(싱글·더블, 상대/야생 접두어), Uproar·Burn Up·Double Shock, Feint·Hyperspace Fury 방어 해제 문구, Flame Burst 파트너 이름(더블), Salt Cure·Syrup Bomb, Glitzy Glow·Baddy Bad(방벽 문구)·G-Max Resonance(오로라베일 성공 문구 `STRINGID_PKMNRAISEDDEFSPDEF`), 깨뜨리다·사이코팽의 방벽 순차 해제 문구, 수면·독·마비 상태 기술을 이미 그 상태인 상대에게 썼을 때 대상 이름(변경 없음 확인).
 - 남은 위험: 중간. 스크립트·`SetMoveEffect` 전반의 변수 정리라 위 경로 외 드문 조합(다이맥스 기술, 더블배틀 부가 효과)은 실기로 확인하는 것이 좋다. `BATTLE_MESSAGE_OUTPUT_CHANGES.md`에 G-Max Gold Rush 1행을 추가했다.
+
+## 동기화 단위: seq 90 #9539 `U-9539` Some bool cleanup
+
+- 현재 판정: 적용(그대로)
+- 커밋: `7b578d7bb2`
+- upstream 근거: `439b38b990`
+- 해결한 의존성: 없음
+- 수정 파일: `src/easy_chat.c`(`EasyChatIsNationalPokedexEnabled`·`IsEasyChatIndexAndGroupUnlocked`·`IsRestrictedWordSpecies` 반환형 → `bool32`, 선언 3줄·정의 3줄)
+- HNS 적응과 보존한 한글화/배틀 메시지 동작: `git apply` 그대로. 문자열 무관.
+- 저장·ROM·그래픽 영향: ROM −16 B(32,712,612 B). 세이브 무관.
+- 코드 비교: `easy_chat.o` 함수 58개 중 2개만 다름 — `IsEasyChatIndexAndGroupUnlocked`(`bool8` 절단 `lsls/lsrs #24` 제거, `enabled`를 `ldrb` 대신 `ldr`로 읽음)와 `InitEasyChatScreen`(인라인된 `EasyChatIsNationalPokedexEnabled`의 절단 제거). `EasyChatWordInfo.enabled`는 `int`이고 데이터 값은 `TRUE` 1,002개·`FALSE` 6개뿐, `IsNationalPokedexEnabled()`는 `bool32` TRUE/FALSE라 결과가 같다.
+- 검증:
+  - `git diff --check`: 통과. 비ASCII 줄 변경 0.
+  - `make hns -j8`: 종료 코드 0, ROM 32,712,612 B / EWRAM 248,924 B / IWRAM 25,516 B, 새 경고 없음.
+  - 자동 테스트: 해당 테스트 없음. 구간 끝 전체 실행에 포함.
+  - 실기 확인: 불필요.
+- 남은 위험: 없음.
