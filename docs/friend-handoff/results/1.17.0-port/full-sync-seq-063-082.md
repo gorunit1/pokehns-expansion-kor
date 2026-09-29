@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 63~82
 
-진행 중: seq 80 (#9249) unit 진행 중 — #9249 커밋 완료, 이어서 같은 unit #10648. 그다음 seq 81 (#9051).
+진행 중: 마지막 완료 seq 80 (#9249 unit: #9249·#10648), 다음 seq 81 (#9051).
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `72f40563ad`
@@ -371,3 +371,15 @@
     - `gravity.c`, `uproar.c`, `ally_switch.c`, `ability/own_tempo.c`, `ability/dancer.c`, `move_effect/instruct.c`, `sleep_clause.c`, `ability/parental_bond.c`, `move_effect/me_first.c`, `ability/infiltrator.c`: 기준과 같은 상태(FAIL은 `Unmatched MESSAGE`·기존 확률 테스트).
   - 실기 확인: **필요.** 역린·난동부리기·꽃잎댄스 종료 혼란 문구가 기술 직후 나오는지, 프리폴로 난동 중인 포켓몬을 잡았다 놓을 때(일반·비행 타입·사용자 기절·중력), 신비의부적 아래 난동 종료, 떨어뜨리기로 공중/프리폴 상태 대상, 노가드+프리폴, 하품으로 잠든 프리폴 대상.
 - 남은 위험: 중간(배틀 흐름 리팩터). 참고: #10180(이미 이식, `f2d3008825`)에서 #9249 부재로 뺐던 `IsBattlerInvolvedInSkyDrop()`(탈출팩·탈출버튼이 프리폴 중에는 발동하지 않음)은 이제 전제가 충족됐다. HnS `TrySwitchInEjectPack`에는 아직 이 검사가 없다 — #9784(seq 166, `TryEjectPack`/`TryEjectButton` 신설) 이식 때 1.17.0 형태로 함께 넣을 것.
+
+### unit U-skydrop-9249: #10648 Fixes Sky Drop hitting replacement when original target fainted (순서표 seq 330)
+
+- 현재 판정: 적용(같은 unit 회귀 수정, #9249 바로 뒤). **seq 330 담당은 "이미 적용"으로 처리한다.**
+- 커밋: `ed6ef1dffc`
+- upstream 근거: `7cefadecdf`
+- 수정 파일: `src/battle_main.c`(`SwitchInClearSetData`·`FaintClearSetData`에서 그 배틀러를 가리키는 `skyDropTarget` 해제), `src/battle_move_resolution.c`(`HandleSkyDropResult` 2턴째: 저장된 대상이 없으면 실패), `src/battle_script_commands.c`(`Cmd_tryconfusionafterskydrop` 빈 대상 처리), `test/battle/move_effect/sky_drop.c`(테스트 2개)
+- HNS 적응: `HandleSkyDropResult`는 HnS의 `struct BattleContext *ctx` 형태에 맞춰 수동 적용(upstream은 이후 PR의 `BattleCalcValues *cv`). 테스트는 HnS 파일 끝에 붙였다. 나머지는 그대로(오프셋만).
+- **동작 변화:** 프리폴 대상이 기절해 교체된 뒤 2턴째에 교체된 포켓몬(공중날기 중이거나 다른 프리폴에 잡힌 경우 포함)을 원래 대상으로 착각해 치던 문제 수정(#9249 회귀).
+- 저장·ROM·그래픽 영향: ROM +96 B
+- 검증: `git diff --check` 통과, `make hns -j8` 종료 코드 0, ROM 32,717,236 B / EWRAM 248,908 B / IWRAM 25,516 B, 새 경고 없음. `move_effect/sky_drop.c` 18건 — PASS 14(이 PR 새 테스트 2개 PASS 포함), FAIL 4(모두 `Unmatched MESSAGE`). 회귀 없음.
+- 실기 확인: #9249 항목에 포함(프리폴 대상 기절·교체 뒤 2턴째)
