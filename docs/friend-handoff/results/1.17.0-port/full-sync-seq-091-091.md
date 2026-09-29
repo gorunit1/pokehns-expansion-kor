@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 91 (+ 같은 unit의 seq 93)
 
-진행 중: 마지막 완료 seq 91(#9507), 다음 seq 93(#9558, 같은 unit이라 바로 이어서 넣음) → 그다음 구간은 seq 92 #9429부터.
+진행 중: 마지막 완료 seq 91(#9507)과 같은 unit의 seq 93(#9558), 다음: 구간 끝 전체 테스트 → 다음 구간은 seq 92 #9429부터.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md), group plan [`g4_ai_tests_pokemon_sprites_plan.md`](../1.17.0-sync-plan/g4_ai_tests_pokemon_sprites_plan.md)
 시작 HEAD: `2e403781f3` (작업 트리 clean)
@@ -90,6 +90,23 @@
 - 실기 확인: 아래 "실기 확인 필요".
 - 남은 위험: 낮음. 바뀐 함수 170개는 모두 형 변환(16비트 절단·확장)과 그에 따른 명령 배치 변화이고, 값이 16비트를 넘거나 음수인 경로는 위 필드 기술 울음소리 1건뿐이었다(유지).
 
+## 동기화 단위: seq 93 #9558 `U-species-enum-9507` Add some constants nudging users where to put their custom species
+
+- 현재 판정: 적용(그대로). group plan대로 #9507과 같은 unit이라 seq 92보다 먼저, #9507 바로 뒤 커밋으로 넣었다. **seq 93에 도달하면 "이미 적용"으로 처리한다.**
+- 커밋: `8de47b965d`
+- upstream 근거: `34cf7172bc`
+- 해결한 의존성: #9507(`b0a0fb9033`) 뒤. hunk 문맥이 #9507 enum이라 그대로 적용됐다.
+- 수정 파일: `include/constants/species.h`(`SPECIES_GLIMMORA_MEGA` 뒤에 `SPECIES_CUSTOM_START = SPECIES_GLIMMORA_MEGA`, 주석 1줄, `SPECIES_CUSTOM_END`, `SPECIES_EGG = SPECIES_CUSTOM_END`). 결과 파일이 upstream 1.17.0 `include/constants/species.h`와 바이트 동일하다(모드 100755 유지).
+- HNS 적응과 보존한 한글화/배틀 메시지 동작: 없음(HnS 전용 종 없음). 새 주석은 영문.
+- 새 이름: `SPECIES_CUSTOM_START` = 1572(= `SPECIES_GLIMMORA_MEGA`), `SPECIES_CUSTOM_END` = 1573. `SPECIES_EGG`·`NUM_SPECIES` = 1573으로 전과 같다(C·asm 모두, 아래 "필수 검증 1"). asm 경로에서는 preproc가 `.equiv SPECIES_CUSTOM_END, (SPECIES_GLIMMORA_MEGA) + 1`, `.equiv SPECIES_EGG, (SPECIES_CUSTOM_END) + 0`을 만든다.
+- 저장·ROM·그래픽 영향: **ROM이 #9507 빌드와 바이트 동일**(SHA-1 `cfdfb88553e6c19e308d58099b7c681645bb9dfa`). C 오브젝트 전부 바이트 동일, asm 데이터 오브젝트 4개는 섹션 내용·재배치 동일하고 기호표에 `SPECIES_CUSTOM_*` 2개만 늘었다. 구조체 배치 dump 99개 TU도 #9507 직후와 바이트 동일.
+- 검증:
+  - `git diff --check`: 통과. 비ASCII 변경 줄 0.
+  - `make hns -j8`: 종료 코드 0, ROM 32,713,060 B / EWRAM 248,924 B / IWRAM 25,516 B. 경고 목록이 #9507 전체 재빌드와 같다(새 경고 0).
+  - 자동 테스트: 해당 테스트 없음(ROM 동일). 구간 끝 전체 실행에 포함.
+  - 실기 확인: 불필요(ROM 동일).
+- 남은 위험: 없음. 이후 HnS에 커스텀 종을 넣을 때는 `SPECIES_CUSTOM_START`와 `SPECIES_CUSTOM_END` 사이에 넣게 되며, 그러면 `SPECIES_EGG`·`NUM_SPECIES`가 커져 `dexNavSearchLevels`(현재 `USE_DEXNAV_SEARCH_LEVELS FALSE`라 세이브에 없음) 같은 `NUM_SPECIES` 크기 배열이 바뀐다(upstream과 같은 조건).
+
 ## 필수 검증 결과 (#9507 직후, `b0a0fb9033`)
 
 ### 1. 종 ID 값 보존 (C 경로·asm 경로)
@@ -99,12 +116,12 @@
   - asm 경로: `.4byte NAME` 목록 `.s`를 `data/*.s`와 같은 `preproc -s | cpp -I include | preproc -ie | as`로 조립해 `.data`를 읽었다. 이식 후 값은 preproc가 enum에서 만든 `.equiv`에서 온다(예: `.equiv SPECIES_BULBASAUR, (1) + 0`, `.equiv SPECIES_EGG, ((SPECIES_GLIMMORA_MEGA + 1)) + 0`, `.equiv NUM_SPECIES, (SPECIES_EGG) + 0`).
 - 결과: C 1,679행(숫자 1,677, 나머지 2행은 이식 전후 모두 없는 CUSTOM 이름), asm 1,675행(숫자 1,673). **이식 전후 diff: C 0줄, asm 0줄.** 이름 집합도 같다(파일 안 순서만 다름). 주요 값: `SPECIES_NONE` 0, `SPECIES_GLIMMORA_MEGA` 1572, `SPECIES_EGG` = `NUM_SPECIES` = 1573, `SPECIES_SHINY_TAG` 5000, `RANDOMIZER_MAX_MON` 1572, `P_SCATTERBUG_LINE_FORM_BREED` 1455, `SPECIES_BITMAP_SIZE` 197, `sizeof(gFusionTablePointers)` 6292.
 - `#if`/`#ifdef`/`defined()`와 asm `.if`에서 종 상수를 쓰는 곳 0건(`src`·`include`·`test`·`data`·`asm`·`tools`). `include/constants/species.h`를 파싱하는 빌드 도구 0건(`tools/learnset_helpers`·`wild_encounters`는 이름만 다룸).
-- 참고: `enum Species`의 크기·부호는 `sizeof` 2, `(enum Species)-1 > 0`(무부호 16비트)이다(DWARF: `enumeration_type` byte_size 2, 바탕형 `short unsigned int`).
+- 참고: `enum Species`는 무부호 16비트다. #9558 뒤 같은 C 경로로 `sizeof(enum Species)` = 2, `(enum Species)-1` = 65535, `(enum Species)-1 > 0` = 1을 확인했고, DWARF에서도 `Species`는 byte_size 2·encoding unsigned다.
 
 ### 2. 세이브 구조 불변 (DWARF 배치 비교)
 
 - 방법(`layout/`): (a) `global.h` 뒤에 `include/*.h`·`include/constants/*.h` 가운데 함께 컴파일되는 438개(`help_window.h` 1개만 충돌로 제외, 종 필드 없음)를 include한 TU 1개, (b) #9507이 바꾼 C 파일 98개 각각을 HnS와 같은 `cpp → preproc -i → cc1` 경로와 플래그(`-O2 -mabi=apcs-gnu … -ffunction-sections -fdata-sections`)에 `-g -fno-eliminate-unused-debug-types`를 더해 컴파일했다. `arm-none-eabi-readelf --debug-dump=info`에서 이름 있는 struct/union과 익명 struct를 가리키는 typedef를 뿌리로 삼아 멤버를 재귀적으로 펼쳤다(중첩 struct·union·배열 첫 원소까지, 줄마다 경로·오프셋·크기·비트 오프셋·비트 폭·잎 형 분류). 이식 전후 줄을 비교하되 잎 형 분류는 `uint` → `enum:uint`(같은 폭)만 허용했다.
-- 결과: TU 99개, 뿌리 비교 25,872회(서로 다른 뿌리 633종). **배치(경로·오프셋·크기·비트필드 위치) 차이 0.** 잎 형 변화 12,897건(중복 포함)은 모두 `uint → enum:uint`이고, 형만 바뀐 뿌리는 82종이다(예: `SaveBlock1`·`SaveBlock2`·`BattleFrontier`·`TVShow`·`DayCare`·`DaycareMon`·`DaycareMail`·`Roamer`·`Apprentice`·`ApprenticeMon`·`PlayersApprentice`가 아니라 `ApprenticeTrainer`, `EmeraldBattleTowerRecord`·`BattleTowerPokemon`·`BattleTowerInterview`·`SecretBase`·`SecretBaseParty`·`ContestWinner`·`Mail`·`WonderCard`·`WonderCardMetadata`·`MysteryGiftSave`·`RecordMixingDaycareMail`·`TrainerHill*`·`BattlePokemon`·`BattleResults`·`BattleStruct`·`Evolution`·`FormChange`).
+- 결과: TU 99개, 뿌리 비교 25,872회(서로 다른 뿌리 633종). **배치(경로·오프셋·크기·비트필드 위치) 차이 0.** 잎 형 변화 12,897건(중복 포함)은 모두 `uint → enum:uint`이고, 형만 바뀐 뿌리는 82종이다(예: `SaveBlock1`·`SaveBlock2`·`BattleFrontier`·`TVShow`·`DayCare`·`DaycareMon`·`DaycareMail`·`Roamer`·`Apprentice`·`ApprenticeMon`·`ApprenticeTrainer`·`EmeraldBattleTowerRecord`·`BattleTowerPokemon`·`BattleTowerInterview`·`SecretBase`·`SecretBaseParty`·`ContestWinner`·`Mail`·`WonderCard`·`WonderCardMetadata`·`MysteryGiftSave`·`RecordMixingDaycareMail`·`TrainerHill*`·`BattlePokemon`·`BattleResults`·`BattleStruct`·`Evolution`·`FormChange`).
 - 세이브 관련 주요 구조체 크기(전후 같음): `SaveBlock1` 15,760 / `SaveBlock2` 3,892 / `SaveBlock3` 52 / `PokemonStorage` 34,256 / `Pokemon` 100 / `BoxPokemon` 80(`PokemonSubstruct0.species`는 `u16 :11` 비트필드 그대로) / `TVShow` 36 / `LilycoveLady` 64 / `DayCare` 288 / `Roamer` 28 / `BattleFrontier` 2,272 / `Apprentice` 68 / `EmeraldBattleTowerRecord` 236 / `BattleTowerPokemon` 44 / `TrainerHillSave` 12 / `SecretBase` 160 / `ContestWinner` 32 / `Mail` 36 / `WonderCard` 332 / `WonderCardMetadata` 36 / `MysteryGiftSave` 876 / `RecordMixingDaycareMail` 120 / `RecordedBattleSave` 4,008 / `HallofFameMon` 24.
 - 기존 `STATIC_ASSERT(sizeof …)` 11개(`save.c` `SaveBlock1/2/3`·`PokemonStorage` 여유 공간·`ChallengeSettings == 32`, `hall_of_fame*.c`, `ereader_helpers.c` `TrainerHillChallenge`, `recorded_battle.c`, `list_menu.c`, `battle.h` `palaceFlags`)가 빌드에서 통과했다.
 - asm 데이터 오브젝트(`data/*.o`) 4개는 파일은 달라졌지만 섹션 내용과 재배치가 기준과 같다. 차이는 preproc가 enum에서 만든 `SPECIES_*` 절대 기호(1,670개)가 기호표에 생긴 것뿐이다.
