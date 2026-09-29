@@ -504,7 +504,7 @@ static const struct ChallengeMenuItem sTabItems_Mode[] = {
 };
 
 static const u8 *const sDesc_SaveExit[] = { COMPOUND_STRING("설정을 저장하고 계속합니다") };
-static const u8 sText_ConfirmSave[] = COMPOUND_STRING("이 설정으로 결정하겠습니까?");
+static const u8 sText_ConfirmSave[] = _("이 설정으로 결정하겠습니까?");
 
 // =============================================================================
 // Choice strings — shared across tabs
