@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 63~82
 
-진행 중: 마지막 완료 seq 79 (#9467), 다음 seq 80 (#9249, 같은 unit #10648 포함 예정).
+진행 중: seq 80 (#9249) unit 진행 중 — #9249 커밋 완료, 이어서 같은 unit #10648. 그다음 seq 81 (#9051).
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `72f40563ad`
@@ -344,3 +344,30 @@
   - 자동 테스트: `test/battle/trainer_control.c` 20건 — PASS 19, FAIL 1(`EXPECT failed`, 기준에서도 FAIL). 기준과 같음.
   - 실기 확인: 불필요
 - 남은 위험: 없음
+
+## 동기화 단위: seq 80 #9249 `U-skydrop-9249` Refactor Sky Drop and rampage confusion
+
+- 현재 판정: 적용(HnS 적응)
+- 커밋: `399dc07d5b`(코드), `b836436e60`(`BATTLE_MESSAGE_OUTPUT_CHANGES.md` 기록)
+- upstream 근거: `c114dfbc84`, 1.17.0 대조(`EFFECT_SMACK_DOWN`, 독조종(Poison Puppeteer), `CanBeConfused`)
+- 해결한 의존성: #9446(seq 72), #9358(seq 55) 뒤. 같은 unit의 회귀 수정 #10648(seq 330)을 바로 뒤 커밋으로 넣는다(아래).
+- 수정 파일(21): `asm/macros/battle_script.inc`, `data/battle_scripts_1.s`, `include/battle.h`, `include/battle_main.h`, `include/battle_scripts.h`, `include/battle_util.h`, `include/config/battle.h`, `include/constants/battle.h`, `include/constants/battle_move_resolution.h`, `include/constants/battle_script_commands.h`, `include/constants/generational_changes.h`, `src/battle_ai_items.c`, `src/battle_ai_util.c`, `src/battle_anim_effects_1.c`, `src/battle_end_turn.c`, `src/battle_main.c`, `src/battle_move_resolution.c`, `src/battle_script_commands.c`, `src/battle_util.c`, `test/battle/move_effect/sky_drop.c`, `test/battle/move_effect_secondary/thrash.c`
+- HNS 적응과 보존한 한글화/배틀 메시지 동작:
+  - 17개 파일은 그대로 적용, 거부된 hunk 7개(스크립트 2, `battle_main.h` 1, `battle_script_commands.c` 1, `battle_util.c` 3)는 수동 병합했다. 중력 스크립트는 HnS의 `VOLATILE_MAGNET_RISE_TIMER` 문맥, 기절 스크립트는 HnS의 `call BattleScript_TryRevertWeatherform` 문맥에 맞췄다.
+  - `gBattleStruct->skyDropTargets[]`·`enum SkyDropState`·`CheckSkyDropState`·`BS_SkyDropYawn`·`skydropyawn`·`MOVEEND_SKY_DROP_CONFUSE`·`STATE_SKY_DROP`를 없애고 `VOLATILE_SKY_DROP_TARGET`(`skyDropTarget`, +1 인코딩)·`VOLATILE_CONFUSE_AFTER_DROP`, `STATE_SKY_DROP_ATTACKER`/`STATE_SKY_DROP_TARGET`, `MOVEEND_RAMPAGE`·`MOVEEND_CONFUSION_AFTER_SKY_DROP`, `tryconfusionafterskydrop`(opcode `B_SCR_OP_TRY_CONFUSION_AFTER_SKY_DROP`, `UNUSED_32` 자리 사용)로 바꿨다. `CancelMultiTurnMoves(battler)`, `CanBeConfused(atk, effect)`, `void FaintClearSetData`.
+  - config: HnS `B_RAMPAGE_CANCELLING GEN_LATEST` → `B_RAMPAGE_CONFUSION GEN_LATEST`(이름만, 값 유지, plan).
+  - upstream #9249 뒤에 만들어져 HnS에 먼저 들어와 있던 코드 3곳을 새 상태로 맞췄다(1.17.0 형태와 같음): #10213(2026-09-26 선별 이식)의 떨어뜨리기(`EFFECT_SMACK_DOWN`) move end 검사 → `!= STATE_SKY_DROP_ATTACKER && != STATE_SKY_DROP_TARGET`, #10047 형태의 독조종 혼란 → `CanBeConfused(gBattlerAttacker, gBattlerTarget)`, `BattleCalcValues`를 쓰는 HnS `CanMoveSkipAccuracyCalc`의 노가드 검사 → `IsSkyDropInvolved()`.
+  - HnS 텔레포트 도주의 `FaintClearSetData(battler)` 호출은 반환값을 쓰지 않아 그대로 둔다. HnS `CanSetNonVolatileStatus` 수정(마그마의무장 등)은 이 PR과 무관해 불변.
+  - **출력 시점 변화(upstream 유래):** Gen5+ 난동 종료 혼란("지쳐서 혼란에 빠졌다", `STRINGID_PKMNFATIGUECONFUSION`)이 턴 종료에서 기술 직후로, 프리폴 해제 혼란은 프리폴 공격 뒤 또는 프리폴 사용자 기절 시로 모였다. 신비의부적이 있으면 자기 편 혼란도 막는다(`CanBeConfused`에 신비의부적 검사). `BATTLE_MESSAGE_OUTPUT_CHANGES.md` "기술·필드 상태 효과" 표에 1행 추가(`b836436e60`).
+  - upstream이 넣은 공백만 있는 줄 1개(`battle_script.inc`)는 `git diff --check` 통과를 위해 비웠다.
+- 저장·ROM·그래픽 영향: ROM +2,400 B(32,714,740 → 32,717,140), EWRAM +16 B(`Volatiles` 필드 추가, `BattleStruct.skyDropTargets[4]` 삭제). 세이브 무관(배틀 중 데이터).
+- 검증:
+  - 옛 심볼 사용처 0건(`skyDropTargets`, `SKY_DROP_NO_TARGET`, `SkyDropState`, `STATE_SKY_DROP`, `B_RAMPAGE_CANCELLING`, `ThrashConfusesRet`, `CheckSkyDropState`, `skydropyawn`)
+  - `git diff --check`: 통과. 비ASCII 소스 줄 변경 0건.
+  - `make hns -j8`: 종료 코드 0, ROM 32,717,140 B / EWRAM 248,908 B / IWRAM 25,516 B, 새 경고 없음
+  - 자동 테스트(통과하던 테스트의 회귀 0):
+    - `move_effect/sky_drop.c` 16건: PASS 12(새 테스트 3개 PASS: 비행 타입도 난동 후 떨어지면 혼란, 사용자가 상태이상·상대 특성으로 기절했을 때 즉시 혼란), FAIL 4(모두 `Unmatched MESSAGE`, 새 테스트 "…confusion occurs immediately" 포함).
+    - `move_effect_secondary/thrash.c` 8건 전부 PASS(새 테스트 "Thrash confuses the user after it finishes even if move failed" 포함).
+    - `gravity.c`, `uproar.c`, `ally_switch.c`, `ability/own_tempo.c`, `ability/dancer.c`, `move_effect/instruct.c`, `sleep_clause.c`, `ability/parental_bond.c`, `move_effect/me_first.c`, `ability/infiltrator.c`: 기준과 같은 상태(FAIL은 `Unmatched MESSAGE`·기존 확률 테스트).
+  - 실기 확인: **필요.** 역린·난동부리기·꽃잎댄스 종료 혼란 문구가 기술 직후 나오는지, 프리폴로 난동 중인 포켓몬을 잡았다 놓을 때(일반·비행 타입·사용자 기절·중력), 신비의부적 아래 난동 종료, 떨어뜨리기로 공중/프리폴 상태 대상, 노가드+프리폴, 하품으로 잠든 프리폴 대상.
+- 남은 위험: 중간(배틀 흐름 리팩터). 참고: #10180(이미 이식, `f2d3008825`)에서 #9249 부재로 뺐던 `IsBattlerInvolvedInSkyDrop()`(탈출팩·탈출버튼이 프리폴 중에는 발동하지 않음)은 이제 전제가 충족됐다. HnS `TrySwitchInEjectPack`에는 아직 이 검사가 없다 — #9784(seq 166, `TryEjectPack`/`TryEjectButton` 신설) 이식 때 1.17.0 형태로 함께 넣을 것.
