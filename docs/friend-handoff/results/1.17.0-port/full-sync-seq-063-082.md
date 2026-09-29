@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 63~82
 
-진행 중: 마지막 완료 seq 75 (#9142 unit, #9473·#9564 포함), 다음 seq 76 (#9474, 이미 적용 기록) → seq 77 (#9451). seq 76 #9474는 seq 64 커밋에 포함(이미 적용).
+진행 중: 마지막 완료 seq 77 (#9451), 다음 seq 78 (#9473, 이미 적용 기록) → seq 79 (#9467).
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `72f40563ad`
@@ -299,4 +299,33 @@
 - 현재 판정: **이미 적용**(seq 64 커밋 `2ba44de454`에 #9121과 함께 포함, group plan의 "반드시 같은 커밋")
 - upstream 근거: `4ce8738dae`
 - 근거: `src/battle_gfx_sfx_util.c` `BattleLoadSubstituteOrMonSpriteGfx`의 복사 루프가 `for (u32 i = 1; i < 2; i++)`이고 `s32 i` 선언이 없다(upstream 결과와 같음).
+- 커밋 없음
+
+## 동기화 단위: seq 77 #9451 `U-9451` Allow both AI opponents in doubles to switch out on the same turn
+
+- 현재 판정: 적용(HnS 적응)
+- 커밋: `1c2ca8ec50`
+- upstream 근거: `f32f3a8415`
+- 수정 파일: `include/battle_ai_util.h`, `src/battle_ai_util.c`(`IsPartyMonPlannedToBeSwitchedInByPartner`), `src/battle_ai_main.c`(`AI_TrySwitchOrUseItem`), `src/battle_ai_switch.c`(교체 후보 루프 9곳, `FindMonWithMoveOfEffectiveness`·`ShouldSwitchIfAllMovesBad`·`ShouldSwitchIfWonderGuard`에 `battlerIn1/2`, `GetNextMonInParty`에 `battler`), `test/battle/ai/ai_choice.c`, `test/battle/ai/ai_switching.c`
+- HNS 적응과 보존한 한글화/배틀 메시지 동작:
+  - `GetBestMonIntegrated`·`GetBestMonVanilla` 두 hunk는 HnS의 3인자 `InitializeSwitchinCandidate(battler, monIndex, &party[monIndex])` 문맥 때문에 수동 병합(group plan). 나머지 hunk는 그대로 적용. 파트너 계획 검사 호출 수가 upstream 결과와 같다(10곳).
+  - 새 테스트 "AI can switch out both mons on the same turn in double battles"는 HnS `ai_switching.c` 끝에 붙였다(HnS에 뒤쪽 테스트가 더 있어 패치 위치가 다름).
+  - **AI 동작 변화(upstream 유래):** 더블배틀에서 두 AI가 같은 교체 후보를 고르지 않아 같은 턴에 둘 다 교체할 수 있다(교체하는 모든 AI 트레이너).
+- 저장·ROM·그래픽 영향: ROM +96 B
+- 검증:
+  - `git diff --check`: 통과
+  - `make hns -j8`: 종료 코드 0, ROM 32,714,740 B / EWRAM 248,892 B / IWRAM 25,516 B, 새 경고 없음
+  - 자동 테스트:
+    - `ai/ai_switching.c` 119건: PASS 101, FAIL 16(기준에서도 FAIL인 `Expected 1.0 passes` 11건·`Unmatched MESSAGE` 4건 + 새 테스트 1건), KNOWN_FAILING 1, ASSUMPTION_FAIL 1(기준 목록 형식 밖, 기존과 같음). 새 테스트 "AI can switch out both mons on the same turn in double battles"가 FAIL.
+    - `ai/ai_choice.c` 10건: PASS 9, FAIL 1 — **"Choiced Pokémon won't switch out if they can still affect one opposing Pokémon in doubles 1/2"(기준 PASS)가 FAIL.** 이 테스트는 #9451이 상대를 4마리 → 3마리로 줄이고 기대값을 `EXPECT_SWITCH(opponentLeft, 3)` → `2`로 바꾼 것이라 이전과 다른 시나리오다.
+    - **원인 분류(코드 회귀 아님):** HnS에는 이미 더블배틀 AI 판단 순서를 50% 확률로 뒤집는 `AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE 50`(HnS 기반 커밋 `1821fd6749`)이 있다. 두 테스트는 "왼쪽 AI가 먼저 판단"을 전제하는데 테스트 RNG에서 순서가 뒤집혀 오른쪽 AI가 먼저 후보를 가져간다. 확인을 위해 `include/config/ai.h`의 값을 임시로 0으로 바꿔(커밋 안 함, 되돌림) 돌리자 **`ai_choice.c` 10건 전부 PASS, `ai_switching.c` 새 테스트 PASS**(그 밖의 상태는 기준과 같거나 1건 더 PASS). 뒤집힌 순서에서의 결과(오른쪽이 교체, 왼쪽은 공격)는 upstream 1.17.0의 "(reversed)" 테스트 기대값과 같다.
+    - 해소 예정: upstream은 #9460(seq 88)·#9462(seq 131)에서 `WITH_CONFIG(AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE, 0/100)`와 "(reversed)" 테스트를 넣는다. 그 이식 때 두 테스트가 PASS로 돌아와야 한다(**seq 88/131 담당 확인 필요**).
+  - 실기 확인: 선택(더블배틀 AI 트레이너의 동시 교체)
+- 남은 위험: 낮음(테스트 전제 차이만)
+
+## 동기화 단위: seq 78 #9473 `U-animcall-9142` Move animation call depth increase
+
+- 현재 판정: **이미 적용**(seq 75 커밋 `125e893903`에 #9142와 함께 포함, group plan "반드시 함께")
+- upstream 근거: `913aaae7e7`
+- 근거: `include/battle_anim.h` `MAX_ANIM_CALL_DEPTH 4`, `src/battle_anim.c` `sBattleAnimScriptRetAddr[MAX_ANIM_CALL_DEPTH]`·`sBattleAnimScriptCallDepth`, DefendOrder·SaltCure의 `goto`가 upstream 결과와 같다.
 - 커밋 없음
