@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 63~82
 
-진행 중: 마지막 완료 seq 72 (#9446), 다음 seq 73 (#9463). seq 76 #9474는 seq 64 커밋에 포함(이미 적용).
+진행 중: 마지막 완료 seq 73 (#9463), 다음 seq 74 (#8664). seq 76 #9474는 seq 64 커밋에 포함(이미 적용).
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `72f40563ad`
@@ -238,3 +238,19 @@
   - 자동 테스트(기준 대비 PASS→FAIL 0): `ability/synchronize.c` 9건 PASS 8(새 테스트 2개 "Synchronize will trigger on both targets", "…can trigger again during the same attack if user cured it's status" PASS 포함), FAIL 1(기준에서도 FAIL인 "…Toxic Orb or Flame Orb 2/2", `Task_FreeAbilityPopUpGfx` task not freed). `hold_effect/cure_status.c` 14건(PASS 2, FAIL 12), `move_effect/teatime.c` 12건 FAIL(`Unmatched MESSAGE`), `flower_shield.c`(PASS 3, FAIL 1), `gravity.c`(PASS 1, FAIL 1, TO_DO 3), `psycho_shift.c` TO_DO 1, `ability/poison_touch.c`·`static.c`·`flame_body.c`·`effect_spore.c`·`poison_point.c`(FAIL은 `Unmatched MESSAGE`와 기존 확률 테스트) — 모두 기준과 같은 상태.
   - 실기 확인: **필요.** 싱크로(독·마비·화상) 되돌리기와 팝업 순서, 광역 독 공격에 두 싱크로 포켓몬, 리샘열매·복숭열매 등 상태 치료 열매 발동 시점과 한글 문구·아이템 팝업, 독수(Poison Touch)+싱크로+리샘열매 조합, 티타임·플라워가드·중력.
 - 남은 위험: 중간(배틀 스크립트 흐름 변경). 자동 테스트로 핵심 경로는 확인.
+
+## 동기화 단위: seq 73 #9463 `U-cstring-9086` Use PRIu64 to print appropriate variable length in preproc
+
+- 현재 판정: 적용
+- 커밋: `db75d9c0e1`
+- upstream 근거: `80933058c2`
+- 해결한 의존성: #9086(seq 65) 뒤
+- 수정 파일: `tools/preproc/c_file.cpp`(해시 출력 `%016lx` → `%016" PRIx64`), `tools/preproc/c_file.h`(`inttypes.h`)
+- HNS 적응과 보존한 한글화/배틀 메시지 동작: 그대로 적용. 도구 이식성 수정이라 LP64(WSL)에서는 출력이 같다. 이전/이후 preproc로 `src/challenge_menu.c`·`src/item.c`·`src/battle_message.c`·`src/strings.c`·`test/battle/ability/synchronize.c`를 전처리한 출력이 **바이트 동일**함을 확인했다(한글 문자열 포함).
+- 저장·ROM·그래픽 영향: 없음
+- 검증:
+  - `git diff --check`: 통과, `tools/preproc` 재빌드 성공(`-Werror`)
+  - `make hns -j8`: 종료 코드 0, ROM 32,716,052 B / EWRAM 248,876 B / IWRAM 25,516 B, 새 경고 없음
+  - 자동 테스트: 해당 없음
+  - 실기 확인: 불필요
+- 남은 위험: 없음
