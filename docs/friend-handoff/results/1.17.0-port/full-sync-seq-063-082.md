@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 63~82
 
-진행 중: seq 70 (#9407) unit 진행 중 — #9407 커밋 완료, 이어서 같은 unit #9549·#9707·#10573. 그다음 seq 71 (#9417). seq 76 #9474는 seq 64 커밋에 포함(이미 적용).
+진행 중: seq 70 (#9407) unit 진행 중 — #9407·#9549 커밋 완료, 이어서 같은 unit #9707·#10573. 그다음 seq 71 (#9417). seq 76 #9474는 seq 64 커밋에 포함(이미 적용).
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `72f40563ad`
@@ -160,3 +160,13 @@
   - 자동 테스트: 해당 없음
   - 실기 확인: unit 끝(#10573)에서 함께 확인
 - 남은 위험: unit 끝에서 기록
+
+### unit U-fade-9407: #9549 Fix blend-immune sprite not fading properly (순서표 seq 94)
+
+- 현재 판정: 적용(같은 unit, #9407 바로 뒤). **seq 94 담당은 "이미 적용"으로 처리한다.**
+- 커밋: `b00b2cb140`
+- upstream 근거: `eebd085c24`
+- 수정 파일: `src/palette.c`(`UpdateTimeOfDayPaletteFade`의 `copyPalettes` u16 → u32: 32비트 선택 마스크에서 스프라이트 팔레트 쪽이 잘리던 회귀 수정)
+- HNS 적응: 그대로 적용
+- 저장·ROM·그래픽 영향: ROM 크기 변화 없음
+- 검증: `git diff --check` 통과, `make hns -j8` 종료 코드 0, ROM 32,715,812 B / EWRAM 248,892 B / IWRAM 25,516 B, 새 경고 없음. 자동 테스트 해당 없음.
