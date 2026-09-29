@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-09-29 — full-sync port seq 83 (#8497 loadspritegfx 제거, XL 단독 구간)
+
+- 에이전트 1개가 약 68분 동안 진행했다. 커밋: `f59f50ca17`(#8497), `5121b83c94`(#9595), `45b27b9bce`(#10345), `715c1b91fc`(#10589), 결과 문서 `d1ba480f41`·`b5d3881de3`. 뒤 세 PR은 group plan에 "#8497과 같은 unit으로 넣는다"로 적혀 있음을 메인이 확인했다.
+- 메인 검증:
+  - docs 밖 소스에서 한글이 든 줄 변경 0(28파일, +1,059/−2,462).
+  - `rm -f pokehns.elf pokehns.gba` 뒤 `make hns -j8`: 종료 코드 0, ROM 32,712,548 B(97.49%), EWRAM 248,924 B(94.96%), IWRAM 25,516 B, SHA1 `09927f92473a555ef521349aee72e8367125452d`.
+  - 테스트 목록 `test-baseline-seq082.txt` → `seq083.txt`: 추가 5줄(`Move Animations work 1`·`2` FAIL, `3`·`4`·`Tera Blast animations work` PASS)뿐이고 PASS 손실 0.
+- 판단: `Move Animations work 1`·`2` FAIL은 HnS 도구 팝업 태스크가 테스트 배틀 종료 시점에 남는 테스트 환경 차이로 보고 회귀로 보지 않았다. 실제 게임에서 쪼아대기·내던지기·벌레먹음 뒤 도구 팝업이 정상적으로 사라지는지는 실기로 확인한다.
+- 사용자 지시로 구간 3(seq 84~90) 시작 전 대기한다. 메인의 15분 주기 자동 push도 멈췄다.
+- 다음 시작점: **seq 84 (#9376 `U-cleanup-9376`, M)**.
+
 ### 2026-09-29 — full-sync port seq 63~82 (노트북 WSL 첫 세션)
 
 - 작업 환경 메모:
