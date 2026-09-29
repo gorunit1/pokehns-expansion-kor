@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 84~90
 
-진행 중: 마지막 완료 seq 86, 다음 seq 87
+진행 중: 마지막 완료 seq 87, 다음 seq 88
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `79af946ddf`
@@ -93,3 +93,23 @@
   - 자동 테스트: 전체 실행(16분 24초, 병렬 부하로 느림). 목록 5,128행이 이식 전(#9466 직후 = `test-baseline-seq083.txt`)과 **바이트 동일**. 그중 날씨 관련 24파일(`test/battle/weather/*.c` + 기상예보·플라워기프트·아이스페이스·수확·아이스바디·건조피부·젖은접시·촉촉한몸·선파워·리프가드·엽록소·쓱쓱 등 특성, 만능우산) 테스트 145건: 전후 모두 PASS 83 / FAIL 61 / TO_DO 1.
   - 실기 확인: 권장(선택). 맑음·비에서 만능우산 보유자의 선파워·건조피부·젖은접시, 수확, 체리꼬 폼 체인지, 에어록/날씨부정 상태의 기상예보 복귀.
 - 남은 위험: 낮음. AI 대미지 계산에서 선파워·플라워기프트 보정이 AI가 아는 도구(만능우산 미확인 시)를 기준으로 바뀐다(upstream 의도).
+
+## 동기화 단위: seq 87 #9135 `U-9135` Allow other species to have Shedinja HP handling
+
+- 현재 판정: 적용(HnS 적응: config 한 줄만)
+- 커밋: `fd549f70bc`
+- upstream 근거: `f851f3b8bf`
+- 해결한 의존성: 없음. #9507(seq 91) 전이라 시그니처는 upstream 이 커밋과 같은 `bool32 HasShedinjaHPHandling(u32 species)`.
+- 수정 파일: `include/config/pokemon.h`, `include/pokemon.h`, `src/pokemon.c`, `src/battle_dome.c`, `src/battle_dynamax.c`, `src/party_menu.c`
+- HNS 적응과 보존한 한글화/배틀 메시지 동작:
+  - `include/config/pokemon.h`: `P_SHOW_DYNAMIC_TYPES` 뒤에 `P_BASE_HP_1_SHEDINJA_HANDLING FALSE` 한 줄만 추가. HnS 설정값(`P_EGG_CYCLE_LENGTH GEN_3`, `P_SHOW_TERA_TYPE GEN_8`, `P_EGG_SHINY_ROLL_ON_PICKUP` 등)은 그대로. 새 줄은 ASCII(`Shedinja's`).
+  - `src/pokemon.c`: `CalculateMonStats`의 비교 1곳 교체, 함수는 HnS 파일 끝(`GetPaldeaCatchProgress` 뒤)에 추가. `battle_dome.c` 1곳, `battle_dynamax.c` 3곳, `party_menu.c` 2곳은 그대로 적용(7곳, group plan과 같음).
+  - 남은 `SPECIES_SHEDINJA` 비교(`battle_main.c` `TryCorrectShedinjaLanguage`, `evolution_scene.c` 껍질몬 생성, `trade.c` 이름 보정, `frontier_util.c` 데이터)는 1.17.0에서도 그대로인 비-HP 용도라 대상 아님.
+- 저장·ROM·그래픽 영향: 기본값 FALSE라 동작 불변(`species == SPECIES_SHEDINJA`와 같음). ROM 크기 32,712,852 B(변화 0, 비교 명령이 같은 길이의 호출로 바뀜). 세이브 무관.
+- 코드 비교: 바뀐 함수 8개(`CalculateMonStats`, 새 `HasShedinjaHPHandling`, `CalcDomeMonStats`, `ApplyDynamaxHPMultiplier`·`GetNonDynamaxHP`·`GetNonDynamaxMaxHP`, `ItemEffectToMonEv`·`ItemUseCB_Medicine`) 모두 비교식 → 함수 호출 교체뿐.
+- 검증:
+  - `git diff --check`: 통과. 비ASCII 줄 변경 0.
+  - `make hns -j8`: 종료 코드 0, ROM 32,712,852 B / EWRAM 248,924 B / IWRAM 25,516 B, 새 경고 없음.
+  - 자동 테스트: `test/battle/gimmick/dynamax.c` 81건(PASS 11 / FAIL 67 / 기타 3) — 이식 전 목록과 테스트별로 같음. upstream 테스트 hunk 없음.
+  - 실기 확인: 불필요.
+- 남은 위험: 없음.
