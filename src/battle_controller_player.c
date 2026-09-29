@@ -1198,7 +1198,7 @@ static void SetLinkBattleEndCallbacks(enum BattlerId battler)
 {
     if (gWirelessCommType == 0)
     {
-        if (gReceivedRemoteLinkPlayers == 0)
+        if (!gReceivedRemoteLinkPlayers)
         {
             m4aSongNumStop(SE_LOW_HEALTH, FlagGet(FLAG_SYS_GBS_ENABLED));
             gMain.inBattle = FALSE;

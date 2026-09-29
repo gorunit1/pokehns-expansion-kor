@@ -4,6 +4,7 @@
 #include "battle.h"
 #include "m4a.h"
 #include "main.h"
+#include "overworld.h"
 #include "pokemon.h"
 #include "constants/cries.h"
 #include "constants/songs.h"
@@ -670,7 +671,7 @@ static void ClearPlayerForGBSSoundEffect(u16 songNum, bool32 isGBSEnabled)
 
 void PlaySE(u16 songNum)
 {
-    if (gDisableMapMusicChangeOnMapLoad == 0)
+    if (gDisableMapMusicChangeOnMapLoad == MUSIC_DISABLE_OFF)
     {
         bool32 isGBSEnabled = FlagGet(FLAG_SYS_GBS_ENABLED);
 
