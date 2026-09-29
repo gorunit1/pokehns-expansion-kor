@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 83~83
 
-진행 중: 마지막 완료 seq 83 unit의 #10589(커밋 `715c1b91fc`), 다음: 전체 테스트·구간 요약
+완료: seq 83(#8497 unit, 같은 unit의 seq 110 #9595·seq 265 #10345·seq 321 #10589 포함) 이식·전체 테스트·기록 완료. 다음 구간은 seq 84부터. 아래 "seq 83 요약" 참고.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `152910621b`
@@ -27,7 +27,7 @@
 - HNS 적응과 보존한 한글화/배틀 메시지 동작:
   - **스크립트 변환:** upstream 결과 파일을 복사하지 않고 HnS `data/battle_anim_scripts.s`(이식 전)에 #8497판 `remove_loadspritegfx.py`를 돌렸다. `loadspritegfx` 2,351줄 삭제, `unloadspritegfx` 155줄 뒤에 같은 태그의 `unloadspritepal` 추가. 이식 전 파일의 `loadspritegfx` 2,506회는 전부 탭으로 시작하는 명령 줄(로드 2,351 + 언로드 155)이고 주석 줄에는 없다. 별도로 짠 정규식 변환기와 결과가 주석 복사 여부(81줄)만 다르다.
   - **#9511판 스크립트는 쓰지 않았다:** HnS 파일에 돌려 보면 연속된 `unloadspritegfx` 두 줄 중 뒷줄을 지운다(`"loadspritegfx" in line2` 조건이 `unloadspritegfx`에도 걸림). 결과가 #8497판과 108줄 다르다. 저장소에 넣은 마이그레이션 스크립트도 #8497판 그대로다(#9511은 group plan상 "무관", 이식하지 않음).
-  - **upstream 수동 수정 5곳도 반영:** upstream 부모 파일에 같은 스크립트를 돌린 결과와 upstream #8497 결과를 비교해 스크립트 밖 수정 5곳을 찾아 같은 위치에 넣었다 — GhostGetOut `delay 1`→`2`, Punishment 두 번째 타격 전 `delay 1`, Poltergeist 끝 `unloadspritegfx/unloadspritepal ANIM_TAG_ITEM_BAG` 삭제, 10만볼트 `unloadallspritepals`, Extreme Evoboost 배경 전환을 `unloadspritepal ANIM_TAG_LEER` 뒤 `delay 1` 다음으로 이동.
+  - **upstream 수동 수정 5곳도 반영:** upstream 부모 파일에 같은 스크립트를 돌린 결과와 upstream #8497 결과를 비교해 스크립트 밖 수정 5곳을 찾아 같은 위치에 넣었다 — GhostGetOut `delay 1`→`2`, Punishment 두 번째 타격 전 `delay 1`, Poltergeist 끝 `unloadspritegfx/unloadspritepal ANIM_TAG_ITEM_BAG` 삭제, 1000만볼트 `unloadallspritepals`, Extreme Evoboost 배경 전환을 `unloadspritepal ANIM_TAG_LEER` 뒤 `delay 1` 다음으로 이동.
   - **HnS 스크립트 차이 보존 확인:** "이식 전 HnS ↔ upstream 부모" diff와 "이식 후 HnS ↔ upstream #8497" diff의 변경 줄이 완전히 같다. 즉 HnS 차이 4종(HealingEffect 호출 4곳 없음, Bite 이빨 `x=-33`(#9564), SecretPower `end`, 메가·원시회귀 `AnimTask_BlendParticle` 3줄(#10324))이 그대로 남았다.
   - **C 코드:** upstream hunk 전부 그대로 적용(문맥 충돌 없음). `src/battle_anim.c`의 HnS 추가분(`monbg` 중복 assert, 배경 타일맵 버퍼 크기 보정)과 HnS `CreateSpriteUnchecked` 사용부(`battle_anim_electric.c`)는 hunk 밖이라 그대로다. 파일 모드(100755)는 바뀌지 않았다.
   - **HnS 추가(upstream과 다름) 2곳(이 커밋) + 1곳(#10345 커밋):** 아래 순서 검사에서 upstream 1.17.0에도 남아 있는 회귀를 찾아 #10589와 같은 방식(`TryLoadPal`)으로 막았다. 세 번째(`AnimTask_AnimateGustTornadoPalette`, BloomDoom·HydroVortex)는 upstream #10345가 같은 함수를 고치므로 그 커밋에 넣었다.
@@ -72,7 +72,7 @@
 - 커밋: `5121b83c94`
 - upstream 근거: `c1e0532fe2`
 - 수정 파일: `src/battle_anim.c`(`Cmd_waitforvisualfinish`에서 #8497이 넣은 `UnloadAllSpritePalettes()`와 주석 9줄 삭제)
-- HNS 적응과 보존한 한글화/배틀 메시지 동작: 그대로 적용. 결과 `Cmd_waitforvisualfinish`가 이식 전 HnS(`152910621b`) 함수와 글자 단위로 같다(group plan "결과적으로 HnS 현재 코드와 같은 상태"). `UnloadAllSpritePalettes()`는 `unloadallspritepals` 명령(10만볼트)에서만 쓰인다.
+- HNS 적응과 보존한 한글화/배틀 메시지 동작: 그대로 적용. 결과 `Cmd_waitforvisualfinish`가 이식 전 HnS(`152910621b`) 함수와 글자 단위로 같다(group plan "결과적으로 HnS 현재 코드와 같은 상태"). `UnloadAllSpritePalettes()`는 `unloadallspritepals` 명령(1000만볼트)에서만 쓰인다.
 - 저장·ROM·그래픽 영향: ROM −48 B. `waitforvisualfinish` 뒤에도 애니 팔레트(블렌드 결과 포함)가 유지된다. 위 순서 검사·슬롯 한도 검사는 이 상태 기준이다.
 - 검증:
   - `git diff --check`: 통과. 한글 줄 변경 0.
@@ -128,9 +128,76 @@ upstream 테스트가 실제로 잡지 못하는 부분을 보완하려고, unit
   - `AnimUproarRing` THIN_RING 9개 기술 — 정적 검사와 같고 화면 차이 없음.
   - `AnimSlowFlyingMusicNotes` BENT_SPOON·LARGE_FRESH_EGG(706 `MOVE_DRUM_BEATING`, Z 876·877): 음표 색 표 팔레트는 무지개 블렌드 작업이 따로 할당해야 생기는 태그인데 이 애니들은 그 작업을 부르지 않는다. 0xFF 검사가 있어 음표 자체 팔레트로 표시된다. 이식 전에도 `loadspritegfx`로 로드되지 않던 태그라 변화 없음.
   - `FreeSpritePaletteByTag` MUSIC_NOTES_2(215 방울소리): `AnimTask_FreeMusicNotesPals`가 먼저 해제한 태그를 `end`가 다시 해제하려다 없음 → 아무 것도 하지 않음(이중 해제 아님).
-  - `CreateSpriteAt`·`FreeSpritePaletteByTag`의 IMPACT(547 `MOVE_RELIC_SONG`)·CIRCLE_OF_LIGHT(Z 867 10만볼트)·LEAF·POISON_BUBBLE(Z 869 Extreme Evoboost): 아래 팔레트 16칸 소진.
+  - `CreateSpriteAt`·`FreeSpritePaletteByTag`의 IMPACT(547 `MOVE_RELIC_SONG`)·CIRCLE_OF_LIGHT(Z 867 1000만볼트)·LEAF·POISON_BUBBLE(Z 869 Extreme Evoboost): 아래 팔레트 16칸 소진.
 - **OBJ 팔레트 16칸 소진(세 애니):** 테스트 싱글배틀에서 예약 4칸 + 전투 UI 6칸(태그 55039·55044·30004·55160~55162)을 빼면 애니가 쓸 수 있는 칸은 6칸이다. 이 한도를 넘으면 `TryLoadPal`은 추적 표에는 기록하지만 실제 로드는 실패하고, 그 팔레트의 스프라이트는 `paletteNum` 15(그때 15번 칸 팔레트 색)로 표시된다.
-  - 10만볼트(Z 867): CIRCLE_OF_LIGHT 1개 실패. **이식 전에는 시작 때 `loadspritegfx` 21개를 한꺼번에 올려 15개가 실패**했으므로 크게 나아졌다(upstream이 넣은 `unloadallspritepals` 포함).
-  - Extreme Evoboost(Z 869): LEAF·POISON_BUBBLE 2개 실패. 이식 전에는 10개를 한꺼번에 올려 4개 실패.
+  - 1000만볼트(Z 867): CIRCLE_OF_LIGHT 1개 실패. **이식 전에는 시작 때 `loadspritegfx` 21개를 한꺼번에 올렸으므로** 같은 6칸 조건이라면 15개 안팎이 실패했을 것이다(추정, 이식 전 코드는 이 계측으로 돌리지 않음). upstream이 넣은 `unloadallspritepals`까지 포함해 크게 나아졌다.
+  - Extreme Evoboost(Z 869): LEAF·POISON_BUBBLE 2개 실패. 이식 전에는 10개를 한꺼번에 올렸다(같은 조건이면 4개 안팎 실패, 추정).
   - RelicSong(547): 이식 전후 모두 7개가 필요해 1개가 실패하는데, 실패하는 쪽이 바뀐다. 이식 전에는 시작 때 4개(JAGGED_MUSIC_NOTE·THIN_RING·MUSIC_NOTES·IMPACT)를 먼저 올려 음표 무지개 셋째 색(LARGE_FRESH_EGG) 할당이 실패했고(일부 음표가 기본색), 이식 후에는 무지개 색 3개가 먼저 할당되어 마지막에 필요한 IMPACT(타격 이펙트)가 실패한다(타격 이펙트가 15번 칸 = 들쭉날쭉 음표 팔레트 색). upstream도 같은 순서다. 스크립트 순서를 HnS 단독으로 바꾸지 않고 **실기 확인 항목**으로 둔다.
   - 더블배틀은 UI 팔레트가 더 많을 수 있어 여유 칸이 더 적다. 다만 이식 후에는 쓰는 태그만 필요할 때 올리므로 전체적으로 이식 전보다 팔레트를 적게 쓴다.
+
+## seq 83 요약
+
+- 처리 범위: seq 83 한 행(#8497, XL). group plan에 따라 같은 unit `U-anim-8497`의 #9595(seq 110)·#10345(seq 265)·#10589(seq 321)를 바로 뒤 커밋으로 함께 넣었다(세 PR 모두 group plan이 "#8497과 같은 unit으로 넣는다"고 적은 #8497 회귀 수정). #9511(변환 스크립트 수정)은 group plan상 "무관"이라 넣지 않았다. seq 84 이후는 손대지 않았다.
+- 시작 `152910621b` → 이식 마지막 커밋 `715c1b91fc`(그 뒤 기록 커밋). 이식 커밋 4개, 진행 기록 커밋 4개.
+
+| seq | PR | 판정 | 커밋 | 비고 |
+|---:|---|---|---|---|
+| 83 | #8497 | 적용(HnS 적응) | `f59f50ca17` | 스크립트 기계 변환 + upstream 수동 수정 5곳, HnS `TryLoadPal` 2곳 추가 |
+| 110 | #9595 | 적용(unit 선행 반영) | `5121b83c94` | `Cmd_waitforvisualfinish`가 이식 전 HnS와 같아짐 |
+| 265 | #10345 | 적용(HnS 적응) | `45b27b9bce` | HnS `TryLoadPal(ANIM_TAG_GUST)` 추가(BloomDoom·HydroVortex) |
+| 321 | #10589 | 적용(unit 선행 반영) | `715c1b91fc` | 그대로 |
+
+- 마지막 빌드(`rm -rf build/hns` 뒤 전체 재빌드, HEAD `7f159191ff`, 코드 기준 `715c1b91fc`): 종료 코드 0, **ROM 32,712,548 B(97.49%) / EWRAM 248,924 B(94.96%) / IWRAM 25,516 B(77.87%)**, 경고 줄 166개·고유 44개(기준과 같음, 새 경고 0). ROM SHA-1 `09927f92473a555ef521349aee72e8367125452d`.
+- 기준 대비: ROM −4,624 B, EWRAM +16 B(애니 태그 추적 표), IWRAM 0.
+- 한글 포함 소스 줄 변경: 0(네 커밋 모두). 문자열·STRINGID·조사·배틀 메시지 출력 무관.
+- 태그 검증 요약: 이식 전 `loadspritegfx` 태그 304종 전부 새 자동 로드 표에서 해석됨(실패 0), HnS 전용 태그 0, 표 추가 항목 없음. 이전 로드 ⊆ 이후 자동 로드가 아닌 쌍은 모두 분류됨(색만 빌림 248, 다른 팔레트 템플릿 283, 원래 안 쓰던 로드 191, 페이드 마스크 조회 4). C 생성 스프라이트 115쌍은 upstream `TryLoadSpriteAssets`로 모두 덮임. 순서 검사로 upstream 1.17.0에도 남은 범위 밖 쓰기 2건(HealBell, BloomDoom/HydroVortex GUST)과 음표 색 블렌드 1건을 찾아 HnS에서 막았다. 경로별 추적 슬롯 최대 그림 7 / 팔레트 8(한도 8).
+- 동적 검증(임시 계측): 947회 실행에서 로드 안 된 그림/팔레트로 생성 0, 타일 할당 실패 0, 할당·해제 균형. 하드웨어 팔레트 16칸 소진은 1000만볼트·Extreme Evoboost·RelicSong에서만(앞 둘은 이식 전보다 줄어든 것으로 추정, RelicSong은 실패하는 팔레트가 음표 색 → 타격 이펙트로 바뀜).
+- 호출 구조 정적 검사: 이식 전후 `call` 2,725, 최대 깊이 2, 호출 안 `end` 0, 빈 스택 `return` 0.
+
+### upstream과 일부러 다르게 둔 곳 (이후 port 담당 참고)
+
+| seq | PR | 내용 |
+|---|---|---|
+| 83 | #8497 | `AnimTask_LoadMusicNotesPals` 앞 `TryLoadPal(ANIM_TAG_MUSIC_NOTES_2)`(실패 시 작업 종료) — HealBell 범위 밖 `LoadPalette` 방지 |
+| 83 | #8497 | `AnimTask_MusicNotesRainbowBlend` 앞 `TryLoadPal(gParticlesColorBlendTable[0][0])` — 음표 기본 색 블렌드 유지 |
+| 83 | #8497 | 마이그레이션 스크립트는 #8497판 그대로(#9511판은 연속 `unloadspritegfx` 뒷줄을 지우는 문제가 있어 쓰지 않음, #9511 무관 판정) |
+| 265 | #10345 | `AnimTask_AnimateGustTornadoPalette` 앞 `TryLoadPal(ANIM_TAG_GUST)`(실패 시 작업 종료) — BloomDoom·HydroVortex 범위 밖 `memmove` 방지 |
+
+세 곳 모두 `//  HnS:` 주석이 붙어 있다. 이후 upstream PR이 이 함수들을 바꾸면 HnS 줄을 유지한다. upstream `CreateSpriteAt` 테스트 검사 조건(`< ANIM_TAG_COUNT`, 항상 거짓)은 그대로 두었다(upstream 1.17.0과 같음).
+
+### 실기 확인 필요 (mGBA)
+
+HnS에는 upstream에 없는 전용 기술 애니·태그가 없다(스크립트 차이는 Bite 좌표·SecretPower `end`·메가/원시회귀 입자 블렌드·HealingEffect 호출 없음 4종). 그래서 upstream과 같은 기술 애니 전체가 새 로드 방식으로 바뀐 것으로 보고 대표 항목을 확인한다. 가능하면 싱글·더블 둘 다.
+
+1. 음표 계열: 방울소리(음표 3색·방울·고리, 멈춤·깨진 화면 없음), 노래하기·풀피리·돌림노래·배수의진(음표가 흰색~분홍 무지개 색인지), 옛날노래(타격 이펙트 색이 들쭉날쭉 음표 색으로 섞여 보이는지 — 알려진 변화 후보).
+2. 바람 회오리 색 순환: 바람일으키기·날개치기·강철날개·폭풍·그래스믹서. Z기술 블룸샤인엑스트라(BloomDoom)·하이드로볼텍스(HydroVortex) 재생 뒤 화면·다음 행동 이상 없음.
+3. 팔레트 순환·블렌드: 매지컬리프(잎 색 순환), 깜짝베기(붉게 블렌드되는 베기), 오로라빔(무지개 고리 회전), 문포스.
+4. 파티클 색·팔레트 섞임: 메가진화·원시회귀 입자(HnS #10324 흰색 블렌드 입자), 전기 계열(10만볼트·전기쇼크·볼트태클 번개 조각), 물 계열(해수스파우팅·하이드로펌프 물방울), 날씨(비·싸라기눈·눈 입자), 얼음 계열 상태이상(얼음 큐브), 구르기 흙·바위.
+5. Z기술 1000만볼트(10000000VoltThunderbolt)·나인에볼부스트(ExtremeEvoboost): 파티클 색이 엉뚱한 팔레트로 보이는 정도(이식 전보다 줄어야 함).
+6. 폴터가이스트·Bestow 등 도구 아이콘 애니, 에스퍼윙(마지막 사이코커터 그림이 이제 보임).
+7. 타이밍: 기술 애니 시작이 1~5프레임 빨라짐. 벌(Punishment, 두 번째 타격)·`GhostGetOut` 일반 애니·나인에볼부스트 배경 전환이 어색하지 않은지.
+8. 콘테스트에서 기술 애니 몇 개(콘테스트는 예약 팔레트 수가 달라 팔레트 여유가 다름).
+9. 메시지·한글: 변화 없음(확인 불필요).
+
+### 다음 구간 담당 참고
+
+- **이미 적용(재이식 금지):** seq 110 #9595(`5121b83c94`), seq 265 #10345(`45b27b9bce`), seq 321 #10589(`715c1b91fc`). 앞 구간에서 넣은 seq 94 #9549, 98 #9564, 138 #9707, 319 #10573, 330 #10648도 계속 유효.
+- seq 102 #9172(애니 hex→10진, `U-9172`)의 선행 #8497이 충족됐다. #9172는 스크립트 기계 치환이므로, 이 구간처럼 upstream 부모에 치환을 돌린 결과와 upstream 결과를 비교해 수동 수정만 옮기는 방식을 권한다. HnS 스크립트 차이 4종과 이 구간의 HnS C 추가 3곳은 스크립트 치환과 겹치지 않는다.
+- seq 356 #10027(도구 아이콘 애니)은 #8497 뒤라 `loadspritegfx ANIM_TAG_ITEM_BAG` 문맥 문제가 없어졌다. Poltergeist처럼 `AddItemIconSprite` 전에 `StoreGfxTag`/`StorePalTag`를 부르는지 확인.
+- seq 398 #10274(애니 테스트 수정)에서 `gLoadFail`이 `TESTING`으로 바뀐다. 그때 `all_anims.c`의 HnS 전용 실패 2종(아래)이 어떻게 되는지 다시 볼 것.
+- 새 기술 애니를 넣는 upstream PR(1.16 이후 전부 `loadspritegfx` 없음)은 이제 그대로 들어온다. 다만 C 작업이 `IndexOfSpritePaletteTag(ANIM_TAG_…)`로 팔레트를 찾는 경우, 그 시점에 템플릿으로 이미 로드됐는지(또는 `TryLoadPal`이 있는지) 확인한다. 스크래치 `a8497/animorder.py` 방식(순서 검사)이 유용하다.
+
+### 전체 테스트 (구간 끝)
+
+- 명령: `PATH=… make check BUILD=hns -j8 > build/port-check.log 2>&1`(코드 기준 `715c1b91fc`). 약 9분 43초.
+- 결과: **PASS 2,298 / FAIL 2,229 / KNOWN_FAILING 8 / TO_DO 618 / EXPECT_FAILING 6 / ASSUMPTIONS_FAILED 38 / TOTAL 5,197**(기준 seq082: PASS 2,295 / FAIL 2,226 / TOTAL 5,191). assertion·crash 0.
+- 새 기준 목록: [`test-baseline-seq083.txt`](test-baseline-seq083.txt)(5,128행, `LC_ALL=C`. PASS 2,295 / FAIL 2,204 / KNOWN_FAILING 8 / TO_DO 616 / EXPECTED_FAIL 5 — 이름 중복 제거 목록 기준).
+- `test-baseline-seq082.txt` 대비 차이 전부와 원인:
+
+| 테스트 | 기준 → 지금 | 원인 분류 |
+|---|---|---|
+| Move Animations work 3 / 4, Tera Blast animations work (`move_animations/all_anims.c`) | 새 테스트 → PASS | #8497이 가벼운 전체 애니 테스트를 새로 엶 |
+| Move Animations work 1 (222/222), 2 (221/221) | 새 테스트 → FAIL | 사유 `Task_FreeAbilityPopUpGfx: task not freed`뿐. 쪼아대기·내던지기·벌레먹음에서 HnS 도구 팝업(기반 커밋부터 있음)이 배틀 종료 시점에 남는 **HnS 테스트 환경 차이**. 애니 로드 단정(`gLoadFail`·`gSpriteAllocs`)은 통과 |
+| Z-Moves animations work (17/37) | 새 테스트 → INVALID(목록 형식 밖, 요약 FAIL 수에 포함) | HnS 도전 설정 `tx_Mode_Fairy_Types = 0`(테스트 기본)에서 문포스가 악 타입이 되어 페어리Z 변환 불가. 설정을 켜면 PASS(동적 검증에서 확인) |
+
+- **회귀 판정:** 로직 회귀 0. 기준 목록의 PASS 2,295건(이름 중복 제거 2,292건)은 모두 그대로 PASS. 알려진 AI 더블 테스트 3건은 기준과 같은 상태(FAIL)다.
