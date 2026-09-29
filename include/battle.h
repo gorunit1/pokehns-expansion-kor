@@ -101,7 +101,13 @@ struct ProtectStruct
 // Cleared at the start of HandleAction_ActionFinished
 struct SpecialStatus
 {
-    u8 changedStatsBattlerId; // Battler that was responsible for the latest stat change. Can be self.
+    u8 changedStatsBattlerId:3; // Battler that was responsible for the latest stat change. Can be self.
+    u8 neutralizingGasRemoved:1;
+    u8 berryReduced:1;
+    u8 mindBlownRecoil:1;
+    u8 poisonPuppeteer:1;
+    u8 padding:1;
+    // End of byte
     u8 statLowered:1;
     u8 abilityRedirected:1;
     u8 restoredBattlerSprite: 1;
@@ -111,13 +117,6 @@ struct SpecialStatus
     u8 dancerUsedMove:1;
     u8 criticalHit:1;
     // End of byte
-    u8 instructedChosenTarget:3;
-    u8 neutralizingGasRemoved:1;
-    u8 berryReduced:1;
-    u8 mindBlownRecoil:1;
-    u8 poisonPuppeteer:1;
-    u8 padding2:1;
-    // End of byte
     u8 gemParam:7;
     u8 gemBoost:1;
     // End of byte
@@ -125,7 +124,7 @@ struct SpecialStatus
     u8 multiHitOn:1;
     u8 distortedTypeMatchups:1;
     u8 teraShellAbilityDone:1;
-    u8 dancerOriginalTarget:3;
+    u8 backUpTarget:3;
     // End of byte
 };
 
