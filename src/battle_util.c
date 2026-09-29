@@ -12,7 +12,7 @@
 #include "battle_gimmick.h"
 #include "battle_hold_effects.h"
 #include "challenge_menu.h"
-#include "generational_changes.h"
+#include "config_changes.h"
 #include "party_menu.h"
 #include "pokemon.h"
 #include "international_string_util.h"
