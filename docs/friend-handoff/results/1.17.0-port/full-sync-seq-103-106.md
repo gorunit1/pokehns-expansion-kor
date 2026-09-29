@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 103~106
 
-진행 중: 마지막 완료 seq 103, 다음 seq 104.
+진행 중: 마지막 완료 seq 104, 다음 seq 105.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 사전 분석: PR마다 분석 에이전트가 쓴 이식 계획(`hns-sync-work/chunk-103-106/seq<N>-<PR>.md`, 저장소 밖)을 따랐다.
@@ -80,3 +80,33 @@
     - 난수 소비 증가로 결과가 바뀐 테스트: 없음(위 이유).
   - 실기 확인: 필수 아님(판단 로직이 이식 전과 같음). 아래 "실기 확인 항목"의 Beat Up 트레이너·더블 광역기 항목을 권장.
 - 남은 위험: 낮음. 이후 upstream 테스트가 `AI_ROLL_ATTACKING=MAX`를 가정하면 HnS에서 실패할 수 있다. 그때는 "HnS config 차이(결정 6절)"로 기록한다(아래 "후속 행 메모").
+
+## 동기화 단위: seq 104 #9551 `U-9551` Add Intimidate cycling logic for ai switching
+
+- 현재 판정: 적용(선언부·INTIMIDATE case 수동 문맥, Zero to Hero hunk 제외)
+- 커밋: `34aec8afd7`
+- upstream 근거: `a354d21142`(부모 `d12a6a46e5` = #9568, 7파일 +222/−11)
+- 해결한 의존성: #9124(seq 99 `fac71f54b0`), #9568(seq 103 `4bc61b3ffc`). `GetBestDmgFromBattler`·`HasPhysicalBestMove`·`GetIncomingMove`·`AI_IsAbilityOnSide`·`AnyUsefulStatIsRaised`·`GetConfig(B_UPDATED_INTIMIDATE)`가 모두 HnS에 있다.
+- 수정 파일(7): `include/battle_ai_switch.h`, `include/battle_ai_util.h`, `include/config/ai.h`, `include/random.h`, `src/battle_ai_switch.c`, `src/battle_ai_util.c`, `test/battle/ai/ai_switching.c`
+- 적용 방법:
+  - `include/*`, `src/battle_ai_util.c`, `test/battle/ai/ai_switching.c`: upstream diff를 `git apply`로 그대로 넣었다(오프셋만 다름). `SHOULD_SWITCH_INTIMIDATE`/`_STATS_RAISED` 시나리오, `SHOULD_SWITCH_INTIMIDATE_PERCENTAGE 25`/`_STATS_RAISED_PERCENTAGE 10`, `RNG_AI_SWITCH_INTIMIDATE`, `DoesIntimidateRaiseStats` 공개 선언, 주눅(`ABILITY_RATTLED`)은 `GetConfig(B_UPDATED_INTIMIDATE) >= GEN_8`일 때만 TRUE, 새 테스트 7개.
+  - `src/battle_ai_switch.c`: 사전 분석 부록 A 패치로 넣었다. upstream과 `+`/`-` 줄을 비교해 새 함수 3개(`IsOpponentPhysicalAttacker`, `CanIntimidateLowerOpponentAtk`, `ShouldSwitchIfIntimidateBenefit`)와 `GetSwitchChance` case, `case ABILITY_INTIMIDATE:` 블록이 upstream과 글자까지 같음을 확인했다.
+    - static 선언 3줄은 `IsSwitchinTSpikesAffected` 선언 바로 뒤에 넣었다. HnS는 다음 줄이 `GetPartyMonAbilityForSwitchCalc` 정의라서 upstream 문맥(`InitializeSwitchinCandidate`)과 다르다(seq 99 후속 행 메모).
+    - 새 함수 3개는 `CanPalafinZeroSafelyUseHitEscape`(HnS의 1.17.0형 함수) 뒤, `ShouldSwitchIfAbilityBenefit` 앞에 넣었다. upstream은 `GetHitEscapeTransformState` 뒤지만 끝 문맥이 같다.
+  - 제외한 hunk: `ShouldSwitchIfAbilityBenefit`의 Zero to Hero 루프 교체. HnS는 이미 1.17.0 최종형(`GetBattlerMoveIndexWithEffect`, `SPECIES_PALAFIN_ZERO` 검사, `CanPalafinZeroSafelyUseHitEscape`)이다. upstream #9551 형태(`hitEscapeMove`/`GetHitEscapeTransformState`)로 되돌리지 않았다.
+- HNS 적응과 보존한 한글화/배틀 메시지 동작:
+  - 비ASCII 변경 줄 0. 문자열·STRINGID·배틀 메시지 순서 변경 없음. AI가 교체를 고르는 빈도만 바뀐다. 교체·위협 문구는 기존 HnS 경로를 탄다.
+  - `IsOpponentPhysicalAttacker`는 upstream대로 `GetBattleMoveCategory`를 쓴다. HnS `GetBattleMoveCategory`에는 챌린지 `optionStyle == 1`(타입별 물리/특수) 분기가 있으므로, 이 옵션을 켜면 "물리 공격자" 판정도 자동으로 타입 기준이 된다. `GetMoveCategory`로 바꾸지 않았다.
+  - `B_UPDATED_INTIMIDATE`는 HnS에서 `GEN_LATEST`라 주눅은 이전처럼 TRUE이고, `CanIntimidateLowerOpponentAtk`의 Gen8+ 4특성(정신력·배짱·마이페이스·둔감) 차단이 켜진다. 엔진의 위협 처리와 같다.
+  - HnS 전용 코드(`GetPartyMonAbilityForSwitchCalc`, seq 99의 `// HnS:` 구 시트러스 분기·HP 0 클램프, Supreme Overlord 카운터)는 건드리지 않았다.
+- 저장·ROM·그래픽 영향: 세이브 영향 없음. `enum ShouldSwitchScenario`와 `RandomTag` 중간 삽입으로 뒤 값이 1씩 밀리지만 저장하지 않는다.
+- 실전 영향: `AI_FLAG_SMART_SWITCHING`(= Smart Trainer) 트레이너가 위협 몬을 들고 있고, 플레이어 쪽에 위협으로 공격을 낮출 수 있는 물리 공격자가 있으면 25%(능력 랭크 상승 중이면 10%) 확률로 위협 몬을 교체한다. 상대 가운데 위협으로 이득을 보는 특성(오기·승기·주눅·미러아머 등)이 하나라도 있으면 교체하지 않는다. HnS에서 해당하는 트레이너는 `TRAINER_FINLEY_HNS`(핀리, 더블, 보만다), `TRAINER_BUGSY_POSTOBC_HNS`(호일 PostOBC, 비나방), `TRAINER_BRUNO_POSTOBC_HNS`(시바 PostOBC, 켄타로스 팔데아 블레이즈), `TRAINER_LANCE_POSTOBC_HNS`(목호 PostOBC, 보만다·갸라도스)다. 모두 `Smart Trainer / Prediction`이다.
+- 검증:
+  - `git diff --check`: 통과. 파일 모드(100755) 유지(`git diff --summary` 빈 출력).
+  - `make hns -j8`: 종료 코드 0, **ROM 32,716,324 B(+928 B) / EWRAM 248,924 B(0) / IWRAM 25,516 B(0)**. 경고 163줄·고유 42개가 기준과 같다(새 경고 0). 오브젝트 text+data: `battle_ai_switch.o` +764 B, `battle_ai_util.o` +48 B, `battle_ai_main.o` 0. 분석 추정 +812 B보다 조금 크다(링크 정렬 차이).
+  - 자동 테스트(이식 전 = seq 103 커밋 뒤 같은 명령 결과):
+    - `ai_switching.c`: 121줄 → 128줄. **새 테스트 7개 모두 PASS**(싱글 3: 물리 공격자 상대 교체 `PASSES_RANDOMLY` 25%, 클리어바디·오기 상대 미교체, 특수 공격자 상대 미교체 / 더블 4: 한쪽이라도 유효하면 교체, 양쪽 차단 시 미교체, 한쪽 오기 시 미교체, 양쪽 특수 시 미교체). 기존 121줄은 같다. `AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE` 순서 문제로 실패한 더블 테스트는 없었다.
+    - `ai_flag_predict_switch.c`(PASS 11), `ai_doubles.c`(51줄), `ai.c`(74줄), `ai_double_ace.c`(PASS 3 / FAIL 1), `ai_multi.c`(PASS 11), `ai_flag_sequence_switching.c`(PASS 2 / FAIL 2), `test/battle/ability/rattled.c`(FAIL 4), `intimidate.c`(PASS 5 / FAIL 11): 이식 전과 같다. 이 파일들의 FAIL은 기존 `Unmatched MESSAGE` 등 기준 목록 그대로다.
+    - **회귀 0.** 추출 정규식 밖 상태(Dondozo INVALID, Encore ASSUMPTION_FAIL)도 전후 같다.
+  - 실기 확인: 권장(아래 "실기 확인 항목" 1).
+- 남은 위험: 낮음. upstream과 같은 한계로, 현재 몬이 1:1에서 이기는 경우에도 교체할 수 있다(코드의 TODO, 1.17.0에도 있음). 예측 트레이너(Smart Trainer / Prediction)가 플레이어의 위협 몬 교체를 예측할 때 `RNG_AI_SWITCH_INTIMIDATE`를 소비한다(upstream과 같은 동작).
