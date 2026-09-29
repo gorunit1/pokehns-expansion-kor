@@ -22,6 +22,7 @@
 | 0.5배 미만 또는 2배 초과 상성(Champions 이식) | 기존 0.5배·2배 단계 문구에만 수렴 | `STRINGID_MOSTLYINEFFECTIVE`·`STRINGID_EXTREMELYEFFECTIVE` 및 단일/복수 대상 전용 ID | 효과 배율 플래그와 결과 메시지 분기 추가 |
 | 방어 측 대상명을 넣는 급소·상성 메시지(Champions 이식) | 대상별 전용 문구 없음 | `STRINGID_CRITICALHITONDEF`와 `...ONDEF`·`...TWOFOES` 계열 | 결과 메시지 선택·대상별 출력 경로 추가 |
 | 명중 판정이 있는 변화기가 빗나감(`accuracycheck BattleScript_ButItFailed` 사용 기술, upstream #9929 이식) | `STRINGID_BUTITFAILED` (`그러나 실패하고 말았다!`) | `gMissStringIds[B_MSG_AVOIDED_ATK]` = `STRINGID_PKMNAVOIDEDATTACK` (`…에게는 맞지 않았다!`) | `AccuracyCheck()`가 실패 경로가 `BattleScript_ButItFailed`일 때 새 `BattleScript_TargetAvoidsAttackEnd`로 이동 |
+| 난동 계열(역린·난동부리기·꽃잎댄스) 종료 시 지쳐서 혼란, 프리폴로 잡혀 있던 난동 중인 포켓몬이 풀려날 때의 혼란 (upstream #9249 이식, `B_RAMPAGE_CONFUSION` = `GEN_LATEST`) | 난동이 끝난 턴의 **턴 종료** 단계에서 `BattleScript_ThrashConfuses`로 `STRINGID_PKMNFATIGUECONFUSION`. 프리폴 해제 혼란은 해제 경로마다(행동 불가·중력·하품·기절 등) 따로 처리 | 같은 `STRINGID_PKMNFATIGUECONFUSION`이 그 기술 **직후** move end(`MOVEEND_RAMPAGE`)에서 `BattleScript_ConfusionAfterRampage`로 출력. 프리폴 해제 혼란은 프리폴 공격 뒤 `MOVEEND_CONFUSION_AFTER_SKY_DROP` 또는 프리폴 사용자가 기절할 때 `tryconfusionafterskydrop`에서 출력. 신비의부적(자기 편)·미스트필드·마이페이스·이미 혼란이면 혼란·문구 없음 | `MoveEndRampage()`, `MoveEndConfusionAfterSkyDrop()`, `Cmd_tryconfusionafterskydrop`, `CanBeConfused(atk, effect)`에 신비의부적 검사 추가. 문자열 ID 변화 없음, 출력 시점만 변경 |
 
 ## 상태이상·회복·잠자기
 
