@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 84~90
 
-진행 중: 마지막 완료 seq 84, 다음 seq 85
+진행 중: 마지막 완료 seq 85, 다음 seq 86
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `79af946ddf`
@@ -37,4 +37,34 @@
   - `make hns -j8`: 종료 코드 0, ROM 32,712,548 B / EWRAM 248,924 B / IWRAM 25,516 B, 새 경고 없음.
   - 자동 테스트: `test/battle/hold_effect/berserk_gene.c` 13건 — PASS 4 / FAIL 9, 기준 목록과 테스트별로 같음(FAIL은 영문 `MESSAGE`).
   - 실기 확인: 불필요(동작 동등). 선택: 통신(유니온룸·무선) 기능은 원래 실기 확인 범위 밖.
+- 남은 위험: 없음.
+
+## 동기화 단위: seq 85 #9466 `U-cleanup-9376` Fix enum usage
+
+- 현재 판정: 적용(hunk 단위 수동 적용)
+- 커밋: `a4c46a4a8f`
+- upstream 근거: `56ee6f0f19`
+- 해결한 의존성: #9376(seq 84) 뒤. 같은 unit 두 행을 순서대로 따로 커밋했다.
+- 수정 파일(55): 게임 16개(`src/battle_ai_main.c`, `battle_ai_util.c`, `battle_dome.c`, `battle_hold_effects.c`, `battle_main.c`, `battle_move_resolution.c`, `battle_script_commands.c`, `battle_util.c`, `daycare.c`, `evolution_scene.c`, `item.c`, `item_use.c`, `mail_data.c`, `party_menu.c`, `pokemon.c`, `trainer_pools.c`), 테스트 39개(`test/battle/**` 38개 + `test/text.c`, 모두 지역 변수 형·`0` → `*_NONE` 표기)
+- HNS 적응과 보존한 한글화/배틀 메시지 동작:
+  - 49파일은 `git apply`로 그대로, 문맥이 달라 실패한 6파일은 같은 표현이 남은 줄만 손으로 바꿨다.
+    - `battle_ai_main.c`: HnS 함수는 `struct ChosenAction ChooseMoveOrAction_Singles`(구조 다름)지만 `gAiLogicData->partnerMove = 0;` 줄이 같아 `MOVE_NONE`으로.
+    - `battle_script_commands.c`: `SetMoveEffect` 소각·벌레먹음 `item = 0` → `ITEM_NONE`, 내던지기 `u32 item` → `enum Item`, 맥스 기술 측면 능력치 하락 `enum Stat statId = 0` → 초기값 없음(HnS switch 3갈래 모두 대입), `BS_JumpIfAbilityCantBeReactivated`·`BS_TryActivateSoulheart`·`BS_PlayMoveAnimation`·`BS_TryPsychoShift`·`BS_JumpIfAbilityPreventsRest`·`BS_CutOneThirdHpAndRaiseStats`. `BS_SwitchinAbilities`·`BS_TryActivateReceiver`는 HnS가 이미 `enum Ability`(나중 upstream 형태)라 해당 없음.
+    - `battle_util.c`: `PrepareStringBattle` 2줄, `GetHighestStatId`·`GetParadoxHighestStatId` 루프 변수, `CalcDefenseStat` 쿼크차지. 파일 끝 빈 줄 삭제 hunk는 HnS에 빈 줄이 이미 없어 해당 없음.
+    - `daycare.c`: HnS `InheritIVs`·`GiveMoveIfItem` 계열은 이미 `enum Item`(나중 upstream 알 재작업 형태)이라 `AlterEggSpeciesWithIncenseItem` 한 줄만.
+    - `pokemon.c`: `DoesMonMeetAdditionalConditions`·`GetEvolutionTargetSpecies` 5곳(`partnerSpecies, partnerHeldItem` 두 줄로 나눔).
+    - `test/battle/ability/infiltrator.c`: HnS 테스트 구성이 upstream 부모와 달라(아군 흰안개·신비의부적 테스트가 `ability` 변수 없음) `u32 ability` 5곳만 1.17.0과 같은 표기로.
+  - group plan의 "HnS 전용 배틀 함수에도 같은 규칙" 문구는 upstream hunk가 닿는 함수 안에서만 적용했다. 저장소 전체 일괄 치환은 하지 않았다(범위 밖 변경 방지).
+  - `evolution_scene.c` `CreateShedinja`: upstream은 `MON_DATA_POKEBALL`에 도구 번호 대신 `GetItemSecondaryId(ball)`를 넣는다. HnS에서 `ITEM_POKE_BALL = 1`, 그 `secondaryId = BALL_POKE = 1`이라 저장되는 값이 같다(`P_SHEDINJA_BALL = GEN_LATEST`).
+- 저장·ROM·그래픽 영향: ROM +80 B(32,712,628 B). 세이브 무관(저장값 동일).
+- **비기능 확인(오브젝트 코드 비교, #9376 직후 오브젝트 기준):** 바뀐 C 파일 16개의 함수 2,117개 중 2,079개 동일, 38개 다름. 모두 설명된다.
+  - HnS의 `enum Item`·`Ability`·`Move`·`Stat`은 `__attribute__((packed))`라 `u32` → enum 변경이 16/8비트 절단·확장 명령을 넣거나 뺀다. 값 범위(도구·특성 < 65,536, 능력치 번호 < 8) 안이라 결과가 같다: `pokemon.o` `DoesMonMeetAdditionalConditions`, `battle_util.o` `GetHighestStatId`·`GetParadoxHighestStatId`·`GetParadoxBoostedStatId`(인라인)·`DoMoveDamageCalcVars`·`AbilityBattleEffects`(인라인 블록 배치), `battle_script_commands.o` `SetMoveEffect`·`BS_JumpIfAbilityPreventsRest`·`ChangeStatBuffs`(명령열은 정규화 후 동일, 분기 주소만).
+  - `pokemon.o`의 나머지 26개(`GetSpeciesBaseHP` 등): `pokemon.c` 한 줄이 두 줄로 나뉘어 뒤쪽 assert의 `__LINE__` 상수가 1씩 커진 것뿐(`0x24b5` → `0x24b6` 등).
+  - `battle_util.o` `CanFling`: 컴파일러 생성 switch 표 이름(`CSWTCH.1346` → `.1348`)만.
+  - `evolution_scene.o` `Task_EvolutionScene`: 위 `GetItemSecondaryId(ITEM_POKE_BALL)` 호출 추가(결과 1).
+- 검증:
+  - `git diff --check`: 통과. 비ASCII 줄 변경 0.
+  - `make hns -j8`: 종료 코드 0, ROM 32,712,628 B / EWRAM 248,924 B / IWRAM 25,516 B, 새 경고 없음.
+  - 자동 테스트: L 크기라 전체 실행(`make check BUILD=hns -j8`, 9분 2초). PASS 2,298 / FAIL 2,229 / KNOWN_FAILING 8 / TO_DO 618 / EXPECT_FAILING 6 / TOTAL 5,197. 목록(5,128행)이 `test-baseline-seq083.txt`와 **바이트 동일**.
+  - 실기 확인: 불필요(동작 동등).
 - 남은 위험: 없음.
