@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 63~82
 
-진행 중: 마지막 완료 seq 77 (#9451), 다음 seq 78 (#9473, 이미 적용 기록) → seq 79 (#9467).
+진행 중: 마지막 완료 seq 79 (#9467), 다음 seq 80 (#9249, 같은 unit #10648 포함 예정).
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `72f40563ad`
@@ -329,3 +329,18 @@
 - upstream 근거: `913aaae7e7`
 - 근거: `include/battle_anim.h` `MAX_ANIM_CALL_DEPTH 4`, `src/battle_anim.c` `sBattleAnimScriptRetAddr[MAX_ANIM_CALL_DEPTH]`·`sBattleAnimScriptCallDepth`, DefendOrder·SaltCure의 `goto`가 upstream 결과와 같다.
 - 커밋 없음
+
+## 동기화 단위: seq 79 #9467 `U-9467` Change `TrainersMon`'s ball from `u8` to `enum PokeBall`
+
+- 현재 판정: 적용
+- 커밋: `d85cf78e9a`
+- upstream 근거: `a338550479`
+- 수정 파일: `include/data.h`(`#include "constants/pokeball.h"`, `enum PokeBall ball:8`), `src/battle_partner.c`(비트필드 주소를 넘기지 않도록 지역 변수로 복사)
+- HNS 적응과 보존한 한글화/배틀 메시지 동작: 그대로 적용(오프셋만). HnS의 다른 사용처(`battle_main.c` 트레이너 파티 생성은 이미 지역 변수로 복사, 테스트 `trainer_control.h`의 지정 초기화)는 수정 불필요.
+- 저장·ROM·그래픽 영향: 없음. 실제 컴파일러로 이전/이후 `struct TrainerMon`을 평가해 크기 36, `lvl` 오프셋 26, `friendship` 오프셋 28로 같음을 확인. ROM 크기 동일.
+- 검증:
+  - `git diff --check`: 통과
+  - `make hns -j8`: 종료 코드 0, ROM 32,714,740 B / EWRAM 248,892 B / IWRAM 25,516 B, 새 경고 없음
+  - 자동 테스트: `test/battle/trainer_control.c` 20건 — PASS 19, FAIL 1(`EXPECT failed`, 기준에서도 FAIL). 기준과 같음.
+  - 실기 확인: 불필요
+- 남은 위험: 없음
