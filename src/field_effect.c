@@ -1062,7 +1062,7 @@ u8 AddNewGameOakObject(s16 x, s16 y, u8 subpriority)
 }
 #endif
 
-u8 CreateMonSprite_PicBox(u16 species, s16 x, s16 y, u8 subpriority)
+u8 CreateMonSprite_PicBox(enum Species species, s16 x, s16 y, u8 subpriority)
 {
     s32 spriteId = CreateMonPicSprite(species, FALSE, 0x8000, TRUE, x, y, 0, species);
     PreservePaletteInWeather(IndexOfSpritePaletteTag(species) + 0x10);
@@ -1082,7 +1082,7 @@ u8 CreateShinyMonSprite_PicBox(u16 species, s16 x, s16 y, u8 subpriority)
         return spriteId;
 }
 
-u8 CreateMonSprite_FieldMove(u16 species, bool8 isShiny, u32 personality, s16 x, s16 y, u8 subpriority)
+u8 CreateMonSprite_FieldMove(enum Species species, bool8 isShiny, u32 personality, s16 x, s16 y, u8 subpriority)
 {
     u16 spriteId = CreateMonPicSprite(species, isShiny, personality, TRUE, x, y, 0, species);
     PreservePaletteInWeather(gSprites[spriteId].oam.paletteNum + 0x10);
@@ -3333,6 +3333,8 @@ static bool8 SlideIndoorBannerOffscreen(struct Task *task)
 #undef tBgOffset
 #undef tMonSpriteId
 
+// HnS: keep u32 (not enum Species). The argument carries SHOW_MON_CRY_NO_DUCKING in bit 31,
+// which a 16-bit enum Species parameter would drop (upstream #9507 regression).
 static u8 InitFieldMoveMonSprite(u32 species, bool8 isShiny, u32 personality)
 {
     bool16 noDucking;

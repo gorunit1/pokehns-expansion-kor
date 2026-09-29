@@ -198,7 +198,7 @@ struct NamingScreenData
     const struct NamingScreenTemplate *template;
     u8 templateNum;
     u8 *destBuffer;
-    u16 monSpecies;
+    enum Species monSpecies;
     u16 monGender;
     u32 monPersonality;
     bool8 isShiny;
@@ -436,7 +436,7 @@ static void NamingScreen_ShowBgs(void);
 
 static const u8 sText_MoveOkBack[] = _("{DPAD_NONE}이동  {A_BUTTON}결정  {B_BUTTON}취소");
 
-void DoNamingScreen(u8 templateNum, u8 *destBuffer, u16 monSpecies, u16 monGender, u32 monPersonality, bool8 isShiny, MainCallback returnCallback)
+void DoNamingScreen(u8 templateNum, u8 *destBuffer, u16 monSpeciesOrPlayerGender, u16 monGender, u32 monPersonality, bool8 isShiny, MainCallback returnCallback)
 {
     sNamingScreen = Alloc(sizeof(struct NamingScreenData));
     if (!sNamingScreen)
@@ -446,7 +446,7 @@ void DoNamingScreen(u8 templateNum, u8 *destBuffer, u16 monSpecies, u16 monGende
     else
     {
         sNamingScreen->templateNum = templateNum;
-        sNamingScreen->monSpecies = monSpecies;
+        sNamingScreen->monSpecies = monSpeciesOrPlayerGender;
         sNamingScreen->monGender = monGender;
         sNamingScreen->monPersonality = monPersonality;
         sNamingScreen->isShiny = isShiny;
@@ -1488,7 +1488,7 @@ static void NamingScreen_CreatePlayerIcon(void)
     u16 rivalGfxId;
     u8 spriteId;
 
-    rivalGfxId = GetRivalAvatarGraphicsIdByStateIdAndGender(PLAYER_AVATAR_STATE_NORMAL, sNamingScreen->monSpecies);
+    rivalGfxId = GetRivalAvatarGraphicsIdByStateIdAndGender(PLAYER_AVATAR_STATE_NORMAL, (enum Gender)sNamingScreen->monSpecies);
     spriteId = CreateObjectGraphicsSprite(rivalGfxId, SpriteCallbackDummy, 56, 37, 0);
     gSprites[spriteId].oam.priority = 3;
     StartSpriteAnim(&gSprites[spriteId], ANIM_STD_GO_SOUTH);

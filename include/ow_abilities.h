@@ -9,8 +9,8 @@ enum GeneratedMonOrigin
     GIFTMON_ORIGIN
 };
 
-u32 GetSynchronizedNature(enum GeneratedMonOrigin origin, u16 species);
-u32 GetSynchronizedGender(enum GeneratedMonOrigin origin, u16 species);
+u32 GetSynchronizedNature(enum GeneratedMonOrigin origin, enum Species species);
+u32 GetSynchronizedGender(enum GeneratedMonOrigin origin, enum Species species);
 bool32 DoesLeadingMonHaveAbilityEffect(const enum Ability *abilityArray);
 bool32 DoesPartyMemberHaveAbilityEffect(const enum Ability *abilityArray);
 bool32 DoesPartyHaveIncubatorMon(void);

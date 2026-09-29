@@ -9,13 +9,13 @@ const static enum Ability sForceNatureAbilities[] = {ABILITY_SYNCHRONIZE, ABILIT
 const static enum Ability sForceOppositeGenderAbilities[] = {ABILITY_CUTE_CHARM, ABILITY_NONE};
 const static enum Ability sIncreaseHatchingSpeedAbilities[] = {ABILITY_MAGMA_ARMOR, ABILITY_FLAME_BODY, ABILITY_STEAM_ENGINE, ABILITY_NONE};
 
-static UNUSED bool32 HasHalfChance(u32 species);
-static UNUSED bool32 HasTwoThirdsChance(u32 species);
-static UNUSED bool32 IsFalse(u32 species);
-static UNUSED bool32 IsTrue(u32 species);
-static UNUSED bool32 IsTrueIfUndiscoveredEggGroup(u32 species);
+static UNUSED bool32 HasHalfChance(enum Species species);
+static UNUSED bool32 HasTwoThirdsChance(enum Species species);
+static UNUSED bool32 IsFalse(enum Species species);
+static UNUSED bool32 IsTrue(enum Species species);
+static UNUSED bool32 IsTrueIfUndiscoveredEggGroup(enum Species species);
 
-static const bool32 (*const sSynchronizeModes[]) (u32) =
+static const bool32 (*const sSynchronizeModes[])(enum Species) =
 {
 #if OW_SYNCHRONIZE_NATURE == GEN_3
     [WILDMON_ORIGIN] = HasHalfChance,
@@ -50,7 +50,7 @@ static const bool32 (*const sSynchronizeModes[]) (u32) =
 #endif
 };
 
-static const bool32 (*const sCuteCharmModes[]) (u32) =
+static const bool32 (*const sCuteCharmModes[])(enum Species) =
 {
     [WILDMON_ORIGIN] = HasTwoThirdsChance,
     [STATIC_WILDMON_ORIGIN] = HasTwoThirdsChance,
@@ -58,27 +58,27 @@ static const bool32 (*const sCuteCharmModes[]) (u32) =
     [GIFTMON_ORIGIN] = IsFalse,
 };
 
-static UNUSED bool32 HasHalfChance(u32 species)
+static UNUSED bool32 HasHalfChance(enum Species species)
 {
     return Random() % 2;
 }
 
-static UNUSED bool32 HasTwoThirdsChance(u32 species)
+static UNUSED bool32 HasTwoThirdsChance(enum Species species)
 {
     return Random() % 3;
 }
 
-static UNUSED bool32 IsFalse(u32 species)
+static UNUSED bool32 IsFalse(enum Species species)
 {
     return FALSE;
 }
 
-static UNUSED bool32 IsTrue(u32 species)
+static UNUSED bool32 IsTrue(enum Species species)
 {
     return TRUE;
 }
 
-static UNUSED bool32 IsTrueIfUndiscoveredEggGroup(u32 species)
+static UNUSED bool32 IsTrueIfUndiscoveredEggGroup(enum Species species)
 {
     return (gSpeciesInfo[species].eggGroups[0] == EGG_GROUP_NO_EGGS_DISCOVERED);
 }
@@ -118,7 +118,7 @@ bool32 DoesPartyMemberHaveAbilityEffect(const enum Ability *abilityArray)
     return FALSE;
 }
 
-u32 GetSynchronizedNature(enum GeneratedMonOrigin origin, u32 species)
+u32 GetSynchronizedNature(enum GeneratedMonOrigin origin, enum Species species)
 {
     if (!IsSynchronizeActive())
         return NATURE_RANDOM;
@@ -132,7 +132,7 @@ u32 GetSynchronizedNature(enum GeneratedMonOrigin origin, u32 species)
     return GetMonData(&gPlayerParty[0], MON_DATA_PERSONALITY) % NUM_NATURES;
 }
 
-u32 GetSynchronizedGender(enum GeneratedMonOrigin origin, u32 species)
+u32 GetSynchronizedGender(enum GeneratedMonOrigin origin, enum Species species)
 {
     if (!DoesLeadingMonHaveAbilityEffect(sForceOppositeGenderAbilities))
         return MON_GENDER_RANDOM;

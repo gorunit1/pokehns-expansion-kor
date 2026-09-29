@@ -61,7 +61,7 @@ struct EggHatchData
     u8 windowId;
     u8 unused_9;
     u8 unused_A;
-    u16 species;
+    enum Species species;
     u8 textColor[3];
 };
 
@@ -308,7 +308,7 @@ static const s16 sEggShardVelocities[][2] =
 
 static void AddHatchedMonToParty(u8 id)
 {
-    u16 species;
+    enum Species species;
     enum NationalDexOrder nationalDexNum;
     u8 name[POKEMON_NAME_LENGTH + 1];
     u32 metLevel, friendship;
@@ -323,9 +323,9 @@ static void AddHatchedMonToParty(u8 id)
     StringCopy(name, GetSpeciesName(species));
     SetMonData(mon, MON_DATA_NICKNAME, name);
 
-    species = SpeciesToNationalPokedexNum(species);
-    GetSetPokedexFlag(species, FLAG_SET_SEEN);
-    GetSetPokedexFlag(species, FLAG_SET_CAUGHT);
+    nationalDexNum = SpeciesToNationalPokedexNum(species);
+    GetSetPokedexFlag(nationalDexNum, FLAG_SET_SEEN);
+    GetSetPokedexFlag(nationalDexNum, FLAG_SET_CAUGHT);
 
     GetMonNickname(mon, gStringVar1);
 
@@ -363,7 +363,7 @@ static u8 EggHatchCreateMonSprite(u8 useAlt, u8 state, u8 partyId, u16 *speciesL
     u8 position = 0;
     u8 spriteId = 0;
     struct Pokemon *mon = NULL;
-    u16 species = SPECIES_NONE;
+    enum Species species = SPECIES_NONE;
 
     if (useAlt == FALSE)
     {
@@ -478,7 +478,7 @@ static void CB2_LoadEggHatch(void)
         break;
     case 3:
     {
-        u32 species = GetMonData(&gPlayerParty[sEggHatchData->eggPartyId], MON_DATA_SPECIES);
+        enum Species species = GetMonData(&gPlayerParty[sEggHatchData->eggPartyId], MON_DATA_SPECIES);
         if (gSpeciesInfo[species].eggId != EGG_ID_NONE)
         {
             u32 *tempSprite = malloc_and_decompress(gEggDatas[gSpeciesInfo[species].eggId].eggHatchGfx, NULL);
@@ -578,7 +578,7 @@ static void Task_EggHatchPlayBGM(u8 taskId)
 
 static void CB2_EggHatch(void)
 {
-    u16 species;
+    enum Species species;
     u8 gender;
     u32 personality;
 

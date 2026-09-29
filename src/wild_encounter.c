@@ -56,7 +56,7 @@ static void FeebasSeedRng(u16 seed);
 static bool8 IsWildLevelAllowedByRepel(u8 level);
 static void ApplyFluteEncounterRateMod(u32 *encRate);
 static void ApplyCleanseTagEncounterRateMod(u32 *encRate);
-static u8 GetMaxLevelOfSpeciesInWildTable(const struct WildPokemon *wildMon, u16 species, enum WildPokemonArea area);
+static u8 GetMaxLevelOfSpeciesInWildTable(const struct WildPokemon *wildMon, enum Species species, enum WildPokemonArea area);
 #ifdef BUGFIX
 static bool8 TryGetAbilityInfluencedWildMonIndex(const struct WildPokemon *wildMon, enum Type type, enum Ability ability, u8 *monIndex, u32 size);
 #else
@@ -452,7 +452,7 @@ enum TimeOfDay GetTimeOfDayForEncounters(u32 headerId, enum WildPokemonArea area
         return GenConfigTimeOfDay(timeOfDay);
 }
 
-static u8 PickWildMonNature(u32 species)
+static u8 PickWildMonNature(enum Species species)
 {
     u8 i;
     struct Pokeblock *safariPokeblock;
@@ -583,7 +583,7 @@ static void TryApplyPokeblockBonus(struct Pokemon *mon, u16 species)
     CalculateMonStats(mon);
 }
 
-void CreateWildMon(u16 species, u8 level)
+void CreateWildMon(enum Species species, u8 level)
 {
     ZeroEnemyPartyMons();
     u32 personality = GetMonPersonality(species, GetSynchronizedGender(WILDMON_ORIGIN, species), PickWildMonNature(species), RANDOM_UNOWN_LETTER);
@@ -673,7 +673,7 @@ static bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, enum 
 static u16 GenerateFishingWildMon(const struct WildPokemonInfo *wildMonInfo, u8 rod)
 {
     u8 wildMonIndex = ChooseWildMonIndex_Fishing(rod);
-    u16 wildMonSpecies = wildMonInfo->wildPokemon[wildMonIndex].species;
+    enum Species wildMonSpecies = wildMonInfo->wildPokemon[wildMonIndex].species;
     u8 level = ChooseWildMonLevel(wildMonInfo->wildPokemon, wildMonIndex, WILD_AREA_FISHING);
 
     #if RANDOMIZER_AVAILABLE == TRUE
@@ -1063,7 +1063,7 @@ bool8 DoesCurrentMapHaveFishingMons(void)
 
 void FishingWildEncounter(u8 rod)
 {
-    u16 species;
+    enum Species species;
     u32 headerId;
     enum TimeOfDay timeOfDay;
 
@@ -1272,7 +1272,7 @@ static bool8 TryGetHoennSoundWildMonIndex(const struct WildPokemon *wildMon, u8 
 
 #include "data.h"
 
-static u8 GetMaxLevelOfSpeciesInWildTable(const struct WildPokemon *wildMon, u16 species, enum WildPokemonArea area)
+static u8 GetMaxLevelOfSpeciesInWildTable(const struct WildPokemon *wildMon, enum Species species, enum WildPokemonArea area)
 {
     u8 i, maxLevel = 0, numMon = 0;
 

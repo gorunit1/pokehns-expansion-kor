@@ -273,7 +273,7 @@ void MoveAllRoamers(void)
     }
 }
 
-static void CreateInitialRoamerMon(u8 index, u16 species, u8 level, u8 locationTableId)
+static void CreateInitialRoamerMon(u8 index, enum Species species, u8 level, u8 locationTableId)
 {
     ClearRoamerLocationHistory(index);
     ROAMER(index)->locationTableId = locationTableId;
@@ -315,7 +315,7 @@ static u8 GetFirstInactiveRoamerIndex(void)
     return ROAMER_COUNT;
 }
 
-bool8 TryAddRoamer(u16 species, u8 level, u8 locationTableId)
+bool8 TryAddRoamer(enum Species species, u8 level, u8 locationTableId)
 {
     u8 index = GetFirstInactiveRoamerIndex();
 
