@@ -55,6 +55,7 @@
 | 야생 포켓몬의 텔레포트가 개미지옥·그림자밟기·자력에 막힘(Gen 8+) | 특성 팝업 → `STRINGID_PKMNSXMADEITINEFFECTIVE` 실패 | 해당 팝업·실패 문구 없이 정상 도주 | 텔레포트 전용 도주 불가 판정에서 세 특성 검사를 건너뜀 |
 | 생명의구슬 반동(Champions 이식) | `STRINGID_HURTBYITEM` | 생명의구슬 팝업 뒤 `STRINGID_LOSTSOMEOFITSHP` | `BattleScript_LifeOrbActivates`를 전용 HP 갱신·메시지 스크립트로 분리 |
 | 아이템 발동(Champions 이식) | 아이템 발동 애니메이션/효과만, 아이템 팝업 없음 | 아이템 팝업 → 기존 효과 처리 | 파워허브, 운명의매듭, 맹독·화염구슬, 특성가드, 울퉁불퉁멧, 열매, 보석, 하얀허브, 생명의구슬, 기합의띠, 선제공격손톱, 레드카드, 탈출버튼 등에 팝업 helper 연결. 본문은 고정 `STRINGID`가 아니라 아이템명 데이터 |
+| 기술·특성이 독·맹독·마비·화상을 걸 때 대상의 싱크로 발동, 상태이상에 걸린 포켓몬의 상태 치료 열매(리샘열매 등) 발동 (upstream #9446 이식) | 싱크로는 기술 처리 뒤 move end 단계(`MOVEEND_SYNCHRONIZE_TARGET`/`_ATTACKER`)에서 팝업·상태 문구, 열매는 move end 도구 단계에서 발동. 광역기로 두 대상이 모두 싱크로면 하나만 반응할 수 있었음 | 같은 문구(`BattleScript_SynchronizeActivates`, 특성 팝업, 열매 팝업·치료 문구)가 상태 문구 직후(`BattleScript_UpdateEffectStatusIconRet`의 `trysynchronize` → `tryactivateitem ACTIVATION_ON_STATUS_CHANGE`)로 앞당겨져 출력. 광역기는 대상마다 싱크로 반응. 열매로 치료한 뒤 같은 공격의 다른 효과로 다시 걸리면 싱크로가 다시 반응 | `TrySynchronizeActivation()`·`Cmd_trysynchronize`, `SetNonVolatileStatus(battlerAtk, …)`, `MOVEEND_SYNCHRONIZE_*`·`ABILITYEFFECT_(ATK_)SYNCHRONIZE` 삭제. 문자열 ID 변화 없음, 출력 순서만 변경 |
 
 ## 제외한 변경
 
