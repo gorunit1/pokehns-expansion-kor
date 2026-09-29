@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 63~82
 
-진행 중: 마지막 완료 seq 81 (#9051), 다음 seq 82 (#9505).
+진행 중: seq 63~82 이식 완료(마지막 seq 82 #9505). 남은 일: 구간 전체 테스트와 결과 커밋.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `72f40563ad`
@@ -408,4 +408,19 @@
   - `make hns -j8`: 종료 코드 0, ROM 32,717,172 B / EWRAM 248,908 B / IWRAM 25,516 B, 새 경고 없음
   - 자동 테스트: 해당 없음(구간 끝 전체 테스트)
   - 실기 확인: 선택(비밀기지 PC·콘테스트·배틀프런티어 규칙·링크 메뉴·시작 메뉴의 한글 선택지 표시). 문자열 바이트가 같아 표시 변화는 없어야 한다.
+- 남은 위험: 없음
+
+## 동기화 단위: seq 82 #9505 `U-9505` fix: battle message assert no longer calls for gText_Blank
+
+- 현재 판정: 적용(+ `gText_Blank` 정의 삭제)
+- 커밋: `0d0dfd2720`
+- upstream 근거: `e5ebd6be22`
+- 수정 파일: `src/battle_message.c`(`BattleStringGetOpponentNameByTrainerId`의 assert 실패 경로 반환값 `gText_Blank` → `sText_EmptyString4`), `src/strings.c`·`include/strings.h`(`gText_Blank` 삭제)
+- HNS 적응과 보존한 한글화/배틀 메시지 동작: hunk는 그대로(오프셋만). 정상 경로 출력 불변(둘 다 빈 문자열 `0xFF`). #9051에서 남겨 둔 `gText_Blank`는 이 수정으로 사용처가 0이 되어 지웠다(upstream 결과와 같은 상태). 조사·`{B_...}`·STRINGID 변화 없음. 한글이 든 소스 줄 변경 0(삭제한 `gText_Blank` 줄은 빈 문자열).
+- 저장·ROM·그래픽 영향: ROM 크기 변화 없음. 이식 후에도 스크립트 메뉴 676개 항목 문자열이 #9051 이전과 바이트 동일.
+- 검증:
+  - `git diff --check`: 통과
+  - `make hns -j8`: 종료 코드 0, ROM 32,717,172 B / EWRAM 248,908 B / IWRAM 25,516 B, 새 경고 없음
+  - 자동 테스트: `test/battle/battle_message.c` 2건(FAIL 1 `Unmatched MESSAGE`, TO_DO 1) 기준과 같음
+  - 실기 확인: 불필요
 - 남은 위험: 없음
