@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 92~101
 
-진행 중: 마지막 완료 seq 95, 다음 seq 96.
+진행 중: 마지막 완료 seq 96, 다음 seq 97.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 사전 분석: PR마다 병렬 분석 에이전트가 쓴 이식 계획(`hns-sync-work/chunk-092-101/seq<N>-<PR>.md`, 저장소 밖)을 따랐다.
@@ -72,3 +72,31 @@
   - 자동 테스트: 이 PR이 바꾸는 테스트 없음. `test/pokemon.c` 27개가 기준과 같다(PASS 26, 기준 목록 밖 `… learnsets fit within MAX_LEVEL_UP_MOVES … 1436/1573: INVALID` 1건은 이전 전체 로그에도 있음).
   - 실기 확인: 필수 아님. 가능하면 링크 교환 1회(교환 메뉴 진입·교환 완료).
 - 남은 위험: 낮음. **seq 516 #9986**이 `GiveGiftRibbonToParty`를 새 파일 `src/give_gift_ribbon_to_party.c`로 옮길 때 upstream 커밋은 옛 `GIFT_RIBBONS_COUNT` 형태를 담고 있다. 이 상수가 없어졌으므로 그때는 1.17.0 최종 형태(`[NUM_GIFT_RIBBONS]`, `index < NUM_GIFT_RIBBONS`)로 옮긴다(아래 "후속 행 메모").
+
+## 동기화 단위: seq 96 #9525 `U-9525` Fill out missing type info
+
+- 현재 판정: 적용(1 hunk 수동)
+- 커밋: `6c2c954693`
+- upstream 근거: `0f3c8d5bfe`
+- 해결한 의존성: 없음. 쓰는 심볼(`MOVE_BREAKNECK_BLITZ`, `MOVE_MAX_STRIKE`, `DAMAGE_CATEGORY_*`)은 모두 있다. 새 심볼 `gItemIconPalette_MysteryTMHM`은 이 PR에서 정의한다.
+- 수정 파일(4): `graphics/items/icon_palettes/mystery_tm_hm.pal`(신규, blob이 upstream과 같음, 작업 트리는 `.gitattributes`대로 CRLF), `include/graphics.h`, `src/data/graphics/items.h`, `src/data/types_info.h`
+- 적용 방법:
+  - 팔레트·`graphics.h`·`items.h`와 `types_info.h`의 `[TYPE_MYSTERY]`·`[TYPE_STELLAR]` hunk는 `git apply` 그대로.
+  - `types_info.h` `[TYPE_NONE]` hunk는 문맥 `.name = _("None")`이 HnS에서 `_("없음")`이라 실패해서 `.palette = 15` 아래에 `.zMove = MOVE_BREAKNECK_BLITZ`, `.maxMove = MOVE_MAX_STRIKE` 두 줄을 손으로 넣었다(`.rej`는 지움).
+  - 결과를 upstream `0f3c8d5bfe:src/data/types_info.h`와 비교하면 한글 `.name` 줄을 빼고 4줄만 다르다: HnS `841b07a3c0` "Ghost special dark physical"의 `[TYPE_GHOST] SPECIAL`·`[TYPE_DARK] PHYSICAL`(보존).
+  - 제외 hunk: 없음.
+- 바뀐 값: `TYPE_NONE`·`TYPE_MYSTERY`에 zMove/maxMove(`MOVE_NONE` failsafe 구멍 메움), `TYPE_MYSTERY` `damageCategory` SPECIAL → PHYSICAL과 `paletteTMHM` NULL → `gItemIconPalette_MysteryTMHM`, `TYPE_STELLAR` `damageCategory` 미지정(0 = PHYSICAL) → SPECIAL. upstream 1.17.0까지 `types_info.h` 변경이 더 없으므로 1.17.0 최종값이다.
+- HNS 적응과 보존한 한글화/배틀 메시지 동작: 한글 타입 이름과 HnS 고스트·악 분류 유지. 비ASCII 변경 줄 0. 배틀 메시지 변화 없음.
+- **동작 변화(HnS 챌린지 "물리/특수 구분: 끔"):** `damageCategory`를 읽는 곳은 `GetBattleMoveCategory()`의 `B_PHYSICAL_SPECIAL_SPLIT < GEN_4 || gSaveBlock3Ptr->challengeSettings.optionStyle == 1` 분기 하나뿐이다. 새 게임 기본값(`optionStyle = 0`)과 추천 모드(구분 켬)에서는 변화가 없고, **커스텀 모드에서 구분을 끈 세이브**에서만 달라진다.
+  - 발버둥은 배틀 중 동적 타입이 `TYPE_MYSTERY`라 이전에는 **특수**(특공·특방, 빛의장막 적용, 화상 반감 없음)였고, 이제 **물리**(공격·방어, 리플렉터 적용, 화상 반감)다. 3세대·이후 모든 세대의 발버둥과 같다.
+  - 혼란 자해(`MOVE_NONE`, 선택 기술의 동적 타입을 따름)도 발버둥을 고른 턴에는 특수 → 물리다.
+  - 타입을 잃은 사용자의 리베레이션댄스도 특수 → 물리(드묾).
+  - 스텔라(스텔라 테라버스트·테라클러스터)는 특수가 되지만 HnS 플레이어는 테라스탈할 수 없고 스텔라 트레이너 데이터도 없어 도달하지 않는다.
+  - **확인:** 로컬 임시 테스트 2개(`optionStyle = 1`, 커밋하지 않음)로 이식 전후를 비교했다. 공격 200/특공 10 마자용의 발버둥 피해: 이식 전 `optionStyle` 0/1 = 73/5(특수 계산), 이식 후 같음. 상대 리플렉터: 이식 전 피해 22/22(반감 안 됨), 이식 후 반감됨.
+- 저장·ROM·그래픽 영향: 세이브 영향 없음(`gTypesInfo`는 ROM 상수). ??? 타입 TM이 없어 아이콘 표시 변화 없음(NULL 팔레트 failsafe만 메움).
+- 검증:
+  - `git diff --check`: 통과. 파일 모드 유지.
+  - `make hns -j8`: 종료 코드 0, **ROM 32,713,124 B(+32 B, 16색 팔레트) / EWRAM 248,924 B(0) / IWRAM 25,516 B(0)**. 새 경고 0. `gItemIconPalette_MysteryTMHM`이 `pokehns.map`에 링크됨.
+  - 자동 테스트: 이 PR이 바꾸는 테스트 없음(테스트 러너는 `optionStyle == 0`이라 타입별 분류 분기를 타지 않는다). `struggle.c`(4), `tera_blast.c`(8), `tera_starstorm.c`(4), `revelation_dance.c`(5), `gimmick/dynamax.c`(81), `gimmick/zmove.c`(44), `gimmick/terastal.c`(44, 같은 이름 2개라 목록 43줄) — 추출 목록이 기준과 같다(회귀 0).
+  - 실기 확인: **필요**(아래 "실기 확인 필요").
+- 남은 위험: 낮음. seq 478 #10300(`DAMAGE_CATEGORY_NONE` 추가) 이식 때 HnS의 `optionStyle == 1` 조건을 새 `GetBattleMoveCategory`로 옮겨야 한다(아래 "후속 행 메모").
