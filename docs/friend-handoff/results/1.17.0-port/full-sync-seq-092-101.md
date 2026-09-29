@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 92~101
 
-진행 중: 마지막 완료 seq 97, 다음 seq 98.
+진행 중: 마지막 완료 seq 98, 다음 seq 99.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 사전 분석: PR마다 병렬 분석 에이전트가 쓴 이식 계획(`hns-sync-work/chunk-092-101/seq<N>-<PR>.md`, 저장소 밖)을 따랐다.
@@ -120,7 +120,12 @@
 - 검증:
   - `git diff --check`: 통과. 파일 모드 유지.
   - `make hns -j8`: 종료 코드 0, **ROM 32,713,092 B(−32 B) / EWRAM 248,924 B(0) / IWRAM 25,516 B(0)**. 새 경고 0.
-  - 크기 내역(맵 비교): `gBattlePartners` 0x444 → 0x3A8(−156), `sTrainerSlides` 파트너 1행(−168), DUMMY의 Wynaut 파티(−36) = rodata −360 B. 대신 `gBattlePartners` 행 간격이 7×52 → 6×52 = 312가 되어 `GetTrainerStructFromId` 인라인을 쓰는 함수 44개가 `movs/lsls/muls`(×364) 대신 시프트·가감(×312)으로 곱해 4~28 B씩 늘었다(`GetTrainerMoneyToGive`는 그 밖에 `IsPartnerTrainerId`의 `cmp #5` → `#4`만 다름). 섹션 합계 −48 B, 정렬 후 ROM −32 B.
+  - 크기 내역(맵 비교): `gBattlePartners` 0x444 → 0x3A8(−156), `sTrainerSlides` 파트너 1행(−168), DUMMY의 Wynaut 파티(−36) = rodata −360 B. 대신 `gBattlePartners` 행 간격이 7×52 → 6×52 = 312가 되어 `GetTrainerStructFromId` 인라인을 쓰는 함수 42개가 `movs/lsls/muls`(×364) 대신 시프트·가감(×312)으로 곱해 4~28 B씩 늘었다(`GetTrainerMoneyToGive`는 그 밖에 `IsPartnerTrainerId`의 `cmp #5` → `#4`만 다름). 섹션 합계 −48 B, 정렬 후 ROM −32 B.
   - 자동 테스트: `trainer_control.c` 20개(PASS 19 / FAIL 1), `trainer_slides.c` 39개(PASS 12 / FAIL 27), `ai/ai_multi.c` 11개(PASS 11) — 추출 목록이 기준과 같다(회귀 0). 바뀐 파트너 난이도 테스트 4개(`… for partner … (EASY/HARD/NORMAL)`, `Difficulty default to Normal if the partner doesn't have a member …`)는 모두 PASS. `trainer_control.c`의 FAIL 1건(`CreateNPCTrainerPartyForTrainer generates customized Pokémon`)은 기준에서도 FAIL.
   - 실기 확인: 필수 아님(파트너 번호 불변). 원하면 디버그 메뉴 `Lance Multi`·`Silver Multi`로 파트너 파티·뒷모습 1회.
 - 남은 위험: 낮음. seq 128 #9475(트레이너 그림 정보 재작업)는 이 PR 뒤 문맥(`Difficulty: Normal`, DUMMY 없음)을 전제로 하고, HnS LANCE·SILVER×3의 `Back Pic:`을 따로 처리해야 한다(아래 "후속 행 메모").
+
+## 동기화 단위: seq 98 #9564 `U-animcall-9142` Fixed Stuff Cheeks animation
+
+- 현재 판정: **이미 적용**. 커밋 없음.
+- 근거: `125e893903` "Port upstream #9142: Create functions for repeated move animations (+ #9473, #9564)"(같은 unit으로 한 커밋). upstream `070f31e384`. 현재 `data/battle_anim_scripts.s` `BiteOpponent`의 두 `create_sharp_teeth_sprite`가 upstream 수정 후와 같은 `x=-33`이다.
