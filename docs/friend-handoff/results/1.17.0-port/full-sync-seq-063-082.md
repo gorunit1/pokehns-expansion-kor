@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 63~82
 
-진행 중: 마지막 완료 seq 73 (#9463), 다음 seq 74 (#8664). seq 76 #9474는 seq 64 커밋에 포함(이미 적용).
+진행 중: 마지막 완료 seq 74 (#8664), 다음 seq 75 (#9142, 같은 unit #9473·#9564 포함 예정). seq 76 #9474는 이미 적용. seq 76 #9474는 seq 64 커밋에 포함(이미 적용).
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `72f40563ad`
@@ -254,3 +254,22 @@
   - 자동 테스트: 해당 없음
   - 실기 확인: 불필요
 - 남은 위험: 없음
+
+## 동기화 단위: seq 74 #8664 `U-8664` Smarter Doubles Fake Out AI + EFFECT_FIRST_TURN_ONLY tests
+
+- 현재 판정: 적용(`include/random.h` hunk 제외)
+- 커밋: `f7a32cc1ff`
+- upstream 근거: `62b91cf57d`
+- 수정 파일: `include/config/ai.h`(`FAKE_OUT_SAVE_ALLY_CHANCE 50`), `src/battle_ai_main.c`(`AI_CalcMoveEffectScore`: 확정 풀죽음 가산을 싱글 한정, `EFFECT_FIRST_TURN_ONLY` 더블 분기), `test/battle/move_effect/first_turn_only.c`
+- HNS 적응과 보존한 한글화/배틀 메시지 동작:
+  - `RNG_AI_FAKE_OUT_SAVE_ALLY`는 HnS `include/random.h:256`에 이미 있어 그 hunk를 뺐다(group plan).
+  - upstream 추가 줄의 후행 공백 8줄과 테스트 파일 끝 빈 줄은 `git diff --check` 통과를 위해 지웠다(내용 동일).
+  - `predictedMoveSpeedCheck`는 HnS `AI_CalcMoveEffectScore`에 이미 있다(#9857 개명 전 이름, upstream 당시와 같음).
+  - **AI 동작 변화(upstream 유래):** 더블배틀에서 속이다 점수가 상대·아군의 확정 KO/속도 관계로 달라진다(난이도 소폭 상승 가능).
+- 저장·ROM·그래픽 영향: ROM +704 B
+- 검증:
+  - `git diff --check`: 통과
+  - `make hns -j8`: 종료 코드 0, ROM 32,716,756 B / EWRAM 248,876 B / IWRAM 25,516 B, 새 경고 없음
+  - 자동 테스트: `test/battle/move_effect/first_turn_only.c` 9건 — 새 AI 테스트 5개 PASS. 기준에서 TO_DO였던 4개("Fake Out/First Impression can only be used on the user's first turn", "… fails if it's called via Instruct")가 upstream에서 실제 테스트로 바뀌어 FAIL, 사유는 모두 `Unmatched MESSAGE`(영문 기대값, 알려진 한계). 통과하던 테스트의 회귀 없음.
+  - 실기 확인: 선택(더블배틀 AI 속이다 사용)
+- 남은 위험: 낮음
