@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 84~90
 
-진행 중: 마지막 완료 seq 90, 다음 구간 끝 전체 테스트
+완료: seq 84~90 이식·전체 테스트·기록 완료(다음 구간은 seq 91 #9507부터). 아래 "seq 84~90 요약" 참고.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `79af946ddf`
@@ -216,3 +216,38 @@
   - 자동 테스트: 해당 테스트 없음. 구간 끝 전체 실행에 포함.
   - 실기 확인: 불필요.
 - 남은 위험: 없음.
+
+## seq 84~90 요약
+
+| seq | PR | 판정 | 커밋 | ROM 변화 |
+|---:|---|---|---|---:|
+| 84 | #9376 | 적용(hunk 단위 수동) | `6e050d6e70` | 0 B |
+| 85 | #9466 | 적용(hunk 단위 수동) | `a4c46a4a8f` | +80 B |
+| 86 | #9510 | 적용(HnS 적응) | `7a6cd5b51b` | +224 B |
+| 87 | #9135 | 적용(config 한 줄) | `fd549f70bc` | 0 B |
+| 88 | #9460 | 적용(파일명 유지, ROM 바이트 동일) | `d81b37f15b` | 0 B |
+| 89 | #9514 | 적용(HnS 적응, 한글 토큰 교체 22건) | `f0c3349daf` | −224 B |
+| 90 | #9539 | 적용(그대로) | `7b578d7bb2` | −16 B |
+
+- 구간 밖 행은 넣지 않았다.
+- 마지막 빌드(`e1b1914846` 소스, 메인이 `rm -f pokehns.elf pokehns.gba` 뒤 `make hns -j8`로 재링크): 종료 코드 0, ROM 32,712,612 B(97.49%, 구간 시작 대비 +64 B), EWRAM 248,924 B(94.96%, 변화 0), IWRAM 25,516 B(77.87%, 변화 0). SHA1 `9dcd5c1578cbf4a7b117e3681eb030478bb4742b`.
+- 한글이 든 소스 줄: `src/battle_message.c` 22쌍뿐이다(#9514). 메인이 따로 확인한 결과, `{B_DEF_*}/{B_ATK_*}` → `{B_EFF_*}/{B_SCR_*}` 토큰 자리를 같은 자리표시로 바꾸면 옛 줄과 새 줄이 22건 모두 바이트 동일하다.
+
+### 전체 테스트 (구간 끝)
+
+- 에이전트의 구간 끝 전체 실행은 사용자 지시(인터넷 연결 문제)로 중단됐다. 메인이 재개 뒤 `make check BUILD=hns -j8`를 다시 돌렸다.
+- 결과: PASS 2,298 / FAIL 2,229 / KNOWN_FAILING 8 / ASSUMPTIONS_FAILED 38 / TO_DO 618 / EXPECT_FAILING 6 / TOTAL 5,197. assertion·illegal opcode·Killed 0.
+- 테스트별 목록(5,128행)이 [`test-baseline-seq083.txt`](test-baseline-seq083.txt)와 **바이트 동일**하다. 회귀 0. 새 기준 목록: [`test-baseline-seq090.txt`](test-baseline-seq090.txt)(내용은 seq083과 같다).
+- AI 더블 테스트 3건(`AI_FLAG_DOUBLE_ACE_POKEMON: Ace mons…`, `Choiced Pokémon won't switch out…`, `AI can switch out both mons on the same turn…`)은 #9460 뒤에도 FAIL이다. #9460은 빈 AI config 틀만 추가하므로 예상대로다. seq 131 #9462 이식 뒤 다시 확인한다.
+- 목록 추출 주의: "~ fit on ~" 계열 23개 테스트는 실패 내용의 한글 인코딩 바이트가 테스트 이름 줄에 붙어 출력된다. UTF-8 로케일에서 `grep`·`sed`를 쓰면 이 줄이 빠지므로 `LC_ALL=C`와 `grep -a`로 추출해야 기준 목록과 비교할 수 있다.
+
+### 실기 확인 필요 (mGBA)
+
+1. #9514: 조이기 계열 10개(조이기·김밥말이·회오리불꽃·껍질끼우기·바다회오리·모래지옥·마그마스톰·엉겨붙기·집게덫·썬더프리즌) 문장의 두 이름과 조사(싱글·더블, 상대/야생 접두어), 소란피기·불사르기·전광쌍격, 페인트·이차원러시 방어 해제 문구, 불꽃튀기기 파트너 이름(더블), 소금절이·시럽봄, 방벽을 치는 기술의 방벽 문구, 오로라베일 성공 문구.
+2. #9514: 거다이골드러시는 플레이어 편이 쓸 때만 "돈이 주위에 흩어졌다!"가 나온다(upstream 동작 변경, `BATTLE_MESSAGE_OUTPUT_CHANGES.md`에 기록).
+3. #9510(선택): 맑음·비에서 만능우산 보유자의 선파워·건조피부·젖은접시, 수확, 체리꼬 폼 체인지, 에어록·날씨부정 상태의 기분파(캐스퐁) 복귀.
+
+### 다음 구간 담당 참고
+
+- 다음 시작: seq 91 #9507 `U-species-enum-9507` Add Species enum (XL, 단독 구간).
+- #10064(seq 206)를 이식할 때 HnS의 "이미 잠들어/독/마비" 세 문장은 `{B_DEF_NAME_WITH_PREFIX}`를 그대로 두고 엔진 1줄만 넣는다(#9514 항목 "ALREADY 3건").
