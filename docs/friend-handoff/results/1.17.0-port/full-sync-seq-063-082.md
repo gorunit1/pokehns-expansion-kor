@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 63~82
 
-진행 중: 마지막 완료 seq 70 (#9407 unit: #9407·#9549·#9707·#10573), 다음 seq 71 (#9417). seq 76 #9474는 seq 64 커밋에 포함(이미 적용).
+진행 중: 마지막 완료 seq 71 (#9417), 다음 seq 72 (#9446). seq 76 #9474는 seq 64 커밋에 포함(이미 적용).
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `72f40563ad`
@@ -193,3 +193,25 @@
 - 검증: `git diff --check` 통과, `make hns -j8` 종료 코드 0, ROM 32,716,052 B / EWRAM 248,892 B / IWRAM 25,516 B, 새 경고 없음. 자동 테스트 해당 없음.
 - 실기 확인(unit 전체): **필요.** 맵 이동(문·계단·워프) 페이드아웃/인, 비·안개 등 날씨 맵과 자연광 맵의 시간대별 페이드인, 동반 포켓몬·NPC 스프라이트가 배경과 같은 속도로 페이드되는지(스프라이트만 늦게/먼저 바뀌는 깜빡임 없음), 블렌드 면역 스프라이트(조명 등) 색, 메뉴 열고 닫기·배틀 진입/종료 페이드.
 - 남은 위험: 낮음(1.17.0 최종형과 같음). 시간대 페이드 경로는 HnS DNS 설정에서 실기로만 확인 가능.
+
+## 동기화 단위: seq 71 #9417 `U-9417` Minor dancer clean up/consolidation
+
+- 현재 판정: 적용(HnS 적응)
+- 커밋: `ce841b0cb7`
+- upstream 근거: `138a8f90c6`, 1.17.0 `TryDancer`(대상 저장 필드 대조)
+- 해결한 의존성: #9446(seq 72)의 선행
+- 수정 파일: `include/battle.h`(`SpecialStatus`), `include/battle_util.h`(`ABILITYEFFECT_MOVE_END_OTHER` → `ABILITYEFFECT_DANCER`), `src/battle_move_resolution.c`(`CancelerMoveFailure` 2곳, `MoveEndClearBits`, `MoveEndDancer`), `src/battle_script_commands.c`(`BS_TryInstruct`), `src/battle_util.c`(`TryDancer` 신설, `AbilityBattleEffects`의 춤추기 case 교체)
+- HNS 적응과 보존한 한글화/배틀 메시지 동작:
+  - 4개 파일이 HnS 문맥 차이로 패치가 실패해 의미 단위로 옮겼다.
+  - HnS에 이미 있는 #9515(`gBattleStruct->dancerSavedTarget`/`dancerSavedAttacker`)를 `TryDancer`에서 그대로 쓴다(upstream #9417 당시의 `gBattleScripting.savedBattler` 인코딩은 쓰지 않음, 1.17.0 `TryDancer`와 같은 필드). 춤추기 순서 config `B_DANCER_ORDER`는 후속 PR 몫이라 넣지 않았다(기존 "가장 느린 배틀러부터" 유지).
+  - `SpecialStatus`: upstream처럼 `changedStatsBattlerId:3`과 같은 바이트에 `neutralizingGasRemoved`·`berryReduced`·`mindBlownRecoil`을 모으고, HnS가 #10047 이식으로 가진 `poisonPuppeteer:1`도 이 바이트로 옮겼다(`padding:1`). `instructedChosenTarget`/`dancerOriginalTarget`(`| 0x4` 인코딩) → `backUpTarget`(`+ 1` 인코딩). `changedStatsBattlerId`에는 배틀러 번호(0~3)만 들어간다.
+  - 메시지·스크립트 변화 없음(`BattleScript_DancerActivates` 그대로).
+  - **동작 차이(upstream 유래):** 춤추기 발동 시 `gLastUsedAbility = ABILITY_DANCER`와 `RecordAbilityBattle`이 추가된다(AI 특성 기록).
+- 저장·ROM·그래픽 영향: ROM +240 B, EWRAM −16 B(`gSpecialStatuses` 배틀러당 1바이트 감소). 세이브 무관.
+- 검증:
+  - 옛 필드·enum 사용처 0건(`instructedChosenTarget`, `dancerOriginalTarget`, `ABILITYEFFECT_MOVE_END_OTHER`)
+  - `git diff --check`: 통과
+  - `make hns -j8`: 종료 코드 0, ROM 32,716,292 B / EWRAM 248,876 B / IWRAM 25,516 B, 새 경고 없음
+  - 자동 테스트(기준 대비 변화 없음): `ability/dancer.c` 35건(PASS 22, FAIL 13 = `Unmatched MESSAGE` 12 + 확률 테스트 1, 모두 기준과 같음), `move_effect/instruct.c` 20건(PASS 15, FAIL 4 `Unmatched MESSAGE`, TO_DO 1), `first_turn_only.c` TO_DO 4, `mat_block.c` TO_DO 1.
+  - 실기 확인: 선택(더블배틀 춤추기 연쇄, 지시(Instruct) 뒤 대상 복원, 속이다·마룻바닥세워막기 첫 턴 판정)
+- 남은 위험: 낮음
