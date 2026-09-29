@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 84~90
 
-진행 중: 마지막 완료 seq 88, 다음 seq 89
+진행 중: 마지막 완료 seq 89, 다음 seq 90
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `79af946ddf`
@@ -132,3 +132,70 @@
   - 자동 테스트: upstream 테스트 hunk 없음. AI 더블 테스트 3건이 든 `ai_double_ace.c`(4건)·`ai_choice.c`(10건)·`ai_switching.c`(118건)를 돌려 이식 전 목록과 같음을 확인. **알려진 AI 3건은 그대로 FAIL**(`AI_FLAG_DOUBLE_ACE_POKEMON: Ace mons won't…`, `Choiced Pokémon won't switch out… 1/2 (1/?)`, `AI can switch out both mons… (1/?)`) — #9460은 빈 인프라뿐이고, 테스트의 `WITH_CONFIG(AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE, 0)`과 설정 항목은 seq 131 #9462에서 들어온다.
   - 실기 확인: 불필요(ROM 동일).
 - 남은 위험: 없음.
+
+## 동기화 단위: seq 89 #9514 `U-9514` SetMoveEffect cleanup
+
+- 현재 판정: 적용(HnS 적응, **한글 문자열 토큰 교체 22건 / upstream이 바꾼 3건은 의도적으로 유지**)
+- 커밋: `f0c3349daf`
+- upstream 근거: `3bbcc63258`
+- 해결한 의존성: 선행 #9176·#9446·#9249 모두 앞 구간에서 이식 완료. 후속 수정 #10064(seq 206, "이미 ~ 상태" 문구의 배틀러 수정)는 group plan상 #9655 unit이라 이번에 넣지 않았다(아래 "ALREADY 3건" 참고).
+- 수정 파일(13): `data/battle_scripts_1.s`, `include/battle_scripts.h`, `include/constants/battle_string_ids.h`, `src/battle_message.c`, `src/battle_move_resolution.c`, `src/battle_script_commands.c`, `src/data/moves_info.h`, 테스트 6개(`test/battle/gimmick/dynamax.c`, `move_effect/heal_bell.c`, `move_effect_secondary/aromatherapy.c`·`light_screen.c`·`reflect.c`, `sleep_clause.c`)
+- 적용 방법: upstream diff를 스크래치 사본에 `patch -F0`로 적용(문맥 불일치 hunk만 거부) → 거부된 hunk 6개와 한글 문자열 15 hunk를 손으로 옮김 → 결과를 저장소에 복사. 적용 뒤 HnS `SetMoveEffect`를 upstream #9514 직후 `SetMoveEffect`와 함수 단위로 비교해, 남은 차이가 HnS 고유 분기뿐임을 확인했다(Gen1 반동 챌린지 `genOneRecharge`, Core Enforcer `isFirstTurn != 2`(1.17.0과 같은 형태로 `effectBattler`), Fling #9951 순서, 오로라베일 `B_MSG_SET_AURORA_VEIL`, 깨뜨리다 계열 방벽 마스크, Spectral Thief 루프 밖 호출). `IgnoreTargetingForMoveEffect`·`DoesSubstituteBlockMoveEffectOnTarget`은 upstream과 같아졌다.
+- HNS 적응과 보존한 한글화/배틀 메시지 동작:
+  - **방벽:** `BattleScript_MoveEffectReflect`·`LightScreen`·`AuroraVeil`을 upstream대로 `BattleScript_MoveEffectScreens`(`saveattacker` / `copybyte gBattlerAttacker, gEffectBattler` / `printfromtable gReflectLightScreenSafeguardStringIds` / `restoreattacker`)로 합쳤다. 오로라베일 C 분기의 HnS 선택값 `B_MSG_SET_AURORA_VEIL`(→ `STRINGID_PKMNRAISEDDEFSPDEF`)을 유지했다(upstream은 `B_MSG_SET_SAFEGUARD`). 리플렉터·빛의장막은 `TrySetReflect`·`TrySetLightScreen`이 정하는 단일/복수 선택값 그대로. 해당 기술 14개가 `.self = TRUE`가 되어 `gEffectBattler` = 사용자이므로 `copybyte`는 값이 같다. `BattleScript_BreakScreens` 순차 출력(리플렉터 → 빛의장막 → 오로라베일)과 `MOVE_EFFECT_BREAK_SCREEN`의 방벽 마스크 저장은 손대지 않았다.
+  - **Feint·Hyperspace Fury:** HnS `BattleScript_HyperspaceFuryRemoveProtect`를 upstream처럼 없애고 `BattleScript_MoveEffectFeint`가 새 표 `gBrokeProtectionStringIds`(`B_MSG_FEINT` → `STRINGID_FELLFORFEINT`, `B_MSG_HYPERSPACE_FURY` → `STRINGID_BROKETHROUGHPROTECTION`)를 출력한다. 기술별 출력 ID는 이전과 같다.
+  - `B_MSG_NO_MESSSAGE_SKIP` 오타 수정(값 불변), 스크립트 이름 정리(`StealthRockActivates` → `MoveEffectStealthRock` 등 11개)는 그대로.
+- **한글 문자열 토큰 대응표(22건, 본문 바이트 동일):**
+
+| STRINGID | 옛 토큰 → 새 토큰 | 한글 문장(새) |
+|---|---|---|
+| PKMNSQUEEZEDBYBIND | DEF→EFF, ATK→SCR | `{B_EFF_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n{B_SCR_NAME_WITH_PREFIX}에게 조이기를 당했다!` |
+| PKMNTRAPPEDINVORTEX | DEF→EFF | `{B_EFF_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n소용돌이 속에 갇혔다!` |
+| PKMNWRAPPEDBY | DEF→EFF, ATK→SCR | `{B_EFF_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n{B_SCR_NAME_WITH_PREFIX}에게 휘감겼다!` |
+| PKMNCLAMPED | DEF→EFF, ATK→SCR | `{B_EFF_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n{B_SCR_NAME_WITH_PREFIX}의 껍질에 꼈다!` |
+| PKMNCAUSEDUPROAR | ATK→EFF | `{B_EFF_NAME_WITH_PREFIX}{B_TXT_EUNNEUN} 소란피기 시작했다!` |
+| PKMNTRAPPEDBYSANDTOMB | DEF→EFF | `{B_EFF_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n모래지옥에 붙잡혔다!` |
+| TRAPPEDBYSWIRLINGMAGMA | DEF→EFF | `{B_EFF_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n불꽃의 소용돌이에 갇혔다!` |
+| INFESTATION | ATK2→SCR2, DEF→EFF | `{B_SCR_NAME_WITH_PREFIX2}{B_TXT_EUNNEUN}\n{B_EFF_NAME_WITH_PREFIX}에게 엉겨 붙었다!` |
+| BURSTINGFLAMESHIT | SCR2→EFF2 | `분출하는 불꽃이\n{B_EFF_NAME_WITH_PREFIX2}에게 명중했다!` |
+| FELLFORFEINT | DEF→EFF | `{B_EFF_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n페인트에 걸렸다!` |
+| ATTACKERLOSTFIRETYPE | ATK→EFF | `{B_EFF_NAME_WITH_PREFIX}의 불꽃은 다 타 버렸다!` |
+| BROKETHROUGHPROTECTION | DEF2→EFF2 | `{B_EFF_NAME_WITH_PREFIX2}의\n방어를 깨뜨렸다!` |
+| PKMNINSNAPTRAP | DEF→EFF | `{B_EFF_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n집게덫에 붙잡혔다!` |
+| ATTACKERLOSTELECTRICTYPE | ATK→EFF | `{B_EFF_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n전기를 다 써 버렸다!` |
+| THUNDERCAGETRAPPED | ATK→SCR, DEF2→EFF2 | `{B_SCR_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n{B_EFF_NAME_WITH_PREFIX2}{B_TXT_EULREUL} 번개우리로 가뒀다!` |
+| TARGETISBEINGSALTCURED | DEF→EFF | `{B_EFF_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n소금에 절여졌다!` |
+| TARGETCOVEREDINSTICKYCANDYSYRUP | DEF→EFF | `{B_EFF_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n물엿범벅이 되었다!` |
+| TEAMTRAPPEDWITHVINES | DEF_TEAM1→EFF_TEAM1 | `{B_EFF_TEAM1} 포켓몬은\n채찍의 맹타에 휩싸였다!` |
+| TEAMCAUGHTINVORTEX | DEF_TEAM1→EFF_TEAM1 | `{B_EFF_TEAM1} 포켓몬은\n거친 물살에 휩싸였다!` |
+| TEAMSURROUNDEDBYFIRE | DEF_TEAM1→EFF_TEAM1 | `{B_EFF_TEAM1} 포켓몬은\n불꽃에 휩싸였다!` |
+| TEAMSURROUNDEDBYROCKS | DEF_TEAM1→EFF_TEAM1 | `{B_EFF_TEAM1} 포켓몬은\n바위에 둘러싸였다!` |
+| ATTACKERLOSTITSTYPE | ATK→EFF | `{B_EFF_NAME_WITH_PREFIX}의\n타입이 원래대로 되돌아왔다!` |
+
+  - 옛 문장은 표의 새 토큰을 옛 토큰으로 되돌린 것과 같다(`PREFIX`/`PREFIX2` 구분은 HnS 문장 그대로 유지, 예: INFESTATION 첫 토큰은 `B_ATK_NAME_WITH_PREFIX2` → `B_SCR_NAME_WITH_PREFIX2`). upstream의 토큰 대응(대상 DEF→EFF, 주체 ATK→SCR, 자기 효과 ATK→EFF, 불꽃튀기기 SCR→EFF)을 HnS 문장의 같은 자리 토큰에 그대로 적용했다.
+  - **검증 (1) 본문:** 네 종류 이름 토큰을 같은 자리표시로 바꾼 뒤 옛/새 줄의 UTF-8 바이트가 22건 모두 같다. **(2) 조사·줄 제어:** `{B_TXT_EUNNEUN}`·`{B_TXT_EULREUL}` 목록과 `\n` 개수 22건 모두 같다. **(3) 토큰 정의:** `charmap.txt` `B_EFF_NAME_WITH_PREFIX = FD 11`, `B_SCR_NAME_WITH_PREFIX = FD 13`, `B_EFF_NAME_WITH_PREFIX2 = FD 47`, `B_SCR_NAME_WITH_PREFIX2 = FD 48`, `B_EFF_TEAM1 = FD 4D`. `battle_message.c` 확장부는 네 배틀러 모두 같은 `HANDLE_NICKNAME_STRING_CASE(배틀러)`·`HANDLE_NICKNAME_STRING_LOWERCASE(배틀러)` 매크로(상대/야생 접두어 `sText_FoePkmnPrefix`·`sText_WildPkmnPrefix`·소문자판 동일)와 같은 `sText_Your1`/`sText_Opposing1` 분기를 쓴다. 조사 토큰은 직전에 출력된 글자 기준이라 토큰 종류와 무관하다. 이 토큰 코드를 따로 해석하는 곳은 확장부 외에 없다(`src`·`include`·`test`·`tools` 검색).
+  - **ROM 확인:** 이식 전후 ROM의 `gBattleStringsTable` 726개 항목을 모두 읽어 비교했다. 달라진 것은 위 22건뿐이고, 22건 모두 길이가 같으며 `FD` 다음 토큰 코드 1바이트만 다르다(FD 10→11, 0F→13, 0F→11, 45→48, 46→47, 48→47, 41→4D). 스크립트 `p84/strcheck.py`.
+- **배틀러 일치 확인(출력 경로별):** `SetMoveEffect` 머리에서 `gBattleScripting.battler = battlerAtk`, `gEffectBattler = effectBattler`(HnS도 같음).
+  - 조이기 계열 9건(`gWrappedStringIds`): `MOVE_EFFECT_WRAP`를 가진 기술 10개가 모두 `.self` 없음 → `Cmd_setadditionaleffects`가 `SetMoveEffect(gBattlerAttacker, gBattlerTarget, …)`로 부른다. `BattleScriptPush` 직후 `BattleScript_MoveEffectWrap`의 첫 명령이 `printfromtable`이라 사이에 바뀌는 곳이 없다. 이 스크립트를 부르는 다른 곳 없음 → EFF = 옛 DEF, SCR = 옛 ATK.
+  - Uproar(`.self`), Burn Up·Double Shock(`MOVE_EFFECT_REMOVE_ARG_TYPE`, `.self` 2개): `effectBattler = gBattlerAttacker` → EFF = 옛 ATK. 각 스크립트(`BattleScript_MoveEffectUproar`, `BattleScript_Remove*Type`)의 호출처는 해당 `SetMoveEffect` 분기 하나뿐.
+  - Feint 문구 2건(`MOVE_EFFECT_FEINT` 기술 5개 모두 `.self` 없음), Salt Cure, Syrup Bomb, G-Max 4종(Vine Lash·Wildfire·Cannonade·Volcalith): 모두 대상 효과 → EFF = 옛 DEF / EFF_TEAM1 = 옛 DEF_TEAM1. 스크립트 호출처는 각 분기 하나뿐.
+  - Flame Burst: C에서 `gBattleScripting.battler = partnerTarget` → `gEffectBattler = partnerTarget`, 스크립트 `BS_SCRIPTING` → `BS_EFFECT_BATTLER`, 문자열 SCR2 → EFF2를 함께 바꿔 가리키는 배틀러(대상의 파트너)가 같다.
+  - `savetarget; copybyte gBattlerTarget, gEffectBattler`가 새로 붙은 스크립트(Psychic Noise, Sappy Seed, Core Enforcer, Eerie Spell, Spectral Thief, G-Max Snooze, G-Max Depletion, 거다이 측면 상태이상 루프 7종)는 모두 대상 효과라 `gEffectBattler == gBattlerTarget`. 스펙트럴시프는 공격 전 효과 루프에서 부르지만, 대상이 아닌 배틀러는 캔슬러에서 `targetsDone`이 켜져 `GetPossibleNextTarget`이 실제 대상만 돌려준다. 아군 루프 3종(G-Max Chi Strike·Finale·Replenish)은 `.self`가 되어 `sBATTLER = gEffectBattler = 사용자`(옛 `gBattlerAttacker`와 같음). 루프 안 명령(`statbuffchange` 증가 경로, `BS_HealOneSixth`, `BS_TryRecycleBerry`, HP 갱신)은 `gBattleScripting.battler`를 바꾸지 않는다. 이 스크립트들의 문자열은 바뀌지 않았다.
+  - **배틀러 불일치 경로: 0건**(바꾼 22건 기준).
+- **ALREADY 3건 (upstream과 다르게 유지, 판단 사항):** upstream #9514는 `STRINGID_PKMNALREADYASLEEP`·`PKMNALREADYPOISONED`·`PKMNISALREADYPARALYZED`의 `{B_DEF_NAME_WITH_PREFIX}`를 `{B_SCR_NAME_WITH_PREFIX}`로 바꿨다. 이 문구는 상태 기술의 `trynonvolatilestatus`(`CanSetNonVolatileStatus(…, RUN_SCRIPT)`)가 `BattleScript_AlreadyAsleep`·`AlreadyPoisoned`·`AlreadyParalyzed`로 보낼 때만 나오는데, 이 경로는 `gBattleScripting.battler`를 대상으로 설정하지 않는다(`IsNonVolatileStatusBlocked`가 특성 방어일 때만 설정, HnS·upstream #9514 모두 같음). 그래서 SCR로 바꾸면 "이미 잠들어 있다" 문장에 대상이 아닌 배틀러(보통 공격자) 이름이 나온다. upstream도 이것을 #10064(seq 206, `3ed1ce5570` "Fix already-status messages using the wrong battler", 테스트 `NOT MESSAGE("Wobbuffet is already paralyzed!")`)로 고쳤다. g1 plan의 #10064 항목도 "HnS 한글 문장({B_DEF_NAME_WITH_PREFIX} 사용)은 바꾸지 않는다"고 적고 있다. 따라서 HnS 세 문장은 `B_DEF` 그대로 두었다(출력 불변). #10064를 이식할 때는 엔진 1줄만 넣고 문장은 그대로 두면 된다.
+  - `STRINGID_RESETSTARGETSSTATLEVELS`: HnS 문장("모든 상태가\n원래대로 되돌아왔다!")에 이름 토큰이 없어 바꿀 것이 없다.
+- **upstream 동작 수정이 함께 들어온 것(메시지 문구 불변, 조건·상태만):**
+  - 방벽·중력·아로마테라피·팀 회복·열매 재생·팀 능력치 상승·급소 랭크 부가 효과를 가진 14개 기술(Glitzy Glow·Baddy Bad·Sparkly Swirl, Max Knuckle·Max Ooze·Max Airstream·Max Quake·Max Steelspike, G-Max Chi Strike·Resonance·Replenish·Gravitas·Sweetness·Finale)에 `.self = TRUE`. 효과 대상이 사용자로 계산된다. HnS 기술 데이터에서 이 효과를 가진 기술은 이 14개뿐이다. 부작용으로 AI 점수의 "대상 효과" 분기에 있던 `MOVE_EFFECT_RAISE_TEAM_*`·`GRAVITY`·`AURORA_VEIL` 가산이 이 기술들에 더는 적용되지 않는다(upstream #9514 직후와 1.17.0 모두 같은 상태).
+  - G-Max Gold Rush(`MOVE_EFFECT_CONFUSE_PAY_DAY_SIDE`): 트레이너 배틀에서 **플레이어 편이 쓸 때만** 돈이 늘고 "돈이 주위에 흩어졌다!"가 나온다(이전에는 상대가 써도 나옴).
+  - G-Max Snooze(`MOVE_EFFECT_YAWN_FOE`): `CanBeSlept`의 공격자 인자가 대상 자신 → 실제 공격자. 수면 판정에서 공격자 인자를 쓰는 곳은 수면 클로즈 아군 예외(`CanBeSlept`가 먼저 클로즈를 검사해 도달 전 반환)와 신비의부적(아군이어도 막음, 공격자 특성은 `ABILITY_NONE`으로 전달)뿐이라 결과는 같다.
+  - Jaw Lock(`MOVE_EFFECT_TRAP_BOTH`): 둘 다 도망 불가가 아닐 때만 상태를 건다(메시지 조건은 이전과 같음).
+  - Sappy Seed(`BattleScript_MoveEffectLeechSeed`) 스크립트 끝 `goto BattleScript_MoveEnd` → `return`, G-Max Depletion(`BattleScript_MoveEffectSpite`) 실패 분기 `BattleScript_MoveEnd` → 복귀: 스크립트 스택에 복귀 주소가 남던 문제 수정(출력 순서 같음).
+  - G-Max Befuddle·Smite·Gold Rush·Cuddle 루프(`ConfuseSide`·`InfatuateSide`)의 애니메이션 대상이 루프의 현재 대상으로(이전에는 항상 첫 효과 대상).
+  - Fling 아이템을 `gLastUsedItem` 대신 사용자의 현재 도구에서 읽음, 미러아머 판정을 효과 대상 기준으로.
+- 저장·ROM·그래픽 영향: ROM −224 B(32,712,628 B). 세이브 무관.
+- 검증:
+  - `git diff --check`: 통과. 비ASCII 줄 변경: `src/battle_message.c` 22쌍(44줄)뿐, 위 대응표와 같음.
+  - `make hns -j8`: 종료 코드 0, ROM 32,712,628 B / EWRAM 248,924 B / IWRAM 25,516 B, 새 경고 없음.
+  - 자동 테스트: L 크기라 전체 실행(11분 47초). 목록 5,128행이 이식 전(#9510 직후 전체 실행 = `test-baseline-seq083.txt`)과 **바이트 동일**, CRASH/INVALID 줄도 같음. #9514가 건드린 테스트 6파일과 관련 파일(`test/battle/move_effect_secondary/*.c` 전체, `move_effect/` 방벽·오로라베일·중력·씨뿌리기·코어퍼니셔·내던지기·원한·소란·수면·마비·독, `gimmick/dynamax.c`, `sleep_clause.c`) 52파일 319건: 전후 모두 PASS 100 / FAIL 196 / KNOWN_FAILING 1 / TO_DO 22. upstream 테스트 hunk(`ASSUME(MoveHasAdditionalEffect…)` → `MoveHasAdditionalEffectSelf`, 14줄)는 그대로 이식했다(영문 `MESSAGE` 기대값 변경은 이 PR에 없음).
+  - 실기 확인: 권장. 조이기 계열 10개(Bind·Wrap·Fire Spin·Clamp·Whirlpool·Sand Tomb·Magma Storm·Infestation·Snap Trap·Thunder Cage) 문장의 두 이름과 조사(싱글·더블, 상대/야생 접두어), Uproar·Burn Up·Double Shock, Feint·Hyperspace Fury 방어 해제 문구, Flame Burst 파트너 이름(더블), Salt Cure·Syrup Bomb, Glitzy Glow·Baddy Bad(방벽 문구)·G-Max Resonance(오로라베일 성공 문구 `STRINGID_PKMNRAISEDDEFSPDEF`), 깨뜨리다·사이코팽의 방벽 순차 해제 문구, 수면·독·마비 상태 기술을 이미 그 상태인 상대에게 썼을 때 대상 이름(변경 없음 확인).
+- 남은 위험: 중간. 스크립트·`SetMoveEffect` 전반의 변수 정리라 위 경로 외 드문 조합(다이맥스 기술, 더블배틀 부가 효과)은 실기로 확인하는 것이 좋다. `BATTLE_MESSAGE_OUTPUT_CHANGES.md`에 G-Max Gold Rush 1행을 추가했다.
