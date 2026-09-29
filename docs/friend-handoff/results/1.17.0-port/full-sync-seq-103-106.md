@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 103~106
 
-진행 중: 마지막 완료 seq 104, 다음 seq 105.
+진행 중: 마지막 완료 seq 105, 다음 seq 106.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 사전 분석: PR마다 분석 에이전트가 쓴 이식 계획(`hns-sync-work/chunk-103-106/seq<N>-<PR>.md`, 저장소 밖)을 따랐다.
@@ -110,3 +110,12 @@
     - **회귀 0.** 추출 정규식 밖 상태(Dondozo INVALID, Encore ASSUMPTION_FAIL)도 전후 같다.
   - 실기 확인: 권장(아래 "실기 확인 항목" 1).
 - 남은 위험: 낮음. upstream과 같은 한계로, 현재 몬이 1:1에서 이기는 경우에도 교체할 수 있다(코드의 TODO, 1.17.0에도 있음). 예측 트레이너(Smart Trainer / Prediction)가 플레이어의 위협 몬 교체를 예측할 때 `RNG_AI_SWITCH_INTIMIDATE`를 소비한다(upstream과 같은 동작).
+
+## 동기화 단위: seq 105 #9579 `U-aiswitch-9124` Fix upcoming compile
+
+- 현재 판정: **이미 적용**. 커밋 없음.
+- 근거: `fac71f54b0`("Port upstream #9124: …", seq 99). 커밋 본문에 `Includes #9579 TERRAIN_SEED braces;`가 있다. upstream `e563c57a27`(`src/battle_ai_switch.c` +2/−0, `SetBattlerStatStagesForSwitchin`의 `case HOLD_EFFECT_TERRAIN_SEED:` 본문을 `{ … }`로 감쌈).
+  - 현재 코드(seq 104 커밋 뒤): `src/battle_ai_switch.c` 2899행 `case HOLD_EFFECT_TERRAIN_SEED:` 다음 줄이 `    {`이고, 2908행에 닫는 `    }`가 있다.
+  - upstream diff 역방향 `git apply --check -R`이 성공하고, 정방향은 `patch failed: src/battle_ai_switch.c:2861`로 실패한다(이미 들어 있음).
+- 수정 파일: 없음. ROM·EWRAM·IWRAM 변화 0. 테스트 불필요(코드 변화 없음). 실기 확인 불필요.
+- 참고: `SetBattlerStatStagesForSwitchin`에 upstream의 no-op `case ABILITY_SUPREME_OVERLORD: break;`가 없는 것은 seq 99에서 일부러 뺀 차이다. 이 행과 무관하다.
