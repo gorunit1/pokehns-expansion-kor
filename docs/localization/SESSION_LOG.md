@@ -2,6 +2,32 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-09-30 — full-sync port seq 92~101, Safari UI 수정, 순서표 보정 (데스크탑)
+
+- 기준: 노트북 세션의 `7b4e3dba40`(seq 91 완료)을 fast-forward pull했다. 이 PC의 clean build ROM 32,713,060 B가 기록과 같았고, 전체 테스트 목록이 `test-baseline-seq091.txt`와 바이트 동일했다.
+- 순서표 보정(`1364cb18fb`):
+  - 외부결정 6건을 `port_sequence.tsv`에 넣었다: #8943 138.5, #9920 186.5, #10454 385.5, #10461 434.5, #10144 471.5, #10151 475.5.
+  - 40개 행의 `deps`를 복원했다.
+  - #10299·#10310·#10282를 475.6~475.8로 옮겼다. 의존 위반은 0이다.
+- port seq 92~101:
+  - 진행: 병렬 사전 분석 7개 → 적용 에이전트 1개 → 병렬 커밋 리뷰 5개(전부 문제 없음)
+  - 적용 7건: #9429 `838e441612`, #9542 `8c7978ad50`, #9525 `6c2c954693`, #9562 `cc2ce789c3`, #9124 `fac71f54b0`, #9548 `3c09c95b2a`, #9529 `bc3c30671a`
+  - 이미 적용 3건: seq 93, 94, 98
+  - upstream과 다른 점: #9124 교체 후보 HP 음수 방지 `// HnS:` 가드
+  - 결과 문서: `docs/friend-handoff/results/1.17.0-port/full-sync-seq-092-101.md`
+- Safari UI 수정(port와 무관, 친구 실기 요청):
+  - `6fe11839e4` 어순 `30개 남음`
+  - `ebb94a174d` 3세대 라벨이 상단 프레임을 흰색으로 덮던 문제
+  - merge `4160fc31f0`
+  - 보고서: `docs/friend-handoff/results/SAFARI_UI_FIX_2026-09-30.md`
+- 친구 실기 결과: seq 1~62 전 항목 PASS. `docs/friend-handoff/results/1.17.0-port/mgba-check-seq001-062.md`에 정리했다.
+- 최종 검증(`4160fc31f0` 이후, clean build):
+  - 빌드: 종료 코드 0, ROM 32,714,868 B(97.50%), EWRAM 248,924 B, IWRAM 25,516 B, SHA1 `3613568d3329886ca25b4f54148bf2c5d267e275`
+  - 테스트: PASS 2,306 / FAIL 2,232 / TO_DO 613 / TOTAL 5,203. `test-baseline-seq101.txt`와 바이트 동일
+  - 한글 변경: 한글이 든 소스 변경 줄은 Safari 코드 주석 1줄뿐이다(문자열 변경 0)
+- 참고: seq 91의 ROM SHA1(`cfdfb885…`, 노트북 ARM 공식 툴체인)과 이 PC의 SHA1(Ubuntu `gcc-arm-none-eabi` 13.2.1)은 다르지만 크기는 같다. 툴체인 빌드 차이로 본다.
+- 다음 시작점: **seq 102 (#9172, XL 단독)**. 친구 mGBA 확인 대기: Safari 재확인 6항목, #9525 발버둥, #9124 교체 AI(`HANDBACK_2026-09-30.md`).
+
 ### 2026-09-29 — full-sync port 구간 4(seq 91 #9507 Species enum, XL 단독)
 
 - 에이전트 1개가 약 67분 동안 진행했다(약 55만 토큰). 커밋 `b0a0fb9033`(#9507), `8de47b965d`(#9558, group plan상 같은 unit), 결과 `3f6ccb8a6e`. 148파일 중 113파일은 그대로 적용, 35파일은 `patch -F0` 뒤 거부 hunk 100개를 `enum Species` 치환만 수동으로 옮겼다.

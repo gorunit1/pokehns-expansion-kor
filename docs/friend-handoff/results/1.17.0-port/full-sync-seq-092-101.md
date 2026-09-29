@@ -92,7 +92,7 @@
   - 혼란 자해(`MOVE_NONE`, 선택 기술의 동적 타입을 따름)도 발버둥을 고른 턴에는 특수 → 물리다.
   - 타입을 잃은 사용자의 리베레이션댄스도 특수 → 물리(드묾).
   - 스텔라(스텔라 테라버스트·테라클러스터)는 특수가 되지만 HnS 플레이어는 테라스탈할 수 없고 스텔라 트레이너 데이터도 없어 도달하지 않는다.
-  - **확인:** 로컬 임시 테스트 2개(`optionStyle = 1`, 커밋하지 않음)로 이식 전후를 비교했다. 공격 200/특공 10 마자용의 발버둥 피해: 이식 전 `optionStyle` 0/1 = 73/5(특수 계산), 이식 후 같음. 상대 리플렉터: 이식 전 피해 22/22(반감 안 됨), 이식 후 반감됨.
+  - **확인:** 로컬 임시 테스트 2개(`optionStyle = 1`, 커밋하지 않음)로 이식 전후를 비교했다. 공격 200/특공 10 마자용의 발버둥 피해: `optionStyle` 0/1 기준으로 이식 전에는 73/5였다(끔 모드에서 특수로 계산). 이식 후에는 73/73이다(끔 모드도 물리로 계산). 상대 리플렉터: 이식 전 피해 22/22(반감 안 됨), 이식 후 반감됨.
 - 저장·ROM·그래픽 영향: 세이브 영향 없음(`gTypesInfo`는 ROM 상수). ??? 타입 TM이 없어 아이콘 표시 변화 없음(NULL 팔레트 failsafe만 메움).
 - 검증:
   - `git diff --check`: 통과. 파일 모드 유지.
@@ -269,3 +269,22 @@
 - **seq 516 #9986**: `GiveGiftRibbonToParty`를 새 파일 `src/give_gift_ribbon_to_party.c`로 옮기는 upstream 커밋(`3ea7f0d71b`)은 옛 `GIFT_RIBBONS_COUNT` 형태를 담고 있다. seq 95로 상수가 없어졌으므로 **1.17.0 최종 형태(`sGiftRibbonsMonDataIds[NUM_GIFT_RIBBONS]`, `index < NUM_GIFT_RIBBONS`)**로 옮긴다.
 - **config 추가 PR 전반**(seq 103 #9568, #10350, #10298, #10443, #10454, #10151 등): plan의 "HnS `generational_changes.h`에 추가"는 `include/constants/config_changes.h`로 읽는다. 확정 결정 값(#10151 계열 `GEN_9`, #10454 `GEN_8`)은 `include/config/battle.h`에 둔다.
 - **Champions 앙코르 테스트**(#10151·#10282): `encore.c` 끝(1.17.0 337행 이후)에 붙는다. seq 92 결과가 1.17.0 앞 336행과 같아 문맥이 맞는다.
+
+## 커밋 리뷰 (병렬, 읽기 전용)
+
+적용이 끝난 뒤 리뷰 에이전트 5개가 커밋을 upstream PR, 1.17.0 최종형, 사전 분석 문서와 대조했다. 판정은 모두 **문제 없음**이다.
+
+| 커밋 | PR | 판정 | 요지 |
+|---|---|---|---|
+| `838e441612` | #9429 | 문제 없음 | `Cmd_trysetencore`가 1.17.0과 diff 0이다. `GEN_CHAMPIONS`(=9)에서 3/4턴 분기를 타므로 난수 소비가 이식 전과 같다. `encoreTimer` 3비트에 최대 7이 들어간다. |
+| `8c7978ad50` | #9542 | 문제 없음 | 세이브 배치를 직접 컴파일해 확인했다. `giftRibbons` 0x38C8, `externalEventData` 0x38D3, `roamer` 0x38FC, `SaveBlock1/2/3` 크기가 모두 이식 전과 같다. |
+| `6c2c954693` | #9525 | 문제 없음 | 물리/특수 끔 모드에서 바뀌는 것은 발버둥을 고른 턴(혼란 자해 포함)뿐이다. HnS의 고스트=특수, 악=물리는 유지된다. |
+| `cc2ce789c3` | #9562 | 문제 없음 | HnS 파트너 번호 2~5가 그대로이고, 파트너 데이터는 DUMMY 블록만 빠졌다. |
+| `fac71f54b0` | #9124 | 문제 없음 | 적응 3가지(구 시트러스, 혼란 열매, Supreme Overlord)가 이식 전 동작과 같다. HP 가드는 upstream 의도와 맞는다. 교체 시뮬레이션 뒤 `gBattleMons` 4슬롯, SO 카운터, AI 데이터가 모두 복원된다(호출 3곳 모두 저장과 복원 사이에 return 없음). |
+| `3c09c95b2a` | #9548 | 문제 없음 | 실전 경로(`aiCalc == FALSE`)의 결과가 이식 전과 같다. 새 함수 3개는 1.17.0과 바이트 동일하다. |
+| `bc3c30671a` | #9529 | 문제 없음 | 전처리 결과가 바이트 동일하다(TESTING=0). 코드와 빌드에 옛 이름 참조가 0이다. 누수 예외는 `TestInitConfigData` 1곳에만 해당한다. |
+
+참고 사항은 기록만 하고 수정하지 않는다.
+- #9124: 후보 계산 중 `RecordItemEffectBattle`·`RecordAbilityBattle`가 AI 기억에 남는다. upstream 1.17.0과 같다.
+- #9529: `test_runner` 누수 검사의 `break`는 upstream 중간 상태 그대로다. seq 508 #9892가 정리한다.
+- plan TSV에 남은 `generational_changes` 표기는 `config_changes`로 읽는다.

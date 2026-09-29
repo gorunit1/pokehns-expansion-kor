@@ -1,5 +1,14 @@
 # 현재 인수인계 상태
 
+## 2026-09-30 — full-sync port seq 92~101 완료, Safari UI 수정, 순서표 보정 (현재)
+
+- **다음 시작 seq: 102** (#9172, XL 단독). 순서표에 외부결정 6건이 소수 번호로 들어갔다(138.5, 186.5, 385.5, 434.5, 471.5, 475.5). #10299·#10310·#10282는 475.6~475.8로 옮겼다.
+- 구간 결과: `docs/friend-handoff/results/1.17.0-port/full-sync-seq-092-101.md`. 이식 7건, 이미 적용 3건, 병렬 리뷰 전부 문제 없음.
+- 빌드: ROM 32,714,868 B(97.50%), EWRAM 248,924 B(94.96%), IWRAM 25,516 B(77.87%). 한글 문자열 변경 0.
+- 테스트: PASS 2,306 / FAIL 2,232 / TOTAL 5,203. 기준 목록은 `test-baseline-seq101.txt`, 회귀 0.
+- Safari UI 한글화 버그 2건 수정(port와 무관, merge `4160fc31f0`). 친구 mGBA 재확인 대기.
+- 친구 실기: seq 1~62 PASS(`mgba-check-seq001-062.md`). seq 92~101 확인 요청은 `docs/friend-handoff/HANDBACK_2026-09-30.md`에 있다.
+
 ## 2026-09-29 — full-sync port seq 91 (#9507 Species enum) 완료 (현재)
 
 - **다음 시작 seq: 92** (#9429 Encore 타이머, M). 다음 구간 예정: seq 92~101(가중치 23, seq 93·94·98은 이미 적용) → seq 102 #9172(XL 단독).
