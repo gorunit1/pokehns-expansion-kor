@@ -1,10 +1,22 @@
 # full-sync 실제 port 결과 — seq 103~106
 
-진행 중: 마지막 완료 seq 106(코드), 남은 일: 구간 끝 전체 테스트와 기준 목록.
+완료: seq 103~106 이식·전체 테스트·기록 완료(다음 구간은 seq 107부터). 아래 "seq 103~106 요약" 참고.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 사전 분석: PR마다 분석 에이전트가 쓴 이식 계획(`hns-sync-work/chunk-103-106/seq<N>-<PR>.md`, 저장소 밖)을 따랐다.
 시작 HEAD: `3e745b621e` (작업 트리 clean)
+
+## seq 103~106 요약
+
+| seq | PR | 판정 | 커밋 | ROM 변화 | 비고 |
+|---|---|---|---|---:|---|
+| 103 | #9568 | 적용(HnS 적응) | `4bc61b3ffc` | +528 B | AI 롤 config 전부 MEDIAN(현재 동작 유지), 아군 KO 판정 max 유지, 방어 계열 `battlerDef`, **Beat Up 버그 교정(upstream 1.17.0과 다름)** |
+| 104 | #9551 | 적용 | `34aec8afd7` | +928 B | 위협 순환 교체 AI. Zero to Hero hunk 제외(이미 1.17.0형) |
+| 105 | #9579 | 이미 적용 | 없음(`fac71f54b0`) | 0 | TERRAIN_SEED 중괄호 |
+| 106 | #8213 | 적용 | `1660ce2f81` | −64 B | DebugPrintf 3줄 삭제, sprite.c `return TAG_NONE;` 유지 |
+
+- 마지막 빌드(`1660ce2f81`): 종료 코드 0, **ROM 32,716,260 B(97.50%) / EWRAM 248,924 B(94.96%) / IWRAM 25,516 B(77.87%)**. 구간 전체 ROM +1,392 B, EWRAM·IWRAM 0. 새 경고 0.
+- 전체 테스트: PASS 2,306 → **2,314**(+8) / FAIL 2,232 → 2,232 / TOTAL 5,203 → 5,211. **회귀 0.** 새 기준 목록 [`test-baseline-seq106.txt`](test-baseline-seq106.txt).
 
 ## seq 103~106 공통 사항
 
@@ -144,3 +156,41 @@
   - 자동 테스트: 이 PR이 바꾸는 테스트 없음. 분석 문서대로 개별 실행은 생략하고, 구간 끝 전체 실행으로 확인했다(아래).
   - 실기 확인: 불필요.
 - 남은 위험: 없음. VRAM 타일 부족 때 mGBA 로그로 태그를 보던 경로("Tile: N")만 없어진다. 실패 처리(`gLoadFail`, `return TAG_NONE`)는 그대로다.
+
+## 구간 끝 전체 테스트
+
+- 명령: `GITHUB_ACTION=1 make check BUILD=hns -j6`(HEAD `1660ce2f81`, 약 3분 34초). 끝 요약: FAILED 2,232 / KNOWN_FAILING 8 / ASSUMPTIONS_FAILED 38 / TO_DO 613 / EXPECT_FAILING 6 / **PASSED 2,314** / TOTAL 5,211. seq 101 기록(PASS 2,306 / FAIL 2,232 / TOTAL 5,203)보다 PASS·TOTAL이 8씩 늘었다.
+- `LC_ALL=C` 추출 목록(5,142줄)을 [`test-baseline-seq101.txt`](test-baseline-seq101.txt)(5,134줄)와 비교했다.
+  - 상태별: PASS 2,303 → 2,311, FAIL 2,207 → 2,207, KNOWN_FAILING 8, TO_DO 611, EXPECTED_FAIL 5(같음).
+  - **통과하던 것 중 사라진 줄: 0(회귀 0).**
+  - 바뀐 줄 10개:
+    - 이름 변경 1(FAIL→FAIL, `Unmatched MESSAGE`): `AI prefers a weaker move over a one with a downside effect … 1/2: FAIL` → `AI prefers a weaker move over one with a downside effect … 1/2: FAIL`(#9568).
+    - 새 PASS 8: `AI sees random rolls correctly`(#9568), `AI_FLAG_SMART_SWITCHING: … cycle Intimidate …` 7개(#9551).
+  - 새 테스트 가운데 FAIL이나 영문 `MESSAGE` 불일치는 없다.
+- 새 기준 목록: [`test-baseline-seq106.txt`](test-baseline-seq106.txt)(위 추출 목록 그대로).
+
+## 실기 확인 항목 (친구용)
+
+모두 필수는 아니다. 판단 로직이 바뀐 곳은 #9551 하나다.
+
+1. **#9551 위협 순환 교체 AI(권장).** 플레이어 선두를 물리 공격 몬(위협으로 공격이 내려가는 특성, 예: 클리어바디·오기·승기·미러아머·정신력·배짱·마이페이스·둔감이 아닌 몬)으로 두고 싸운다.
+   - 싱글: `TRAINER_LANCE_POSTOBC_HNS`(목호 PostOBC, 보만다·갸라도스), `TRAINER_BRUNO_POSTOBC_HNS`(시바 PostOBC, 켄타로스 팔데아 블레이즈), `TRAINER_BUGSY_POSTOBC_HNS`(호일 PostOBC, 비나방).
+   - 더블: `TRAINER_FINLEY_HNS`(핀리, 보만다).
+   - 확인할 것: 가끔(약 25%, 상대 능력 랭크가 올라 있으면 약 10%) 위협 몬이 교체됐다가 다시 나와 위협이 재발동하는지. 특수 공격 몬, 또는 클리어바디·오기·승기·미러아머 몬을 상대로는 이 교체가 없어야 한다. 교체 문구와 위협 발동 문구(한글)는 이전과 같아야 한다.
+2. **#9568 Beat Up 트레이너(선택).** `TRAINER_PRYCE_2_HNS`·`TRAINER_PRYCE_POSTOBC_HNS`(류옹, 포푸니라), `TRAINER_AKALA_CAVE_HIKER_HNS`(캥카)가 이전처럼 Beat Up(집단구타)을 고르는지 본다. HnS는 upstream 버그를 고쳐 합산 대미지를 그대로 보므로 이전과 같아야 한다.
+3. **#9568 더블 광역기(선택).** 더블배틀에서 AI가 아군을 쓰러뜨릴 수 있는 광역기(지진·파도타기·방전 등)를 이전보다 더 쓰지 않는지 본다(아군 KO 판정은 이전처럼 max 롤).
+4. #9579·#8213: 실기 확인 불필요(코드 변화 없음 / 디버그 로그만 삭제).
+
+## 후속 행 메모
+
+- **seq 118 #9630:** `RandomRollDmg`를 `noinline ARM_FUNC`로 바꾼다. 이번에 upstream과 같은 `static inline`으로 넣었으므로 문맥이 맞는다.
+- **seq 131 #9462:** `AI_CONFIG_DEFINITIONS`에 1.17.0 순서(`AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE`, `SHOULD_SWITCH_ALL_MOVES_BAD_PERCENTAGE`, `SHOULD_SWITCH_LOSES_1V1_PERCENTAGE`, `AI_ROLL_ATTACKING`)대로 `AI_ROLL_ATTACKING` **앞에** 넣는다. 이 순서는 테스트 전용 enum 값에만 영향을 준다.
+- **seq 145 #8472:** `include/config/ai.h` hunk는 #9551 뒤 문맥 그대로 붙는다. `src/battle_ai_switch.c`의 선언 hunk 2개는 손으로 넣는다.
+  - `GetTypeMatchupAgainstTypes`: HnS는 `AI_CanSwitchinAbilityTrapOpponent`와 `GetBattlerTypeMatchup` 선언 사이에 `GetPartyMonAbilityForSwitchCalc` 선언이 있다.
+  - `DoesMostSuitableSwitchinBenefitFromWish`: `ShouldSwitchIfIntimidateBenefit` 선언 뒤에 넣는다. HnS는 그다음이 빈 줄과 `GetPartyMonAbilityForSwitchCalc` 정의다(`InitializeSwitchinCandidate`가 아님).
+- **seq 173 #9847:** `AI_ROLL_*`을 전제로 한다. #9551의 `ShouldSwitchIfIntimidateBenefit`/`ShouldSwitchIfAbilityBenefit`를 `struct SwitchAiContext *` 형태로 바꾸고 `BATTLE_PARTNER` → `GetPartnerBattler`로 바꾼다. `IsOpponentPhysicalAttacker`의 `GetBattleMoveCategory`는 유지한다(HnS `optionStyle`).
+- **seq 426 #10236:** `CalcDynamicMoveDamage`의 Beat Up 줄을 문맥으로 쓴다. upstream 줄(`maximum = minimum = median = random;`)로 바꾸지 말고 HnS 줄(`maximum = minimum = random = median; // HnS: …`)을 유지한다.
+- **seq 481 #10326:** `SetBattlerStatStagesForSwitchin`의 `case HOLD_EFFECT_TERRAIN_SEED:` 본문을 다시 쓸 때 `{ }` 블록은 지우지 않는다(1.17.0도 유지).
+- **#10127(Even more enums):** #9551 새 테스트의 `u32 Species` → `enum Species Species`.
+- **이후 upstream AI 테스트:** `AI_ROLL_ATTACKING=MAX`(또는 `SHOULD_SETUP_DEFENDING`·`ATTACKING_PARTNER`=MAX)를 가정해 HnS에서 실패하면 "HnS config 차이(결정 6절, median 유지)"로 기록한다. 로직 확인이 필요하면 로컬에서만 `WITH_CONFIG(AI_ROLL_ATTACKING, AI_ROLL_MAX)`로 돌려 본다.
+- **sprite.c:** `LoadSpriteSheetWithOffset`의 `#if T_SHOULD_RUN_MOVE_ANIM` → `#if TESTING` 변경은 다른 PR 몫이다. 그때도 `return TAG_NONE;`(HnS, `e2966117d8`)을 유지한다.
