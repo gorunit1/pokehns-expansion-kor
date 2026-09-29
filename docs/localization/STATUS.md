@@ -1,8 +1,21 @@
 # 현재 인수인계 상태
 
-## 2026-09-29 — full-sync port seq 84~90 완료 (현재)
+## 2026-09-29 — full-sync port seq 91 (#9507 Species enum) 완료 (현재)
 
-- **다음 시작 seq: 91** (#9507 `U-species-enum-9507` Add Species enum, XL, 단독 구간). 그다음 예정: seq 92~101(가중치 23) → seq 102 #9172(XL).
+- **다음 시작 seq: 92** (#9429 Encore 타이머, M). 다음 구간 예정: seq 92~101(가중치 23, seq 93·94·98은 이미 적용) → seq 102 #9172(XL 단독).
+- 구간 결과: `docs/friend-handoff/results/1.17.0-port/full-sync-seq-091-091.md`. 커밋 #9507 `b0a0fb9033`, #9558(seq 93, 같은 unit) `8de47b965d`, 결과 `3f6ccb8a6e`. seq 93은 도달하면 "이미 적용"으로 처리한다.
+- 검증(에이전트 기록, 메인 일부 재확인):
+  - 종 ID 값 표: C·asm 경로 모두 diff 0(공통 이름 1,675개 + 파생 상수 4개). 새 이름은 `SPECIES_CUSTOM_START`(1572)·`SPECIES_CUSTOM_END`(1573)뿐이고 `SPECIES_EGG`·`NUM_SPECIES`는 1573 그대로다.
+  - 세이브 구조체: DWARF로 구조체·공용체 633종의 오프셋·크기·비트필드를 비교해 차이 0(`SaveBlock1/2/3`·`PokemonStorage`·`BoxPokemon`·TV·릴리코브·프런티어·어프렌티스·데이케어·로밍·트레이너 힐·메일·WonderCard 포함). 기존 `STATIC_ASSERT(sizeof…)` 11개 통과.
+  - 코드: 오브젝트 1,524개 중 1,478개 바이트 동일. 달라진 C 함수 170개는 `__LINE__` 상수·16비트 절단/확장 명령과 그에 따른 레지스터 차이다.
+- HnS가 upstream과 다르게 둔 곳: `field_effect.c` `InitFieldMoveMonSprite`는 `u32` 유지(bit 31에 울음소리 "배경음 안 줄임" 플래그를 실어 오는데 16비트 enum이면 잘린다, upstream 1.17.0 회귀). HnS에서 이 플래그를 쓰는 경로는 록클라임이다(파도타기는 HnS에서 포켓몬 표시가 꺼져 있다). `RemoveSpeciesFromIconList`는 아이콘 키라 `u16` 유지. HnS 전용 함수는 `u16` 유지.
+- 빌드(메인 재링크): 종료 코드 0, ROM 32,713,060 B(97.49%, +448 B), EWRAM 248,924 B, IWRAM 25,516 B. 새 경고 0. 한글이 든 소스 줄 변경 0.
+- 테스트: PASS 2,298 / FAIL 2,229 / TOTAL 5,197, 목록이 `test-baseline-seq090.txt`와 바이트 동일(회귀 0). 새 기준 목록 `test-baseline-seq091.txt`. 테스트 빌드의 `-Wenum-conversion` 오류 2곳(`test/battle/capture.c`, `mummy.c`)은 upstream 후속 병합과 같은 형태로 고쳤다.
+- 실기 확인 추가: 이식 전 ROM(`9dcd5c15…`) 세이브를 불러와 파티·PC 박스·도감(HGSS 진화·분포), 데이케어 포켓몬·알과 부화·향로 아기·볼트태클 유전, 로밍 포켓몬, TV·릴리코브·비밀기지·프런티어·어프렌티스 기록과 메일 아이콘, DexNav, 록클라임 울음소리(배경음을 줄이지 않음), `givemon`/`giveegg`·이름 짓기·진화·폼체인지·다이맥스.
+
+## 2026-09-29 — full-sync port seq 84~90 완료
+
+- 다음 시작 seq(당시): 91 (#9507).
 - 구간 결과: `docs/friend-handoff/results/1.17.0-port/full-sync-seq-084-090.md`. 커밋 #9376 `6e050d6e70`, #9466 `a4c46a4a8f`, #9510 `7a6cd5b51b`, #9135 `fd549f70bc`, #9460 `d81b37f15b`, #9514 `f0c3349daf`, #9539 `7b578d7bb2`, 결과 `2ecd462ad9`. 구간 밖 행은 넣지 않았다.
 - 빌드(메인 재링크 확인): 종료 코드 0, ROM 32,712,612 B(97.49%, +64 B), EWRAM 248,924 B(94.96%), IWRAM 25,516 B(77.87%). 새 경고 0.
 - 한글: 한글이 든 소스 줄 변경은 `src/battle_message.c` 22쌍(#9514)뿐이다. `{B_DEF_*}/{B_ATK_*}` → `{B_EFF_*}/{B_SCR_*}` 토큰 교체 외에는 바이트가 같고, 에이전트 기록상 가리키는 배틀러가 달라진 출력 경로는 0건이다.
