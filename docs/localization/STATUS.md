@@ -1,10 +1,17 @@
 # 현재 인수인계 상태
 
-## 2026-09-29 17:40 — full-sync port 구간 3(seq 84~90) 마무리 중 (현재)
+## 2026-09-29 17:50 — full-sync port 구간 3(seq 84~90) 이식 완료, 마무리 전 사용자 지시로 중단 (현재)
 
-- seq 84~90 7행은 이식·PR별 커밋·진행 기록 커밋까지 끝났고 `e1b1914846`까지 push됐다(#9376 `6e050d6e70`, #9466 `a4c46a4a8f`, #9510 `7a6cd5b51b`, #9135 `fd549f70bc`, #9460 `d81b37f15b`, #9514 `f0c3349daf`, #9539 `7b578d7bb2`). PR별 기록: `docs/friend-handoff/results/1.17.0-port/full-sync-seq-084-090.md`.
-- 인터넷 연결이 끊길 수 있는 시점에 적었다. 이 시점에 남은 일: 에이전트의 구간 전체 테스트와 `test-baseline-seq090.txt` 저장, `Record full-sync port results seq 84-90` 커밋, 메인의 한글 줄 검사·재빌드·STATUS/SESSION_LOG 정리.
-- **세션이 끊겼다면:** `git log --oneline -5`에 `Record full-sync port results seq 84-90`가 없으면 위 남은 일을 이어서 한다. 전체 테스트는 `PATH=/opt/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin:$PATH make check BUILD=hns -j8 > build/port-check.log 2>&1`로 다시 돌리고 `test-baseline-seq083.txt`와 비교한다. 그다음 시작 seq는 **91 (#9507 Species enum, XL 단독)**이다.
+- seq 84~90 7행은 이식·PR별 커밋·진행 기록 커밋까지 끝났다(#9376 `6e050d6e70`, #9466 `a4c46a4a8f`, #9510 `7a6cd5b51b`, #9135 `fd549f70bc`, #9460 `d81b37f15b`, #9514 `f0c3349daf`, #9539 `7b578d7bb2`, 마지막 진행 기록 `e1b1914846`). PR별 기록: `docs/friend-handoff/results/1.17.0-port/full-sync-seq-084-090.md`.
+- 중단 시점: 인터넷 연결 문제로 사용자가 중단을 지시했다. 에이전트는 구간 끝 전체 테스트(`build/hns` 전체 재빌드 → `make check`) 도중 멈췄고, 남은 프로세스는 없다. 작업 트리는 clean이다.
+- 이미 끝난 메인 검증: docs 밖 한글 줄 변경은 `src/battle_message.c` 22줄뿐이고, 모두 `{B_DEF_*}/{B_ATK_*}` → `{B_EFF_*}/{B_SCR_*}` 토큰 교체 외에는 바이트 동일하다(#9514). 에이전트 기록상 배틀러 불일치 경로 0건, #9514 직후 전체 테스트 목록은 `test-baseline-seq083.txt`와 바이트 동일했다.
+- #9514 참고: upstream이 `STRINGID_PKMNALREADYASLEEP`·`PKMNALREADYPOISONED`·`PKMNISALREADYPARALYZED`에서 `{B_DEF_…}`를 `{B_SCR_…}`로 바꾼 3건은 HnS에서 `B_DEF`로 유지했다. SCR로 바꾸면 공격자 이름이 나오는 upstream 버그이고 #10064(seq 206)가 고친다. g1 plan대로 #10064 때는 엔진 1줄만 넣고 문장은 그대로 둔다.
+- **재개 절차 (그대로 실행):**
+  1. `git status --short --branch`가 clean인지 확인하고 `git fetch origin` 뒤 친구 커밋이 있으면 merge한다(rebase 금지).
+  2. 구간 3 마무리: `PATH=/opt/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin:$PATH make check BUILD=hns -j8 > build/port-check.log 2>&1` → `PORT_INSTRUCTIONS.md` "테스트" 절 방법(`command grep`)으로 목록을 만들어 `test-baseline-seq083.txt`와 비교 → 회귀가 없으면 `test-baseline-seq090.txt`로 저장한다. #9460 뒤 AI 더블 테스트 3건의 상태도 적는다.
+  3. `full-sync-seq-084-090.md` 첫머리와 요약에 전체 테스트 결과를 적고 `Record full-sync port results seq 84-90` 커밋을 만든다(기준 목록 포함).
+  4. 메인 확인: `rm -f pokehns.elf pokehns.gba` 뒤 `make hns -j8`로 ROM/EWRAM/IWRAM 기록, STATUS·SESSION_LOG 갱신, push.
+  5. 다음 구간은 **seq 91 (#9507 Species enum, XL 단독)**이다. 이 세션에서는 구간마다 멈추고 사용자 지시를 받은 뒤 시작한다.
 
 ## 2026-09-29 — full-sync port seq 83 (#8497 loadspritegfx 제거) 완료 (현재)
 
