@@ -941,7 +941,7 @@ static struct ChosenAction ChooseMoveOrAction_Singles(enum BattlerId battler)
     u8 consideredMoveArray[MAX_MON_MOVES];
     u32 numOfBestMoves;
     enum BattlerId opposingBattler = GetOppositeBattler(battler);
-    gAiLogicData->partnerMove = 0;   // no ally
+    gAiLogicData->partnerMove = MOVE_NONE;   // no ally
     DoAIScoreProcessing(battler, opposingBattler);
 
     for (u32 moveIndex = 0; moveIndex < MAX_MON_MOVES; moveIndex++)

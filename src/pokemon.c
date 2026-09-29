@@ -6806,7 +6806,7 @@ u32 GetGMaxTargetSpecies(u32 species)
 bool32 DoesMonMeetAdditionalConditions(struct Pokemon *mon, const struct EvolutionParam *params, struct Pokemon *tradePartner, u32 partyId, bool32 *canStopEvo, enum EvoState evoState)
 {
     u32 i, j;
-    u32 heldItem = GetMonData(mon, MON_DATA_HELD_ITEM);
+    enum Item heldItem = GetMonData(mon, MON_DATA_HELD_ITEM);
     u32 gender = GetMonGender(mon);
     u32 friendship = GetMonData(mon, MON_DATA_FRIENDSHIP, 0);
     u32 attack = GetMonData(mon, MON_DATA_ATK, 0);
@@ -6816,10 +6816,11 @@ bool32 DoesMonMeetAdditionalConditions(struct Pokemon *mon, const struct Evoluti
     u32 weather = GetCurrentWeather();
     u32 nature = GetNature(mon);
     bool32 removeHoldItem = FALSE;
-    u32 removeBagItem = ITEM_NONE;
+    enum Item removeBagItem = ITEM_NONE;
     u32 removeBagItemCount = 0;
     u32 evolutionTracker = GetMonData(mon, MON_DATA_EVOLUTION_TRACKER, 0);
-    u32 partnerSpecies, partnerHeldItem;
+    u32 partnerSpecies;
+    enum Item partnerHeldItem;
     enum HoldEffect partnerHoldEffect;
 
     if (tradePartner != NULL)
@@ -7109,7 +7110,7 @@ bool32 DoesMonMeetAdditionalConditions(struct Pokemon *mon, const struct Evoluti
         {
             if (removeHoldItem)
             {
-                u32 heldItem = ITEM_NONE;
+                enum Item heldItem = ITEM_NONE;
                 SetMonData(mon, MON_DATA_HELD_ITEM, &heldItem);
             }
 
@@ -7149,7 +7150,7 @@ u32 GetEvolutionTargetSpecies(struct Pokemon *mon, enum EvolutionMode mode, u16 
     int i;
     u32 targetSpecies = SPECIES_NONE;
     u32 species = GetMonData(mon, MON_DATA_SPECIES, 0);
-    u32 heldItem = GetMonData(mon, MON_DATA_HELD_ITEM, 0);
+    enum Item heldItem = GetMonData(mon, MON_DATA_HELD_ITEM, 0);
     u32 level = GetMonData(mon, MON_DATA_LEVEL, 0);
     enum HoldEffect holdEffect;
     const struct Evolution *evolutions;
