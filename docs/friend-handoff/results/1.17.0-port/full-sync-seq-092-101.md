@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 92~101
 
-진행 중: 마지막 완료 seq 100, 다음 seq 101.
+진행 중: 마지막 완료 seq 101(구간 이식 끝), 전체 테스트·요약 기록 중.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 사전 분석: PR마다 병렬 분석 에이전트가 쓴 이식 계획(`hns-sync-work/chunk-092-101/seq<N>-<PR>.md`, 저장소 밖)을 따랐다.
@@ -177,3 +177,25 @@
   - 자동 테스트: 코드 넣기 전 테스트만 먼저 넣고 돌리면 새 테스트 2개가 FAIL(`Bolt Beak … (singles) 2/2`는 `Unmatched EXPECT_MOVE`, `(doubles)`는 `Unmatched SCORE_EQ_VAL`)이었고, 코드를 넣은 뒤 둘 다 PASS. `ai/ai.c` 77개(PASS 60 / FAIL 14, 기준 대비 새 PASS 2, 나머지 같음), `bolt_beak.c`(PASS 2), `payback.c`(TO_DO 1), `analytic.c`(PASS 3 / TO_DO 2), `sheer_force.c`(30/1), `ai/ai_doubles.c`(43/3) — 기준 목록과 같다(회귀 0).
   - 실기 확인: 권장(필수 아님). 아래 "실기 확인 필요".
 - 남은 위험(upstream과 같은 한계): AI 순서 계산이 우선도·교체 예측을 보지 않는다. `Ai_AttackerMovesLast`는 살아 있는 수만 세지만 정렬에는 쓰러진 칸도 들어가 더블에서 ×1.3을 잘못 줄 수 있다. `Ai_AttackerMoves*` 호출마다 `AI_WhoStrikesFirst`를 16번 부른다(1.17.0과 같은 비용).
+
+## 동기화 단위: seq 101 #9529 `U-genconfig-9529` `GenConfig` naming cleanup
+
+- 현재 판정: 적용(1줄 문맥 수동)
+- 커밋: `bc3c30671a`(파일 이름 변경 3개 + include 9곳 + `test/test_runner.c` 누수 예외를 **한 커밋**에)
+- upstream 근거: `137670bed2`
+- 해결한 의존성: 없음. #9429(seq 92) 뒤라 constants 파일 문맥이 upstream 기준 blob과 맞는다.
+- 수정 파일(13): 이름 변경 `include/generational_changes.h` → `include/config_changes.h`, `include/constants/generational_changes.h` → `include/constants/config_changes.h`, `src/generational_changes.c` → `src/config_changes.c`. include 교체 `data/battle_scripts_1.s`, `include/battle.h`, `include/move.h`, `include/test/battle.h`, `src/battle_script_commands.c`, `src/battle_switch_in.c`, `src/battle_util.c`, `src/pokerus.c`, `test/pokerus.c`. `test/test_runner.c`(`TestRunner_CheckMemory` 누수 예외를 `strncmp("src/config_changes.c")`로).
+- 적용 방법: `git apply --index --whitespace=fix`(upstream 패치의 빈 줄 끝 공백 1곳만 고쳐짐)로 12파일. `src/battle_util.c`는 HnS `#include "challenge_menu.h"`가 문맥에 끼어 있어 `#include "generational_changes.h"` 한 줄만 손으로 바꿨다. 제외 hunk 없음. 파일 모드는 그대로(`include/constants/config_changes.h` 100755).
+- 확인:
+  - `include/config_changes.h`·`src/config_changes.c` blob이 upstream `137670bed2`와 같다(`6d3e434f57`, `06e5b6ab6a`).
+  - `include/constants/config_changes.h`는 이전 파일에서 include guard 이름만 바뀌었다(F 표 215항목, HnS 항목 `B_RAGE_FIST`·`B_DREAM_EATER_SUBSTITUTE`·`P_*_INHERITANCE`·`B_WILD_NATURAL_ENEMIES`·빈 `AI_CONFIG_DEFINITIONS` 위치 그대로).
+  - `include/config/*` 변경 0. `git grep generational_changes`(docs 제외) 0건.
+- HNS 보존: config 값·이름 변경 없음(`GEN_LATEST = GEN_CHAMPIONS` 등 그대로, `B_WILD_NATURAL_ENEMIES` → `WE_*`는 seq 177 #9879 몫). `battle_util.c`의 `challenge_menu.h` include, `test_runner.c`의 HnS 추가분(fake_rtc include 순서, One Type Challenge 초기화) 유지. 한글 변경 0.
+- 동작 차이(테스트 러너만): 새 코드는 첫 누수를 보고한 뒤 힙 순회를 끝낸다(이전은 안쪽 비교 루프만 빠져나옴). 이미 FAIL인 테스트의 출력 줄 수만 달라질 수 있고 판정은 같다.
+- 저장·ROM·그래픽 영향: 세이브 영향 없음.
+- 검증:
+  - `git diff --cached --check`: 통과.
+  - `make hns -j8`: 종료 코드 0, **ROM 32,714,948 B(0) / EWRAM 248,924 B(0) / IWRAM 25,516 B(0)**. 새 경고 0. 새 `config_changes.o`의 `.rodata.sConfigChanges`·`.text.GetConfigInternal`·`.text.SetConfig`가 이전 `generational_changes.o`와 바이트 동일(SHA-1 비교). 링크 맵 차이는 `GetConfigInternal`(0x84)의 입력 파일 이름과 주소(링크 순서가 바뀜)뿐이다.
+  - 자동 테스트: `test/pokerus.c`(PASS 19), `dream_eater.c`(3/3), `rage_fist.c`(10/5), `encore.c`(seq 92 결과와 같음), `test/daycare.c`(4/1), `test/test_test_runner.c`(PASS 7 외 기대 실패류) — 기준 목록과 같다(회귀 0). `bytes not freed` 0건. 전체 실행 결과는 아래 "전체 테스트".
+  - 실기 확인: 불필요(ROM 동작 변화 없음).
+- 남은 위험: 없음. **이후 plan TSV·문서의 "`generational_changes.h`에 추가" 표기는 `include/constants/config_changes.h`로 읽는다.** seq 508 #9892가 이 `strncmp` 예외를 없애고 `TestFreeConfigData`를 누수 검사 전에 부르게 바꾼다.
