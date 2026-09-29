@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 83~83
 
-진행 중: 마지막 완료 seq 83 unit의 #10345(커밋 `45b27b9bce`), 다음: 같은 unit의 #10589(seq 321) → 전체 테스트
+진행 중: 마지막 완료 seq 83 unit의 #10589(커밋 `715c1b91fc`), 다음: 전체 테스트·구간 요약
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `152910621b`
@@ -45,7 +45,7 @@
     - 참조 0인 191쌍(73개 태그, 괄호는 애니 수): IMPACT(26) BLUE_STAR(14) SMALL_EMBER(7) POISON_BUBBLE(6) ICE_CRYSTALS(6) CLAW_SLASH(6) SMALL_BUBBLES(5) HANDS_AND_FEET(5) ELECTRICITY(5) SPARK_2(4) SPARK(4) ROUND_SHADOW(4) ROCKS(4) ITEM_BAG(4) ELECTRIC_ORBS(4) CIRCLE_OF_LIGHT(4) SPEED_DUST(3) ORBS(3) GRAY_SMOKE(3) DUCK(3) BLACK_BALL_2(3) WHITE_FEATHER(2) WATER_IMPACT(2) TORN_METAL(2) THOUGHT_BUBBLE(2) SPARKLE_6(2) SPARKLE_2(2) PINK_HEART(2) LEER(2) FLOWER(2) FLAT_ROCK(2) EYE_SPARKLE(2) ECLIPSING_ORB(2) BUBBLE(2) BLUE_ORB(2) BLUE_LIGHT_WALL(2) BLACK_BALL(2) 그리고 1개씩: WOOD_HAMMER_HAMMER WHITE_CIRCLE_OF_LIGHT WHIRLWIND_LINES WEB_THREAD WATER_ORB WATER_GUN VERTICAL_HEX THIN_RING TAG_HAND SWEAT_DROP SPLASH SHOCK_3 RAZOR_LEAF QUICK_GUARD_HAND PURPLE_HAND_OUTLINE PUNISHMENT_BLADES POISON_JAB PINK_PETAL PINK_CLOUD MUSIC_NOTES METEOR LIGHTNING LEAF JAGGED_MUSIC_NOTE ICE_SPIKES GUST GREEN_SPIKE GREEN_SPARKLE FOCUS_ENERGY FLYING_DIRT EXPLOSION_6 CUT BREATH BLACK_SMOKE ASSURANCE_HAND ACUPRESSURE. (애니별 목록은 스크래치 `a8497/out/classB.tsv`)
   - C에서 직접 만드는 스프라이트: C 로드를 빼고 스크립트 템플릿만으로 다시 계산하면 115쌍이 추가로 "안 쓰임"이 되는데, 모두 upstream이 해당 작업·콜백에 넣은 `TryLoadSpriteAssets`(우박·비·눈 입자, 전기 볼트·충전 입자·볼트태클 계열, 에어컷터, 물 계열, 연속펀치 타격, 길동무·다크홀, 동결 얼음, 째려보기, 원념 불꽃, 하트스웝·스킬스웝, 봉인, 이온, 리프블레이드, 충격파, 폴터가이스트, 구르기 흙·바위, 트집 등)로 해결된다. 변수 템플릿을 쓰는 곳(충전 입자 `MOVE_FLASH_CANNON/STEEL_BEAM`, 볼트태클 `FAIRY_LOCK/COLLISION_COURSE`, 길동무 `DARK_VOID/POLTERGEIST`)은 로드하는 템플릿과 생성하는 템플릿의 선택 조건이 같음을 확인했다. 충격파 진행 볼트는 로드용(`gVoltTackleBoltSpriteTemplate`)과 생성용(`gShockWaveProgressingBoltSpriteTemplate`) 템플릿이 다르지만 태그가 둘 다 SPARK(10001/10001)로 같다.
   - **순서 검사(`animorder.py`, 최종 unit 상태 기준):** 태그로 팔레트를 찾는 C 코드 17곳 × 진입점 조합 408건 중 이식 전에는 로드돼 있었는데 이식 후 그 시점에 없는 곳:
-    - 범위 밖 쓰기 위험: AuroraBeam(`RAINBOW_RINGS`)·MagicalLeaf(`LEAF`/`RAZOR_LEAF`)·NightSlash(`SLASH`) → **#10589**가 `TryLoadPal`로 해결. WingAttack·SteelWing·DoubleIronBash·VeeveeVolley의 바람 회오리 팔레트(`GUST`) → **#10345**가 조회를 스프라이트 생성 뒤 프레임으로 옮겨 해결(같은 프레임에 GUST 팔레트 템플릿 스프라이트가 만들어짐). HydroVortex·BloomDoom은 GUST **그림**에 다른 팔레트(물소용돌이·꽃잎 등)를 쓰는 템플릿뿐이라 GUST 팔레트가 끝까지 로드되지 않아 #10345 뒤에도 단계마다 `OBJ_PLTT_ID(0xFF)` 위치를 `memmove`로 덮어쓴다(upstream 1.17.0도 같음) → **HnS 추가 3**(#10345 커밋, 작업 시작 때 `TryLoadPal(ANIM_TAG_GUST)`)으로 해결. HealBell(`MUSIC_NOTES_2`) → **HnS 추가 1**로 해결.
+    - 범위 밖 쓰기 위험: AuroraBeam(`RAINBOW_RINGS`)·MagicalLeaf(`LEAF`/`RAZOR_LEAF`)·NightSlash(`SLASH`) → **#10589**가 `TryLoadPal`로 해결. WingAttack·SteelWing·DoubleIronBash·VeeveeVolley의 바람 회오리 팔레트(`GUST`) → **#10345**가 조회를 스프라이트 생성 뒤 프레임으로 옮겨 해결(같은 프레임에 GUST 팔레트 템플릿 스프라이트가 만들어짐). HydroVortex·BloomDoom은 GUST **그림**에 다른 팔레트(WATER_ORB·RAZOR_LEAF)를 쓰는 템플릿뿐이라 GUST 팔레트가 끝까지 로드되지 않아 #10345 뒤에도 단계마다 `OBJ_PLTT_ID(0xFF)` 위치를 `memmove`로 덮어쓴다(upstream 1.17.0도 같음) → **HnS 추가 3**(#10345 커밋, 작업 시작 때 `TryLoadPal(ANIM_TAG_GUST)`)으로 해결. HealBell(`MUSIC_NOTES_2`) → **HnS 추가 1**로 해결.
     - 시각 차이: 음표 무지개 블렌드 5개 애니 → **HnS 추가 2**로 해결. `AnimUproarRing` 콜백을 쓰는 9개 애니(NightDaze·NaturesMadness·OriginPulse·Electrify·SimpleBeam·FusionFlare·MagneticFlux·RevelationDance·ZingZap)는 THIN_RING 그림에 다른 팔레트를 쓰는 템플릿이라 블렌드 대상인 THIN_RING 팔레트를 쓰는 스프라이트가 그 애니에 없다 → 화면 차이 없음.
     - `AnimTask_MoonlightEndFade`의 `GREEN_SPARKLE`(Moonblast·MaxStarfall·GMaxSmite·GMaxFinale): 팔레트 번호 0xFF로 `0x10000 << 0xFF`를 계산한다. 이 네 애니에는 그 팔레트를 쓰는 스프라이트가 없어 화면 차이는 없고, 같은 계산이 이식 전에도 HealingWish(`MOON`)·LunarBlessing·MoongeistBeam·RevivalBlessing(`GREEN_SPARKLE`)에서 이미 일어나고 있었다(ARM 레지스터 시프트 32 이상 = 0 → 페이드 마스크에서 빠질 뿐). upstream 1.17.0과 같아 **손대지 않고 기록만 한다.**
     - 추가 후 결과: 회귀 0(위 GUST·AuroraBeam·MagicalLeaf·NightSlash는 #10345·#10589 커밋 뒤 기준, MoonlightEndFade 4건은 화면 차이 없음으로 제외), 이식 전부터 있던 것 4건(위 MoonlightEndFade).
@@ -62,7 +62,7 @@
   - `make hns -j8`: 종료 코드 0, ROM 32,712,420 B / EWRAM 248,924 B / IWRAM 25,516 B, 새 경고 0.
   - 자동 테스트: `test/battle/move_animations/all_anims.c`는 이식 전 전부 `#if T_SHOULD_RUN_MOVE_ANIM`(FALSE) 안이라 0건이었고, #8497이 가벼운 판 6건을 새로 연다. HnS 결과: PASS 3(`Move Animations work 3`·`4`, `Tera Blast animations work`), FAIL 2, INVALID 1.
     - `Move Animations work 1`(222/222)·`2`(221/221) FAIL: 사유는 둘 다 `Task_FreeAbilityPopUpGfx: task not freed`뿐이다(`gLoadFail`·`gSpriteAllocs` 단정은 통과). 러너는 매개변수별 누수 검사에서 실패해도 다음 매개변수로 계속 가고 마지막 번호로 보고한다. 임시 디버그 출력(커밋 안 함)으로 찾은 원인 기술은 쪼아대기(`MOVE_PLUCK` 365)·내던지기(`MOVE_FLING` 374)·벌레먹음(`MOVE_BUG_BITE` 450) — 상대의 오랭열매를 먹거나 도구를 던지는 기술이다. HnS는 기반 커밋부터 도구 팝업(`CreateItemPopUp`, `BattleScript_ItemPopUp_*`)을 쓰는데 이 테스트는 그 턴 직후 배틀을 끝내므로 팝업 그림 해제 작업이 남는다. upstream #8497 시점에는 도구 팝업이 없다. 애니 로드와 무관한 **HnS 테스트 환경 차이**로 분류한다. 끝쪽 기술(833~847)만 돌리면 네 테스트 모두 PASS.
-    - `Z-Moves animations work` 17/37 INVALID(`Cannot turn … into a Z-Move`): 0부터 센 17번 = 18번째 매개변수 `MOVE_TWINKLE_TACKLE`(문포스 + 페어리Z). HnS `GetMoveType()`은 도전 설정 `tx_Mode_Fairy_Types`가 0이면 페어리 기술을 다른 타입으로 바꾸는데(문포스 → 악), 테스트 러너는 이 설정을 0으로 두므로 페어리Z로 변환할 수 없다. 역시 **HnS 설정 차이**이며 애니와 무관하다. INVALID로 테스트가 끝나 나머지 Z기술 19~37번 애니는 이 테스트에서 돌지 않았다(아래 추가 확인 참고).
+    - `Z-Moves animations work` 17/37 INVALID(`Cannot turn … into a Z-Move`): 0부터 센 17번 = 18번째 매개변수 `MOVE_TWINKLE_TACKLE`(문포스 + 페어리Z). HnS `GetMoveType()`은 도전 설정 `tx_Mode_Fairy_Types`가 0이면 페어리 기술을 다른 타입으로 바꾸는데(문포스 → 악), 테스트 러너는 이 설정을 0으로 두므로 페어리Z로 변환할 수 없다. 역시 **HnS 설정 차이**이며 애니와 무관하다. INVALID로 테스트가 끝나 나머지 Z기술 19~37번 애니는 이 테스트에서 돌지 않았다(아래 "동적 검증"에서 설정을 켜고 37개 모두 확인).
   - 실기 확인: 필요(아래 구간 끝 목록).
 - 남은 위험: upstream `CreateSpriteAt`의 테스트용 검사 조건 `tileTag > ANIM_SPRITES_START && tileTag < ANIM_TAG_COUNT`는 `ANIM_TAG_COUNT`가 413(태그 개수)이라 항상 거짓이다(1.17.0도 같음). 그래서 upstream 테스트는 "로드 안 된 그림/팔레트로 스프라이트 생성"을 실제로 잡지 못한다. 그대로 이식했고, 검증은 위 정적 분석으로 했다.
 
@@ -89,12 +89,48 @@
 - 수정 파일: `src/battle_anim_flying.c`(`#include "sprite.h"`, `AnimTask_AnimateGustTornadoPalette`에서 팔레트 번호 캐시 삭제, `_Step`에서 매번 `IndexOfSpritePaletteTag(ANIM_TAG_GUST)`로 찾고 `memmove`로 회전)
 - HNS 적응과 보존한 한글화/배틀 메시지 동작:
   - upstream hunk 그대로 적용(문맥 충돌 없음). 회전 결과(색 1~8 오른쪽으로 한 칸, 8→1)는 이식 전 루프와 같다.
-  - **HnS 추가 3:** `AnimTask_AnimateGustTornadoPalette` 앞에 `TryLoadPal(ANIM_TAG_GUST)`(실패 시 작업 종료). BloomDoom(`gBloomDoomHurricaneSpriteTemplate` 그림 GUST/팔레트 10160)과 HydroVortex(`gHydroVortexHurricaneSpriteTemplate`·`gWhirlpoolSpriteTemplate`)는 GUST 팔레트를 쓰는 스프라이트가 없어 #8497 뒤로 그 팔레트가 로드되지 않는다. 이식 전에는 `loadspritegfx ANIM_TAG_GUST`가 팔레트도 올렸으므로, 이렇게 해야 이식 전과 같이 (보이지 않는) GUST 팔레트를 회전하고 범위 밖 쓰기가 없다. 다른 GUST 애니(Gust·WingAttack·SteelWing·Hurricane·LeafTornado·DoubleIronBash·VeeveeVolley)는 이미 로드된 팔레트를 그대로 쓴다. 스크립트에서 GUST를 해제하는 곳은 없다.
+  - **HnS 추가 3:** `AnimTask_AnimateGustTornadoPalette` 앞에 `TryLoadPal(ANIM_TAG_GUST)`(실패 시 작업 종료). BloomDoom(`gBloomDoomHurricaneSpriteTemplate` 그림 GUST/팔레트 RAZOR_LEAF)과 HydroVortex(`gHydroVortexHurricaneSpriteTemplate` 그림 GUST/팔레트 WATER_ORB, `gWhirlpoolSpriteTemplate`)는 GUST 팔레트를 쓰는 스프라이트가 없어 #8497 뒤로 그 팔레트가 로드되지 않는다. 이식 전에는 `loadspritegfx ANIM_TAG_GUST`가 팔레트도 올렸으므로, 이렇게 해야 이식 전과 같이 (보이지 않는) GUST 팔레트를 회전하고 범위 밖 쓰기가 없다. 다른 GUST 애니(Gust·WingAttack·SteelWing·Hurricane·LeafTornado·DoubleIronBash·VeeveeVolley)는 이미 로드된 팔레트를 그대로 쓴다. 스크립트에서 GUST를 해제하는 곳은 없다.
   - 추가 뒤 순서 검사: GUST 회귀 0, 경로별 최대 추적 팔레트 8(한도 이내).
 - 저장·ROM·그래픽 영향: ROM 변화 0(32,712,372 B, 코드 감소와 추가가 상쇄). 화면은 이식 전과 같아야 한다.
 - 검증:
   - `git diff --check`: 통과. 한글 줄 변경 0.
   - `make hns -j8`: 종료 코드 0, ROM 32,712,372 B / EWRAM 248,924 B / IWRAM 25,516 B, 새 경고 0.
-  - 자동 테스트: 아래 #10589 항목과 함께 기록.
+  - 자동 테스트: `all_anims.c` 6건 결과가 #8497 직후와 같다(PASS 3, FAIL 2 = HnS 도구 팝업 태스크, INVALID 1 = HnS 페어리 타입 설정).
   - 실기 확인: 바람일으키기·날개치기·강철날개·폭풍 회오리 색 순환, BloomDoom·HydroVortex(Z기술) 진행 중 화면·다음 동작 이상 없음.
 - 남은 위험: 낮음
+
+## 동기화 단위: seq 321 #10589 `U-anim-8497` Fix out-of-bounds palette writes in certain move animations (seq 83 unit에 포함)
+
+- 현재 판정: 적용(group plan "#8497과 같은 unit으로 넣는다"). **seq 321은 도달 시 "이미 적용"으로 처리한다.**
+- 커밋: `715c1b91fc`
+- upstream 근거: `de3e43897e`
+- 수정 파일: `src/battle_anim_effects_1.c`(`AnimTask_CycleMagicalLeafPal`에 `TryLoadPal(LEAF)`·`TryLoadPal(RAZOR_LEAF)`, `AnimTask_BlendNightSlash`에 `TryLoadPal(SLASH)`와 `OBJ_PLTT_ID` 표기), `src/battle_anim_water.c`(`AnimTask_RotateAuroraRingColors`에 `TryLoadPal(RAINBOW_RINGS)`), `src/util.c`(`BlendPalette` 경계 `assertf`)
+- HNS 적응과 보존한 한글화/배틀 메시지 동작: 그대로 적용(문맥 충돌 없음). 문자열 무관.
+  - `BlendPalette` 경계 검사는 HnS 디버그 빌드에서 "재개 가능한 크래시 화면 + 함수 종료", 테스트 빌드에서 INVALID다. 동적 오프셋으로 `BlendPalette`를 부르는 곳(72곳 중 14곳)을 확인했다. 태그 조회 결과를 그대로 쓰는 곳은 이 PR이 막는 NightSlash뿐이고, 나머지는 스프라이트 `paletteNum`(4비트)·배틀러 번호·가드된 인덱스라 범위를 벗어나지 않는다. HnS 전용 호출부는 없다.
+- 저장·ROM·그래픽 영향: ROM +176 B(32,712,548 B). 세 애니의 팔레트 색 순환·블렌드가 이식 전과 같아진다.
+- 검증:
+  - `git diff --check`: 통과. 한글 줄 변경 0.
+  - `make hns -j8`: 종료 코드 0, ROM 32,712,548 B / EWRAM 248,924 B / IWRAM 25,516 B, 새 경고 0.
+  - 순서 검사(unit 최종 상태): 이식으로 생긴 범위 밖 쓰기 0. 남은 것은 `AnimTask_MoonlightEndFade` 4건(화면 차이 없음)과 `AnimUproarRing` 27건(해당 팔레트를 쓰는 스프라이트 없음)뿐이다.
+  - 자동 테스트: 아래 "동적 검증"과 구간 끝 전체 테스트.
+  - 실기 확인: 매지컬리프 잎 색 순환, 깜짝베기 붉은 베기, 오로라빔 고리 색 순환.
+- 남은 위험: 낮음(`BlendPalette` assert가 이전에 조용히 넘어가던 범위 밖 호출을 크래시 화면으로 드러낼 수 있으나 해당 경로를 찾지 못함)
+
+## unit 최종 상태 동적 검증 (임시 계측, 커밋 안 함)
+
+upstream 테스트가 실제로 잡지 못하는 부분을 보완하려고, unit 최종 코드(`715c1b91fc`)에 아래 임시 수정을 넣고 `all_anims.c`를 돌린 뒤 파일을 원래대로 되돌렸다(작업 트리 clean 확인).
+
+- 임시 수정: ① `CreateSpriteAt` 검사 조건을 `ANIM_SPRITES_START <= tag < ANIM_SPRITES_START + ANIM_TAG_COUNT`로 고치고 assert 대신 기록만, ② `gLoadFail`(타일 할당 실패) 설정·초기화를 `TESTING`으로(upstream은 seq 398 #10274에서 이렇게 바꿈), ③ 테스트 러너에서 `tx_Mode_Fairy_Types = 1`(페어리 타입 켬), ④ 애니 실행 중 애니 태그로 `IndexOfSpritePaletteTag`/`GetSpriteTileStartByTag`가 실패하면 호출 주소와 함께 기록, ⑤ `LoadSpritePalette`/`AllocSpritePalette`가 16칸 부족으로 실패하면 그때의 팔레트 태그 표 기록, ⑥ 매 실행 끝에 기술 번호와 `gLoadFail`·`gSpriteAllocs` 기록.
+- 범위: 싱글배틀 기술 1~847 전부(변형 포함 891회), Z기술 37개, 테라버스트 19타입 — 모두 947회. 결과 PASS 4 / FAIL 2(위와 같은 HnS 도구 팝업 태스크). 페어리 설정을 켜면 `Z-Moves animations work`도 PASS.
+- **로드 안 된 그림/팔레트로 스프라이트 생성: 0건.** `gLoadFail`(타일 부족) 0건, 실행마다 `gSpriteAllocs` 0(타일 할당·해제 균형).
+- 애니 중 태그 조회 실패(호출자별, 괄호 = 기술 번호):
+  - `AnimTask_MoonlightEndFade` GREEN_SPARKLE(585 문포스, 668, 777, 791)·MOON(361) — 정적 검사와 같다. 668·777·791·361은 이식 전부터.
+  - `AnimUproarRing` THIN_RING 9개 기술 — 정적 검사와 같고 화면 차이 없음.
+  - `AnimSlowFlyingMusicNotes` BENT_SPOON·LARGE_FRESH_EGG(706 `MOVE_DRUM_BEATING`, Z 876·877): 음표 색 표 팔레트는 무지개 블렌드 작업이 따로 할당해야 생기는 태그인데 이 애니들은 그 작업을 부르지 않는다. 0xFF 검사가 있어 음표 자체 팔레트로 표시된다. 이식 전에도 `loadspritegfx`로 로드되지 않던 태그라 변화 없음.
+  - `FreeSpritePaletteByTag` MUSIC_NOTES_2(215 방울소리): `AnimTask_FreeMusicNotesPals`가 먼저 해제한 태그를 `end`가 다시 해제하려다 없음 → 아무 것도 하지 않음(이중 해제 아님).
+  - `CreateSpriteAt`·`FreeSpritePaletteByTag`의 IMPACT(547 `MOVE_RELIC_SONG`)·CIRCLE_OF_LIGHT(Z 867 10만볼트)·LEAF·POISON_BUBBLE(Z 869 Extreme Evoboost): 아래 팔레트 16칸 소진.
+- **OBJ 팔레트 16칸 소진(세 애니):** 테스트 싱글배틀에서 예약 4칸 + 전투 UI 6칸(태그 55039·55044·30004·55160~55162)을 빼면 애니가 쓸 수 있는 칸은 6칸이다. 이 한도를 넘으면 `TryLoadPal`은 추적 표에는 기록하지만 실제 로드는 실패하고, 그 팔레트의 스프라이트는 `paletteNum` 15(그때 15번 칸 팔레트 색)로 표시된다.
+  - 10만볼트(Z 867): CIRCLE_OF_LIGHT 1개 실패. **이식 전에는 시작 때 `loadspritegfx` 21개를 한꺼번에 올려 15개가 실패**했으므로 크게 나아졌다(upstream이 넣은 `unloadallspritepals` 포함).
+  - Extreme Evoboost(Z 869): LEAF·POISON_BUBBLE 2개 실패. 이식 전에는 10개를 한꺼번에 올려 4개 실패.
+  - RelicSong(547): 이식 전후 모두 7개가 필요해 1개가 실패하는데, 실패하는 쪽이 바뀐다. 이식 전에는 시작 때 4개(JAGGED_MUSIC_NOTE·THIN_RING·MUSIC_NOTES·IMPACT)를 먼저 올려 음표 무지개 셋째 색(LARGE_FRESH_EGG) 할당이 실패했고(일부 음표가 기본색), 이식 후에는 무지개 색 3개가 먼저 할당되어 마지막에 필요한 IMPACT(타격 이펙트)가 실패한다(타격 이펙트가 15번 칸 = 들쭉날쭉 음표 팔레트 색). upstream도 같은 순서다. 스크립트 순서를 HnS 단독으로 바꾸지 않고 **실기 확인 항목**으로 둔다.
+  - 더블배틀은 UI 팔레트가 더 많을 수 있어 여유 칸이 더 적다. 다만 이식 후에는 쓰는 태그만 필요할 때 올리므로 전체적으로 이식 전보다 팔레트를 적게 쓴다.
