@@ -21,6 +21,7 @@ upstream은 저장소 옆 폴더 `../pokeemerald-expansion-upstream` (없으면 
      - 보존: 한글 문자열·인코딩·`STRINGID` 매핑·`{B_...}`·조사 토큰·HnS 배틀 메시지 출력 정책·HnS config·Pokegear/Pokenav·작명·storage 로컬 변경, #10429 HnS 구현(`CHAR_ZWS=0x42`)
      - upstream 테스트 파일(`test/**`)도 이식 대상이다. 영문 `MESSAGE` 기대값은 원문 그대로 둔다. HnS에서 실패하는 것은 알려진 한계로 기록한다.
   3. **검증:** `git diff --check`를 통과시킨 뒤 `GITHUB_ACTION=1 make hns -j8 > build/port.log 2>&1`로 빌드한다. 종료 코드와 `Memory region`(ROM/EWRAM/IWRAM)을 기록한다. 새 경고가 나왔으면 원인을 확인한다.
+     - 노트북 WSL에서는 ARM 공식 툴체인이 PATH에 없다. 빌드·테스트 명령마다 앞에 `PATH=/opt/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin:$PATH`를 붙인다.
      - 출력이 없다는 이유로 빌드를 중복 실행하지 않는다.
      - 테스트가 가능하면 해당 테스트 파일만 돌린다(아래 "테스트" 절).
   4. **커밋:** PR(또는 반드시 같이 가야 하는 unit)마다 커밋 1개를 만든다. `git add`에는 변경 파일 경로를 명시한다(`.`/`-A` 금지). 메시지 형식:
@@ -36,6 +37,7 @@ upstream은 저장소 옆 폴더 `../pokeemerald-expansion-upstream` (없으면 
      - 결과 문서: `docs/friend-handoff/results/1.17.0-port/full-sync-seq-{FROM}-{TO}.md`
      - 형식: 지시서의 "결과 보고 양식"
      - 항목: 판정(적용/부분 적용/이미 적용/HnS 동등/skip), 커밋, 수정 파일, HnS 적응·보존 내용, ROM/EWRAM/IWRAM, 테스트, 남은 위험, 실기 확인 필요 여부
+- **PR마다 진행 기록 커밋(2026-09-29 추가):** 사용량 한도로 세션이 끊겨도 진행이 남도록, 각 PR 커밋 직후 결과 문서에 그 PR 항목(커밋 해시 포함)을 적고 결과 문서만 별도 커밋한다(`Record full-sync port progress seq N (#NNNN)`). 결과 문서 첫머리에는 "진행 중: 마지막 완료 seq N, 다음 seq M" 한 줄을 두고 매번 갱신한다. 메인이 커밋을 수시로 push하므로 `index.lock` 오류가 나면 몇 초 뒤 다시 시도한다.
 - 구간을 끝내면 결과 문서를 별도 커밋으로 남긴다(`Record full-sync port results seq FROM-TO`).
 - `STATUS.md`·`SESSION_LOG.md`는 건드리지 않는다(메인이 통합한다).
 
@@ -56,6 +58,7 @@ upstream은 저장소 옆 폴더 `../pokeemerald-expansion-upstream` (없으면 
   sed 's/\x1b\[[0-9;]*m//g' <로그> | grep -E '^\[[0-9]+\] .*: (PASS|FAIL|KNOWN_FAILING|TO_DO|EXPECTED_FAIL)$' | sed -E 's/^\[[0-9]+\] //' | sort -u > new.txt
   diff <(grep ': PASS$' <기준 목록>) <(grep ': PASS$' new.txt) | grep '^<'   # 통과하던 것 중 사라진 것 = 회귀 후보
   ```
+- 노트북 WSL 셸의 `grep`은 ugrep 래퍼 함수라서 파일 인자를 주면 빈 결과가 나올 수 있다. 위 비교에는 `command grep`을 쓴다.
 - 무한 출력하는 크래시가 생기면 테스트 러너(hydra)가 메모리 부족으로 죽을 수 있다. 전체 실행이 `Killed`로 끝나면 로그 끝에서 반복되는 출력부터 확인한다.
 
 ## 중단 조건 (여기에 해당할 때만 멈추고 보고)
