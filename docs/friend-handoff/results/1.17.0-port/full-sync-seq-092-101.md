@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 92~101
 
-진행 중: 마지막 완료 seq 96, 다음 seq 97.
+진행 중: 마지막 완료 seq 97, 다음 seq 98.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 사전 분석: PR마다 병렬 분석 에이전트가 쓴 이식 계획(`hns-sync-work/chunk-092-101/seq<N>-<PR>.md`, 저장소 밖)을 따랐다.
@@ -100,3 +100,27 @@
   - 자동 테스트: 이 PR이 바꾸는 테스트 없음(테스트 러너는 `optionStyle == 0`이라 타입별 분류 분기를 타지 않는다). `struggle.c`(4), `tera_blast.c`(8), `tera_starstorm.c`(4), `revelation_dance.c`(5), `gimmick/dynamax.c`(81), `gimmick/zmove.c`(44), `gimmick/terastal.c`(44, 같은 이름 2개라 목록 43줄) — 추출 목록이 기준과 같다(회귀 0).
   - 실기 확인: **필요**(아래 "실기 확인 필요").
 - 남은 위험: 낮음. seq 478 #10300(`DAMAGE_CATEGORY_NONE` 추가) 이식 때 HnS의 `optionStyle == 1` 조건을 새 `GetBattleMoveCategory`로 옮겨야 한다(아래 "후속 행 메모").
+
+## 동기화 단위: seq 97 #9562 `U-9562` Remove PARTNER_DUMMY need by adding additional difficulty when TESTING
+
+- 현재 판정: 적용(HnS 파트너 번호에 맞춰 2파일 수동)
+- 커밋: `cc2ce789c3`
+- upstream 근거: `03d82af1c6`
+- 해결한 의존성: 없음. 선행 #9419(`GetBattlePartnerDifficultyLevel`)는 HnS `976e642137`로 이미 들어와 있다. `PARTNER_STEVEN_TEST`(1)는 `test/test_runner_battle.c`에 있다.
+- 수정 파일(5): `include/constants/battle_partner.h`, `include/constants/difficulty.h`, `src/data/battle_partners.party`, `test/battle/partner_control.party`, `test/battle/trainer_control.c`
+- 적용 방법:
+  - `difficulty.h`·`partner_control.party`·`trainer_control.c`는 HnS가 upstream 부모와 같아 `git apply` 그대로. 테스트 2파일은 upstream `03d82af1c6` 판과 바이트 동일. `difficulty.h`는 upstream 원문 `#endif ` 끝 공백만 빼고 넣었다(`git diff --check` 통과, 동작 같음).
+  - `battle_partner.h`: HnS는 원작업자 `f206a6c007`가 2~5번(`PARTNER_LANCE_HNS`, `PARTNER_SILVER_{MEGANIUM,TYPHLOSION,FERALIGATR}_HNS`)을 끼워 DUMMY가 6번이다. 2~5번은 그대로 두고 `PARTNER_DUMMY 6`과 주석을 지운 뒤 **`PARTNER_COUNT 7 → 6`**(upstream은 3 → 2).
+  - `battle_partners.party`: 끝의 `=== PARTNER_DUMMY ===` 블록(앞 빈 줄 + 헤더 8줄 + 빈 줄 + `Wynaut` + 빈 줄, 12줄)만 지웠다. 파일은 Silver Gengar의 `- Hypnosis`로 끝나고 파트너 블록은 6개(NONE, STEVEN, LANCE, SILVER×3).
+  - 제외 hunk: 없음. `git grep PARTNER_DUMMY`(docs·migration_scripts 제외) 0건.
+- `PARTNER_DUMMY` 의존 확인: 정의와 데이터 블록 외 참조 0. HnS 파트너 배틀(`multi_2_vs_2`)은 1~5번만 쓰고(스페이스센터 성호, 로켓 아지트 B2F 목호, 디버그 메뉴 Lance/Silver Multi), `NPCfollower.battlePartner`에 6을 넣는 경로가 없다. HnS는 실제 파트너가 5명이라 테스트용 `PARTNER_COUNT ≥ 3` 조건이 DUMMY 없이 이미 충족됐다.
+- HNS 적응과 보존한 한글화/배틀 메시지 동작: 파트너 2~5번 번호·데이터·`Name: {B_RIVAL_NAME}` 그대로. 비ASCII 변경 줄 0. 게임 빌드는 `B_VAR_DIFFICULTY 0`이라 항상 Normal이고 `DIFFICULTY_TEST`는 `#if TESTING`에서만 생긴다(릴리스 `DIFFICULTY_COUNT` 3 그대로).
+- 부수 효과(의도됨): 디버그 트레이너 메뉴의 파트너 선택 상한(`PARTNER_COUNT - 1`)이 6 → 5라 빈 DUMMY 파티를 더 고를 수 없다. `IsPartnerTrainerId`가 `TRAINER_PARTNER(6)`을 더는 파트너로 보지 않는다(쓰는 곳 없음).
+- 저장·ROM·그래픽 영향: 세이브 구조 변화 없음(`PARTNER_COUNT`·`DIFFICULTY_COUNT` 크기의 세이브 필드 없음).
+- 검증:
+  - `git diff --check`: 통과. 파일 모드 유지.
+  - `make hns -j8`: 종료 코드 0, **ROM 32,713,092 B(−32 B) / EWRAM 248,924 B(0) / IWRAM 25,516 B(0)**. 새 경고 0.
+  - 크기 내역(맵 비교): `gBattlePartners` 0x444 → 0x3A8(−156), `sTrainerSlides` 파트너 1행(−168), DUMMY의 Wynaut 파티(−36) = rodata −360 B. 대신 `gBattlePartners` 행 간격이 7×52 → 6×52 = 312가 되어 `GetTrainerStructFromId` 인라인을 쓰는 함수 44개가 `movs/lsls/muls`(×364) 대신 시프트·가감(×312)으로 곱해 4~28 B씩 늘었다(`GetTrainerMoneyToGive`는 그 밖에 `IsPartnerTrainerId`의 `cmp #5` → `#4`만 다름). 섹션 합계 −48 B, 정렬 후 ROM −32 B.
+  - 자동 테스트: `trainer_control.c` 20개(PASS 19 / FAIL 1), `trainer_slides.c` 39개(PASS 12 / FAIL 27), `ai/ai_multi.c` 11개(PASS 11) — 추출 목록이 기준과 같다(회귀 0). 바뀐 파트너 난이도 테스트 4개(`… for partner … (EASY/HARD/NORMAL)`, `Difficulty default to Normal if the partner doesn't have a member …`)는 모두 PASS. `trainer_control.c`의 FAIL 1건(`CreateNPCTrainerPartyForTrainer generates customized Pokémon`)은 기준에서도 FAIL.
+  - 실기 확인: 필수 아님(파트너 번호 불변). 원하면 디버그 메뉴 `Lance Multi`·`Silver Multi`로 파트너 파티·뒷모습 1회.
+- 남은 위험: 낮음. seq 128 #9475(트레이너 그림 정보 재작업)는 이 PR 뒤 문맥(`Difficulty: Normal`, DUMMY 없음)을 전제로 하고, HnS LANCE·SILVER×3의 `Back Pic:`을 따로 처리해야 한다(아래 "후속 행 메모").
