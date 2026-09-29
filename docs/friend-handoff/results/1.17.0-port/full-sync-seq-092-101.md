@@ -168,7 +168,7 @@
   - `src/battle_util.c`: `IsLastMonToMove` 뒤에 `GetAiTurnOrder`·`Ai_AttackerMovesAfterTarget(battlerAtk, battlerDef)`·`Ai_AttackerMovesLast(battlerAtk)`(호출할 때 `AI_SetBattlerTurnOrder`로 로컬 순서 계산). 세 함수는 1.17.0 `battle_util.c`와 글자까지 같다. `CalcMoveBasePower`의 `EFFECT_PAYBACK`·`EFFECT_BOLT_BEAK`, `CalcMoveBasePowerAfterModifiers`의 `ABILITY_ANALYTIC`에 `ctx->aiCalc` 분기를 넣었다. 1.17.0과 다른 줄은 실전(else) 분기의 `gBattleStruct->battlerState[battlerDef].isFirstTurn`(1.17.0은 #9786 `BattlerJustSwitchedIn`, seq 159 몫) 2줄뿐이고 들여쓰기는 #9786 hunk가 그대로 붙도록 upstream과 같게 뒀다.
   - `test/battle/ai/ai.c`: upstream hunk 그대로(`TURN { ` 끝 공백 제거 1줄 + Bolt Beak AI 테스트 2개). 새 테스트는 1.17.0과 같다.
   - **제외 hunk(4):** `include/battle_util.h`의 `BattleContext.aiTurnOrder` 필드(최종형에 없음, #9596이 제거), `src/battle_ai_util.c`의 `static void AI_SetBattlerTurnOrder` 선언·정의(HnS 공개 함수와 충돌)와 `AI_CalcDamage` 안의 호출(원형의 프레임 회귀 원인, #9596·#10453이 바꿈).
-- 동작 변화(의도된 AI 개선): AI 대미지 계산에서만 보복(공격자가 늦으면 ×2)·전격부리/아가미물기(공격자가 빠르면 ×2)·애널라이즈(살아 있는 배틀러 중 마지막이면 ×1.3, 미래예지 제외)를 AI 예측 속도 순서로 판정한다. 이전에는 지난 턴의 행동 기록으로 판정했다. 실전 대미지·메시지 경로(`aiCalc == FALSE`)는 식이 그대로다. HnS 트레이너 중 해당: 블루 마기라스(보복), 아칼라 수영선수 아쿠스타·조이(해방 후) 자포코일(애널라이즈)(사전 분석 기준).
+- 동작 변화(의도된 AI 개선): AI 대미지 계산에서만 보복(공격자가 늦으면 ×2)·전격부리/아가미물기(공격자가 빠르면 ×2)·애널라이즈(살아 있는 배틀러 중 마지막이면 ×1.3, 미래예지 제외)를 AI 예측 속도 순서로 판정한다. 이전에는 지난 턴의 행동 기록으로 판정했다. 실전 대미지·메시지 경로(`aiCalc == FALSE`)는 식이 그대로다. HnS 트레이너 중 해당: `TRAINER_BLUE_HNS` 마기라스(보복), `TRAINER_AKALA_SWIMMER_1_HNS` 아쿠스타·`TRAINER_JASMINE_POSTOBC_HNS` 자포코일(애널라이즈)(사전 분석 기준).
 - HNS 보존: 한글·STRINGID·메시지 변화 없음(비ASCII 변경 줄 0). `AI_SetBattlerTurnOrder`·HnS `AI_CalcDamage`(Nature Power 분기)·`GetDamageCalcAbility` 가드 수정 없음. `BattleContext` 크기 그대로.
 - 저장·ROM·그래픽 영향: 세이브 영향 없음.
 - 검증:
