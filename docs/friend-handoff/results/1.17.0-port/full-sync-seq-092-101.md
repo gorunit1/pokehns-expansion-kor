@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 92~101
 
-진행 중: 마지막 완료 seq 101(구간 이식 끝), 전체 테스트·요약 기록 중.
+완료: seq 92~101 이식·전체 테스트·기록 완료(다음 구간은 seq 102부터). 아래 "seq 92~101 요약" 참고.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 사전 분석: PR마다 병렬 분석 에이전트가 쓴 이식 계획(`hns-sync-work/chunk-092-101/seq<N>-<PR>.md`, 저장소 밖)을 따랐다.
@@ -199,3 +199,73 @@
   - 자동 테스트: `test/pokerus.c`(PASS 19), `dream_eater.c`(3/3), `rage_fist.c`(10/5), `encore.c`(seq 92 결과와 같음), `test/daycare.c`(4/1), `test/test_test_runner.c`(PASS 7 외 기대 실패류) — 기준 목록과 같다(회귀 0). `bytes not freed` 0건. 전체 실행 결과는 아래 "전체 테스트".
   - 실기 확인: 불필요(ROM 동작 변화 없음).
 - 남은 위험: 없음. **이후 plan TSV·문서의 "`generational_changes.h`에 추가" 표기는 `include/constants/config_changes.h`로 읽는다.** seq 508 #9892가 이 `strncmp` 예외를 없애고 `TestFreeConfigData`를 누수 검사 전에 부르게 바꾼다.
+
+## seq 92~101 요약
+
+| seq | PR | 판정 | 커밋 | ROM 변화 |
+|---:|---|---|---|---:|
+| 92 | #9429 | 적용(문맥 2곳 수동) | `838e441612` | +32 B |
+| 93 | #9558 | 이미 적용 | (`8de47b965d`) | — |
+| 94 | #9549 | 이미 적용 | (`b00b2cb140`) | — |
+| 95 | #9542 | 적용(1줄 수동) | `8c7978ad50` | 0 B |
+| 96 | #9525 | 적용(1 hunk 수동) | `6c2c954693` | +32 B |
+| 97 | #9562 | 적용(HnS 파트너 번호에 맞춰 수동) | `cc2ce789c3` | −32 B |
+| 98 | #9564 | 이미 적용 | (`125e893903`) | — |
+| 99 | #9124 | 적용(HnS 적응 + upstream과 다른 HP 가드) | `fac71f54b0` | +1,424 B |
+| 100 | #9548 | 적용(1.17.0 최종형, 원형 hunk 4개 제외) | `3c09c95b2a` | +432 B |
+| 101 | #9529 | 적용(1줄 수동, 이름 변경과 누수 예외 한 커밋) | `bc3c30671a` | 0 B |
+
+- 마지막 빌드(`bc3c30671a`, `rm -rf build/hns` 뒤 전체 재빌드 23초): 종료 코드 0, **ROM 32,714,948 B(97.50%, 구간 시작 대비 +1,888 B), EWRAM 248,924 B(94.96%, 0), IWRAM 25,516 B(77.87%, 0)**. 경고 줄 163개·고유 42개로 구간 시작 기준 빌드와 목록이 같다(새 경고 0). SHA-1 `90c521140b9788fb0097022f02dc07317c9ca1d3`.
+  - 참고: 구간 시작 기준 빌드의 SHA-1은 `51e5750ea2c363298dbb83bb344ead923e620c9a`였다. seq 91 문서에 적힌 `cfdfb885…`와 다르지만 `8de47b965d` 뒤 비문서 변경은 0이고 크기(32,713,060 B)는 같다. 이 구간의 비교는 모두 이 구간에서 만든 기준 빌드로 했다.
+- 한글이 든 소스 줄 변경: **0**(코드 커밋 7개 모두 비ASCII 변경 줄 0).
+- upstream 1.17.0과 일부러 다르게 둔 곳: `src/battle_ai_switch.c` `SetBattlerHPChangeForSwitch`의 `// HnS:` HP 0 가드(seq 99, 메인 결정). 그 밖의 차이는 HnS 기존 코드 보존(구 시트러스, `HOLD_EFFECT_CONFUSE_FLAVOR`, Supreme Overlord 카운터 위치, 한글 이름, 고스트 특수·악 물리, HnS 파트너 2~5번, `challenge_menu.h`, #9786 전 `isFirstTurn` 식)이다.
+- 세이브 구조: 변화 없음. seq 95 `SaveBlock1.giftRibbons`는 7 + `padding[4]`로 11바이트·오프셋 0x38C8 유지(ROM 헤더 오프셋 필드로 확인).
+
+### 전체 테스트 (구간 끝)
+
+- 실행: `PATH=… GITHUB_ACTION=1 make check BUILD=hns -j6 > build/port-check.log 2>&1`(237초, 테스트 실패가 있어 종료 코드 2는 이전과 같음). 코드 커밋 `bc3c30671a` 기준.
+- 결과: **PASS 2,306 / FAIL 2,232 / KNOWN_FAILING 8 / ASSUMPTIONS_FAILED 38 / TO_DO 613 / EXPECT_FAILING 6 / TOTAL 5,203**(seq 91: 2,298 / 2,229 / 8 / 38 / 618 / 6 / 5,197). `bytes not freed`·`Killed`·assertion 0(`CRASH`·`illegal` 문자열 3줄은 테스트 이름으로 이전과 같음).
+- `LC_ALL=C` 추출 목록(5,134행)을 [`test-baseline-seq091.txt`](test-baseline-seq091.txt)(= 구간 시작 전 `tests-before.txt`)와 비교한 차이는 아래뿐이다. **회귀 0.**
+  - 사라진 PASS 2줄 = 이름 변경(seq 92): `Encore forces consecutive move uses for 3 turns: Encore used before move` → `… (Gen5+)`, `… for 3 turns for player: Encore used after move` → `… for 4 turns: Encore used after move (Gen5+)`. 새 이름 둘 다 PASS.
+  - 새 PASS 8: seq 99 `AI_FLAG_SMART_MON_CHOICES: AI sees … changes on switchin …` 4개, seq 100 `Bolt Beak damage will be correctly seen by AI (singles)`·`(doubles)`, seq 92 `Encore randomly chooses an opponent target (Gen 2-4)`(옛 TO_DO)·`Encore allows choosing an opponent target (Gen 5+)`(신규).
+  - TO_DO → FAIL 3(알려진 한계, 영문 MESSAGE, seq 92): `Encore's effect ends if the encored move runs out of PP`, `Encore lasts for 2-6 turns (Gen 2-3) 1/5 (5/5)`, `Encore lasts for 3-7 turns (Gen 4) 1/5 (5/5)`. HnS 문구로 바꾸면 3개 모두 PASS함을 로컬에서 확인했다(커밋하지 않음).
+  - 삭제된 TO_DO 1: `Encore lasts for 3 turns (Gen 5+)`.
+- 추출 정규식 밖 상태까지 모든 상태 줄은 5,193행(seq 91의 5,187행 + 새 테스트 6개)이다. `Z-Moves animations work 17/37: INVALID`는 seq 83부터 기록된 HnS 페어리 설정 차이다.
+- 새 기준 목록: [`test-baseline-seq101.txt`](test-baseline-seq101.txt).
+
+### 실기 확인 필요 (mGBA)
+
+1. **(seq 96, 필수) 챌린지 "물리/특수 구분: 끔"의 발버둥**: 커스텀 모드에서 "물리/특수 구분"을 끄고 새 게임을 시작해 PP를 모두 쓴 뒤 발버둥을 쓴다(혼란 상태에서 발버둥을 고른 턴의 자해 포함).
+   - 공격이 높고 특공이 낮은 포켓몬으로 피해가 이전보다 커지는지(특수 → 물리).
+   - 상대 리플렉터에 반감되고 빛의장막에는 영향이 없는지, 화상일 때 반감되는지.
+   - 추천 모드(구분 켬) 세이브에서는 변화가 없어야 한다.
+2. **(seq 99, 필수) 교체 AI의 후속 몬 선택**:
+   - Smart Trainer(예측 포함) 싱글: 스텔스록·압정뿌리기·독압정·끈적끈적네트가 깔린 상태에서 빈사·저HP 몬이 있을 때 후속 몬 선택과 사고 지연이 없는지(HnS 가드로 장판에 쓰러질 몬을 튼튼한 후보로 보지 않아야 한다).
+   - 위협·다운로드·부스트에너지 보유 후보가 있는 트레이너의 선택.
+   - 챌린지 "구 시트러스" 켬/끔에서 시트러스 보유 후보의 선택.
+   - 일반 트레이너 더블배틀의 후속 몬 선택.
+   - 다운로드 특성 발동 문구와 올라가는 능력치(엔진 리팩터, 한글 문구 불변).
+3. (seq 100, 권장) `TRAINER_BLUE_HNS` 마기라스가 느릴 때 보복을 고르는지, 애널라이즈 트레이너(`TRAINER_AKALA_SWIMMER_1_HNS` 아쿠스타, `TRAINER_JASMINE_POSTOBC_HNS` 자포코일)의 기술 선택, 플레이어가 전격부리·아가미물기를 쓸 때 AI 교체 판단. 메시지·실전 대미지 변화는 없어야 한다.
+4. (선택) seq 92 앙코르 3턴(대상이 이미 행동한 턴이면 4턴), seq 95 링크 교환 1회, seq 97 디버그 메뉴 `Lance Multi`·`Silver Multi` 파트너 파티.
+
+### 후속 행 메모
+
+- **seq 104 #9551**: 선언부 hunk가 `bool32 IsSwitchinTSpikesAffected(...)` 선언 뒤에 붙는데, HnS는 그다음 줄이 `static enum Ability GetPartyMonAbilityForSwitchCalc(` 정의라 문맥이 1줄 어긋난다. 손으로 넣는다.
+- **seq 105 #9579**: `HOLD_EFFECT_TERRAIN_SEED` 중괄호가 seq 99 커밋 `fac71f54b0`에 들어 있다 → **"이미 적용"**으로 처리한다.
+- **seq 112 #9587**: `speedStats[]` 캐시가 들어오면 seq 99가 넣은 교체 후보 스피드 단계 변화(끈적끈적네트 등)가 `AI_WhoStrikesFirst`에 반영되지 않는다(upstream과 같음). seq 100의 `Ai_AttackerMoves*`도 같은 캐시를 쓰게 된다.
+- **seq 113 #9596**: `battle_util.h`/`battle_util.c`/`battle_ai_util.c`의 `aiTurnOrder`·`turnOrder` hunk는 seq 100에서 1.17.0 최종형으로 대체됐으므로 **제외**한다. 남는 것은 `AiLogicData.holdEffectParams` 제거(`battle.h`, `battle_ai_main.c`)와 `ShouldTryOHKO` 기합의띠 판정뿐이다.
+- **seq 128 #9475**: `test/battle/partner_control.party` hunk가 seq 97 뒤 문맥(`Difficulty: Normal`, Easy/Hard `PARTNER_STEVEN_TEST` 블록)을 전제로 하고, `battle_partners.party` hunk는 DUMMY가 없는 상태를 전제로 한다. HnS 파트너 LANCE·SILVER×3의 `Back Pic:`은 따로 처리해야 한다.
+- **seq 145 #8472, seq 173 #9847(`SwitchAiContext`)**: seq 99의 새 함수들을 다시 건드린다. HnS 적응(구 시트러스, `CONFUSE_FLAVOR`, Supreme Overlord의 `gBattleStruct` 카운터 저장·복원)과 **`SetBattlerHPChangeForSwitch`의 `// HnS:` HP 0 가드**를 유지한다.
+- **seq 159 #9786**: Payback/Bolt Beak의 실전 분기(`isFirstTurn` → `BattlerJustSwitchedIn`) hunk가 seq 100 뒤 문맥 그대로 붙는다(들여쓰기를 upstream과 같게 둠).
+- **seq 177 #9879**: `B_WILD_NATURAL_ENEMIES` → `WE_WILD_NATURAL_ENEMIES` 등 이름 변경은 그 행에서 한다(seq 101은 이름을 바꾸지 않았다).
+- **seq 376 #8893**: 앙코르 설명을 바꾸지 않는다(1.17.0 Encore 블록이 seq 92 결과와 같음).
+- **seq 383 #10145**: Supreme Overlord 설정은 이미 1.17.0 위치(`SetBattlerVolatilesForSwitchin`)에 HnS형(`gBattleStruct->supremeOverlordCounter`, 저장·복원은 `InitializeSwitchinCandidate`)으로 들어갔다. 남는 것은 `aiHoldEffect` 변수화와 "카운터를 volatile로 옮길지" 결정뿐이다. `SetBattlerStatStagesForSwitchin`의 no-op `case ABILITY_SUPREME_OVERLORD`는 넣지 않았다.
+- **seq 400 #9440**: deps `9562` 충족(seq 97 `cc2ce789c3`).
+- **seq 431 #10453**: g4 plan의 잔여 "battle_util.c Payback 턴순서 hunk"는 seq 100에서 처리됐다 → 그 부분은 **이미 적용**.
+- **seq 434 #8647**: 잔여 ①("`Ai_AttackerMoves*`가 `AI_SetBattlerTurnOrder` 사용, `SetBattlerTurnOrder` 복제 금지")은 seq 100에서 처리됐다.
+- **seq 478 #10300**: `DAMAGE_CATEGORY_NONE`이 0번으로 들어온다. seq 96으로 모든 타입의 `damageCategory`가 명시돼 있다. 새 `GetBattleMoveCategory`로 HnS의 `|| gSaveBlock3Ptr->challengeSettings.optionStyle == 1` 조건을 반드시 옮긴다.
+- **seq 481 #10326**: `switchinFieldStatus` → `switchinTerrain`, `TERRAIN_SEED` 재작성. seq 99의 함수 시그니처가 바뀐다.
+- **seq 508 #9892**: seq 101이 넣은 `strncmp("src/config_changes.c")` 누수 예외를 없애고 `TestFreeConfigData`를 누수 검사 전에 부른다.
+- **seq 516 #9986**: `GiveGiftRibbonToParty`를 새 파일 `src/give_gift_ribbon_to_party.c`로 옮기는 upstream 커밋(`3ea7f0d71b`)은 옛 `GIFT_RIBBONS_COUNT` 형태를 담고 있다. seq 95로 상수가 없어졌으므로 **1.17.0 최종 형태(`sGiftRibbonsMonDataIds[NUM_GIFT_RIBBONS]`, `index < NUM_GIFT_RIBBONS`)**로 옮긴다.
+- **config 추가 PR 전반**(seq 103 #9568, #10350, #10298, #10443, #10454, #10151 등): plan의 "HnS `generational_changes.h`에 추가"는 `include/constants/config_changes.h`로 읽는다. 확정 결정 값(#10151 계열 `GEN_9`, #10454 `GEN_8`)은 `include/config/battle.h`에 둔다.
+- **Champions 앙코르 테스트**(#10151·#10282): `encore.c` 끝(1.17.0 337행 이후)에 붙는다. seq 92 결과가 1.17.0 앞 336행과 같아 문맥이 맞는다.
