@@ -1580,6 +1580,12 @@ static void AirCutterProjectileStep1(u8 taskId)
 
 void AnimTask_AirCutterProjectile(u8 taskId)
 {
+    if (!TryLoadSpriteAssets(&gAirWaveProjectileSpriteTemplate))
+    {
+        DestroyAnimVisualTask(taskId);
+        return;
+    }
+
     s16 attackerY = 0;
     s16 attackerX = 0;
     s16 targetX = 0;
@@ -2865,6 +2871,12 @@ static void AnimTask_ExtremeSpeedMonReappear_Step(u8 taskId)
 
 void AnimTask_SpeedDust(u8 taskId)
 {
+    if (!TryLoadSpriteAssets(&gSpeedDustSpriteTemplate))
+    {
+        DestroyAnimVisualTask(taskId);
+        return;
+    }
+
     struct Task *task = &gTasks[taskId];
     task->data[0] = 0;
     task->data[1] = 4;
@@ -2963,6 +2975,14 @@ void AnimTask_LoadMusicNotesPals(u8 taskId)
 {
     int i;
     u8 paletteNums[NUM_MUSIC_NOTE_PAL_TAGS];
+
+    //  HnS: Heal Bell runs this task before any note sprite loads the palette,
+    //  so load it here instead of writing the palette to OBJ_PLTT_ID(0xFF)
+    if (!TryLoadPal(ANIM_TAG_MUSIC_NOTES_2))
+    {
+        DestroyAnimVisualTask(taskId);
+        return;
+    }
 
     paletteNums[0] = IndexOfSpritePaletteTag(ANIM_TAG_MUSIC_NOTES_2);
     for (i = 1; i < NUM_MUSIC_NOTE_PAL_TAGS; i++)
