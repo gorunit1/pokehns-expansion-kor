@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 63~82
 
-진행 중: 마지막 완료 seq 66 (#9420), 다음 seq 67 (#9410). seq 76 #9474는 seq 64 커밋에 포함(이미 적용).
+진행 중: 마지막 완료 seq 67 (#9410), 다음 seq 68 (#9388). seq 76 #9474는 seq 64 커밋에 포함(이미 적용).
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `72f40563ad`
@@ -96,4 +96,21 @@
   - `make hns -j8`: 종료 코드 0, ROM 32,715,748 B / EWRAM 248,892 B / IWRAM 25,516 B, 새 경고 없음
   - 자동 테스트: 해당 없음(빌드 전용). 구간 끝 전체 테스트에서 테스트 빌드 의존성 확인.
   - 실기 확인: 불필요
+- 남은 위험: 없음
+
+## 동기화 단위: seq 67 #9410 `U-9410` pr adding telekinesis ban list to species data
+
+- 현재 판정: 적용(HnS 비트필드 적응)
+- 커밋: `1513e3840b`
+- upstream 근거: `b3114ae9d3`
+- 수정 파일: `include/pokemon.h`, `src/battle_script_commands.c`, `src/data/pokemon/species_info/gen_1_families.h`, `src/data/pokemon/species_info/gen_7_families.h`
+- HNS 적응과 보존한 한글화/배틀 메시지 동작:
+  - `SpeciesInfo`에 `isTelekinesisBanned:1`을 upstream처럼 `isSkyBattleBanned` 뒤에 넣고, HnS 전용 `randomizerMode:2`·`dexNotRequired:1`은 그대로 둔 채 `padding4`를 6 → 5로 줄였다(32비트 워드 크기 불변).
+  - `sTelekinesisBanList`(디그다·닥트리오·알로라 2종·모래꿍·모래성이당·메가팬텀 7종)를 종 플래그로 옮기고 `IsTelekinesisBannedSpecies`에 `SanitizeSpeciesId`를 넣었다. HnS 알로라 폼은 `.dexNotRequired = TRUE` 줄이 있어 `gen_1_families.h` 패치가 실패하므로, 7종 블록마다 `.levelUpLearnset` 바로 앞에 스크립트로 넣었다(종 블록이 파일 안에 각각 1개뿐임 확인, 플래그 총 7개).
+- 저장·ROM·그래픽 영향: ROM 크기 변화 없음(32,715,748 B). 세이브 무관(ROM 데이터).
+- 검증:
+  - `git diff --check`: 통과
+  - `make hns -j8`: 종료 코드 0, ROM 32,715,748 B / EWRAM 248,892 B / IWRAM 25,516 B, 새 경고 없음
+  - 자동 테스트: `test/battle/move_effect/telekinesis.c` 5건 — FAIL 3(모두 `Unmatched MESSAGE`), TO_DO 2. 기준과 같음.
+  - 실기 확인: 불필요(동작 동일, 목록 동일)
 - 남은 위험: 없음
