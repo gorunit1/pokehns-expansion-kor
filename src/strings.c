@@ -564,7 +564,6 @@ const u8 gText_MenuOptionPokenav[] = _("포켓기어");
 #else
 const u8 gText_MenuOptionPokenav[] = _("포켓내비");
 #endif
-const u8 gText_Blank[] = _("");
 const u8 gText_MenuOptionSave[] = _("리포트");
 const u8 gText_MenuOptionOption[] = _("설정");
 const u8 gText_MenuOptionExit[] = _("닫는다");

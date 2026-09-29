@@ -824,7 +824,6 @@ extern const u8 gText_DexEmptyString[];
 extern const u8 gText_DexSearchDontSpecify[];
 extern const u8 gText_DexSearchTypeNone[];
 
-extern const u8 gText_Blank[];
 extern const u8 gText_BattlePokemon[];
 extern const u8 gText_NormalTagMatch[];
 extern const u8 gText_VarietyTagMatch[];
