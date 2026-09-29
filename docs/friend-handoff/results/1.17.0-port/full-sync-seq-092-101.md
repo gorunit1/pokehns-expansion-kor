@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 92~101
 
-진행 중: 마지막 완료 seq 98, 다음 seq 99.
+진행 중: 마지막 완료 seq 99, 다음 seq 100.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 사전 분석: PR마다 병렬 분석 에이전트가 쓴 이식 계획(`hns-sync-work/chunk-092-101/seq<N>-<PR>.md`, 저장소 밖)을 따랐다.
@@ -129,3 +129,30 @@
 
 - 현재 판정: **이미 적용**. 커밋 없음.
 - 근거: `125e893903` "Port upstream #9142: Create functions for repeated move animations (+ #9473, #9564)"(같은 unit으로 한 커밋). upstream `070f31e384`. 현재 `data/battle_anim_scripts.s` `BiteOpponent`의 두 `create_sharp_teeth_sprite`가 upstream 수정 후와 같은 `x=-33`이다.
+
+## 동기화 단위: seq 99 #9124 `U-9124` Switch AI sees stat, volatile, status, and HP changes on switchin in calcs
+
+- 현재 판정: 적용(HnS 적응 + upstream과 다른 가드 1곳)
+- 커밋: `fac71f54b0`
+- upstream 근거: `2c965d02b6`
+- 해결한 의존성: 선행 PR 없음(쓰는 심볼·시그니처가 모두 HnS에 있음). 같은 unit으로 기록된 #9579(seq 105)의 `HOLD_EFFECT_TERRAIN_SEED` 중괄호를 이 커밋에 함께 넣었다 → **seq 105는 "이미 적용"으로 처리**한다.
+- 수정 파일(6): `include/battle_ai_util.h`, `include/battle_util.h`, `src/battle_ai_switch.c`, `src/battle_ai_util.c`, `src/battle_util.c`, `test/battle/ai/ai_switching.c`
+- 적용 방법:
+  - `battle_ai_switch.c` 외 5파일: upstream patch 그대로(오프셋만). `SetBattlerFieldStatusForSwitchin` 삭제(→ `SetBattlerVolatilesForSwitchin`으로 이동·확장), `AI_GetSwitchinWeather`에 `ABILITY_ORICHALCUM_PULSE`(쾌청), `AbilityBattleEffects`의 다운로드 스탯 선택을 `GetDownloadStat()`로 추출(동작 불변), 테스트 4개 추가.
+  - `battle_ai_switch.c`: 사전 분석 문서의 검증 patch(부록 A, `git apply --check` 통과)로 적용했다. upstream 9 hunk 중 3개는 그대로, 6개는 HnS 문맥(`GetPartyMonAbilityForSwitchCalc` 선언, 3인자 `IsMoldBreakerTypeAbility`, HnS 회복 도구 switch)에 맞춰 손으로 맞춘 형태다. 새 함수 7개: `IsSwitchinTSpikesAffected`, `GetSwitchinSingleUseItemHealing`, `SetBattlerStatusForSwitchin`, `SetBattlerStatStagesForSwitchin`, `SetBattlerHPChangeForSwitch`, `SetBattlerVolatilesForSwitchin`.
+  - 제외 hunk: 없음. upstream 추가 줄의 줄 끝 공백 3줄은 지웠다(1.17.0 원문도 지운 형태).
+- HNS 적응:
+  - **구 시트러스 챌린지**: `GetSwitchinHitsToKO`에 있던 HnS 분기(`tx_Mode_New_Citrus == 0`이면 시트러스 30 고정)를 새 `GetSwitchinSingleUseItemHealing`의 `HOLD_EFFECT_RESTORE_PCT_HP` case로 옮겼다(`// HnS:` 주석). 새 `SetBattlerHPChangeForSwitch`에도 같은 규칙이 적용된다(엔진과 일치).
+  - **혼란 열매**: upstream `HOLD_EFFECT_CONFUSE_SPICY/DRY/SWEET/BITTER/SOUR` 5 case 대신 HnS에 있는 `HOLD_EFFECT_CONFUSE_FLAVOR` 1 case(#10163 최종형과 같은 본문).
+  - **Supreme Overlord(Champions)**: 교체 후보 카운터 설정을 `InitializeSwitchinCandidate`에서 `SetBattlerVolatilesForSwitchin`의 `case ABILITY_SUPREME_OVERLORD`로 옮겼다(1.17.0 #10145 위치, HnS는 카운터가 `gBattleStruct`에 있고 `B_UPDATED_ABILITY_DATA >= GEN_CHAMPIONS` 게이트 유지). 저장·복원(`savedSupremeOverlordCounter`)은 `InitializeSwitchinCandidate`에 그대로 둔다. 카운터를 읽는 곳(`GetSupremeOverlordModifier`)은 후보 루프의 대미지 계산뿐이라 설정 시점 이동의 영향이 없다. upstream이 `SetBattlerStatStagesForSwitchin`에 넣는 no-op `case ABILITY_SUPREME_OVERLORD: break;`는 #10145 최종형에 맞춰 생략했다.
+  - HnS 전용 유지: `GetPartyMonAbilityForSwitchCalc`, 앞쪽 `gBattlerPartyIndexes = monIndex` + `CopyMonAbilityAndTypesToBattleMon`, `switchInCalc` 플래그.
+- **upstream 1.17.0과 다른 점(메인 결정):** `SetBattlerHPChangeForSwitch`에서 `if (currentHP < 0) currentHP = 0;` 가드를 넣었다(`// HnS:` 주석). upstream은 등장 장판 대미지가 현재 HP 이상이면 `s32` 음수를 `u16 hp`에 그대로 넣어 약 65,000으로 감긴다. 그러면 싱글 Integrated 경로의 `GetSwitchinHitsToKO`가 1 대신 매우 큰 값을 돌려줘 장판에 바로 쓰러질 빈사 몬을 "튼튼한 방어 후보"로 보고, 대미지가 작으면 루프가 수천 번 돈다(1.17.0·현 master에도 남아 있음). 가드 뒤에는 hp 0 → `hazardDamage >= hp`로 1을 돌려준다(이식 전 HnS 동작 `hazardDamage >= hp → 1`과 같음).
+- 동작 변화(의도된 upstream 변화): 교체 후보 평가가 등장 효과(재앙 4종, 쿼크차지/고대활성, 풍력발전, 독압정 상태, 불굴의검/불요의방패/다운로드/위협/감미로운꿀/바람타기, 끈적끈적네트, 시드·핀치 열매·룸서비스·미러허브, 장판 대미지 후 1회용 회복 도구)를 반영한다. 영향 범위는 싱글 `AI_FLAG_SMART_MON_CHOICES`(`GetBestMonIntegrated`)뿐 아니라 그 밖의 모든 AI 트레이너·더블배틀의 `GetBestMonVanilla`(후보 대미지 계산), `AI_SelectRevivalBlessingMon`, 예측 트레이너의 플레이어 교체 예측까지다.
+- HNS 보존: 한글 문자열·STRINGID·배틀 메시지 변화 없음(비ASCII 변경 줄 0). 다운로드 리팩터는 스탯 선택만 함수로 뺐고 `CompareStat` → `SET_STATCHANGER` → `PREPARE_STAT_BUFFER` → `BattleScriptCall` 순서 그대로. 새 config 없음.
+- 저장·ROM·그래픽 영향: 세이브 영향 없음(`challengeSettings.tx_Mode_New_Citrus`는 읽기만). 새 전역 없음.
+- 검증:
+  - `git diff --check`: 통과. 파일 모드 유지.
+  - `make hns -j8`: 종료 코드 0, **ROM 32,714,516 B(+1,424 B) / EWRAM 248,924 B(0) / IWRAM 25,516 B(0)**. 새 경고 0. 섹션 변화(맵 비교): `InitializeSwitchinCandidate` 448 → 2,064 B(새 static 함수 대부분이 인라인) + switch 표 116 B, `IsSwitchinTSpikesAffected` +320, `GetSwitchinSingleUseItemHealing` +184, `GetDownloadStat` +204, `AbilityBattleEffects` −600, `GetSwitchinHitsToKO` −172, `GetSwitchinStatusDamage` −116, `SetBattlerFieldStatusForSwitchin` −132, `AI_GetSwitchinWeather` +16.
+  - 자동 테스트(9개 파일): `ai/ai_switching.c` 123개(PASS 104 / FAIL 16 / KNOWN_FAILING 1, 기준 목록 밖 INVALID 1·ASSUMPTION_FAIL 1은 위 공통 사항), `ai_flag_predict_switch.c` 11(PASS 11), `ai_double_ace.c` 4(3/1), `ai_doubles.c` 50(43/3), `ai_multi.c` 11(11), `ai_flag_sequence_switching.c` 4(2/2), `ai/ai.c` 75(PASS 58 / FAIL 14, 같은 이름 1쌍, `First Impression …` ASSUMPTION_FAIL 2건은 이전 전체 로그에도 있음), `ability/download.c` 4(FAIL 4, 모두 `Unmatched MESSAGE`), `ability/supreme_overlord.c` 5(1/4, FAIL은 모두 `Unmatched MESSAGE`). 기존 테스트는 기준 목록과 같고(회귀 0), **새 테스트 4개(`AI_FLAG_SMART_MON_CHOICES: AI sees stat stage / status / volate / HP changes …`) 모두 PASS**.
+  - 실기 확인: **필요**(아래 "실기 확인 필요").
+- 남은 위험(upstream과 같은 한계, 원문대로 둠): 스탯 단계·HP 변화가 다른 배틀러마다 반복 적용된다(더블에서 끈적끈적네트 −3, 장판 대미지 3배, 파트너에게도 위협). 위협·감미로운꿀로 낮춘 상대 스탯 단계가 같은 선택 과정의 다음 후보 평가에 누적된다(`FreeRestoreBattleMons`에서만 복원). 장판 대미지가 `SetBattlerHPChangeForSwitch`와 `GetSwitchinHitsToKO`에서 두 번 빠진다. 상대가 +6일 때 오기/승기 +2가 붙으면 스탯 단계 표 범위를 넘는다(드묾). 뒤 PR(seq 104 #9551, 112 #9587, 145 #8472, 173 #9847, 383 #10145, 481 #10326)이 이 함수들을 다시 바꾼다(아래 "후속 행 메모").
