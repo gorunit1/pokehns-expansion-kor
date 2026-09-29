@@ -59,6 +59,10 @@ upstream은 저장소 옆 폴더 `../pokeemerald-expansion-upstream` (없으면 
   diff <(grep ': PASS$' <기준 목록>) <(grep ': PASS$' new.txt) | grep '^<'   # 통과하던 것 중 사라진 것 = 회귀 후보
   ```
 - 노트북 WSL 셸의 `grep`은 ugrep 래퍼 함수라서 파일 인자를 주면 빈 결과가 나올 수 있다. 위 비교에는 `command grep`을 쓴다.
+- "~ fit on ~" 계열 23개 테스트는 실패 내용의 한글 인코딩 바이트(UTF-8이 아님)가 이름 줄에 붙어 출력된다. UTF-8 로케일에서는 이 줄이 목록에서 빠지므로 `LC_ALL=C`에서 `grep -a`로 추출한다. 노트북에서 쓴 명령:
+  ```bash
+  LC_ALL=C sed 's/\x1b\[[0-9;]*m//g' <로그> | LC_ALL=C command grep -a -E '^\[[0-9]+\] .*: (PASS|FAIL|KNOWN_FAILING|TO_DO|EXPECTED_FAIL)$' | LC_ALL=C sed -E 's/^\[[0-9]+\] //' | LC_ALL=C sort -u > new.txt
+  ```
 - 무한 출력하는 크래시가 생기면 테스트 러너(hydra)가 메모리 부족으로 죽을 수 있다. 전체 실행이 `Killed`로 끝나면 로그 끝에서 반복되는 출력부터 확인한다.
 
 ## 중단 조건 (여기에 해당할 때만 멈추고 보고)
