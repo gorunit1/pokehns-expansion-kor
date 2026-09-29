@@ -64,7 +64,7 @@
     - `Move Animations work 1`(222/222)·`2`(221/221) FAIL: 사유는 둘 다 `Task_FreeAbilityPopUpGfx: task not freed`뿐이다(`gLoadFail`·`gSpriteAllocs` 단정은 통과). 러너는 매개변수별 누수 검사에서 실패해도 다음 매개변수로 계속 가고 마지막 번호로 보고한다. 임시 디버그 출력(커밋 안 함)으로 찾은 원인 기술은 쪼아대기(`MOVE_PLUCK` 365)·내던지기(`MOVE_FLING` 374)·벌레먹음(`MOVE_BUG_BITE` 450) — 상대의 오랭열매를 먹거나 도구를 던지는 기술이다. HnS는 기반 커밋부터 도구 팝업(`CreateItemPopUp`, `BattleScript_ItemPopUp_*`)을 쓰는데 이 테스트는 그 턴 직후 배틀을 끝내므로 팝업 그림 해제 작업이 남는다. upstream #8497 시점에는 도구 팝업이 없다. 애니 로드와 무관한 **HnS 테스트 환경 차이**로 분류한다. 끝쪽 기술(833~847)만 돌리면 네 테스트 모두 PASS.
     - `Z-Moves animations work` 17/37 INVALID(`Cannot turn … into a Z-Move`): 0부터 센 17번 = 18번째 매개변수 `MOVE_TWINKLE_TACKLE`(문포스 + 페어리Z). HnS `GetMoveType()`은 도전 설정 `tx_Mode_Fairy_Types`가 0이면 페어리 기술을 다른 타입으로 바꾸는데(문포스 → 악), 테스트 러너는 이 설정을 0으로 두므로 페어리Z로 변환할 수 없다. 역시 **HnS 설정 차이**이며 애니와 무관하다. INVALID로 테스트가 끝나 나머지 Z기술 19~37번 애니는 이 테스트에서 돌지 않았다(아래 "동적 검증"에서 설정을 켜고 37개 모두 확인).
   - 실기 확인: 필요(아래 구간 끝 목록).
-- 남은 위험: upstream `CreateSpriteAt`의 테스트용 검사 조건 `tileTag > ANIM_SPRITES_START && tileTag < ANIM_TAG_COUNT`는 `ANIM_TAG_COUNT`가 413(태그 개수)이라 항상 거짓이다(1.17.0도 같음). 그래서 upstream 테스트는 "로드 안 된 그림/팔레트로 스프라이트 생성"을 실제로 잡지 못한다. 그대로 이식했고, 검증은 위 정적 분석으로 했다.
+- 남은 위험: upstream `CreateSpriteAt`의 테스트용 검사 조건 `tileTag > ANIM_SPRITES_START && tileTag < ANIM_TAG_COUNT`는 `ANIM_TAG_COUNT`가 413(태그 개수)이라 항상 거짓이다(1.17.0도 같음). 그래서 upstream 테스트는 "로드 안 된 그림/팔레트로 스프라이트 생성"을 실제로 잡지 못한다. 그대로 이식했고, 검증은 위 정적 분석과 조건을 임시로 고친 동적 검증(아래 "unit 최종 상태 동적 검증", 0건)으로 했다.
 
 ## 동기화 단위: seq 110 #9595 `U-anim-8497` Fix move anim pal blending being discarded (seq 83 unit에 포함)
 
