@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 63~82
 
-진행 중: seq 63~82 이식 완료(마지막 seq 82 #9505). 남은 일: 구간 전체 테스트와 결과 커밋.
+완료: seq 63~82 이식·전체 테스트·기록 완료(다음 구간은 seq 83 #8497부터). 아래 "seq 63~82 요약" 참고.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `72f40563ad`
@@ -8,9 +8,9 @@
 ## seq 63~82 공통 사항
 
 - 빌드 명령: `PATH=/opt/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin:$PATH GITHUB_ACTION=1 make hns -j8 > build/port.log 2>&1` (노트북 WSL, 8코어).
-- 기준 빌드(`72f40563ad`, `rm -rf build/hns` 뒤 전체 재빌드, 약 49초): 종료 코드 0, ROM 32,739,220 B(97.57%), EWRAM 248,892 B(94.94%), IWRAM 25,516 B(77.87%). 경고 줄 166개, 파일·메시지 기준 고유 목록 44개(기존 `-Woverride-init`·미사용 함수/변수·링커 RWX 계열). 시작 전 `pokehns.gba`(11:26 빌드)와 바이트 동일.
+- 기준 빌드(`72f40563ad`, `rm -rf build/hns` 뒤 전체 재빌드, 약 49초): 종료 코드 0, ROM 32,739,220 B(97.57%), EWRAM 248,892 B(94.94%), IWRAM 25,516 B(77.87%). 경고 줄 166개, 파일·메시지 기준 고유 목록 44개(기존 `-Woverride-init`·미사용 함수/변수·링커 RWX 계열). 시작 전 `pokehns.gba`(11:26 빌드)와 바이트 동일. 안내받은 스크래치 `build_hns.log`는 없어서 이 전체 재빌드 로그로 경고 기준을 새로 만들었다.
 - 경고 비교: 매 빌드의 경고를 "파일: 메시지"(줄 번호 제거) 목록으로 만들어 기준 목록과 비교하고 새 경고만 확인했다.
-- 테스트 기준: [`test-baseline-seq062.txt`](test-baseline-seq062.txt)(PASS 2,283 / FAIL 2,218 / TOTAL 5,175, 이름 중복 제거 목록 5,107행). PR마다 관련 테스트 파일을 이식 전후로 돌려 비교했다. 통과하던 것이 실패로 바뀌면 회귀, `Unmatched MESSAGE`만이 사유면 알려진 한계로 본다.
+- 테스트 기준: [`test-baseline-seq062.txt`](test-baseline-seq062.txt)(PASS 2,283 / FAIL 2,218 / TOTAL 5,175, 이름 중복 제거 목록 5,107행). PR마다 이식 뒤 관련 테스트 파일을 돌려 "이식 전" 상태인 기준 목록과 테스트 이름별로 비교했다(`make check BUILD=hns -j8 TESTS="<파일>"`). #9086 직후 전체 테스트가 기준 목록과 바이트 동일했으므로 기준 목록을 이식 전 결과로 썼다. 상태가 바뀐 테스트는 원인을 따로 확인했다. 통과하던 것이 실패로 바뀌면 회귀, `Unmatched MESSAGE`만이 사유면 알려진 한계로 본다. 목록은 `LC_ALL=C`로 만든다(한글 바이트가 섞인 테스트 이름 때문).
 - 한글 포함 소스 줄: 커밋마다 `git show <커밋> | grep -aP '^[-+](?![-+]).*[^\x00-\x7F]'`로 비ASCII 줄 변경을 확인했다.
 
 ## 동기화 단위: seq 63 #9066 `U-enum-9066` Typeless enums for OBJ_EVENT_GFX, Multichoice Ids, and Facility Classes
@@ -38,7 +38,7 @@
   - `make hns -j8`: 종료 코드 0, ROM 32,739,220 B / EWRAM 248,892 B / IWRAM 25,516 B, 새 경고 없음. **`pokehns.gba`가 기준 ROM과 `cmp` 바이트 동일.**
   - 자동 테스트: 해당 테스트 없음(ROM 동일). 전체 테스트는 구간 끝에서 확인.
   - 실기 확인: 불필요(ROM 동일)
-- 남은 위험: 없음. 이후 upstream PR이 이 enum에 새 멤버를 값 없이 추가하면 HnS에서는 반드시 명시 값을 붙여야 한다(틈 250·388~397에는 넣지 않는다).
+- 남은 위험: 게임 쪽 없음. 이후 upstream PR이 이 enum에 새 멤버를 값 없이 추가하면 HnS에서는 반드시 명시 값을 붙여야 한다(틈 250·388~397에는 넣지 않는다). 맵 에디터 porymap은 이 상수들을 `#define`이 아니라 enum에서 읽게 되므로 enum을 파싱하는 버전이 필요하다(upstream과 같은 조건, 저장소 `porymap.project.json`에 별도 설정 없음).
 
 ## 동기화 단위: seq 64 #9121 `U-heap-9121` Reduce heap usage in battle (+ seq 76 #9474)
 
@@ -319,6 +319,7 @@
     - `ai/ai_switching.c` 119건: PASS 101, FAIL 16(기준에서도 FAIL인 `Expected 1.0 passes` 11건·`Unmatched MESSAGE` 4건 + 새 테스트 1건), KNOWN_FAILING 1, ASSUMPTION_FAIL 1(기준 목록 형식 밖, 기존과 같음). 새 테스트 "AI can switch out both mons on the same turn in double battles"가 FAIL.
     - `ai/ai_choice.c` 10건: PASS 9, FAIL 1 — **"Choiced Pokémon won't switch out if they can still affect one opposing Pokémon in doubles 1/2"(기준 PASS)가 FAIL.** 이 테스트는 #9451이 상대를 4마리 → 3마리로 줄이고 기대값을 `EXPECT_SWITCH(opponentLeft, 3)` → `2`로 바꾼 것이라 이전과 다른 시나리오다.
     - **원인 분류(코드 회귀 아님):** HnS에는 이미 더블배틀 AI 판단 순서를 50% 확률로 뒤집는 `AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE 50`(HnS 기반 커밋 `1821fd6749`)이 있다. 두 테스트는 "왼쪽 AI가 먼저 판단"을 전제하는데 테스트 RNG에서 순서가 뒤집혀 오른쪽 AI가 먼저 후보를 가져간다. 확인을 위해 `include/config/ai.h`의 값을 임시로 0으로 바꿔(커밋 안 함, 되돌림) 돌리자 **`ai_choice.c` 10건 전부 PASS, `ai_switching.c` 새 테스트 PASS**(그 밖의 상태는 기준과 같거나 1건 더 PASS). 뒤집힌 순서에서의 결과(오른쪽이 교체, 왼쪽은 공격)는 upstream 1.17.0의 "(reversed)" 테스트 기대값과 같다.
+    - 구간 끝 전체 테스트에서 같은 원인의 1건을 더 찾았다: `ai/ai_double_ace.c` "AI_FLAG_DOUBLE_ACE_POKEMON: Ace mons won't be switched in even if they are the best candidates"(기준 PASS → FAIL). 순서 0 고정 시 이 파일 4건 전부 PASS(아래 요약의 전체 테스트 표 참고).
     - 해소 예정: upstream은 #9460(seq 88)·#9462(seq 131)에서 `WITH_CONFIG(AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE, 0/100)`와 "(reversed)" 테스트를 넣는다. 그 이식 때 두 테스트가 PASS로 돌아와야 한다(**seq 88/131 담당 확인 필요**).
   - 실기 확인: 선택(더블배틀 AI 트레이너의 동시 교체)
 - 남은 위험: 낮음(테스트 전제 차이만)
@@ -424,3 +425,81 @@
   - 자동 테스트: `test/battle/battle_message.c` 2건(FAIL 1 `Unmatched MESSAGE`, TO_DO 1) 기준과 같음
   - 실기 확인: 불필요
 - 남은 위험: 없음
+
+## seq 63~82 요약
+
+- 처리 범위: seq 63~82(20행). 시작 `72f40563ad` → 이식 마지막 커밋 `0d0dfd2720`(그 뒤 기록 커밋). 이식 커밋 22개(+ 배틀 메시지 문서 기록 1개), PR 25개 반영.
+- 판정(20행): 적용 18(그중 HnS 적응이 큰 것: #9066, #9086, #9417, #9446, #9451, #9249, #9051), 이미 적용 2(seq 76 #9474 → seq 64 커밋, seq 78 #9473 → seq 75 커밋), skip 0. 중단 없음.
+- **group plan에 따라 구간 밖 unit 구성원을 함께 이식했다(뒤 구간 담당은 "이미 적용"으로 처리):**
+
+| 순서표 seq | PR | 넣은 커밋 | 이유 |
+|---:|---|---|---|
+| 94 | #9549 | `b00b2cb140` | U-fade-9407, #9407 회귀 수정 |
+| 98 | #9564 | `125e893903`(#9142와 한 커밋) | U-animcall-9142, #9142가 바꾼 물기 좌표 원복("반드시 함께") |
+| 138 | #9707 | `8e6f16bf71` | U-fade-9407, #9407 회귀 수정 |
+| 319 | #10573 | `f76c7bf7ed` | U-fade-9407 마지막(동시 페이드 opt-in, 최종 동작 = 1.17.0) |
+| 330 | #10648 | `ed6ef1dffc` | U-skydrop-9249, #9249 회귀 수정 |
+
+- 마지막 빌드(`rm -rf build/hns` 뒤 전체 재빌드, HEAD `0d0dfd2720` 코드 기준): 종료 코드 0, **ROM 32,717,172 B(97.50%) / EWRAM 248,908 B(94.95%) / IWRAM 25,516 B(77.87%)**, 경고 줄 166개·고유 44개(기준 목록과 완전히 같음, 새 경고 0). ROM SHA-1 `1d57bfdf33f1115161cbfcf34733123ea6dc64d1`.
+- 기준 대비: ROM −22,048 B(대부분 #9086 문자열 병합 −23,424 B), EWRAM +16 B, IWRAM 0.
+- 한글 포함 소스 줄 변경: #9086 8줄(`challenge_menu.c` 1쌍, `contest.c` `…` 3쌍 — 리터럴 바이트 동일), #9051 95줄(이동·재배치, 리터럴 바이트 동일, ROM 메뉴 676항목 동일). 그 밖의 커밋 0줄.
+- 구간 끝 문자열 전수 대조: 최종 트리의 `src/`·`test/` C 파일 1,338개 preproc 문자열을 #9086 직후 스냅샷과 비교한 결과 바뀐 파일은 5개뿐이다 — `src/script_menu.c`·`src/strings.c`(#9051 이동, 위 검증), `test/battle/ai/ai_switching.c`·`test/battle/move_effect/first_turn_only.c`·`test/battle/move_effect/sky_drop.c`(upstream 테스트 추가·수정의 영문 `MESSAGE`). 그 밖의 한글 문자열 바이트 변화 0.
+
+### upstream과 일부러 다르게 둔 곳 (이후 port 담당 참고)
+
+| seq | PR | 내용 |
+|---|---|---|
+| 63 | #9066 | enum 멤버에 **모든 값을 명시 대입**(upstream은 값 없이 순번). HnS 값·틈(250, 388~397)·`NUM_OBJ_EVENT_GFX = 548`·`FACILITY_CLASSES_COUNT = 0x8B` 보존. 새 멤버를 넣을 때도 명시 값 필요 |
+| 65 | #9086 | HnS 전용 `challenge_menu.c` `sText_ConfirmSave` 배열 초기화를 `_()`로 |
+| 67 | #9410 | `isTelekinesisBanned` 뒤에 HnS `randomizerMode:2`·`dexNotRequired:1` 유지, `padding4:5` |
+| 71 | #9417 | `TryDancer`는 HnS의 #9515 `dancerSavedTarget/Attacker` 사용, `SpecialStatus` 첫 바이트에 HnS `poisonPuppeteer` |
+| 72 | #9446 | 삭제한 싱크로 move end 경로의 #9828 조건은 새 `TrySynchronizeActivation` 검사로 대체(1.17.0과 같음) |
+| 74 | #8664 | `include/random.h` hunk 제외(이미 있음) |
+| 80 | #9249 | `B_RAMPAGE_CANCELLING` → `B_RAMPAGE_CONFUSION` 이름만(값 GEN_LATEST 유지). 먼저 들어온 #10213·#10047 코드와 `BattleCalcValues` 노가드 검사를 새 상태로 맞춤 |
+| 80 | #10648 | `HandleSkyDropResult`는 HnS `BattleContext *ctx` 형태 |
+| 81 | #9051 | `gText_Blank`는 #9505까지 유지, `gStdStrings` 배지 줄 열 맞춤 생략 |
+| 82 | #9505 | #9051에서 남긴 `gText_Blank` 정의를 여기서 삭제 |
+| 70·74·80 | #9407·#8664·#9249 | upstream이 넣은 후행 공백·공백 줄·파일 끝 빈 줄은 `git diff --check` 통과를 위해 제거 |
+
+### 출력 문구·순서 변화 (기록 완료)
+
+- #9446: 싱크로 발동·상태 치료 열매 발동이 move end에서 상태 문구 직후로. `BATTLE_MESSAGE_OUTPUT_CHANGES.md` "특성·도구·도주" 표 1행(`c1afbb563d`).
+- #9249: Gen5+ 난동 종료 혼란이 턴 종료에서 기술 직후로, 프리폴 해제 혼란 시점 정리, 신비의부적이 자기 편 혼란도 막음. 같은 문서 "기술·필드 상태 효과" 표 1행(`b836436e60`).
+- 문자열·STRINGID·조사 토큰·`{B_...}` 변화 없음.
+
+### 실기 확인 필요 (mGBA)
+
+1. #9407 unit(#9549·#9707·#10573): 맵 이동 페이드아웃/인, 날씨 맵·자연광 맵의 시간대 페이드인, 동반 포켓몬·NPC·조명 스프라이트가 배경과 같은 속도로 페이드되는지, 메뉴·배틀 진입/종료 페이드.
+2. #9446: 싱크로 되돌리기와 팝업 순서, 광역 독 공격에 두 싱크로 포켓몬, 상태 치료 열매 발동 시점·한글 문구·아이템 팝업, 독수+싱크로+리샘열매, 티타임·플라워가드·중력.
+3. #9249(+#10648): 역린·난동부리기·꽃잎댄스 종료 혼란 문구 시점, 프리폴로 난동 중인 포켓몬 잡기·놓기(비행 타입·사용자 기절·중력·하품), 신비의부적 아래 난동 종료, 떨어뜨리기, 노가드+프리폴, 프리폴 대상 기절·교체 후 2턴째.
+4. #9142(+#9473·#9564): 서브루틴화된 기술 애니(물기·깨물어부수기·사이코팽 계열, 흡수 계열, 방어지령·소금절이, 볼 부풀리기, 매직파우더)와 HnS 추가 기술 애니 재생 중 assert 크래시 화면이 없는지.
+5. #9121(+#9474): 더블배틀 상대 오른쪽·왼쪽의 대타 인형 표시, 대타 해제 뒤 원래 모습.
+6. #9086: 메뉴·배틀·필드의 한글 문자열 전반(도구 이름/설명, 챌린지 메뉴 확인 문구, 콘테스트 문구).
+7. 선택: #9417 춤추기 연쇄·지시, #8664·#9451 더블배틀 AI(속이다, 동시 교체), #9051 스크립트 메뉴 한글 선택지.
+
+### 다음 구간 담당 참고
+
+- **이미 적용(재이식 금지):** seq 94 #9549, seq 98 #9564, seq 138 #9707, seq 319 #10573, seq 330 #10648.
+- seq 83 #8497(XL)의 선행 조건 #9142·#9473 충족.
+- seq 88 #9460·seq 131 #9462: 테스트 `WITH_CONFIG(AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE, …)` 도입 뒤 `ai_choice.c` "Choiced Pokémon won't switch out if they can still affect one opposing Pokémon in doubles", `ai_switching.c` "AI can switch out both mons on the same turn in double battles", `ai_double_ace.c` "AI_FLAG_DOUBLE_ACE_POKEMON: Ace mons won't be switched in even if they are the best candidates"가 PASS로 돌아오는지 확인(HnS는 이미 `AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE 50`을 가짐).
+- seq 166 #9784: #10180(`f2d3008825`)에서 뺀 `IsBattlerInvolvedInSkyDrop()`(탈출팩·탈출버튼)을 1.17.0 형태로 넣을 것(#9249 전제 충족).
+- seq 124 #9667: #9086 뒤라 공용 설명 문자열이 병합된다(HnS 설명 문구 유지).
+- #9066 이후 `OBJ_EVENT_GFX`/facility class/multichoice enum에 멤버를 추가하는 PR은 값을 명시해야 한다.
+
+### 전체 테스트 (구간 끝)
+
+- 명령: `PATH=… make check BUILD=hns -j8 > build/port-check.log 2>&1`(HEAD `aa233f0008`, 코드 기준 `0d0dfd2720`). 약 9분.
+- 결과: **PASS 2,295 / FAIL 2,226 / KNOWN_FAILING 8 / TO_DO 618 / EXPECT_FAILING 6 / ASSUMPTIONS_FAILED 38 / TOTAL 5,191**(기준 seq062: PASS 2,283 / FAIL 2,218 / TO_DO 622 / TOTAL 5,175).
+- 새 기준 목록: [`test-baseline-seq082.txt`](test-baseline-seq082.txt)(5,123행, `LC_ALL=C`로 생성. PASS 2,292 / FAIL 2,202 / KNOWN_FAILING 8 / TO_DO 616 / EXPECTED_FAIL 5 — 이름 중복 제거 목록 기준).
+- `test-baseline-seq062.txt` 대비 차이 전부와 원인:
+
+| 테스트 | 기준 → 지금 | 원인 분류 |
+|---|---|---|
+| AI_FLAG_DOUBLE_ACE_POKEMON: Ace mons won't be switched in even if they are the best candidates (`ai/ai_double_ace.c`) | PASS → **FAIL** | 테스트 전제 차이(코드 회귀 아님). #9451로 파트너가 고른 교체 후보를 피하게 됐는데, HnS는 이미 `AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE 50`으로 더블 AI 판단 순서를 뒤집을 수 있고 테스트 RNG에서 오른쪽 AI가 먼저 유일한 후보를 가져간다. `include/config/ai.h` 값을 임시로 0으로 두면(커밋 안 함) `ai_double_ace.c` 4건 전부 PASS. upstream 1.17.0은 이 테스트에 `WITH_CONFIG(AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE, 0)`과 "(reversed)" 판을 두며, 이는 #9460(seq 88)·#9462(seq 131)에서 들어온다 |
+| Choiced Pokémon won't switch out if they can still affect one opposing Pokémon in doubles (`ai/ai_choice.c`) | PASS → 이름이 "… 1/2 (1/?)"로 바뀌어 **FAIL** | 같은 원인. #9451이 이 테스트를 상대 3마리·`EXPECT_SWITCH(opponentLeft, 2)`로 바꿨다. 순서 0 고정 시 `ai_choice.c` 10건 전부 PASS |
+| AI can switch out both mons on the same turn in double battles (1/?) (`ai/ai_switching.c`) | 새 테스트 **FAIL** | 같은 원인(#9451 새 테스트). 순서 0 고정 시 PASS |
+| Fake Out/First Impression can only be used on the user's first turn, … fails if it's called via Instruct (`move_effect/first_turn_only.c`, 4건) | TO_DO → FAIL | #8664가 TO_DO를 실제 테스트로 바꿈. 사유는 모두 `Unmatched MESSAGE`(영문 기대값, 알려진 한계) |
+| Sky Drop: If target was locked into a move that would confuse, the target will be freed and confusion occurs immediately (`move_effect/sky_drop.c`) | 새 테스트 FAIL | #9249 새 테스트, `Unmatched MESSAGE`(알려진 한계) |
+| 새 테스트 PASS 14건 | 새로 생김 → PASS | #8664 AI 속이다 5, #9107 Order Up 1, #9446 싱크로 2, #9249 프리폴 3·난동 1, #10648 프리폴 2 |
+
+- **회귀 판정:** 로직 회귀 0. PASS에서 바뀐 2건과 새 FAIL 1건은 upstream 테스트가 "왼쪽 AI 먼저"를 전제하는데 HnS에 이미 있는 AI 순서 무작위(50%) 때문에 생긴 것으로, 순서를 고정하면 통과함을 확인했다. seq 88·131 이식 뒤 PASS로 돌아와야 한다. 기준 목록의 PASS 2,280건(이름 중복 제거) 가운데 위 2건을 뺀 2,278건은 모두 그대로 PASS.
