@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 83~83
 
-진행 중: 마지막 완료 seq 83 unit의 #9595(커밋 `5121b83c94`), 다음: 같은 unit의 #10345(seq 265) → #10589(seq 321) → 전체 테스트
+진행 중: 마지막 완료 seq 83 unit의 #10345(커밋 `45b27b9bce`), 다음: 같은 unit의 #10589(seq 321) → 전체 테스트
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `152910621b`
@@ -30,7 +30,7 @@
   - **upstream 수동 수정 5곳도 반영:** upstream 부모 파일에 같은 스크립트를 돌린 결과와 upstream #8497 결과를 비교해 스크립트 밖 수정 5곳을 찾아 같은 위치에 넣었다 — GhostGetOut `delay 1`→`2`, Punishment 두 번째 타격 전 `delay 1`, Poltergeist 끝 `unloadspritegfx/unloadspritepal ANIM_TAG_ITEM_BAG` 삭제, 10만볼트 `unloadallspritepals`, Extreme Evoboost 배경 전환을 `unloadspritepal ANIM_TAG_LEER` 뒤 `delay 1` 다음으로 이동.
   - **HnS 스크립트 차이 보존 확인:** "이식 전 HnS ↔ upstream 부모" diff와 "이식 후 HnS ↔ upstream #8497" diff의 변경 줄이 완전히 같다. 즉 HnS 차이 4종(HealingEffect 호출 4곳 없음, Bite 이빨 `x=-33`(#9564), SecretPower `end`, 메가·원시회귀 `AnimTask_BlendParticle` 3줄(#10324))이 그대로 남았다.
   - **C 코드:** upstream hunk 전부 그대로 적용(문맥 충돌 없음). `src/battle_anim.c`의 HnS 추가분(`monbg` 중복 assert, 배경 타일맵 버퍼 크기 보정)과 HnS `CreateSpriteUnchecked` 사용부(`battle_anim_electric.c`)는 hunk 밖이라 그대로다. 파일 모드(100755)는 바뀌지 않았다.
-  - **HnS 추가(upstream과 다름) 2곳:** 아래 순서 검사에서 upstream 1.17.0에도 남아 있는 회귀 2건을 찾아 #10589와 같은 방식으로 막았다.
+  - **HnS 추가(upstream과 다름) 2곳(이 커밋) + 1곳(#10345 커밋):** 아래 순서 검사에서 upstream 1.17.0에도 남아 있는 회귀를 찾아 #10589와 같은 방식(`TryLoadPal`)으로 막았다. 세 번째(`AnimTask_AnimateGustTornadoPalette`, BloomDoom·HydroVortex)는 upstream #10345가 같은 함수를 고치므로 그 커밋에 넣었다.
     - `AnimTask_LoadMusicNotesPals`(HealBell): 스크립트에서 음표 스프라이트보다 먼저 실행되어 `ANIM_TAG_MUSIC_NOTES_2` 팔레트가 없을 때 `IndexOfSpritePaletteTag`가 0xFF를 돌려주고 `LoadPalette(…, OBJ_PLTT_ID(0xFF) = 0x10F0, …)`로 팔레트 버퍼(512색) 밖 EWRAM 32바이트×2를 덮어쓴다. 함수 앞에 `TryLoadPal(ANIM_TAG_MUSIC_NOTES_2)`(실패 시 작업 종료)를 넣었다.
     - `AnimTask_MusicNotesRainbowBlend`(Sing·BellyDrum·GrassWhistle·RelicSong·Round): 음표 팔레트가 아직 없어 첫 색(흰색→분홍) 블렌드가 빠진다(0xFF 검사가 있어 메모리 문제는 없음). 함수 앞에 `TryLoadPal(gParticlesColorBlendTable[0][0])`를 넣었다(실패해도 기존 검사로 진행).
   - 문자열·STRINGID·조사·배틀 메시지 무관.
@@ -45,10 +45,10 @@
     - 참조 0인 191쌍(73개 태그, 괄호는 애니 수): IMPACT(26) BLUE_STAR(14) SMALL_EMBER(7) POISON_BUBBLE(6) ICE_CRYSTALS(6) CLAW_SLASH(6) SMALL_BUBBLES(5) HANDS_AND_FEET(5) ELECTRICITY(5) SPARK_2(4) SPARK(4) ROUND_SHADOW(4) ROCKS(4) ITEM_BAG(4) ELECTRIC_ORBS(4) CIRCLE_OF_LIGHT(4) SPEED_DUST(3) ORBS(3) GRAY_SMOKE(3) DUCK(3) BLACK_BALL_2(3) WHITE_FEATHER(2) WATER_IMPACT(2) TORN_METAL(2) THOUGHT_BUBBLE(2) SPARKLE_6(2) SPARKLE_2(2) PINK_HEART(2) LEER(2) FLOWER(2) FLAT_ROCK(2) EYE_SPARKLE(2) ECLIPSING_ORB(2) BUBBLE(2) BLUE_ORB(2) BLUE_LIGHT_WALL(2) BLACK_BALL(2) 그리고 1개씩: WOOD_HAMMER_HAMMER WHITE_CIRCLE_OF_LIGHT WHIRLWIND_LINES WEB_THREAD WATER_ORB WATER_GUN VERTICAL_HEX THIN_RING TAG_HAND SWEAT_DROP SPLASH SHOCK_3 RAZOR_LEAF QUICK_GUARD_HAND PURPLE_HAND_OUTLINE PUNISHMENT_BLADES POISON_JAB PINK_PETAL PINK_CLOUD MUSIC_NOTES METEOR LIGHTNING LEAF JAGGED_MUSIC_NOTE ICE_SPIKES GUST GREEN_SPIKE GREEN_SPARKLE FOCUS_ENERGY FLYING_DIRT EXPLOSION_6 CUT BREATH BLACK_SMOKE ASSURANCE_HAND ACUPRESSURE. (애니별 목록은 스크래치 `a8497/out/classB.tsv`)
   - C에서 직접 만드는 스프라이트: C 로드를 빼고 스크립트 템플릿만으로 다시 계산하면 115쌍이 추가로 "안 쓰임"이 되는데, 모두 upstream이 해당 작업·콜백에 넣은 `TryLoadSpriteAssets`(우박·비·눈 입자, 전기 볼트·충전 입자·볼트태클 계열, 에어컷터, 물 계열, 연속펀치 타격, 길동무·다크홀, 동결 얼음, 째려보기, 원념 불꽃, 하트스웝·스킬스웝, 봉인, 이온, 리프블레이드, 충격파, 폴터가이스트, 구르기 흙·바위, 트집 등)로 해결된다. 변수 템플릿을 쓰는 곳(충전 입자 `MOVE_FLASH_CANNON/STEEL_BEAM`, 볼트태클 `FAIRY_LOCK/COLLISION_COURSE`, 길동무 `DARK_VOID/POLTERGEIST`)은 로드하는 템플릿과 생성하는 템플릿의 선택 조건이 같음을 확인했다. 충격파 진행 볼트는 로드용(`gVoltTackleBoltSpriteTemplate`)과 생성용(`gShockWaveProgressingBoltSpriteTemplate`) 템플릿이 다르지만 태그가 둘 다 SPARK(10001/10001)로 같다.
   - **순서 검사(`animorder.py`, 최종 unit 상태 기준):** 태그로 팔레트를 찾는 C 코드 17곳 × 진입점 조합 408건 중 이식 전에는 로드돼 있었는데 이식 후 그 시점에 없는 곳:
-    - 범위 밖 쓰기 위험: AuroraBeam(`RAINBOW_RINGS`)·MagicalLeaf(`LEAF`/`RAZOR_LEAF`)·NightSlash(`SLASH`) → **#10589**가 `TryLoadPal`로 해결. WingAttack·SteelWing·HydroVortex·BloomDoom·DoubleIronBash·VeeveeVolley의 바람 회오리 팔레트(`GUST`) → **#10345**가 조회를 스프라이트 생성 뒤 프레임으로 옮겨 해결(바로 다음 줄들에서 GUST 템플릿 스프라이트가 만들어짐). HealBell(`MUSIC_NOTES_2`) → **HnS 추가 1**로 해결.
+    - 범위 밖 쓰기 위험: AuroraBeam(`RAINBOW_RINGS`)·MagicalLeaf(`LEAF`/`RAZOR_LEAF`)·NightSlash(`SLASH`) → **#10589**가 `TryLoadPal`로 해결. WingAttack·SteelWing·DoubleIronBash·VeeveeVolley의 바람 회오리 팔레트(`GUST`) → **#10345**가 조회를 스프라이트 생성 뒤 프레임으로 옮겨 해결(같은 프레임에 GUST 팔레트 템플릿 스프라이트가 만들어짐). HydroVortex·BloomDoom은 GUST **그림**에 다른 팔레트(물소용돌이·꽃잎 등)를 쓰는 템플릿뿐이라 GUST 팔레트가 끝까지 로드되지 않아 #10345 뒤에도 단계마다 `OBJ_PLTT_ID(0xFF)` 위치를 `memmove`로 덮어쓴다(upstream 1.17.0도 같음) → **HnS 추가 3**(#10345 커밋, 작업 시작 때 `TryLoadPal(ANIM_TAG_GUST)`)으로 해결. HealBell(`MUSIC_NOTES_2`) → **HnS 추가 1**로 해결.
     - 시각 차이: 음표 무지개 블렌드 5개 애니 → **HnS 추가 2**로 해결. `AnimUproarRing` 콜백을 쓰는 9개 애니(NightDaze·NaturesMadness·OriginPulse·Electrify·SimpleBeam·FusionFlare·MagneticFlux·RevelationDance·ZingZap)는 THIN_RING 그림에 다른 팔레트를 쓰는 템플릿이라 블렌드 대상인 THIN_RING 팔레트를 쓰는 스프라이트가 그 애니에 없다 → 화면 차이 없음.
     - `AnimTask_MoonlightEndFade`의 `GREEN_SPARKLE`(Moonblast·MaxStarfall·GMaxSmite·GMaxFinale): 팔레트 번호 0xFF로 `0x10000 << 0xFF`를 계산한다. 이 네 애니에는 그 팔레트를 쓰는 스프라이트가 없어 화면 차이는 없고, 같은 계산이 이식 전에도 HealingWish(`MOON`)·LunarBlessing·MoongeistBeam·RevivalBlessing(`GREEN_SPARKLE`)에서 이미 일어나고 있었다(ARM 레지스터 시프트 32 이상 = 0 → 페이드 마스크에서 빠질 뿐). upstream 1.17.0과 같아 **손대지 않고 기록만 한다.**
-    - 추가 후 결과: 회귀 0(위 GUST·오로라빔·매지컬리프·깜짝베기는 #10345·#10589 커밋 뒤 기준), 이식 전부터 있던 것 4건(위 MoonlightEndFade).
+    - 추가 후 결과: 회귀 0(위 GUST·AuroraBeam·MagicalLeaf·NightSlash는 #10345·#10589 커밋 뒤 기준, MoonlightEndFade 4건은 화면 차이 없음으로 제외), 이식 전부터 있던 것 4건(위 MoonlightEndFade).
   - **슬롯 한도:** 경로별로 동시에 추적되는 태그 수 최대 그림 7 / 팔레트 8(한도 8, `unloadspritegfx`·`unloadspritepal`·`unloadallspritepals` 반영) → 한도 초과로 `failed to store gfx/pal` assert가 날 경로 0. 진입점 합집합으로는 테라버스트(27/26)·트랩(12/12) 등 13개가 8을 넘지만 모두 서로 배타적인 분기 합계다.
   - 새로 로드되는 것(이전에 빠져 있던 것): EsperWing 마지막 `gPsychoCutSpriteTemplate`는 이식 전 `PSYCHO_CUT`을 로드하지 않아 그림이 없었는데 이제 자동 로드된다(화면 변화). 사파리 포켓몬스낵 던지기(`gBattleAnimGeneral_PokeblockThrow`)는 `AnimTask_LoadPokeblockGfx`가 직접 올린 그림을 `createsprite`가 추적 표 기준으로 한 번 더 올린다(같은 태그 타일 2벌, `AnimTask_FreePokeblockGfx`와 `end`가 한 벌씩 해제해 누수 없음, upstream과 같음).
 - 해제 경로 확인:
@@ -80,3 +80,21 @@
   - 자동 테스트: `all_anims.c` 6건 결과가 #8497 직후와 같다(PASS 3, FAIL 2 = HnS 도구 팝업 태스크, INVALID 1 = HnS 페어리 타입 설정).
   - 실기 확인: #8497과 함께(팔레트 블렌드가 도중에 풀리지 않는지).
 - 남은 위험: 없음
+
+## 동기화 단위: seq 265 #10345 `U-anim-8497` fix(battle-anim): fix gust colour cycling animation (seq 83 unit에 포함)
+
+- 현재 판정: 적용(HnS 적응 1줄 블록). group plan "#8497과 같은 unit으로 넣는다". **seq 265는 도달 시 "이미 적용"으로 처리한다.**
+- 커밋: `45b27b9bce`
+- upstream 근거: `651edaf8f6`
+- 수정 파일: `src/battle_anim_flying.c`(`#include "sprite.h"`, `AnimTask_AnimateGustTornadoPalette`에서 팔레트 번호 캐시 삭제, `_Step`에서 매번 `IndexOfSpritePaletteTag(ANIM_TAG_GUST)`로 찾고 `memmove`로 회전)
+- HNS 적응과 보존한 한글화/배틀 메시지 동작:
+  - upstream hunk 그대로 적용(문맥 충돌 없음). 회전 결과(색 1~8 오른쪽으로 한 칸, 8→1)는 이식 전 루프와 같다.
+  - **HnS 추가 3:** `AnimTask_AnimateGustTornadoPalette` 앞에 `TryLoadPal(ANIM_TAG_GUST)`(실패 시 작업 종료). BloomDoom(`gBloomDoomHurricaneSpriteTemplate` 그림 GUST/팔레트 10160)과 HydroVortex(`gHydroVortexHurricaneSpriteTemplate`·`gWhirlpoolSpriteTemplate`)는 GUST 팔레트를 쓰는 스프라이트가 없어 #8497 뒤로 그 팔레트가 로드되지 않는다. 이식 전에는 `loadspritegfx ANIM_TAG_GUST`가 팔레트도 올렸으므로, 이렇게 해야 이식 전과 같이 (보이지 않는) GUST 팔레트를 회전하고 범위 밖 쓰기가 없다. 다른 GUST 애니(Gust·WingAttack·SteelWing·Hurricane·LeafTornado·DoubleIronBash·VeeveeVolley)는 이미 로드된 팔레트를 그대로 쓴다. 스크립트에서 GUST를 해제하는 곳은 없다.
+  - 추가 뒤 순서 검사: GUST 회귀 0, 경로별 최대 추적 팔레트 8(한도 이내).
+- 저장·ROM·그래픽 영향: ROM 변화 0(32,712,372 B, 코드 감소와 추가가 상쇄). 화면은 이식 전과 같아야 한다.
+- 검증:
+  - `git diff --check`: 통과. 한글 줄 변경 0.
+  - `make hns -j8`: 종료 코드 0, ROM 32,712,372 B / EWRAM 248,924 B / IWRAM 25,516 B, 새 경고 0.
+  - 자동 테스트: 아래 #10589 항목과 함께 기록.
+  - 실기 확인: 바람일으키기·날개치기·강철날개·폭풍 회오리 색 순환, BloomDoom·HydroVortex(Z기술) 진행 중 화면·다음 동작 이상 없음.
+- 남은 위험: 낮음
