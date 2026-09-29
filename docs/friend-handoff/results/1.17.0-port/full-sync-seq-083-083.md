@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 83~83
 
-진행 중: 마지막 완료 seq 83(#8497 커밋 `f59f50ca17`), 다음: 같은 unit의 #9595(seq 110) → #10345(seq 265) → #10589(seq 321) → 전체 테스트
+진행 중: 마지막 완료 seq 83 unit의 #9595(커밋 `5121b83c94`), 다음: 같은 unit의 #10345(seq 265) → #10589(seq 321) → 전체 테스트
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `152910621b`
@@ -65,3 +65,18 @@
     - `Z-Moves animations work` 17/37 INVALID(`Cannot turn … into a Z-Move`): 0부터 센 17번 = 18번째 매개변수 `MOVE_TWINKLE_TACKLE`(문포스 + 페어리Z). HnS `GetMoveType()`은 도전 설정 `tx_Mode_Fairy_Types`가 0이면 페어리 기술을 다른 타입으로 바꾸는데(문포스 → 악), 테스트 러너는 이 설정을 0으로 두므로 페어리Z로 변환할 수 없다. 역시 **HnS 설정 차이**이며 애니와 무관하다. INVALID로 테스트가 끝나 나머지 Z기술 19~37번 애니는 이 테스트에서 돌지 않았다(아래 추가 확인 참고).
   - 실기 확인: 필요(아래 구간 끝 목록).
 - 남은 위험: upstream `CreateSpriteAt`의 테스트용 검사 조건 `tileTag > ANIM_SPRITES_START && tileTag < ANIM_TAG_COUNT`는 `ANIM_TAG_COUNT`가 413(태그 개수)이라 항상 거짓이다(1.17.0도 같음). 그래서 upstream 테스트는 "로드 안 된 그림/팔레트로 스프라이트 생성"을 실제로 잡지 못한다. 그대로 이식했고, 검증은 위 정적 분석으로 했다.
+
+## 동기화 단위: seq 110 #9595 `U-anim-8497` Fix move anim pal blending being discarded (seq 83 unit에 포함)
+
+- 현재 판정: 적용(group plan "#8497과 같은 unit으로 넣는다"). **seq 110은 도달 시 "이미 적용"으로 처리한다.**
+- 커밋: `5121b83c94`
+- upstream 근거: `c1e0532fe2`
+- 수정 파일: `src/battle_anim.c`(`Cmd_waitforvisualfinish`에서 #8497이 넣은 `UnloadAllSpritePalettes()`와 주석 9줄 삭제)
+- HNS 적응과 보존한 한글화/배틀 메시지 동작: 그대로 적용. 결과 `Cmd_waitforvisualfinish`가 이식 전 HnS(`152910621b`) 함수와 글자 단위로 같다(group plan "결과적으로 HnS 현재 코드와 같은 상태"). `UnloadAllSpritePalettes()`는 `unloadallspritepals` 명령(10만볼트)에서만 쓰인다.
+- 저장·ROM·그래픽 영향: ROM −48 B. `waitforvisualfinish` 뒤에도 애니 팔레트(블렌드 결과 포함)가 유지된다. 위 순서 검사·슬롯 한도 검사는 이 상태 기준이다.
+- 검증:
+  - `git diff --check`: 통과. 한글 줄 변경 0.
+  - `make hns -j8`: 종료 코드 0, ROM 32,712,372 B / EWRAM 248,924 B / IWRAM 25,516 B, 새 경고 0.
+  - 자동 테스트: `all_anims.c` 6건 결과가 #8497 직후와 같다(PASS 3, FAIL 2 = HnS 도구 팝업 태스크, INVALID 1 = HnS 페어리 타입 설정).
+  - 실기 확인: #8497과 함께(팔레트 블렌드가 도중에 풀리지 않는지).
+- 남은 위험: 없음
