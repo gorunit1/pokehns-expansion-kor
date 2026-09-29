@@ -1087,96 +1087,26 @@ void MarkBattlerReceivedLinkData(enum BattlerId battler)
     MarkBattleControllerMessageSynchronizedOverLink(battler);
 }
 
-const u8 *CheckSkyDropState(enum BattlerId battler, enum SkyDropState skyDropState)
+void CancelMultiTurnMoves(enum BattlerId battler)
 {
-    const u8 *result = NULL;
-
-    u8 otherSkyDropper = gBattleStruct->skyDropTargets[battler];
-    gBattleMons[battler].volatiles.semiInvulnerable = STATE_NONE;
-
-    // Makes both attacker and target's sprites visible
-    gSprites[gBattlerSpriteIds[battler]].invisible = FALSE;
-    gSprites[gBattlerSpriteIds[otherSkyDropper]].invisible = FALSE;
-
-    // If target was sky dropped in the middle of Outrage/Thrash/Petal Dance,
-    // confuse them upon release and display "confused by fatigue" message & animation.
-    // Don't do this if this CancelMultiTurnMoves is caused by falling asleep via Yawn.
-    if (gBattleMons[otherSkyDropper].volatiles.rampageTurns && skyDropState != SKY_DROP_STATUS_YAWN)
-    {
-        gBattleMons[otherSkyDropper].volatiles.rampageTurns = 0;
-
-        // If the target can be confused, confuse them.
-        // Don't use CanBeConfused, can cause issues in edge cases.
-        enum Ability ability = GetBattlerAbility(otherSkyDropper);
-        if (!(gBattleMons[otherSkyDropper].volatiles.confusionTurns > 0
-            || IsAbilityAndRecord(otherSkyDropper, ability, ABILITY_OWN_TEMPO)
-            || IsMistyTerrainAffected(otherSkyDropper, ability, GetBattlerHoldEffect(otherSkyDropper), gFieldStatuses)))
-        {
-            gBattleMons[otherSkyDropper].volatiles.confusionTurns = RandomUniform(RNG_CONFUSION_TURNS, 2, B_CONFUSION_TURNS); // 2-5 turns
-            if (skyDropState == SKY_DROP_ATTACKCANCELER_CHECK)
-            {
-                gBattleStruct->skyDropTargets[battler] = SKY_DROP_RELEASED_TARGET;
-            }
-            else if (skyDropState == SKY_DROP_GRAVITY_ON_AIRBORNE)
-            {
-                // Reapplying STATE_SKY_DROPPED allows for avoiding unecessary messages when Gravity is applied to the target.
-                gBattleStruct->skyDropTargets[battler] = SKY_DROP_RELEASED_TARGET;
-                gBattleMons[otherSkyDropper].volatiles.semiInvulnerable = STATE_SKY_DROP;
-            }
-            else if (skyDropState == SKY_DROP_CANCEL_MULTI_TURN_MOVES)
-            {
-                gBattlerAttacker = otherSkyDropper;
-                result = BattleScript_ThrashConfuses;
-            }
-            else if (skyDropState == SKY_DROP_STATUS_FREEZE_SLEEP)
-            {
-                gBattlerAttacker = otherSkyDropper;
-                BattleScriptPush(gBattlescriptCurrInstr + 1);
-                result = BattleScript_ThrashConfuses;
-            }
-        }
-    }
-
-    // Clear skyDropTargets data, unless this CancelMultiTurnMoves is caused by Yawn, attackcanceler, or VARIOUS_GRAVITY_ON_AIRBORNE_MONS
-    if (!(gBattleMons[otherSkyDropper].volatiles.rampageTurns) && gBattleStruct->skyDropTargets[battler] < 4)
-    {
-        gBattleStruct->skyDropTargets[battler] = SKY_DROP_NO_TARGET;
-        gBattleStruct->skyDropTargets[otherSkyDropper] = SKY_DROP_NO_TARGET;
-    }
-
-    return result;
-}
-
-const u8 *CancelMultiTurnMoves(enum BattlerId battler, enum SkyDropState skyDropState)
-{
-    const u8 *result = NULL;
     gBattleMons[battler].volatiles.uproarTurns = 0;
     gBattleMons[battler].volatiles.bideTurns = 0;
-
-    if (B_RAMPAGE_CANCELLING < GEN_5)
-    {
-        gBattleMons[battler].volatiles.multipleTurns = 0;
-        gBattleMons[battler].volatiles.rampageTurns = 0;
-    }
-    else if (!gBattleMons[battler].volatiles.rampageTurns
-     || gBattleMons[battler].volatiles.rampageTurns > 1)
-    {
-        gBattleMons[battler].volatiles.multipleTurns = 0;
-    }
-
-    // Clear battler's semi-invulnerable bits if they are not held by Sky Drop.
-    if (gBattleMons[battler].volatiles.semiInvulnerable != STATE_SKY_DROP)
-        gBattleMons[battler].volatiles.semiInvulnerable = STATE_NONE;
-
-    if (gBattleStruct->skyDropTargets[battler] != SKY_DROP_NO_TARGET && gBattleMons[battler].volatiles.semiInvulnerable != STATE_SKY_DROP)
-        result = CheckSkyDropState(battler, skyDropState);
-
     gBattleMons[battler].volatiles.rolloutTimer = 0;
     gBattleMons[battler].volatiles.furyCutterCounter = 0;
 
-    return result;
-}
+    if (B_RAMPAGE_CONFUSION < GEN_5
+     || gBattleMons[battler].volatiles.rampageTurns != 1) // Will be confused at the end of the turn
+    {
+        gLockedMoves[battler] = MOVE_NONE;
+        gBattleMons[battler].volatiles.multipleTurns = 0;
+        gBattleMons[battler].volatiles.rampageTurns = 0;
+    }
 
+    // Clear battler's semi-invulnerable bits if they are not held by Sky Drop.
+    if (gBattleMons[battler].volatiles.semiInvulnerable != STATE_SKY_DROP_TARGET)
+        gBattleMons[battler].volatiles.semiInvulnerable = STATE_NONE;
+
+}
 
 // Returns TRUE if no other battler after this one in turn order will use a move
 bool32 IsLastMonToMove(enum BattlerId battler)
@@ -1440,7 +1370,7 @@ u32 TrySetCantSelectMoveBattleScript(enum BattlerId battler)
 
     if (DYNAMAX_BYPASS_CHECK && GetActiveGimmick(battler) != GIMMICK_Z_MOVE && move == gLastMoves[battler] && move != MOVE_STRUGGLE && (gBattleMons[battler].volatiles.torment == TRUE))
     {
-        CancelMultiTurnMoves(battler, SKY_DROP_IGNORE);
+        CancelMultiTurnMoves(battler);
         if (gBattleTypeFlags & BATTLE_TYPE_PALACE)
         {
             gPalaceSelectionBattleScripts[battler] = BattleScript_SelectingTormentedMoveInPalace;
@@ -1823,7 +1753,7 @@ bool32 BattleArenaTurnEnd(void)
      && IsBattlerAlive(GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)) && IsBattlerAlive(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)))
     {
         for (enum BattlerId battler = 0; battler < 2; battler++)
-            CancelMultiTurnMoves(battler, SKY_DROP_IGNORE);
+            CancelMultiTurnMoves(battler);
 
         gBattlescriptCurrInstr = BattleScript_ArenaDoJudgment;
         BattleScriptExecute(BattleScript_ArenaDoJudgment);
@@ -4482,7 +4412,7 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
              && gSpecialStatuses[gBattlerTarget].poisonPuppeteer)
             {
                 gSpecialStatuses[gBattlerTarget].poisonPuppeteer = FALSE;
-                if (CanBeConfused(gBattlerTarget))
+                if (CanBeConfused(gBattlerAttacker, gBattlerTarget))
                 {
                     gBattleScripting.battler = gBattlerAttacker;
                     gEffectBattler = gBattlerTarget;
@@ -5117,7 +5047,7 @@ bool32 CanBattlerEscape(enum BattlerId battler) // no ability check
         return FALSE;
     else if (gFieldStatuses & STATUS_FIELD_FAIRY_LOCK)
         return FALSE;
-    else if (gBattleMons[battler].volatiles.semiInvulnerable == STATE_SKY_DROP)
+    else if (gBattleMons[battler].volatiles.semiInvulnerable == STATE_SKY_DROP_TARGET)
         return FALSE;
     else
         return TRUE;
@@ -5647,13 +5577,16 @@ static bool32 CanSleepDueToSleepClause(enum BattlerId battlerAtk, enum BattlerId
     return FALSE;
 }
 
-bool32 CanBeConfused(enum BattlerId battler)
+bool32 CanBeConfused(enum BattlerId battlerAtk, enum BattlerId effectBattler)
 {
-    enum Ability ability = GetBattlerAbility(battler);
-    if (gBattleMons[battler].volatiles.confusionTurns > 0
-     || IsMistyTerrainAffected(battler, ability, GetBattlerHoldEffect(battler), gFieldStatuses)
-     || IsAbilityAndRecord(battler, ability, ABILITY_OWN_TEMPO))
+    enum Ability effectAbility = GetBattlerAbility(effectBattler);
+
+    if (gBattleMons[effectBattler].volatiles.confusionTurns > 0
+     || IsSafeguardProtected(battlerAtk, effectBattler, GetBattlerAbility(battlerAtk))
+     || IsMistyTerrainAffected(effectBattler, effectAbility, GetBattlerHoldEffect(effectBattler), gFieldStatuses)
+     || IsAbilityAndRecord(effectBattler, effectAbility, ABILITY_OWN_TEMPO))
         return FALSE;
+
     return TRUE;
 }
 
@@ -7596,7 +7529,7 @@ static inline uq4_12_t GetDiveModifier(enum Move move, enum BattlerId battlerDef
 
 static inline uq4_12_t GetAirborneModifier(enum Move move, enum BattlerId battlerDef)
 {
-    if (MoveDamagesAirborneDoubleDamage(move) && gBattleMons[battlerDef].volatiles.semiInvulnerable == STATE_ON_AIR)
+    if (MoveDamagesAirborneDoubleDamage(move) && IsBattlerOnAir(battlerDef))
         return UQ_4_12(2.0);
     return UQ_4_12(1.0);
 }
@@ -8741,7 +8674,7 @@ bool32 CanMegaEvolve(enum BattlerId battler)
         return FALSE;
 
     // Check if battler is currently held by Sky Drop.
-    if (gBattleMons[battler].volatiles.semiInvulnerable == STATE_SKY_DROP)
+    if (gBattleMons[battler].volatiles.semiInvulnerable == STATE_SKY_DROP_TARGET)
         return FALSE;
 
     // Check if battler is holding a Z-Crystal.
@@ -8782,7 +8715,7 @@ bool32 CanUltraBurst(enum BattlerId battler)
         return FALSE;
 
     // Check if mon is currently held by Sky Drop
-    if (gBattleMons[battler].volatiles.semiInvulnerable == STATE_SKY_DROP)
+    if (gBattleMons[battler].volatiles.semiInvulnerable == STATE_SKY_DROP_TARGET)
         return FALSE;
 
     enum Ability ability = GetBattlerAbility(battler);
@@ -10300,7 +10233,7 @@ bool32 EmergencyExitCanBeTriggered(enum BattlerId battler)
      && HadMoreThanHalfHpNowDoesnt(battler)
      && (CanBattlerSwitch(battler) || !(gBattleTypeFlags & BATTLE_TYPE_TRAINER))
      && !(gBattleTypeFlags & BATTLE_TYPE_ARENA)
-     && gBattleMons[battler].volatiles.semiInvulnerable != STATE_SKY_DROP)
+     && gBattleMons[battler].volatiles.semiInvulnerable != STATE_SKY_DROP_TARGET)
         return TRUE;
 
     return FALSE;
@@ -10502,6 +10435,14 @@ static bool32 CanMoveSkipAccuracyCheck(enum BattlerId battlerAtk, u32 move)
     return MoveAlwaysHitsOnSameType(move) && IS_BATTLER_OF_TYPE(battlerAtk, GetMoveType(move));
 }
 
+static bool32 IsSkyDropInvolved(enum BattlerId battlerDef, enum BattleMoveEffects moveEffect)
+{
+    if (moveEffect != EFFECT_SKY_DROP)
+        return FALSE;
+    return gBattleMons[battlerDef].volatiles.semiInvulnerable == STATE_SKY_DROP_ATTACKER
+        || gBattleMons[battlerDef].volatiles.semiInvulnerable == STATE_SKY_DROP_TARGET;
+}
+
 bool32 CanMoveSkipAccuracyCalc(struct BattleCalcValues *cv, u32 weather, enum ResultOption option)
 {
     bool32 effect = FALSE;
@@ -10517,18 +10458,15 @@ bool32 CanMoveSkipAccuracyCalc(struct BattleCalcValues *cv, u32 weather, enum Re
     {
         effect = TRUE;
     }
-    // If the attacker has the ability No Guard and they aren't targeting a Pokemon involved in a Sky Drop with the move Sky Drop, move hits.
     else if (cv->abilities[battlerAtk] == ABILITY_NO_GUARD
           && gBattleMons[battlerDef].volatiles.semiInvulnerable != STATE_COMMANDER
-          && (moveEffect != EFFECT_SKY_DROP || gBattleStruct->skyDropTargets[battlerDef] == SKY_DROP_NO_TARGET))
+          && !IsSkyDropInvolved(battlerDef, moveEffect))
     {
         effect = TRUE;
         ability = ABILITY_NO_GUARD;
         abilityBattler = battlerAtk;
     }
-    // If the target has the ability No Guard and they aren't involved in a Sky Drop or the current move isn't Sky Drop, move hits.
-    else if (cv->abilities[battlerDef] == ABILITY_NO_GUARD
-          && (moveEffect != EFFECT_SKY_DROP || gBattleStruct->skyDropTargets[battlerDef] == SKY_DROP_NO_TARGET))
+    else if (cv->abilities[battlerDef] == ABILITY_NO_GUARD && !IsSkyDropInvolved(battlerDef, moveEffect))
     {
         effect = TRUE;
         ability = ABILITY_NO_GUARD;
@@ -10811,7 +10749,8 @@ static bool32 CanBreakThroughSemiInvulnerablityInternal(enum BattlerId battlerAt
     case STATE_UNDERWATER:
         return MoveDamagesUnderWater(move);
     case STATE_ON_AIR:
-    case STATE_SKY_DROP:
+    case STATE_SKY_DROP_ATTACKER:
+    case STATE_SKY_DROP_TARGET:
         return MoveDamagesAirborne(move) || MoveDamagesAirborneDoubleDamage(move);
     case STATE_PHANTOM_FORCE:
         return FALSE;
@@ -10833,6 +10772,19 @@ bool32 CanBreakThroughSemiInvulnerablity(enum BattlerId battlerAtk, enum Battler
 bool32 BreaksThroughSemiInvulnerableState(enum BattlerId battlerAtk, enum BattlerId battlerDef, enum Ability abilityAtk, enum Ability abilityDef, enum Move move, enum SemiInvulnerableState state)
 {
     return CanBreakThroughSemiInvulnerablityInternal(battlerAtk, battlerDef, abilityAtk, abilityDef, move, state);
+}
+
+bool32 IsBattlerOnAir(enum BattlerId battler)
+{
+    switch (gBattleMons[battler].volatiles.semiInvulnerable)
+    {
+    case STATE_ON_AIR:
+    case STATE_SKY_DROP_ATTACKER:
+    case STATE_SKY_DROP_TARGET:
+        return TRUE;
+    default:
+        return FALSE;
+    }
 }
 
 bool32 HasPartnerTrainer(enum BattlerId battler)

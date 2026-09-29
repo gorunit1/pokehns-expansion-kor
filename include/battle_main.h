@@ -93,7 +93,7 @@ void AnimSetCenterToCornerVecX(struct Sprite *sprite);
 void BeginBattleIntroDummy(void);
 void BeginBattleIntro(void);
 void SwitchInClearSetData(enum BattlerId battler, struct Volatiles *volatilesCopy);
-const u8 *FaintClearSetData(enum BattlerId battler);
+void FaintClearSetData(enum BattlerId battler);
 void BattleTurnPassed(void);
 u8 IsRunningFromBattleImpossible(enum BattlerId battler);
 u8 IsTeleportRunningFromBattleImpossible(enum BattlerId battler);
