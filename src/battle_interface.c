@@ -2166,11 +2166,12 @@ static void UpdateSafariBallsTextOnHealthbox(u8 healthboxSpriteId)
 
 static void UpdateLeftNoOfBallsTextOnHealthbox(u8 healthboxSpriteId)
 {
-    u8 text[16];
+    u8 text[24];
     u8 *txtPtr;
 
-    txtPtr = StringCopy(text, gText_SafariBallLeft);
-    ConvertIntToDecimalStringN(txtPtr, gNumSafariBalls, STR_CONV_MODE_LEFT_ALIGN, 2);
+    // Korean word order, as in pokeemerald-kr: number first, then gText_SafariBallLeft ("개 남음").
+    txtPtr = ConvertIntToDecimalStringN(text, gNumSafariBalls, STR_CONV_MODE_LEFT_ALIGN, 2);
+    StringAppend(txtPtr, gText_SafariBallLeft);
 
     if (UseGen4BattleUI())
     {
