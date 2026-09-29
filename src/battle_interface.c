@@ -2137,40 +2137,30 @@ static u8 GetStatusIconForBattlerId(u8 statusElementId, enum BattlerId battler)
 
 static void UpdateSafariBallsTextOnHealthbox(u8 healthboxSpriteId)
 {
-    if (UseGen4BattleUI())
-    {
-        u32 windowId, spriteTileNum;
-        u8 *windowTileData;
+    u32 windowId, spriteTileNum;
+    u8 *windowTileData;
 
-        windowTileData = AddTextPrinterAndCreateWindowOnHealthbox(gText_SafariBalls, 2, 3, 2, &windowId, FALSE);
-        spriteTileNum = gSprites[healthboxSpriteId].oam.tileNum * TILE_SIZE_4BPP;
-        TextIntoHealthboxObject((void *)(OBJ_VRAM0 + 0x40) + spriteTileNum, windowTileData, 6);
-        TextIntoHealthboxObject((void *)(OBJ_VRAM0 + 0x800) + spriteTileNum, windowTileData + 0xC0, 2);
-        RemoveWindowOnHealthbox(windowId);
-    }
-    else
-    {
-        u32 healthboxSpriteId2 = gSprites[healthboxSpriteId].oam.affineParam;
-
-        s16 savedValue1 = gSprites[healthboxSpriteId].data[1];
-        s16 savedValue2 = gSprites[healthboxSpriteId2].data[1];
-        gSprites[healthboxSpriteId].data[1] = healthboxSpriteId2;
-        gSprites[healthboxSpriteId2].data[1] = SPRITE_NONE;
-
-        AddSpriteTextPrinterParameterized6(healthboxSpriteId, FONT_SMALL, 16, 3, 0, 0, sHealthBoxTextColor, 0, gText_SafariBalls);
-
-        gSprites[healthboxSpriteId].data[1] = savedValue1;
-        gSprites[healthboxSpriteId2].data[1] = savedValue2;
-    }
+    // Render the label the pokeemerald-kr way for both UIs: print into a window pre-filled with the
+    // box colour and let TextIntoHealthboxObject copy only window rows 5-15.
+    // gText_SafariBalls starts with {HIGHLIGHT DARK_GRAY}, so printing it straight onto the sprite
+    // (old Gen3 path) also wrote the glyph cell's blank top rows as colour 2 at sprite y 3-4,
+    // over the HnS Gen3 healthbox's top frame.
+    // x: Gen4 keeps its 2px inset; Gen3 keeps the old sprite printer position (healthbox x 16).
+    windowTileData = AddTextPrinterAndCreateWindowOnHealthbox(gText_SafariBalls, UseGen4BattleUI() ? 2 : 0, 3, HEALTHBOX_BG_INDEX, &windowId, FALSE);
+    spriteTileNum = gSprites[healthboxSpriteId].oam.tileNum * TILE_SIZE_4BPP;
+    TextIntoHealthboxObject((void *)(OBJ_VRAM0 + 0x40) + spriteTileNum, windowTileData, 6);
+    TextIntoHealthboxObject((void *)(OBJ_VRAM0 + 0x800) + spriteTileNum, windowTileData + 0xC0, 2);
+    RemoveWindowOnHealthbox(windowId);
 }
 
 static void UpdateLeftNoOfBallsTextOnHealthbox(u8 healthboxSpriteId)
 {
-    u8 text[16];
+    u8 text[24];
     u8 *txtPtr;
 
-    txtPtr = StringCopy(text, gText_SafariBallLeft);
-    ConvertIntToDecimalStringN(txtPtr, gNumSafariBalls, STR_CONV_MODE_LEFT_ALIGN, 2);
+    // Korean word order, as in pokeemerald-kr: number first, then gText_SafariBallLeft ("개 남음").
+    txtPtr = ConvertIntToDecimalStringN(text, gNumSafariBalls, STR_CONV_MODE_LEFT_ALIGN, 2);
+    StringAppend(txtPtr, gText_SafariBallLeft);
 
     if (UseGen4BattleUI())
     {
