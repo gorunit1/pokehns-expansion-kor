@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 91 (+ 같은 unit의 seq 93)
 
-진행 중: 마지막 완료 seq 91(#9507)과 같은 unit의 seq 93(#9558), 다음: 구간 끝 전체 테스트 → 다음 구간은 seq 92 #9429부터.
+완료: seq 91 #9507과 같은 unit의 seq 93 #9558 이식·전체 테스트·기록 완료(다음 구간은 seq 92 #9429부터). 아래 "seq 91 요약" 참고.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md), group plan [`g4_ai_tests_pokemon_sprites_plan.md`](../1.17.0-sync-plan/g4_ai_tests_pokemon_sprites_plan.md)
 시작 HEAD: `2e403781f3` (작업 트리 clean)
@@ -62,7 +62,7 @@
 
 ### upstream과 일부러 다르게 둔 곳
 
-- **`src/field_effect.c` `InitFieldMoveMonSprite` 인자 `u32` 유지(`// HnS:` 주석).** upstream #9507은 이 인자를 `enum Species`로 바꿨다. 그런데 이 인자는 종 번호에 `SHOW_MON_CRY_NO_DUCKING`(bit 31)을 함께 싣는다(`FldEff_FieldMoveShowMonInit`, 파도타기 `tMonId | SHOW_MON_CRY_NO_DUCKING`, 다른 필드 기술 `| 0x80000000`). 16비트 `enum Species` 인자에서는 bit 31이 잘려 울음소리가 항상 배경음을 줄이는 쪽으로 바뀐다. 오브젝트 비교로 확인했다: 기준 빌드 `FldEff_FieldMoveShowMon`은 `lsrs r7, r0, #31; lsls r7, r7, #15`로 `data[6]`에 0x8000을 넣고, upstream 그대로면 `movs r2, #0`으로 항상 0이 된다. upstream 1.17.0에도 같은 코드가 남아 있다. 선언과 정의를 `u32`로 두어 `field_effect.o`가 기준 빌드와 함수 233개 모두 명령열 동일하다.
+- **`src/field_effect.c` `InitFieldMoveMonSprite` 인자 `u32` 유지(`// HnS:` 주석).** upstream #9507은 이 인자를 `enum Species`로 바꿨다. 그런데 이 인자는 종 번호에 `SHOW_MON_CRY_NO_DUCKING`(bit 31)을 함께 싣는다(`FldEff_FieldMoveShowMonInit`, 파도타기 `tMonId | SHOW_MON_CRY_NO_DUCKING`, 다른 필드 기술 `| 0x80000000`). 16비트 `enum Species` 인자에서는 bit 31이 잘려 `SpriteCB_FieldMoveMonSlideOnscreen`이 `PlayCry_NormalNoDucking` 대신 항상 `PlayCry_Normal`(배경음을 줄임)을 부르게 된다(파도타기·록클라임 연출). 오브젝트 비교로 확인했다: 기준 빌드 `FldEff_FieldMoveShowMon`은 `lsrs r7, r0, #31; lsls r7, r7, #15`로 `data[6]`에 0x8000을 넣고, upstream 그대로면 `movs r2, #0`으로 항상 0이 된다. upstream 1.17.0에도 같은 코드가 남아 있다. 선언과 정의를 `u32`로 두어 `field_effect.o`가 기준 빌드와 함수 233개 모두 명령열 동일하다.
 - `RemoveSpeciesFromIconList(u16 key)`: 위 표 참고(HnS 아이콘 키).
 - HnS 전용 함수·인자·변수는 `u16`으로 두었다(upstream hunk가 없고 1.17.0에도 없는 것). 예: `CreateShinyScriptedMon`·`CreateScriptedWildBossMon`·`CreateScriptedDoubleWildBossMon`, `ScriptMenu_ShowShinyPokemonPic`, `CreateShinyMonSprite_PicBox`, `GetMonIconListKey`, `SpeciesToJohtoPokedexNum` 계열, `TransferEggMovesFromPool`의 `poolSpecies`·`TransferEggMoves`의 `nonBabySpecies`, `PrintEvolutionTargetSpeciesAndMethod`의 `baseSpecies`.
 
@@ -107,7 +107,7 @@
   - 실기 확인: 불필요(ROM 동일).
 - 남은 위험: 없음. 이후 HnS에 커스텀 종을 넣을 때는 `SPECIES_CUSTOM_START`와 `SPECIES_CUSTOM_END` 사이에 넣게 되며, 그러면 `SPECIES_EGG`·`NUM_SPECIES`가 커져 `dexNavSearchLevels`(현재 `USE_DEXNAV_SEARCH_LEVELS FALSE`라 세이브에 없음) 같은 `NUM_SPECIES` 크기 배열이 바뀐다(upstream과 같은 조건).
 
-## 필수 검증 결과 (#9507 직후, `b0a0fb9033`)
+## 필수 검증 결과 (#9507 직후 `b0a0fb9033`, #9558 뒤 `8de47b965d`에서 다시 확인)
 
 ### 1. 종 ID 값 보존 (C 경로·asm 경로)
 
@@ -115,6 +115,7 @@
   - C 경로: `global.h`·`constants/species.h`·`randomizer.h`·`config/pokemon.h`·`pokemon.h`를 include한 임시 C 파일을 실제 빌드와 같은 `arm-none-eabi-cpp` + `cc1 -O2`로 컴파일하고 `const long long v = (NAME);` 초기값을 어셈블리에서 읽었다.
   - asm 경로: `.4byte NAME` 목록 `.s`를 `data/*.s`와 같은 `preproc -s | cpp -I include | preproc -ie | as`로 조립해 `.data`를 읽었다. 이식 후 값은 preproc가 enum에서 만든 `.equiv`에서 온다(예: `.equiv SPECIES_BULBASAUR, (1) + 0`, `.equiv SPECIES_EGG, ((SPECIES_GLIMMORA_MEGA + 1)) + 0`, `.equiv NUM_SPECIES, (SPECIES_EGG) + 0`).
 - 결과: C 1,679행(숫자 1,677, 나머지 2행은 이식 전후 모두 없는 CUSTOM 이름), asm 1,675행(숫자 1,673). **이식 전후 diff: C 0줄, asm 0줄.** 이름 집합도 같다(파일 안 순서만 다름). 주요 값: `SPECIES_NONE` 0, `SPECIES_GLIMMORA_MEGA` 1572, `SPECIES_EGG` = `NUM_SPECIES` = 1573, `SPECIES_SHINY_TAG` 5000, `RANDOMIZER_MAX_MON` 1572, `P_SCATTERBUG_LINE_FORM_BREED` 1455, `SPECIES_BITMAP_SIZE` 197, `sizeof(gFusionTablePointers)` 6292.
+- #9558 뒤(`8de47b965d`) 다시 만든 표: C 1,682행·asm 1,675행 모두 숫자. 이식 전 표와 비교하면 공통 이름 1,675개와 파생 상수 4개는 diff 0이고, 달라진 것은 이식 전에 없던 `SPECIES_CUSTOM_START` = 1572, `SPECIES_CUSTOM_END` = 1573(C·asm 같음)과 형 확인용 식 3개뿐이다.
 - `#if`/`#ifdef`/`defined()`와 asm `.if`에서 종 상수를 쓰는 곳 0건(`src`·`include`·`test`·`data`·`asm`·`tools`). `include/constants/species.h`를 파싱하는 빌드 도구 0건(`tools/learnset_helpers`·`wild_encounters`는 이름만 다룸).
 - 참고: `enum Species`는 무부호 16비트다. #9558 뒤 같은 C 경로로 `sizeof(enum Species)` = 2, `(enum Species)-1` = 65535, `(enum Species)-1 > 0` = 1을 확인했고, DWARF에서도 `Species`는 byte_size 2·encoding unsigned다.
 
@@ -147,3 +148,48 @@
 ### 5. 한글
 
 - #9507 커밋의 비ASCII 변경 줄 0(`species.h` 머리 주석 "Pokémon" 줄은 바뀌지 않음).
+
+## seq 91 요약
+
+| seq | PR | 판정 | 커밋 | ROM 변화 |
+|---:|---|---|---|---:|
+| 91 | #9507 | 적용(HnS 적응) | `b0a0fb9033` | +448 B |
+| 93 | #9558 | 적용(그대로, #9507과 같은 unit이라 먼저 넣음) | `8de47b965d` | 0 B(바이트 동일) |
+
+- 구간 밖 행: seq 93 #9558만 group plan의 같은 unit이라 함께 넣었다. seq 92 #9429 등 다른 행은 넣지 않았다.
+- 마지막 빌드(`8de47b965d`): 종료 코드 0, **ROM 32,713,060 B(97.49%, 구간 시작 대비 +448 B), EWRAM 248,924 B(94.96%, 0), IWRAM 25,516 B(77.87%, 0)**. SHA-1 `cfdfb88553e6c19e308d58099b7c681645bb9dfa`. 경고: 기준 대비 새 경고 0, 사라진 경고 1(`egg_hatch.c` 'nationalDexNum' 미사용).
+- 한글이 든 소스 줄 변경: **0**(두 코드 커밋 모두 비ASCII 변경 줄 0).
+- 종 ID 값: 이식 전후 C·asm 값 표 diff 0(공통 이름 1,675개 + 파생 상수 4개). 새 이름은 `SPECIES_CUSTOM_START` = 1572, `SPECIES_CUSTOM_END` = 1573뿐이고 `SPECIES_EGG`·`NUM_SPECIES` = 1573 그대로.
+- 세이브 구조: TU 99개·뿌리 633종 배치 차이 0(`SaveBlock1/2/3`·`PokemonStorage`·`BoxPokemon`·TV·릴리코브·프런티어·어프렌티스·데이케어·로밍·트레이너 힐·메일·Mystery Gift(WonderCard) 등 포함). 형 이름만 `u16` → `enum Species`.
+- upstream과 일부러 다르게 둔 곳: `InitFieldMoveMonSprite` `u32` 유지(파도타기·록클라임 울음소리 플래그), `RemoveSpeciesFromIconList(u16 key)`, HnS 전용 함수·인자는 `u16`.
+
+### 전체 테스트 (구간 끝)
+
+- 실행: `PATH=… make check BUILD=hns -j8 > build/port-check.log 2>&1`(10분 45초, 테스트 실패가 있어 종료 코드 2는 이전과 같음). 코드 커밋 `8de47b965d` 기준.
+- 결과: PASS 2,298 / FAIL 2,229 / KNOWN_FAILING 8 / ASSUMPTIONS_FAILED 38 / TO_DO 618 / EXPECT_FAILING 6 / TOTAL 5,197. assertion·illegal opcode·Killed 0(`CRASH`·`illegal` 문자열 3줄은 테스트 이름이며 이식 전과 같음).
+- `PORT_INSTRUCTIONS`의 `LC_ALL=C` 추출 목록(5,128행)이 [`test-baseline-seq090.txt`](test-baseline-seq090.txt)와 **바이트 동일**하다. 회귀 0, 새 PASS·새 테스트 0. 새 기준 목록: [`test-baseline-seq091.txt`](test-baseline-seq091.txt)(내용은 seq090과 같다).
+- 추출 정규식 밖 상태(INVALID·ASSUMPTIONS_FAILED·EXPECT_FAILING 등)까지 모든 상태 줄 5,187행을 이식 전 전체 로그와 비교했다: **바이트 동일**. `capture.c` 7건 INVALID(이식 전과 같음)도 여기 포함된다.
+- 알려진 FAIL은 그대로다: AI 더블 테스트 3건(`AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE 50`, seq 131 #9462에서 재확인), `Move Animations work 1`·`2`(HnS 도구 팝업).
+- 테스트 빌드: 이식 후 `-Wenum-conversion` 오류가 난 `test/battle/capture.c`·`test/battle/ability/mummy.c`를 1.17.0 형태로 고쳐(#9507 커밋에 포함) 테스트 ELF가 링커 RWX 경고 외 경고 없이 빌드된다.
+
+### 실기 확인 필요 (mGBA)
+
+코드상 동작 변화는 없도록 맞췄다(ROM 차이는 형 변환 명령뿐). 아래는 종 값을 저장·표시하는 화면이 전과 같은지 보는 스모크 확인이다.
+
+1. **기존 세이브 불러오기**: 이식 전 ROM(`9dcd5c15…`)으로 저장한 세이브를 새 ROM에서 불러와 이어하기 화면·파티·PC 박스(아이콘·요약 화면·포켓몬 옮기기)가 전과 같은지. 도감(본/잡은 수, HGSS 도감의 진화 화면·기술 목록·분포 화면).
+2. **데이케어**: 맡겨 둔 포켓몬과 알이 그대로인지, 알을 받아 부화(부화 화면, 도감 등록, 이름 짓기). 향로를 쥔 부모의 아기 포켓몬, 피츄(전기구슬을 쥔 부모 → 볼트태클) 유전.
+3. **로밍**: 저장 전 활성화된 라이코·앤테이(조토)·라티아스/라티오스가 그대로 돌아다니는지, 만나서 전투 시작.
+4. **TV·기록 계열**: 저장된 TV 방송(포켓몬 이름이 나오는 방송), 릴리코브 레이디, 비밀기지, 배틀 프런티어·어프렌티스 기록, 메일의 포켓몬 아이콘.
+5. **DexNav**: 검색 화면의 종 아이콘·숨은 포켓몬 발견·연쇄.
+6. **필드 기술 연출**: 파도타기·록클라임을 쓸 때 포켓몬이 나오며 우는 울음소리가 이전처럼 배경음을 줄이지 않는지(이번에 upstream 회귀를 막은 곳). 폭포오르기·다이빙·공중날기와 파티 메뉴에서 쓰는 필드 기술(풀베기·바위깨기 등) 연출은 기존처럼 배경음을 줄이는지.
+7. 스크립트로 받는 포켓몬·알(`givemon`·`giveegg`), 이름 짓기 화면(포켓몬 아이콘과 주인공·라이벌 성별 아이콘), 진화·교환 진화 화면, 전투 중 폼체인지·다이맥스 표시.
+
+### 다음 구간 담당 참고
+
+- 다음 시작: seq 92 #9429 `U-9429`(M). **seq 93 #9558은 이미 적용**(`8de47b965d`)이라 도달하면 "이미 적용"으로 처리한다.
+- 이제 upstream의 `enum Species` 시그니처를 그대로 받을 수 있다. 다만 `u16`과 `enum Species`는 C에서 호환형이라 선언·정의 형이 엇갈려도 컴파일 오류가 나지 않는다. 새 PR에서 시그니처를 바꿀 때는 선언·정의를 함께 바꾼다.
+- `-Wenum-conversion`이 종 상수에도 걸린다. 종 상수를 다른 enum 인자(`enum NationalDexOrder`·`enum Ability` 등)에 바로 넘기는 upstream 테스트는 HnS에서 테스트 빌드 오류가 된다(이번에 `capture.c`·`mummy.c`를 1.17.0 형태로 고침).
+- HnS가 upstream과 다르게 둔 곳: `src/field_effect.c` `InitFieldMoveMonSprite(u32 species, …)`(bit 31 울음소리 플래그), `src/pokemon_storage_system.c` `RemoveSpeciesFromIconList(u16 key)`(HnS 아이콘 키). 뒤 PR이 이 함수들을 다시 건드리면 유지한다.
+- seq 367 #9878(알 재작업) 이식 때: HnS의 #9878 선반영 함수(`GiveParent*`·`GiveMoveIfParentHeldItem`·`BuildEggMoveset`·`InheritPokeball`·`InheritAbility`)는 이번에 종 형을 1.17.0과 같게 맞췄다. `TransferEggMovesFromPool`(HnS 자체 구현)의 `poolSpecies`·`nonBabySpecies`는 `u16`으로 남아 있다.
+- 뒤 PR에서 `enum Species`가 되는 것(이번에 넣지 않음): `SanitizeSpeciesId`·`GetFormSpeciesId`·`GetSpeciesPreEvolution`·`GetRegionalFormByRegion`·`GetUnownSpeciesId`·`MailSpeciesToSpecies` 반환형, `GetFormIdFromFormSpeciesId`, `GetFollowerInfo`·`GetMonInfo`(`u32 *`), `AreBattleTowerLinkSpeciesSame`, `AppendIfValid`의 배열, `EggHatchCreateMonSprite`, `GetTypeEffectivenessPoints`, `GetMoveSpeciesPowerOverride_Species` 등.
+- porymap 같은 외부 도구가 `SPECIES_*`를 `#define`에서 읽는 설정이면 enum을 읽는 버전이 필요하다(upstream과 같은 조건, 저장소에 별도 설정 없음).
