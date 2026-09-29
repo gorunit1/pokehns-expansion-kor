@@ -8,8 +8,6 @@
 #define PARTNER_SILVER_MEGANIUM_HNS 3
 #define PARTNER_SILVER_TYPHLOSION_HNS 4
 #define PARTNER_SILVER_FERALIGATR_HNS 5
-#define PARTNER_DUMMY 6
-#define PARTNER_COUNT 7
-//Tests need PARTNER_COUNT to be at least 3 so we add a dummy partner
+#define PARTNER_COUNT 6
 
 #endif  // GUARD_CONSTANTS_BATTLE_PARTNERS_H
