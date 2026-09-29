@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 63~82
 
-진행 중: seq 70 (#9407) unit 진행 중 — #9407·#9549·#9707 커밋 완료, 이어서 같은 unit #10573. 그다음 seq 71 (#9417). seq 76 #9474는 seq 64 커밋에 포함(이미 적용).
+진행 중: 마지막 완료 seq 70 (#9407 unit: #9407·#9549·#9707·#10573), 다음 seq 71 (#9417). seq 76 #9474는 seq 64 커밋에 포함(이미 적용).
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `72f40563ad`
@@ -180,3 +180,16 @@
 - HNS 적응: 그대로 적용
 - 저장·ROM·그래픽 영향: ROM 크기 변화 없음
 - 검증: `git diff --check` 통과, `make hns -j8` 종료 코드 0, ROM 32,715,812 B / EWRAM 248,892 B / IWRAM 25,516 B, 새 경고 없음. 자동 테스트 해당 없음.
+
+### unit U-fade-9407: #10573 Rework simultaneous palette fade (순서표 seq 319)
+
+- 현재 판정: 적용(같은 unit 마지막). **seq 319 담당은 "이미 적용"으로 처리한다.**
+- 커밋: `f76c7bf7ed`
+- upstream 근거: `4a39c64fe4`
+- 수정 파일: `include/palette.h`(`PaletteFadeControl.simultaneousFade:1`, padding 15 → 14), `src/field_weather.c`(`FadeSelectedPals`의 페이드아웃에서 `simultaneousFade = TRUE`), `src/palette.c`(`UpdateNormalPaletteFade`를 `_Alternate`/`_Simultaneous`로 나눔)
+- HNS 적응: 그대로 적용(오프셋만). 적용 뒤 `palette.c`의 페이드 함수들(`UpdateTimeOfDayPaletteFade`, `UpdateNormalPaletteFade*`, `IsSoftwarePaletteFadeFinishing`)은 upstream 1.17.0과 같다. 남은 차이는 다른 PR 몫(#2309 DMA 매크로, HnS가 쓰는 `TimeBlendPalette`·`TintPalette_RGB_Copy`, 공백 줄)이다.
+- **unit 최종 동작(= 1.17.0):** 일반 소프트웨어 페이드(메뉴·배틀 전환 등)는 이식 전 HnS와 같은 배경/스프라이트 번갈아 방식. 필드 `FadeScreen`/`FadeSelectedPals`의 페이드아웃(검정·흰색)은 동시 방식. 자연광 맵 페이드인에 쓰는 시간대 페이드(`UpdateTimeOfDayPaletteFade`, `OW_ENABLE_DNS = TRUE`)는 #9407부터 2프레임마다 배경·스프라이트를 함께 블렌드한다(같은 속도).
+- 저장·ROM·그래픽 영향: ROM +240 B(unit 전체 +144 B: 32,715,908 → 32,716,052). `gPaletteFade` 비트필드 1개 추가(크기 불변). 세이브 무관.
+- 검증: `git diff --check` 통과, `make hns -j8` 종료 코드 0, ROM 32,716,052 B / EWRAM 248,892 B / IWRAM 25,516 B, 새 경고 없음. 자동 테스트 해당 없음.
+- 실기 확인(unit 전체): **필요.** 맵 이동(문·계단·워프) 페이드아웃/인, 비·안개 등 날씨 맵과 자연광 맵의 시간대별 페이드인, 동반 포켓몬·NPC 스프라이트가 배경과 같은 속도로 페이드되는지(스프라이트만 늦게/먼저 바뀌는 깜빡임 없음), 블렌드 면역 스프라이트(조명 등) 색, 메뉴 열고 닫기·배틀 진입/종료 페이드.
+- 남은 위험: 낮음(1.17.0 최종형과 같음). 시간대 페이드 경로는 HnS DNS 설정에서 실기로만 확인 가능.
