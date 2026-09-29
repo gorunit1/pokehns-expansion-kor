@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 84~90
 
-진행 중: 마지막 완료 seq 85, 다음 seq 86
+진행 중: 마지막 완료 seq 86, 다음 seq 87
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `79af946ddf`
@@ -68,3 +68,28 @@
   - 자동 테스트: L 크기라 전체 실행(`make check BUILD=hns -j8`, 9분 2초). PASS 2,298 / FAIL 2,229 / KNOWN_FAILING 8 / TO_DO 618 / EXPECT_FAILING 6 / TOTAL 5,197. 목록(5,128행)이 `test-baseline-seq083.txt`와 **바이트 동일**.
   - 실기 확인: 불필요(동작 동등).
 - 남은 위험: 없음.
+
+## 동기화 단위: seq 86 #9510 `U-9510` Minor IsBattlerWeatherAffected refactor
+
+- 현재 판정: 적용(HnS 적응)
+- 커밋: `7a6cd5b51b`
+- upstream 근거: `60eeba987f`
+- 해결한 의존성: 없음. #9735(seq 146, 메가솔)의 본체는 HnS에 먼저 들어와 있다(`GetAttackerWeather`).
+- 수정 파일: `include/battle_util.h`, `src/battle_util.c`, `src/battle_script_commands.c`, `src/battle_move_resolution.c`, `src/battle_main.c`
+- HNS 적응과 보존한 한글화/배틀 메시지 동작:
+  - **`GetWeather()` 공개:** `battle_script_commands.c`의 static `GetWeather`를 지우고 `battle_util.c`에 공개 함수로 둔다. HnS에는 본문이 같은 `GetBattleWeatherForEffects()`(HnS 이름, #9735 선반영 때 `GetWeather`가 static이라 따로 만든 것)가 있어, 이것을 `GetWeather`로 바꾸고 호출 4곳(`DoesMoveMissTarget` 2, `CanTwoTurnMoveFireThisTurn`, `GetDynamicMoveType`)을 맞췄다. 1.17.0도 같은 자리에서 `GetWeather()`를 쓴다.
+  - **새 시그니처 `IsBattlerWeatherAffected(holdEffect, weather, flags)`:** 본문은 #9510 그대로. HnS 이전 판은 `GetAttackerWeather(보유 도구, 특성, 날씨) & flags`라 메가솔 보유자를 "햇살"로 봤다. 새 함수에는 특성 인자가 없어서 호출부마다 메가솔 영향 여부를 확인했다.
+    - 특성이 정해진 경로(수확·아이스바디·건조피부·젖은접시·촉촉한몸·선파워·리프가드·기상예보/플라워기프트/아이스페이스, 플라워기프트 공격/방어·아군): 대상의 특성이 그 특성이라 메가솔일 수 없다 → upstream 형태 그대로. 날씨·우산 판정은 옛 식과 같다(날씨 ≠ 없음이면 `weather == gBattleWeather`).
+    - **메가솔이 걸릴 수 있는 3곳은 HnS 동작 유지:** `CanSetNonVolatileStatus` 얼음 상태 면역(맑음), `CalcDefenseStat` 모래바람 바위 특방·설경 얼음 방어 보정. `GetAttackerWeather(…) & flag` 형태로 옛 판정을 그대로 두고 `// HnS:` 주석을 달았다(방어 보정은 #9510 의도대로 `ctx->holdEffectDef/abilityDef/weather` 사용, 실전 계산에서는 `CalculateMoveDamage`가 채운 값이라 옛 값과 같다). upstream #9510을 그대로 쓰면 메가솔 방어측이 얼음 상태에 걸리게 되는 등 동작이 바뀐다. 이 두 보정은 seq 146 #9735에서 공격측 `GetAttackerWeather` 기준으로 바뀔 예정이다(group plan).
+    - 대미지 계산의 선파워·플라워기프트(자신)·아군 플라워기프트(방어)는 #9510대로 `ctx->holdEffectAtk`·`ctx->weather`를 쓴다. 실전 계산은 같은 값이고, AI 계산은 AI가 아는 도구·예상 날씨를 쓰게 된다(upstream 의도).
+    - 기상예보·플라워기프트·아이스페이스 폼 체인지 조건의 `gBattleWeather == NONE || !HasWeatherEffect()`는 upstream처럼 `weather == B_WEATHER_NONE`(`weather = GetWeather()`)으로 합쳤다(같은 값).
+  - upstream hunk 중 HnS가 이미 나중 형태(`GetAttackerWeather`)를 쓰는 곳은 해당 없음: 2턴 기술 `CanTwoTurnMoveFireThisTurn`, `BS_JumpIfWeatherAffected`, 명중 `CanMoveSkipAccuracyCalc`·`GetTotalAccuracy`, 솔라빔 위력.
+  - 기존 HnS `GetAttackerWeather(holdEffect, ability, weather)`는 인자 순서가 이미 1.17.0과 같아 바꾸지 않았다.
+- 저장·ROM·그래픽 영향: ROM +224 B(32,712,852 B). 세이브 무관.
+- 코드 비교(#9466 직후 오브젝트 기준): 바뀐 함수는 날씨 판정 호출부(`AbilityBattleEffects`, `CanSetNonVolatileStatus`, `DoMoveDamageCalcVars`, `IsLeafGuardProtected`·`IsAbilityStatusProtected`·`BS_JumpIfAbilityPreventsRest`, `BS_JumpIfWeatherAffected`·`Cmd_damagecalc`·`Cmd_recoverbasedonsunlight`(static `GetWeather` 인라인 → 외부 호출), `CancelerCharging`·`GetDynamicMoveType`(호출 이름만))와, 줄 수 변화에 따른 assert `__LINE__` 상수·명령 배치만 다른 함수들(`Cmd_call`·`BS_SaveAttacker` 등 19개, `Cmd_getexp`·`Cmd_attackanimation`·`Cmd_endselectionscript`는 같은 호출 집합에서 레지스터·상수 배치만 다름).
+- 검증:
+  - `git diff --check`: 통과. 비ASCII 줄 변경 0.
+  - `make hns -j8`: 종료 코드 0, ROM 32,712,852 B / EWRAM 248,924 B / IWRAM 25,516 B, 새 경고 없음.
+  - 자동 테스트: 전체 실행(16분 24초, 병렬 부하로 느림). 목록 5,128행이 이식 전(#9466 직후 = `test-baseline-seq083.txt`)과 **바이트 동일**. 그중 날씨 관련 24파일(`test/battle/weather/*.c` + 기상예보·플라워기프트·아이스페이스·수확·아이스바디·건조피부·젖은접시·촉촉한몸·선파워·리프가드·엽록소·쓱쓱 등 특성, 만능우산) 테스트 145건: 전후 모두 PASS 83 / FAIL 61 / TO_DO 1.
+  - 실기 확인: 권장(선택). 맑음·비에서 만능우산 보유자의 선파워·건조피부·젖은접시, 수확, 체리꼬 폼 체인지, 에어록/날씨부정 상태의 기상예보 복귀.
+- 남은 위험: 낮음. AI 대미지 계산에서 선파워·플라워기프트 보정이 AI가 아는 도구(만능우산 미확인 시)를 기준으로 바뀐다(upstream 의도).
