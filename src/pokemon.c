@@ -3832,7 +3832,7 @@ void CalculateMonStats(struct Pokemon *mon)
         return;
 #endif
 
-    if (species == SPECIES_SHEDINJA)
+    if (HasShedinjaHPHandling(species))
     {
         newMaxHP = 1;
     }
@@ -10176,4 +10176,13 @@ u16 GetPaldeaCatchProgress(void)
     };
 
     return GetCatchProgress(paldeaPkmn, sizeof(paldeaPkmn) / sizeof(*paldeaPkmn));
+}
+
+bool32 HasShedinjaHPHandling(u32 species)
+{
+    if (species == SPECIES_SHEDINJA)
+        return TRUE;
+    if (P_BASE_HP_1_SHEDINJA_HANDLING && GetSpeciesBaseHP(species) == 1)
+        return TRUE;
+    return FALSE;
 }
