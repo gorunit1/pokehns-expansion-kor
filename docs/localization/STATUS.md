@@ -1,6 +1,19 @@
 # 현재 인수인계 상태
 
-## 2026-09-29 — full-sync port seq 1~62 완료, 테스트 러너 복구 (현재)
+## 2026-09-29 — full-sync port seq 63~82 완료 (현재)
+
+- **다음 시작 seq: 83** (#8497 `U-anim-8497`, XL, 단독 구간). 구간 결과: `docs/friend-handoff/results/1.17.0-port/full-sync-seq-063-082.md`
+- 구간 밖이지만 unit 구성원이라 먼저 넣은 행: seq 94 #9549, 98 #9564, 138 #9707, 319 #10573, 330 #10648(기존 329 #10647 포함). 도달하면 "이미 적용"으로 처리한다.
+- 빌드(`b42872eba2`, 노트북 WSL, ARM 13.2.1, 메인이 재링크해 확인): 종료 코드 0, ROM 32,717,172 B(97.50%, 구간 시작 대비 −22,048 B, 주로 #9086 문자열 병합), EWRAM 248,908 B(94.95%, +16 B), IWRAM 25,516 B(77.87%). 새 경고 0.
+- 한글: 한글이 든 소스 줄 변경은 #9086(`challenge_menu.c` 1쌍, `contest.c` 3쌍)과 #9051(`strings.c` → `src/data/script_menu.h` 이동)뿐이다. 메인 대조 결과 제거된 한글 리터럴 48종이 모두 그대로 다시 나타나고, 새 리터럴 7종(`슈퍼`·`하이퍼`·`마스터`·`싱글`·`더블`·`멀티`·`통신 멀티`)은 `strings.c`에 남아 있는 기존 문구의 인라인 사본이다. #9086 preproc 문자열 바이트 비교(C 1,338파일)·#9051 스크립트 메뉴 676항목 비교 모두 불일치 0.
+- #9066: OBJ_EVENT_GFX·multichoice·facility class 값 표가 전후 C·asm 양쪽 diff 0이고 ROM이 바이트 동일했다. multichoice 값은 실제로 0~177 연속이다(이전 보고의 "값 틈"은 주석 붙은 줄을 추출에서 놓친 착오).
+- 테스트(`make check BUILD=hns -j8`): PASS 2,295 / FAIL 2,226 / TO_DO 618 / TOTAL 5,191, assertion·crash 0. 기준 목록: `results/1.17.0-port/test-baseline-seq082.txt`.
+  - **확인 대기 3건:** #9451 이후 AI 더블 테스트 `AI_FLAG_DOUBLE_ACE_POKEMON: Ace mons won't be switched in…`, `Choiced Pokémon won't switch out…`(PASS→FAIL), 새 테스트 `AI can switch out both mons on the same turn…`(FAIL). 원인은 `AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE 50`(upstream 1.17.0도 50)이 "왼쪽 AI 먼저" 테스트 가정을 깨는 것이다. 값을 0으로 두면 모두 PASS했다(미커밋). upstream은 seq 88 #9460·seq 131 #9462의 `WITH_CONFIG`로 해결하므로, 그 행 이식 뒤 PASS 복귀를 확인한다.
+  - 나머지 차이: 새 테스트 14건 PASS, #8664 TO_DO→실제 테스트 4건과 #9249 새 테스트 1건은 영문 `MESSAGE` 불일치로 FAIL.
+- 실기 확인 추가: 페이드 unit(맵 전환·날씨·시간대 페이드), #9446 싱크로·치료 열매 발동 순서, #9249 난동 혼란 문구 시점·프리폴 해제, #9142 기술 애니 서브루틴(assert 화면 없음), #9121 더블배틀 대타 표시, #9086 한글 문자열 전반.
+- 작업 환경 주의: 이 WSL 셸의 `grep`은 ugrep 래퍼 함수라 파일 인자를 주면 빈 결과가 나올 수 있다. 테스트 목록 비교 등에는 `command grep`을 쓴다.
+
+## 2026-09-29 — full-sync port seq 1~62 완료, 테스트 러너 복구
 
 - **다음 시작 seq: 63** (#9066 `U-enum-9066`, L). seq 329(#10647)는 이미 적용됐다(#9942와 함께).
 - 빌드: ROM 32,739,220 B(97.57%), EWRAM 248,892 B(94.94%), IWRAM 25,516 B(77.87%). 한글 문자열 변경 0.
@@ -24,7 +37,7 @@
 ## 2026-09-28 — 전체 엔진 동기화 1단계 완료: 이식 계획 확정 (현재)
 
 - 남은 594개 PR의 판정: 이식 517(+테스트 러너 복구), 동등 56, 무관 15, 외부결정 6. 이식 순서는 `docs/friend-handoff/results/1.17.0-sync-plan/port_sequence.tsv`, 요약은 `results/pokeemerald-expansion-1.17.0-full-sync-plan.md`에 있다.
-- 결정 대기: #8943 녹화 배틀 형식. 나머지 5건은 기존 원칙에 따른 권장안으로 진행한다.
+- 결정 완료(갱신 2026-09-29): #8943 녹화 배틀 형식은 **A안으로 확정**됐다. upstream 1.17.0 구조를 쓰고, 기존 HnS 녹화 배틀 무효화를 허용하며, 일반 게임 세이브 호환은 유지한다(`CLAUDE_FULL_SYNC_PORT_PROMPT.md` 4절, full-sync plan 5절). 나머지 5건도 권장안으로 확정됐다.
 - 실기 대기: `7e7c38ab10`(`-ffunction-sections`) 이후 ROM의 스모크 테스트, 인접 트레이너 방향.
 - 다음: 테스트 러너 복구 → #9881·#9086 빌드 기반 → 1.16 배틀 리팩터 순으로 이식한다.
 

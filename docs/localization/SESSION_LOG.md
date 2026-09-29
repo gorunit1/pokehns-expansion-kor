@@ -2,6 +2,24 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-09-29 — full-sync port seq 63~82 (노트북 WSL 첫 세션)
+
+- 작업 환경 메모:
+  - 노트북 WSL(Ubuntu, 8코어·메모리 7 GB). ARM 공식 툴체인 `/opt/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi`(13.2.1)를 쓴다. apt 패키지가 아니므로 PATH에 없고, 빌드·테스트 명령마다 `PATH=/opt/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin:$PATH`를 붙인다.
+  - 호스트 gcc 15.2.0에서 tools/ 빌드(-Werror 포함)가 정상이다.
+  - seq 62(`72f40563ad`) 전체 빌드: 종료 코드 0, ROM 32,739,220 B / EWRAM 248,892 B / IWRAM 25,516 B로 데스크탑과 같다. SHA1 `1008a1fa69a582c2a0279b6b5837ca3113df99cf`(데스크탑 `879f6333d0…`와 다른 것은 툴체인 차이).
+  - seq 62 전체 테스트 목록이 `test-baseline-seq062.txt`와 완전히 같았다(PASS 2,283 / FAIL 2,218 / TOTAL 5,175). 그래서 별도 `-wsl` 기준 목록은 만들지 않았다.
+  - push: 노트북은 `credential.helper=store`로 `gorunit1/pokehns-expansion-kor`에 직접 push할 수 있다. 클라우드 세션(claude.ai/code)은 gorunit1 계정에 Claude GitHub App이 설치돼 있지 않아 push가 403으로 막힌다. 친구가 앱을 설치하면 클라우드에서도 push할 수 있다.
+  - 이 셸의 `grep`은 ugrep 래퍼 함수라 파일 인자를 주면 빈 결과가 나올 수 있다. 목록 비교에는 `command grep`을 쓴다.
+- 진행 방식: 구간(가중치 S=1·M=3·L=8·XL=25, 합 40~60, XL 단독)을 에이전트 하나에 순차로 맡겼다. 사용량 한도 대비로 에이전트는 PR마다 결과 문서를 커밋하고, 메인은 15분마다 fetch 뒤 fast-forward일 때만 push한다. 병렬 진행은 의존성(배틀 핵심 파일 공유), 메모리 7 GB, 한도 소모를 이유로 하지 않았다.
+- port: seq 63~82 20행 + unit 구성원 5행(seq 94·98·138·319·330). 커밋 `3cbed2e8f7`~`b42872eba2`. 상세는 `docs/friend-handoff/results/1.17.0-port/full-sync-seq-063-082.md`.
+- 메인 검증:
+  - docs 밖 소스에서 한글이 든 줄 변경: `challenge_menu.c` 1쌍, `contest.c` 3쌍, `strings.c` −38, `src/data/script_menu.h` −6/+51. 제거된 한글 리터럴 48종이 모두 그대로 다시 나타나고, 새 7종은 기존 `strings.c` 문구의 사본이다.
+  - `rm -f pokehns.elf pokehns.gba` 뒤 `make hns -j8`: 종료 코드 0, ROM 32,717,172 B(97.50%), EWRAM 248,908 B(94.95%), IWRAM 25,516 B(77.87%), SHA1 `1d57bfdf33f1115161cbfcf34733123ea6dc64d1`.
+  - 테스트 목록 차이(`command grep`으로 재확인): PASS→FAIL 2건과 새 FAIL 1건은 모두 #9451 이후 AI 더블 테스트이고, 원인은 `AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE 50`이다. 로직 회귀가 아니라 테스트 전제 문제로 판정했다. seq 88·131 이식 뒤 다시 확인한다.
+- 실기: 하지 않았다. 확인 항목은 STATUS 맨 위와 결과 문서에 있다.
+- 다음 시작점: **seq 83 (#8497 `U-anim-8497`, XL)**. 이어서 84~90, 91(#9507 XL) 순이다.
+
 ### 2026-09-29 — full-sync 실제 port seq 1~62, 테스트 러너 복구
 
 - 기준: 친구 인수인계 `88d72d436e`(HANDBACK_2026-09-29_FULL_SYNC_PORT_START, CLAUDE_FULL_SYNC_PORT_PROMPT). 브랜치가 깨끗한 것을 확인하고 fast-forward pull했다.
