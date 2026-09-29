@@ -2,6 +2,23 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-09-30 — full-sync port seq 103~106 (데스크탑, 사용자 부재 중 자율 진행)
+
+- 진행: 병렬 사전 분석 3개 → 적용 1개 → 병렬 리뷰 2개(#9568, #9551) + 메인이 #8213 확인. 전부 문제 없음.
+- 커밋:
+  - #9568 `4bc61b3ffc`: AI 롤 config 6개를 MEDIAN으로 두었다. 아군 KO는 `.maximum`을 유지했고, Beat Up은 `// HnS:`로 수정했다.
+  - #9551 `34aec8afd7`
+  - #9579: 이미 적용
+  - #8213 `1660ce2f81`
+  - 결과 문서: `9294b1eb3b` `docs/friend-handoff/results/1.17.0-port/full-sync-seq-103-106.md`
+- 검증:
+  - 메인 clean rebuild: 종료 코드 0, ROM 32,716,260 B(97.50%, +1,392 B), EWRAM 248,924 B, IWRAM 25,516 B, SHA1 `61ad9a09375b9052880e60f32a0b5ed06a66432e`
+  - 한글 변경 0, `git diff --check` 통과
+  - 새 config는 AI_ROLL 6개(전부 MEDIAN)와 위협 교체 확률 2개다.
+- 테스트(적용 에이전트 전체 실행): PASS 2,314 / FAIL 2,232 / TOTAL 5,211. seq101 대비 PASS 손실 0이고, 새 PASS는 8개다. 새 기준 목록은 `test-baseline-seq106.txt`다.
+- 실기 확인 요청: `docs/friend-handoff/HANDBACK_2026-09-30.md` 5절에 있다.
+- 다음 시작점: **seq 107 (#7305 gBerries 재구성, XL)**. 세이브 호환 주의: 기존 열매 번호 36~65 순서를 유지해야 한다(full-sync plan 4절).
+
 ### 2026-09-30 — full-sync port seq 102 (#9172 애니 스크립트 16진수 → 10진수) (데스크탑)
 
 - 커밋: `b72fd0c63d`(코드), `fa7cd4ef9c`(결과 문서 `docs/friend-handoff/results/1.17.0-port/full-sync-seq-102-102.md`)

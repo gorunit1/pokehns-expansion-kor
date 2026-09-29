@@ -194,3 +194,14 @@
 - **#10127(Even more enums):** #9551 새 테스트의 `u32 Species` → `enum Species Species`.
 - **이후 upstream AI 테스트:** `AI_ROLL_ATTACKING=MAX`(또는 `SHOULD_SETUP_DEFENDING`·`ATTACKING_PARTNER`=MAX)를 가정해 HnS에서 실패하면 "HnS config 차이(결정 6절, median 유지)"로 기록한다. 로직 확인이 필요하면 로컬에서만 `WITH_CONFIG(AI_ROLL_ATTACKING, AI_ROLL_MAX)`로 돌려 본다.
 - **sprite.c:** `LoadSpriteSheetWithOffset`의 `#if T_SHOULD_RUN_MOVE_ANIM` → `#if TESTING` 변경은 다른 PR 몫이다. 그때도 `return TAG_NONE;`(HnS, `e2966117d8`)을 유지한다.
+
+## 커밋 리뷰 (병렬, 읽기 전용)
+
+| 커밋 | PR | 판정 | 요지 |
+|---|---|---|---|
+| `4bc61b3ffc` | #9568 | 문제 없음 | 모든 호출처(ATTACKING·DEFENDING·SWITCHIN·SHOULD_SETUP·PARTNER, 아군 KO `.maximum`)의 롤이 이식 전과 같다. Beat Up `// HnS:` 수정은 합산 median을 보존한다. RISKY/CONSERVATIVE 규칙은 1.17.0 최종형과 같다(HnS 게임 데이터에서는 0건). Skill Link `random *= 5` 추가는 맞다. |
+| `34aec8afd7` | #9551 | 문제 없음 | 추가 로직과 테스트 7개가 upstream과 같다. Zero to Hero hunk를 뺀 것이 맞다(HnS가 이미 1.17.0형이고, 넣으면 빌드가 깨진다). `optionStyle`, 챌린지, Champions, 파트너 경로에 영향이 없다. 예측 트레이너 쪽에 새 부작용이 없다. |
+| `1660ce2f81` | #8213 | 문제 없음(메인 확인) | 정확히 3줄(`fishing.c` 2, `sprite.c` 1)만 지웠다. HnS `return TAG_NONE;`과 `DebugPrintfLevel`은 유지했다. |
+
+참고(조치 없음): 아군 KO 판정은 RISKY/CONSERVATIVE를 무시하고 항상 max를 쓴다(hunk 제외 결정). 1.17.0과 다르지만 HnS 게임에서는 두 플래그가 0건이다.
+메인 clean rebuild: ROM 32,716,260 B, EWRAM 248,924 B, IWRAM 25,516 B, SHA1 `61ad9a09375b9052880e60f32a0b5ed06a66432e`.
