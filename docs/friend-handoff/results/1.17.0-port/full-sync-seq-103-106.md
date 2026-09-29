@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 103~106
 
-진행 중: 마지막 완료 seq 105, 다음 seq 106.
+진행 중: 마지막 완료 seq 106(코드), 남은 일: 구간 끝 전체 테스트와 기준 목록.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 사전 분석: PR마다 분석 에이전트가 쓴 이식 계획(`hns-sync-work/chunk-103-106/seq<N>-<PR>.md`, 저장소 밖)을 따랐다.
@@ -119,3 +119,28 @@
   - upstream diff 역방향 `git apply --check -R`이 성공하고, 정방향은 `patch failed: src/battle_ai_switch.c:2861`로 실패한다(이미 들어 있음).
 - 수정 파일: 없음. ROM·EWRAM·IWRAM 변화 0. 테스트 불필요(코드 변화 없음). 실기 확인 불필요.
 - 참고: `SetBattlerStatStagesForSwitchin`에 upstream의 no-op `case ABILITY_SUPREME_OVERLORD: break;`가 없는 것은 seq 99에서 일부러 뺀 차이다. 이 행과 무관하다.
+
+## 동기화 단위: seq 106 #8213 `U-8213` Remove leftover DebugPrintfs
+
+- 현재 판정: 적용(sprite.c 1줄 수동)
+- 커밋: `1660ce2f81`
+- upstream 근거: `264d99215b`(2파일 −3)
+- 해결한 의존성: 없음.
+- 수정 파일(2): `src/fishing.c`, `src/sprite.c`
+- 적용 방법: upstream이 지우는 3줄만 Edit로 지웠다. 패턴 일괄 삭제는 하지 않았다.
+  - `src/fishing.c` `CalculateFishingBiteOdds`: `DebugPrintf("Fishing odds: %d", odds);`
+  - `src/fishing.c` `CalculateChainFishingShinyRolls`: `DebugPrintf("Total Shiny Rolls %d", a);`(변수 `a`는 `return a;`에서 계속 씀)
+  - `src/sprite.c` `LoadSpriteSheetWithOffset`: `DebugPrintf("Tile: %u", sheet->tag);`. upstream 문맥 다음 줄은 `return 0;`인데 HnS는 `return TAG_NONE;`(HnS 전용, `e2966117d8`)이라 손으로 지웠다. **`return TAG_NONE;`은 그대로 두었다.** `#if T_SHOULD_RUN_MOVE_ANIM`도 그대로다.
+  - 제외한 hunk: 없음.
+- 보존 확인:
+  - `git diff --stat`: `src/fishing.c | 2 --`, `src/sprite.c | 1 -`, 3 deletions.
+  - 남은 `DebugPrintf(`: `script_menu.c` 3곳, `vs_seeker.c` 1곳(upstream 1.17.0에도 남아 있는 공통 호출).
+  - HnS 전용 `DebugPrintfLevel`: `scrcmd.c` 7곳, `battle_script_commands.c` 1곳 그대로.
+  - 비ASCII 변경 줄 0. 낚시 챌린지 분기(`challengeSettings.fishing`) 무관.
+- 저장·ROM·그래픽 영향: 세이브 영향 없음. 게임 동작 변화 없음. mGBA 로그의 "Fishing odds: N", "Tile: N" 출력만 사라진다(`make hns`는 `NDEBUG`가 없어 이전에는 `MgbaPrintf`로 들어가 있었다).
+- 검증:
+  - `git diff --check`: 통과.
+  - `make hns -j8`: 종료 코드 0, **ROM 32,716,260 B(−64 B) / EWRAM 248,924 B(0) / IWRAM 25,516 B(0)**. 새 경고 0(`fishing.c`·`sprite.c`만 다시 컴파일, 두 파일은 기준에도 경고 없음). 오브젝트 text+data: `fishing.o` −29 B, `sprite.o` −21 B. ROM에서 두 포맷 문자열이 사라졌다(`grep -c`: 2 → 0).
+  - 자동 테스트: 이 PR이 바꾸는 테스트 없음. 분석 문서대로 개별 실행은 생략하고, 구간 끝 전체 실행으로 확인했다(아래).
+  - 실기 확인: 불필요.
+- 남은 위험: 없음. VRAM 타일 부족 때 mGBA 로그로 태그를 보던 경로("Tile: N")만 없어진다. 실패 처리(`gLoadFail`, `return TAG_NONE`)는 그대로다.
