@@ -2,6 +2,19 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-09-30 — full-sync port seq 102 (#9172 애니 스크립트 16진수 → 10진수) (데스크탑)
+
+- 커밋: `b72fd0c63d`(코드), `fa7cd4ef9c`(결과 문서 `docs/friend-handoff/results/1.17.0-port/full-sync-seq-102-102.md`)
+- 방식:
+  - upstream `48bf615a67`의 토큰 쌍 318종에서 변환 규칙을 도출했다. `0x8000` 초과 16비트 값은 음수로 바꾸고, 주석 안의 16진수도 바꾼다. `@` 앞에는 탭을 넣고, 빠진 콤마 15곳을 보충하며, 예외 1곳은 수동으로 처리한다.
+  - 스크립트를 upstream 부모 파일에 돌린 결과가 upstream 결과와 바이트 동일했다. 그다음 HnS 파일 전체(4,399줄, HnS 고유 줄 포함)에 적용했다.
+- 검증:
+  - 메인이 `data/battle_anim_scripts.s`를 다시 조립해 확인했다. ROM SHA1 `3613568d3329886ca25b4f54148bf2c5d267e275`가 **변환 전과 같다**. ROM 32,714,868 B, EWRAM·IWRAM 변화 없음.
+  - 테스트 빌드용 오브젝트(`TESTING=1`)도 바이트 동일하므로 테스트 기준은 `test-baseline-seq101.txt` 그대로다(`all_anims.c` 재실행 결과도 같음).
+  - 한글 변경 0. `git diff --check` 통과. KowtowCleave 한 줄은 space-before-tab 공백만 제거했다.
+- 후속 결정 필요(나중에): seq 497 #9924는 hunk 7개가 거부된다. 뒤 순서인 #9986(seq 516) pret 병합의 애니 매크로(`76799d84eb`, `edc58c881f`)가 선행 조건이다. 그때 #9986의 애니 매크로 부분을 먼저 가져올지, 손으로 옮길지 정한다. 상세는 결과 문서에 있다.
+- 다음 시작점: **seq 103**.
+
 ### 2026-09-30 — full-sync port seq 92~101, Safari UI 수정, 순서표 보정 (데스크탑)
 
 - 기준: 노트북 세션의 `7b4e3dba40`(seq 91 완료)을 fast-forward pull했다. 이 PC의 clean build ROM 32,713,060 B가 기록과 같았고, 전체 테스트 목록이 `test-baseline-seq091.txt`와 바이트 동일했다.
