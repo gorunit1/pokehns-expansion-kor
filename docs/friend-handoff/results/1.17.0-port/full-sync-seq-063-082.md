@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 63~82
 
-진행 중: 마지막 완료 seq 74 (#8664), 다음 seq 75 (#9142, 같은 unit #9473·#9564 포함 예정). seq 76 #9474는 이미 적용. seq 76 #9474는 seq 64 커밋에 포함(이미 적용).
+진행 중: 마지막 완료 seq 75 (#9142 unit, #9473·#9564 포함), 다음 seq 76 (#9474, 이미 적용 기록) → seq 77 (#9451). seq 76 #9474는 seq 64 커밋에 포함(이미 적용).
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `72f40563ad`
@@ -273,3 +273,30 @@
   - 자동 테스트: `test/battle/move_effect/first_turn_only.c` 9건 — 새 AI 테스트 5개 PASS. 기준에서 TO_DO였던 4개("Fake Out/First Impression can only be used on the user's first turn", "… fails if it's called via Instruct")가 upstream에서 실제 테스트로 바뀌어 FAIL, 사유는 모두 `Unmatched MESSAGE`(영문 기대값, 알려진 한계). 통과하던 테스트의 회귀 없음.
   - 실기 확인: 선택(더블배틀 AI 속이다 사용)
 - 남은 위험: 낮음
+
+## 동기화 단위: seq 75 #9142 `U-animcall-9142` Create functions for repeated move animations (+ seq 78 #9473, seq 98 #9564)
+
+- 현재 판정: 적용(unit 3개 PR을 한 커밋에)
+- 커밋: `125e893903`
+- upstream 근거: #9142 `6d1fec9df3`, #9473 `913aaae7e7`, #9564 `070f31e384`
+- 해결한 의존성: group plan "같은 unit의 #9473(호출 깊이)·#9564(Stuff Cheeks 좌표)를 반드시 함께 넣는다". #9142는 서브루틴 안에서 다시 `call`하는 중첩 호출을 만드는데, 이식 전 HnS `sBattleAnimScriptRetAddr`는 반환 주소 1개뿐이라 #9142만 넣으면 중첩 호출 뒤 반환 위치가 깨진다. 그래서 #9473까지 한 커밋으로 넣었고, #9142가 `BiteOpponent`의 이빨 x 좌표를 `-33`(0xffDF) → `33`으로 잘못 바꾼 것을 되돌리는 #9564도 함께 넣었다. **seq 78 #9473과 seq 98 #9564는 "이미 적용"으로 처리한다.** #8497(seq 83)의 선행 조건(#9142·#9473)이 충족됐다.
+- 수정 파일: `asm/macros/battle_anim_script.inc`(`create_magic_powder_particle_sprite`), `data/battle_anim_scripts.s`(반복 시퀀스를 서브루틴 `call`로, DefendOrder·SaltCure 꼬리를 `goto`로, BiteOpponent x=-33), `include/battle_anim.h`(`MAX_ANIM_CALL_DEPTH 4`), `src/battle_anim.c`(반환 주소 스택, `Cmd_call`/`Cmd_return`/`Cmd_end` assert)
+- HNS 적응과 보존한 한글화/배틀 메시지 동작: 세 PR 모두 그대로 적용(오프셋만, HnS 애니 스크립트와 충돌 없음). 문자열 무관.
+- **호출 구조 정적 검사:** HnS `data/battle_anim_scripts.s` 전체를 파싱해 `gBattleAnim*` 진입점 1,022개에서 가능한 모든 흐름(`goto`, `jump*`·`choosetwoturnanim` 양쪽 분기, `.if` 양쪽, 중첩 `call`/`return`)을 따라갔다(스크래치 `anim/animcalls.py`).
+  - 이식 전: `call` 2,678개, 최대 깊이 1, "호출 안에서 `end` 도달" 2곳(DefendOrder → BideSetUp, SaltCure → SaltCureDamage = #9473이 고친 곳).
+  - 이식 후: `call` 2,725개, **최대 깊이 2**(assert 한도 3 이내), 호출 안 `end` 도달 **0**, 빈 스택 `return` **0**. 새 assert(`Call depth not 0 at end`, `Max animation call depth exceeded`, `return with empty call stack`)에 걸리는 정적 경로 없음.
+  - 동적 전수 검사(`test/battle/move_animations/all_anims.c`)는 `T_SHOULD_RUN_MOVE_ANIM = FALSE`(매우 무거움)라 돌리지 않았다. 구간 끝 전체 테스트에서 일반 배틀 테스트의 기술 애니 재생은 확인한다.
+- 저장·ROM·그래픽 영향: ROM −1,408 B(32,716,756 → 32,714,644), EWRAM +16 B(반환 주소 배열·깊이 카운터). 애니 연출은 같다(서브루틴화, Bite 좌표 원복).
+- 검증:
+  - `git diff --check`: 통과
+  - `make hns -j8`: 종료 코드 0, ROM 32,714,644 B / EWRAM 248,892 B / IWRAM 25,516 B, 새 경고 없음
+  - 자동 테스트: 해당 전용 테스트 없음(위 참고)
+  - 실기 확인: **권장.** HnS는 비릴리스 빌드라 assert 실패 시 크래시 화면이 뜬다. 서브루틴으로 바뀐 애니 표본(물기·깨물어부수기·사이코팽 계열, 흡수 계열, 방어지령·소금절이, 볼 부풀리기, 매직파우더)과 HnS 추가 기술 애니를 재생해 크래시 화면·연출 차이가 없는지.
+- 남은 위험: 낮음. 호출 깊이 카운터는 애니 시작 때 초기화되지 않는다(upstream 1.17.0도 같음). 정적 검사상 깊이가 0이 아닌 채 끝나는 경로는 없다.
+
+## 동기화 단위: seq 76 #9474 `U-heap-9121` Fix Substitute breaking when used by opponentRight in double battles
+
+- 현재 판정: **이미 적용**(seq 64 커밋 `2ba44de454`에 #9121과 함께 포함, group plan의 "반드시 같은 커밋")
+- upstream 근거: `4ce8738dae`
+- 근거: `src/battle_gfx_sfx_util.c` `BattleLoadSubstituteOrMonSpriteGfx`의 복사 루프가 `for (u32 i = 1; i < 2; i++)`이고 `s32 i` 선언이 없다(upstream 결과와 같음).
+- 커밋 없음
