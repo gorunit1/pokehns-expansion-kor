@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 63~82
 
-진행 중: 마지막 완료 seq 69 (#9107), 다음 seq 70 (#9407). seq 76 #9474는 seq 64 커밋에 포함(이미 적용).
+진행 중: seq 70 (#9407) unit 진행 중 — #9407 커밋 완료, 이어서 같은 unit #9549·#9707·#10573. 그다음 seq 71 (#9417). seq 76 #9474는 seq 64 커밋에 포함(이미 적용).
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `72f40563ad`
@@ -144,3 +144,19 @@
   - 자동 테스트: `test/battle/ai/ai_check_viability.c` 31건 — PASS 24(새 테스트 "AI scores Order Up's stat boost only with Commander" PASS 포함), FAIL 6(모두 `Unmatched MESSAGE`, 기준과 같음), ASSUMPTION_FAIL 1(기준 목록 형식에 없는 상태, 기존과 같음). 기준 대비 회귀 없음.
   - 실기 확인: 불필요
 - 남은 위험: 없음
+
+## 동기화 단위: seq 70 #9407 `U-fade-9407` Fade background and sprites simulatneously
+
+- 현재 판정: 적용
+- 커밋: `f09cd6f890`
+- upstream 근거: `8f123fb8b7`
+- 해결한 의존성: 같은 unit의 #9549(seq 94), #9707(seq 138), #10573(seq 319)을 group plan("#9549·#9707·#10573을 같은 unit으로 연속 적용")대로 바로 뒤 커밋으로 넣는다(아래 항목). #9549·#9707은 #9407 회귀 수정이고, #10573은 동시 페이드를 `FadeSelectedPals` opt-in으로 되돌리는 재작업이라 unit 최종 동작이 1.17.0과 같아진다.
+- 수정 파일: `src/palette.c`(`UpdateTimeOfDayPaletteFade`·`UpdateNormalPaletteFade`가 배경·스프라이트 팔레트를 2프레임마다 동시에 블렌드)
+- HNS 적응과 보존한 한글화/배틀 메시지 동작: HnS `src/palette.c`는 upstream 부모와 같아 그대로 적용. upstream이 넣은 공백만 있는 줄 1개는 `git diff --check` 통과를 위해 빈 줄로 뒀다(동작 무관).
+- 저장·ROM·그래픽 영향: ROM −96 B. 화면 페이드 방식 변화(이 커밋 단독으로는 모든 소프트웨어 페이드가 동시 방식, #10573 뒤에는 기존 번갈아 방식으로 복귀).
+- 검증:
+  - `git diff --check`: 통과
+  - `make hns -j8`: 종료 코드 0, ROM 32,715,812 B / EWRAM 248,892 B / IWRAM 25,516 B, 새 경고 없음
+  - 자동 테스트: 해당 없음
+  - 실기 확인: unit 끝(#10573)에서 함께 확인
+- 남은 위험: unit 끝에서 기록
