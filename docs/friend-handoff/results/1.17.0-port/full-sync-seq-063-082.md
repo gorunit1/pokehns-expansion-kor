@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 63~82
 
-진행 중: 마지막 완료 seq 80 (#9249 unit: #9249·#10648), 다음 seq 81 (#9051).
+진행 중: 마지막 완료 seq 81 (#9051), 다음 seq 82 (#9505).
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `72f40563ad`
@@ -383,3 +383,29 @@
 - 저장·ROM·그래픽 영향: ROM +96 B
 - 검증: `git diff --check` 통과, `make hns -j8` 종료 코드 0, ROM 32,717,236 B / EWRAM 248,908 B / IWRAM 25,516 B, 새 경고 없음. `move_effect/sky_drop.c` 18건 — PASS 14(이 PR 새 테스트 2개 PASS 포함), FAIL 4(모두 `Unmatched MESSAGE`). 회귀 없음.
 - 실기 확인: #9249 항목에 포함(프리폴 대상 기절·교체 뒤 2턴째)
+
+## 동기화 단위: seq 81 #9051 `U-strings-9051` Converted script_menu.h strings to COMPOUND_STRINGs
+
+- 현재 판정: 적용(HnS 적응)
+- 커밋: `15f4cae1c6`
+- upstream 근거: `a1e46272cf`
+- 해결한 의존성: 없음. 같은 unit의 #10335(seq 416, 도감 문자열 이동)는 별도 리팩터라 그 순서에서 이식한다.
+- 수정 파일: `src/data/script_menu.h`, `src/strings.c`, `include/strings.h`
+- HNS 적응과 보존한 한글화/배틀 메시지 동작:
+  - 3파일 모두 HnS 한글 문구 때문에 패치가 실패해 스크립트로 옮겼다(스크래치 `sm9051/port9051.py`). upstream처럼 스크립트 메뉴 전용 전역 문자열 28개(`gText_Info2`, `gText_Decoration2`·`PackUp`·`Registry`, `gText_LilycoveCity`, 조각 4개, `gText_Opponent`·`Tourney_Tree`·`ReadyToStart`·`Record2`·`Rest`·`Retire`, `gText_TradeCenter`·`Colosseum`·`RecordCorner`, `gText_BerryCrush3`, 배틀 규칙·판정 7개, `gText_GoOn`)를 `strings.c`에서 지우고 `script_menu.h`의 해당 목록 바로 앞에 **HnS 정의 줄 그대로**(`const u8 gText_X[] = _("한글");`) 옮겼다.
+  - `gStdStrings`의 슈퍼·하이퍼·마스터, 근사함2~강인함2, 도구·중요한 물건·몬스터볼·기술머신·나무열매, 싱글·더블·멀티·통신 멀티 17개는 upstream처럼 `COMPOUND_STRING("…")`로 바꾸고 따옴표 안에 HnS `strings.c` 문구를 그대로 넣었다. 근사함2~나무열매 10개 정의는 `strings.c`에서 지웠고, 슈퍼·하이퍼·마스터·싱글2·더블2·멀티·통신 멀티 7개 정의는 upstream처럼 `strings.c`에 남겼다(extern만 삭제, 1.17.0도 같음).
+  - `sSeagallopDestStrings`의 4~7섬은 `static` 정의를 지우고 `COMPOUND_STRING`으로(HnS도 영문 FRLG 문구 그대로). 강제 시작 메뉴의 빈 항목 `{gText_Blank}` → `{COMPOUND_STRING("")}`.
+  - **`gText_Blank`는 지우지 않았다.** `src/battle_message.c`가 아직 쓰며 다음 #9505(seq 82)에서 사용처가 없어진다(upstream도 #9051에서 지우고 #9505에서 사용처를 고쳐 그 사이 빌드가 깨졌다).
+  - upstream이 함께 바꾼 `{ X }` → `{X}` 중괄호 공백은 upstream이 바꾼 목록 44개에만 똑같이 적용했다(HnS 전용 목록은 손대지 않음). `gStdStrings` 배지 줄의 열 맞춤 변경은 HnS에만 있는 `STDSTRING_MEDICINE` 등 뒤 항목과 어긋나므로 적용하지 않았다(표시 무관).
+  - 다른 곳에서 쓰는 전역 문자열 없음을 확인(옮긴 문자열의 사용처는 `script_menu.h`뿐).
+- **script_menu 문자열 바이트 비교(필수):**
+  - ROM 대조: 이식 전후 ROM에서 `sMultichoiceLists`(178개 목록)의 모든 항목, `gStdStrings` 40개, `sSeagallopDestStrings` 8개의 포인터를 따라가 실제 문자열 바이트(종결 0xFF 포함)를 뽑아 비교했다(스크래치 `sm9051/dumpmenus.py`). **676개 항목 전부 바이트 동일.**
+  - preproc 대조: `src/script_menu.c`·`src/strings.c`의 preproc 문자열 바이트 집합(고유 1,319개)이 전후 같다. 새로 늘어난 것은 같은 바이트의 중복 8개(`COMPOUND_STRING("")`, `strings.c`에 남긴 7개와 같은 `gStdStrings` 리터럴)뿐이고 없어진 문자열 0.
+  - 소스 줄 대조: 비ASCII 줄 변경(삭제 44줄, 추가 51줄)의 따옴표 안 리터럴이 삭제분 전부 추가분에 그대로 있고, 추가분에만 있는 7개는 `strings.c`에 남긴 문구와 같다(슈퍼·하이퍼·마스터·싱글·더블·멀티·통신 멀티).
+- 저장·ROM·그래픽 영향: ROM −64 B. 세이브 무관.
+- 검증:
+  - `git diff --check`: 통과
+  - `make hns -j8`: 종료 코드 0, ROM 32,717,172 B / EWRAM 248,908 B / IWRAM 25,516 B, 새 경고 없음
+  - 자동 테스트: 해당 없음(구간 끝 전체 테스트)
+  - 실기 확인: 선택(비밀기지 PC·콘테스트·배틀프런티어 규칙·링크 메뉴·시작 메뉴의 한글 선택지 표시). 문자열 바이트가 같아 표시 변화는 없어야 한다.
+- 남은 위험: 없음
