@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 84~90
 
-진행 중: 마지막 완료 seq 87, 다음 seq 88
+진행 중: 마지막 완료 seq 88, 다음 seq 89
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `79af946ddf`
@@ -112,4 +112,23 @@
   - `make hns -j8`: 종료 코드 0, ROM 32,712,852 B / EWRAM 248,924 B / IWRAM 25,516 B, 새 경고 없음.
   - 자동 테스트: `test/battle/gimmick/dynamax.c` 81건(PASS 11 / FAIL 67 / 기타 3) — 이식 전 목록과 테스트별로 같음. upstream 테스트 hunk 없음.
   - 실기 확인: 불필요.
+- 남은 위험: 없음.
+
+## 동기화 단위: seq 88 #9460 `U-aiconfig-9460` Add AI internal config support
+
+- 현재 판정: 적용(HnS 적응: 파일명 유지, 수동 삽입)
+- 커밋: `d81b37f15b`
+- upstream 근거: `62c4ac5f5a`
+- 해결한 의존성: 없음. 같은 unit의 #9462(seq 131, `AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE` 등 실제 항목과 `WITH_CONFIG` 테스트)는 group plan상 "함께 넣는다"가 아니라 순서대로 뒤에서 넣으므로 이번에 넣지 않았다.
+- 수정 파일: `include/constants/generational_changes.h`, `include/generational_changes.h`, `src/generational_changes.c`
+- HNS 적응과 보존한 한글화/배틀 메시지 동작:
+  - HnS 파일명 `generational_changes.*` 유지(#9460은 #9529 개명 전 커밋이라 upstream도 이 경로).
+  - `include/constants/generational_changes.h`: HnS `POKEMON_CONFIG_DEFINITIONS` 끝(알 상속 5항목 `BALL/MOVE/NATURE/ABILITY_INHERITANCE`·`EGG_MOVE_TRANSFER` 뒤) 빈 줄 다음에 빈 `#define AI_CONFIG_DEFINITIONS(F) \`를, `enum ConfigTag`에 `AI_CONFIG_DEFINITIONS(UNPACK_CONFIG_ENUMS)`를 넣었다. 나머지 두 파일은 `git apply` 그대로(`struct GenChanges` → `ConfigChanges`, `config/ai.h` include, 게터·세터·클램퍼에 AI 매크로, 인자 이름 `_genConfig` → `_config`).
+  - `GenChanges`·`_genConfig`를 쓰는 다른 곳 없음(`src`·`include`·`test`·`tools` 검색).
+- 저장·ROM·그래픽 영향: **ROM 바이트 동일**(`cmp`). 헤더 변경으로 오브젝트 160개가 다시 컴파일됐고 결과가 같으므로 `sConfigChanges` 구조·`GetConfigInternal`(0x84 B) 불변. 세이브 무관.
+- 검증:
+  - `git diff --check`: 통과. 비ASCII 줄 변경 0.
+  - `make hns -j8`: 종료 코드 0, ROM 32,712,852 B / EWRAM 248,924 B / IWRAM 25,516 B, 새 경고 없음.
+  - 자동 테스트: upstream 테스트 hunk 없음. AI 더블 테스트 3건이 든 `ai_double_ace.c`(4건)·`ai_choice.c`(10건)·`ai_switching.c`(118건)를 돌려 이식 전 목록과 같음을 확인. **알려진 AI 3건은 그대로 FAIL**(`AI_FLAG_DOUBLE_ACE_POKEMON: Ace mons won't…`, `Choiced Pokémon won't switch out… 1/2 (1/?)`, `AI can switch out both mons… (1/?)`) — #9460은 빈 인프라뿐이고, 테스트의 `WITH_CONFIG(AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE, 0)`과 설정 항목은 seq 131 #9462에서 들어온다.
+  - 실기 확인: 불필요(ROM 동일).
 - 남은 위험: 없음.
