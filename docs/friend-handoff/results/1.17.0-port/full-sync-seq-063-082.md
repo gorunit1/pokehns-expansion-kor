@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 63~82
 
-진행 중: 마지막 완료 seq 68 (#9388), 다음 seq 69 (#9107). seq 76 #9474는 seq 64 커밋에 포함(이미 적용).
+진행 중: 마지막 완료 seq 69 (#9107), 다음 seq 70 (#9407). seq 76 #9474는 seq 64 커밋에 포함(이미 적용).
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md)
 시작 HEAD: `72f40563ad`
@@ -127,5 +127,20 @@
   - `git diff --check`: 통과
   - `make hns -j8`: 종료 코드 0, ROM 32,715,748 B / EWRAM 248,892 B / IWRAM 25,516 B, 새 경고 없음
   - 자동 테스트: 해당 없음
+  - 실기 확인: 불필요
+- 남은 위험: 없음
+
+## 동기화 단위: seq 69 #9107 `U-9107` AI scores Order Up stat boosts under Commander
+
+- 현재 판정: 적용
+- 커밋: `34aaa7f6d9`
+- upstream 근거: `1f81dd27ef`
+- 수정 파일: `src/battle_ai_main.c`(`AI_CalcAdditionalEffectScore`에 `MOVE_EFFECT_ORDER_UP` case), `test/battle/ai/ai_check_viability.c`(새 테스트 1개)
+- HNS 적응과 보존한 한글화/배틀 메시지 동작: 그대로 적용(오프셋만). 엔진 `MOVE_EFFECT_ORDER_UP`도 CURLY/DROOPY/STRETCHY 3종만 처리하므로 HnS 메가 싸리룡 3종은 AI·엔진 모두 default(효과 없음)로 일관된다. #9730 이식 때 1.17.0 형태(`IncreaseStatUpScore(stat, 1)`)로 함께 바뀐다.
+- 저장·ROM·그래픽 영향: ROM +160 B
+- 검증:
+  - `git diff --check`: 통과
+  - `make hns -j8`: 종료 코드 0, ROM 32,715,908 B / EWRAM 248,892 B / IWRAM 25,516 B, 새 경고 없음
+  - 자동 테스트: `test/battle/ai/ai_check_viability.c` 31건 — PASS 24(새 테스트 "AI scores Order Up's stat boost only with Commander" PASS 포함), FAIL 6(모두 `Unmatched MESSAGE`, 기준과 같음), ASSUMPTION_FAIL 1(기준 목록 형식에 없는 상태, 기존과 같음). 기준 대비 회귀 없음.
   - 실기 확인: 불필요
 - 남은 위험: 없음
