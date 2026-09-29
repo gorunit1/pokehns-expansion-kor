@@ -1532,15 +1532,16 @@ static enum CancelerResult HandleSkyDropResult(struct BattleContext *ctx)
         gBattleScripting.animTargetsHit = 0;
         gBattleMons[ctx->battlerAtk].volatiles.multipleTurns = FALSE;
         gBattleMons[ctx->battlerAtk].volatiles.semiInvulnerable = STATE_NONE;
-        gBattleMons[ctx->battlerAtk].volatiles.skyDropTarget = 0;
 
         // Sky Drop fails if target already left the field
-        if (gBattleMons[ctx->battlerDef].volatiles.semiInvulnerable == STATE_NONE)
+        if (gBattleMons[ctx->battlerDef].volatiles.semiInvulnerable == STATE_NONE || gBattleMons[ctx->battlerAtk].volatiles.skyDropTarget == 0)
         {
+            gBattleMons[ctx->battlerAtk].volatiles.skyDropTarget = 0;
             gBattlescriptCurrInstr = BattleScript_SkyDropNoTarget;
             return CANCELER_RESULT_FAILURE;
         }
 
+        gBattleMons[ctx->battlerAtk].volatiles.skyDropTarget = 0;
         gBattleMons[ctx->battlerDef].volatiles.semiInvulnerable = STATE_NONE;
         return CANCELER_RESULT_SUCCESS;
     }
