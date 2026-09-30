@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 108~119
 
-진행 중: seq 108~119 이식 완료, 구간 끝 전체 테스트 실행 중(`build/port-check-post119.log`).
+완료: seq 108~119 이식·전체 테스트·기록 완료(다음 구간은 seq 120 #9657부터). 결과 커밋에 기준 목록 [`test-baseline-seq119.txt`](test-baseline-seq119.txt)를 넣었다. 메인의 커밋 리뷰는 이 문서 밖에서 진행한다.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md), 메시지 출력 기록: [`BATTLE_MESSAGE_OUTPUT_CHANGES.md`](../../../localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md)
 시작 HEAD: `10077a5d70` (작업 트리 clean)
@@ -22,6 +22,14 @@
 | 117 | #9578 | 부분 적용(HnS 적응) | `3960fc0c8e` | −64 B | `BattleScript_ShedSkinActivates` hunk 제외, 미사용 스크립트·`STRINGID_PKMNSXCUREDYPROBLEM`(한글 1줄) 삭제, `STRINGID_PKMNPREVENTSROMANCEWITH` 유지 |
 | 118 | #9630 | 적용 | `4e3c6bd5e7` | +96 B | upstream 그대로. 롤 값 불변(나눗셈 전수 증명, 실제 커밋으로 mGBA 롤 하네스 재실행 exit 0) |
 | 119 | #9634 | 적용(HnS 적응) | `de9b581a28` | −32 B | 한글 `STRINGID_PKMNISGLOWING` 한 줄 삭제, 불새는 이미 출력 중인 `STRINGID_CLOAKEDINAHARSHLIGHT` 고정 |
+
+- 마지막 빌드(`de9b581a28`): 종료 코드 0, **ROM 32,718,964 B(97.51%) / EWRAM 248,940 B(94.96%) / IWRAM 25,516 B(77.87%)**. 구간 전체 ROM +2,880 B(대부분 #9557 변형 B +2,416 B), EWRAM +16 B(#9494 `gSpecialStatuses`), IWRAM 0. 매 빌드 새 경고 0. `pokehns.gba` SHA1 `d439ac3b54a464827093a1a0d80d33e74c83ea5e`.
+- 값 표: #9537 오브젝트 그래픽 값 표 값 변화 0(이름만 3개, ROM SHA1 이식 직전과 동일), #9241 (class, 그래픽) 쌍 남 30·여 20 전후 동일(HnS·Emerald·FRLG), 세이브 `facilityClass` 불변. STRINGID→바이트 대응: 구간 누적 removed 2(`PKMNISGLOWING`, `PKMNSXCUREDYPROBLEM`), 바이트 변경 2(#9610 토큰만), 나머지 722개 바이트 동일.
+- 한글이 든 소스 줄 변경(docs 밖): `src/battle_message.c`의 #9610 토큰 교체 2쌍(`STRINGID_PKMNFLUNG`, `STRINGID_ABOUTTOUSEPOLTERGEIST`, 본문 바이트 동일), #9578 `STRINGID_PKMNSXCUREDYPROBLEM` 삭제 1줄, #9634 `STRINGID_PKMNISGLOWING` 삭제 1줄. 그 밖 0.
+- upstream과 다르게 둔 곳(`HnS:` 표시): #9537 `event_objects.h` 명시 값 유지·`spritesheet_rules.mk` 규칙 이름(#9668 오타 제외), #9241 `#if IS_HNS` 그래픽 표, #9610 `AccuracyCheck` #9929 분기 유지, #9532 방출 턴 `animTurn = 1`, #9494 `BattleScript_QueuedSwitch` 원시 날씨 해제 2줄(`@ HnS:`)·드래곤애로 허탕보험 테스트 `KNOWN_FAILING`(upstream 병합 상태와 동일), #9557 미리보기 그림·표 `#if MPS_ENABLE_MAP_PREVIEWS` 가드, #9578 `ShedSkinActivates` hunk 제외, #9596 턴 순서 hunk 제외(이미 1.17.0형).
+- `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 추가 행: 5행 — "기술·필드 상태 효과"에 #9610 폴터가이스트+대타출동 1행, #9532 참기 1행, "특성·도구·도주"에 #9494 3행(대기열 교체 순서, 레드카드 뒤 위기회피, 목스프레이·과사열매·허탕보험·옛노래 시점). 지시의 "3행(#9532 1행 포함)"은 사전 분석의 #9494 3행 초안과 #9532 1행을 모두 넣는 것으로 해석했다(내용이 서로 겹치지 않아 합치지 않음).
+- 구간 밖 행: #9668(seq 126, seq 108 커밋에 포함), #9864(seq 176, 별도 커밋 `489c58259c`)만 넣었다. #9784(seq 166)는 넣지 않았다.
+- 전체 테스트: 아래 "구간 끝 전체 테스트".
 
 ## 공통 사항
 
@@ -312,3 +320,56 @@
   - **구간 누적(이식 전 `10077a5d70` 표 대비):** 728 → 726행. removed 2(`PKMNISGLOWING`, `PKMNSXCUREDYPROBLEM`), added 0, 바이트 변경 2(`PKMNFLUNG`·`ABOUTTOUSEPOLTERGEIST` 토큰 바이트만, #9610), 순번 이동 647개(−1/−2), UNSET/REF 13개 동일. 나머지 722개 STRINGID의 인코딩 바이트는 이식 전과 같다. 결과 표가 사전 분석이 세 패치를 스크래치에 적용해 예측한 표(`verify-after.tsv`)와 바이트 동일.
 - 테스트: 구간 끝 전체 테스트로 대신했다. `test/text.c` `Battle strings fit on the battle message window` 줄이 `(125/125)`에서 `(124/124)`로 바뀌는 것은 예상된 차이(같은 문장 `STRINGID_PKMNSTOLEITEM`, FAIL 유지).
 - 출력 변화: 없음. 실기 확인: 선택(불새 1턴째 문장).
+
+## 구간 끝 전체 테스트
+
+- 명령: `PATH=… GITHUB_ACTION=1 make check BUILD=hns -j8 > build/port-check-post119.log 2>&1`(`de9b581a28`, 12분 4초, 종료 코드 2 = 실패 테스트 있음). 목록은 `PORT_INSTRUCTIONS`의 `LC_ALL=C`·`grep -a` 표준 추출과 확장 추출(`ASSUMPTION_FAIL|INVALID|TIMEOUT|CRASH` 포함) 두 가지.
+
+| 항목 | 이식 전(seq 107) | 이식 후(seq 119) |
+|---|---|---|
+| 러너 요약 | PASSED 2,314 / FAILED 2,232 / KNOWN_FAILING 8 / ASSUMPTIONS_FAILED 38 / TO_DO 613 / EXPECT_FAILING 6 / TOTAL 5,211 | PASSED **2,321** / FAILED 2,243 / KNOWN_FAILING 10 / ASSUMPTIONS_FAILED 38 / TO_DO 611 / EXPECT_FAILING 6 / TOTAL 5,229 |
+| 표준 목록 | 5,142줄(`test-baseline-seq107.txt`) | 5,160줄(PASS 2,318 / FAIL 2,218 / TO_DO 609 / KNOWN_FAILING 10 / EXPECTED_FAIL 5) |
+| 확장 목록 | 5,201줄(PASS 2,311 / FAIL 2,207 / TO_DO 611 / KNOWN_FAILING 8 / EXPECTED_FAIL 5 / ASSUMPTION_FAIL 37 / INVALID 21 / CRASH 1) | 5,219줄(PASS 2,318 / FAIL 2,218 / TO_DO 609 / KNOWN_FAILING 10 / EXPECTED_FAIL 5 / ASSUMPTION_FAIL 37 / INVALID 21 / CRASH 1) |
+
+- 표준·확장 목록의 차이는 같은 36줄이다(ASSUMPTION_FAIL·INVALID·CRASH 줄은 전후 같음). **설명되지 않는 PASS 손실 0.**
+- **PASS 손실 4건(모두 분류됨):**
+  1. `Eject Button activates after Wandring Spirit` → 이름 변경 `…Wandering Spirit`(PASS). #9494.
+  2. `Red Card prevents Emergency Exit activation when triggered` → 이름·기대 변경 `Red Card doesn't prevent…`(PASS). #9494.
+  3. `Eject Button will activate before Red Card if holder is faster`: PASS → KNOWN_FAILING. upstream #9494의 `KNOWN_FAILING; // #9499`(seq 166 #9784가 해소). 예상 변화.
+  4. `Blunder Policy activates for Dragon Darts…`: PASS → KNOWN_FAILING. #9494로 허탕보험이 두 타격 뒤로 옮겨져 HnS가 master에서 먼저 받은 #9790 테스트의 기대 순서와 달라짐. upstream 병합(`7ff83c6542`)과 같은 `KNOWN_FAILING;`, seq 467 #9841이 해소(seq 115 항목).
+- 그 밖의 차이: 이름 변경 FAIL/TO_DO 3건(`Relic Song transformation is the last thing…` → `…activates after target faints` FAIL, `Bide has +1 priority if called…` → `…on following turns…` TO_DO, `TODO: Write Poltergeist (Move Effect) test titles` TO_DO 삭제), TO_DO → PASS 1건(`Bide hits the last Pokémon that attacked the user, even allies`), 새 테스트 19건(PASS 8, FAIL 11 — FAIL은 모두 영문 `MESSAGE` 불일치; 삭제된 폴터가이스트 TO_DO 1건을 빼면 순증 18건), `Battle strings fit on the battle message window: (125/125)` → `(124/124)`(같은 문장 `STRINGID_PKMNSTOLEITEM`, #9634로 순번 −1, FAIL 유지, 예상 차이).
+- 새 기준 목록: [`test-baseline-seq119.txt`](test-baseline-seq119.txt)(표준 추출 5,160줄).
+
+## 실기 확인 항목 (친구용)
+
+이식 전 ROM(`10077a5d70`, SHA1 `0c91520c…`)과 이식 후 ROM(`de9b581a28` 이후)을 비교한다. 기술·특성·도구·지명은 `src/data/moves_info.h`·`abilities.h`·`items.h`·`src/data/region_map/region_map_sections.json`·`src/strings.c`의 표기다.
+
+1. **배틀프런티어 트레이너 그림(#9241):** 배틀타워 대전 방에 들어갈 때 상대 트레이너의 필드 그림, 배틀피라미드 층 트레이너 그림, 배틀팩토리·배틀팰리스·배틀돔·배틀튜브·배틀아레나 중 한 곳 이상. 이식 전 세이브를 불러와 배틀타워 기록 트레이너·견습생 그림이 같은지.
+2. **내던지기·폴터가이스트(#9610):**
+   - 내던지기(상처약·화염구슬·오랭열매 등 소지): `{공격자}은(는)\n{도구}을(를) 내던졌다!` → 공격 애니메이션 → 대미지. 조사와 상대 접두어(`상대의 …`). 문장 앞 짧은 멈춤이 없어지고 문장 뒤 대기가 길어진 것. 빗나감(상대 반짝가루)·행동 불가 때는 문장 없이 도구만 소모.
+   - 폴터가이스트(대상이 도구 소지): `{도구}이(가)\n{대상}에게 덤벼들었다!` → 애니메이션 → 대미지. 받침 있는/없는 도구명(예: 상처약이, 오랭열매가)에서 도구명이 제대로 나오는지(`{B_LAST_ITEM}` 교체 확인). 대상이 도구 없음 → `그러나 실패하고 말았다!`, 노말 타입 대상 → 효과 없음 문구만, **대상이 대타출동 상태 → 도구 공개 문장 없이 대타출동 대미지(변경점)**.
+   - 깨뜨리다·사이코팽·레이징불 방벽 제거, 섀도스틸 능력치 빼앗기 문장이 이전과 같은지.
+3. **(선택) 교체 AI(#9587):** Smart Trainer 싱글에서 AI 쪽에 끈적끈적네트가 깔린 상태로 기절 후 교체할 때 후속 포켓몬 선택·멈춤 여부, 더블에서 한 자리가 비었을 때 애널라이즈·보복 보유 AI의 기술 선택.
+4. **참기(#9532):** 3턴 흐름(싱글·더블). 2·3턴째 `…은(는)\n참기를 썼다!`가 없어지고 `…은(는) 참고 있다` / `…의\n참기가 풀렸다!`만 나오는지. **방출 턴 연출이 준비 연출(흔들림)이 아니라 방출 연출인지(HnS `animTurn = 1`)**. 방출 피해가 받은 피해의 2배인지, 고스트 타입 대상 효과 없음, 받은 피해 0이면 `그러나 실패하고 말았다!`, 대타출동·방어·칼등치기 0 피해, 비비드바디 상대, 더블에서 아군에게 맞았을 때 아군을 반격, 손가락흔들기로 나온 참기.
+5. **교체 대기열(#9494·#9864):**
+   - 탈출버튼(싱글·더블): 아이템 팝업 → `…은(는)\n탈출버튼 때문에 돌아간다!` → 볼 회수 → 교체 화면 → `가랏! …!`. 공격자가 생명의구슬을 들었으면 교체 화면 전에 `…의\n생명이 조금 깎였다!`.
+   - 레드카드: 공격자 강제 교체. 레드카드 보유자가 위기회피(예: 갑주무사)면 이어서 교체되는지.
+   - 위기회피·도망태세: 목스프레이를 든 공격자의 하이퍼보이스 뒤 목스프레이가 교체 전에 발동. 트레이너·야생 배틀.
+   - 유턴·볼트체인지·퀵턴: 상대 나쁜손버릇이 교체 전에 발동, 상대 탈출버튼·레드카드가 먼저 발동하면 유턴 교체가 없는지, 따라가때리기와의 조합.
+   - 탈출팩: 위협, 막말내뱉기, 드래곤테일·배대뒤치기. 배턴터치: 볼 회수 뒤 파티 화면.
+   - 화학변화가스 보유자가 탈출버튼·탈출팩으로 나갈 때 `화학변화가스의 효과가 사라졌다!` 뒤 올바른 포켓몬의 교체 화면.
+   - 옛노래 메로엣타(생명의구슬): 폼체인지 문구 `…의\n모습이 변화했다!`가 반동보다 먼저. 매지션으로 빼앗은 목스프레이 발동. 드래곤애로 허탕보험이 두 타격 뒤 한 번.
+   - **원시 날씨(HnS 유지):** 끝의대지 그란돈(주홍구슬)이 유턴·탈출버튼 등으로 나가면 교체 직후 `햇살이 원래대로 되돌아왔다!`(시작의바다 `강한 비가 그쳤다!`, 델타스트림 `수수께끼의 난기류가 가라앉았다!`).
+   - 교체 대기 중 파티 화면을 열었다 닫을 때 이전 포켓몬 체력 상자가 숨겨지는지(#9864). 파트너 멀티 배틀에서 파트너 포켓몬의 탈출버튼.
+6. **맵 미리보기 이식(#9557, 미리보기 자체는 HnS에서 꺼짐):** 문으로 드나든 뒤 바로 조작이 풀리는지(예: 고동마을 집), 동굴 진입 전환과 맵 이름 팝업이 그대로인지(어둠의 동굴, 연결동굴, 절구산), 지역 이동 팝업(고동마을 → 33번 도로, 로켓단아지트). 비 날씨 맵(진청시티·담청시티 `WEATHER_RAIN`, 분노의 호수 `WEATHER_RAIN_THUNDERSTORM`)에서 필드·대화창 색. 팔레트 13 창(엘리베이터 층 표시, 상점 금액 창)을 비 날씨 맵에서 열면 테두리 색만 달라질 수 있다(upstream 의도).
+
+## 후속 행 메모
+
+- **seq 126 #9668:** "HnS 동등(seq 108 커밋 `70eb6a4271`에 포함, 오타 `poke_manic_frlg` 제외)", 커밋 없음.
+- **seq 166 #9784:** 넣지 않았다. 선행 #9717(seq 150)·#8943(seq 138.5) 뒤에 이식한다. 그때 `Eject Button will activate before Red Card if holder is faster`의 `KNOWN_FAILING`이 풀리는지 보고, `BattleScript_QueuedSwitch`의 HnS 원시 날씨 2줄(`@ HnS:`) 문맥을 맞춘다.
+- **seq 176 #9864:** "이미 적용(`489c58259c`)", 커밋 없음.
+- **seq 250 #10281:** "HnS 동등"(규칙 이름이 이미 올바름). seq 500 #9881(INCGFX) 때 `gObjectEventPic_PokeManiacFrlg` INCGFX 줄에 `-mwidth 2 -mheight 4`가 붙는지 확인.
+- **seq 366 #10080:** #9557 변형 B 위에 적용 가능(사전 분석 확인).
+- **seq 467 #9841:** `blunder_policy.c`가 upstream 병합 상태(`KNOWN_FAILING;`, blob `fbba72441b`)와 같으므로 그대로 적용되고 드래곤애로 허탕보험 테스트가 PASS로 돌아와야 한다.
+- **seq 500 #9881(INCGFX):** `map_preview_screen.c` 가드 안의 `INCBIN_U8` 63줄을 `INCGFX_U8`로 옮긴다.
+- **#9657·#10220·#9939(공격 전 효과·명중 판정 캔슬러 이동):** `AccuracyCheck`의 #9929 분기(`BattleScript_TargetAvoidsAttackEnd`)와 #9610 내던지기 분기, `MOVE_EFFECT_ITEM_MESSAGE`, 한글 2문장 토큰을 이번 결과 기준으로 유지한다.
