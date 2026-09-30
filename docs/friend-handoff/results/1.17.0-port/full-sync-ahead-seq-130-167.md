@@ -1,6 +1,6 @@
 # full-sync 선진행 결과 — 구간 1 (seq 130~167 중 15행)
 
-진행 중: 마지막 완료 seq 143, 다음 seq 148
+진행 중: 마지막 완료 seq 148, 다음 seq 149
 
 **순서표와 다르게 진행한 구간이다.** 순서표([`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv))의 다음 행 seq 127 #9655(배틀 메시지 리팩터)가 D1~D7 결정 대기라서, #9655와 무관한 뒤쪽 행을 앞당겨 이식한다. 선정 기준과 전체 분류는 [`ahead-of-9655/README.md`](ahead-of-9655/README.md)(`ahead_candidates.tsv`)에 있다. 이 구간은 그 "선진행" 114행 가운데 앞쪽 15행(seq 130, 131, 133, 134, 137, 143, 148, 149, 151, 156, 157, 158, 160, 165, 167)이다.
 
@@ -20,6 +20,7 @@
 | 134 | #9903 | 부분 적용(HnS 적응) | `cf71e21e56` | 0 B | relearner hunk만 `HandleMoveRelearnerInput`(#9006)으로 옮겨 넣음. 이름 바꾸기 hunk 제외(HnS 요약 화면에 분기 없음). config로 꺼진 경로라 동작 불변(코드 바이트 동일, assert 줄 번호 문자열만 이동) |
 | 137 | #9713 | 적용(HnS 적응, **B안**) | `d057cee5c2` | −1,296 B | 디버그 사운드 메뉴 `FindSong`/`sSongNames`. **곡 이름 저장 안 함(`SE_`/`MUS_` 접두어만, Korean patch 화면 유지)**. HnS GBS 전환 유지, `FIRST_PHONEME_SONG`은 `DP_MUSIC_END + 1`(값 746 불변), DP 음악 11곡·`SE_FASTER_JOY_HEAL` 목록 추가. 이름 `{0}`(EOS 없음) EWRAM 덮어쓰기 잠재 버그 해소 |
 | 143 | #9721 | 적용 | `f3893a4cb4` | 0 B | `Makefile` 1줄(learnables JSON order-only 의존 삭제). **seq 137 빌드와 `pokehns.gba` SHA1 동일** |
+| 148 | #9690 | 적용(문맥 수동) | `aeab20beac` | +16 B | 파운드 변환 식 현대화(`DECAGRAMS_IN_POUND` 453592, u64 식). `pokedex.h` 문맥(`IS_HNS`)만 다름. **옵션 "단위계 = 야드파운드법"일 때만** 도감 무게 일부 +0.1 lb(기본 미터법 화면 불변) |
 
 ## 공통 사항
 
@@ -194,6 +195,27 @@
 - 남은 위험: 없음.
 - 실기 확인: 불필요(ROM 바이트 동일).
 
+## 동기화 단위: seq 148 #9690 `U-9690` fix: Modernize the conversion formula for imperial weights
+
+- 현재 판정: 적용(한 줄 문맥 수동)
+- 커밋: `aeab20beac`
+- upstream 근거: `0cd398953c`(2파일 각 1줄). `git log --grep='#9690'` 없음, 옛 값·옛 식 그대로였다.
+- 수정 파일(2): `include/constants/pokedex.h`, `src/pokedex.c`
+- 적용 방법: 사전 분석 patch(`seq148-9690.patch`)를 `git apply`했다. 충돌 없음. `pokedex.h` hunk는 upstream 문맥 `REGIONAL_DEX_COUNT (IS_FRLG ? …)`가 HnS에서 `(IS_HNS ? JOHTO_DEX_COUNT : IS_FRLG ? …)`라 사전 분석이 문맥만 HnS에 맞췄다. 바뀐 줄은 upstream과 같다.
+- 내용: `DECAGRAMS_IN_POUND` 4536 → 453592, `ConvertMonWeightToImperialString`의 `lbs = (weight * 100000) / DECAGRAMS_IN_POUND` → `lbs = (u32)(((u64)weight * 10000000) / DECAGRAMS_IN_POUND)`(두 줄을 함께 바꿈. 사용처는 이 한 곳).
+- HnS 적응·화면 영향:
+  - HnS 도감은 config `UNITS`가 아니라 플레이어 옵션 `gSaveBlock3Ptr->challengeSettings.unitSystem`(옵션 "단위계", 새 게임 기본 0 = 미터법)을 쓴다. `ConvertMonWeightToString`이 `unitSystem == 1`일 때만 이 함수를 부른다(기본 도감·HGSS 도감 공통).
+  - **기본(미터법) 화면은 변화 없음.** 야드파운드법에서는 HnS 종 무게 547종류 중 22개가 **+0.1 lb** 달라진다(사전 분석 계산. 예: 32.5 kg 폴리곤2·다꼬리 71.6 → 71.7, 레쿠쟈 455.2 → 455.3, 펄기아 740.7 → 740.8, 디아루가 1505.7 → 1505.8). 표시 형식·바이트 길이·한글 문자열은 그대로다.
+  - 나무열매 태그(자체 인치 계산)와 크기 기록(키만 사용)은 영향 없음.
+- 제외한 hunk: 없음.
+- 검증:
+  - `git diff --check` 통과. 한글 줄·세이브 변경 0.
+  - 빌드(`build/port.log`): 종료 코드 0, **ROM 32,720,772 B(97.52%, +16 B) / EWRAM 248,940 B(0) / IWRAM 25,516 B(0)**. 사전 분석 추정 +16 B. `pokehns.gba` SHA1 `1507a194434b846323ebe18ec1ff36ffbbb66843`. 새 경고 0(`pokedex.h` 변경으로 경고 163줄, 모두 기준 목록의 기존 경고).
+  - 64비트 나눗셈 `__udivdi3`는 이미 ROM에 있던 libgcc 함수를 쓴다(ELF 심볼 1개, 새 libgcc 코드 없음). 오버플로: 새 식은 u64 캐스트로 `9999 × 10^7`까지 안전하다.
+- 테스트: 없음(테스트 추가·변경 없음, `test/`에 `ConvertMonWeight` 사용 0건). 빌드 검증만.
+- 남은 위험: 낮음(야드파운드법 표시 +0.1 lb, upstream 1.17.0과 같음).
+- 실기 확인: 필요(아래 "실기 확인 항목" 4).
+
 ## 한글 문구 미결
 
 **공식 문구 확인 전 임시 번역**이다. 확정되면 `src/strings.c`의 해당 줄만 바꾼다(seq 133 #9006).
@@ -227,6 +249,7 @@
    - 위/아래·좌우 자릿수 이동, 음악 734 → 735(DP 곡) ~ 745, SE 269 다음 797(`SE_FASTER_JOY_HEAL`) 재생
    - SELECT GBS 전환 뒤 문구 On/Off 갱신과 재생
    - 메뉴를 나간 뒤 다른 창의 글자가 깨지지 않는지(이식 전 이름 복사 오버런 해소 확인)
+4. **도감 무게 파운드 표시(#9690):** 옵션 "단위계"를 "야드파운드법"으로 바꾼 뒤 도감(기본·HGSS 화면)에서 폴리곤2 또는 다꼬리 무게가 `71.7 lbs.`(이식 전 71.6), 피카츄(6.0 kg)는 `13.2 lbs.`(변화 없음)인지 본다. "미터법"으로 되돌리면 kg 표시가 이식 전과 같아야 한다.
 
 ## 후속 행 메모
 
