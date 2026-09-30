@@ -9,6 +9,7 @@ HERE=$(cd "$(dirname "$0")" && pwd)
 REPO=$(cd "$1" && pwd)
 OUT=$2
 TC=${TC:-/opt/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin}
+export READELF=${READELF:-$TC/arm-none-eabi-readelf}   # dwarf_layout.py가 읽는다
 WORK=$(mktemp -d "${TMPDIR:-/tmp}/berry_layout.XXXXXX")
 trap 'rm -rf "$WORK"' EXIT
 

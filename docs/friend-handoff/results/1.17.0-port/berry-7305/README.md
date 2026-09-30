@@ -6,7 +6,7 @@ seq 107(#7305 gBerries 리팩터) 이식 뒤, 기존 세이브의 열매 나무(
   - `newgame_trees.sh`: `cpp | awk`에서 awk가 먼저 `exit`하면 cpp가 EPIPE로 실패해 무작위로 FAIL이 났다. awk가 입력을 끝까지 읽게 했다. 스크래치 경로 대신 스크립트 위치를 쓴다.
   - `verify.sh`: 안내 문구만 고쳤다.
 - 모든 스크립트는 저장소를 읽기만 한다. 중간 파일은 `$TMPDIR`(없으면 `/tmp`)에 만들고 지운다.
-- 필요: `/opt/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin`(다르면 `TC=<bin 경로>`), 호스트 `gcc`, `python3`, `readelf`.
+- 필요: `/opt/arm-gnu-toolchain-13.2.Rel1-x86_64-arm-none-eabi/bin`(다르면 `TC=<bin 경로>`. `layout.sh`가 이 값으로 `READELF`도 정한다), 호스트 `gcc`, `python3`, `readelf`.
 
 ## 1. 데이터 수준 검증 (4항목)
 

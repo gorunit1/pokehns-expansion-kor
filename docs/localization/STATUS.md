@@ -1,8 +1,20 @@
 # 현재 인수인계 상태
 
-## 2026-09-30 — full-sync port seq 102~106 완료 (현재)
+## 2026-09-30 — full-sync port seq 107 (#7305 나무열매 개편) 완료 (현재)
 
-- **다음 시작 seq: 107** (#7305 `U-berries-7305`, XL 단독). 세이브 호환 주의: 나무열매 ID를 재구성해도 기존 열매 번호 순서를 유지해야 한다(full-sync plan 4절).
+- **다음 시작 seq: 108** (#9537 FRLG 오브젝트 그래픽 이름, M). 다음 구간 예정: seq 108~119(seq 110은 이미 적용) → seq 120 #9657(XL 단독).
+- 구간 결과: `docs/friend-handoff/results/1.17.0-port/full-sync-seq-107-107.md`. 커밋 `f2a0395e90`(#7305, 41파일, 새 파일 `include/constants/berries.h`), 결과 `2b5ec2bb98`. 진행 방식: 병렬 사전 분석 4개(세이브·C·스크립트·테스트) → 적용 에이전트 1개 → 병렬 리뷰 3개(전부 문제 없음) → 메인 확인.
+- **세이브 호환:** `FOREACH_BERRY`를 HnS 아이템 순서로 두었다(upstream과 두 곳만 다름: CHILAN=36, ROSELI=53). 열매 68종 번호·경계 상수가 이식 전 `ITEM_TO_BERRY`와 같고, `berry.c`의 `STATIC_ASSERT` 가드가 순서를 고정한다(upstream 순서로 바꾸면 컴파일 오류). 세이브 구조체 레이아웃 diff 0, 새 게임 나무 118그루(473바이트) 전후 동일.
+- HnS가 upstream과 다르게 둔 곳(`// HnS:`): 열매 순서, 순서 가드, `berry_blender.c` NPC 열매 세트(upstream 그대로면 버치~배리열매를 넣을 때 NPC가 같은 열매를 넣는 회귀, 1.17.0에도 남음). HnS 수확량 43종·IS_HNS 성장/재식재·나무 팔레트·태그 화면 단위계 코드 보존. `include/random.h` hunk 제외.
+- 그대로 둔 upstream 변화(정상 플레이에서 닿지 않음): 무효 나무 값 → `ITEM_NONE`, E-Reader 의문열매 자연의은혜 0/0, 자뭉열매 표시, 구버전 ROM과의 베리 크래시·도도리오 통신 번호 1칸 차이.
+- 빌드(메인 재링크, 노트북): 종료 코드 0, ROM 32,716,084 B(97.50%, −176 B), EWRAM 248,924 B, IWRAM 25,516 B. 새 경고 0. 한글이 든 소스 줄 변경 0.
+- 테스트: 이식 전후 모두 PASS 2,314 / FAIL 2,232 / TOTAL 5,211, 목록 바이트 동일(회귀 0). 기준 목록 `test-baseline-seq107.txt`(seq106과 같음).
+- 세이브 확인 도구: `docs/friend-handoff/results/1.17.0-port/berry-7305/`(`verify.sh` 4항목, `sav_berry_trees.py`, `sav_set_tree.py`, README).
+- 실기 확인 추가: 기존 세이브의 36~65번 나무(카리·오카·바리비·로셀·치리·의문·애터열매, 130번 수로(Route130) 치리열매 treeId 82), 조토·관동 나무 단계별 그림·팔레트, 수확 뒤 재식재, 금빛시티 꽃집, 열매 태그 화면(번호·그림·미터법 슈박열매), 가방 열매 번호, 자연의은혜, 블렌더 NPC.
+
+## 2026-09-30 — full-sync port seq 102~106 완료
+
+- 다음 시작 seq(당시): 107 (#7305 `U-berries-7305`, XL 단독). 세이브 호환 주의: 나무열매 ID를 재구성해도 기존 열매 번호 순서를 유지해야 한다(full-sync plan 4절).
 - seq 102 #9172: ROM SHA1이 변환 전과 같다. seq 103~106: #9568(롤 config 전부 MEDIAN, 롤 동작이 이식 전과 같음), #9551, #9579(이미 적용), #8213.
 - 빌드: ROM 32,716,260 B(97.50%), EWRAM 248,924 B, IWRAM 25,516 B. 테스트: PASS 2,314 / FAIL 2,232 / TOTAL 5,211, 회귀 0. 기준 목록은 `test-baseline-seq106.txt`다.
 - 친구 mGBA 확인 대기: Safari 재확인, #9525 발버둥, #9124·#9551 교체 AI(`HANDBACK_2026-09-30.md`).

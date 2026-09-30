@@ -70,7 +70,7 @@
 | `include/berry.h` | 없음 | `#if IS_HNS void Berry_Ready(void); #endif` 유지 | HnS special |
 | `src/data/object_events/berry_tree_graphics_tables.h` | 팔레트 슬롯 표 하나 | `#if IS_HNS` 팔레트 슬롯 표(120줄) 유지. `sPicTable_*` → `gPicTable_*`와 포인터 표 삭제는 upstream대로 | HnS 나무 팔레트 |
 | `src/event_object_movement.c` `SetBerryTreeGraphicsById` | `#else` 줄만 있음 | `IS_HNS` 분기 `palSlot = gBerries[berryId].berryTreePaletteSlotTable[berryStage] - 2`(1기준 `berryId`), `sHnsBerryPalTags` 유지 | HnS 나무 팔레트. 호출부는 upstream처럼 `- 1` 제거, `> NUM_BERRIES`면 0 |
-| `src/berry_tag_screen.c` | 인치 표시만 | HnS 단위계(`challengeSettings.unitSystem`) 분기와 수박열매 미터법 설명 유지, `BERRY_ID_WATMEL` 사용 | HnS 챌린지 |
+| `src/berry_tag_screen.c` | 인치 표시만 | HnS 단위계(`challengeSettings.unitSystem`) 분기와 슈박열매 미터법 설명 유지, `BERRY_ID_WATMEL` 사용 | HnS 챌린지 |
 | `src/berry_blender.c` `SetOpponentsBerryData` | `opponentSetId = ItemIdToBerryType(id); if (> 5) ((id−1)%5)+5` | `opponentSetId = ItemIdToBerryType(id) - 1; if (>= 5) (id%5)+5`. `// HnS:` 주석 | upstream은 0기준 표를 1기준 번호로 읽어 버치~배리열매에서 한 칸 밀린다(아래 표). 이식 전 동작 유지 |
 | `data/scripts/new_game.inc` HnS 38줄 | 없음 | 같은 규칙으로 `BERRY_ID_X` | 조토·관동 나무 유지 |
 | `data/maps/GoldenrodCity_FlowerShop_hns/scripts.inc` | (파일 없음) | 바꾸지 않음(`random 8` + `addvar VAR_RESULT, FIRST_BERRY_INDEX`) | 아이템 ID 산술이라 열매 번호와 무관하다. `FIRST_BERRY_INDEX`는 upstream에도 남는다. 바이트·동작이 이식 전과 같다 |
@@ -130,12 +130,29 @@
   - `IS_HNS` 나무 팔레트(`palSlot`)의 1기준 전환은 ROM 표(나무 그림·팔레트 슬롯 표가 열매마다 같은 심볼)로 확인했지만 화면 출력은 실기로만 볼 수 있다.
   - 이후 upstream 동기화가 `include/constants/berries.h`를 upstream 순서로 되돌리면 `berry.c` 가드가 컴파일 오류를 낸다. 그때 가드를 지우지 말고 HnS 순서를 유지한다.
 
+## 커밋 리뷰 (병렬, 읽기 전용)
+
+적용이 끝난 뒤 메인이 리뷰 에이전트 3개를 띄워 `f2a0395e90`을 upstream `47cac73a61`, 1.17.0 최종형, 이식 전 코드, 사전 분석 문서와 대조했다. 리뷰어는 저장소를 수정하지 않았고 `make`를 돌리지 않았다(스크래치에서 하네스만 컴파일).
+
+| 관점 | 판정 | 요지 |
+|---|---|---|
+| 세이브·열매 번호 순서 | 문제 없음 | 68종 모두 `BERRY_ID_X == 옛 ITEM_TO_BERRY(ITEM_X_BERRY)`(CHILAN 36, ROSELI 53, ENIGMA 61, E-Reader 68)이고 경계 상수가 전후 같다. 아이템↔번호 양방향 차이 0. `STATIC_ASSERT`는 67종 순서와 11개 번호를 고정하며, upstream 순서로 바꾸면 32개가 오류를 낸다. 나무 심기·수확·재식재·그래픽·Wonder News·랜덤 열매 경로에 off-by-one이 없다. `verify.sh` EPIPE 수정은 검사를 약화시키지 않는다. 세이브 구조체는 이름(`Berry`→`BerryInfo`, `Berry2`→`EnigmaBerryInfo`)만 바뀌었다. |
+| HnS 동작·C 코드 | 문제 없음 | C/헤더 34파일은 upstream과 줄 집합이 같고, 다른 곳은 결과 문서의 HnS 적응 6곳과 `random.h` 제외뿐이다. 후속 PR 내용은 없다. 옛 `gBerries`·`gNaturalGiftTable`·`gBerryCrush_BerryData`·그림·팔레트 표를 새 필드와 비교해 차이 0(수확량 43종·81필드 포함). IS_HNS `palSlot`은 68종 × 전 단계에서 같은 슬롯을 고른다. 블렌더 `// HnS:` 수정은 이식 전과 모든 조합이 같다(upstream 그대로면 30행 차이). 한글 변경 줄 0. |
+| 스크립트·데이터·그래픽·테스트 | 문제 없음 | `setberrytree`·`giverandomberry` 매크로가 upstream과 같고 바이트코드(0x8A + u8×3)가 이식 전과 같다. `new_game.inc` 118줄은 기계 치환 결과와 바이트 동일. ROM에서 랜덤 열매 블록 7곳의 범위가 옛 아이템 구간과 같고, `GoldenrodCity_FlowerShop_hns`는 바이트가 그대로다. `ITEM_TO_BERRY`·`NUM_*_BERRIES` 사용처 0. 나무 그림·팔레트 68종과 HnS `*_hns` 그림 32줄, IS_HNS 팔레트 표가 보존됐다. 테스트 6개가 upstream과 같다. |
+
+리뷰 뒤 메인 조치:
+- 도구 README 사소 문제 1건 수정: `TC`만 지정하면 `dwarf_layout.py`가 `READELF`를 찾지 못하던 문제. `layout.sh`가 `READELF=${READELF:-$TC/arm-none-eabi-readelf}`를 export하게 고치고, `/opt`가 아닌 경로를 `TC`로만 줘서 종료 코드 0을 확인했다.
+- 실기 목록의 열매 이름을 `src/data/items.h`와 대조해 "수박열매"를 공식 명칭 "슈박열매"로 고쳤다.
+- 참고(조치 없음): upstream 변이 코드의 잠재 버그 2개(`sBerryMutations` 중복 행, 변이 열매 이름에 부모 열매 사용)는 HnS에서 `OW_BERRY_MUTATIONS FALSE`라 실행되지 않는다. 변이를 켤 때 고친다.
+
+메인 검증: `rm -f pokehns.elf pokehns.gba` 뒤 `make hns -j8` 종료 코드 0, ROM 32,716,084 B, EWRAM 248,924 B, IWRAM 25,516 B, SHA1 `0c91520caa7dca02ada0115f9657501147c9927a`. 이식 전후 테스트 로그를 메인이 `LC_ALL=C`로 다시 추출해 이식 전 목록 = `test-baseline-seq106.txt`, 이식 후 목록 = `test-baseline-seq107.txt`를 확인했다. docs 밖 한글(U+AC00~D7A3)이 든 변경 줄 0.
+
 ## 실기 확인 항목 (친구용)
 
-이식 전 ROM(`84fd460dc0`)으로 만든 세이브를 이식 후 ROM(`f2a0395e90` 이후)에 넣어 본다. 36~65번 열매 나무는 일반 플레이로는 거의 생기지 않으므로 [`berry-7305/README.md`](berry-7305/README.md) 2절의 `sav_set_tree.py`로 세이브 사본을 만들어 쓰면 편하다(예: 31번도로·도라지시티·37번도로·42번도로·33번도로·고동마을 나무를 카리·오카·로셀·바리비·애터·치리열매로).
+이식 전 ROM(`84fd460dc0`)으로 만든 세이브를 이식 후 ROM(`f2a0395e90` 이후)에 넣어 본다. 36~65번 열매 나무는 일반 플레이로는 거의 생기지 않으므로 [`berry-7305/README.md`](berry-7305/README.md) 2절의 `sav_set_tree.py`로 세이브 사본을 만들어 쓰면 편하다(예: 31번 도로·도라지시티·37번 도로·42번 도로·33번 도로·고동마을 나무를 카리·오카·로셀·바리비·애터·치리열매로).
 
-1. **기존 세이브의 36~65번 나무:** 카리열매(36), 오카열매(37), 바리비열매(52), 로셀열매(53), 치리열매(54), 의문열매(61), 애터열매(65) 나무의 그림·팔레트, "○○열매가 N개" 문구, 수확 아이템이 이식 전 ROM과 같은지. 에메랄드 130번수로의 치리열매 나무(treeId 82, 저장값 54)가 있으면 그것도 치리열매로 보여야 한다.
-2. **조토·관동 나무 단계별 그림·팔레트:** 30번도로(오랭열매, 호엔 나무 ID 재사용), 26번도로·연분홍시티(자뭉열매, 호엔 ID 재사용), 1번도로(자뭉열매), 31번도로·도라지시티(버치열매), 고동마을(복슝열매), 46번도로(리샘열매) 등에서 새싹·성장·열매 단계 그림과 색이 이식 전과 같은지.
+1. **기존 세이브의 36~65번 나무:** 카리열매(36), 오카열매(37), 바리비열매(52), 로셀열매(53), 치리열매(54), 의문열매(61), 애터열매(65) 나무의 그림·팔레트, "○○열매가 N개" 문구, 수확 아이템이 이식 전 ROM과 같은지. 에메랄드 130번 수로의 치리열매 나무(treeId 82, 저장값 54)가 있으면 그것도 치리열매로 보여야 한다.
+2. **조토·관동 나무 단계별 그림·팔레트:** 30번 도로(오랭열매, 호엔 나무 ID 재사용), 26번 도로·연분홍시티(자뭉열매, 호엔 ID 재사용), 1번 도로(자뭉열매), 31번 도로·도라지시티(버치열매), 고동마을(복슝열매), 46번 도로(리샘열매) 등에서 새싹·성장·열매 단계 그림과 색이 이식 전과 같은지.
 3. **수확 뒤 재식재:** 나무에서 열매를 따고 다시 심으면 같은 열매가 새싹 단계로 심기는지(`sLastPickedBerryType`), 시간이 지나 열매 단계가 되는지. 리샘열매·자뭉열매는 다른 열매보다 오래 걸려야 한다.
 4. **금빛시티 꽃집:** 하루 한 번 버치~시몬열매 중 하나를 주는지(스크립트는 바꾸지 않았다).
 5. **열매 태그 화면:** 가방에서 열매 확인 시 번호(예: 카리열매 No.36, 로셀열매 No.53), 열매 그림·이름·설명, 크기 표시. 단위계 설정이 미터법이면 슈박열매 설명이 미터 문구로 나오는지. 좌우로 다른 열매로 넘길 때 그림이 맞는지.
