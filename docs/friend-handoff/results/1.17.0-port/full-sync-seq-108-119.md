@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 108~119
 
-진행 중: 마지막 완료 seq 118, 다음 seq 119.
+진행 중: seq 108~119 이식 완료, 구간 끝 전체 테스트 실행 중(`build/port-check-post119.log`).
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md), 메시지 출력 기록: [`BATTLE_MESSAGE_OUTPUT_CHANGES.md`](../../../localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md)
 시작 HEAD: `10077a5d70` (작업 트리 clean)
@@ -21,6 +21,7 @@
 | 116 | #9557 | 적용(HnS 적응, 변형 B) | `4440c18163` | +2,416 B | 미리보기 그림·표를 `#if MPS_ENABLE_MAP_PREVIEWS`로 감쌈(`// HnS:`), `MAPSEC_ROCKET_HIDEOUT_HNS` 보존, BG 팔레트 13 날씨 색 변환 해제는 upstream대로, docs 제외 |
 | 117 | #9578 | 부분 적용(HnS 적응) | `3960fc0c8e` | −64 B | `BattleScript_ShedSkinActivates` hunk 제외, 미사용 스크립트·`STRINGID_PKMNSXCUREDYPROBLEM`(한글 1줄) 삭제, `STRINGID_PKMNPREVENTSROMANCEWITH` 유지 |
 | 118 | #9630 | 적용 | `4e3c6bd5e7` | +96 B | upstream 그대로. 롤 값 불변(나눗셈 전수 증명, 실제 커밋으로 mGBA 롤 하네스 재실행 exit 0) |
+| 119 | #9634 | 적용(HnS 적응) | `de9b581a28` | −32 B | 한글 `STRINGID_PKMNISGLOWING` 한 줄 삭제, 불새는 이미 출력 중인 `STRINGID_CLOAKEDINAHARSHLIGHT` 고정 |
 
 ## 공통 사항
 
@@ -296,3 +297,18 @@
 - 검증: `git diff --check` 통과. 빌드: 종료 코드 0, **ROM 32,718,996 B(+96 B, ARM 함수 3개와 Thumb↔ARM 베니어) / EWRAM 248,940 B / IWRAM 25,516 B**, 새 경고 0. 한글 줄 변경 0.
 - 테스트: 마감 때문에 AI 파일별 실행은 생략하고 구간 끝 전체 테스트로 대신했다(아래 "구간 끝 전체 테스트").
 - 남은 위험: 매우 낮음. 실제 게임에서는 AI 계산이 빨라져 사고 중 지나가는 VBlank 수가 달라지면 이후 난수열이 달라질 수 있다(타이밍 차이, 동작 차이 아님). 실기 확인: 필요 없음(선택: 더블 첫 턴 AI 사고 시간이 길어지지 않았는지).
+
+## 동기화 단위: seq 119 #9634 `U-9634` Removed STRINGID_PKMNISGLOWING
+
+- 현재 판정: 적용(HnS 적응: 한글 문장 줄만 수동 삭제)
+- 커밋: `de9b581a28`
+- upstream 근거: `fb8819b572`(3파일 +8/−10)
+- 수정 파일(3): `include/constants/battle_string_ids.h`, `src/battle_message.c`(한글 1줄 삭제), `src/data/moves_info.h`(불새 `stringId`를 `STRINGID_CLOAKEDINAHARSHLIGHT`로 고정, `.stringId =  X` 두 칸 공백 7곳 → 한 칸). 패치와 upstream의 `+`/`-` 줄 차이는 삭제되는 문장이 한글인 것뿐이다.
+- 삭제한 한글 문장: `[STRINGID_PKMNISGLOWING] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX}{B_TXT_EULREUL}\n세찬 빛이 감쌌다!")`. 사용처는 불새의 `B_UPDATED_MOVE_DATA >= GEN_4 ? STRINGID_CLOAKEDINAHARSHLIGHT : STRINGID_PKMNISGLOWING` Gen3 이하 분기뿐이었고 HnS(`GEN_LATEST`)에서는 선택되지 않았다.
+- **대체 문장 확인:** `STRINGID_CLOAKEDINAHARSHLIGHT` = `{B_ATK_NAME_WITH_PREFIX}로부터\n눈부신 빛이 넘쳐흐른다!`(`src/battle_message.c`, 한글). 이식 전후 모두 불새 1턴째에 이 문장이 나온다.
+- 검증:
+  - `git diff --check` 통과. 빌드: 종료 코드 0, **ROM 32,718,964 B(−32 B) / EWRAM 248,940 B / IWRAM 25,516 B**, 새 경고 0. `pokehns.gba` SHA1 `d439ac3b54a464827093a1a0d80d33e74c83ea5e`.
+  - **STRINGID→바이트 대응(#9578 뒤 표와 비교):** removed 1(`STRINGID_PKMNISGLOWING`, 순번 79), added 0, 바이트 변경 0, `STRINGID_PKMNFLEWHIGH`부터 647개 순번 −1.
+  - **구간 누적(이식 전 `10077a5d70` 표 대비):** 728 → 726행. removed 2(`PKMNISGLOWING`, `PKMNSXCUREDYPROBLEM`), added 0, 바이트 변경 2(`PKMNFLUNG`·`ABOUTTOUSEPOLTERGEIST` 토큰 바이트만, #9610), 순번 이동 647개(−1/−2), UNSET/REF 13개 동일. 나머지 722개 STRINGID의 인코딩 바이트는 이식 전과 같다. 결과 표가 사전 분석이 세 패치를 스크래치에 적용해 예측한 표(`verify-after.tsv`)와 바이트 동일.
+- 테스트: 구간 끝 전체 테스트로 대신했다. `test/text.c` `Battle strings fit on the battle message window` 줄이 `(125/125)`에서 `(124/124)`로 바뀌는 것은 예상된 차이(같은 문장 `STRINGID_PKMNSTOLEITEM`, FAIL 유지).
+- 출력 변화: 없음. 실기 확인: 선택(불새 1턴째 문장).
