@@ -1,6 +1,6 @@
 # full-sync 선진행 결과 — 구간 1 (seq 130~167 중 15행)
 
-진행 중: 마지막 완료 seq 157, 다음 seq 158
+진행 중: 마지막 완료 seq 158, 다음 seq 160
 
 **순서표와 다르게 진행한 구간이다.** 순서표([`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv))의 다음 행 seq 127 #9655(배틀 메시지 리팩터)가 D1~D7 결정 대기라서, #9655와 무관한 뒤쪽 행을 앞당겨 이식한다. 선정 기준과 전체 분류는 [`ahead-of-9655/README.md`](ahead-of-9655/README.md)(`ahead_candidates.tsv`)에 있다. 이 구간은 그 "선진행" 114행 가운데 앞쪽 15행(seq 130, 131, 133, 134, 137, 143, 148, 149, 151, 156, 157, 158, 160, 165, 167)이다.
 
@@ -25,6 +25,7 @@
 | 151 | #9755 | 적용 | `ce1fc01da9` | −16 B | AI `IsDamageMoveUnusable`의 `HasWeatherEffect()` 이중 검사 제거(upstream 그대로). `ctx->weather`가 이미 날씨 무효를 반영해 사실상 동작 동일 |
 | 156 | #9774 | 적용 | `adb22cd5f0` | 0 B | Fallarbor 떠올리기 NPC 판정 `VAR_0x8004, 0` → `VAR_RESULT, FALSE`(upstream 그대로). HnS 실사용 검은먹시티 NPC의 같은 수정은 seq 133에 포함. Fallarbor는 HnS에서 도달 불가 |
 | 157 | #8628 | 적용 | `5381abba16` | 0 B | `setmetatileinrange` 매크로(`callnative`, 새 opcode 없음)와 `NativeFunc_SetMetatileInRange`. 쓰는 스크립트가 없어 함수는 gc로 빠짐. 공백 1줄 정리 |
+| 158 | #9765 | 적용 | `2cef59f506` | −5,360 B (EWRAM −4 B) | 도감 분포 지도 템플릿 제거, BG 3 상수. 쓰이지 않던 affine 그래픽·BG 번호 힙 할당 삭제. HnS `pokedex_area_screen.c` 고유 변경 보존. 동작 동일 |
 
 ## 공통 사항
 
@@ -304,6 +305,24 @@
 - 남은 위험: 없음. 좌표가 `u8`이라 `xmin + MAP_OFFSET`이 255를 넘으면 잘린다(upstream과 같음, 쓰는 스크립트 없음).
 - 실기 확인: 불필요(쓰는 스크립트 없음).
 
+## 동기화 단위: seq 158 #9765 `U-9765` Remove template abstraction for pokedex area map
+
+- 현재 판정: 적용(그대로)
+- 커밋: `2cef59f506`
+- upstream 근거: `63d96455ca`(3파일 +13/−57). `git log --all --grep='#9765'` 없음 → 미적용이었다.
+- 수정 파일(3): `include/pokedex_area_region_map.h`, `src/pokedex_area_region_map.c`, `src/pokedex_area_screen.c`
+- 적용 방법: 사전 분석 patch(`seq158-9765.patch`)를 `git apply`했다. 충돌 없음. `src/pokedex_area_region_map.c`·`include/pokedex_area_region_map.h`는 적용 뒤 upstream `63d96455ca`와 **바이트 동일**(이식 전에도 upstream 부모와 같았다).
+- 내용: `PokedexAreaMapTemplate` 구조체를 없애고 BG 번호를 `#define POKEDEX_AREA_MAP_BG 3`으로 고정. 쓰이지 않던 affine 분기(mode≠0)와 그 그래픽 `sPokedexAreaMapAffine_Gfx`·`_Tilemap` INCBIN, BG 번호 EWRAM 포인터 `sPokedexAreaMapBgNum`과 `Alloc`/`FreePokedexAreaMapBgNum`, `offset` 0이라 아무 일도 안 하던 `AddValToTilemapBuffer` 호출 삭제. `pokedex_area_screen.c`의 `sPokedexAreaMapTemplate`(bg 3, offset 0, mode 0) 삭제, 호출 2곳 `LoadPokedexAreaMapGfx()`, `FreePokedexAreaMapBgNum()` 호출 삭제.
+- 동작: 같다. 이전에도 템플릿 값으로 항상 mode 0 분기만 탔고, 이후 같은 호출을 BG 3 상수로 한다. 기본 도감·HGSS 도감 모두 같은 `DisplayPokedexAreaScreen`을 거친다. 조토·관동 지도 선택(`GetRegionMapType`/`gRegionMapInfos`)은 건드리지 않았다.
+- HnS 적응: 없음. HnS `pokedex_area_screen.c` 고유 변경(`MAP_GROUP_*_HNS`, 조토 표시 시 관동 MAPSEC 제외, `MapHasSpecies(…, headerSectionId, …)`, 낮/밤 전환, `GetActiveRegionMapEntries()` 좌표)은 hunk와 떨어져 있어 그대로다.
+- 제외한 hunk: 없음. `graphics/pokedex/region_map_affine.*`와 `graphics_file_rules.mk` 규칙은 upstream도 남겼다(참조 없음, ROM에 안 들어감).
+- 검증:
+  - `git diff --check` 통과. 한글·config·세이브 변경 0.
+  - 빌드(`build/port.log`): 종료 코드 0, **ROM 32,715,524 B(97.50%, −5,360 B) / EWRAM 248,936 B(94.96%, −4 B) / IWRAM 25,516 B(0)**. 사전 분석 추정 약 −5.29 KB(affine gfx 4,368 B + tilemap 608 B + 함수), EWRAM −4 B(`sPokedexAreaMapBgNum`). `pokehns.gba` SHA1 `f5cdbb4354fd0f1c6178c6987db0e67add92684a`. 새 경고 0(경고 2줄 모두 기존).
+- 테스트: 없음(이 PR은 테스트를 바꾸지 않고, 도감 분포 화면 테스트도 없다). 전체 테스트는 메인이 구간 끝에 돌린다.
+- 남은 위험: 낮음(코드 경로 동일, 힙 4 B 할당·해제가 없어짐).
+- 실기 확인: 필요(아래 "실기 확인 항목" 6).
+
 ## 한글 문구 미결
 
 **공식 문구 확인 전 임시 번역**이다. 확정되면 `src/strings.c`의 해당 줄만 바꾼다(seq 133 #9006).
@@ -339,6 +358,7 @@
    - 메뉴를 나간 뒤 다른 창의 글자가 깨지지 않는지(이식 전 이름 복사 오버런 해소 확인)
 4. **도감 무게 파운드 표시(#9690):** 옵션 "단위계"를 "야드파운드법"으로 바꾼 뒤 도감(기본·HGSS 화면)에서 폴리곤2 또는 다꼬리 무게가 `71.7 lbs.`(이식 전 71.6), 피카츄(6.0 kg)는 `13.2 lbs.`(변화 없음)인지 본다. "미터법"으로 되돌리면 kg 표시가 이식 전과 같아야 한다.
 5. **맵 이름 팝업(#9461):** 팝업 모양·글꼴이 이식 전과 같은지. 숫자가 든 도로("29번 도로"), 긴 이름("사파리존 게이트", "블루시티동굴", "남쪽의 외딴섬"), 다층 던전(모다피의 탑·연결동굴 등: **층 표시가 나오지 않는 것이 정상**), 배틀프런티어·배틀 피라미드 팝업.
+6. **도감 분포 화면(#9765):** HGSS 도감 → 분포 화면(조토 지도, 관동 방문 뒤 관동/조토 지도), 위·아래로 낮/밤 전환 반복, 분포 화면 ↔ 울음소리/크기 화면 전환 뒤 복귀, 도감 종료. 지도·서식지 표시가 이식 전과 같아야 한다.
 
 ## 후속 행 메모
 
