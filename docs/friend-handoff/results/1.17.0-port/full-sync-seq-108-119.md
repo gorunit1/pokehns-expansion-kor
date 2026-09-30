@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 108~119
 
-진행 중: 마지막 완료 seq 117, 다음 seq 118.
+진행 중: 마지막 완료 seq 118, 다음 seq 119.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md), 메시지 출력 기록: [`BATTLE_MESSAGE_OUTPUT_CHANGES.md`](../../../localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md)
 시작 HEAD: `10077a5d70` (작업 트리 clean)
@@ -20,6 +20,7 @@
 | (176) | #9864 | 적용(같은 unit, 선반영) | `489c58259c` | +32 B | upstream 그대로(`reshow_battle_screen.c` 2줄). seq 176 도달 시 "이미 적용" |
 | 116 | #9557 | 적용(HnS 적응, 변형 B) | `4440c18163` | +2,416 B | 미리보기 그림·표를 `#if MPS_ENABLE_MAP_PREVIEWS`로 감쌈(`// HnS:`), `MAPSEC_ROCKET_HIDEOUT_HNS` 보존, BG 팔레트 13 날씨 색 변환 해제는 upstream대로, docs 제외 |
 | 117 | #9578 | 부분 적용(HnS 적응) | `3960fc0c8e` | −64 B | `BattleScript_ShedSkinActivates` hunk 제외, 미사용 스크립트·`STRINGID_PKMNSXCUREDYPROBLEM`(한글 1줄) 삭제, `STRINGID_PKMNPREVENTSROMANCEWITH` 유지 |
+| 118 | #9630 | 적용 | `4e3c6bd5e7` | +96 B | upstream 그대로. 롤 값 불변(나눗셈 전수 증명, 실제 커밋으로 mGBA 롤 하네스 재실행 exit 0) |
 
 ## 공통 사항
 
@@ -280,3 +281,18 @@
   - STRINGID→바이트 대응(#9610 뒤 표와 비교): removed 1(`STRINGID_PKMNSXCUREDYPROBLEM`, 순번 292), added 0, 바이트 변경 0, `STRINGID_ITSUCKEDLIQUIDOOZE`부터 435개 순번 −1. `enum StringID`에 명시 값이 없고 문자열 표는 지정 초기화, 숫자 `printstring`은 매크로 기본값 `printstring 0`뿐(#9494가 `0x3`을 `STRINGID_SWITCHINMON`으로 바꿈), 세이브·녹화에 저장 안 함 → 영향 없음.
   - 테스트(`test/text.c`, `ability/oblivious.c`·`shed_skin.c`·`hydration.c`·`healer.c`): 이식 전과 상태 변화 0.
 - 출력 변화: 없음(삭제 대상 모두 미사용). 실기 확인: 필요 없음.
+
+## 동기화 단위: seq 118 #9630 `U-9630` Damage roll speed wizardry
+
+- 현재 판정: 적용
+- 커밋: `4e3c6bd5e7`
+- upstream 근거: `c107917e6c`(1파일 +3/−3). deps #9568(seq 103 `4bc61b3ffc`) 적용됨.
+- 수정 파일(1): `src/battle_ai_util.c` — `LowestRollDmg`·`DmgRoll`·`RandomRollDmg`를 `static inline`에서 `static __attribute__((noinline)) ARM_FUNC`로(패치 `+`/`-` 줄이 upstream과 같음, 오프셋만 다름). `HighestRollDmg`는 upstream도 inline 유지. 본문은 바뀌지 않는다.
+- HnS 적응: 없음. #9568 HnS 적응(롤 config 전부 MEDIAN, 아군 KO `.maximum`, Beat Up `// HnS:` 줄)과 겹치는 줄이 없다. `ARM_FUNC`는 IWRAM 배치가 아니라 ROM의 ARM 코드이며, HnS에 이미 같은 형태(`PercentToUQ4_12`)가 있다.
+- 동작: C 계산식은 그대로이고 100으로 나누기가 `__divsi3` 호출에서 곱셈(`smull` 매직 넘버)으로 바뀐다.
+  - 사전 분석 결과 인용: 호스트 전수 증명(`ai-harness/roll9630/host_div100_proof.c`, 32비트 입력 2^32개 전부에서 매직 나눗셈 = 절삭 나눗셈, 85×/93× 곱 동일, 불일치 0), mGBA 롤 하네스(HnS와 같은 플래그로 이전·이후 롤 함수를 추출해 GBA ROM으로 비교, dmg −65,536~1,048,575 전수 × LOWEST/MEDIAN/HIGHEST/RANDOM, s32 표본, RANDOM 85~100% 전부, 롤마다 RNG 호출 1회·인자 `(RNG_AI_DMG_ROLL_RANDOM, 85, 100)` 검사, 확장 실행 0~2^24 전수, 음성 대조로 92% 변조 검출 확인).
+  - **이식 세션 재실행:** `OLD_SRC=<seq 117 커밋의 battle_ai_util.c> NEW_SRC=<4e3c6bd5e7의 파일> build_run.sh` → `bad-mask 00000000`, 검사한 dmg 값 0x210000(2,162,688), RNG 호출 0xC201E0(12,714,464), 잘못된 인자 0, **mgba-rom-test exit 0**.
+  - AI 대미지 소비처는 모두 `simulatedDmg[..].{minimum,median,maximum,random}`만 읽고, 이 값을 만드는 곳은 `AI_CalcDamage`의 `GetDamageByRollType` 8회뿐이라 위 비교가 모든 호출처의 동등성이다.
+- 검증: `git diff --check` 통과. 빌드: 종료 코드 0, **ROM 32,718,996 B(+96 B, ARM 함수 3개와 Thumb↔ARM 베니어) / EWRAM 248,940 B / IWRAM 25,516 B**, 새 경고 0. 한글 줄 변경 0.
+- 테스트: 마감 때문에 AI 파일별 실행은 생략하고 구간 끝 전체 테스트로 대신했다(아래 "구간 끝 전체 테스트").
+- 남은 위험: 매우 낮음. 실제 게임에서는 AI 계산이 빨라져 사고 중 지나가는 VBlank 수가 달라지면 이후 난수열이 달라질 수 있다(타이밍 차이, 동작 차이 아님). 실기 확인: 필요 없음(선택: 더블 첫 턴 AI 사고 시간이 길어지지 않았는지).
