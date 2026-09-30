@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 108~119
 
-진행 중: 마지막 완료 seq 108, 다음 seq 109.
+진행 중: 마지막 완료 seq 110, 다음 seq 111.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md), 메시지 출력 기록: [`BATTLE_MESSAGE_OUTPUT_CHANGES.md`](../../../localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md)
 시작 HEAD: `10077a5d70` (작업 트리 clean)
@@ -10,6 +10,8 @@
 | seq | PR | 판정 | 커밋 | ROM 변화 | 비고 |
 |---|---|---|---|---:|---|
 | 108 | #9537 (+#9668) | 적용(HnS 적응) | `70eb6a4271` | 0 B (SHA1 동일) | `OBJ_EVENT_GFX_*` 명시 값 유지·이름만 변경, FRLG 맵 2개 수동 hunk, `spritesheet_rules.mk` 규칙 3개 이름(#9668 동등, 오타 제외) |
+| 109 | #9241 | 적용(HnS 적응) | `ec9dca2712` | +32 B | `#if IS_HNS` 그래픽을 새 구조체 표 HnS판으로 옮김, (class, 그래픽) 쌍·세이브 값 불변 |
+| 110 | #9595 | 이미 적용 | 없음(`5121b83c94`) | 0 | seq 83 unit에서 적용 |
 
 ## 공통 사항
 
@@ -60,3 +62,28 @@
   - **seq 250 #10281:** upstream hunk는 INCGFX 줄(`gObjectEventPic_PokeManiacFrlg`에 `-mwidth 2 -mheight 4`)이다. HnS 규칙 이름이 이미 올바르므로 도달하면 "HnS 동등"으로 기록한다. seq 500 #9881(INCGFX) 이식 때 `gObjectEventPic_PokeManiacFrlg` 줄에 `-mwidth 2 -mheight 4`가 붙는지 확인한다.
 - 남은 위험: 없음(ROM 동일). FRLG 빌드는 이 PR과 무관하게 이식 전부터 `src/map_preview_screen.c`의 HnS 줄 `MAPSEC_ROCKET_HIDEOUT_HNS` 때문에 실패한다(seq 116 참고).
 - 실기 확인: 필요 없음(ROM SHA1 동일).
+
+## 동기화 단위: seq 109 #9241 `U-9241` Consolidated Battle Tower classes and object events
+
+- 현재 판정: 적용(HnS 적응)
+- 커밋: `ec9dca2712`
+- upstream 근거: `7b0b0b6fdd`(5파일 +91/−143). 1.17.0의 `include/battle_tower.h`·`gTower*FacilityClasses` 정의와 같은 형태.
+- 수정 파일(5): `include/battle_tower.h`, `src/apprentice.c`, `src/battle_special.c`, `src/battle_tower.c`, `src/frontier_util.c`
+- 적용 방법: 사전 분석 패치(`seq109-9241.patch`)를 `git apply`로 넣었다. `battle_tower.c`를 뺀 4파일의 `+`/`-` 줄 집합이 upstream과 같다. `battle_tower.c`의 `#else` 블록은 upstream `7b0b0b6fdd`의 배열 정의와 빈 줄을 뺀 글자가 같다(`diff` 0).
+- HnS 적응: HnS는 `const u8 g…FacilityClasses[]` 두 개 뒤에 `#if IS_HNS` / `#else`로 그래픽 배열 두 벌(`OBJ_EVENT_GFX_*_HNS` / 원본)을 두었다. 새 형태는 `#if IS_HNS` 안에 HnS 그래픽으로 짝지은 `const struct FacilityClass gTowerMale/FemaleFacilityClasses[]`, `#else` 안에 upstream과 같은 두 표다. `SaveBattleTowerRecord`의 `.class`는 upstream대로.
+- 제외한 hunk: 없음. `gTower*` 사용처는 upstream hunk와 1:1이고 HnS 고유 사용처는 없다(`git grep`).
+- 검증:
+  - `git diff --check` 통과, 파일 모드 변경 없음.
+  - **(class, 그래픽) 쌍**(`a108/tower_values.py`, 이식 전 파일은 이식 전 `battle_tower.h`로, 이식 후 파일은 새 헤더로 각각 컴파일): POKEMON_HNS·EMERALD·FIRERED 모두 남 30/30·여 20/20 SAME. 예) HnS 남 첫 쌍 (14, 423) (17, 453) (3, 414) (21, 406).
+  - **세이브:** 세이브에 들어가는 것은 표에서 꺼낸 class 값이다. `SaveBattleTowerRecord`가 `u8 class = …[i].class`로 `playerRecord->facilityClass`(u8)에 넣고, `battle_special.c`(`UNUSED` 함수)는 `ereaderTrainer->facilityClass`(u8), `apprentice.c`·`frontier_util.c`는 u8 class와 비교한다. 필드가 `u16 class`가 되어도 값(최대 `FACILITY_CLASSES_COUNT` 139 미만)이 같다. 표는 ROM 상수라 세이브 배치와 무관하다.
+  - 빌드: 종료 코드 0, **ROM 32,716,116 B(+32 B) / EWRAM 248,924 B(0) / IWRAM 25,516 B(0)**, 새 경고 0. (표 150 B → 200 B, 코드 약간 감소. 사전 분석 추정 +42 B)
+- 테스트: 직접 관련 테스트 없음(`test/`에 `gTower`·`FacilityClassToGraphicsId`·apprentice 참조 0). 구간 끝 전체 실행에 포함.
+- 남은 위험: 낮음. 이후 upstream PR이 이 표를 문맥으로 쓰면 HnS `#if IS_HNS` 블록 때문에 hunk 문맥 적응이 필요할 수 있다(1.17.0까지 이 배열 정의를 다시 바꾸는 커밋은 없음).
+- 실기 확인: 필요(아래 "실기 확인 항목" 1).
+
+## 동기화 단위: seq 110 #9595 `U-anim-8497` Fix move anim pal blending being discarded
+
+- 현재 판정: 이미 적용
+- 커밋: 없음. 적용 커밋 `5121b83c94`(seq 83 #8497 unit에서 선반영, 진행 기록 `838acd9430`)
+- 근거: upstream `c1e0532fe2`는 `Cmd_waitforvisualfinish`의 `UnloadAllSpritePalettes()` 호출과 주석 9줄 삭제다. 현재 `src/battle_anim.c` 997행 `Cmd_waitforvisualfinish`에 그 호출이 없다(남은 `UnloadAllSpritePalettes`는 정적 함수 정의와 다른 함수의 호출 1곳뿐, upstream 이후와 같음).
+- 실기 확인: seq 83 항목에 포함.
