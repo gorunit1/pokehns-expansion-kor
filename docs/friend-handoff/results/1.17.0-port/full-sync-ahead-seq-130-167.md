@@ -1,6 +1,6 @@
 # full-sync 선진행 결과 — 구간 1 (seq 130~167 중 15행)
 
-완료: 구간 1의 14행 이식·기록 완료(마지막 완료 seq 165). seq 167 #9819는 보류(#10548 직전 적용). 전체 테스트는 메인이 구간 끝에 돌린다.
+완료: 구간 1의 14행 이식·기록·커밋 리뷰·전체 테스트 완료(마지막 완료 seq 165). seq 167 #9819는 보류(#10548 직전 적용). 순서표 기준 다음 행은 여전히 seq 127 #9655(결정 대기)이고, 선진행 다음 구간은 [`ahead-of-9655/README.md`](ahead-of-9655/README.md)의 "선진행" 행 중 seq 186부터다.
 
 **순서표와 다르게 진행한 구간이다.** 순서표([`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv))의 다음 행 seq 127 #9655(배틀 메시지 리팩터)가 D1~D7 결정 대기라서, #9655와 무관한 뒤쪽 행을 앞당겨 이식한다. 선정 기준과 전체 분류는 [`ahead-of-9655/README.md`](ahead-of-9655/README.md)(`ahead_candidates.tsv`)에 있다. 이 구간은 그 "선진행" 114행 가운데 앞쪽 15행(seq 130, 131, 133, 134, 137, 143, 148, 149, 151, 156, 157, 158, 160, 165, 167)이다.
 
@@ -35,7 +35,7 @@
 - config 값·세이브 구조체 변경 0. 스크립트 명령 번호·special 번호 불변(#9006은 같은 자리 이름 변경, #8628은 `callnative`).
 - upstream과 다르게 둔 곳(`HnS:` 표시 포함): #9006 `Task_ReturnToFieldWhileLearningMove`의 `tRecoverPp = TRUE`(가르침 교체 최대 PP 유지)·`VALIDATE_BEFORE_LEARNING`의 `IsBoxMonExcluded`·요약 화면 START/R/L과 relearner 분기 위치·새 문자열 한글 초안, #9713 B안(곡 이름 저장 안 함)·DP 음악/`SE_FASTER_JOY_HEAL` 목록·`FIRST_PHONEME_SONG`, #9461 피라미드 조건·`FONT_NARROW`·`CELADON DEPT.` `!IS_HNS`. 제외한 hunk: #9006 요약 화면 A 버튼 이름 바꾸기·IV/EV 프롬프트, #9903 이름 바꾸기, #9461 글꼴, #9462 `config/ai.h`·`random.h`·뒤집기 로직(이미 있음).
 - 선반영: #10223(seq 390)의 `chooseboxmon.c` 1줄(#9006 커밋), #10445(seq 298)의 박스 번호 줄(#9903 커밋). 아래 "후속 행 메모".
-- upstream대로 둔 동작 변화: #9575 예측 AI 트레이너 25명의 AI 판단(1.17.0과 같아짐), #9006 떠올리기 흐름(확인 단계 위치, 공용 문구, 팡파레), #9690 야드파운드법 도감 무게 +0.1 lb(일부). `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 추가 행 0.
+- upstream대로 둔 동작 변화: #9575 예측 AI 트레이너 25명의 AI 판단(1.17.0과 같아짐), #9006 떠올리기 흐름(확인 단계 위치, 공용 문구, 팡파레), #9690 야드파운드법 도감 무게 +0.1 lb(일부), #9006 디버그 메뉴 전용: `data/scripts/move_relearner.inc`의 `.if P_ENABLE_MOVE_RELEARNERS` 분기가 없어져 디버그 메뉴(R+START) "Move Relearner"에 영문 "Egg Moves / TM Moves / Tutor Moves" 선택지가 항상 나온다(이식 전에는 "Level Up Moves"만. TM은 스크립트 모드라 모든 TM이 나오고 아이템 소모 없음. upstream 1.17.0과 같음, 커밋 리뷰에서 발견). `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 추가 행 0.
 - 테스트(PR별 지정 파일, seq 126 기준 대비): **사라진 PASS 0.** #9462로 FAIL → PASS 3건(AI 더블 테스트: Choiced doubles, Double Ace, 같은 턴 두 마리 교체), 새 줄 PASS 5 + FAIL 3(`Unmatched MESSAGE`, 알려진 한계), #9461 새 줄 `Map names fit in popup: PASS`. 그 밖 지정 파일(#9575 AI 9파일 336줄, #9006 `text.c`·`pokemon.c`, #9755 AI 3파일, #8628 `script.c`, #9813 `sprite.c`)은 기준과 같다.
 
 ## 공통 사항
@@ -107,7 +107,7 @@
 - 테스트(지정 4파일: `test/battle/ai/ai_choice.c`, `test/battle/ai/ai_double_ace.c`, `test/battle/ai/ai_switching.c`, `test/battle/move_effect/first_turn_only.c`) → 160줄(PASS 137). 이름이 seq 126 기준에 있는 줄은 아래를 빼고 **모두 같다.** 사라진 PASS 0.
   - **FAIL → PASS 3건**(STATUS의 "AI 더블 테스트 3건"): `Choiced Pokémon won't switch out if they can still affect one opposing Pokémon in doubles`(기준 `… 1/2 (1/?): FAIL`), `AI_FLAG_DOUBLE_ACE_POKEMON: Ace mons won't be switched in even if they are the best candidates`(기준 FAIL), `AI can switch out both mons on the same turn in double battles`(기준 `… (1/?): FAIL`). `WITH_CONFIG(…, 0)`으로 판단 순서가 고정된 결과다. 실패 꼬리가 사라져 이름 줄이 바뀐다.
   - 새 줄 PASS 5: `Choiced … doubles (reversed)`, `AI_FLAG_DOUBLE_ACE_POKEMON: … (reversed)`, `AI can switch out both mons on the same turn in double battles (reversed)`, `AI can switch out both mons in either order`, `AI will Fake Out either opponent if one has a slower Fake Out (reversed)`.
-  - 새 줄 FAIL 3: `AI will not try to switch for the same Pokémon for 2 spots in a double battle (all bad moves, reversed) 1/2 (1/?)`, `… (Wonder Guard, reversed) (1/?)`, `AI will not try to switch for the same pokemon for 2 spots in a 2v1 battle (all bad moves, reversed) 1/2`. 사유는 `Unmatched MESSAGE`(영문 `withdrew …`/`sent out …` 기대값)와 그로 인한 `PASSES_RANDOMLY`의 `observed 0.0`이다. reversed가 아닌 원래 3개도 기준에서 같은 사유로 FAIL이다(알려진 한계).
+  - 새 줄 FAIL 3: `AI will not try to switch for the same Pokémon for 2 spots in a double battle (all bad moves, reversed) 1/2 (1/?)`, `… (Wonder Guard, reversed) (1/?)`, `AI will not try to switch for the same pokemon for 2 spots in a 2v1 battle (all bad moves, reversed) 1/2`. 사유는 `Unmatched MESSAGE`(영문 `withdrew …`/`sent out …` 기대값)다. 앞의 두 줄은 그로 인한 `PASSES_RANDOMLY`의 `observed 0.0`이 함께 나오고, 2v1 테스트는 `PASSES_RANDOMLY`가 주석 처리돼 있어(`ai_switching.c:400`) `Unmatched MESSAGE`뿐이다(커밋 리뷰 정정). reversed가 아닌 원래 3개도 기준에서 같은 사유로 FAIL이다(알려진 한계).
 - 남은 위험: 없음(게임 동작 불변).
 - 실기 확인: 불필요.
 
@@ -185,7 +185,7 @@
 - 제외한 hunk: 없음(upstream `seName` 지역 변수 재배치는 HnS 구조에 해당 없음).
 - 검증:
   - `git diff --check` 통과. 한글 줄 변경 0(`src/debug.c`에 한글 없음). `END_SE`·`START_MUS`·`END_MUS` 남은 곳 0(docs 제외).
-  - 빌드(`build/port.log`): 종료 코드 0, **ROM 32,720,756 B(97.51%, −1,296 B) / EWRAM 248,940 B(0) / IWRAM 25,516 B(0)**. 사전 분석 추정 B안 약 −1,108 B(정렬 전). `pokehns.gba` SHA1 `a9db6b6c32941fd8581bb571c9728ebd4ca6522e`. 새 경고 0(`songs.h` 변경으로 경고 154줄이 나왔지만 모두 기준 목록의 기존 경고).
+  - 빌드(`build/port.log`): 종료 코드 0, **ROM 32,720,756 B(97.52%, −1,296 B) / EWRAM 248,940 B(0) / IWRAM 25,516 B(0)**. 사전 분석 추정 B안 약 −1,108 B(정렬 전). `pokehns.gba` SHA1 `a9db6b6c32941fd8581bb571c9728ebd4ca6522e`. 새 경고 0(`songs.h` 변경으로 경고 154줄이 나왔지만 모두 기준 목록의 기존 경고).
   - `arm-none-eabi-nm -S`: `sSongNames` 크기 `0xc78`(798칸), `FindSong` 있음. ROM의 `sSongNames`를 읽으면 SE 접두어 270칸(1~269 연속 + 797), MUS 접두어 396칸(350~745 연속), 나머지는 NULL이다. 따라서 SE/음악 선택 순서는 이식 전과 같고, SE 269 다음이 797이다. PH_*(746~796)는 지금처럼 메뉴에서 빠진다.
 - 테스트: 없음(이 PR은 `test/**`를 바꾸지 않고, 관련 테스트도 없다). 빌드 검증만 했다.
 - 남은 위험:
@@ -271,7 +271,7 @@
 - 수정 파일(1): `src/battle_ai_util.c`
 - 적용 방법: 사전 분석 patch(`seq151-9755.patch`)를 `git apply`했다. 충돌 없음. 결과가 upstream·1.17.0과 같다.
 - 내용: `IsDamageMoveUnusable`에서 원시 날씨(끝의대지·시작의바다) 검사를 감싼 `if (HasWeatherEffect())` 블록을 없앤다. `ctx->weather`는 모두 `AI_GetWeather()`/`AI_GetSwitchinWeather()`에서 오고, 두 함수는 `!AI_WeatherHasEffect()`이면 `B_WEATHER_NONE`을 돌려준다(턴 시작 `HasWeatherEffect()` 스냅숏).
-- 동작: 사실상 같다. 달라지는 경우는 `AI_FLAG_NEGATE_UNAWARE` AI(HnS 트레이너 데이터 0건, 디버그로만 켤 수 있음)와, 같은 턴 안에 날씨부정·에어록이 새로 나온 뒤 원시 날씨 아래에서 AI가 다시 계산하는 드문 경우뿐이다(upstream 동작과 같음).
+- 동작: 사실상 같다. 달라지는 경우는 `AI_FLAG_NEGATE_UNAWARE` AI(HnS 트레이너 데이터 0건, 디버그로만 켤 수 있음)와, 같은 턴 안에 날씨부정·에어록이 새로 나온 뒤 원시 날씨 아래에서 AI가 다시 계산하는 드문 경우뿐이다(upstream 동작과 같음). 이론상 하나 더: 전지(omniscient)가 아닌 `PREDICT_SWITCH` AI가 원시 날씨 아래에서 플레이어 교체 후보를 계산할 때, 후보가 공개되지 않은 날씨부정·에어록 특성을 가진 경우(`AI_GetSwitchinWeather`는 AI 추정 특성을 씀). HnS 예측 트레이너 25명은 모두 Smart Trainer(`AI_FLAG_OMNISCIENT` 포함)라 생기지 않는다(커밋 리뷰 보충). 1.17.0과 같다.
 - HnS 적응: 없음. 제외한 hunk: 없음.
 - 검증:
   - `git diff --check` 통과. 한글·config·세이브 변경 0.
@@ -379,6 +379,45 @@
   - **`MB_ROCK_CLIMB` 배치 0개:** 이 메타타일은 `indigo_plateau_hns` tileset 357번 하나뿐이고, 이를 쓰는 `LAYOUT_INDIGO_PLATEAU_HNS`·`LAYOUT_ROUTE23_HNS`의 `map.bin`·`border.bin`에 배치가 없다. 바위 타일 상호작용 변화는 플레이에 나타나지 않는다.
   - **asm/C enum 불일치 잠재 버그:** 스크립트 조립 경로에서는 `TRUE`/`FALSE`가 정의되지 않아 `#if OW_ROCK_CLIMB_FIELD_MOVE == TRUE`가 `0 == 0`으로 참이 된다. 그래서 지금 asm은 `FIELD_MOVE_ROCK_CLIMB = 14`, `FIELD_MOVE_DEFOG = 15`, `FIELD_MOVES_COUNT = 16`인데 C `gFieldMoveInfo`는 14항목이다. `EventScript_UseRockClimb`의 `checkfieldmove FIELD_MOVE_ROCK_CLIMB`가 실행되면 배열 밖을 읽는다(타일이 없어 도달하지 않음). #9819를 넣으면 C도 16항목이 되어 맞는다.
   - **ROM 약 +240 B 추정**(표 2항목·잠금 함수 +32 B, 상호작용 +12 B, 지금 gc로 빠지는 `SetUpFieldMove_Defog/RockClimb`·`FieldCallback_*` 196 B가 다시 링크됨). EWRAM·IWRAM 0. 세이브 영향 0. 새 문자열 없음.
+
+## 구간 끝 전체 테스트 (메인)
+
+`GITHUB_ACTION=1 make check BUILD=hns -j6`(`c1f24e6121` = 코드 `4442f1a559`, 로그 `build/port-check-ahead1.log`, 종료 코드 2 = 실패 테스트 있음, assertion·Killed 0). 목록은 `PORT_INSTRUCTIONS`의 `LC_ALL=C`·`grep -a` 표준 추출로 만들었다. 메인 재빌드는 종료 코드 0, ROM 32,715,492 B / EWRAM 248,936 B / IWRAM 25,516 B, SHA1 `a1aa5ea8c9c824ba1c6bfa4d068f8948392a2a8c`(적용 담당 마지막 빌드와 같음), 새 경고 0.
+
+| 항목 | 이식 전(seq 126) | 이식 후(선진행 구간 1) |
+|---|---|---|
+| 러너 요약 | PASSED 2,323 / FAILED 2,244 / KNOWN_FAILING 10 / ASSUMPTIONS_FAILED 38 / TO_DO 611 / EXPECT_FAILING 6 / TOTAL 5,232 | PASSED 2,332 / FAILED 2,244 / KNOWN_FAILING 10 / ASSUMPTIONS_FAILED 38 / TO_DO 611 / EXPECT_FAILING 6 / TOTAL 5,241 |
+| 표준 목록 | 5,163줄(PASS 2,320 / FAIL 2,219 / TO_DO 609 / KNOWN_FAILING 10 / EXPECTED_FAIL 5) | 5,172줄(PASS 2,329 / FAIL 2,219 / TO_DO 609 / KNOWN_FAILING 10 / EXPECTED_FAIL 5) |
+| 확장 목록(`ASSUMPTION_FAIL|INVALID|TIMEOUT|CRASH` 포함) | 5,222줄(ASSUMPTION_FAIL 37 / INVALID 21 / TIMEOUT 0 / CRASH 1) | 5,231줄, 같은 분포 |
+
+- **사라진 PASS 0.** `test-baseline-seq126.txt`와의 차이 12줄은 모두 #9462·#9461 몫이다.
+  - FAIL → PASS 3건(이름 꼬리가 사라져 줄이 바뀜): `Choiced Pokémon won't switch out if they can still affect one opposing Pokémon in doubles`, `AI_FLAG_DOUBLE_ACE_POKEMON: Ace mons won't be switched in even if they are the best candidates`, `AI can switch out both mons on the same turn in double battles`.
+  - 새 줄 PASS 6: #9462의 `(reversed)` 4개와 `AI can switch out both mons in either order`, #9461의 `Map names fit in popup`.
+  - 새 줄 FAIL 3: #9462의 `(reversed)` 3개, 사유 `Unmatched MESSAGE`(알려진 한계, seq 131 항목).
+- 새 기준 목록: [`test-baseline-seq167-ahead1.txt`](test-baseline-seq167-ahead1.txt)(표준 추출 5,172줄). 선진행 구간 1이 반영된 현재 HEAD의 기준이다. 순서표로 돌아가 seq 127을 할 때도 이 목록을 기준으로 쓴다.
+
+## 커밋 리뷰 (병렬 4개, 읽기 전용)
+
+리뷰 지시: 스크래치 `/home/hjm0725/hns-sync-work/chunk-ahead-130-167/REVIEW.md`. 리뷰어는 `git show`로 커밋 기준 내용을 읽고 upstream·1.17.0·사전 분석·메인 결정과 대조했다. 14커밋 모두 사전 분석(메인 결정 반영) patch와 변경 줄이 같다.
+
+| 리뷰 | 커밋 | 판정 | 비고 |
+|---|---|---|---|
+| AI | `0f60183f1f` #9575 | 문제 없음 | `SetupAIPredictionData`·`ComputeAiBattlerDecisions`·턴 시작 예측 루프가 1.17.0과 같음(차이는 후속 #9847 계열 몫). HnS `battlerMovesScored`·디버그 타이머 위치가 1.17.0과 같고, `turnOrder`는 HnS·1.17.0 모두 없음 |
+| AI | `99388d6158` #9462 | 문제 없음 | 게임 코드가 1.17.0과 같음. `ABILITY_GLUTTONY` 적응은 1.17.0 최종형과 같음. 정보 1건(FAIL 사유 설명) → 위 seq 131 항목 정정 |
+| AI | `ce1fc01da9` #9755 | 문제 없음 | 모든 `ctx->weather` 출처가 날씨 무효를 반영함을 확인. 정보 1건(이론상 세 번째 경우) → seq 151 항목 보충 |
+| 떠올리기 | `fc205e1a40` #9006 | 경미 | 메인 결정 3건 모두 의도대로. 기존 한글 줄 바이트 불변, 새 문자열 44 B·50 B, 공용 떠올리기 문구 6개 최대 155px. 검은먹시티 모든 경로에서 `VAR_RESULT`가 명시적으로 정해짐. 경미 1건: 디버그 메뉴 "Move Relearner" 영문 선택지(위 "upstream대로 둔 동작 변화"에 기록, 코드는 upstream대로 둠) |
+| 떠올리기 | `cf71e21e56` #9903 | 문제 없음 | 박스 번호 줄 위치가 1.17.0과 같음, 이름 바꾸기 hunk 제외 타당 |
+| 떠올리기 | `adb22cd5f0` #9774 | 문제 없음 | Fallarbor 스크립트가 upstream과 바이트 동일, HnS에서 도달 불가 |
+| 기타 | `d057cee5c2` #9713 | 문제 없음 | ROM의 `sSongNames`로 `FindSong` 순회 모의: SE 1~269→797, MUS 350~745, 끝에서 정지, PH_* 진입 없음. 접두어 문자열에 EOS 있음, `gStringVar1` 넘침 없음. `songs.h` 상수 727개 값 불변 |
+| 기타 | `f3893a4cb4` #9721 | 문제 없음 | 137·143 빌드 SHA1 동일 확인 |
+| 기타 | `aeab20beac` #9690 | 문제 없음 | 0~9999 전체에서 1,943개 값만 +0.1 lb, 미터법 경로 불변 |
+| 기타 | `5381abba16` #8628 | 문제 없음 | 1.17.0과 줄 단위 동일, `callnative`(0x23)만 사용, `script_cmd_table.inc` 불변 |
+| 필드 | `9f6c5b5c58` #9461 | 문제 없음 | 이전·이후 mapjson으로 HnS 맵 560개 헤더를 만들어 바이트 동일. 가장 긴 지역명 15 B < 버퍼 21 B. 참고: 테스트는 `FONT_NARROWER`로 재서 실제(`FONT_NARROW`)보다 엄격 |
+| 필드 | `2cef59f506` #9765 | 문제 없음 | BG 3·offset 0·mode 0 인자 동일, 기본·HGSS 도감 모두 같은 경로 |
+| 필드 | `8d46f0241b` #9762 | 문제 없음 | 삭제한 `SetMonData` 2개는 같은 값 재설정, 세이브 불변 |
+| 필드 | `4442f1a559` #9813 | 문제 없음 | 결과 함수가 1.17.0과 #10349·#10392의 3줄만 다름(= upstream 병합 결과) |
+
+"수정 필요" 0건. 결과 문서 사실 오류 1건(seq 137 ROM 사용률 97.51% → 97.52%)을 고쳤다.
 
 ## 한글 문구 미결
 

@@ -39,7 +39,7 @@ seq	pr	class	size	kind	korean_touch	save_impact	unit	deps	reason	title
 164	9811	#9655 파일	S	fix	N	N	U-12v12-8943	8943	battle_util.c	Use GetBattlerTrainer instead of GetBattlerSide in GetBattlerPartyState
 165	9813	선진행	S	fix	N	N	U-fillsprite-9973	9973	-	Improve `FillSpriteRect` performance
 166	9784	#9655 의존	L	refactor	N	N	U-queuedswitch-9494	9494,8943,9717	deps 9717(seq 150)→9655	Adjustments for Eject Items / Mirror Herb / White Herb
-167	9819	선진행	S	refactor	N	N	U-fieldmove-9819	-	-	Refactor rock climb and defog to be defined at all times
+167	9819	보류(#10548 직전)	S	refactor	N	N	U-fieldmove-9819	-	구간 1에서 뺌: #9819만 넣으면 seq 446 #10548까지 파티 메뉴 중간 회귀(회색 필드 기술 항목, 공중날기·플래시 자동 항목 밀림)	Refactor rock climb and defog to be defined at all times
 168	9832	#9655 의존	S	refactor	N	N	U-eject-9784	9494,9784	deps 9784(seq 166)→9655	Clean up for eject item changes
 169	9835	#9655 파일	S	build	N	N	U-9835	-	battle_util.c	Fix declaration after label
 170	9751	#9655 파일	S	test	N	N	U-12v12-8943	8943	battle_util.c	Adds AreMultiPartiesFullTeams and Test_BattlersShareParty handling to tests
