@@ -3412,7 +3412,7 @@ void SwitchInClearSetData(enum BattlerId battler, struct Volatiles *volatilesCop
 
     gBattleStruct->moveResultFlags[battler] = 0;
     gBattleStruct->battlerState[battler].isFirstTurn = 2;
-    gBattleStruct->battlerState[battler].fainted = FALSE;
+    gBattleStruct->battlerState[battler].notOnField = FALSE;
     gBattleMons[battler].volatiles.truantSwitchInHack = volatilesCopy->truantSwitchInHack;
     gLastMoves[battler] = MOVE_NONE;
     gLastLandedMoves[battler] = MOVE_NONE;
@@ -3432,6 +3432,7 @@ void SwitchInClearSetData(enum BattlerId battler, struct Volatiles *volatilesCop
     gBattleStruct->battlerState[battler].canPickupItem = FALSE;
     gBattleStruct->battlerState[battler].wasAboveHalfHp = gBattleMons[battler].hp > gBattleMons[battler].maxHP / 2;
     gBattleStruct->hazardsCounter = 0;
+    gSpecialStatuses[battler].queuedSwitch = NO_QUEUED_SWITCH;
 
     ClearPursuitValuesIfSet(battler);
 
@@ -3485,10 +3486,8 @@ void FaintClearSetData(enum BattlerId battler)
     if (GetConfig(B_RAGE_FIST) >= GEN_CHAMPIONS)
         GetBattlerPartyState(battler)->timesGotHit = 0;
 
-    bool32 keepGastroAcid = gBattleMons[battler].volatiles.gastroAcid;
     bool32 keepTransformed = gBattleMons[battler].volatiles.transformed;
     memset(&gBattleMons[battler].volatiles, 0, sizeof(struct Volatiles));
-    gBattleMons[battler].volatiles.gastroAcid = keepGastroAcid; // Edge case: Keep Gastro Acid if pokemon's ability can have effect after fainting, for example Innards Out.
     gBattleMons[battler].volatiles.transformed = keepTransformed; // Edge case: Keep Transformed status to prevent triggering FORM_CHANGE_FAINT on transformed mons.
 
     for (enum BattlerId i = 0; i < gBattlersCount; i++)
@@ -3524,6 +3523,7 @@ void FaintClearSetData(enum BattlerId battler)
     gProtectStructs[battler].fleeType = 0;
     gProtectStructs[battler].statRaised = FALSE;
     gProtectStructs[battler].pranksterElevated = FALSE;
+    gSpecialStatuses[battler].queuedSwitch = NO_QUEUED_SWITCH;
 
     gBattleStruct->battlerState[battler].isFirstTurn = 2;
 

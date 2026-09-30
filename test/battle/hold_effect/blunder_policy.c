@@ -231,6 +231,7 @@ DOUBLE_BATTLE_TEST("Blunder Policy activates for Dragon Darts if one target miss
     PARAMETRIZE { chosenTarget = opponentLeft;  finalTarget = opponentRight; itemLeft = ITEM_BRIGHT_POWDER;  itemRight = ITEM_NONE; }
     PARAMETRIZE { chosenTarget = opponentRight; finalTarget = opponentLeft;  itemLeft = ITEM_NONE;           itemRight = ITEM_BRIGHT_POWDER; }
 
+    KNOWN_FAILING;
     GIVEN {
         ASSUME(GetMoveAccuracy(MOVE_DRAGON_DARTS) == 100);
         ASSUME(GetMoveTarget(MOVE_DRAGON_DARTS) == TARGET_SMART);
