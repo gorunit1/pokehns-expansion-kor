@@ -1,6 +1,6 @@
 # full-sync 선진행 결과 — 구간 1 (seq 130~167 중 15행)
 
-진행 중: 마지막 완료 seq 137, 다음 seq 143
+진행 중: 마지막 완료 seq 143, 다음 seq 148
 
 **순서표와 다르게 진행한 구간이다.** 순서표([`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv))의 다음 행 seq 127 #9655(배틀 메시지 리팩터)가 D1~D7 결정 대기라서, #9655와 무관한 뒤쪽 행을 앞당겨 이식한다. 선정 기준과 전체 분류는 [`ahead-of-9655/README.md`](ahead-of-9655/README.md)(`ahead_candidates.tsv`)에 있다. 이 구간은 그 "선진행" 114행 가운데 앞쪽 15행(seq 130, 131, 133, 134, 137, 143, 148, 149, 151, 156, 157, 158, 160, 165, 167)이다.
 
@@ -19,6 +19,7 @@
 | 133 | #9006 | 적용(HnS 적응) | `fc205e1a40` | −640 B (EWRAM −4 B) | 기술 떠올리기를 공용 `LearnMove`로. HnS chooseboxmon·요약 START/R/L 유지, 검은먹시티 NPC `Special_HasMoveToRelearn`/`VAR_RESULT`, **#10223 1줄 선반영**, **가르침 교체 최대 PP 유지(`// HnS:`)**, **새 문자열 2개 한글 초안(미결)** |
 | 134 | #9903 | 부분 적용(HnS 적응) | `cf71e21e56` | 0 B | relearner hunk만 `HandleMoveRelearnerInput`(#9006)으로 옮겨 넣음. 이름 바꾸기 hunk 제외(HnS 요약 화면에 분기 없음). config로 꺼진 경로라 동작 불변(코드 바이트 동일, assert 줄 번호 문자열만 이동) |
 | 137 | #9713 | 적용(HnS 적응, **B안**) | `d057cee5c2` | −1,296 B | 디버그 사운드 메뉴 `FindSong`/`sSongNames`. **곡 이름 저장 안 함(`SE_`/`MUS_` 접두어만, Korean patch 화면 유지)**. HnS GBS 전환 유지, `FIRST_PHONEME_SONG`은 `DP_MUSIC_END + 1`(값 746 불변), DP 음악 11곡·`SE_FASTER_JOY_HEAL` 목록 추가. 이름 `{0}`(EOS 없음) EWRAM 덮어쓰기 잠재 버그 해소 |
+| 143 | #9721 | 적용 | `f3893a4cb4` | 0 B | `Makefile` 1줄(learnables JSON order-only 의존 삭제). **seq 137 빌드와 `pokehns.gba` SHA1 동일** |
 
 ## 공통 사항
 
@@ -174,6 +175,24 @@
   - 낮음(디버그 전용): 이름 자리에 곡 이름 대신 `SE_`/`MUS_`만 나온다(이식 전에는 빈 칸). 곡은 번호로 구분한다.
   - 낮음: 자릿수 1000 단위에서 위/아래 한 번에 `FindSong` 최대 1,000번(upstream과 같음).
 - 실기 확인: 필요(아래 "실기 확인 항목" 3, 디버그 메뉴).
+
+## 동기화 단위: seq 143 #9721 `U-9721` Learnset Helper: Remove unnecessary order-only dependencies
+
+- 현재 판정: 적용(그대로)
+- 커밋: `f3893a4cb4`
+- upstream 근거: `1d854c4cb4`(`Makefile` 1줄). `git log --grep='#9721'` 없음, `Makefile`에 order-only 의존이 그대로 있었다.
+- 수정 파일(1): `Makefile`
+- 적용 방법: 사전 분석 patch(`seq143-9721.patch`)를 `git apply`했다(오프셋 +32, 문맥 동일). 충돌 없음. HnS `-ffunction-sections` CFLAGS 줄(`7e7c38ab10`)과 떨어진 위치다.
+- 내용: `$(ALL_LEARNABLES_JSON):  | $(wildcard $(LEARNSET_HELPERS_DATA_DIR)/*.json)` → `$(ALL_LEARNABLES_JSON):`. 규칙 본문(`make_learnables.py`)은 그대로. `src/data/pokemon/all_learnables.json`은 git 추적 파일이라 이전·이후 모두 재생성하지 않고, 파일이 없을 때는 둘 다 같은 명령을 실행한다(사전 분석 장난감 Makefile 확인).
+- HnS 적응: 없음. `make hns`도 같은 규칙을 쓴다(`BUILD=hns` 분기 없음).
+- 제외한 hunk: 없음.
+- 검증:
+  - `git diff --check` 통과.
+  - 빌드(`build/port.log`): 종료 코드 0, **ROM 32,720,756 B(0) / EWRAM 248,940 B(0) / IWRAM 25,516 B(0)**. 재링크만 일어났고 `make_learnables.py` 실행 줄 0, 경고 0줄(새 경고 0).
+  - **`pokehns.gba` SHA1 `a9db6b6c32941fd8581bb571c9728ebd4ca6522e` — seq 137 빌드(`d057cee5c2`, 스크래치 사본 `apply/pokehns-137.gba`)와 같다(메인 결정대로 확인).**
+- 테스트: 없음(테스트 추가·변경 없음).
+- 남은 위험: 없음.
+- 실기 확인: 불필요(ROM 바이트 동일).
 
 ## 한글 문구 미결
 
