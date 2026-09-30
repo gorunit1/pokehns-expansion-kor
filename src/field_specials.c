@@ -4587,6 +4587,7 @@ static void UIEndTask(u8 taskId)
 #define tState         data[0]
 #define tPartyIndex    data[1]
 #define tMove          data[2]
+#define tRecoverPp     data[3]
 
 static void UIShowMoveList(u8 taskId)
 {
@@ -4625,6 +4626,7 @@ void CanTeachMoveBoxMon(void)
     gTasks[taskId].tState = GetLearnMoveStartState();
     gTasks[taskId].tPartyIndex = gSpecialVar_0x8004;
     gTasks[taskId].tMove = gSpecialVar_0x8005;
+    gTasks[taskId].tRecoverPp = TRUE;
 }
 
 static void FieldCB_ContinueLearningMove(void)
@@ -4648,6 +4650,7 @@ static void Task_ReturnToFieldWhileLearningMove(u8 taskId)
         gTasks[taskId].tState = GetLearnMoveResumeAfterSummaryScreenState();
         gTasks[taskId].tPartyIndex = gSpecialVar_0x8000;
         gTasks[taskId].tMove = gSpecialVar_0x8001;
+        gTasks[taskId].tRecoverPp = TRUE; // HnS: keep full PP when a tutor replaces a move (new task after the summary screen)
     }
 }
 
