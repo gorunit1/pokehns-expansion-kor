@@ -1,8 +1,22 @@
 # 현재 인수인계 상태
 
-## 2026-09-30 — full-sync port seq 107 (#7305 나무열매 개편) 완료 (현재)
+## 2026-09-30 — full-sync port seq 108~119 완료 (현재)
 
-- **다음 시작 seq: 108** (#9537 FRLG 오브젝트 그래픽 이름, M). 다음 구간 예정: seq 108~119(seq 110은 이미 적용) → seq 120 #9657(XL 단독).
+- **다음 시작 seq: 120** (#9657 `U-calcvalues-9657` BattleCalcValues, XL 단독). 그다음 예정: seq 121~126(seq 126 #9668은 이미 적용) → seq 127 #9655 배틀 메시지 리팩터(XL, 한글 영향 큼).
+- 구간 결과: `docs/friend-handoff/results/1.17.0-port/full-sync-seq-108-119.md`. 진행: 병렬 사전 분석 4개 → 적용 1개 → 병렬 리뷰 3개(9커밋, 전부 문제 없음) + 메인 확인 3커밋.
+- 커밋: #9537(+#9668) `70eb6a4271`, #9241 `ec9dca2712`, #9610 `47cd51facf`, #9587 `2d86edca81`, #9596 `f6ef307f76`, #9532 `7e4f61c927`, #9494 `3f7f0ddabf`, #9864(seq 176 선반영) `489c58259c`, #9557 `4440c18163`, #9578 `3960fc0c8e`, #9630 `4e3c6bd5e7`, #9634 `de9b581a28`, 결과 `ef460923b9`. seq 110은 이미 적용이었다.
+- 뒤 행 처리: seq 126 #9668·seq 250 #10281은 "HnS 동등", seq 176 #9864는 "이미 적용". seq 166 #9784는 선행(#9717 seq 150, #8943 seq 138.5)이 없어 넣지 않았다.
+- HnS가 upstream과 다르게 둔 곳: #9557 미리보기 그림·표 가드(upstream 그대로면 ROM +110 KB·Emerald 빌드 실패), #9532 `animTurn = 1`(방출 연출 유지), #9494 원시 날씨 해제 2줄(`@ HnS:`), #9610 `AccuracyCheck`의 #9929 분기 유지, #9578 ShedSkin hunk 제외, #9596 `turnOrder` hunk 제외.
+- upstream대로 둔 출력·동작 변화(`BATTLE_MESSAGE_OUTPUT_CHANGES.md` 5행 추가): 대타출동 상대에게 폴터가이스트를 쓰면 도구 문장이 나오지 않음, 참기 2·3턴째 문장 없음, 탈출버튼·탈출팩·유턴류 교체 순서(발동 문구 → 볼 회수 → 남은 효과 → 교체), 레드카드 보유자의 위기회피 발동, 목스프레이·허탕보험 등 시점. #9557 비 오는 날 BG 팔레트 13 창 색, #9587 교체 AI 경계 사례.
+- 한글: 소스에서 한글이 든 줄 변경은 `src/battle_message.c` 세 곳뿐이다(#9610 토큰 교체 2쌍, 본문 바이트 동일 / #9578 `STRINGID_PKMNSXCUREDYPROBLEM`·#9634 `STRINGID_PKMNISGLOWING` 미사용 문장 삭제). 남은 STRINGID 722개 문자열 바이트 동일.
+- 빌드(메인 재링크): 종료 코드 0, ROM 32,718,964 B(97.51%, +2,880 B, 주로 #9557), EWRAM 248,940 B(+16 B, #9494 `SpecialStatus`), IWRAM 25,516 B. 새 경고 0.
+- 테스트: PASS 2,321 / FAIL 2,243 / KNOWN_FAILING 10 / TOTAL 5,229, assertion·Killed 0. 기준 목록 `test-baseline-seq119.txt`. seq107 대비 PASS 손실 4건은 모두 설명된다(이름 변경 2, upstream 표시와 같은 KNOWN_FAILING 2 — `Eject Button … before Red Card`는 seq 166 #9784, `Blunder Policy … Dragon Darts`는 seq 467 #9841에서 풀림).
+- **후속 검토(결정 대기 아님, 기록):** upstream #9494 이후 더블배틀 시작 때 둘째 칸의 기절 포켓몬 특성이 적용되는 잠재 문제(1.17.0에도 있음). 사용 가능한 포켓몬이 한 마리뿐인 더블배틀에서만 생긴다. HnS 가드를 넣을지는 나중에 정한다.
+- 실기 확인 추가: 배틀프런티어 트레이너 그림, 내던지기·폴터가이스트(대타출동 상대 포함), 참기 방출 연출, 탈출버튼·레드카드·위기회피·유턴·탈출팩 순서와 원시 날씨 해제 문구·체력 상자, 문 출입·동굴 진입·비 날씨 맵의 창 색.
+
+## 2026-09-30 — full-sync port seq 107 (#7305 나무열매 개편) 완료
+
+- 다음 시작 seq(당시): 108 (#9537 FRLG 오브젝트 그래픽 이름, M).
 - 구간 결과: `docs/friend-handoff/results/1.17.0-port/full-sync-seq-107-107.md`. 커밋 `f2a0395e90`(#7305, 41파일, 새 파일 `include/constants/berries.h`), 결과 `2b5ec2bb98`. 진행 방식: 병렬 사전 분석 4개(세이브·C·스크립트·테스트) → 적용 에이전트 1개 → 병렬 리뷰 3개(전부 문제 없음) → 메인 확인.
 - **세이브 호환:** `FOREACH_BERRY`를 HnS 아이템 순서로 두었다(upstream과 두 곳만 다름: CHILAN=36, ROSELI=53). 열매 68종 번호·경계 상수가 이식 전 `ITEM_TO_BERRY`와 같고, `berry.c`의 `STATIC_ASSERT` 가드가 순서를 고정한다(upstream 순서로 바꾸면 컴파일 오류). 세이브 구조체 레이아웃 diff 0, 새 게임 나무 118그루(473바이트) 전후 동일.
 - HnS가 upstream과 다르게 둔 곳(`// HnS:`): 열매 순서, 순서 가드, `berry_blender.c` NPC 열매 세트(upstream 그대로면 버치~배리열매를 넣을 때 NPC가 같은 열매를 넣는 회귀, 1.17.0에도 남음). HnS 수확량 43종·IS_HNS 성장/재식재·나무 팔레트·태그 화면 단위계 코드 보존. `include/random.h` hunk 제외.

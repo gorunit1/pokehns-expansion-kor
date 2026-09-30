@@ -340,6 +340,27 @@
 - 그 밖의 차이: 이름 변경 FAIL/TO_DO 3건(`Relic Song transformation is the last thing…` → `…activates after target faints` FAIL, `Bide has +1 priority if called…` → `…on following turns…` TO_DO, `TODO: Write Poltergeist (Move Effect) test titles` TO_DO 삭제), TO_DO → PASS 1건(`Bide hits the last Pokémon that attacked the user, even allies`), 새 테스트 19건(PASS 8, FAIL 11 — FAIL은 모두 영문 `MESSAGE` 불일치; 삭제된 폴터가이스트 TO_DO 1건을 빼면 순증 18건), `Battle strings fit on the battle message window: (125/125)` → `(124/124)`(같은 문장 `STRINGID_PKMNSTOLEITEM`, #9634로 순번 −1, FAIL 유지, 예상 차이).
 - 새 기준 목록: [`test-baseline-seq119.txt`](test-baseline-seq119.txt)(표준 추출 5,160줄).
 
+## 커밋 리뷰 (병렬, 읽기 전용)
+
+마감(16:50) 때문에 메인이 적용 도중에 이미 커밋된 PR부터 리뷰 에이전트 3개를 띄웠다. 리뷰어는 작업 트리를 읽지 않고 `git show`/`git archive`로 커밋만 읽었으며 `make`를 돌리지 않았다. 마지막 3건(#9578, #9630, #9634)은 메인이 직접 확인했다.
+
+| 커밋 | PR | 판정 | 요지 |
+|---|---|---|---|
+| `70eb6a4271` | #9537(+#9668) | 문제 없음 | HnS·Emerald 두 설정에서 `OBJ_EVENT_GFX_*` 554개 값 변화 0, 이름만 259·279·281. 규칙 이름 `crush_girl`·`black_belt_frlg`·`poke_maniac_frlg`(오타 없음). PNG 이동 3개는 100% rename이고 덮어쓴 파일 없음. `*_hns` 그림·규칙·맵 변경 0. |
+| `ec9dca2712` | #9241 | 문제 없음 | HNS·EMERALD·FIRERED 세 설정에서 (class, 그래픽) 쌍 남 30·여 20이 이식 전과 같다. `facilityClass` 최대 139로 u8 값 불변. |
+| `4440c18163` | #9557 | 문제 없음 | upstream과 다른 곳은 `// HnS:` 주석·`#if` 가드·`MAPSEC_NONE` 대체 표뿐. `MPS_ENABLE_MAP_PREVIEWS` 0이면 새 경로가 모두 FALSE라 문 출입·동굴 전환·맵 이름 팝업이 이식 전 분기를 탄다. 동작 변화는 BG 팔레트 13 한 줄(upstream대로). |
+| `47cd51facf` | #9610 | 문제 없음 | hunk가 upstream `e16cc7a1f2`와 같고(선언 위치·빈 줄만 다름) `AccuracyCheck`에서 #9929 삼항식이 유지된다. 두 문장은 토큰만 바뀌었고 가리키는 배틀러가 같다. 폴터가이스트+대타출동 변화가 출력 변화 문서에 있다. |
+| `2d86edca81` | #9587 | 문제 없음 | upstream `5774efaea1`과 같다. `speedStats`는 `SetBattlerAiData`에서 채운다. |
+| `f6ef307f76` | #9596 | 문제 없음 | `holdEffectParams` 제거·`ShouldTryOHKO` 변경이 upstream과 같고, `turnOrder` 제외는 1.17.0 최종형과 같아 타당하다. |
+| `7e4f61c927` | #9532 | 문제 없음 | upstream과 다른 곳은 `// HnS: animTurn = 1`(방출 분기, `BattleScriptCall(BideAttack)` 앞), 빈 줄 hunk 제외, Champions 문맥뿐. opcode 헤더·명령 표가 upstream과 바이트 동일(`UNUSED_32`=0xfd, `UNUSED_33`=0xfe). Champions 상성 문구는 `DoFixedDamageMoveCalc`가 지워 계속 나오지 않는다. |
+| `3f7f0ddabf` | #9494 | 문제 없음 | upstream `bede100c3e`와 다른 곳은 원시 날씨 `@ HnS:` 2줄(옛 탈출버튼 경로와 같은 자리), 1인자 `IsAnyTargetTurnDamaged`, 매지션 점착 hunk 제외, blunder_policy `KNOWN_FAILING`(upstream `7ff83c6542`와 같음). 보존 대상 HnS 코드 모두 남음. `NeutralizingGasExits` 저장·복원 2줄이 upstream과 같은 자리. AI `notOnField` 저장·복원 사이 조기 return 없음. |
+| `489c58259c` | #9864 | 문제 없음 | upstream `47f01e61ba`와 내용이 같다. |
+| `3960fc0c8e`·`4e3c6bd5e7`·`de9b581a28` | #9578·#9630·#9634 | 문제 없음(메인 확인) | 한글 줄 변경은 #9578·#9634의 미사용 문장 1줄씩 삭제뿐이고, 삭제된 두 `STRINGID` 참조가 남지 않았다. #9634의 대체 문장 `STRINGID_CLOAKEDINAHARSHLIGHT`("…로부터\n눈부신 빛이 넘쳐흐른다!")가 있다. #9630의 +/− 줄이 upstream `c107917e6c`와 같다. |
+
+참고(이식 결함 아님, upstream #9494에서 생겨 1.17.0에도 있음, 후속 검토): 더블배틀 시작 때 둘째 칸이 기절한 포켓몬이면 그 칸은 부재 처리되지만 `notOnField`가 켜지지 않는다. #9494가 `IsBattlerAlive` 검사를 지우면서 이 포켓몬의 특성이 이제 적용된다(예: 기절한 클라우드나인 → 날씨 무효, 기절한 프레셔 → PP 추가 감소, 피뢰침 → 전기 기술 유도). 사용 가능한 포켓몬이 한 마리뿐인 더블배틀에서만 생긴다. HnS 가드를 넣을지는 나중에 정한다.
+
+메인 검증: `rm -f pokehns.elf pokehns.gba` 뒤 `make hns -j8` 종료 코드 0, ROM 32,718,964 B(97.51%), EWRAM 248,940 B, IWRAM 25,516 B, SHA1 `d439ac3b54a464827093a1a0d80d33e74c83ea5e`. `build/port-check-post119.log`를 `LC_ALL=C`로 다시 추출해 `test-baseline-seq119.txt`와 같음을 확인했다. seq107 대비 PASS 손실 4건은 위 "구간 끝 전체 테스트" 분류와 같다. docs 밖 한글 줄 변경은 #9610 토큰 교체 2쌍, #9578·#9634 문장 삭제 1줄씩이다.
+
 ## 실기 확인 항목 (친구용)
 
 이식 전 ROM(`10077a5d70`, SHA1 `0c91520c…`)과 이식 후 ROM(`de9b581a28` 이후)을 비교한다. 기술·특성·도구·지명은 `src/data/moves_info.h`·`abilities.h`·`items.h`·`src/data/region_map/region_map_sections.json`·`src/strings.c`의 표기다.
