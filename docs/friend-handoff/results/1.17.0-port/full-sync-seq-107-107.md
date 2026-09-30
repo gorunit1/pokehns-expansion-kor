@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 107
 
-진행 중: 마지막 완료 seq 107, 다음 seq 108(구간 결과 커밋 전).
+완료: seq 107 이식·전체 테스트·기록 완료(다음 구간은 seq 108부터). 아래 "seq 107 요약" 참고. 결과 커밋에 기준 목록 [`test-baseline-seq107.txt`](test-baseline-seq107.txt)와 세이브·블렌더 확인 도구 [`berry-7305/`](berry-7305/README.md)(스크립트와 이식 전 기준 표, 약 290 KB, 바이너리 없음)를 넣었다.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md), 세이브 방침: [full-sync plan 4절](../pokeemerald-expansion-1.17.0-full-sync-plan.md)(#7305는 기존 열매 번호 36~65 순서를 유지한다)
 시작 HEAD: `84fd460dc0` (작업 트리 clean)
@@ -108,7 +108,7 @@
 - **열매 데이터(ELF):** A2 `verify_berries_elf.py <이식 전 ELF> pokehns.elf` → `checked BerryId 1..68; mismatches = 0`. 이름·설명 문자열 바이트, 나머지 `BerryInfo` 바이트(수확량 포함), 자연의은혜 타입·위력, 크러시 난이도·가루, 열매 그림·팔레트, 나무 그림·팔레트 슬롯 표를 비교한다. A4 `a4_berrydata_cmp.py`(소스 필드 비교)도 `diffs 0`.
 - **블렌더 NPC 열매 표:** `berry_blender.c`에서 `NUM_NPC_BERRIES`, `struct BlenderBerry`, `sOpponentBerrySets`, `sBerryMasterBerries`, `SetOpponentsBerryData`를 원문 그대로 잘라 각 시점의 헤더로 호스트 컴파일하는 하네스를 만들었다(`berry-7305/blender/`). 플레이어 열매 68종 × NPC 1~3명 × Blend Master 플래그 2가지(E-Reader는 가장 낮은 맛 5가지) = 432행.
   - 이식 전 vs upstream 그대로: **30행이 다르다.** 플레이어가 버치·유루·복슝·복분·배리열매(1~5번)를 넣을 때만 다르다. 예) NPC 2명, 버치열매: 이식 전 배리·복분열매 → upstream 버치·배리열매(플레이어와 같은 열매). NPC 1명(Blend Master 규칙): 버치열매 → 이식 전 메호키열매, upstream 자야열매. 6번 이상 열매와 E-Reader는 같다. A1·A2의 지적이 맞고, A4의 "같다"는 순서 차이만 본 판단이었다. upstream 1.17.0과 master에도 같은 코드가 남아 있다.
-  - HnS 수정 후 vs 이식 전: **432행 모두 같다.** 이 표를 `berry-7305/blender/blender_pre.tsv`로, upstream 그대로일 때의 차이를 `upstream_unfixed.diff`로 두었다.
+  - HnS 수정 후 vs 이식 전: **432행 모두 같다.** 이 표를 `berry-7305/blender/blender_pre.tsv`로, upstream 그대로일 때의 차이를 `upstream_unfixed.txt`로 두었다.
   - HnS에서는 `FLAG_HIDE_LILYCOVE_CONTEST_HALL_BLEND_MASTER`가 0이라 `FlagGet(0)`이 FALSE다. 따라서 NPC 1명 블렌드는 항상 Blend Master 규칙(메호키~루베 / 토망~노멜열매)을 탄다. 이식 전부터 같은 동작이다.
 - **순서 가드 음성 시험:** 가드 줄만 뽑아 호스트 gcc로 컴파일했다. HnS 순서 헤더에서는 통과했다. upstream 순서 `berries.h`로 바꾸면 30종 순서 가드와 명시 번호 가드 2개(`HnsBerryIdSave_35_52`, `HnsBerryIdSave_53_65`)가 오류를 낸다.
 - **한글:** 한글이 든 변경 줄 0. 비ASCII 변경 줄 6개는 영문 열매 설명 3줄(위키·리체·마코열매 `description2`의 "Pokémon")이 `.info = { … }` 안으로 들어가며 들여쓰기만 바뀐 것이다. ELF 비교에서 문자열 바이트가 같다. 조사·제어 코드·`STRINGID` 변경 없음.
