@@ -1,6 +1,6 @@
 # full-sync 선진행 결과 — 구간 1 (seq 130~167 중 15행)
 
-진행 중: 마지막 완료 seq 130, 다음 seq 131
+진행 중: 마지막 완료 seq 131, 다음 seq 133
 
 **순서표와 다르게 진행한 구간이다.** 순서표([`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv))의 다음 행 seq 127 #9655(배틀 메시지 리팩터)가 D1~D7 결정 대기라서, #9655와 무관한 뒤쪽 행을 앞당겨 이식한다. 선정 기준과 전체 분류는 [`ahead-of-9655/README.md`](ahead-of-9655/README.md)(`ahead_candidates.tsv`)에 있다. 이 구간은 그 "선진행" 114행 가운데 앞쪽 15행(seq 130, 131, 133, 134, 137, 143, 148, 149, 151, 156, 157, 158, 160, 165, 167)이다.
 
@@ -15,6 +15,7 @@
 | seq | PR | 판정 | 커밋 | ROM 변화 | 비고 |
 |---|---|---|---|---:|---|
 | 130 | #9575 | 적용(HnS 적응) | `0f60183f1f` | −192 B | AI 예측 처리 통합. `battle_ai_main.c` 수동 맞춤(HnS `battlerMovesScored` 줄·무조건 디버그 타이머 유지). **예측 AI 트레이너 25명의 AI 동작이 1.17.0과 같아짐** |
+| 131 | #9462 | 부분 적용(잔여분) | `99388d6158` | +32 B | 게임 기능(`AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE`·RNG·뒤집기 로직)은 HnS에 이미 있음. `GetConfig` 2곳·`AI_CONFIG_DEFINITIONS` 2항목·테스트 4파일만 이식(`(reversed)` Choiced 테스트 값 `ABILITY_GLUTTONY`). 게임 동작 불변 |
 
 ## 공통 사항
 
@@ -59,6 +60,35 @@
   - 낮음: 녹화 배틀(더블) 재생 중 난수 소비가 바뀌어 이식 전 녹화가 어긋날 수 있다(#8943 A안의 기존 녹화 무효화 허용 범위).
   - 낮음: `SetupAIPredictionData`는 플레이어 쪽 배틀러의 생존 여부를 보지 않는다(1.17.0과 같음).
 - 실기 확인: 필요(아래 "실기 확인 항목" 1).
+
+## 동기화 단위: seq 131 #9462 `U-aiconfig-9460` Config to randomize the order AI mons compute logic in double battles
+
+- 현재 판정: 부분 적용(잔여분). 예전 판정표 `all_prs_master.tsv`의 "이미 적용(기능 동등)"은 게임 코드만 본 판정이었다. g4 plan의 "잔여분 이식"이 맞다.
+- 커밋: `99388d6158`
+- upstream 근거: `6c40826d14`(9파일 +217/−5, 부모가 #9575 `c06999df7d`). deps #9460(seq 88, `d81b37f15b`) 적용됨.
+- 수정 파일(7): `include/constants/config_changes.h`, `src/battle_ai_switch.c`, `src/battle_main.c`, `test/battle/ai/ai_choice.c`, `test/battle/ai/ai_double_ace.c`, `test/battle/ai/ai_switching.c`, `test/battle/move_effect/first_turn_only.c`
+- 적용 방법: 사전 분석 patch(`seq131-9462.patch`)를 `git apply`했다. 충돌 없음.
+- 이미 있던 것(제외한 hunk):
+  - `include/config/ai.h`의 `AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE 50`(같은 값·자리, HnS 주석 유지)
+  - `include/random.h`의 `RNG_AI_REVERSE_BATTLER_LOGIC_ORDER`(upstream과 같은 자리라 enum 값 같음)
+  - `battle_main.c`의 판단 순서 뒤집기 로직(HnS에 1.17.0형 `gAiLogicData->reverseBattlerLogicOrder`로 이미 있음). upstream의 지역 변수·`battlerIndex` 루프는 넣지 않았다.
+- 내용(잔여분):
+  - `battle_main.c` 뒤집기 확률과 `battle_ai_switch.c` `GetSwitchChance`의 `SHOULD_SWITCH_ALL_MOVES_BAD_PERCENTAGE`를 `GetConfig(...)`로 읽는다.
+  - `AI_CONFIG_DEFINITIONS`에 `AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE`(`reverseBattlerLogicChance`, `(u32, 100)`)·`SHOULD_SWITCH_ALL_MOVES_BAD_PERCENTAGE`(`switchAllBadMovesChance`, `(u32, 100)`)를 `AI_ROLL_ATTACKING` 앞에 넣었다(1.17.0과 같은 열 맞춤). 없으면 `WITH_CONFIG(AI_REVERSE_…)` 테스트가 컴파일되지 않는다.
+  - 테스트: 기존 더블 AI 테스트에 `WITH_CONFIG(AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE, 0)`, `(reversed)` 변형과 "AI can switch out both mons in either order" 추가.
+- HnS 적응:
+  - `ai_choice.c`의 새 `(reversed)` 테스트 `defendingAbility = SPECIES_ZIGZAGOON` → **`ABILITY_GLUTTONY`**. upstream이 원래 테스트의 버그를 복사한 것이고, 원래 테스트는 #9719 `4a7bebe2b2`가 고쳐 HnS에 이미 있다(1.17.0도 둘 다 `ABILITY_GLUTTONY`). HnS는 #9507(seq 91)로 종이 `enum Species`라 upstream 값 그대로면 `-Werror=enum-conversion`으로 테스트 빌드가 깨진다.
+  - `ai_switching.c` 마지막 hunk: HnS 파일 끝이 upstream과 달라(#9124 이식 순서 차이) 새 테스트 2개를 파일 끝에 그대로 붙였다(1.17.0에서도 "HP changes on switchin" 뒤쪽).
+  - `first_turn_only.c`: #9655 이전형 파일(`ABILITY_POPUP` 줄 있음)이지만 #9462 hunk는 48행 뒤라 겹치지 않는다. 나중에 #9655의 이 파일 hunk도 그대로 들어간다(사전 분석 `git apply --check` 확인).
+- 검증:
+  - `git diff --check` 통과. 한글 줄 변경 0. config 기본값 변경 0(HnS 50/100 유지). 비테스트 빌드의 `GetConfig`는 `sConfigChanges` 값(50, 100)을 돌려준다(7비트 필드). 게임 동작 불변.
+  - 빌드(`build/port.log`): 종료 코드 0, **ROM 32,722,692 B(97.52%, +32 B) / EWRAM 248,944 B(0) / IWRAM 25,516 B(0)**. 사전 분석 추정 약 +66 B(정렬 전). `pokehns.gba` SHA1 `2dd0353e224599d9a04f8f4bbc0565b8776e4137`. 새 경고 0(배틀 헤더 변경으로 경고 21줄이 나왔지만 모두 기준 목록의 기존 경고).
+- 테스트(지정 4파일: `test/battle/ai/ai_choice.c`, `test/battle/ai/ai_double_ace.c`, `test/battle/ai/ai_switching.c`, `test/battle/move_effect/first_turn_only.c`) → 160줄(PASS 137). 이름이 seq 126 기준에 있는 줄은 아래를 빼고 **모두 같다.** 사라진 PASS 0.
+  - **FAIL → PASS 3건**(STATUS의 "AI 더블 테스트 3건"): `Choiced Pokémon won't switch out if they can still affect one opposing Pokémon in doubles`(기준 `… 1/2 (1/?): FAIL`), `AI_FLAG_DOUBLE_ACE_POKEMON: Ace mons won't be switched in even if they are the best candidates`(기준 FAIL), `AI can switch out both mons on the same turn in double battles`(기준 `… (1/?): FAIL`). `WITH_CONFIG(…, 0)`으로 판단 순서가 고정된 결과다. 실패 꼬리가 사라져 이름 줄이 바뀐다.
+  - 새 줄 PASS 5: `Choiced … doubles (reversed)`, `AI_FLAG_DOUBLE_ACE_POKEMON: … (reversed)`, `AI can switch out both mons on the same turn in double battles (reversed)`, `AI can switch out both mons in either order`, `AI will Fake Out either opponent if one has a slower Fake Out (reversed)`.
+  - 새 줄 FAIL 3: `AI will not try to switch for the same Pokémon for 2 spots in a double battle (all bad moves, reversed) 1/2 (1/?)`, `… (Wonder Guard, reversed) (1/?)`, `AI will not try to switch for the same pokemon for 2 spots in a 2v1 battle (all bad moves, reversed) 1/2`. 사유는 `Unmatched MESSAGE`(영문 `withdrew …`/`sent out …` 기대값)와 그로 인한 `PASSES_RANDOMLY`의 `observed 0.0`이다. reversed가 아닌 원래 3개도 기준에서 같은 사유로 FAIL이다(알려진 한계).
+- 남은 위험: 없음(게임 동작 불변).
+- 실기 확인: 불필요.
 
 ## 실기 확인 항목 (친구용)
 
