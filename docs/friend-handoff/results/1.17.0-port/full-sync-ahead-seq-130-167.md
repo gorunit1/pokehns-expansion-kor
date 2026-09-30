@@ -1,6 +1,6 @@
 # full-sync 선진행 결과 — 구간 1 (seq 130~167 중 15행)
 
-진행 중: 마지막 완료 seq 151, 다음 seq 156
+진행 중: 마지막 완료 seq 156, 다음 seq 157
 
 **순서표와 다르게 진행한 구간이다.** 순서표([`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv))의 다음 행 seq 127 #9655(배틀 메시지 리팩터)가 D1~D7 결정 대기라서, #9655와 무관한 뒤쪽 행을 앞당겨 이식한다. 선정 기준과 전체 분류는 [`ahead-of-9655/README.md`](ahead-of-9655/README.md)(`ahead_candidates.tsv`)에 있다. 이 구간은 그 "선진행" 114행 가운데 앞쪽 15행(seq 130, 131, 133, 134, 137, 143, 148, 149, 151, 156, 157, 158, 160, 165, 167)이다.
 
@@ -23,6 +23,7 @@
 | 148 | #9690 | 적용(문맥 수동) | `aeab20beac` | +16 B | 파운드 변환 식 현대화(`DECAGRAMS_IN_POUND` 453592, u64 식). `pokedex.h` 문맥(`IS_HNS`)만 다름. **옵션 "단위계 = 야드파운드법"일 때만** 도감 무게 일부 +0.1 lb(기본 미터법 화면 불변) |
 | 149 | #9461 | 적용(HnS 적응) | `9f6c5b5c58` | +128 B | 맵 팝업 층 번호(`MapHeader.floorNumber`, mapjson). HnS 적응 3곳: 피라미드 조건 유지, **`FONT_NARROW` 유지**, `CELADON DEPT.` 특례 `!IS_HNS`. HnS 맵 `floor_number` 0개라 팝업 문구·맵 헤더 바이트 불변. 새 테스트 `Map names fit in popup` PASS |
 | 151 | #9755 | 적용 | `ce1fc01da9` | −16 B | AI `IsDamageMoveUnusable`의 `HasWeatherEffect()` 이중 검사 제거(upstream 그대로). `ctx->weather`가 이미 날씨 무효를 반영해 사실상 동작 동일 |
+| 156 | #9774 | 적용 | `adb22cd5f0` | 0 B | Fallarbor 떠올리기 NPC 판정 `VAR_0x8004, 0` → `VAR_RESULT, FALSE`(upstream 그대로). HnS 실사용 검은먹시티 NPC의 같은 수정은 seq 133에 포함. Fallarbor는 HnS에서 도달 불가 |
 
 ## 공통 사항
 
@@ -265,6 +266,23 @@
 - 테스트(지정 3파일: `test/battle/ai/ai_switching.c`(원시 그란돈), `test/battle/ai/ai.c`·`test/battle/ai/ai_doubles.c`(날씨부정)) → 259줄(PASS 219)이 seq 130·131 적용 뒤 결과와 **모두 같다**(사라진 PASS 0). upstream 테스트 변경 없음.
 - 남은 위험: 없음.
 - 실기 확인: 불필요.
+
+## 동기화 단위: seq 156 #9774 `U-relearner-9006` Properly cancel move relearner NPC after refusing to learn a move
+
+- 현재 판정: 적용(그대로)
+- 커밋: `adb22cd5f0`
+- upstream 근거: `2b9bffd8ce`(`data/maps/FallarborTown_MoveRelearnersHouse/scripts.inc` 1줄). deps #9006(seq 133). `git log --all --grep='#9774'` 없음 → 미적용이었다.
+- 수정 파일(1): `data/maps/FallarborTown_MoveRelearnersHouse/scripts.inc`
+- 적용 방법: 사전 분석 patch(`seq156-9774.patch`)를 `git apply`했다. 충돌 없음(seq 133이 바꾼 31행은 이 hunk 문맥 밖).
+- 내용: #9006 뒤 `TeachMoveRelearnerMove`는 결과를 `VAR_RESULT`로 돌려주므로 `goto_if_eq VAR_0x8004, 0, …ChooseMon` → `goto_if_eq VAR_RESULT, FALSE, …ChooseMon`.
+- HnS 적응: 같은 판정을 쓰는 HnS 실사용 맵 `data/maps/BlackthornCity_House3_hns/scripts.inc`는 **seq 133 커밋 `fc205e1a40`에서 이미 고쳤다**(#9006과 같이 넣지 않으면 seq 133~155 사이에 하트비늘 처리가 깨지므로). "배우게 하겠습니까?" 거절 시 제대로 취소되는 것은 seq 133의 #10223 1줄(`gSpecialVar_Result = FALSE`)이 있어야 완성된다. `data/maps/TwoIsland_House_Frlg/scripts.inc`(`VAR_0x8004, 0`)는 upstream 1.17.0에도 그대로라 upstream대로 둔다(FRLG 맵).
+- 제외한 hunk: 없음.
+- 검증:
+  - `git diff --check` 통과.
+  - 빌드(`build/port.log`): 종료 코드 0, **ROM 32,720,884 B(0) / EWRAM 248,940 B(0) / IWRAM 25,516 B(0)**. `pokehns.gba` SHA1 `b530755d8b5ee6a9ff49393be23c37605d2d0532`. 경고 0줄(새 경고 0). SHA1이 바뀐 것은 Fallarbor 스크립트가 HnS 맵 목록에는 없지만 `data/event_scripts.s`(218행)로 ROM에 어셈블되기 때문이다(`goto_if_eq` 변수 인자 0x8004 → 0x800D, 크기 동일). HnS 맵에서 `MAP_FALLARBOR_TOWN`으로 가는 워프는 0건이라 도달하지 않는다.
+- 테스트: 없음(스크립트 1줄, upstream 테스트 변경 없음). 빌드(스크립트 어셈블)로 확인.
+- 남은 위험: 없음.
+- 실기 확인: 불필요(도달 불가 맵). 검은먹시티 NPC는 "실기 확인 항목" 2.
 
 ## 한글 문구 미결
 
