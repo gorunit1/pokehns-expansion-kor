@@ -1,6 +1,6 @@
 # full-sync 선진행 결과 — 구간 1 (seq 130~167 중 15행)
 
-진행 중: 마지막 완료 seq 134, 다음 seq 137
+진행 중: 마지막 완료 seq 137, 다음 seq 143
 
 **순서표와 다르게 진행한 구간이다.** 순서표([`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv))의 다음 행 seq 127 #9655(배틀 메시지 리팩터)가 D1~D7 결정 대기라서, #9655와 무관한 뒤쪽 행을 앞당겨 이식한다. 선정 기준과 전체 분류는 [`ahead-of-9655/README.md`](ahead-of-9655/README.md)(`ahead_candidates.tsv`)에 있다. 이 구간은 그 "선진행" 114행 가운데 앞쪽 15행(seq 130, 131, 133, 134, 137, 143, 148, 149, 151, 156, 157, 158, 160, 165, 167)이다.
 
@@ -18,6 +18,7 @@
 | 131 | #9462 | 부분 적용(잔여분) | `99388d6158` | +32 B | 게임 기능(`AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE`·RNG·뒤집기 로직)은 HnS에 이미 있음. `GetConfig` 2곳·`AI_CONFIG_DEFINITIONS` 2항목·테스트 4파일만 이식(`(reversed)` Choiced 테스트 값 `ABILITY_GLUTTONY`). 게임 동작 불변 |
 | 133 | #9006 | 적용(HnS 적응) | `fc205e1a40` | −640 B (EWRAM −4 B) | 기술 떠올리기를 공용 `LearnMove`로. HnS chooseboxmon·요약 START/R/L 유지, 검은먹시티 NPC `Special_HasMoveToRelearn`/`VAR_RESULT`, **#10223 1줄 선반영**, **가르침 교체 최대 PP 유지(`// HnS:`)**, **새 문자열 2개 한글 초안(미결)** |
 | 134 | #9903 | 부분 적용(HnS 적응) | `cf71e21e56` | 0 B | relearner hunk만 `HandleMoveRelearnerInput`(#9006)으로 옮겨 넣음. 이름 바꾸기 hunk 제외(HnS 요약 화면에 분기 없음). config로 꺼진 경로라 동작 불변(코드 바이트 동일, assert 줄 번호 문자열만 이동) |
+| 137 | #9713 | 적용(HnS 적응, **B안**) | `d057cee5c2` | −1,296 B | 디버그 사운드 메뉴 `FindSong`/`sSongNames`. **곡 이름 저장 안 함(`SE_`/`MUS_` 접두어만, Korean patch 화면 유지)**. HnS GBS 전환 유지, `FIRST_PHONEME_SONG`은 `DP_MUSIC_END + 1`(값 746 불변), DP 음악 11곡·`SE_FASTER_JOY_HEAL` 목록 추가. 이름 `{0}`(EOS 없음) EWRAM 덮어쓰기 잠재 버그 해소 |
 
 ## 공통 사항
 
@@ -146,6 +147,34 @@
 - 남은 위험: 없음(HnS config에서 닿지 않는 경로).
 - 실기 확인: 불필요.
 
+## 동기화 단위: seq 137 #9713 `U-9713` Support non-contiguous SE/MUS IDs in debug menu
+
+- 현재 판정: 적용(HnS 적응, **메인 결정 B안**)
+- 커밋: `d057cee5c2`
+- upstream 근거: `48a165c403`(`include/constants/songs.h`, `src/debug.c`). `git log --grep='#9713'` 없음, `FindSong`/`sSongNames` 없음 → 미적용이었다. deps 없음. 후행 #9927(seq 351)이 이 PR을 deps로 둔다.
+- 수정 파일(2): `include/constants/songs.h`, `src/debug.c`
+- 적용 방법: 사전 분석의 B안 patch(`tmp-137/seq137-9713-optB-no-names.patch`)를 `git apply`했다. 충돌 없음. A안 patch(`seq137-9713.patch`)와는 이름 표 생성부(D7)만 다르다.
+- 내용(upstream):
+  - `songs.h`의 `END_SE`·`START_MUS`·`END_MUS` 삭제.
+  - `debug.c`: `enum SongType`/`enum FindSongMode`, 비정적 `FindSong()`, 위·아래 입력에 `sPowersOfTen[tDigit]`번 `FindSong`을 부르는 `Debug_HandleInput_SongId()`. `sBGMNames`/`sSENames` 두 표를 곡 ID로 바로 인덱싱하는 `sSongNames[]` 하나로 합치고, 사운드 메뉴 시작값을 `FindSong(…, SONG_FIRST_GE, MUS_DUMMY)`로 정한 뒤 초기 표시를 task 설정 뒤로 옮김. `FindSong`은 이름 문자열 접두어(`SE_`/`MUS_`)로 SE와 음악을 가린다.
+- **B안(메인 결정):** 곡 이름을 저장하지 않는다. `sSongNames[songId]`가 곡 종류별 접두어 문자열 `sSongNamePrefix_SE`(`_("SE_")`)/`sSongNamePrefix_MUS`(`_("MUS_")`)를 가리킨다(`// HnS:` 주석). `FindSong`은 upstream 코드 그대로 동작하고, 화면의 이름 자리에는 `SE_`/`MUS_`만 나온다. 근거: Korean patch(`361f1e4a77`)가 곡 이름을 비운 현재 HnS 화면 유지, ROM 약 −1.1 KB(A안은 약 +12.5 KB). 이후 upstream(#9927 등)이 기대하는 `sSongNames`/`FindSong` 이름·구조는 A안과 같다.
+  - **대안 A안(이름 복원, `seq137-9713.patch`):** upstream대로 `[songId] = COMPOUND_STRING(#songId)`. 화면에 `MUS_HG_NEW_BARK` 같은 상수 이름(영문, HnS charmap에서 `_`는 밑줄 기호 `F9 09`)이 나오고 ROM 약 +12.5 KB. 디버그 메뉴 문구는 원래 전부 영문이라 번역 문제는 없다. 바꾸려면 `src/debug.c`의 이름 표 생성부만 A안 patch의 D7로 바꾼다.
+  - 두 안 모두 사운드 메뉴 EWRAM 덮어쓰기 잠재 버그를 없앤다: 이식 전 HnS 이름은 `{0}`(1바이트 `0x00`, EOS `0xFF` 없음)이라 `StringCopyPadded(gStringVar1, name, CHAR_SPACE, 35)`가 다음 `0xFF`까지(첫 SE 이름부터 5,410 B, 첫 BGM 이름부터 2,798 B) 0x100 B짜리 `gStringVar1` 뒤(`gTextFlags`·`gFonts`)를 덮어썼다(사전 분석의 코드·ROM 분석, 실기 미확인).
+- HnS 적응(A·B 공통):
+  - HnS GBS 사운드 테스트 변경(`f9afc19dd1`: `Debug_Sound_Redraw_SE/MUS`, SELECT로 GBS 전환 `Debug_Sound_ToggleGBS`, `m4aSongNumStart/Stop`의 GBS 인자, `sDebugText_Sound_*_Gbs` 문구) 유지. 초기 표시는 GBS 문구 선택을 유지한 채 task 설정 뒤로 옮겼고, 이름 조회는 HnS `Debug_Sound_Redraw_*`에서 `sSongNames[tInput]`으로 바꿨다.
+  - `songs.h`: HnS는 `FIRST_PHONEME_SONG (END_MUS + 1)`이 `END_MUS`를 쓰므로 `(DP_MUSIC_END + 1)`로 바꿨다(`END_MUS`가 `DP_MUSIC_END`로 정의돼 있어 값 746 같음). PH_*와 `SE_FASTER_JOY_HEAL`(797) 번호 불변.
+  - `SOUND_LIST_BGM` 끝에 DP 음악 11곡(`MUS_DP_AZURE_FLUTE`~`MUS_DP_STARK_MOUNTAIN`, 735~745), `SOUND_LIST_SE` 끝에 `SE_FASTER_JOY_HEAL`(797)을 넣었다. 이식 전에는 숫자 입력으로 735~745에 갈 수 있었으므로 도달 범위를 유지하고, 797은 이번에 처음 디버그에서 들을 수 있다. 매크로 안에는 주석을 넣지 않았다(줄 이음 문제), 설명은 커밋 메시지에 적었다.
+- 제외한 hunk: 없음(upstream `seName` 지역 변수 재배치는 HnS 구조에 해당 없음).
+- 검증:
+  - `git diff --check` 통과. 한글 줄 변경 0(`src/debug.c`에 한글 없음). `END_SE`·`START_MUS`·`END_MUS` 남은 곳 0(docs 제외).
+  - 빌드(`build/port.log`): 종료 코드 0, **ROM 32,720,756 B(97.51%, −1,296 B) / EWRAM 248,940 B(0) / IWRAM 25,516 B(0)**. 사전 분석 추정 B안 약 −1,108 B(정렬 전). `pokehns.gba` SHA1 `a9db6b6c32941fd8581bb571c9728ebd4ca6522e`. 새 경고 0(`songs.h` 변경으로 경고 154줄이 나왔지만 모두 기준 목록의 기존 경고).
+  - `arm-none-eabi-nm -S`: `sSongNames` 크기 `0xc78`(798칸), `FindSong` 있음. ROM의 `sSongNames`를 읽으면 SE 접두어 270칸(1~269 연속 + 797), MUS 접두어 396칸(350~745 연속), 나머지는 NULL이다. 따라서 SE/음악 선택 순서는 이식 전과 같고, SE 269 다음이 797이다. PH_*(746~796)는 지금처럼 메뉴에서 빠진다.
+- 테스트: 없음(이 PR은 `test/**`를 바꾸지 않고, 관련 테스트도 없다). 빌드 검증만 했다.
+- 남은 위험:
+  - 낮음(디버그 전용): 이름 자리에 곡 이름 대신 `SE_`/`MUS_`만 나온다(이식 전에는 빈 칸). 곡은 번호로 구분한다.
+  - 낮음: 자릿수 1000 단위에서 위/아래 한 번에 `FindSong` 최대 1,000번(upstream과 같음).
+- 실기 확인: 필요(아래 "실기 확인 항목" 3, 디버그 메뉴).
+
 ## 한글 문구 미결
 
 **공식 문구 확인 전 임시 번역**이다. 확정되면 `src/strings.c`의 해당 줄만 바꾼다(seq 133 #9006).
@@ -174,6 +203,11 @@
    - 기술 가르침 NPC(`data/scripts/move_tutors.inc` 사용 NPC, `UlaulaIsle_hns`, `BattleFrontier_Lounge7_hns`, `NewSinjoh_HotSprings_hns` PLA 가르침)에서 PP가 적은 기술을 교체하면 새 기술이 **최대 PP**인지(`// HnS:` 줄).
    - 요약 화면: 능력치 페이지 START/R/L 전환, 기술 페이지 오른쪽 위에 잔상·영문이 없는지, 박스 요약, 전투 중 요약.
    - 목록 다시 그리기(`RedrawListMenu`): 옵션·챌린지 메뉴에서 값 변경 시 설명·하이라이트, 챌린지 메뉴 맨 아래로 이동, 커트 볼 상점 구매 뒤 목록 복귀(아이콘·열매 수).
+3. **디버그 사운드 메뉴(#9713, B안):** 디버그 메뉴(R+START) → Sound → SFX/Music.
+   - 첫 화면 SE `0001`, 음악 `0350`, 이름 자리에 `SE_`/`MUS_`가 나오는지
+   - 위/아래·좌우 자릿수 이동, 음악 734 → 735(DP 곡) ~ 745, SE 269 다음 797(`SE_FASTER_JOY_HEAL`) 재생
+   - SELECT GBS 전환 뒤 문구 On/Off 갱신과 재생
+   - 메뉴를 나간 뒤 다른 창의 글자가 깨지지 않는지(이식 전 이름 복사 오버런 해소 확인)
 
 ## 후속 행 메모
 
