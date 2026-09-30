@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 108~119
 
-진행 중: 마지막 완료 seq 115(+176), 다음 seq 116.
+진행 중: 마지막 완료 seq 116, 다음 seq 117.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md), 메시지 출력 기록: [`BATTLE_MESSAGE_OUTPUT_CHANGES.md`](../../../localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md)
 시작 HEAD: `10077a5d70` (작업 트리 clean)
@@ -14,10 +14,11 @@
 | 110 | #9595 | 이미 적용 | 없음(`5121b83c94`) | 0 | seq 83 unit에서 적용 |
 | 111 | #9610 | 적용(HnS 적응) | `47cd51facf` | +112 B | `AccuracyCheck` #9929 분기 유지, 한글 2문장 토큰만 교체(`{B_BUFF1}`→`{B_LAST_ITEM}`), 폴터가이스트+대타출동 문장 미출력(upstream대로, 출력 변화 문서 1행) |
 | 112 | #9587 | 적용 | `2d86edca81` | +16 B | upstream 그대로. 교체 후보 시뮬레이션 등 캐시 속도 미반영 경계 사례는 upstream 1.17.0과 같은 동작 |
-| 113 | #9596 | 부분 적용(HnS 적응) | `f6ef307f76` | −112 B | `holdEffectParams` 캐시 제거·`ShouldTryOHKO` 기합의띠 판정만. 턴 순서 hunk는 seq 100에서 1.17.0 최종형으로 이미 대체 |
+| 113 | #9596 | 부분 적용(HnS 적응) | `f6ef307f76` | −112 B | `holdEffectParams` 캐시 제거·`ShouldTryOHKO` 기합의머리띠 판정만. 턴 순서 hunk는 seq 100에서 1.17.0 최종형으로 이미 대체 |
 | 114 | #9532 | 적용(HnS 적응) | `7e4f61c927` | +32 B | opcode `UNUSED_32/33`(0xfd/0xfe, upstream과 헤더·명령 표 바이트 동일), 방출 턴 연출 `animTurn = 1`(`// HnS:`), 2·3턴째 공격 문구 생략(출력 변화 문서 1행) |
 | 115 | #9494 | 적용(HnS 적응) | `3f7f0ddabf` | +352 B (EWRAM +16 B) | 교체 대기열. HnS 아이템 팝업·Champions 상성·#9790/#9946/#9818 형태 보존, `NeutralizingGasExits` sBATTLER 저장·복원, **원시 날씨 해제 2줄 유지(`@ HnS:`)**, 드래곤애로 허탕보험 테스트 `KNOWN_FAILING`(upstream 병합과 같음), 출력 변화 문서 3행 |
 | (176) | #9864 | 적용(같은 unit, 선반영) | `489c58259c` | +32 B | upstream 그대로(`reshow_battle_screen.c` 2줄). seq 176 도달 시 "이미 적용" |
+| 116 | #9557 | 적용(HnS 적응, 변형 B) | `4440c18163` | +2,416 B | 미리보기 그림·표를 `#if MPS_ENABLE_MAP_PREVIEWS`로 감쌈(`// HnS:`), `MAPSEC_ROCKET_HIDEOUT_HNS` 보존, BG 팔레트 13 날씨 색 변환 해제는 upstream대로, docs 제외 |
 
 ## 공통 사항
 
@@ -36,7 +37,7 @@
 | `seq109-9241.md` (+`.patch`, `a108/tower_values.py`) | `battle_tower.c`의 `#if IS_HNS` 그래픽 배열을 새 구조체 배열 HnS판으로 옮김. (class, 그래픽) 쌍 전후 동일, 세이브 `facilityClass`(u8) 불변 |
 | `seq111-9610.md` (+`.patch`, `w-111-117-119/stringid_table.sh`·`stringid_bytes.py`) | `AccuracyCheck`의 #9929 분기 유지 + 내던지기 분기. 한글 2문장 토큰만 교체(`{B_BUFF1}`→`{B_LAST_ITEM}` 필수). 폴터가이스트+대타출동 문장 미출력(upstream 동작) |
 | `seq112-9587.md` (+`.patch`, `ai-harness/run_ai_tests.sh`) | upstream 그대로. 교체 후보 시뮬레이션 등 캐시 속도 미반영 경계 사례는 upstream 1.17.0과 같은 동작 |
-| `seq113-9596.md` (+`.patch`) | 최소 패치: `holdEffectParams` 캐시 제거와 `ShouldTryOHKO` 기합의띠 판정만. 턴 순서 hunk는 seq 100에서 1.17.0 최종형으로 이미 대체 |
+| `seq113-9596.md` (+`.patch`) | 최소 패치: `holdEffectParams` 캐시 제거와 `ShouldTryOHKO` 기합의머리띠 판정만. 턴 순서 hunk는 seq 100에서 1.17.0 최종형으로 이미 대체 |
 | `seq114-9532.md` (+`.patch`, 선택 `-animturn-optional.patch`) | 참기 리팩터. opcode `UNUSED_32/33` 추가. 방출 턴 연출 유지용 선택 1줄 |
 | `seq115-9494.md` (+`.patch`, 선택 `-primalweather-optional.patch`, `seq176-9864.patch`) | 교체 대기열. HnS 아이템 팝업·Champions 상성·#9790·#9946 보존, `NeutralizingGasExits` sBATTLER 저장·복원 필수. #9864는 바로 뒤, #9784는 넣지 않음 |
 | `seq116-9557.md` (+`.patch` 변형 B) | upstream이 `IS_FRLG` 가드를 지워 그대로면 ROM +110 KB·Emerald 빌드 실패. 변형 B는 미리보기 그림·표를 `#if MPS_ENABLE_MAP_PREVIEWS`로 감쌈 |
@@ -143,7 +144,7 @@
 - 수정 파일(1): `src/battle_ai_util.c`(`speedBattlerAI/speedBattler = GetBattlerTotalSpeedStat(...)` → `gAiLogicData->speedStats[...]`)
 - HnS 적응: 없음(오프셋 +24줄). HnS 고유 AI 코드(챌린지 구 시트러스, HP 0 클램프, Supreme Overlord, #9568 Beat Up, 아군 KO `.maximum`)와 겹치는 줄이 없다. `GetBattlerTotalSpeedStat`에 HnS 챌린지 참조는 없다.
 - 동작: `speedStats[b]`는 `SetBattlerAiData`에서 `abilities[b]`·`holdEffects[b]`를 채우는 같은 순간에 같은 인자로 계산된다. 턴 시작 판단, 플레이어 기술 예측, 교체 예측 점수는 같은 값이다. **값이 달라지는 경계 사례(upstream 1.17.0과 같은 동작):**
-  1. 교체 후보 시뮬레이션(`InitializeSwitchinCandidate`): 캐시한 뒤 적용되는 끈적끈적네트 −1(더블은 상대 수만큼), 심술꾸러기+네트 +1, 스피드업 열매, 룸서비스, 부스트에너지·날씨/필드 고대활성·쿼크차지, 가상 독(속보), 치유소원·초승달춤 상태 해제가 속도 비교에 반영되지 않는다. 영향은 `GetBestMonIntegrated`의 선공 판정(1:1 승리 판정·배턴터치 후보)과 후보 대미지 계산 안의 보복·전격부리·애널라이즈 턴 순서다.
+  1. 교체 후보 시뮬레이션(`InitializeSwitchinCandidate`): 캐시한 뒤 적용되는 끈적끈적네트 −1(더블은 상대 수만큼), 심술꾸러기+네트 +1, 캄라열매 등 스피드 상승 열매, 룸서비스, 부스트에너지·날씨/필드 고대활성·쿼크차지, 가상 독(속보), 치유소원·초승달춤 상태 해제가 속도 비교에 반영되지 않는다. 영향은 `GetBestMonIntegrated`의 선공 판정(1:1 승리 판정·배턴터치 후보)과 후보 대미지 계산 안의 보복·전격부리·애널라이즈 턴 순서다.
   2. 턴 시작 시 이미 쓰러진 배틀러의 `speedStats`는 0이다(이전에는 남은 `gBattleMons` 수치). `AI_SetBattlerTurnOrder` 위치만 바뀐다(트릭룸이 아니면 맨 뒤).
   3. 턴 도중 재판단(기절 후 교체, 탈출버튼·탈출팩, 유턴)에서 AI 파트너 속도는 턴 시작 값이다.
   - 난수: `AI_WhoStrikesFirst`는 난수를 쓰지 않는다. 위 경계 사례에서 AI 결정이 달라질 때만 이후 난수 소비가 달라진다. 이식 전에 저장한 녹화 배틀을 재생하면 이 경계 사례에서 대미지 난수가 어긋날 수 있다(아주 드묾, 녹화는 #8943 A안으로 어차피 무효화 예정).
@@ -165,7 +166,7 @@
   - `AiLogicData.turnOrder[]` 추가, `SetBattlerTurnOrder` 신설과 `SetAiLogicDataForTurn` 안의 초기화·정렬: 1.17.0에 없다(#10453이 되돌림). HnS는 seq 100(#9548)에서 1.17.0 최종형(`Ai_AttackerMoves*`가 필요할 때 `AI_SetBattlerTurnOrder`로 계산)을 넣었다. 현재 `GetAiTurnOrder`·`Ai_AttackerMovesAfterTarget`·`Ai_AttackerMovesLast`가 1.17.0과 글자까지 같다(`diff` 0).
   - `BattleContext.aiTurnOrder` 삭제, `AI_CalcDamage` 안의 `AI_SetBattlerTurnOrder` 호출 삭제, `CalcMoveBasePower` 등 호출 3곳 시그니처: HnS에 원래 없거나 이미 새 형태(이미 동등).
   - `SetAiLogicDataForTurn` 선언 인라인화·변수명·공백, `AI_CheckBadMove` 등 줄끝 공백: 동작·코드가 같은 정리(선택 패치와 오브젝트 바이트 동일). 계획 TSV대로 넣지 않았다.
-- 동작: 기합의띠 확률 값이 `SetBattlerAiData` 시점 캐시에서 호출 시점 `GetBattlerHoldEffectParam`로 바뀐다. AI 판단 중 대상 도구가 바뀌는 경로는 모두 `SetBattlerAiData`를 다시 부르므로 값이 같다. `Random()` 호출 횟수·순서도 같다(사전 분석 역어셈블 확인). "프레임 카운터" 회귀(#9548 원형의 `AI_CalcDamage`마다 턴 순서 계산)는 HnS에 들어온 적이 없다.
+- 동작: 기합의머리띠 발동 확률 값이 `SetBattlerAiData` 시점 캐시에서 호출 시점 `GetBattlerHoldEffectParam`로 바뀐다. AI 판단 중 대상 도구가 바뀌는 경로는 모두 `SetBattlerAiData`를 다시 부르므로 값이 같다. `Random()` 호출 횟수·순서도 같다(사전 분석 역어셈블 확인). "프레임 카운터" 회귀(#9548 원형의 `AI_CalcDamage`마다 턴 순서 계산)는 HnS에 들어온 적이 없다.
 - 검증:
   - `git diff --check` 통과.
   - 빌드: 종료 코드 0, **ROM 32,716,132 B(−112 B) / EWRAM 248,924 B(0) / IWRAM 25,516 B(0)**, 새 경고 0. `gAiLogicData`는 힙이라 `sizeof(struct AiLogicData)`만 4 B 줄었다(정적 배치 무관).
@@ -194,7 +195,7 @@
   - 파일: `move_effect/bide.c`(PASS 1 / FAIL 7 / TO_DO 1), `instruct.c`(15/4/TO_DO 1), `copycat.c`(1/1/TO_DO 15), `two_turns_attack.c`(8/11), `semi_invulnerable.c`(1/3), `sky_drop.c`(14/4), `solar_beam.c`(0/2), `geomancy.c`(TO_DO 3), `focus_punch.c`(3/13/TO_DO 5/ASSUMPTION_FAIL 1), `ability/dazzling.c`(7/4/INVALID 1, INVALID는 이식 전과 같음), `sheer_force.c`(30/1), `ai/can_use_all_moves.c`(8/4).
   - 새 FAIL 6건(`Bide fails if no damage…`, `…0 total damage…`, `…blocked by Dazzling…`, `…blocked by partner Dazzling`, `…Substitute`, `…through protect`)과 기존 `Bide deals twice…` FAIL의 사유는 모두 `Unmatched MESSAGE`. TO_DO 1건은 이름 변경(`Bide has +1 priority on following turns if called via a different move`).
 - **출력 변화(upstream 동작):** 2턴째(축적)·3턴째(방출)에 `…은(는)\n참기를 썼다!`(`sText_AttackerUsedX`)가 더 나오지 않는다(`CancelerAttackstring`이 `bideTurns` 중 건너뜀). 방출은 `…의\n참기가 풀렸다!` → 일반 공격 경로. 빗나감 경로가 `BattleScript_MoveMissed`에서 `MoveMissedPause`로 바뀌어 짧은 멈춤이 한 번 더 있다. 받은 피해 0이면 `…참기가 풀렸다!` → `그러나 실패하고 말았다!`. 설정 턴 이후 캔슬러(변환자재·리베로 등)는 설정 턴에 돌지 않는다. → `BATTLE_MESSAGE_OUTPUT_CHANGES.md` "기술·필드 상태 효과" 표에 1행 추가(이 커밋).
-- 남은 위험: 낮음~중간. 참기 축적 중인 포켓몬이 춤추기로 다른 기술을 따라 쓰면 그 기술의 공격 문구도 생략된다(upstream과 같음).
+- 남은 위험: 낮음~중간. 참기 축적 중인 포켓몬이 특성 무희로 다른 기술을 따라 쓰면 그 기술의 공격 문구도 생략된다(upstream과 같음).
 - 실기 확인: 필요(아래 "실기 확인 항목" 4).
 
 ## 동기화 단위: seq 115 #9494 `U-queuedswitch-9494` Adds queued switches for Move End switches (+ seq 176 #9864)
@@ -211,10 +212,10 @@
   - `battle_hold_effects.c`: 약점보험·`TrySetEnigmaBerry`의 Champions `MOVE_RESULT_HIGH_EFFECTIVENESS` 유지(`IsBattlerAlive`만 제거), 허탕보험 #9790 형태에서 `IsBattlerAlive` → `!redCardSwitched`만, 목스프레이·조개껍질방울·생명의구슬 HnS 1인자 `IsAnyTargetTurnDamaged`. `ItemBattleEffects()` 첫머리의 HnS `IsBattlerAlive` 검사는 남는다.
   - `FaintClearSetData`: HnS Champions `B_RAGE_FIST` 두 줄 유지, `keepGastroAcid` 두 줄만 삭제.
   - `MoveEndHitEscape`: HnS 조건 `IsBattlerTurnDamaged(gBattlerTarget, INCLUDING_SUBSTITUTES)` 유지, `!HasAnyBattlerQueuedSwitch()`·`!redCardSwitched`·`queuedSwitch = QUEUED_SWITCH_OPEN_PARTY_SCREEN`만 추가. `FAINT_BLOCK_CHECK_TARGET_FAINTED`의 HnS #9409 조건 유지.
-  - 자신과잉 계열 case 목록의 HnS `ABILITY_EELEVATE` 유지.
+  - 자기과신 계열 case 목록의 HnS `ABILITY_EELEVATE` 유지.
   - `test/battle/ability/magician.c`: HnS 파일이 1.17.0 순서(#9818)라 새 테스트를 1.17.0처럼 파일 끝에 넣었다.
 - **upstream과 다르게 둔 곳 1 — 원시 날씨 해제(`data/battle_scripts_1.s` `BattleScript_QueuedSwitch`):** upstream은 옛 탈출버튼 스크립트와 유턴 경로(`BattleScript_MoveSwitchOpenPartyScreenReturnWithNoAnim`)에 있던 `trytoclearprimalweather`를 대기열 교체 경로에 옮기지 않아, 끝의대지·시작의바다·델타스트림 보유자가 탈출버튼·탈출팩·위기회피·유턴·볼트체인지·퀵턴으로 나가도 날씨가 남는다(1.17.0에도 남음). HnS는 `hpthresholds` 뒤에 `@ HnS:` 주석과 `trytoclearprimalweather`·`flushtextbox`를 두어 이식 전 동작(날씨 해제와 기존 한글 해제 문구)을 유지했다.
-  - 확인(임시 테스트, 저장소에 남기지 않음): `desolate_land.c` 끝에 "그란돈(빨강구슬)이 유턴으로 나간 뒤 `gBattleWeather & B_WEATHER_SUN_PRIMAL`이 0" 테스트와 대조 테스트를 붙여 돌렸다. HnS 2줄이 있으면 PASS, 2줄을 지우면(upstream 상태) FAIL, 대조 테스트는 두 경우 모두 PASS. 확인 뒤 두 파일을 원래대로 되돌렸다(`git diff` 없음 확인).
+  - 확인(임시 테스트, 저장소에 남기지 않음): `desolate_land.c` 끝에 "그란돈(주홍구슬)이 유턴으로 나간 뒤 `gBattleWeather & B_WEATHER_SUN_PRIMAL`이 0" 테스트와 대조 테스트를 붙여 돌렸다. HnS 2줄이 있으면 PASS, 2줄을 지우면(upstream 상태) FAIL, 대조 테스트는 두 경우 모두 PASS. 확인 뒤 두 파일을 원래대로 되돌렸다(`git diff` 없음 확인).
 - **upstream과 다르게 둔 곳 2 — `test/battle/hold_effect/blunder_policy.c`:** `Blunder Policy activates for Dragon Darts if one target misses for accuracy but the other target is hit twice`에 `KNOWN_FAILING;` 한 줄을 넣었다. 이 테스트는 HnS가 upstream master에서 받은 #9790(`69b1891140`)의 것으로, 허탕보험이 드래곤애로 첫 타격 뒤에 발동한다고 기대한다. #9494로 허탕보험이 모든 타격 뒤(`MOVEEND_SPRAY_LEPPA_BLUNDER`)로 옮겨져 `Unmatched ANIMATION`으로 PASS→FAIL이 됐다. upstream도 #9790을 upcoming(#9494 포함)에 병합할 때(`7ff83c6542`) 같은 줄을 넣었고, **seq 467 #9841**이 `KNOWN_FAILING`을 지우고 기대 순서를 "두 타격 뒤"로 바꾼다. 결과 파일이 upstream `7ff83c6542`~#9841 직전 blob(`fbba72441b`)과 바이트 동일하므로 #9841이 그대로 적용된다.
   - 동작 확인: 기대 순서만 #9841처럼 바꾼 임시 사본으로 돌리면 이 테스트가 PASS(파일 11건 모두 PASS)였다. 즉 허탕보험은 드래곤애로 두 타격 뒤 한 번 발동하며 1.17.0과 같다. 확인 뒤 원래대로 되돌렸다.
 - 제외한 hunk: `src/battle_util.c` 매지션 점착 조건(`ABILITY_STICKY_HOLD || !IsBattlerAlive`) 2줄 — HnS #9818 형태에는 이 절이 없다(1.17.0도 없음).
@@ -233,7 +234,32 @@
   - 이름 변경(이전 이름은 전체 목록에서 사라짐): `Eject Button activates after Wandring Spirit`(PASS) → `…Wandering Spirit`(PASS), `Red Card prevents Emergency Exit activation when triggered`(PASS) → `Red Card doesn't prevent Emergency Exit activation when triggered`(PASS, 기대 동작도 바뀜), `Relic Song transformation is the last thing that happens after it hits`(FAIL) → `Relic Song transformation activates after target faints`(FAIL, `Unmatched MESSAGE`).
   - 새 테스트: PASS 3(`Eject Button activates and the attacker takes Life Orb recoil before replacement comes out`, `Emergency Exit activates and attacker's Throat Spray activates before replacement enters`, `Hit Escape: U-Turn switches user out and target activates Pickpocket before replacement enters`), FAIL 2(`Magician allows activation of stolen Throat Spray`, `Relic Song transforms Meloetta before taking Life Orb damage`, 모두 `Unmatched MESSAGE`).
   - 나머지 상태 변화 0. 이식 전부터 있던 비 MESSAGE 실패(버서크·위기회피 팝업 태스크 미해제, AI 교체 확률 테스트 등)는 전후 같다.
-  - 대상 파일: 탈출버튼·레드카드·탈출팩·위기회피·도망태세·유턴 계열·매지션·폼체인지, 도구(목스프레이·허탕보험·과사열매·생명의구슬·조개껍질방울·약점보험·의문열매·하양허브·흉내허브·룸서비스), 특성(나쁜손버릇·화학변화가스·변색·발끈·분노의껍질·비스트부스트·자신과잉·유대변화·사령탑·편승·긴장감·개미지옥·프레셔·춤추기·기분파·고대활성·재생력·마이티체인지·내용물분출·위협·점착·자연회복·달마모드), 교체 기술(배턴터치·막말내뱉기·순간이동·꼬리자르기·썰렁개그·따라가때리기·드래곤테일 계열·울부짖기·땅고르기·부활의기원·프리폴), AI 교체 3파일, 다이맥스, 원시 날씨 3파일.
+  - 대상 파일: 탈출버튼·레드카드·탈출팩·위기회피·도망태세·유턴 계열·매지션·폼체인지, 도구(목스프레이·허탕보험·과사열매·생명의구슬·조개껍질방울·약점보험·의문열매·하양허브·흉내허브·룸서비스), 특성(나쁜손버릇·화학변화가스·변색·발끈·분노의껍질·비스트부스트·자기과신·유대변화·사령탑·편승·긴장감·개미지옥·프레셔·무희·기분파·고대활성·재생력·마이티체인지·내용물분출·위협·점착·자연회복·달마모드), 교체 기술(배턴터치·막말내뱉기·순간이동·꼬리자르기·썰렁개그·따라가때리기·드래곤테일 계열·울부짖기·분함의발구르기·회생의기도·프리폴), AI 교체 3파일, 다이맥스, 원시 날씨 3파일.
 - **출력 변화(upstream 동작, 원시 날씨 제외):** `BATTLE_MESSAGE_OUTPUT_CHANGES.md` "특성·도구·도주" 표에 3행 추가(이 커밋): (1) 탈출버튼·탈출팩·유턴 계열·위기회피·도망태세 교체가 move end 끝으로 밀려 발동 문구 → 볼 회수 → 남은 move end 출력(생명의구슬 반동 등) → 교체 화면 → `가랏! …!` 순서가 됨(탈출버튼이 발동해도 공격자의 생명의구슬·조개껍질방울·옛노래 폼체인지가 이제 적용됨), (2) 레드카드 뒤 보유자의 위기회피·도망태세가 발동, (3) 목스프레이·과사열매·허탕보험이 move end 후반으로 늦춰지고(드래곤애로 허탕보험은 두 타격 뒤), 매지션으로 빼앗은 목스프레이가 발동, 옛노래 폼체인지 문구가 생명의구슬 반동보다 먼저. 즉시 교체 경로(배턴터치·막말내뱉기 등)는 문구가 같고 볼 회수가 교체 화면보다 먼저 나온다.
 - 남은 위험: 중간. `GetBattlerAbility`·`GetBattlerHoldEffect`가 `notOnField` 배틀러에 NONE을 돌려주는 것에 기대어 여러 `IsBattlerAlive` 검사가 지워졌다. HnS 고유 코드 중 이 함수를 거치지 않고 특성·도구를 읽는 경로가 교체 대기 중인 배틀러에 반응할 수 있다. 영문 `MESSAGE` 실패가 많은 파일(따라가때리기·울부짖기·레드카드 등)은 로직 회귀가 가려질 수 있다. 이후 #9717·#9784가 `BattleScript_QueuedSwitch` 주변을 고칠 때 HnS 원시 날씨 2줄의 문맥 적응이 필요하다.
 - 실기 확인: 필요(아래 "실기 확인 항목" 5).
+
+## 동기화 단위: seq 116 #9557 `U-9557` Improved FRLG Map Previews
+
+- 현재 판정: 적용(HnS 적응, 사전 분석 변형 B)
+- 커밋: `4440c18163`
+- upstream 근거: `74e4e2efe2`(47파일 +813/−146: 코드 12파일, docs md 1개 + 이미지 34개 9.2 MB + `SUMMARY.md`). 같은 unit 뒤 행 seq 366 #10080은 그 순서에 넣는다(이번에 넣지 않음).
+- 수정 파일(11, 신규 1): `asm/macros/event.inc`(`mappreview` 매크로), `include/config/map_preview_screen.h`(신규, `MPS_ENABLE_MAP_PREVIEWS IS_FRLG` 등), `include/constants/global.h`, `include/fldeff.h`, `include/map_preview_screen.h`, `include/overworld.h`, `src/field_screen_effect.c`, `src/field_weather.c`, `src/fldeff_flash.c`, `src/map_preview_screen.c`, `src/overworld.c`
+- 적용 방법: 사전 분석 변형 B 패치(`seq116-9557.patch`)를 `git apply`로 넣었다. 패치와 upstream 코드 부분의 `+`/`-` 줄 집합 차이는 HnS 가드 줄(주석 3줄, `#if MPS_ENABLE_MAP_PREVIEWS`/`#else`/`#endif`, `#else` 쪽 표 선언·`[0 ... MPS_COUNT - 1] = { .mapsec = MAPSEC_NONE }`·`};`)뿐이다. upstream 줄은 모두 들어갔다.
+- **HnS 적응(upstream과 다름):**
+  - plan(g6)은 "`map_preview_screen.c`가 `#if IS_FRLG` 안이라 HnS ROM 영향 없음"이라고 했지만 upstream #9557은 그 가드를 지우고 모든 빌드의 `overworld.c`·`fldeff_flash.c`·`field_screen_effect.c`에서 미리보기 함수를 부른다(끄고 켜기는 `ShouldRunMapPreview()` 안의 `MPS_ENABLE_MAP_PREVIEWS`). HnS는 LTO 없이 `--gc-sections`만 쓰므로 그대로 넣으면 호출부에서 `sMapPreviewScreenData`까지 참조가 이어져 FRLG 미리보기 그림 21종(약 108 KB)이 ROM에 들어간다(변형 A, ROM 약 +110 KB).
+  - 변형 B: 첫 `INCBIN_U8`부터 `sMapPreviewScreenData` 끝까지 `#if MPS_ENABLE_MAP_PREVIEWS … #else`(모든 칸 `MAPSEC_NONE`인 표) `#endif`로 감쌌다(주석 `// HnS:` 3줄). 가드 조건이 config 자체라 HnS에서 미리보기를 켜면 upstream 표·그림이 그대로 돌아온다. 꺼져 있을 때는 `ShouldRunMapPreview()`가 FALSE라 표를 읽는 경로가 불리지 않는다.
+  - 표의 HnS 줄 `.mapsec = MAPSEC_ROCKET_HIDEOUT_HNS`(`f1f5cd0ec2`)를 보존했다(upstream에서는 문맥 줄 `MAPSEC_ROCKET_HIDEOUT`). 같은 칸의 `.type`은 upstream대로 `MPS_TYPE_FADE_IN`.
+- 제외: `docs/**`(튜토리얼 md·이미지 34개 9.2 MB·`SUMMARY.md` 1줄). 코드 hunk는 모두 넣었다.
+- HnS 동작:
+  - 미리보기 화면은 HnS에서 뜨지 않는다(컴파일 상수 FALSE). 맵 이름 팝업·문 출입(`Task_ExitDoor`/`Task_ExitNonAnimDoor`/`Task_ExitNonDoor`)·동굴 진입 전환은 이식 전과 같은 분기를 탄다(`FadeInMapPreviewScreenIsRunning()`이 항상 FALSE라 기존처럼 `UnlockPlayerFieldControls()`).
+  - **BG 팔레트 13의 날씨 색 변환 해제(upstream대로 둠):** `field_weather.c` `sBasePaletteColorMapTypes`의 BG 13이 `COLOR_MAP_DARK_CONTRAST` → `COLOR_MAP_NONE`. upstream 의도는 미리보기 그림을 BG 13~15에 올릴 때 날씨로 어두워지지 않게 하는 것이다. HnS 필드에서 팔레트 13을 쓰는 창은 엘리베이터 층 표시 창, 상점 금액 창, `mom_savings.c` 금액 창 정도다(필드 금액 상자·대화창은 14·15). 비·뇌우·가뭄처럼 색 변환을 쓰는 날씨에서 이 창들의 테두리가 더는 어두워지거나 밝아지지 않고 팔레트 14·15 창과 같게 보인다. 페이드와 시간대 색은 그대로 적용된다.
+- 검증:
+  - `git diff --check` 통과, 새 파일 `include/config/map_preview_screen.h` 모드 100644, 기존 파일 모드 변경 없음.
+  - 빌드: 종료 코드 0, **ROM 32,718,964 B(+2,416 B) / EWRAM 248,940 B(0) / IWRAM 25,516 B(0)**, 새 경고 0. 사전 분석 예상(변형 B 약 +2.4~2.7 KB, EWRAM +1 B는 정렬로 0~4 B)과 같다. ROM에 들어간 것은 미리보기 코드와 `MAPSEC_NONE` 표뿐이다(`pokehns.map`에 FRLG 미리보기 그림 심볼 없음).
+  - **기본 `make`(Emerald) 영향:** 바뀐 C 파일 6개(`map_preview_screen.c`, `overworld.c`, `fldeff_flash.c`, `field_screen_effect.c`, `field_weather.c`, `scrcmd.c`)를 Makefile과 같은 파이프라인(`-DEMERALD`, `-Werror`)으로 스크래치에서 컴파일했다(`make`는 공유 생성 파일을 Emerald용으로 다시 만들 수 있어 쓰지 않음). `map_preview_screen.c`·`fldeff_flash.c`·`field_screen_effect.c`·`field_weather.c`는 성공. `overworld.c`(HnS `FLAG_NIGHT_POKEMON`·`FLAG_DAY_POKEMON`)와 `scrcmd.c`(HnS `FLAG_STARTER_PREVIEW_CHECKED_*`·`FLAG_SHINY_STARTER_*`)는 실패하지만 이식 전 파일·헤더로도 같은 오류(이식 전후 오류 목록 동일)라 **이 PR로 새로 깨진 것은 없다**(Emerald 빌드는 이식 전부터 HnS 플래그 때문에 실패). 변형 A였다면 `map_preview_screen.c`가 `MAPSEC_ROCKET_HIDEOUT_HNS`로 추가 실패한다.
+  - 한글 줄 변경 0.
+- 테스트: 직접 관련 테스트 없음. `test/script.c`(PASS 2)·`test/event_object_movement.c`(PASS 1) 이식 전과 같음.
+- 남은 위험: 낮음(동작 변화는 팔레트 13 한 줄). FRLG 빌드는 이식 전부터 `MAPSEC_ROCKET_HIDEOUT_HNS` 때문에 실패한다(이 PR 범위 밖 기존 HnS 수정, 기록만).
+- 후속: seq 366 #10080(`map_preview_screen.h` 비트필드, `map_preview_screen.c` 4곳)은 변형 B 위에 적용 가능(사전 분석 확인). seq 378 #10162(`enum MapPreviewScreenType`)는 `#else` 표와 충돌 없음. seq 500 #9881(INCGFX) 때 가드 안의 `INCBIN_U8` 63줄을 `INCGFX_U8`로 옮긴다(upstream INCGFX 커밋의 hunk는 #9557 이전 문맥).
+- 실기 확인: 필요(아래 "실기 확인 항목" 6).
