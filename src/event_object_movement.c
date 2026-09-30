@@ -22,6 +22,7 @@
 #include "follower_helper.h"
 #include "gpu_regs.h"
 #include "graphics.h"
+#include "item.h"
 #include "mauville_old_man.h"
 #include "metatile_behavior.h"
 #include "overworld.h"
@@ -220,8 +221,6 @@ static void CopyObjectGraphicsInfoToSpriteTemplate_WithMovementType(u16 graphics
 
 static u16 GetGraphicsIdForMon(enum Species species, bool32 shiny, bool32 female);
 static enum Species GetUnownSpecies(struct Pokemon *mon);
-
-static const struct SpriteFrameImage sPicTable_PechaBerryTree[];
 
 static void StartSlowRunningAnim(struct ObjectEvent *objectEvent, struct Sprite *sprite, enum Direction direction);
 
@@ -3442,15 +3441,15 @@ static void SetBerryTreeGraphicsById(struct ObjectEvent *objectEvent, u8 berryId
             OBJ_EVENT_PAL_TAG_NPC_3_HNS,
             OBJ_EVENT_PAL_TAG_NPC_4_HNS,
         };
-        u8 palSlot = gBerryTreePaletteSlotTablePointers[berryId][berryStage] - 2;
+        u8 palSlot = gBerries[berryId].berryTreePaletteSlotTable[berryStage] - 2;
         UpdateSpritePalette(&sObjectEventSpritePalettes[FindObjectEventPaletteIndexByTag(sHnsBerryPalTags[palSlot])], sprite);
     }
 #else
-    UpdateSpritePalette(&sObjectEventSpritePalettes[gBerryTreePaletteSlotTablePointers[berryId][berryStage]-2], sprite);
+    UpdateSpritePalette(&sObjectEventSpritePalettes[gBerries[berryId].berryTreePaletteSlotTable[berryStage] - 2], sprite);
 #endif
     sprite->oam.shape = graphicsInfo->oam->shape;
     sprite->oam.size = graphicsInfo->oam->size;
-    sprite->images = gBerryTreePicTablePointers[berryId];
+    sprite->images = gBerries[berryId].berryTreePicTable;
     sprite->anims = graphicsInfo->anims;
     sprite->subspriteTables = graphicsInfo->subspriteTables;
     objectEvent->inanimate = graphicsInfo->inanimate;
@@ -3467,7 +3466,7 @@ static void SetBerryTreeGraphicsById(struct ObjectEvent *objectEvent, u8 berryId
 static void SetBerryTreeGraphics(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
     u8 berryStage;
-    u8 berryId;
+    enum BerryId berryId;
 
     objectEvent->invisible = TRUE;
     sprite->invisible = TRUE;
@@ -3476,9 +3475,9 @@ static void SetBerryTreeGraphics(struct ObjectEvent *objectEvent, struct Sprite 
     {
         objectEvent->invisible = FALSE;
         sprite->invisible = FALSE;
-        berryId = GetBerryTypeByBerryTreeId(objectEvent->trainerRange_berryTreeId) - 1;
+        berryId = GetBerryTypeByBerryTreeId(objectEvent->trainerRange_berryTreeId);
         berryStage--;
-        if (berryId > ITEM_TO_BERRY(LAST_BERRY_INDEX))
+        if (berryId > NUM_BERRIES)
             berryId = 0;
 
         SetBerryTreeGraphicsById(objectEvent, berryId, berryStage);
