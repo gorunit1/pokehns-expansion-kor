@@ -1,6 +1,6 @@
 # full-sync 선진행 결과 — 구간 1 (seq 130~167 중 15행)
 
-진행 중: 마지막 완료 seq 160, 다음 seq 165
+진행 중: 마지막 완료 seq 165, 다음 seq 167(보류 기록 후 구간 종료)
 
 **순서표와 다르게 진행한 구간이다.** 순서표([`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv))의 다음 행 seq 127 #9655(배틀 메시지 리팩터)가 D1~D7 결정 대기라서, #9655와 무관한 뒤쪽 행을 앞당겨 이식한다. 선정 기준과 전체 분류는 [`ahead-of-9655/README.md`](ahead-of-9655/README.md)(`ahead_candidates.tsv`)에 있다. 이 구간은 그 "선진행" 114행 가운데 앞쪽 15행(seq 130, 131, 133, 134, 137, 143, 148, 149, 151, 156, 157, 158, 160, 165, 167)이다.
 
@@ -27,6 +27,7 @@
 | 157 | #8628 | 적용 | `5381abba16` | 0 B | `setmetatileinrange` 매크로(`callnative`, 새 opcode 없음)와 `NativeFunc_SetMetatileInRange`. 쓰는 스크립트가 없어 함수는 gc로 빠짐. 공백 1줄 정리 |
 | 158 | #9765 | 적용 | `2cef59f506` | −5,360 B (EWRAM −4 B) | 도감 분포 지도 템플릿 제거, BG 3 상수. 쓰이지 않던 affine 그래픽·BG 번호 힙 할당 삭제. HnS `pokedex_area_screen.c` 고유 변경 보존. 동작 동일 |
 | 160 | #9762 | 적용 | `8d46f0241b` | −32 B | `GiveMailToMon`의 중복 `SetMonData` 2회 삭제(`GiveMailToMonByItemId`가 같은 값으로 이미 설정). 동작·세이브 데이터 동일 |
+| 165 | #9813 | 적용(위치 적응) | `4442f1a559` | 0 B | `FillSpriteRect`의 `%`를 `& mask`로(나눗셈 호출 5개 제거). X축 전환 hunk는 #9973(seq 31)이 만든 루프 앞 위치에 적용. 동작 변화 0(사전 분석 네이티브 비교) |
 
 ## 공통 사항
 
@@ -341,6 +342,24 @@
 - 남은 위험: 없음.
 - 실기 확인: 선택(아래 "실기 확인 항목" 7).
 
+## 동기화 단위: seq 165 #9813 `U-fillsprite-9973` Improve `FillSpriteRect` performance
+
+- 현재 판정: 적용(hunk 1개 위치 적응)
+- 커밋: `4442f1a559`
+- upstream 근거: `bea3a1b4d2`(`src/sprite.c`). deps #9973(seq 31, HnS `c24b95141d`) 적용됨. `git log --all --grep='#9813'` 없음, `widthMask`/`heightMask` 없음 → 미적용이었다.
+- 수정 파일(1): `src/sprite.c`
+- 적용 방법: 사전 분석 patch(`seq165-9813.patch`)를 `git apply`했다. 충돌 없음.
+- 내용: GBA 스프라이트 너비·높이는 항상 2의 거듭제곱이라 `FillSpriteRect`의 `% spriteWidth`/`% spriteHeight` 7곳을 `& widthMask`/`& heightMask`로 바꾸고 지역 변수 2개를 추가했다(upstream 주석의 오타 `posible`도 원문 그대로).
+- HnS 적응: upstream diff는 #9973 이전 상태라 X축 스프라이트 전환 블록이 루프 **끝**에 있다. HnS는 #9973을 이미 넣어 그 블록이 루프 **앞**에 있으므로, 그 hunk를 루프 앞 `if (currStart > 0 && (currStart & widthMask) == 0)`에 적용했다(1.17.0 최종본과 같은 위치). 적용 뒤 `FillSpriteRect` 안 `% spriteWidth`/`% spriteHeight` 0건. 1.17.0과는 #10349·#10392의 3줄만 다르다(사전 분석: 이 위에 두 커밋을 그대로 적용하면 1.17.0과 바이트 동일).
+- 제외한 hunk: 없음.
+- 동작: 사전 분석 x86 하니스(`tmp-165/harness/`)로 색 채우기·스프라이트 복사 각 5,160,804건을 비교해 **이식 전후 VRAM 결과 차이 0건**. HnS 호출처는 `src/battle_interface.c`의 3세대 배틀 UI(`newBattleUI` OFF) 체력 상자 `FillSpriteRectColor` 9곳뿐이다(한글 스프라이트 텍스트·작명·Pokegear·storage는 부르지 않음). #10349·#10392가 고치는 기존 버그(사파리 남은 볼 호출의 72픽셀 과다 칠하기, 배경색과 같아 화면 차이 없음)는 이식 전과 같게 남는다(seq 273·275에서 처리).
+- 검증:
+  - `git diff --check` 통과. 한글·config·세이브 변경 0.
+  - 빌드(`build/port.log`): 종료 코드 0, **ROM 32,715,492 B(0) / EWRAM 248,936 B(0) / IWRAM 25,516 B(0)**. 사전 분석 추정 0 B(함수 크기 동일, `__aeabi_uidivmod` 호출 5개 → 0개). `pokehns.gba` SHA1 `a1aa5ea8c9c824ba1c6bfa4d068f8948392a2a8c`. 경고 0줄(새 경고 0).
+- 테스트(`test/sprite.c`) → PASS 5, seq 126 기준과 같다. upstream 테스트 변경 없음. 배틀 테스트의 체력 상자 갱신은 구간 끝 전체 실행에서 간접 확인된다.
+- 남은 위험: 없음(동작 동일, 행마다 나눗셈 호출이 빠져 조금 빨라짐).
+- 실기 확인: 선택(아래 "실기 확인 항목" 8).
+
 ## 한글 문구 미결
 
 **공식 문구 확인 전 임시 번역**이다. 확정되면 `src/strings.c`의 해당 줄만 바꾼다(seq 133 #9006).
@@ -378,6 +397,7 @@
 5. **맵 이름 팝업(#9461):** 팝업 모양·글꼴이 이식 전과 같은지. 숫자가 든 도로("29번 도로"), 긴 이름("사파리존 게이트", "블루시티동굴", "남쪽의 외딴섬"), 다층 던전(모다피의 탑·연결동굴 등: **층 표시가 나오지 않는 것이 정상**), 배틀프런티어·배틀 피라미드 팝업.
 6. **도감 분포 화면(#9765):** HGSS 도감 → 분포 화면(조토 지도, 관동 방문 뒤 관동/조토 지도), 위·아래로 낮/밤 전환 반복, 분포 화면 ↔ 울음소리/크기 화면 전환 뒤 복귀, 도감 종료. 지도·서식지 표시가 이식 전과 같아야 한다.
 7. **편지(#9762, 선택):** 가방에서 편지를 포켓몬에게 지니게 하기 → 읽기/회수, 편지를 지닌 포켓몬을 키우미집에 맡기고 찾기, PC 편지함에서 다시 지니게 하기.
+8. **3세대 배틀 UI 체력 상자(#9813, 선택):** 옵션에서 새 배틀 UI를 끈 상태(`newBattleUI` OFF)로 싱글·더블 배틀의 레벨·HP 숫자·HP%·이름 갱신, 사파리존 남은 볼 수 갱신이 이식 전과 같은지.
 
 ## 후속 행 메모
 
@@ -387,3 +407,4 @@
 - **seq 298 #10445:** `HandleMoveRelearnerInput`의 `gSpecialVar_MonBoxId = StorageGetCurrentBox();` 줄(박스 번호 줄)은 **이미 적용**(seq 134 커밋 `cf71e21e56`). 함수 앞의 중복 `gSpecialVar_MonBoxPos = sMonSummaryScreen->curMonIndex;` 삭제만 남는다.
 - **`U-mapheader-9461` 뒤 행(seq 358 #7975, 371 #9080, 374 #10167, 377 #10176, 462 #10159):** `global.fieldmap.h`의 `MapHeader`와 `tools/mapjson/mapjson.cpp`는 upstream #9461과 같은 모양이다. `map_name_popup.c`의 HnS 차이 3곳(피라미드 조건, `FONT_NARROW`, `!IS_HNS` 백화점 가드)은 유지한다.
 - **HnS 맵에 `floor_number`를 넣을 때(별도 결정):** 층 표기 한글화(`MapNamePopupAppendFloorNum` HnS 분기)와 `Map names fit in popup`(`FONT_NARROWER` 80px) 테스트 한계를 같이 정한다. 생성 `header.inc`는 도구가 바뀌어도 자동 재생성되지 않으므로 `floor_number`를 넣은 맵은 `map.json` 수정으로 재생성된다.
+- **seq 273 #10349 → seq 275 #10392(`U-fillsprite-9973`):** seq 165 #9813 위에 upstream `f4748fcb02`·`be48038854`가 그대로 적용된다(사전 분석 스크래치 확인, 결과 `FillSpriteRect`가 1.17.0과 바이트 동일). 사파리 남은 볼 호출의 과다 칠하기가 그때 없어진다.
