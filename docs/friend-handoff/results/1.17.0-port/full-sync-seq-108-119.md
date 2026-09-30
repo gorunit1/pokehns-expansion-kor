@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 108~119
 
-진행 중: 마지막 완료 seq 110, 다음 seq 111.
+진행 중: 마지막 완료 seq 111, 다음 seq 112.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md), 메시지 출력 기록: [`BATTLE_MESSAGE_OUTPUT_CHANGES.md`](../../../localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md)
 시작 HEAD: `10077a5d70` (작업 트리 clean)
@@ -12,6 +12,7 @@
 | 108 | #9537 (+#9668) | 적용(HnS 적응) | `70eb6a4271` | 0 B (SHA1 동일) | `OBJ_EVENT_GFX_*` 명시 값 유지·이름만 변경, FRLG 맵 2개 수동 hunk, `spritesheet_rules.mk` 규칙 3개 이름(#9668 동등, 오타 제외) |
 | 109 | #9241 | 적용(HnS 적응) | `ec9dca2712` | +32 B | `#if IS_HNS` 그래픽을 새 구조체 표 HnS판으로 옮김, (class, 그래픽) 쌍·세이브 값 불변 |
 | 110 | #9595 | 이미 적용 | 없음(`5121b83c94`) | 0 | seq 83 unit에서 적용 |
+| 111 | #9610 | 적용(HnS 적응) | `47cd51facf` | +112 B | `AccuracyCheck` #9929 분기 유지, 한글 2문장 토큰만 교체(`{B_BUFF1}`→`{B_LAST_ITEM}`), 폴터가이스트+대타출동 문장 미출력(upstream대로, 출력 변화 문서 1행) |
 
 ## 공통 사항
 
@@ -87,3 +88,44 @@
 - 커밋: 없음. 적용 커밋 `5121b83c94`(seq 83 #8497 unit에서 선반영, 진행 기록 `838acd9430`)
 - 근거: upstream `c1e0532fe2`는 `Cmd_waitforvisualfinish`의 `UnloadAllSpritePalettes()` 호출과 주석 9줄 삭제다. 현재 `src/battle_anim.c` 997행 `Cmd_waitforvisualfinish`에 그 호출이 없다(남은 `UnloadAllSpritePalettes`는 정적 함수 정의와 다른 함수의 호출 1곳뿐, upstream 이후와 같음).
 - 실기 확인: seq 83 항목에 포함.
+
+## 동기화 단위: seq 111 #9610 `U-9610` Makes Poltergeist and Fling messages into a pre attack effect
+
+- 현재 판정: 적용(HnS 적응)
+- 커밋: `47cd51facf`
+- upstream 근거: `e16cc7a1f2`(11파일 +186/−40). 선행 #9176(seq 59, `2e93d86ed1`) 적용됨. #9929(seq 17, `2be66d7011`)가 같은 `AccuracyCheck` 분기를 이미 바꿔 두었다.
+- 수정 파일(12): `asm/macros/battle_script.inc`, `data/battle_scripts_1.s`, `include/battle_scripts.h`, `include/constants/battle.h`, `src/battle_message.c`, `src/battle_move_resolution.c`, `src/battle_script_commands.c`, `src/data/battle_move_effects.h`, `src/data/moves_info.h`, `test/battle/move_effect/fling.c`, `test/battle/move_effect/poltergeist.c`, `docs/localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md`
+- 적용 방법: 사전 분석 패치(`seq111-9610.patch`)를 `git apply`로 넣었다. 패치와 upstream의 `+`/`-` 줄 집합 차이는 아래 HnS 적응 두 곳(한글 2문장, `AccuracyCheck` 삼항식)뿐이다. `battle_scripts.h` 선언 위치와 `fling.c` 새 테스트 위치는 문맥만 다르다. 파일 모드 변경 없음.
+- HnS 적응:
+  - `AccuracyCheck`(`battle_script_commands.c`): HnS #9929 삼항식(`failInstr == BattleScript_ButItFailed ? BattleScript_TargetAvoidsAttackEnd : failInstr`)을 유지하고 앞에 upstream의 `EFFECT_FLING → BattleScript_FlingMissed` 분기를 두었다. 내던지기의 새 스크립트(`BattleScript_EffectHit`)의 실패 경로는 `MoveMissedPause`라 두 분기가 겹치지 않는다. upstream은 master→upcoming 병합에서 #9929 분기를 잃었고 1.17.0에서는 #9939가 이 함수를 캔슬러로 옮긴다(그때 다시 합친다).
+  - `battle_scripts.h`: `FlingMissed`·`FlingMessage` 선언을 #9929의 `BattleScript_TargetAvoidsAttackEnd` 줄 뒤에 넣었다.
+  - `fling.c`: HnS 파일 끝의 #9782 테스트 2개(멘탈허브·하양허브) 때문에 새 테스트 3개를 1.17.0과 같은 위치(Booster Energy 테스트 뒤)에 넣었다.
+  - 한글 2문장(토큰만, 본문 바이트 동일):
+
+    | STRINGID | 이전 | 이후 |
+    |---|---|---|
+    | `STRINGID_PKMNFLUNG` | `{B_ATK_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n{B_LAST_ITEM}{B_TXT_EULREUL} 내던졌다!` | `{B_EFF_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n{B_LAST_ITEM}{B_TXT_EULREUL} 내던졌다!` |
+    | `STRINGID_ABOUTTOUSEPOLTERGEIST` | `{B_BUFF1}{B_TXT_IGA}\n{B_DEF_NAME_WITH_PREFIX}에게 덤벼들었다!` | `{B_LAST_ITEM}{B_TXT_IGA}\n{B_EFF_NAME_WITH_PREFIX}에게 덤벼들었다!` |
+
+    `{B_BUFF1}` 교체는 필수다. upstream이 `BS_SetPoltergeistMessage`(`PREPARE_ITEM_BUFFER(gBattleTextBuff1, 대상 도구)`)를 지우므로 그대로 두면 이전 메시지의 버퍼 내용이 도구명 자리에 나온다. 가리키는 값은 같다: 내던지기 이름은 `gEffectBattler` = 공격자(자기 대상 효과), 도구는 `SetMoveEffect`가 설정하는 `gLastUsedItem`(공격자 도구). 폴터가이스트 도구는 `gLastUsedItem`(대상 도구, 옛 `gBattleTextBuff1`과 같은 `CopyItemName` 결과), 대상은 `gEffectBattler` = `gBattlerTarget`(`TARGET_SELECTED`). 조사 토큰은 직전 두 바이트로 정해지므로 같다.
+- 제외한 hunk: 없음.
+- 검증:
+  - `git diff --check` 통과.
+  - **STRINGID→바이트 대응**(`w-111-117-119/stringid_table.sh`·`stringid_bytes.py`, 이식 전 표는 사전 분석 표와 바이트 동일): 728행, removed 0, added 0, 바이트 변경 2(아래 토큰 바이트만), 순번 이동 0, UNSET/REF 13개 같음.
+    ```
+    STRINGID_PKMNFLUNG             FD 0F → FD 11 (ATK_NAME_WITH_PREFIX → EFF_NAME_WITH_PREFIX), 나머지 18바이트 같음
+    STRINGID_ABOUTTOUSEPOLTERGEIST FD 00 → FD 16 (BUFF1 → LAST_ITEM), FD 10 → FD 11 (DEF → EFF), 나머지 같음
+    ```
+    문장 길이가 같아 창 너비도 같다.
+  - 빌드: 종료 코드 0, **ROM 32,716,228 B(+112 B) / EWRAM 248,924 B(0) / IWRAM 25,516 B(0)**, 새 경고 0.
+  - 한글이 든 소스 줄 변경: `src/battle_message.c` 2쌍(위 표)뿐. docs 밖 비ASCII 변경 줄도 이 4줄뿐.
+- 테스트(이식 후 파일별 실행 25개, 이식 전은 seq 107 전체 실행의 확장 목록과 이름 대조): 이식 후 427건 중 419건이 이식 전 목록과 이름이 같고 **상태 변화 0**, 새 이름 8건, PASS 손실 0.
+  - 파일: `move_effect/fling.c`(PASS 8 / FAIL 16), `poltergeist.c`(PASS 3 / FAIL 2, 옛 TO_DO 1 삭제), `move_effect_secondary/break_screens.c`·`steal_stats.c`, `move_effect/beat_up.c`·`raging_bull.c`·`embargo.c`, `status1/paralysis.c`, `hold_effect/blunder_policy.c`·`restore_pp.c`, `ability/cheek_pouch.c`·`corrosion.c`·`harvest.c`·`magician.c`·`pickup.c`·`symbiosis.c`·`unburden.c`·`keen_eye.c`·`clear_body.c`·`big_pecks.c`·`hyper_cutter.c`·`sheer_force.c`, `sleep_clause.c`, `gimmick/dynamax.c`, `test/text.c`.
+  - 새 테스트: PASS 5(`Fling doesn't reveal … failed to use / missed`, `Poltergeist doesn't reveal … missed / immune / fails to use`), FAIL 3(`Fling reveals the user's item before dealing damage`, `Poltergeist reveals the target's item before dealing damage`, `Poltergeist fails if the target isn't holding an item 1/2`). FAIL 3건의 사유는 모두 `Unmatched MESSAGE`(영문 기대값, 알려진 한계)다. 사전 분석 예측과 같다.
+- **출력 변화(upstream 동작 그대로):**
+  1. 폴터가이스트가 대타출동 상태의 대상에게 쓰일 때(공격자 특성이 틈새포착이 아닐 때) 도구 공개 문장이 나오지 않는다. 새 경로 `setpreattackadditionaleffect` → `SetMoveEffect()`에서 `DoesSubstituteBlockMoveEffectOnTarget()`이 효과를 막는다. upstream 1.17.0도 예외가 없다. → `BATTLE_MESSAGE_OUTPUT_CHANGES.md` "기술·필드 상태 효과" 표에 1행 추가(이 커밋).
+  2. 내던지기 대기 프레임(결과 문서에만 기록, 문자열 선택 변화가 아니라 출력 변화 문서 범위 밖): 이전 `pause B_WAIT_TIME_SHORT`(32프레임) → 문장 → `waitmessage B_WAIT_TIME_SHORT`(32). 이후 문장 → `waitmessage B_WAIT_TIME_LONG`(64). 총 대기는 같고 문장 앞 멈춤이 문장 뒤로 옮겨졌다.
+  3. 공격 전 효과 전체에 `!IsAnyTargetAffected()` 조건이 붙는다. HnS의 기존 공격 전 효과 기술(깨뜨리다·사이코팽·레이징불, 섀도스틸, 집단구타)은 단일 대상이고 면역·방어·빗나감이 먼저 처리되므로 출력 변화는 예상되지 않는다(관련 테스트 전후 같음).
+  4. 행동 불가·빗나감·면역일 때 문장이 나오지 않는 것, 부자유친 2회 공격 폴터가이스트에서 두 번 출력되는 것은 이전과 같다.
+- 남은 위험: 낮음. #9657·#10220·#9939가 이 경로(공격 전 효과·명중 판정)를 캔슬러로 옮길 때 `MOVE_EFFECT_ITEM_MESSAGE`와 두 한글 문장의 토큰은 이번 결과를 기준으로 유지한다. `AccuracyCheck`의 #9929 분기를 upstream 원문으로 덮지 않는다.
+- 실기 확인: 필요(아래 "실기 확인 항목" 2).
