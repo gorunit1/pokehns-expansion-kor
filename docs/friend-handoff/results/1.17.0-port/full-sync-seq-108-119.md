@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 108~119
 
-진행 중: 마지막 완료 seq 116, 다음 seq 117.
+진행 중: 마지막 완료 seq 117, 다음 seq 118.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md), 메시지 출력 기록: [`BATTLE_MESSAGE_OUTPUT_CHANGES.md`](../../../localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md)
 시작 HEAD: `10077a5d70` (작업 트리 clean)
@@ -19,6 +19,7 @@
 | 115 | #9494 | 적용(HnS 적응) | `3f7f0ddabf` | +352 B (EWRAM +16 B) | 교체 대기열. HnS 아이템 팝업·Champions 상성·#9790/#9946/#9818 형태 보존, `NeutralizingGasExits` sBATTLER 저장·복원, **원시 날씨 해제 2줄 유지(`@ HnS:`)**, 드래곤애로 허탕보험 테스트 `KNOWN_FAILING`(upstream 병합과 같음), 출력 변화 문서 3행 |
 | (176) | #9864 | 적용(같은 unit, 선반영) | `489c58259c` | +32 B | upstream 그대로(`reshow_battle_screen.c` 2줄). seq 176 도달 시 "이미 적용" |
 | 116 | #9557 | 적용(HnS 적응, 변형 B) | `4440c18163` | +2,416 B | 미리보기 그림·표를 `#if MPS_ENABLE_MAP_PREVIEWS`로 감쌈(`// HnS:`), `MAPSEC_ROCKET_HIDEOUT_HNS` 보존, BG 팔레트 13 날씨 색 변환 해제는 upstream대로, docs 제외 |
+| 117 | #9578 | 부분 적용(HnS 적응) | `3960fc0c8e` | −64 B | `BattleScript_ShedSkinActivates` hunk 제외, 미사용 스크립트·`STRINGID_PKMNSXCUREDYPROBLEM`(한글 1줄) 삭제, `STRINGID_PKMNPREVENTSROMANCEWITH` 유지 |
 
 ## 공통 사항
 
@@ -263,3 +264,19 @@
 - 남은 위험: 낮음(동작 변화는 팔레트 13 한 줄). FRLG 빌드는 이식 전부터 `MAPSEC_ROCKET_HIDEOUT_HNS` 때문에 실패한다(이 PR 범위 밖 기존 HnS 수정, 기록만).
 - 후속: seq 366 #10080(`map_preview_screen.h` 비트필드, `map_preview_screen.c` 4곳)은 변형 B 위에 적용 가능(사전 분석 확인). seq 378 #10162(`enum MapPreviewScreenType`)는 `#else` 표와 충돌 없음. seq 500 #9881(INCGFX) 때 가드 안의 `INCBIN_U8` 63줄을 `INCGFX_U8`로 옮긴다(upstream INCGFX 커밋의 hunk는 #9557 이전 문맥).
 - 실기 확인: 필요(아래 "실기 확인 항목" 6).
+
+## 동기화 단위: seq 117 #9578 `U-9578` identified deprecated values
+
+- 현재 판정: 부분 적용(HnS 적응)
+- 커밋: `3960fc0c8e`
+- upstream 근거: `f13b73ee6d`(5파일 +1/−12)
+- 수정 파일(5): `data/battle_scripts_1.s`(`BattleScript_ObliviousPreventsAttraction` 삭제), `include/battle_scripts.h`, `include/constants/battle_string_ids.h`, `src/battle_message.c`, `test/text.c`. 사전 분석 패치(`seq117-9578.patch`) 그대로.
+- 제외한 hunk: `BattleScript_ShedSkinActivates`의 `printstring STRINGID_PKMNSXCUREDYPROBLEM` → `STRINGID_PKMNSXCUREDITSYPROBLEM`. HnS 탈피 스크립트는 이미 `printfromtable gStatusCureStringIds`로 치료한 상태별 문장을 출력한다(HnS 배틀 메시지 정책, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` "…촉촉한몸·탈피" 행). upstream 문맥 줄이 HnS에 없고, 넣으면 HnS 정책을 되돌린다.
+- **group plan 표기 정정:** `g5_general_cleanup_docs_plan.tsv`·`.md`의 "BattleScript_HealerActivates hunk는 제외"는 git hunk 머리글(`@@ -6134,7 +6134,7 @@ BattleScript_HealerActivates::`)의 함수 문맥 표시를 잘못 읽은 것이다. upstream #9578은 치유의마음 스크립트를 바꾸지 않는다. 실제로 제외한 hunk는 바로 아래 `BattleScript_ShedSkinActivates`다. HnS `BattleScript_HealerActivates`(`STRINGID_HEALERCURE`)는 그대로다.
+- 보존: `STRINGID_PKMNPREVENTSROMANCEWITH`는 `battle_arena.c`와 문자열 표에서 쓰이므로 남겼다(upstream도 남김).
+- 삭제한 한글 문장(1줄, 사용처 없음): `[STRINGID_PKMNSXCUREDYPROBLEM] = COMPOUND_STRING("{B_SCR_NAME_WITH_PREFIX}{B_TXT_EUNNEUN} {B_SCR_ABILITY} 때문에\n{B_BUFF1}상태가 나았다!")`
+- 검증:
+  - `git diff --check` 통과. 빌드: 종료 코드 0, **ROM 32,718,900 B(−64 B) / EWRAM 248,940 B / IWRAM 25,516 B**, 새 경고 0.
+  - STRINGID→바이트 대응(#9610 뒤 표와 비교): removed 1(`STRINGID_PKMNSXCUREDYPROBLEM`, 순번 292), added 0, 바이트 변경 0, `STRINGID_ITSUCKEDLIQUIDOOZE`부터 435개 순번 −1. `enum StringID`에 명시 값이 없고 문자열 표는 지정 초기화, 숫자 `printstring`은 매크로 기본값 `printstring 0`뿐(#9494가 `0x3`을 `STRINGID_SWITCHINMON`으로 바꿈), 세이브·녹화에 저장 안 함 → 영향 없음.
+  - 테스트(`test/text.c`, `ability/oblivious.c`·`shed_skin.c`·`hydration.c`·`healer.c`): 이식 전과 상태 변화 0.
+- 출력 변화: 없음(삭제 대상 모두 미사용). 실기 확인: 필요 없음.
