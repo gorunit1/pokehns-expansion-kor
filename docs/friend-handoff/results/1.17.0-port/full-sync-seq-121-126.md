@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 121~126
 
-진행 중: 마지막 완료 seq 124, 다음 seq 125 (#9616)
+진행 중: 마지막 완료 seq 126, 다음은 구간 끝 전체 테스트·요약
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md), 메시지 출력 기록: [`BATTLE_MESSAGE_OUTPUT_CHANGES.md`](../../../localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md)
 시작 HEAD: `5afec6304c` (작업 트리 clean. `aa175914e9`(seq 120 코드) 뒤로는 docs만 바뀜)
@@ -120,3 +120,48 @@
 - 테스트: `test/text.c` → 37줄(PASS 11)이 seq 120 기준 목록의 같은 줄과 **모두 같다**. **`Move descriptions fit on Pokemon Summary Screen: PASS` 유지.** `Move names fit …` 5개 FAIL(한글 이름 폭)은 이식 전과 같다.
 - 남은 위험: 없음(바이트 동일 증명). 설명 문자열이 여러 기술 사이에서 같은 주소를 공유하지만 모두 읽기 전용이다.
 - 실기 확인: 불필요(바이트 동일). 원하면 요약 화면에서 메가드레인·파괴광선·기습 설명을 한 번 본다.
+
+## 동기화 단위: seq 125 #9616 `U-9616` Gen 5+ Uproar with config
+
+- 현재 판정: 적용(HnS 적응, **메인 결정 A안**)
+- 커밋: `673240f6ae`
+- upstream 근거: `fdea5d56ee`(15파일 +163/−32), 부모 `813e1c66c0`. 관련 선행 #7714(`2f22780c17`)·#9685(`699315a1ec`)는 HnS에 있음.
+- 수정 파일(17): `asm/macros/battle_script.inc`, `data/battle_scripts_1.s`, `include/config/battle.h`, `include/constants/battle_move_effects.h`, `include/constants/config_changes.h`, `src/battle_end_turn.c`, `src/battle_message.c`, `src/battle_move_resolution.c`, `src/battle_script_commands.c`, `src/battle_tv.c`, `src/data/battle_move_effects.h`, `src/data/moves_info.h`, `test/battle/ability/parental_bond.c`, `test/battle/move_effect/uproar.c`, `test/battle/move_effect_secondary/throat_chop.c`, `test/battle/sleep_clause.c`, `docs/localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md`
+- 적용 방법: 사전 분석 patch(`seq125-9616.patch`, md5 `0e6bb849…`, A안)를 모드 표기만 지워 `git apply`했다. `moves_info.h` hunk만 seq 124 때문에 오프셋 −85로 들어갔고 나머지는 그대로. 충돌 없음.
+- 내용(upstream):
+  - 새 config `B_UPROAR`. `GEN_5` 이상이면 소란 첫 턴 기술 직후 새 `BS_TryWakeBattlersUproar`(`trywakebattlersuproar`)가 잠든 배틀러를 모두 깨우고, 행동 전·턴 종료 기상을 끈다.
+  - 지옥찌르기 타이머가 남은 배틀러의 소란을 그 턴 끝에 끝낸다(`HandleEndTurnVarious`, config 무관).
+  - `EFFECT_UPROAR` 삭제(소란피기는 `EFFECT_HIT` + self `MOVE_EFFECT_UPROAR`). 배틀 TV 점수는 `battle_tv.c`의 `MOVE_EFFECT_UPROAR` +3으로 보전(1+3 = 이전 4).
+  - `BattleScript_TargetWokeUp`의 아이콘 대상 `BS_TARGET` → `BS_EFFECT_BATTLER`, `B_UPROAR_IGNORE_SOUNDPROOF`를 `GetConfig`로 읽음, `config_changes.h` 표 정리(`B_COUNTER_*` 2개 이동 포함).
+  - 테스트: `uproar.c` 재작성(4개), `throat_chop.c` 1개 추가, `sleep_clause.c` 1개 수정.
+- **HnS 적응(A안):**
+  - **`B_UPROAR = GEN_4`**(`// HnS:` 주석). `B_UPROAR`는 세 곳에서 `GEN_5`와 대소 비교만 하므로 소란 기상 규칙(행동 전 `소란스러워서 눈을 떴다!`, 턴 종료 기상)과 문구가 이식 전과 같고 첫 턴 전원 기상은 없다. upstream 기본은 `GEN_LATEST`.
+  - **턴 종료 방음 줄 HnS 유지(`// HnS:`):** `hasSoundproof = GetBattlerAbility(gEffectBattler) == ABILITY_SOUNDPROOF`. upstream 줄(`GetConfig(B_UPROAR_IGNORE_SOUNDPROOF) < GEN_5 && …`)을 그대로 넣으면 HnS의 `B_UPROAR_IGNORE_SOUNDPROOF = GEN_LATEST` 때문에 턴 종료에 방음 포켓몬도 깨게 된다.
+  - **지옥찌르기 소란 종료 hunk 이식**(출력 변화, 아래).
+  - `STRINGID_TARGETWOKEUP` 토큰 교체 `{B_DEF_NAME_WITH_PREFIX}` → `{B_EFF_NAME_WITH_PREFIX}`(한글 본문·조사 그대로). 이 문장은 `BattleScript_TargetWokeUp` 한 곳에서만 나오고, 기존 경로는 잠깨움뺨치기의 `MOVE_EFFECT_REMOVE_STATUS` 수면 분기(`battle_script_commands.c` `SetMoveEffect`) 하나뿐이다. 이 경로는 `gEffectBattler = effectBattler = gBattlerTarget`으로 두고 출력까지 둘을 바꾸지 않으므로 **표시되는 배틀러가 모든 기존 경로에서 같다**(사전 분석 5절 증명, 적용 뒤 사용처 2곳 — 기존 경로와 새 `BS_TryWakeBattlersUproar` — 재확인). 새 경로(`B_UPROAR >= GEN_5`, 테스트에서만 도달)는 EFF여야 올바르다.
+  - `asm/macros/battle_script.inc`의 새 매크로와 `battle_script_commands.c`의 새 함수는 HnS 전용 `showitempopup`/`destroyitempopup`, `BS_ShowItemPopup`/`BS_DestroyItemPopup` 뒤(파일 끝)에 붙였다. `B_ABSORB_MESSAGE` 주석의 "No" → "no"는 upstream과 같게.
+  - **`test/battle/ability/parental_bond.c`** "Parental Bond does not trigger on Uproar"의 `ASSUME`을 1.17.0형 `MoveHasAdditionalEffectSelf(MOVE_UPROAR, MOVE_EFFECT_UPROAR)`로 바꿨다(HnS에 먼저 들어온 #9685 테스트, 바꾸지 않으면 `EFFECT_UPROAR` 삭제로 `make check` 컴파일 실패).
+  - **넣지 않은 것:** `STRINGID_PKMNWOKEUPINUPROAR`의 `{B_ATK_NAME_WITH_PREFIX}` → `{B_EFF_NAME_WITH_PREFIX}`(사전 분석 별건 1). 친구 결정 대기(아래 "결정 대기"). 한글 줄은 `STRINGID_TARGETWOKEUP` 1줄만 바뀌었다.
+- 제외한 hunk: 없음(upstream hunk 전부 반영, 턴 종료 방음 줄만 HnS식).
+- 출력 변화(`BATTLE_MESSAGE_OUTPUT_CHANGES.md` "기술·필드 상태 효과"에 1행 추가): 소란피기 중인 포켓몬이 지옥찌르기를 맞으면, 이전에는 그 턴 끝 `소란피우고 있다!` → 다음 턴 강제 소란피기가 `지옥찌르기 효과로 기술을 쓸 수 없다!` 뒤 문구 없이 끝났다. 이제 맞은 턴 끝에 `STRINGID_PKMNCALMEDDOWN`(`…은(는)\n얌전해졌다`)으로 끝나고 다음 턴 기술을 자유롭게 고른다(upstream 1.17.0과 같음). 문자열 ID·본문 변화 없음.
+- 검증:
+  - `git diff --check` 통과. `EFFECT_UPROAR`(`MOVE_EFFECT_UPROAR` 제외) 0곳. `git diff -U0 src/battle_message.c`는 `STRINGID_TARGETWOKEUP` 1쌍뿐. 비 ASCII `+`/`−` 줄은 이 1쌍과 테스트 이름 3줄(`Pokémon`)뿐.
+  - 빌드(`build/port.log`): 종료 코드 0, **ROM 32,722,852 B(97.52%, +240 B) / EWRAM 248,944 B(0) / IWRAM 25,516 B(0)**. 사전 분석 추정 약 +0.3~0.5 KB(링크 전). `pokehns.gba` SHA1 `197afe076fa94dccc2579157efc696d93ca3a63b`. 새 경고 0(배틀 헤더 변경으로 경고 163줄이 나왔지만 모두 기준 목록의 기존 경고).
+- 테스트(지정 5파일: `move_effect/uproar.c`, `move_effect_secondary/throat_chop.c`, `sleep_clause.c`, `ability/parental_bond.c`, `move_effect_secondary/remove_status.c`):
+  - 94줄(PASS 15). 이름이 seq 120 기준에 있는 89줄(PASS 13)은 **모두 같다.**
+  - **`Parental Bond does not trigger on Uproar: PASS` 유지.** `throat_chop.c` 기존 PASS 2건 유지.
+  - 새 줄 5개: `Uproar status prevents any battler from falling asleep`(GEN_4/GEN_5 PARAMETRIZE) **PASS**, `Uproar doesn't wake up other pokemon on field after first turn (Gen 5+)` **PASS**, `Uproar status causes … before they move except those with Soundproof (Gen 3-4)` FAIL, `… immediately after damage is dealt on the first turn (Gen 5+)` FAIL, `Throat Chop usage causes Uproar to end at the end of the turn` FAIL. FAIL 3건은 모두 `Unmatched MESSAGE`(영문 기대값, 알려진 한계).
+  - 사라진 이름 2개(`Uproar status causes sleeping Pokémon to wake up during an attack (2/2)`, `Uproar wakes up other pokemon on field`)는 upstream이 재작성한 옛 테스트이고 seq 120 기준에서 FAIL이었다(회귀 아님).
+  - `sleep_clause.c` "…woken up forcefully by Uproar"(이제 `WITH_CONFIG(B_UPROAR, GEN_5)`)는 FAIL 유지, 단독 실행으로 사유가 `Unmatched MESSAGE`뿐임을 확인. `remove_status.c`의 잠깨움뺨치기 FAIL 2건도 토큰 교체 뒤 사유가 `Unmatched MESSAGE`뿐.
+  - 그 밖의 FAIL 사유: `Unmatched MESSAGE`와, MESSAGE 불일치로 생기는 `PASSES_RANDOMLY`의 `observed 0.0`(`parental_bond.c` 연속기 4건, `sleep_clause.c` 포자·탈피·치유의마음 10건). 모두 상태가 seq 120과 같다.
+- 남은 위험:
+  - 낮음: A안이라 1.17.0 기본 동작(5세대 이후 소란)과 config 값이 다르다. seq 475.5 #10151(deps에 #9616)에서 다시 본다.
+  - 기존 버그(이번에 고치지 않음): 턴 종료 소란 기상의 `BtlController_EmitSetMonData(gEffectBattler, …, &gBattleMons[gBattlerAttacker].status1)`가 깬 포켓몬 파티 데이터에 소란 사용자의 status1을 보낸다(upstream 1.17.0에도 있음). 기록만 한다.
+- 실기 확인: 필요(아래 "실기 확인 항목" 4).
+
+## 동기화 단위: seq 126 #9668 `U-frlggfx-9537` Fix spritesheet_rules.mk for renamed FRLG objects
+
+- 현재 판정: 이미 적용(HnS 동등)
+- 커밋: 없음. seq 108 커밋 `70eb6a4271`(#9537)에 포함됐다.
+- upstream 근거: `ca828643b7`(`spritesheet_rules.mk` 3줄)
+- 근거: 현재 `spritesheet_rules.mk`에 `crush_girl.4bpp`(897행), `black_belt_frlg.4bpp`(909행), `poke_maniac_frlg.4bpp`(1113행) 규칙이 있다. upstream의 오타 `poke_manic_frlg`는 넣지 않았다(HnS는 올바른 이름을 씀, `full-sync-seq-108-119.md` seq 108 항목). 코드 변경 없음.
