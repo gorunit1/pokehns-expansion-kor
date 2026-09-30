@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 121~126
 
-진행 중: 마지막 완료 seq 123, 다음 seq 124 (#9667)
+진행 중: 마지막 완료 seq 124, 다음 seq 125 (#9616)
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md), 메시지 출력 기록: [`BATTLE_MESSAGE_OUTPUT_CHANGES.md`](../../../localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md)
 시작 HEAD: `5afec6304c` (작업 트리 clean. `aa175914e9`(seq 120 코드) 뒤로는 docs만 바뀜)
@@ -99,3 +99,24 @@
   - 낮음: `rom_header_gf.c`의 `gDecorations` 포인터가 40 B 간격 구조체를 가리킨다(upstream 1.17.0과 같음, HnS는 GF 헤더 연동을 쓰지 않음).
   - 문서: `NON_NPC_TEXT_AUDIT.md` 24행의 `src/data/decoration/{header,description}.h` 표기는 이제 `header.h` 하나다. 문서 수정은 메인 판단에 맡긴다. 번역할 때는 `header.h`의 인라인 `COMPOUND_STRING`을 바로 한글로 바꾸면 된다.
 - 실기 확인: 필요(아래 "실기 확인 항목" 3).
+
+## 동기화 단위: seq 124 #9667 `U-cstring-9086` Convert move description variables into COMPOUND_STRINGs
+
+- 현재 판정: 적용(HnS 적응)
+- 커밋: `d77ed650ae`
+- upstream 근거: `49590a0709`(`src/data/moves_info.h` 1파일 +161/−150). 선행 #9086(`6c019cffe4`)·#9463(`db75d9c0e1`) 적용됨.
+- 수정 파일(1): `src/data/moves_info.h`
+- 적용 방법: 사전 분석 patch(`seq124-9667.patch`, md5 `e2e7b274…`, HnS 문구로 만든 50 hunk)를 모드 표기만 지워 `git apply`했다. 충돌 없음. upstream diff를 직접 적용하지 않았다(문맥의 기술 이름이 한글이고, 13개 hunk가 upstream 문구를 넣음).
+- 내용: 공용 설명 변수 22개와 미사용 `sNullDescription`(및 `sHyperBeamDescription`의 `#else` 판) 정의를 지우고, 사용처 48곳을 `.description = COMPOUND_STRING(...)`으로 인라인했다(파괴광선·기가임팩트·암석포는 `#if B_SKIP_RECHARGE`를 인자 안에 둠). `gNotDoneYetDescription`은 upstream처럼 남겼다. Crunch의 `additionalEffects` `#if` 블록을 삼항식으로 줄이는 정리 hunk도 넣었다(컴파일 시점 상수, 데이터 동일).
+- **HnS 적응(upstream과 다른 점):** HnS 원작자 커밋 `384dcb99b8`("Tm desc fixes")가 바꾼 문구 6개를 한 글자도 바꾸지 않고 인라인했다.
+  - `"Attack that absorbs\n"`(메가드레인·드레인펀치·우드혼), `"Attack that moves last\n"`(리벤지·눈사태), `"Attack that leaves the\n"`(칼등치기·적당히손봐주기), `"Attack that absorbs over\n"`(드레인키스·데스윙), `"is preparing Attack."`(기습·질풍신뢰), `"Attack that hits foes\n"`(페인트·파워풀에지). upstream은 모두 `"An attack …"`/`"… an attack."`이다.
+  - 확인: 이 6개 문구를 upstream 문구로 치환하면 커밋의 `+`/`−` 311줄이 upstream diff와 정렬 비교로 **같다**.
+- 제외한 hunk: 없음.
+- 검증:
+  - `git diff --check` 통과. 비 ASCII가 든 `+`/`−` 줄 0(한글 기술 이름은 문맥 줄에만 있음). 남은 `s…Description` 변수 0(`gNotDoneYetDescription`만 남음).
+  - 이식 전 ELF 보관: seq 123 빌드의 `pokehns.elf`(SHA1 `04c7dea8…`)를 저장소 밖 `/home/hjm0725/hns-sync-work/chunk-121-126/tmp-124/pre124.elf`로 복사했다.
+  - **`tmp-124/verify_move_text.py cmp pre124.elf pokehns.elf` → `RESULT: OK (0 differences)`** (종료 코드 0). `sizeof=68 moves=935` 전후 같음, 기술 935개의 이름·설명 바이트가 모두 같다. 설명 포인터 932개가 바뀌고 고유 설명 주소가 886 → 883으로 줄었다(메가드레인 문구 = 흡수·비터블레이드, 파괴광선 문구 = 블래스트번 등, 인파이트 문구 = 아머캐논과 병합).
+  - 빌드(`build/port.log`): 종료 코드 0, **ROM 32,722,612 B(97.52%, −176 B) / EWRAM 248,944 B(0) / IWRAM 25,516 B(0)**. 사전 분석 추정 약 −160 B(−175 ~ −155 B, compound 섹션 끝 정렬에 따라 달라짐). `pokehns.gba` SHA1 `faa0aa8aab3dd07dacc4aa87b4732b7284d61c8d`. 경고 0줄(새 경고 0).
+- 테스트: `test/text.c` → 37줄(PASS 11)이 seq 120 기준 목록의 같은 줄과 **모두 같다**. **`Move descriptions fit on Pokemon Summary Screen: PASS` 유지.** `Move names fit …` 5개 FAIL(한글 이름 폭)은 이식 전과 같다.
+- 남은 위험: 없음(바이트 동일 증명). 설명 문자열이 여러 기술 사이에서 같은 주소를 공유하지만 모두 읽기 전용이다.
+- 실기 확인: 불필요(바이트 동일). 원하면 요약 화면에서 메가드레인·파괴광선·기습 설명을 한 번 본다.
