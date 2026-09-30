@@ -2,6 +2,34 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-09-30 — full-sync port seq 121~126 (데스크탑)
+
+- 진행: 병렬 사전 분석 5개 → 적용 1개 → 병렬 리뷰 3개(전부 문제 없음).
+- 커밋
+  - #9594+#9796 `0e6b9c22ec`
+  - #9425 `2397ef4e08`
+  - #9624 `5fa2bc3746`
+  - #9667 `d77ed650ae`
+  - #9616 `673240f6ae`
+  - #9668: 이미 적용
+  - 결과 문서: `12f07d0a29`
+- HnS 적응
+  - 얼루기 점 y=25를 유지했다.
+  - `pokemart 0` assert 위치를 조정했다.
+  - 기술 설명 HnS 문구 6개를 유지했다.
+  - `B_UPROAR = GEN_4`로 두고 턴 끝 방음 HnS 줄을 유지했다.
+  - `STRINGID_PKMNWOKEUPINUPROAR` ATK→EFF는 결정 대기(D7)로 두고 적용하지 않았다.
+- 출력 변화: 지옥찌르기로 소란이 끝나는 동작(upstream). `BATTLE_MESSAGE_OUTPUT_CHANGES.md`에 1행을 추가했다.
+- 검증
+  - 장식 `verify.sh` OK
+  - 기술 문자열 `cmp` 0 differences
+  - 얼루기 네이티브 비교 그림 차이 0
+  - 메인: 한글 줄은 `TARGETWOKEUP` 토큰 1쌍뿐, config는 `B_UPROAR` 추가(`B_ABSORB_MESSAGE`는 주석만), 모드 변경 0
+  - 빌드: ROM 32,722,852 B, EWRAM 248,944 B, IWRAM 25,516 B, SHA1 `197afe076fa94dccc2579157efc696d93ca3a63b`
+  - 테스트: 사라진 PASS 0. 기준 목록은 `test-baseline-seq126.txt`다.
+- 문서: `NON_NPC_TEXT_AUDIT.md`의 옛 경로 2개를 고쳤다. `HANDBACK_2026-09-30.md`에 D7을 추가하고 10절을 새로 썼다.
+- 다음 시작점: **seq 127 (#9655)**. D1~D7 답을 받은 뒤, seq 127 직전 HEAD 기준으로 다시 분석해서 진행한다.
+
 ### 2026-09-30 — full-sync port seq 120 (#9657), #9655 한글 영향 사전 조사 (데스크탑)
 
 - 시작: 노트북 세션의 `bf35dce76a`까지 pull했다(seq 108~119 완료). clean build ROM 32,718,964 B가 기록과 같았다. 이어서 `17aa03192f` 제안 문서를 커밋했다.

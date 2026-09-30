@@ -244,3 +244,26 @@
   - 바꾸면: 행동 전 경로(`gEffectBattler = cv->battlerAtk = gBattlerAttacker`)와 배틀팰리스 경로(`gEffectBattler = gBattlerAttacker`)는 같은 배틀러라 표시가 같고, 턴 종료 경로만 깬 포켓몬 이름으로 바로잡힌다. 한글 본문·조사는 그대로다.
   - 선택: (1) EFF로 교체(버그 수정, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 1행) / (2) 현재 유지.
 - 별건 2(기록만): 턴 종료 소란 기상의 `BtlController_EmitSetMonData(gEffectBattler, …, &gBattleMons[gBattlerAttacker].status1)`가 깬 포켓몬 파티 데이터에 소란 사용자의 status1을 보낸다. upstream 1.17.0에도 있는 기존 버그다.
+
+## 커밋 리뷰 (병렬 3개, 읽기 전용)
+
+| 커밋 | PR | 판정 | 요지 |
+|---|---|---|---|
+| `0e6b9c22ec` | #9594 + #9796 | 문제 없음 | 1.17.0과 동작이 다른 곳은 y=25 한 줄뿐이다. `!isEgg`를 유지했다. 도감·요약·배틀·박스·진화 등의 앞모습은 모두 `LoadSpecialPokePicIsEgg` 한 곳을 거친다. ROM의 점 이미지 128 B가 `.1bpp` 4개와 바이트 동일하다. 네이티브 비교를 다시 해 그림 차이 0, 버퍼 밖 쓰기 0이다. |
+| `2397ef4e08` | #9425 | 문제 없음 | `SetShopItemsForSale`의 호출처 5곳(NORMAL·장식 2·BP·Kurt)이 모두 안전하다. `pokemart 0` 3곳은 NULL이 아닌 배지 목록 뒤에서 assert를 통과한다. 목록 생성·해제는 NORMAL 마트에서 1:1이다. `gItemsInfo` 48 B 가정 코드나 세이브 영향은 없다. |
+| `5fa2bc3746` | #9624 | 문제 없음 | `header.h`가 1.17.0과 바이트 동일하다. HnS `#if IS_HNS` 추가분 9곳을 보존했다. `sDecorShapes` 10개가 지워진 switch 값과 같다. 비밀기지·방 꾸미기·PC 보관·TV·교환소·상점 경로가 모두 검증된 필드만 쓴다. |
+| `d77ed650ae` | #9667 | 문제 없음 | 검증기 방법이 타당하다(68 B 구조체, +0/+4 포인터). 전처리 결과로 935개 항목의 모든 필드를 따로 비교해 차이 0이다. HnS 문구 6개를 유지했고, 이를 upstream 문구로 바꾸면 upstream diff와 완전히 같다. 한글 `.name` 변경은 0이다. |
+| `673240f6ae` | #9616 | 문제 없음 | `GEN_4`에서 행동 전·턴 끝·교체 등장·배틀팰리스 네 경로의 기상 규칙과 문구가 이식 전과 같다. 턴 끝 방음 `// HnS:` 줄은 이전 식과 논리가 같다. 지옥찌르기 종료는 upstream·1.17.0 동작이며 출력 변화 문서 1행과 맞다. `TARGETWOKEUP` 토큰 교체 뒤에도 잠깨움뺨치기 표시가 같다. `PKMNWOKEUPINUPROAR`는 바뀌지 않았다. |
+
+참고(조치 없음):
+- 마트 점원 문장 3개를 나중에 한글로 번역하면 `Pokemart_DefaultItemList` 앞에 `.align 1`을 넣는다.
+- 장식 shape는 ROM 표에서만 오고 0~9 범위라, 표 조회가 범위를 벗어나지 않는다.
+- 소란 턴 끝 방음 줄에서 `GetBattlerAbility` 호출 횟수가 늘었지만 부수효과는 E-Reader 나무열매 이름뿐이다.
+
+메인 확인:
+- `git diff --check` 통과
+- 한글 줄 변경은 `TARGETWOKEUP` 토큰 1쌍뿐이다(본문 불변).
+- config: `B_UPROAR = GEN_4`를 추가했고, `B_ABSORB_MESSAGE`는 주석 대소문자만 바뀌었다(값 불변).
+- 파일 모드 변경은 없다.
+- 빌드: ROM 32,722,852 B, EWRAM 248,944 B, IWRAM 25,516 B, SHA1 `197afe076fa94dccc2579157efc696d93ca3a63b`
+- `docs/localization/NON_NPC_TEXT_AUDIT.md`의 옛 경로 2개(`mart_clerk`, 장식 `description.h`)를 새 경로로 고쳤다.

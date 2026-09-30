@@ -1,5 +1,11 @@
 # 현재 인수인계 상태
 
+## 2026-09-30 — full-sync port seq 121~126 완료 (현재)
+
+- **다음 시작 seq: 127 (#9655 배틀 메시지 리팩터, XL).** 시작 전에 D1~D7 결정이 필요하다(`docs/friend-handoff/HANDBACK_2026-09-30.md` 9절, 사전 조사 `docs/friend-handoff/results/1.17.0-port/pre-9655/REPORT.md`). 결정을 받으면 현재 HEAD 기준으로 dry-run과 분석을 다시 한다.
+- seq 121~126: #9594+#9796(얼루기 점, y=25 유지), #9425(상점, `pokemart 0` 적응), #9624(장식), #9667(기술 설명, HnS 문구 유지), #9616(소란 `GEN_4`), #9668(이미 적용). 병렬 리뷰 결과는 모두 문제 없음. seq 163 #9796은 이미 적용으로 처리한다.
+- 빌드: ROM 32,722,852 B(97.52%), EWRAM 248,944 B, IWRAM 25,516 B. 테스트는 사라진 PASS 0이고 기준 목록은 `test-baseline-seq126.txt`다.
+
 ## 2026-09-30 — full-sync port seq 120 (#9657) 완료 (현재)
 
 - **다음 시작 seq: 121.** 예정: seq 121~126(seq 126 #9668은 이미 적용) → **seq 127 #9655 배틀 메시지 리팩터. 시작 전에 D1~D6 결정이 필요하다**(`docs/friend-handoff/HANDBACK_2026-09-30.md` 9절, `docs/friend-handoff/results/1.17.0-port/pre-9655/REPORT.md`).
