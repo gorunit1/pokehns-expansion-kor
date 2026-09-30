@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 121~126
 
-진행 중: 마지막 완료 seq 121, 다음 seq 122 (#9425)
+진행 중: 마지막 완료 seq 122, 다음 seq 123 (#9624)
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md), 메시지 출력 기록: [`BATTLE_MESSAGE_OUTPUT_CHANGES.md`](../../../localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md)
 시작 HEAD: `5afec6304c` (작업 트리 clean. `aa175914e9`(seq 120 코드) 뒤로는 docs만 바뀜)
@@ -40,3 +40,32 @@
 - 테스트(사전 분석 지정 스모크, `OPPONENT(SPECIES_SPINDA)` 포함): `test/battle/ability/contrary.c`, `test/battle/ability/opportunist.c` → 24줄(PASS 12)이 seq 120 기준 목록의 같은 줄과 **모두 같다**. 실패 10건은 모두 `Unmatched MESSAGE`(알려진 한계), 크래시·assert 없음. 이 PR·#9796은 `test/**`를 바꾸지 않는다.
 - 남은 위험: 낮음. `GetSpotRow`의 `default: errorf`는 얼루기(SCALE_2 고정)로는 닿지 않는다. 링크 순서가 바뀌어 뒤쪽 주소가 이동하지만 세이브에 코드 주소를 저장하지 않는다.
 - 실기 확인: 필요(아래 "실기 확인 항목" 1).
+
+## 동기화 단위: seq 122 #9425 `U-shop-9425` feat (shopMenu): conditional item appearances
+
+- 현재 판정: 적용(HnS 적응)
+- 커밋: `2397ef4e08`
+- upstream 근거: `02943cb4fc`(11파일 +305/−2, docs 3파일 포함)
+- 수정 파일(8): `asm/macros/event.inc`, `data/event_scripts.s`, `data/text/mart_clerk.inc` → `data/scripts/mart_clerk.inc`(이름 변경 + 끝 10줄), `include/item.h`, `include/shop_criteria.h`(신규), `src/item.c`, `src/shop.c`, `src/shop_criteria.c`(신규)
+- 적용 방법: 사전 분석 patch(`seq122-9425.patch`, md5 `e9179255…`)를 모드 표기만 지워 `git apply`했다. 충돌 없음. `src/shop_criteria.c`·`include/shop_criteria.h`·`data/scripts/mart_clerk.inc`는 upstream `02943cb4fc`와 바이트 동일(옮긴 `mart_clerk.inc`는 기존 모드 100755 유지, 기존 10줄의 영문 3문장은 그대로).
+- 내용:
+  - `struct ItemInfo` 끝에 `ShopCriteriaFunc shopCriteriaFunc`를 추가하고, `GetItemShopCriteriaFunc`·`IsItemShopCriteriaFulfilled`를 `item.c`에 넣었다.
+  - 일반 마트(`MART_TYPE_NORMAL`) 구매 메뉴를 열 때 `TryBuildDynamicShopItemList`가 조건을 만족하는 품목만 힙 배열로 복사하고, 닫을 때 `TryFreeDynamicShopItemList`가 해제·복원한다.
+  - `pokemart` 매크로 기본 인자 `Pokemart_DefaultItemList`(7품목, `data/scripts/mart_clerk.inc` 끝).
+- **HnS 적응:**
+  - **`pokemart 0` NULL 분기 유지:** HnS `SetShopItemsForSale`은 `items == NULL`을 배지 수 기반 목록(`sShopInventories[badgeCount]`, PC 챌린지면 `sShopInventories_PC`)으로 쓴다. 체리그로브 마트(`CherrygroveCity_Mart_hns:39`)·도라지 마트(`VioletCity_Mart_hns:9`)·트레이너힐 입구(`TrainerHill_Entrance_hns:265`) 3곳이 쓴다. upstream assertf(`items != NULL`, 함수 첫머리)를 그대로 넣으면 이 3곳에서 크래시 화면이 뜬다. 그래서 assertf를 HnS가 목록을 정한 **뒤**에 두고 조건을 `sMartInfo.itemList != NULL`로 바꿨다(`// HnS:` 주석). HnS 빌드에서는 실패하지 않는다.
+  - `CB2_InitBuyMenu` case 0과 `BuyMenuFreeMemory`: HnS 나무열매 아이콘 줄 때문에 문맥이 달라 같은 의미 위치에 넣었다(Build는 `BuyMenuBuildListMenuTemplate()` 바로 앞, Free는 `RemoveBerryIcon()` 앞). Kurt·BP·장식 상점은 `MART_TYPE_NORMAL`이 아니라 Build/Free를 타지 않는다(정적 목록 `sKurtBallShopItems`·`sBPItemList`를 `Free`하지 않음).
+  - upstream의 `// Read items until ITEM_NONE / DECOR_NONE is reached` 주석은 HnS에 원래 없는 문맥 줄이라 넣지 않았다.
+- 제외한 hunk: `docs/SUMMARY.md`, `docs/tutorials/how_to_dynamic_shop.md`, `docs/tutorials/img/dynamic_shop/showcase.gif`(404 KB). #9557 선례, 게임과 무관.
+- 검증:
+  - `git diff --check` 통과. 한글이 든 줄 변경 0. 인자 없는 `pokemart` 호출 0곳이라 매크로 기본값이 기존 스크립트 바이트를 바꾸지 않는다.
+  - 빌드(`build/port.log`): 종료 코드 0, **ROM 32,723,508 B(97.52%, +4,080 B) / EWRAM 248,944 B(94.96%, +4 B) / IWRAM 25,516 B(0)**. 사전 분석 추정 약 +4.2 KB·EWRAM +4 B. 대부분 `gItemsInfo` 44 B → 48 B × 901(+3,604 B). `pokehns.gba` SHA1 `70ccae6b9731d125693f4652991348f9bcee4a9b`. 새 경고 0.
+  - `arm-none-eabi-nm -S`: `gItemsInfo` 크기 `0xa8f0`(48 × 901), `sDynamicShopItemListRef` 4 B(EWRAM `0x0203a570`), `Pokemart_DefaultItemList` `0x0832bfcc`(짝수, HnS에서는 쓰지 않음).
+  - ROM에서 `gItemsInfo` 901개 항목의 새 필드(오프셋 44)가 **모두 0**(`901 True`). 즉 조건 함수가 붙은 품목이 없어 동적 목록은 원래 목록과 같은 사본이고, 모든 상점의 판매 목록·순서·가격이 이식 전과 같다.
+- 테스트:
+  - 지정 파일 `test/bag.c`, `test/script.c`, `test/save.c` → 9줄(PASS 3)이 seq 120 기준 목록의 같은 줄과 **모두 같다**. FAIL 6은 기존 FAIL(가방 정렬 개수, 세이브 구조체 크기 기대값: HnS 세이브 구조가 upstream과 다름)이고 값도 이식 전과 같다(`SaveBlock1` 15760 등).
+  - L 단위라 전체도 돌렸다(`build/port-check-post122.log`, 4분 5초): 러너 요약 PASSED 2,321 / FAILED 2,243 / TOTAL 5,229로 seq 120과 같고, 표준 목록(5,160줄)이 `test-baseline-seq120.txt`와 **바이트 동일**.
+- 남은 위험:
+  - 낮음(upstream 잠재 버그, 1.17.1까지 그대로): `TryFreeDynamicShopItemList`는 목록 포인터만 되돌리고 `sMartInfo.itemCount`는 되돌리지 않는다. 걸러지는 품목이 생기면 같은 상점에서 두 번째 구매 메뉴가 원래 목록의 앞 N개만 검사한다. 지금 HnS에는 조건 함수가 없어 드러나지 않는다. HnS가 이 기능을 쓰기 전에 고쳐야 한다.
+  - 문서: `docs/localization/NON_NPC_TEXT_AUDIT.md` 17행의 `data/text/{…,mart_clerk,…}.inc` 경로가 옛 경로가 됐다. 문서 수정은 메인 판단에 맡긴다(이번에 고치지 않음).
+- 실기 확인: 필요(아래 "실기 확인 항목" 2).
