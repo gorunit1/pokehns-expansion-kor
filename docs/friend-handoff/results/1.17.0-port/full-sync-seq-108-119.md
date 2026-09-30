@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 108~119
 
-진행 중: 마지막 완료 seq 114, 다음 seq 115.
+진행 중: 마지막 완료 seq 115(+176), 다음 seq 116.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md), 메시지 출력 기록: [`BATTLE_MESSAGE_OUTPUT_CHANGES.md`](../../../localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md)
 시작 HEAD: `10077a5d70` (작업 트리 clean)
@@ -16,6 +16,8 @@
 | 112 | #9587 | 적용 | `2d86edca81` | +16 B | upstream 그대로. 교체 후보 시뮬레이션 등 캐시 속도 미반영 경계 사례는 upstream 1.17.0과 같은 동작 |
 | 113 | #9596 | 부분 적용(HnS 적응) | `f6ef307f76` | −112 B | `holdEffectParams` 캐시 제거·`ShouldTryOHKO` 기합의띠 판정만. 턴 순서 hunk는 seq 100에서 1.17.0 최종형으로 이미 대체 |
 | 114 | #9532 | 적용(HnS 적응) | `7e4f61c927` | +32 B | opcode `UNUSED_32/33`(0xfd/0xfe, upstream과 헤더·명령 표 바이트 동일), 방출 턴 연출 `animTurn = 1`(`// HnS:`), 2·3턴째 공격 문구 생략(출력 변화 문서 1행) |
+| 115 | #9494 | 적용(HnS 적응) | `3f7f0ddabf` | +352 B (EWRAM +16 B) | 교체 대기열. HnS 아이템 팝업·Champions 상성·#9790/#9946/#9818 형태 보존, `NeutralizingGasExits` sBATTLER 저장·복원, **원시 날씨 해제 2줄 유지(`@ HnS:`)**, 드래곤애로 허탕보험 테스트 `KNOWN_FAILING`(upstream 병합과 같음), 출력 변화 문서 3행 |
+| (176) | #9864 | 적용(같은 unit, 선반영) | `489c58259c` | +32 B | upstream 그대로(`reshow_battle_screen.c` 2줄). seq 176 도달 시 "이미 적용" |
 
 ## 공통 사항
 
@@ -194,3 +196,44 @@
 - **출력 변화(upstream 동작):** 2턴째(축적)·3턴째(방출)에 `…은(는)\n참기를 썼다!`(`sText_AttackerUsedX`)가 더 나오지 않는다(`CancelerAttackstring`이 `bideTurns` 중 건너뜀). 방출은 `…의\n참기가 풀렸다!` → 일반 공격 경로. 빗나감 경로가 `BattleScript_MoveMissed`에서 `MoveMissedPause`로 바뀌어 짧은 멈춤이 한 번 더 있다. 받은 피해 0이면 `…참기가 풀렸다!` → `그러나 실패하고 말았다!`. 설정 턴 이후 캔슬러(변환자재·리베로 등)는 설정 턴에 돌지 않는다. → `BATTLE_MESSAGE_OUTPUT_CHANGES.md` "기술·필드 상태 효과" 표에 1행 추가(이 커밋).
 - 남은 위험: 낮음~중간. 참기 축적 중인 포켓몬이 춤추기로 다른 기술을 따라 쓰면 그 기술의 공격 문구도 생략된다(upstream과 같음).
 - 실기 확인: 필요(아래 "실기 확인 항목" 4).
+
+## 동기화 단위: seq 115 #9494 `U-queuedswitch-9494` Adds queued switches for Move End switches (+ seq 176 #9864)
+
+- 현재 판정: 적용(HnS 적응). 같은 unit의 #9864(seq 176)는 바로 뒤 별도 커밋으로 넣었다. #9784(seq 166)는 넣지 않았다(아래).
+- 커밋: #9494 `3f7f0ddabf`, #9864 `489c58259c`
+- upstream 근거: `bede100c3e`(23파일 +336/−145, 부모 `124009500d` = #9532), `47f01e61ba`(#9864, 1파일 +2/−2). deps #9176(seq 59)·#9417(seq 71)·#9249(seq 80) 적용됨.
+- 수정 파일(#9494, 25): `data/battle_scripts_1.s`, `include/battle.h`, `include/battle_hold_effects.h`, `include/battle_scripts.h`, `include/constants/battle.h`, `include/constants/battle_move_resolution.h`, `src/battle_ai_switch.c`, `src/battle_anim_mons.c`, `src/battle_end_turn.c`, `src/battle_hold_effects.c`, `src/battle_main.c`, `src/battle_move_resolution.c`, `src/battle_script_commands.c`, `src/battle_switch_in.c`, `src/battle_util.c`, `src/data/hold_effects.h`, `src/reshow_battle_screen.c`, 테스트 7개(`ability/emergency_exit.c`, `ability/magician.c`, `form_change/battle_after_move.c`, `hold_effect/blunder_policy.c`, `hold_effect/eject_button.c`, `hold_effect/red_card.c`, `move_effect/hit_escape.c`), `docs/localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md`. #9864: `src/reshow_battle_screen.c`.
+- 적용 방법: 사전 분석 패치(`seq115-9494.patch`)를 `git apply`로 넣고, 선택 패치(`seq115-9494-primalweather-optional.patch`, 2줄)에 `@ HnS:` 주석 1줄을 더했다(`.s` 파일은 `@` 주석을 쓴다). 패치와 upstream의 `+`/`-` 줄 집합 차이는 세 줄뿐이다: 조개껍질방울 중복 조건 삭제 줄이 HnS의 1인자 `IsAnyTargetTurnDamaged(battlerAtk)` 형태인 것, 매지션 점착 조건 hunk 2줄이 없는 것(HnS는 #9818 형태라 원래 없음). 나머지 HnS 적응은 문맥만 다르다. #9864는 upstream과 `+`/`-` 줄이 같다. 파일 모드 변경 없음.
+- HnS 적응(보존):
+  - `BattleScript_EjectButtonActivates`: HnS 아이템 팝업(`call BattleScript_ItemPopUp_Scripting`)과 `STRINGID_EJECTBUTTONACTIVATE`는 hunk 밖이라 그대로. 뒷부분(교체 화면·등장)만 upstream처럼 삭제.
+  - `BattleScript_EjectPackActivates`: HnS #9946 `jumpifcantswitch SWITCH_IGNORE_ESCAPE_PREVENTION | BS_SCRIPTING` 유지, `goto` 대상만 변경.
+  - `BattleScript_NeutralizingGasExits`: HnS는 이미 후속판(`gBattlerTarget` 루프)이라 1.17.0과 같게 시작에 `copybyte sSAVED_BATTLER, sBATTLER`, `restoretarget` 뒤 `copybyte sBATTLER, sSAVED_BATTLER`만 추가(필수: 옛 탈출버튼 스크립트의 sBATTLER 보존 줄이 사라지므로 화학변화가스 보유자가 탈출버튼·탈출팩으로 나갈 때 `BS_SCRIPTING`이 덮이지 않게 함). 결과가 1.17.0 스크립트와 같다.
+  - `battle_hold_effects.c`: 약점보험·`TrySetEnigmaBerry`의 Champions `MOVE_RESULT_HIGH_EFFECTIVENESS` 유지(`IsBattlerAlive`만 제거), 허탕보험 #9790 형태에서 `IsBattlerAlive` → `!redCardSwitched`만, 목스프레이·조개껍질방울·생명의구슬 HnS 1인자 `IsAnyTargetTurnDamaged`. `ItemBattleEffects()` 첫머리의 HnS `IsBattlerAlive` 검사는 남는다.
+  - `FaintClearSetData`: HnS Champions `B_RAGE_FIST` 두 줄 유지, `keepGastroAcid` 두 줄만 삭제.
+  - `MoveEndHitEscape`: HnS 조건 `IsBattlerTurnDamaged(gBattlerTarget, INCLUDING_SUBSTITUTES)` 유지, `!HasAnyBattlerQueuedSwitch()`·`!redCardSwitched`·`queuedSwitch = QUEUED_SWITCH_OPEN_PARTY_SCREEN`만 추가. `FAINT_BLOCK_CHECK_TARGET_FAINTED`의 HnS #9409 조건 유지.
+  - 자신과잉 계열 case 목록의 HnS `ABILITY_EELEVATE` 유지.
+  - `test/battle/ability/magician.c`: HnS 파일이 1.17.0 순서(#9818)라 새 테스트를 1.17.0처럼 파일 끝에 넣었다.
+- **upstream과 다르게 둔 곳 1 — 원시 날씨 해제(`data/battle_scripts_1.s` `BattleScript_QueuedSwitch`):** upstream은 옛 탈출버튼 스크립트와 유턴 경로(`BattleScript_MoveSwitchOpenPartyScreenReturnWithNoAnim`)에 있던 `trytoclearprimalweather`를 대기열 교체 경로에 옮기지 않아, 끝의대지·시작의바다·델타스트림 보유자가 탈출버튼·탈출팩·위기회피·유턴·볼트체인지·퀵턴으로 나가도 날씨가 남는다(1.17.0에도 남음). HnS는 `hpthresholds` 뒤에 `@ HnS:` 주석과 `trytoclearprimalweather`·`flushtextbox`를 두어 이식 전 동작(날씨 해제와 기존 한글 해제 문구)을 유지했다.
+  - 확인(임시 테스트, 저장소에 남기지 않음): `desolate_land.c` 끝에 "그란돈(빨강구슬)이 유턴으로 나간 뒤 `gBattleWeather & B_WEATHER_SUN_PRIMAL`이 0" 테스트와 대조 테스트를 붙여 돌렸다. HnS 2줄이 있으면 PASS, 2줄을 지우면(upstream 상태) FAIL, 대조 테스트는 두 경우 모두 PASS. 확인 뒤 두 파일을 원래대로 되돌렸다(`git diff` 없음 확인).
+- **upstream과 다르게 둔 곳 2 — `test/battle/hold_effect/blunder_policy.c`:** `Blunder Policy activates for Dragon Darts if one target misses for accuracy but the other target is hit twice`에 `KNOWN_FAILING;` 한 줄을 넣었다. 이 테스트는 HnS가 upstream master에서 받은 #9790(`69b1891140`)의 것으로, 허탕보험이 드래곤애로 첫 타격 뒤에 발동한다고 기대한다. #9494로 허탕보험이 모든 타격 뒤(`MOVEEND_SPRAY_LEPPA_BLUNDER`)로 옮겨져 `Unmatched ANIMATION`으로 PASS→FAIL이 됐다. upstream도 #9790을 upcoming(#9494 포함)에 병합할 때(`7ff83c6542`) 같은 줄을 넣었고, **seq 467 #9841**이 `KNOWN_FAILING`을 지우고 기대 순서를 "두 타격 뒤"로 바꾼다. 결과 파일이 upstream `7ff83c6542`~#9841 직전 blob(`fbba72441b`)과 바이트 동일하므로 #9841이 그대로 적용된다.
+  - 동작 확인: 기대 순서만 #9841처럼 바꾼 임시 사본으로 돌리면 이 테스트가 PASS(파일 11건 모두 PASS)였다. 즉 허탕보험은 드래곤애로 두 타격 뒤 한 번 발동하며 1.17.0과 같다. 확인 뒤 원래대로 되돌렸다.
+- 제외한 hunk: `src/battle_util.c` 매지션 점착 조건(`ABILITY_STICKY_HOLD || !IsBattlerAlive`) 2줄 — HnS #9818 형태에는 이 절이 없다(1.17.0도 없음).
+- **#9864(seq 176):** 의존은 #9494 하나. `notOnField`가 만든 UI 회귀(교체 대기 중 파티 화면을 열었다 닫으면 이전 포켓몬 체력 상자가 다시 보임)를 고친다. seq 176 도달 시 "이미 적용(`489c58259c`)"으로 처리한다.
+- **#9784(seq 166)는 넣지 않았다:** plan deps가 #9494·#9717(seq 150)·#8943(seq 138.5)인데 HnS에 `BattleScript_EjectItemActivates`·`ENDTURN_SEND_OUT_REPLACEMENTS`·`gBattlersByRawSpeed`·`gParties`가 아직 없다. 그때까지 upstream과 같이 `Eject Button will activate before Red Card if holder is faster`가 `KNOWN_FAILING; // #9499`다(아래 테스트).
+- 검증:
+  - `git diff --check` 통과(두 커밋).
+  - opcode 헤더·명령 표 변경 없음(#9532 뒤 upstream `bede100c3e`와 바이트 동일).
+  - 빌드(#9494): 종료 코드 0, **ROM 32,716,516 B(+352 B) / EWRAM 248,940 B(+16 B) / IWRAM 25,516 B(0)**, 새 경고 0. EWRAM +16 B는 `struct SpecialStatus` 4→8 B(`enum QueuedSwitch`)라 `gSpecialStatuses[4]`가 커진 것(사전 분석 예측과 같음). `BattlerState`·`BattleStruct`·`HoldEffectInfo` 크기는 그대로. 세이브 무관(배틀 중 메모리).
+  - 빌드(#9864): 종료 코드 0, **ROM 32,716,548 B(+32 B) / EWRAM 248,940 B / IWRAM 25,516 B**, 새 경고 0.
+  - 한글 줄 변경: docs 밖 0. `STRINGID` 추가·삭제·본문 변경 없음(`printstring 0x3` → `printstring STRINGID_SWITCHINMON`은 같은 ID).
+- 테스트(이식 후 57파일 + 원시 날씨 3파일, 이식 전은 seq 107 확장 목록과 이름 대조, ` i/n` 접미사 정규화): 797건 중 788건 이름 일치.
+  - **PASS 손실 2건(모두 upstream과 같은 예상 변화):**
+    1. `Eject Button will activate before Red Card if holder is faster`: PASS → **KNOWN_FAILING**. upstream #9494가 `KNOWN_FAILING; // #9499`로 표시(#9784가 해소). 사전 분석 예상.
+    2. `Blunder Policy activates for Dragon Darts…`: PASS → FAIL(`Unmatched ANIMATION`) → 위 `KNOWN_FAILING;` 추가로 **KNOWN_FAILING**. 사전 분석에 없던 항목(HnS가 #9790을 master에서 먼저 받았기 때문).
+  - 이름 변경(이전 이름은 전체 목록에서 사라짐): `Eject Button activates after Wandring Spirit`(PASS) → `…Wandering Spirit`(PASS), `Red Card prevents Emergency Exit activation when triggered`(PASS) → `Red Card doesn't prevent Emergency Exit activation when triggered`(PASS, 기대 동작도 바뀜), `Relic Song transformation is the last thing that happens after it hits`(FAIL) → `Relic Song transformation activates after target faints`(FAIL, `Unmatched MESSAGE`).
+  - 새 테스트: PASS 3(`Eject Button activates and the attacker takes Life Orb recoil before replacement comes out`, `Emergency Exit activates and attacker's Throat Spray activates before replacement enters`, `Hit Escape: U-Turn switches user out and target activates Pickpocket before replacement enters`), FAIL 2(`Magician allows activation of stolen Throat Spray`, `Relic Song transforms Meloetta before taking Life Orb damage`, 모두 `Unmatched MESSAGE`).
+  - 나머지 상태 변화 0. 이식 전부터 있던 비 MESSAGE 실패(버서크·위기회피 팝업 태스크 미해제, AI 교체 확률 테스트 등)는 전후 같다.
+  - 대상 파일: 탈출버튼·레드카드·탈출팩·위기회피·도망태세·유턴 계열·매지션·폼체인지, 도구(목스프레이·허탕보험·과사열매·생명의구슬·조개껍질방울·약점보험·의문열매·하양허브·흉내허브·룸서비스), 특성(나쁜손버릇·화학변화가스·변색·발끈·분노의껍질·비스트부스트·자신과잉·유대변화·사령탑·편승·긴장감·개미지옥·프레셔·춤추기·기분파·고대활성·재생력·마이티체인지·내용물분출·위협·점착·자연회복·달마모드), 교체 기술(배턴터치·막말내뱉기·순간이동·꼬리자르기·썰렁개그·따라가때리기·드래곤테일 계열·울부짖기·땅고르기·부활의기원·프리폴), AI 교체 3파일, 다이맥스, 원시 날씨 3파일.
+- **출력 변화(upstream 동작, 원시 날씨 제외):** `BATTLE_MESSAGE_OUTPUT_CHANGES.md` "특성·도구·도주" 표에 3행 추가(이 커밋): (1) 탈출버튼·탈출팩·유턴 계열·위기회피·도망태세 교체가 move end 끝으로 밀려 발동 문구 → 볼 회수 → 남은 move end 출력(생명의구슬 반동 등) → 교체 화면 → `가랏! …!` 순서가 됨(탈출버튼이 발동해도 공격자의 생명의구슬·조개껍질방울·옛노래 폼체인지가 이제 적용됨), (2) 레드카드 뒤 보유자의 위기회피·도망태세가 발동, (3) 목스프레이·과사열매·허탕보험이 move end 후반으로 늦춰지고(드래곤애로 허탕보험은 두 타격 뒤), 매지션으로 빼앗은 목스프레이가 발동, 옛노래 폼체인지 문구가 생명의구슬 반동보다 먼저. 즉시 교체 경로(배턴터치·막말내뱉기 등)는 문구가 같고 볼 회수가 교체 화면보다 먼저 나온다.
+- 남은 위험: 중간. `GetBattlerAbility`·`GetBattlerHoldEffect`가 `notOnField` 배틀러에 NONE을 돌려주는 것에 기대어 여러 `IsBattlerAlive` 검사가 지워졌다. HnS 고유 코드 중 이 함수를 거치지 않고 특성·도구를 읽는 경로가 교체 대기 중인 배틀러에 반응할 수 있다. 영문 `MESSAGE` 실패가 많은 파일(따라가때리기·울부짖기·레드카드 등)은 로직 회귀가 가려질 수 있다. 이후 #9717·#9784가 `BattleScript_QueuedSwitch` 주변을 고칠 때 HnS 원시 날씨 2줄의 문맥 적응이 필요하다.
+- 실기 확인: 필요(아래 "실기 확인 항목" 5).
