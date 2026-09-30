@@ -1,6 +1,6 @@
 # full-sync 선진행 결과 — 구간 1 (seq 130~167 중 15행)
 
-진행 중: 마지막 완료 seq 165, 다음 seq 167(보류 기록 후 구간 종료)
+완료: 구간 1의 14행 이식·기록 완료(마지막 완료 seq 165). seq 167 #9819는 보류(#10548 직전 적용). 전체 테스트는 메인이 구간 끝에 돌린다.
 
 **순서표와 다르게 진행한 구간이다.** 순서표([`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv))의 다음 행 seq 127 #9655(배틀 메시지 리팩터)가 D1~D7 결정 대기라서, #9655와 무관한 뒤쪽 행을 앞당겨 이식한다. 선정 기준과 전체 분류는 [`ahead-of-9655/README.md`](ahead-of-9655/README.md)(`ahead_candidates.tsv`)에 있다. 이 구간은 그 "선진행" 114행 가운데 앞쪽 15행(seq 130, 131, 133, 134, 137, 143, 148, 149, 151, 156, 157, 158, 160, 165, 167)이다.
 
@@ -24,10 +24,19 @@
 | 149 | #9461 | 적용(HnS 적응) | `9f6c5b5c58` | +128 B | 맵 팝업 층 번호(`MapHeader.floorNumber`, mapjson). HnS 적응 3곳: 피라미드 조건 유지, **`FONT_NARROW` 유지**, `CELADON DEPT.` 특례 `!IS_HNS`. HnS 맵 `floor_number` 0개라 팝업 문구·맵 헤더 바이트 불변. 새 테스트 `Map names fit in popup` PASS |
 | 151 | #9755 | 적용 | `ce1fc01da9` | −16 B | AI `IsDamageMoveUnusable`의 `HasWeatherEffect()` 이중 검사 제거(upstream 그대로). `ctx->weather`가 이미 날씨 무효를 반영해 사실상 동작 동일 |
 | 156 | #9774 | 적용 | `adb22cd5f0` | 0 B | Fallarbor 떠올리기 NPC 판정 `VAR_0x8004, 0` → `VAR_RESULT, FALSE`(upstream 그대로). HnS 실사용 검은먹시티 NPC의 같은 수정은 seq 133에 포함. Fallarbor는 HnS에서 도달 불가 |
-| 157 | #8628 | 적용 | `5381abba16` | 0 B | `setmetatileinrange` 매크로(`callnative`, 새 opcode 없음)와 `NativeFunc_SetMetatileInRange`. 쓰는 스크립트가 없어 함수는 gc로 빠짐. 공백 1줄 정리 |
+| 157 | #8628 | 적용 | `5381abba16` | 0 B | `setmetatileinrange` 매크로(`callnative`, 새 opcode 없음)와 `NativeFunc_SetMetatileInRange`. 쓰는 스크립트가 없어 함수는 gc로 빠짐. 공백 1줄 정리. SHA1 변화는 링커 ARM/Thumb veneer 순서뿐(진단) |
 | 158 | #9765 | 적용 | `2cef59f506` | −5,360 B (EWRAM −4 B) | 도감 분포 지도 템플릿 제거, BG 3 상수. 쓰이지 않던 affine 그래픽·BG 번호 힙 할당 삭제. HnS `pokedex_area_screen.c` 고유 변경 보존. 동작 동일 |
 | 160 | #9762 | 적용 | `8d46f0241b` | −32 B | `GiveMailToMon`의 중복 `SetMonData` 2회 삭제(`GiveMailToMonByItemId`가 같은 값으로 이미 설정). 동작·세이브 데이터 동일 |
 | 165 | #9813 | 적용(위치 적응) | `4442f1a559` | 0 B | `FillSpriteRect`의 `%`를 `& mask`로(나눗셈 호출 5개 제거). X축 전환 hunk는 #9973(seq 31)이 만든 루프 앞 위치에 적용. 동작 변화 0(사전 분석 네이티브 비교) |
+| 167 | #9819 | **보류(중간 회귀 회피: #10548 직전 적용)** | 없음 | 0 | 메인 결정. #9819만 넣으면 seq 446 #10548까지 안개제거·록클라임이 파티 메뉴에 회색 항목으로 나오고 HnS 공중날기·플래시 자동 항목이 밀릴 수 있음. A안 그대로 적용 가능, `MB_ROCK_CLIMB` 0개, asm/C enum 불일치 잠재 버그, ROM +240 B 추정 |
+
+- 마지막 빌드(`4442f1a559`): 종료 코드 0, **ROM 32,715,492 B(97.50%) / EWRAM 248,936 B(94.96%) / IWRAM 25,516 B(77.87%)**. 구간 전체 ROM −7,360 B(대부분 #9765 affine 그래픽 −5,360 B, #9713 B안 −1,296 B, #9006 −640 B), EWRAM −8 B(#9006 −4, #9765 −4), IWRAM 0. 매 빌드 종료 코드 0, 새 경고 0. `pokehns.gba` SHA1 `a1aa5ea8c9c824ba1c6bfa4d068f8948392a2a8c`.
+- 한글이 든 소스 줄 변경(docs 밖): `src/strings.c`의 새 문자열 2줄(#9006, 한글 초안, 아래 "한글 문구 미결")뿐. 기존 한글 줄 변경·삭제 0. 그 밖 비 ASCII 줄은 upstream 테스트 이름의 `Pokémon` 3줄. 파일 모드 변경 0.
+- config 값·세이브 구조체 변경 0. 스크립트 명령 번호·special 번호 불변(#9006은 같은 자리 이름 변경, #8628은 `callnative`).
+- upstream과 다르게 둔 곳(`HnS:` 표시 포함): #9006 `Task_ReturnToFieldWhileLearningMove`의 `tRecoverPp = TRUE`(가르침 교체 최대 PP 유지)·`VALIDATE_BEFORE_LEARNING`의 `IsBoxMonExcluded`·요약 화면 START/R/L과 relearner 분기 위치·새 문자열 한글 초안, #9713 B안(곡 이름 저장 안 함)·DP 음악/`SE_FASTER_JOY_HEAL` 목록·`FIRST_PHONEME_SONG`, #9461 피라미드 조건·`FONT_NARROW`·`CELADON DEPT.` `!IS_HNS`. 제외한 hunk: #9006 요약 화면 A 버튼 이름 바꾸기·IV/EV 프롬프트, #9903 이름 바꾸기, #9461 글꼴, #9462 `config/ai.h`·`random.h`·뒤집기 로직(이미 있음).
+- 선반영: #10223(seq 390)의 `chooseboxmon.c` 1줄(#9006 커밋), #10445(seq 298)의 박스 번호 줄(#9903 커밋). 아래 "후속 행 메모".
+- upstream대로 둔 동작 변화: #9575 예측 AI 트레이너 25명의 AI 판단(1.17.0과 같아짐), #9006 떠올리기 흐름(확인 단계 위치, 공용 문구, 팡파레), #9690 야드파운드법 도감 무게 +0.1 lb(일부). `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 추가 행 0.
+- 테스트(PR별 지정 파일, seq 126 기준 대비): **사라진 PASS 0.** #9462로 FAIL → PASS 3건(AI 더블 테스트: Choiced doubles, Double Ace, 같은 턴 두 마리 교체), 새 줄 PASS 5 + FAIL 3(`Unmatched MESSAGE`, 알려진 한계), #9461 새 줄 `Map names fit in popup: PASS`. 그 밖 지정 파일(#9575 AI 9파일 336줄, #9006 `text.c`·`pokemon.c`, #9755 AI 3파일, #8628 `script.c`, #9813 `sprite.c`)은 기준과 같다.
 
 ## 공통 사항
 
@@ -360,6 +369,17 @@
 - 남은 위험: 없음(동작 동일, 행마다 나눗셈 호출이 빠져 조금 빨라짐).
 - 실기 확인: 선택(아래 "실기 확인 항목" 8).
 
+## 동기화 단위: seq 167 #9819 `U-fieldmove-9819` Refactor rock climb and defog to be defined at all times
+
+- 현재 판정: **보류(중간 회귀 회피: #10548 직전 적용)**. 메인 결정. 커밋 없음.
+- upstream 근거: `8801d939a5`(3파일). 후행 #10548(seq 446, 보류(줄 겹침))이 이 PR을 전제로 한다. `git log --all --grep='#9819'`는 결정 기록 커밋 `c339f2b749`(문서만)뿐이고 코드는 미적용이다.
+- 보류 이유: #9819만 들어가면 #10548(seq 446)까지 **안개제거·록클라임을 아는 포켓몬의 파티 메뉴에 회색(잠김) 필드 기술 항목이 나온다**(`SetPartyMonFieldSelectionActions`가 `FIELD_MOVES_COUNT` 16까지 돌기 때문. 선택하면 "새로운 배지를 얻을 때까지 아직 쓸 수 없습니다"). 또 HnS 필드 기술 수 제한(선두 3·그 외 4)에 이 항목도 포함돼, 선두 포켓몬의 **HnS 공중날기·플래시 자동 항목이 밀릴 수 있다**(사전 분석 `seq167-9819.md` 4.3). 1.17.0에서는 #10548의 `hideIfLocked`/`FieldMove_IsVisible()`로 다시 숨겨 최종 동작은 현재 HnS와 같다. 선진행 행 중 #9819에 기대는 행은 없으므로, **#10548 바로 앞에 붙여 넣는다.**
+- 사전 분석 요지(적용할 때 참고, 산출물 `seq167-9819.md`/`.patch`는 스크래치 폴더에 있음):
+  - **A안(확정 결정: upstream 그대로) 그대로 적용 가능.** upstream diff가 오프셋만 다르고 손 적응 0(`include/constants/field_move.h`의 `#if` 제거, `src/field_move.c`의 `IsFieldMoveUnlocked_RockClimb/Defog`가 config 값 반환·`gFieldMoveInfo` 두 항목 상시 정의, `src/field_control_avatar.c` 바위 타일 상호작용 앞 `IsFieldMoveUnlocked(FIELD_MOVE_ROCK_CLIMB) &&`). `include/config/overworld.h`의 `OW_ROCK_CLIMB_FIELD_MOVE`·`OW_DEFOG_FIELD_MOVE` `FALSE`는 그대로 둔다. 메인이 스크래치에서 이 구간 patch 14개 위에 쌓아 적용·`git diff --check` 통과를 확인했다(`stackcheck/`).
+  - **`MB_ROCK_CLIMB` 배치 0개:** 이 메타타일은 `indigo_plateau_hns` tileset 357번 하나뿐이고, 이를 쓰는 `LAYOUT_INDIGO_PLATEAU_HNS`·`LAYOUT_ROUTE23_HNS`의 `map.bin`·`border.bin`에 배치가 없다. 바위 타일 상호작용 변화는 플레이에 나타나지 않는다.
+  - **asm/C enum 불일치 잠재 버그:** 스크립트 조립 경로에서는 `TRUE`/`FALSE`가 정의되지 않아 `#if OW_ROCK_CLIMB_FIELD_MOVE == TRUE`가 `0 == 0`으로 참이 된다. 그래서 지금 asm은 `FIELD_MOVE_ROCK_CLIMB = 14`, `FIELD_MOVE_DEFOG = 15`, `FIELD_MOVES_COUNT = 16`인데 C `gFieldMoveInfo`는 14항목이다. `EventScript_UseRockClimb`의 `checkfieldmove FIELD_MOVE_ROCK_CLIMB`가 실행되면 배열 밖을 읽는다(타일이 없어 도달하지 않음). #9819를 넣으면 C도 16항목이 되어 맞는다.
+  - **ROM 약 +240 B 추정**(표 2항목·잠금 함수 +32 B, 상호작용 +12 B, 지금 gc로 빠지는 `SetUpFieldMove_Defog/RockClimb`·`FieldCallback_*` 196 B가 다시 링크됨). EWRAM·IWRAM 0. 세이브 영향 0. 새 문자열 없음.
+
 ## 한글 문구 미결
 
 **공식 문구 확인 전 임시 번역**이다. 확정되면 `src/strings.c`의 해당 줄만 바꾼다(seq 133 #9006).
@@ -374,7 +394,7 @@
 
 ## 실기 확인 항목 (친구용)
 
-이식 전 ROM(`e629de8bdf`, SHA1 `197afe07…`)과 이식 후 ROM을 같은 세이브로 비교한다.
+이식 전 ROM(`e629de8bdf`, SHA1 `197afe07…`)과 이식 후 ROM(`4442f1a559`, SHA1 `a1aa5ea8…`)을 같은 세이브로 비교한다.
 
 1. **예측 AI 트레이너(#9575):** 예측 AI 트레이너(예: 재대전 관장 1명, 더블배틀 `FINLEY_HNS` 또는 `MUALANI_HNS`, `STEVEN_HNS`)와 싸워 AI의 교체·기술 선택이 멈추거나 이상하지 않은지, 턴 시작 지연이 늘지 않았는지 본다. AI 판단이 1.17.0과 같아지는 변화라 이식 전과 다른 선택을 할 수 있다.
 2. **기술 떠올리기·가르침(#9006):**
@@ -408,3 +428,4 @@
 - **`U-mapheader-9461` 뒤 행(seq 358 #7975, 371 #9080, 374 #10167, 377 #10176, 462 #10159):** `global.fieldmap.h`의 `MapHeader`와 `tools/mapjson/mapjson.cpp`는 upstream #9461과 같은 모양이다. `map_name_popup.c`의 HnS 차이 3곳(피라미드 조건, `FONT_NARROW`, `!IS_HNS` 백화점 가드)은 유지한다.
 - **HnS 맵에 `floor_number`를 넣을 때(별도 결정):** 층 표기 한글화(`MapNamePopupAppendFloorNum` HnS 분기)와 `Map names fit in popup`(`FONT_NARROWER` 80px) 테스트 한계를 같이 정한다. 생성 `header.inc`는 도구가 바뀌어도 자동 재생성되지 않으므로 `floor_number`를 넣은 맵은 `map.json` 수정으로 재생성된다.
 - **seq 273 #10349 → seq 275 #10392(`U-fillsprite-9973`):** seq 165 #9813 위에 upstream `f4748fcb02`·`be48038854`가 그대로 적용된다(사전 분석 스크래치 확인, 결과 `FillSpriteRect`가 1.17.0과 바이트 동일). 사파리 남은 볼 호출의 과다 칠하기가 그때 없어진다.
+- **seq 167 #9819(이번 구간 보류):** seq 446 #10548 **직전**에 적용한다(같은 unit `U-fieldmove-9819`). `seq167-9819.patch`(스크래치 `/home/hjm0725/hns-sync-work/chunk-ahead-130-167/`)는 이 구간 14행 커밋 뒤 HEAD(`4442f1a559`)에서도 `git apply --check`가 통과한다(구간 끝에 확인). 적용 뒤 확인: `arm-none-eabi-nm build/hns/data/event_scripts.o | grep FIELD_MOVE_ROCK_CLIMB` → `0e`, `gFieldMoveInfo` 192 B(16 × 12), `SetUpFieldMove_Defog/RockClimb`가 Discarded 구간에 없음. #10548과 함께 넣어 파티 메뉴 중간 회귀가 생기지 않게 한다.
