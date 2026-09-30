@@ -1,6 +1,6 @@
 # full-sync 선진행 결과 — 구간 1 (seq 130~167 중 15행)
 
-진행 중: 마지막 완료 seq 148, 다음 seq 149
+진행 중: 마지막 완료 seq 149, 다음 seq 151
 
 **순서표와 다르게 진행한 구간이다.** 순서표([`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv))의 다음 행 seq 127 #9655(배틀 메시지 리팩터)가 D1~D7 결정 대기라서, #9655와 무관한 뒤쪽 행을 앞당겨 이식한다. 선정 기준과 전체 분류는 [`ahead-of-9655/README.md`](ahead-of-9655/README.md)(`ahead_candidates.tsv`)에 있다. 이 구간은 그 "선진행" 114행 가운데 앞쪽 15행(seq 130, 131, 133, 134, 137, 143, 148, 149, 151, 156, 157, 158, 160, 165, 167)이다.
 
@@ -21,6 +21,7 @@
 | 137 | #9713 | 적용(HnS 적응, **B안**) | `d057cee5c2` | −1,296 B | 디버그 사운드 메뉴 `FindSong`/`sSongNames`. **곡 이름 저장 안 함(`SE_`/`MUS_` 접두어만, Korean patch 화면 유지)**. HnS GBS 전환 유지, `FIRST_PHONEME_SONG`은 `DP_MUSIC_END + 1`(값 746 불변), DP 음악 11곡·`SE_FASTER_JOY_HEAL` 목록 추가. 이름 `{0}`(EOS 없음) EWRAM 덮어쓰기 잠재 버그 해소 |
 | 143 | #9721 | 적용 | `f3893a4cb4` | 0 B | `Makefile` 1줄(learnables JSON order-only 의존 삭제). **seq 137 빌드와 `pokehns.gba` SHA1 동일** |
 | 148 | #9690 | 적용(문맥 수동) | `aeab20beac` | +16 B | 파운드 변환 식 현대화(`DECAGRAMS_IN_POUND` 453592, u64 식). `pokedex.h` 문맥(`IS_HNS`)만 다름. **옵션 "단위계 = 야드파운드법"일 때만** 도감 무게 일부 +0.1 lb(기본 미터법 화면 불변) |
+| 149 | #9461 | 적용(HnS 적응) | `9f6c5b5c58` | +128 B | 맵 팝업 층 번호(`MapHeader.floorNumber`, mapjson). HnS 적응 3곳: 피라미드 조건 유지, **`FONT_NARROW` 유지**, `CELADON DEPT.` 특례 `!IS_HNS`. HnS 맵 `floor_number` 0개라 팝업 문구·맵 헤더 바이트 불변. 새 테스트 `Map names fit in popup` PASS |
 
 ## 공통 사항
 
@@ -216,6 +217,37 @@
 - 남은 위험: 낮음(야드파운드법 표시 +0.1 lb, upstream 1.17.0과 같음).
 - 실기 확인: 필요(아래 "실기 확인 항목" 4).
 
+## 동기화 단위: seq 149 #9461 `U-mapheader-9461` Show floor number in map popup
+
+- 현재 판정: 적용(HnS 적응)
+- 커밋: `9f6c5b5c58`
+- upstream 근거: `85128bdeb5`(6파일 +103/−14). `git log --all --grep='#9461'` 없음, `GetPopUpMapName`·`floorNumber`·`FLOOR_ROOFTOP` 없음 → 미적용이었다. 이 unit의 첫 행이다.
+- 수정 파일(6): `include/constants/map_types.h`, `include/global.fieldmap.h`, `include/map_name_popup.h`, `src/map_name_popup.c`, `test/text.c`, `tools/mapjson/mapjson.cpp`
+- 적용 방법: 사전 분석 patch(`seq149-9461.patch`)를 `git apply`했다. 충돌 없음. `include/global.fieldmap.h`의 `MapHeader`와 `tools/mapjson/mapjson.cpp`는 upstream과 같은 모양이 됐다(뒤 행 #7975·#9080·#10167·#10176·#10159의 전제 유지).
+- 내용(upstream):
+  - `struct MapHeader`의 `filler_18[2]` → `s8 floorNumber` + `u8 filler_19`(크기 0x1C·오프셋 불변). `mapjson`이 모든 버전에서 `floor_number`를 `.byte`로 출력(없으면 0).
+  - `map_name_popup.c`: `MapNamePopupAppendFloorNum`(" B1F"/" 1F"/" " + `gText_Rooftop`), `IsCeladonDeptStore`, 공개 `GetPopUpMapName`. `FLOOR_ROOFTOP 127`, `MAP_POPUP_STRING_BUFFER_LENGTH 27`, `MAP_POPUP_PREFIX_BUFFER_LENGTH 6`.
+  - 새 테스트 `test/text.c` "Map names fit in popup"(`FONT_NARROWER`, 80px, `showMapName` 맵 전부).
+- HnS 적응(메인 결정대로 3곳):
+  - **피라미드 조건 유지:** `ShowMapNamePopUpWindow`의 HnS 조건(`LAYOUT_BATTLE_FRONTIER_BATTLE_PYRAMID_TOP || …_PYRAMID_TOP_HNS`)을 그대로 두고, `&(mapDisplayHeader[6])` 3곳 → `[MAP_POPUP_PREFIX_BUFFER_LENGTH]`, `GetMapName(…)` → `GetPopUpMapName(withoutPrefixPtr, &gMapHeader)`.
+  - **`FONT_NARROW` 유지(upstream `GetFontIdToFit(…, FONT_NORMAL, -1, 80)` hunk 제외, `// HnS:` 주석 2줄):** HnS 한글 글리프는 `FONT_NORMAL`·`FONT_NARROW` 8px, `FONT_NARROWER` 11px라 "좁아지는" 대체가 한글에서 오히려 넓어진다. upstream대로면 모든 팝업이 `FONT_NORMAL`이 되어 숫자·라틴 글자 폭이 바뀐다(예: "29번 도로" 37 → 39px). g6 plan 6절 결정.
+  - **`CELADON DEPT.` 특례 `!IS_HNS`(g6 plan 7절):** `GetPopUpMapName`에서 `if (!IS_HNS && IsCeladonDeptStore(mapHeader))`(`// HnS:` 주석). HnS 백화점 맵은 `*_HNS` 레이아웃·`show_map_name` FALSE라 원래도 닿지 않지만 영문 이름을 HnS 빌드에서 뺐다. `#if`로 막으면 미사용 static 함수 경고가 나서 `if` 조건으로 처리했다. 빌드 결과 ROM에 `CELADON DEPT` 0건, `IsCeladonDeptStore`·`MapNamePopupAppendFloorNum` 심볼 없음(`GetPopUpMapName`에 인라인·제거).
+- 제외한 hunk: `map_name_popup.c`의 글꼴 hunk(위).
+- 화면·데이터 영향:
+  - `make hns`에 들어가는 맵 560개(전부 `*_hns`) 중 `floor_number`가 있는 맵은 0개다. `floorNumber`가 모두 0이라 `GetPopUpMapName` 결과는 이식 전 `GetMapName`과 같다. **팝업 문구 변화 없음.**
+  - 층 표기 함수는 upstream 그대로(영문 `B`/`F` 조합, `gText_Rooftop`은 HnS에서 이미 `"옥상"`). 지금은 닿지 않는다.
+  - 맵 헤더: 생성 파일 `header.inc`는 빌드 규칙이 `$(MAPJSON)`에 의존하지 않아 이번 빌드에서 재생성되지 않았다. 새로 빌드된 `tools/mapjson/mapjson`으로 HnS 맵 560개 헤더를 스크래치(`apply/mj149/`)에 다시 만들어, 기존 `.2byte 0`을 `.byte 0`×2로 바꿔 비교하니 **560개 모두 같다**. 즉 새 도구로 다시 만들어도 맵 헤더 ROM 바이트는 같다. 커밋할 생성 파일 없음.
+  - 세이브: `MapHeader`는 ROM 데이터, `gMapHeader` 크기 0x1C 불변. SaveBlock 영향 없음.
+- 검증:
+  - `git diff --check` 통과. 한글이 든 소스 줄 변경 0(주석 영문).
+  - 빌드(`build/port.log`): 종료 코드 0, **ROM 32,720,900 B(97.52%, +128 B) / EWRAM 248,940 B(0) / IWRAM 25,516 B(0)**. 사전 분석 추정 약 +124 B(`GetPopUpMapName` 0x7c). `pokehns.gba` SHA1 `bd3dc3e5e8d08d1576e1b67fcb5b14fdf8fea43f`. 새 경고 0(`global.fieldmap.h` 변경으로 경고 163줄, 모두 기준 목록의 기존 경고).
+- 테스트(`test/text.c`) → 38줄(PASS 12). 기존 37줄은 seq 126 기준과 **모두 같고**, 새 줄 **`Map names fit in popup: PASS`**(`showMapName` 맵 139개, 최장 "사파리존 게이트" `FONT_NARROWER` 80px = 한도 80px).
+- 남은 위험:
+  - **floor_number 도입 시 층 표기 한글화:** 나중에 HnS 맵에 `floor_number`를 넣으면 upstream 영문 `B1F`/`1F` 형식이 팝업에 나온다. HnS 기존 층 표기(`gText_1F` "1층", `gText_B1F` "지하1층", `gText_Rooftop` "옥상")와 맞추려면 `MapNamePopupAppendFloorNum`에 HnS 분기가 필요하다(사전 분석 4-1 B안 코드). 한글 안 최장 "블루시티동굴 지하1층"은 20바이트·`FONT_NARROW` 80px로 표시 한도에 딱 맞는다. 별도 결정.
+  - **`FONT_NARROWER` 80px 테스트 경계:** 새 테스트는 한글 11px 글꼴로 재므로 현재 최장 이름 "사파리존 게이트"가 **정확히 80px**다. 팝업 이름을 한 글자라도 늘리면(또는 floor_number로 층을 붙이면: 한글 안 9개 맵, 영문 안도 "블루시티동굴 B1F/B2F" 81px) 테스트가 실패한다. 실제 팝업은 `FONT_NARROW`(한글 8px)로 그려 여유가 있다.
+  - 낮음: `test/text.c` 새 테스트의 `s8 mapGroup/mapNum`은 HnS 그룹 106개·그룹당 최대 123맵이라 범위 안이다(127 초과 시 오버플로).
+- 실기 확인: 필요(아래 "실기 확인 항목" 5).
+
 ## 한글 문구 미결
 
 **공식 문구 확인 전 임시 번역**이다. 확정되면 `src/strings.c`의 해당 줄만 바꾼다(seq 133 #9006).
@@ -250,6 +282,7 @@
    - SELECT GBS 전환 뒤 문구 On/Off 갱신과 재생
    - 메뉴를 나간 뒤 다른 창의 글자가 깨지지 않는지(이식 전 이름 복사 오버런 해소 확인)
 4. **도감 무게 파운드 표시(#9690):** 옵션 "단위계"를 "야드파운드법"으로 바꾼 뒤 도감(기본·HGSS 화면)에서 폴리곤2 또는 다꼬리 무게가 `71.7 lbs.`(이식 전 71.6), 피카츄(6.0 kg)는 `13.2 lbs.`(변화 없음)인지 본다. "미터법"으로 되돌리면 kg 표시가 이식 전과 같아야 한다.
+5. **맵 이름 팝업(#9461):** 팝업 모양·글꼴이 이식 전과 같은지. 숫자가 든 도로("29번 도로"), 긴 이름("사파리존 게이트", "블루시티동굴", "남쪽의 외딴섬"), 다층 던전(모다피의 탑·연결동굴 등: **층 표시가 나오지 않는 것이 정상**), 배틀프런티어·배틀 피라미드 팝업.
 
 ## 후속 행 메모
 
@@ -257,3 +290,5 @@
 - **seq 144 #7573:** `CanMonLearnMove` → `ChooseBoxMon_CanMonLearnMove`로 이름을 바꿀 때 HnS `VALIDATE_BEFORE_LEARNING`의 `switch (IsBoxMonExcluded(boxmon))`와 PLA 가르침 코드는 유지한다.
 - **#9006 이후 relearner 행:** `field_specials.c` `Task_ReturnToFieldWhileLearningMove`의 `tRecoverPp = TRUE`(`// HnS:`)는 upstream에 없는 줄이다. 후속 PR이 이 주변을 고치면 유지 여부를 본다. seq 268 #10368(`UIEndTask`의 비스크립트 TRUE 경로)은 HnS 스크립트 모드에서 닿지 않는다.
 - **seq 298 #10445:** `HandleMoveRelearnerInput`의 `gSpecialVar_MonBoxId = StorageGetCurrentBox();` 줄(박스 번호 줄)은 **이미 적용**(seq 134 커밋 `cf71e21e56`). 함수 앞의 중복 `gSpecialVar_MonBoxPos = sMonSummaryScreen->curMonIndex;` 삭제만 남는다.
+- **`U-mapheader-9461` 뒤 행(seq 358 #7975, 371 #9080, 374 #10167, 377 #10176, 462 #10159):** `global.fieldmap.h`의 `MapHeader`와 `tools/mapjson/mapjson.cpp`는 upstream #9461과 같은 모양이다. `map_name_popup.c`의 HnS 차이 3곳(피라미드 조건, `FONT_NARROW`, `!IS_HNS` 백화점 가드)은 유지한다.
+- **HnS 맵에 `floor_number`를 넣을 때(별도 결정):** 층 표기 한글화(`MapNamePopupAppendFloorNum` HnS 분기)와 `Map names fit in popup`(`FONT_NARROWER` 80px) 테스트 한계를 같이 정한다. 생성 `header.inc`는 도구가 바뀌어도 자동 재생성되지 않으므로 `floor_number`를 넣은 맵은 `map.json` 수정으로 재생성된다.
