@@ -180,3 +180,23 @@ part-C 6절의 관통드릴 테스트에 대조 2건과 프리폴 무게 확인(
 - **seq 479 #10330(`TargetFailure` 재구성):** `CancelerTargetFailure`가 upstream 자식과 글자까지 같다. 이때 `updateStallMons` 설정 2곳의 위치를 다시 확인한다.
 - **메가솔라 `CanTwoTurnMoveFireThisTurn`:** 1.17.0에서 `cv->moveEffect`·`GetTwoTurnMoveWeather`형으로 다시 바뀐다. 그 PR에서 HnS판(만능우산 반영·팝업 판정)을 합친다.
 - **seq 470 #9939·seq 476 #10220(명중 판정·공격 전 효과 캔슬러):** 새 캔슬러는 cv형으로 들어온다. `AccuracyCheck`의 #9929 분기, #9610 내던지기 분기, HnS Champions 동작은 seq 108~119 메모대로 유지한다.
+
+## 커밋 리뷰 (병렬 4개, 영역별, 읽기 전용)
+
+| 영역 | 판정 | 요지 |
+|---|---|---|
+| A (캔슬러 ~ CancelerBide) | 문제 없음 | upstream hunk 29개를 모두 반영했다. BREAK→RUN_SCRIPT_AND_INCREMENT 매핑이 upstream과 같다(SetTargets만 SUCCESS). cv의 공격자·대상·특성·도구 값은 이전 ctx와 같은 시점, 같은 값이다. HnS 줄 5개(include, #10093, #9999, 4인자 `SetTypeBeforeUsingMove`, 참기 `animTurn`)를 보존했다. 수면·혼란·마비 순서와 메시지는 바뀌지 않았다. |
+| B (MoveFailure ~ 끝) | 문제 없음 | 커밋이 A~D 적용본과 바이트 단위로 같다. 메가솔 판단 입력은 이전과 같다. 불면·의기양양 전용 문구, 인터럽트 캔슬러, 부자유친·로디드다이스, 집단구타 챌린지를 유지했다. 스카이드롭 `HandleSkyDropResult`가 1.17.0과 diff 0이다. `updateStallMons`의 달라진 점은 모두 upstream과 같다. 싱글·더블 대상 반복이 올바르다. |
+| C (util·헤더 등) | 문제 없음 | `BattleContext` 146곳을 전부 바꿨다(HnS 전용 9곳 포함). 관통드릴 조건이 #9740·1.17.0과 글자까지 같고, 호출처 2곳 모두 특성·도구를 채운다. `SpecialStatus` 첫 바이트 8비트는 컴파일로 확인했고, 바이트·마스크 직접 접근은 없다. `DoFutureSightAttackDamageCalcVars`는 #9942에서 이미 삭제됐다. |
+| D (AI 4파일) | 문제 없음 | 부모에 `sed` 이름 변경을 한 결과가 커밋과 바이트 단위로 같다(이름 변경뿐). `partnerCtx`를 반영했다. `// HnS:` 4곳을 보존했다. PP 끌기 기록 변화는 upstream 자식과 같다. |
+
+참고(조치 불필요, 모두 upstream과 같은 중간 상태):
+- 랜덤 대상 absent 검사 `1u << cv->battlerAtk`는 #10459(seq 447)에서 정리한다.
+- 싱글에서 배틀러 2·3에 FAILED 플래그가 남는다. #10330(seq 479)에서 정리한다.
+- 퀵가드는 캔슬러 스냅샷 특성을 쓴다.
+- 메가솔은 자동 테스트가 없어 실기 확인 2번이 필요하다.
+
+메인 확인:
+- `git diff --check` 통과. 한글이 든 소스 줄 변경 0, 파일 모드 변경 0, config 변경 0.
+- 코드에 `BattleContext`와 `CANCELER_RESULT_BREAK`/`PAUSE`가 0개다.
+- 빌드: ROM 32,719,060 B, EWRAM 248,940 B, IWRAM 25,516 B, SHA1 `2ef9b346a463da48dc2a7f41f12d58ca4a619b53`.

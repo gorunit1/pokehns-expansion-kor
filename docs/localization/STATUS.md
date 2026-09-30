@@ -1,5 +1,12 @@
 # 현재 인수인계 상태
 
+## 2026-09-30 — full-sync port seq 120 (#9657) 완료 (현재)
+
+- **다음 시작 seq: 121.** 예정: seq 121~126(seq 126 #9668은 이미 적용) → **seq 127 #9655 배틀 메시지 리팩터. 시작 전에 D1~D6 결정이 필요하다**(`docs/friend-handoff/HANDBACK_2026-09-30.md` 9절, `docs/friend-handoff/results/1.17.0-port/pre-9655/REPORT.md`).
+- seq 120 #9657(`aa175914e9`): `BattleCalcValues` 전환과 `DamageContext` 이름 되돌리기. HnS 고유 분기를 보존했고, 영역별 리뷰 4개 모두 문제 없음. 프리폴 무게 출력 변화 1건(1.17.0 동작).
+- 빌드: ROM 32,719,060 B(97.51%), EWRAM 248,940 B, IWRAM 25,516 B. 한글 변경 0. 테스트 목록은 seq119와 같다(`test-baseline-seq120.txt`).
+- 친구 mGBA 확인 대기: Safari 재확인, #9525·#9124·#9551, seq 108~119, seq 120(프리폴·메가솔·잠자기·관통드릴).
+
 ## 2026-09-30 — full-sync port seq 108~119 완료 (현재)
 
 - **다음 시작 seq: 120** (#9657 `U-calcvalues-9657` BattleCalcValues, XL 단독). 그다음 예정: seq 121~126(seq 126 #9668은 이미 적용) → seq 127 #9655 배틀 메시지 리팩터(XL, 한글 영향 큼).

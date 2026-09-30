@@ -2,6 +2,21 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-09-30 — full-sync port seq 120 (#9657), #9655 한글 영향 사전 조사 (데스크탑)
+
+- 시작: 노트북 세션의 `bf35dce76a`까지 pull했다(seq 108~119 완료). clean build ROM 32,718,964 B가 기록과 같았다. 이어서 `17aa03192f` 제안 문서를 커밋했다.
+- 진행: #9657을 4개 영역으로 나눠 병렬 사전 분석했다. 산출물은 스크래치 `/home/hjm0725/hns-sync-work/chunk-120/`에만 있다. A~D patch를 한 커밋 `aa175914e9`로 적용했다. 결과 문서·기준 목록은 `c6e4a4e29a`다. 영역별 병렬 리뷰 4개는 전부 문제 없음이었다.
+- HnS 보존: 메가솔, 불면·의기양양 문구, 관통드릴(`IsBattlerProtected(cv)`), 집단구타 챌린지, 참기 연출, `// HnS:` 전부. `BattleContext` 146곳을 모두 `DamageContext`/cv로 바꿨다.
+- 출력 변화: 프리폴 무게가 대상의 헤비메탈·라이트메탈·가벼운돌을 반영하게 됐다(1.17.0 동작, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 1행 추가).
+- 검증:
+  - 메인: `git diff --check` 통과. 한글 줄·모드·config 변경 0. 코드에 `BattleContext`와 `CANCELER_RESULT_BREAK`/`PAUSE`가 0개다.
+  - 빌드: ROM 32,719,060 B(+96 B), EWRAM 248,940 B, IWRAM 25,516 B, SHA1 `2ef9b346a463da48dc2a7f41f12d58ca4a619b53`
+  - 테스트: 지정 160파일은 이식 전후가 같다. 전체 목록은 seq119와 바이트 동일하다(`test-baseline-seq120.txt`). 관통드릴·프리폴 임시 테스트는 커밋하지 않았다.
+- #9655 사전 조사(읽기 전용, `17aa03192f` 기준):
+  - 결과: `docs/friend-handoff/results/1.17.0-port/pre-9655/`(REPORT.md와 tsv 3개)
+  - 요약: hunk 112개, 게임 화면 문장 변화 18곳, 권장안이면 새 번역 0, 결정 필요 D1~D6
+- 다음 시작점: **seq 121**. seq 127 #9655 전에 D1~D6 답이 필요하다(`HANDBACK_2026-09-30.md` 9절).
+
 ### 2026-09-30 — 제안 문서: AI가 mGBA MCP로 실기 확인 일부 대체 (검토 중, 확정 아님)
 
 - 요청: 사용자가 mGBA를 조작하는 MCP 서버로 실기 확인의 일부(메모리 값, 특정 화면)를 Claude가 대신하는 방안을 검토하고, 다른 세션과 친구가 볼 수 있게 문서로 남기라고 했다. **확정이 아니라 검토 중인 제안**이다.

@@ -1,0 +1,21 @@
+STRINGID	필요 여부	제안 한글	근거	상태
+STRINGID_SCRCUREDPARALYSIS	필수	{B_SCR_NAME_WITH_PREFIX}의\n몸저림이 풀렸다!	HnS STRINGID_PURIFYTARGETPARALYSISCURED(battle_message.c:697) 본문·토큰 그대로	재사용(창작 없음). 용어는 D5
+STRINGID_SCRCUREDPOISON	필수	{B_SCR_NAME_WITH_PREFIX}의 독은\n말끔하게 해독됐다!	PURIFYTARGETPOISONCURED(:695)	재사용
+STRINGID_SCRCUREDBURN	필수	{B_SCR_NAME_WITH_PREFIX}의\n화상이 나았다!	PURIFYTARGETBURNCURED(:696)	재사용
+STRINGID_SCRCUREDSLEEP	필수	{B_SCR_NAME_WITH_PREFIX}{B_TXT_EUNNEUN} 눈을 떴다!	PURIFYTARGETSLEEPCURED(:698)	재사용
+STRINGID_SCRCUREDCONFUSION	필수	{B_SCR_NAME_WITH_PREFIX}의\n혼란이 풀렸다!	PKMNHEALEDCONFUSION(:246) 본문, {B_ATK}→{B_SCR}	재사용(토큰만)
+STRINGID_PARTYCUREDPARALYSIS	필수	{B_BUFF1}의\n몸저림이 풀렸다!	위 본문 + ITEMCUREDSPECIESSTATUS(:803)의 {B_BUFF1}(종족명) 주어	재사용(토큰만). 용어는 D5
+STRINGID_PARTYCUREDPOISON	필수	{B_BUFF1}의 독은\n말끔하게 해독됐다!	〃	재사용
+STRINGID_PARTYCUREDBURN	필수	{B_BUFF1}의\n화상이 나았다!	〃	재사용
+STRINGID_PARTYCUREDSLEEP	필수	{B_BUFF1}{B_TXT_EUNNEUN} 눈을 떴다!	〃(ITEMCUREDSPECIESSTATUS가 이미 {B_BUFF1}{B_TXT_EUNNEUN} 사용)	재사용
+STRINGID_PARTYCUREDFREEZE	필수	{B_BUFF1}의\n얼음이 녹았다!	PKMNWASDEFROSTED(:236) 본문	재사용
+STRINGID_PARTYCUREDFROSTBITE	필수	{B_BUFF1}의\n동상이 나았다!	PKMNFROSTBITEHEALED(:810) 본문	재사용
+STRINGID_PKMNAURORAVEIL	필수(ID)	{B_ATK_PREFIX2} {B_CURRENT_MOVE}{B_TXT_EU}로\n물리공격과 특수공격에 강해졌다!	PKMNRAISEDDEFSPDEF(:258) 복제(HnS 오로라베일 성공 문구)	재사용. 표 매핑은 HnS 유지
+STRINGID_PKMNHEALEDPOISON	필수(이름 변경)	{B_DEF_NAME_WITH_PREFIX}의 독은 말끔하게 해독됐다!	PASTELVEILENTERS(:755) 이름만 변경	재사용(바이트 동일)
+STRINGID_PKMNATKNOTLOWERED	필수(seq 127~180 사용)	{B_SCR_NAME_WITH_PREFIX}의\n공격은 떨어지지 않는다!	PKMNSXPREVENTSYLOSS(:486) `{B_SCR}의\n{B_BUFF1}{B_TXT_EUNNEUN} 떨어지지 않는다!`에 능력치명 `공격`(sText_Attack :152)을 넣은 결과와 바이트 동일. 1.17.0 최종형도 같은 상황에 같은 영문(`…'s Attack was not lowered!`)을 PKMNSXPREVENTSYLOSS 경로로 출력	기존 문장 조합(창작 아님). 승인 필요 시 D-승인 목록
+STRINGID_STICKYWEBDISAPPEAREDFROMYOU	불필요(권장)	(미이식)	#9777(seq 475)에서 분기·ID 삭제. HnS는 이미 모든 경우 STICKYWEBDISAPPEAREDFROMTEAM `{B_ATK_TEAM2} 발밑의\n끈적끈적네트가 사라졌다!` 출력	미이식 권장. 이식한다면 미결(공식 원문 없음)
+STRINGID_PKMNSWILLPERISHIN3TURNS	기존 누락(#9655가 같은 줄 수정)	후보: 서로의 포켓몬은\n3턴 후에 쓰러져 버린다!	HnS STRINGID_FAINTINTHREE(:430) `멸망의노래를 들은 포켓몬은\n3턴 후에 쓰러져 버린다!`의 서술부 + 영문 Both Pokémon. 공식 한국어 원문 미확인	미결(후보). 현재 게임에 영문이 그대로 나옴
+STRINGID_PKMNSXMADEYINEFFECTIVE(의미 변경)	D2=B일 때만	후보: {B_SCR_NAME_WITH_PREFIX}의\n도구는 빼앗을 수 없다!	영문 `…'s item cannot be removed!`. 공식 한국어 원문 미확인	미결(D2=A면 불필요)
+(선택) STRINGID_NATUREPOWERTURNEDINTO	선택 개선	후보: {B_ATK_NAME_WITH_PREFIX}의 자연의힘은\n{B_CURRENT_MOVE}{B_TXT_IGA} 되었다!	영문에 사용자 이름 추가. 규칙상 기존 문장 수정 금지라 기본은 유지	미결(하지 않음이 기본)
+(선택) STRINGID_ATKGOTOVERINFATUATION	선택 개선	후보: {B_SCR_NAME_WITH_PREFIX}{B_TXT_EUNNEUN} {B_LAST_ITEM}{B_TXT_EU}로\n헤롱헤롱 상태가 나았다!	영문에 도구명 추가. HnS 열매 문구(PKMNSITEM*) 어순 참고	미결(하지 않음이 기본)
+(선택) STRINGID_ITEMRESTOREDSPECIESPP	선택 개선	후보: {B_BUFF1}의 {B_BUFF2}{B_TXT_EUNNEUN}\nPP가 회복되었다!	영문에 기술명({B_BUFF2}) 추가, 엔진이 BUFF2 준비	미결(하지 않음이 기본)
