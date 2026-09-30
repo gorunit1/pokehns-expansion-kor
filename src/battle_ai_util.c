@@ -543,7 +543,7 @@ bool32 Ai_IsPriorityBlocked(enum BattlerId battlerAtk, enum BattlerId battlerDef
     return FALSE;
 }
 
-bool32 AI_CanMoveBeBlockedByTarget(struct BattleContext *ctx)
+bool32 AI_CanMoveBeBlockedByTarget(struct DamageContext *ctx)
 {
     return CanMoveBeBlockedByTarget(ctx, GetBattleMovePriority(ctx->battlerAtk, ctx->abilityAtk, ctx->move));
 }
@@ -556,7 +556,7 @@ bool32 MovesWithCategoryUnusable(u32 attacker, u32 target, enum DamageCategory c
     enum Move *moves = GetMovesArray(attacker);
     u32 moveLimitations = gAiLogicData->moveLimitations[attacker];
 
-    struct BattleContext ctx = {0};
+    struct DamageContext ctx = {0};
     ctx.battlerAtk = attacker;
     ctx.battlerDef = target;
     ctx.updateFlags = FALSE;
@@ -636,7 +636,7 @@ static __attribute__((noinline)) ARM_FUNC s32 RandomRollDmg(s32 dmg)
     return dmg;
 }
 
-bool32 IsDamageMoveUnusable(struct BattleContext *ctx)
+bool32 IsDamageMoveUnusable(struct DamageContext *ctx)
 {
     enum Ability battlerDefAbility = ctx->abilityDef;
     enum Ability partnerDefAbility = gAiLogicData->abilities[BATTLE_PARTNER(ctx->battlerDef)];
@@ -754,7 +754,7 @@ static inline void AI_RestoreBattlerTypes(enum BattlerId battlerAtk, enum Type *
     gBattleMons[battlerAtk].types[2] = types[2];
 }
 
-static inline void CalcDynamicMoveDamage(struct BattleContext *ctx, struct SimulatedDamage *simDamage)
+static inline void CalcDynamicMoveDamage(struct DamageContext *ctx, struct SimulatedDamage *simDamage)
 {
     enum BattleMoveEffects effect = GetMoveEffect(ctx->move);
     u32 median = simDamage->median;
@@ -782,7 +782,7 @@ static inline void CalcDynamicMoveDamage(struct BattleContext *ctx, struct Simul
         bool32 multiplyDamage = FALSE;
         if (IsDoubleBattle() && AI_GetBattlerMoveTargetType(ctx->battlerAtk, ctx->move) == TARGET_SMART)
         {
-            struct BattleContext partnerCtx = *ctx;
+            struct DamageContext partnerCtx = *ctx;
             partnerCtx.battlerDef = BATTLE_PARTNER(ctx->battlerDef);
             partnerCtx.typeEffectivenessModifier = CalcTypeEffectivenessMultiplier(&partnerCtx);
 
@@ -862,7 +862,7 @@ static inline void CalcDynamicMoveDamage(struct BattleContext *ctx, struct Simul
     simDamage->random = random;
 }
 
-static inline bool32 ShouldCalcCritDamage(struct BattleContext *ctx)
+static inline bool32 ShouldCalcCritDamage(struct DamageContext *ctx)
 {
     s32 critChanceIndex = 0;
 
@@ -888,7 +888,7 @@ static inline bool32 ShouldCalcCritDamage(struct BattleContext *ctx)
     return FALSE;
 }
 
-static s32 HandleKOThroughBerryReduction(struct BattleContext *ctx, s32 dmg)
+static s32 HandleKOThroughBerryReduction(struct DamageContext *ctx, s32 dmg)
 {
     if (ctx->aiCheckBerryModifier) // Only set if AI running calcs
     {
@@ -914,7 +914,7 @@ static s32 HandleKOThroughBerryReduction(struct BattleContext *ctx, s32 dmg)
     return dmg;
 }
 
-static s32 AI_ApplyModifiersAfterDmgRoll(struct BattleContext *ctx, s32 dmg)
+static s32 AI_ApplyModifiersAfterDmgRoll(struct DamageContext *ctx, s32 dmg)
 {
     dmg = ApplyModifiersAfterDmgRoll(ctx, dmg);
     dmg = HandleKOThroughBerryReduction(ctx, dmg);
@@ -966,7 +966,7 @@ struct SimulatedDamage AI_CalcDamage(struct AiCalcValues *aiCalc, enum BattlerId
     gBattleStruct->presentBasePower = 80;
     gBattleStruct->beatUpSlot = 0;
 
-    struct BattleContext ctx = {0};
+    struct DamageContext ctx = {0};
     ctx.aiCalc = TRUE;
     ctx.aiCheckBerryModifier = FALSE;
     ctx.battlerAtk = battlerAtk;
@@ -1471,7 +1471,7 @@ uq4_12_t AI_GetMoveEffectiveness(enum Move move, enum BattlerId battlerAtk, enum
 
     gBattleStruct->dynamicMoveType = 0;
     SetTypeBeforeUsingMove(move, battlerAtk, gAiLogicData->abilities[battlerAtk], gAiLogicData->holdEffects[battlerAtk]);
-    struct BattleContext ctx = {0};
+    struct DamageContext ctx = {0};
     ctx.battlerAtk = battlerAtk;
     ctx.battlerDef = battlerDef;
     ctx.move = ctx.chosenMove = move;

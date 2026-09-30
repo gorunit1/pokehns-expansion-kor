@@ -1297,7 +1297,7 @@ static void TrySetBattleSeminarShow(void)
                     gBattleStruct->beatUpSpecies[0] = 0;
             }
 
-            struct BattleContext ctx = {0};
+            struct DamageContext ctx = {0};
             ctx.battlerAtk = gBattlerAttacker;
             ctx.battlerDef = gBattlerTarget;
             ctx.move = ctx.chosenMove = gCurrentMove;
