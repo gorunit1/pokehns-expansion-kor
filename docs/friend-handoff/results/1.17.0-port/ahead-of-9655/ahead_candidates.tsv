@@ -1,0 +1,398 @@
+seq	pr	class	size	kind	korean_touch	save_impact	unit	deps	reason	title
+128	9475	#9655 파일	XL	refactor	N	N	U-trainerpic-9475	-	pokemon.c	Refactor/trainer pic info
+129	9674	#9655 의존	L	refactor	Y	N	U-magicbounce-9674	9176,9657,9655	deps 9655	Magic Bounce / Magic Coat/ Snatch refactor
+130	9575	선진행	M	refactor	N	N	U-9575	9596	-	Unify AI prediction handling
+131	9462	선진행	M	refactor	N	N	U-aiconfig-9460	9460	9655테스트겹침:first_turn_only.c	Config to randomize the order AI mons compute logic in double battles
+132	9680	#9655 의존	XL	refactor	Y	N	U-endturn-9680	9249,9610,9494,9616,9655	deps 9655	Make End Turn events use BattleScriptCall (return instead of end2)
+133	9006	선진행	L	refactor	Y	N	U-relearner-9006	-	-	Move relearner refactor
+134	9903	선진행	S	fix	N	N	U-relearner-9006	9006	-	Fix move relearner from summary screen from pc
+135	9709	#9655 파일	S	refactor	N	N	U-9709	-	battle_util.c,pokemon.c	Improve AI calc speed with affection hearts
+136	9711	보류(줄 겹침)	S	refactor	N	N	U-9711	-	hunk:135#9709(file):pokemon.h	Remove hex values from BattlePokemon
+137	9713	선진행	M	feature	N	N	U-9713	-	-	Support non-contiguous SE/MUS IDs in debug menu
+138	9707	이미 적용	S	fix	N	N	U-fade-9407	9407	-	Reset objPaletteToggle after Software Fade
+138.5	8943	#9655 파일	XL	refactor	Y	Y	U-12v12-8943	9451,9507,9494	battle_message.c,battle_script_commands.c,battle_util.c,pokemon.c,pokemon.c	12v12 capability
+139	9714	#9655 의존	L	refactor	Y	N	U-9714	9655,9680,8943	deps 9680(seq 132)→9655	Slight restructure for Defog and Tidy Up
+140	9725	unit 선행 제외	S	fix	N	N	U-12v12-8943	8943	unit U-12v12-8943 member seq 138.5 excluded	Fix multi_do multiple-definition error
+141	9729	unit 선행 제외	S	fix	N	N	U-12v12-8943	8943	unit U-12v12-8943 member seq 138.5 excluded	Fix wild doubles only having 1 mon
+142	8930	#9655 파일	L	refactor	N	N	U-dexorder-8930	-	pokemon.c	Automate regional Pokedex orders
+143	9721	선진행	S	build	N	N	U-9721	-	-	Learnset Helper: Remove unnecessary order-only dependencies
+144	7573	#9655 파일	M	feature	N	N	U-7573	9006,8943	pokemon.c	Reworked event evolution `tryspecialevo`
+145	8472	보류(줄 겹침)	M	feature	N	N	U-8472	9124,9551	hunk:138.5#8943(file):battle_ai_switch.c	Implement Wish Passing in ShouldSwitch
+146	9735	#9655 파일	S	fix	N	N	U-9735	-	battle_script_commands.c,battle_util.c	Mega Sol and Dragonize
+147	9761	#9655 파일	M	refactor	Y	N	U-9761	-	battle_message.c,battle_script_commands.c,battle_util.c,pokemon.c	Fix spaces, spelling, and grammar
+148	9690	선진행	S	fix	N	N	U-9690	-	-	fix: Modernize the conversion formula for imperial weights
+149	9461	선진행	M	feature	Y	N	U-mapheader-9461	-	9655테스트겹침:text.c	Show floor number in map popup
+150	9717	#9655 의존	L	refactor	Y	N	U-queuedswitch-9717	9494,9680	deps 9680(seq 132)→9655	Adds queued switches for EndTurn switches
+151	9755	선진행	S	refactor	N	N	U-9755	-	-	Remove reundant weather check in IsDamageMoveUnusable
+152	9757	보류(줄 겹침)	S	refactor	N	N	U-9757	-	hunk:135#9709(file):ai.h;138.5#8943(file):ai.h	Remove redundant SetBattlerAiData call in GetMostSuitableMonToSwitchInto
+153	9710	#9655 파일	XL	refactor	Y	N	U-damagecontext-9710	9657	battle_script_commands.c,battle_util.c	Use `ctx` in `GetDefenderPartnerAbilitiesModifier`
+154	9779	보류(줄 겹침)	M	test	N	N	U-9779	-	hunk:135#9709(file):ai.h;153#9710(file):ai.h;138.5#8943(file):ai.c	Isolate AI thinking time tests
+155	9780	#9655 파일	S	refactor	N	N	U-9761	-	pokemon.c	Revert an overzealous find-replace
+156	9774	선진행	S	fix	N	N	U-relearner-9006	9006	-	Properly cancel move relearner NPC after refusing to learn a move
+157	8628	선진행	S	feature	N	N	U-8628	-	-	Add setmetatileinrange Script Command
+158	9765	선진행	S	refactor	N	N	U-9765	-	-	Remove template abstraction for pokedex area map
+159	9786	#9655 파일	M	refactor	N	N	U-9786	-	battle_util.c	Clarify isFirstTurn usage with wrappers
+160	9762	선진행	S	refactor	N	N	U-9762	-	-	Clean mail-related duplicate code
+161	9168	#9655 의존	L	feature	Y	N	U-berryanim-9168	9655	deps 9655	Add Held Berry Animation
+162	9693	보류(줄 겹침)	M	refactor	N	N	U-relearner-9006	9006	hunk:138.5#8943(file):party_menu.c	Remove relearner from party menu
+163	9796	이미 적용	S	fix	N	N	U-spots-9594	9594	-	Add Spot Coord Limits
+164	9811	#9655 파일	S	fix	N	N	U-12v12-8943	8943	battle_util.c	Use GetBattlerTrainer instead of GetBattlerSide in GetBattlerPartyState
+165	9813	선진행	S	fix	N	N	U-fillsprite-9973	9973	-	Improve `FillSpriteRect` performance
+166	9784	#9655 의존	L	refactor	N	N	U-queuedswitch-9494	9494,8943,9717	deps 9717(seq 150)→9655	Adjustments for Eject Items / Mirror Herb / White Herb
+167	9819	선진행	S	refactor	N	N	U-fieldmove-9819	-	-	Refactor rock climb and defog to be defined at all times
+168	9832	#9655 의존	S	refactor	N	N	U-eject-9784	9494,9784	deps 9784(seq 166)→9655	Clean up for eject item changes
+169	9835	#9655 파일	S	build	N	N	U-9835	-	battle_util.c	Fix declaration after label
+170	9751	#9655 파일	S	test	N	N	U-12v12-8943	8943	battle_util.c	Adds AreMultiPartiesFullTeams and Test_BattlersShareParty handling to tests
+171	9799	#9655 의존	M	fix	Y	N	U-12v12-8943	9655,8943	deps 9655	Adds tests for switch battle messages and switch AI bugfix
+172	9850	보류(줄 겹침)	S	refactor	N	N	U-owabilities-9850	-	hunk:138.5#8943(file):ow_abilities.c	Cleanup and tests for ow_abilities.c
+173	9847	deps 선행 제외	L	refactor	N	N	U-aiswitch-9847	9451,9460,9124,9568,9551,9657,9575,9462,8943,8472	deps #8943(seq 138.5)	Shouldswitch refactor to use `SwitchContext`
+174	9856	#9655 의존	S	fix	Y	N	U-battlemsg-9655	9655	deps 9655	Fix contact damage message printing
+175	8434	#9655 파일	XL	feature	N	N	U-owe-8434	-	pokemon.c	Overworld Encounters
+176	9864	이미 적용	S	fix	N	N	U-queuedswitch-9494	9494	-	Make healthbox invisible for previous mon after opening party screen
+177	9879	#9655 파일	M	refactor	N	N	U-wildcfg-9879	9529,8434	battle_script_commands.c,battle_util.c,pokemon.c	Move wild encounter related config to `wild_encounter` config file
+178	9911	보류(줄 겹침)	S	refactor	N	N	U-9911	-	hunk:175#8434(file):event_object_movement.c	Remove two unused functions from src/event_object_movement.c
+179	9906	#9655 파일	M	fix	N	N	U-heap-9906	-	battle_script_commands.c	Reduce battle heap usge outside main battle screen
+180	9843	unit 선행 제외	S	fix	N	N	U-12v12-8943	8943	unit U-12v12-8943 member seq 138.5 excluded	Fix in-battle summary preserving battle party order
+181	9730	#9655 의존	XL	refactor	Y	N	U-statchange-9730	9176,9446,9249,9514,9610,9532,9494,9657,9655,9674,9680,8943,9717,9786,9168	deps 9168(seq 161)→9655	Stat Change Refactor
+182	9865	#9655 파일	L	fix	N	N	U-9865	-	battle_hold_effects.c,battle_script_commands.c,battle_util.c	Mega Sol test adjustments
+183	9928	#9655 의존	M	refactor	N	N	U-statchange-9730	9730	deps 9730(seq 181)→9655	Rename follow up for Stat Change Refactor
+184	9857	deps 선행 제외	L	refactor	N	N	U-9857	9358,9575,9847	deps #9847(seq 173)	Incoming and predicted move function cleanup
+185	9910	unit 선행 제외	S	refactor	N	N	U-owe-8434	8434	unit U-owe-8434 member seq 175 excluded	Modify GetAvailableObjectEventId  to return objectEventId by value instead of by reference
+186	9890	선진행	L	refactor	N	N	U-debug-9890	-	-	Refactor a more generic way to handle complex debug menu actions
+186.5	9920	선진행	S	feature	N	Y	U-dailyseed-9920	-	-	Basic daily seed
+187	9877	선진행	M	feature	N	Y	U-dailyseed-9920	9920	-	Add Dynamic Weather Option
+188	9918	#9655 의존	L	refactor	Y	N	U-pledge-9918	9176,9446,9514,9494,9657,9674,9730	deps 9730(seq 181)→9655	Customizeable Pledge Moves
+189	9805	#9655 파일	M	test	Y	N	U-9805	-	battle_message.c	Adds Ghost battle tests
+190	9968	unit 선행 제외	S	fix	N	N	U-owe-8434	8434,9879,9910	unit U-owe-8434 member seq 175 excluded	Bugfix: OWEs set not to despawn can now be set not to despawn as a result of movement type
+191	9896	#9655 파일	L	feature	N	N	U-randommon-9896	-	pokemon.c	Random Mon Generation
+192	9965	unit 선행 제외	S	refactor	N	N	U-wildcfg-9879	9879	unit U-wildcfg-9879 member seq 177 excluded	config/wild_encounter.h cleanup
+193	9957	#9655 의존	M	fix	N	N	U-statchange-9730	9784,9730	deps 9730(seq 181)→9655	Fixes Guard Dog
+194	9972	#9655 의존	S	fix	N	N	U-statchange-9730	9730	deps 9730(seq 181)→9655	Fix geomancy being a two turn move
+195	9989	#9655 의존	S	fix	N	N	U-statchange-9730	9730	deps 9730(seq 181)→9655	Small Dome updates
+196	9988	#9655 의존	L	fix	N	N	U-dancer-9988	9417,9784	deps 9784(seq 166)→9655	Dancer activation order config + upcoming bugfixes
+197	9861	선진행	M	fix	N	N	U-9861	-	-	Fix Dynamic Summary Screen Type
+198	10014	unit 선행 제외	S	fix	N	N	U-heap-9906	9906	unit U-heap-9906 member seq 179 excluded	Fix battle debug not properly freeing some tilemaps
+199	10020	unit 선행 제외	S	fix	N	N	U-owe-8434	9991,8434	unit U-owe-8434 member seq 175 excluded	Re-add `DetermineFollowerNPCDirection` same coord check
+200	10024	#9655 의존	S	fix	N	N	U-dancer-9988	9988	deps 9988(seq 196)→9655	Fixes Trace not activating when reobtained after activation
+201	10032	#9655 의존	S	fix	N	N	U-statchange-9730	9730	deps 9730(seq 181)→9655	Fixes Swagger into Own Tempo target softlock
+202	10050	선진행	S	fix	N	N	U-dailyseed-9920	9920	-	Set daily seed on new game
+203	10057	#9655 의존	S	refactor	N	N	U-statchange-9730	9730,9928	deps 9928(seq 183)→9655	Further stat change refactor clean up
+204	10051	#9655 파일	XL	refactor	N	N	U-12v12-8943	8943	battle_script_commands.c,battle_util.c,pokemon.c,pokemon.c	Give enum BattleTrainer more user friendly entry names
+205	9885	#9655 파일	M	refactor	N	N	U-12v12-8943	8943	pokemon.c,pokemon.c	Adds deprecation warnings to old party and party count globals
+206	10064	#9655 의존	S	fix	Y	N	U-battlemsg-9655	9655	deps 9655	Fix already-status messages using the wrong battler
+207	10059	#9655 파일	M	fix	N	N	U-12v12-8943	8943,10051	pokemon.c	Fix 12v12 partner party menu slot ptr
+208	10066	unit 선행 제외	S	fix	N	N	U-owe-8434	8434,9910,9968	unit U-owe-8434 member seq 175 excluded	Fix Generated OWEs Accessing Garbage Data
+209	10039	#9655 파일	M	fix	N	N	U-12v12-8943	8943,10051,10059	battle_script_commands.c,battle_util.c	Fixed NoAliveMonsForPlayer for multibattles
+210	10074	#9655 의존	S	fix	Y	N	U-statchange-9730	9730	deps 9730(seq 181)→9655	Fix erroneous failure message for stat change moves
+211	10077	#9655 의존	S	fix	Y	N	U-statchange-9730	9730	deps 9730(seq 181)→9655	Fix Competetive, Defiant and Adrenaline Orb triggering when at min stat
+212	10088	#9655 의존	M	fix	N	N	U-statchange-9730	9657,9730	deps 9730(seq 181)→9655	Fixes stat change queue having erroneous stats stored
+213	10091	#9655 의존	M	fix	N	N	U-statchange-9730	9730	deps 9730(seq 181)→9655	Fixes Acupressure timeout in doubles
+214	10100	선진행	S	fix	N	N	U-10100	-	-	Fix colosseum warps frlg
+215	10102	unit 선행 제외	S	fix	N	N	U-12v12-8943	8943,10051	unit U-12v12-8943 member seq 138.5 excluded	Fix link singles and doubles using incorrect parties
+216	10104	선진행	S	data	N	N	U-10104	-	-	Add missing item sort types
+217	10106	#9655 파일	S	refactor	N	N	U-10106	-	battle_script_commands.c,pokemon.c	Use values from `enum PokeBall` for Poké Balls
+218	10110	선진행	S	refactor	N	N	U-10110	-	-	Cleanup 'message 0x0'
+219	10109	보류(줄 겹침)	S	fix	N	N	U-10109	-	hunk:204#10051(file):party_menu.c	SanitizeBagItemId, TryTakeMonItemResult
+220	10129	선진행	S	gfx	N	N	U-10129	-	-	feat (battle): improve gimmick triggers' graphics
+221	10111	선진행	S	fix	N	N	U-10111	-	-	assertf for NULL goto/call
+222	10131	선진행	S	refactor	N	N	U-10131	-	-	Remove deprecated ``HQ_RANDOM`` config
+223	10103	선진행	S	test	N	N	U-10103	7360	-	Fix Beat Up typeless damage test effectiveness check
+224	10130	선진행	S	refactor	N	N	U-10130	-	-	Add `if_comptime`
+225	10139	보류(줄 겹침)	M	test	N	N	U-aiselftarget-10046	-	hunk:138.5#8943(file):trainer_slides.c	Prevent AI illegally targeting itself in doubles
+226	10147	선진행	S	fix	N	N	U-10147	-	-	Fix HGSS Dex Form Strings
+227	10141	선진행	M	gfx	N	N	U-gen7anim-sprites	-	-	More Gen VII animation data added
+228	10161	#9655 의존	L	fix	N	N	U-10161	9942,9494,9730	deps 9730(seq 181)→9655	Fixes Future Sight attacker in party issues
+229	10169	#9655 파일	M	fix	N	N	U-10169	-	battle_end_turn.c,battle_util.c	Fixes Toxic Poison counter not being incremented on Poison Heal
+230	9642	보류(줄 겹침)	M	test	N	N	U-9642	-	hunk:138.5#8943(file):test_test_runner.c	Add test support for inventory management in battle
+231	10186	#9655 파일	M	fix	N	N	U-10186	-	battle_script_commands.c,battle_util.c	Fixes Supreme Overlord and Last Respects wrong faint counter
+232	10194	선진행	S	fix	N	N	U-debug-9890	-	-	Check if species is disabled when filling pc boxes
+233	10210	#9655 의존	S	build	N	N	U-10210	9991,9730	deps 9730(seq 181)→9655	Fix declaration after label errors
+234	10216	#9655 의존	S	fix	N	N	U-statchange-9730	9730	deps 9730(seq 181)→9655	Fixes Curse wrong animation being played
+235	10208	선진행	S	gfx	N	N	U-gen7anim-sprites	10141	-	More Gen VII Animation Data
+236	10198	선진행	S	tool	N	N	U-mapjson-9949	9949	-	Changes to mapjson.cpp and how_to_frlg.md
+237	10225	선진행	S	gfx	N	N	U-10225	-	-	Remove the preproc around Strange Ball OW graphic
+238	10227	#9655 파일	S	fix	N	N	U-10227	-	battle_end_turn.c	Fix Sea of Fire damage immunities
+239	10229	#9655 파일	S	fix	N	N	U-10229	-	battle_util.c	Fix OHKO moves ignoring Glaive Rush accuracy bypass
+240	10226	#9655 파일	M	fix	Y	N	U-10226	9446	battle_scripts_1.s,battle_script_commands.c	Fix Psycho Shift status transfer interactions
+241	10231	#9655 파일	M	fix	N	N	U-10231	10169	battle_hold_effects.c,battle_util.c	Fix Emergency Exit being skipped after Shell Bell recovery
+242	10219	선진행	S	fix	N	N	U-10219	-	-	Fix incorrect style flagging for Battle Factory
+243	10185	#9655 의존	M	fix	N	N	U-statchange-9730	9784,9730	deps 9730(seq 181)→9655	Fixes Mirror Herb erroneous activations
+244	10263	보류(줄 겹침)	M	fix	N	N	U-10263	-	hunk:138.5#8943(file):battle_controllers.h,battle_controllers.c;147#9761(file):battle_controller_opponent.c;204#10051(file):battle_controllers.c	Fixes TARGET_FIELD moves failing when partner is not on the field
+245	10272	보류(줄 겹침)	S	data	N	N	U-10272	-	hunk:138.5#8943(file):revival_blessing.c	Fix Mimikyu Busted and Eiscue Noice reverting when revived
+246	10262	선진행	S	fix	N	N	U-10262	-	-	Fix Trick Room animation playing on wrong battler
+247	10287	#9655 의존	M	fix	Y	N	U-statchange-9730	9730	deps 9730(seq 181)→9655	Fixes Totem aura message mentioning wrong battler
+248	10289	#9655 파일	M	fix	N	N	U-10289	-	battle_end_turn.c,battle_util.c	Fixes Binding Band no longer affecting bound battler's hp decrease when nullified
+249	10288	#9655 파일	M	fix	N	N	U-10288	10231	battle_util.c	Fixes Pursuit activating Eject Button on switching foe
+250	10281	이미 적용	S	gfx	N	N	U-10281	9537	-	Bugfix: Added missing spritesheet rules to frlg maniac ow
+251	10278	#9655 파일	M	fix	N	N	U-10278	9858	battle_script_commands.c	Fix Incinerate item handling and Core Enforcer targeting
+252	10175	#9655 의존	S	fix	N	N	U-statchange-9730	9730	deps 9730(seq 181)→9655	Fix Target Failure for Ally
+253	10306	#9655 파일	M	fix	Y	N	U-10306	-	battle_script_commands.c	Fix Eerie Spell PP reduction for Max Moves
+254	10307	#9655 파일	M	fix	N	N	U-10307	-	battle_hold_effects.c	Fix Mental Herb leaving volatile status timers uncleared
+255	10295	#9655 파일	M	fix	N	N	U-10295	10231,10288	battle_scripts_1.s,battle_script_commands.c,battle_util.c	Fix Commander simultaneous switch and unintended Dondozo switch-outs
+256	10309	보류(줄 겹침)	S	fix	N	N	U-10309	-	hunk:188#9918(dep9655):battle_move_resolution.c	Fix moveanim being played after hitanim and healthbarupdate
+257	10315	#9655 파일	M	fix	Y	N	U-10315	-	battle_script_commands.c	Fixes Dragon Darts after hit messages
+258	10285	#9655 의존	S	fix	N	N	U-statchange-9730	9730,10057	deps 10057(seq 203)→9655	Fix move effect ai stat change check
+259	10322	선진행	S	fix	N	N	U-10322	-	-	fix(sprite): handle weather blending for BLEND_IMMUNE_FLAG
+260	10332	선진행	S	refactor	N	N	U-10332	-	-	Fix excessive indentation in trainer_pools.c
+261	10325	#9655 파일	M	fix	Y	N	U-10325	-	battle_scripts_1.s,battle_script_commands.c,battle_util.c	Fix Symbiosis not triggering after Cheek Pouch
+262	10354	#9655 파일	L	fix	Y	N	U-10354	-	battle_scripts_1.s,battle_message.c	Fix Thousand Arrows not grounding both targets
+263	10357	선진행	S	data	N	N	U-10357	-	-	Fix Commander suppression and overwrite flags
+264	10358	선진행	S	test	N	N	U-10358	-	-	Fix incorrect Mummy and Doodle ability tests
+265	10345	이미 적용	S	fix	N	N	U-anim-8497	8497	-	fix(battle-anim): fix gust colour cycling animation
+266	10350	#9655 의존	M	fix	N	N	U-statchange-9730	9730	deps 9730(seq 181)→9655	Fix some Mirror Armor issues
+267	10317	#9655 파일	M	fix	N	N	U-commander-10295	10295	battle_script_commands.c,battle_util.c	Fix Commander edge cases with Multi Battles, switching, and gimmicks
+268	10368	보류(줄 겹침)	S	fix	N	N	U-relearner-9006	9006	unit 선행 seq 162 보류	Fix duplicate CANCEL entry in move relearner list after replacing a move
+269	10369	선진행	S	fix	N	N	U-10369	-	-	Fix single-target moves hitting all foes in the shared shadow animation
+270	10366	선진행	S	data	N	N	U-10366	-	9655테스트겹침:drizzle.c	Fix Orichalcum Pulse and Hadron Engine Ability Flags
+271	10323	보류(줄 겹침)	M	refactor	N	N	U-10323	-	hunk:175#8434(file):event.inc;144#7573(file):scrcmd.c;138.5#8943(file):trainer_slide.c	refactor: unified trainer slide and script comparison operators
+272	10199	선진행	S	refactor	N	N	U-dynmulti-10199	-	-	Dynamic Multichoice Tutorial
+273	10349	선진행	S	fix	N	N	U-fillsprite-9973	9813	-	Fix sprite fill function
+274	10386	#9655 의존	M	fix	N	N	U-magicbounce-9674	9674	deps 9674(seq 129)→9655	Fixes bounced moves not activating some effects
+275	10392	선진행	S	fix	N	N	U-fillsprite-9973	10349	-	Fix sprite fills being broken in some cases
+276	10389	#9655 파일	S	fix	N	N	U-10389	-	battle_util.c	Fix Unseen Fist / Mummy interaction
+277	10387	선진행	S	tool	N	N	U-10387	-	-	Remove text encoding error in `za.json`
+278	10385	선진행	S	data	N	N	U-10385	-	-	Fix FRLG Magikarp and Heracross size units
+279	10382	선진행	S	fix	N	N	U-10382	-	-	Fix debug time scripts leaving followers frozen
+280	10381	#9655 의존	M	test	N	N	U-10381	9730	deps 9730(seq 181)→9655	Renaming + reworking Can Use All Moves to Values Moves Over Splash.
+281	10395	#9655 파일	M	fix	Y	N	U-weather-10170	-	battle_scripts_1.s,battle_scripts.h,battle_string_ids.h,battle_message.c,battle_util.c	Fix Orichalcum Pulse and Hadron Engine Activation Messages
+282	10379	선진행	S	test	N	N	U-10379	7360	-	Fix inverse battle matchup parametrization
+283	10270	선진행	M	gfx	Y	N	U-gen7anim-sprites	-	-	Even More Gen VII Animation Data + Gen VIII Clean Up
+284	10399	보류(줄 겹침)	S	fix	N	N	U-10399	-	hunk:173#9847(blocked):battle_ai_main.c;138.5#8943(file):battle_controller_opponent.c	Fix invalid switch in if ace flag is present
+285	10343	선진행	S	fix	N	N	U-10343	-	-	fix(overworld): fix tod blend settings getting updated every frame
+286	10424	deps 선행 제외	S	fix	N	N	U-10424	10289	deps #10289(seq 248)	Fix AI Binding Band check for Wrap damage
+287	10415	#9655 파일	S	fix	N	N	U-12v12-8943	8943	battle_util.c	Fix Illusion party search range for two-opponent trainers
+288	10410	선진행	S	fix	N	N	U-10410	-	-	assert trainer script that needs an object event
+289	10301	선진행	S	fix	Y	N	U-10301	-	-	Fix buffer overrun in ReformatItemDescription
+290	10432	#9655 파일	S	fix	Y	N	U-10432	-	battle_scripts_2.s,battle_string_ids.h,battle_message.c	Fix frlg old man text
+291	10429	이미 적용	M	fix	Y	N	U-zws-10429	-	-	Add Zero-Width-Space and fix some line break handling
+292	10298	#9655 파일	M	feature	N	N	U-transform-10298	-	battle_script_commands.c	New config for transformed pokemon properties
+293	10428	#9655 의존	S	fix	N	N	U-10428	9730	deps 9730(seq 181)→9655	Fix outdated move data
+294	10436	#9655 파일	S	fix	Y	N	U-10436	-	battle_message.c	Fix send mon text in frlg first battle
+295	10437	선진행	S	refactor	N	N	U-10437	-	-	cleanup: remove comment with incorrect time labels
+296	10442	선진행	S	refactor	N	N	U-10442	-	-	fix(cleanup): remove unused variables
+297	10441	#9655 파일	S	fix	N	N	U-transform-10298	10298	battle_script_commands.c	Fix in which gens B_TRANSFORM_BATTLE_REWARDS effects apply
+298	10445	보류(줄 겹침)	S	fix	N	N	U-relearner-9006	9006	unit 선행 seq 162 보류	Fix Box ID Var not being updated when opening Move Relearner from Summary Screen
+299	10448	#9655 파일	S	fix	N	N	U-10448	-	battle_script_commands.c	Fix Struggle recoil damage not using standard rounding
+300	10397	선진행	S	fix	N	N	U-10397	-	-	Fix ANIM_RAPID_H_HOPS freezing the game when opponent is wild shiny
+301	10346	선진행	S	gfx	Y	N	U-10346	-	-	PokeCommunity sprites batch (June 2026)
+302	10414	선진행	M	gfx	N	N	U-gen7anim-sprites	-	-	Alolan and Mega Form Animation Frames
+303	10433	#9655 의존	M	fix	N	N	U-10433	9730,10185	deps 10185(seq 243)→9655	Fix Opportunist and Mirror Herb not triggering during the end turn
+304	10477	#9655 파일	S	fix	N	N	U-ctx-9710	9710	battle_util.c	Fix Misty Terrain grounding check
+305	10535	선진행	S	data	N	N	U-10535	-	-	update mega magearna pokedex entry
+306	10527	선진행	M	fix	N	N	U-10527	-	-	Fix FRLG Trainer Card Setup
+307	10536	#9655 파일	M	fix	Y	N	U-12v12-8943	8943	battle_script_commands.c,battle_util.c	Multiple xp bugfixes
+308	10539	선진행	S	fix	N	N	U-10539	-	-	Fix pokemon shadow reverting to species_none shadow size for one frame
+309	10547	#9655 파일	S	fix	N	N	U-10547	-	battle_util.c	Adds alive check to CanTargetBattler
+310	10550	선진행	S	feature	N	N	U-10550	-	-	Restore singmsg and normalmsg functionality
+311	10542	#9655 파일	XL	refactor	Y	N	U-10542	-	battle_end_turn.c,battle_message.c,battle_script_commands.c,battle_util.c,pokemon.c	Remove BATTLE_PARTNER and BATTLE_OPPOSITE macros
+312	9448	보류(줄 겹침)	M	test	N	N	U-9448	9460,9462	hunk:182#9865(file):battle.h	Prevent Protect AI from blocking ally beneficial-hit setups in doubles
+313	10483	#9655 파일	M	fix	N	N	U-10483	10325,10354	battle_script_commands.c,battle_util.c	Fix Symbiosis activation after Knock Off removed and item
+314	10569	#9655 의존	S	fix	Y	N	U-statchange-9730	9730,9928	deps 9928(seq 183)→9655	Fix freeze when a stat-change move follows Own Tempo-blocked Swagger or No Retreat
+315	10568	#9655 파일	M	refactor	N	N	U-partydefeat-10568	8943,10039	battle_script_commands.c	simplify party defeat functions
+316	10572	보류(줄 겹침)	S	fix	N	N	U-10572	-	hunk:138.5#8943(file):trainer_slide.c;311#10542(file):trainer_slide.c	Fix trainer slide activating for player in multi battle
+317	10571	#9655 파일	M	fix	Y	N	U-trainerslide-9211	-	battle_scripts_1.s,battle_scripts_2.s,battle_scripts.h,battle_script_commands.c,battle_util.c	Fix trainer slide form change
+318	10577	#9655 파일	S	fix	N	N	U-10483	10483	battle_util.c	Fix restore item regression
+319	10573	이미 적용	M	refactor	N	N	U-fade-9407	9407,9549,9707	-	Rework simultaneous palette fade
+320	10590	#9655 의존	S	test	N	N	U-10590	9655,9730	deps 9730(seq 181)→9655	Change Howl Soundproof test to prevent user from blocking with Soundproof
+321	10589	이미 적용	S	fix	N	N	U-anim-8497	8497	-	Fix out-of-bounds palette writes in certain move animations
+322	10557	선진행	S	fix	N	N	U-10557	-	-	fix bard text speed
+323	10608	#9655 파일	M	fix	N	N	U-12v12-8943	8943	battle_hold_effects.c,battle_script_commands.c,battle_util.c,pokemon.c	Fix sleep clause in Multibattles + test
+324	10464	#9655 의존	S	fix	N	N	U-statchange-9730	9730	deps 9730(seq 181)→9655	Fix AI scoring for stat-changing move effects
+325	10616	#9655 파일	L	fix	N	N	U-10616	9657	battle_script_commands.c,battle_util.c	Fix Z-Move and Dmax moves incorrect dmg calcs
+326	10631	#9655 의존	S	fix	N	N	U-statchange-9730	9730	deps 9730(seq 181)→9655	Fix stat change move accuracy
+327	10636	보류(줄 겹침)	S	fix	N	N	U-acupressure-10636	-	hunk:311#10542(file):battle_move_resolution.c;213#10091(dep9655):acupressure.c	Fix Acupressure targetting opposing mon
+328	10639	#9655 파일	S	fix	N	N	U-10639	-	battle_util.c	Fix Cursed Body triggering on Max Moves
+329	10647	이미 적용	S	fix	N	N	U-futuresight-9942	9942	battle_util.c	Fix Future Sight not restoring previous battler mon
+330	10648	이미 적용	S	fix	N	N	U-skydrop-9249	9249	battle_script_commands.c	Fixes Sky Drop hitting replacement when original target fainted
+331	10626	보류(줄 겹침)	M	test	N	N	U-10626	-	hunk:173#9847(blocked):battle_ai_switch.c;311#10542(file):battle_ai_switch.c	Fix Palafin-Hero repeatedly switching to activate Zero to Hero
+332	10645	#9655 파일	M	fix	N	N	U-acupressure-10636	10263,10636	battle_util.c,pokemon.c	Fix Acupressure targetting opposing mon
+333	10654	선진행	S	fix	N	N	U-10654	-	-	Fix Copycat failing to copy a move that fainted its target
+334	10653	보류(줄 겹침)	S	fix	N	N	U-10653	-	hunk:311#10542(file):battle_move_resolution.c / 9655테스트겹침:symbiosis.c	Fix Symbiosis items being consumed as resistance Berries by spread moves
+335	10540	선진행	S	fix	N	N	U-namebox-9905	9905	-	Fix trying to remove non existing speaker box
+336	10657	#9655 파일	M	fix	N	N	U-10657	10616	battle_util.c	Fix Z-Moves being blocked by move restrictions at selection
+337	10661	#9655 파일	S	fix	N	N	U-10661	-	battle_script_commands.c	Fix Metronome-called spread moves hitting the user’s partner
+338	10666	#9655 의존	S	refactor	N	N	U-statchange-9730	9730	deps 9730(seq 181)→9655	Added clarification for BattleScript_IntimidateActivates
+339	10669	보류(줄 겹침)	M	test	N	N	U-10669	-	hunk:311#10542(file):battle_ai_main.c	Fix Mind Reader and Lock-On spam in double battles
+340	10674	#9655 파일	S	fix	N	N	U-partydefeat-10568	10568	battle_script_commands.c	Fix out-of-bounds read of gSelectedOrderFromParty
+341	10671	#9655 파일	S	fix	N	N	U-10671	-	battle_script_commands.c	Prevent Red Card from allowing Z-Move reuse
+342	10662	#9655 파일	S	fix	N	N	U-12v12-8943	8943	battle_util.c	Fixed the Multi Battle party-slot collision
+343	10683	#9655 파일	S	fix	N	N	U-10683	-	battle_util.c,pokemon.c	Recalculate Ash-Greninja's stats after Battle Bond activates
+344	10687	#9655 의존	S	fix	Y	N	U-statchange-9730	9730	deps 9730(seq 181)→9655	Fix multi-target stat move miss messages
+345	10682	#9655 파일	S	fix	N	N	U-10682	-	battle_script_commands.c,battle_util.c	Fix Shell Trap being delayed after a spread move hit
+346	10700	#9655 파일	S	test	N	N	U-10700	-	battle_util.c	Fix AI not calcing crit when high enough crit stage
+347	10707	#9655 의존	S	data	N	N	U-statchange-9730	9730	deps 9730(seq 181)→9655	Fixes G-Max Tartness additional effect
+348	10711	#9655 파일	S	fix	N	N	U-12v12-8943	8943	battle_util.c	Fix full team multi battles with follower NPCs
+349	10656	보류(줄 겹침)	L	fix	N	N	U-10656	-	hunk:175#8434(file):field_effect_helpers.c	(Joint with Syreldar) Fix Underutilisation of CreateSpriteUnchecked meaning a fatal assertf triggers needlessly
+350	10652	선진행	S	fix	N	N	U-10652	-	-	Fix talking to buried movement npc
+351	9927	deps 선행 제외	XL	feature	N	Y	U-outbreak-9927	9713,8943,8434,9920,9890,10051	deps #10051(seq 204)	Mass outbreak
+352	9688	보류(줄 겹침)	S	feature	N	N	U-9688	-	hunk:138.5#8943(file):battle.h	Add B_TERA_ORB_ALWAYS_CHARGED
+353	10089	deps 선행 제외	S	fix	N	N	U-outbreak-9927	9927	deps #9927(seq 351)	Fix debug trainer and flags vars submenu
+354	10046	보류(줄 겹침)	S	test	N	N	U-aiselftarget-10046	9779	hunk:181#9730(dep9655):ai_thinking_time.c;173#9847(blocked):ai_thinking_time.c;138.5#8943(file):trainer_slides.c	Make doubles AI skip scoring on itself
+355	9008	#9655 파일	L	feature	Y	N	U-9008	-	battle_scripts_1.s,battle_scripts_2.s,battle_scripts.h,battle_string_ids.h,battle_message.c,battle_script_commands.c,battle_util.c	Adds Victory Catch
+356	10027	선진행	M	gfx	N	N	U-10027	8497	-	Add Item Icon to Knock Off, Covet, and Thief animations
+357	10108	선진행	S	refactor	N	N	U-10108	-	-	Cleanup battle factory screen constants
+358	7975	선진행	S	feature	N	N	U-mapheader-9461	9461	-	Add map header flag to make writing special var count as a script effect
+359	10012	deps 선행 제외	S	feature	N	N	U-dailyseed-9920	9920,10050,9927	deps #9927(seq 351)	Adds a new debug menu action "Redo daily Events"
+360	10119	선진행	S	refactor	N	N	U-10108	-	-	Cleanup hard-coded values from battle room scripts
+361	9211	#9655 의존	L	feature	N	N	U-trainerslide-9211	9680,8943,9717	deps 9717(seq 150)→9655	Additional trainer slides
+362	10133	보류(줄 겹침)	S	test	N	N	U-10133	-	hunk:361#9211(dep9655):trainer_slides.c;138.5#8943(file):trainer_slides.c	Remove explicit targets from opponent in Trainer Slide tests
+363	10096	unit 선행 제외	M	refactor	N	N	U-owe-8434	9537,8434	unit U-owe-8434 member seq 175 excluded	Use `overworld_ascending_frames` in picture tables
+364	10142	deps 선행 제외	S	fix	N	N	U-outbreak-9927	9927	deps #9927(seq 351)	Fix Debug Menu's `Fly to map` not working immediately
+365	8678	보류(줄 겹침)	XL	feature	N	N	U-8678	-	hunk:175#8434(file):battle_pyramid.h,battle_setup.c	Dynamic trainerbattle Scripts
+366	10080	선진행	S	feature	N	N	U-9557	9557	-	Add the Ability to Disable Map Name in Map Preview Screen
+367	9878	#9655 파일	M	refactor	N	N	U-egg-9878	8943,10051	pokemon.c,pokemon.c	Rework egg creation and hatching mechanisms
+368	9955	deps 선행 제외	S	feature	N	N	U-dailyseed-9920	9920,10050	unit U-dailyseed-9920 earlier member seq 359 blocked	Add config to use daily seed for lottery tickets and mirage island
+369	9966	unit 선행 제외	S	refactor	N	N	U-owe-8434	8434	unit U-owe-8434 member seq 175 excluded	Do not set overworld var species for vanilla ow mons
+370	10076	unit 선행 제외	S	refactor	N	N	U-owe-8434	8434	unit U-owe-8434 member seq 175 excluded	Use `GetDirectionToFace` in `DetermineObjectEventDirectionFromObject`
+371	9080	선진행	M	feature	N	N	U-mapheader-9461	9461,7975	-	Add support for night music
+372	10127	#9655 파일	XL	refactor	N	N	U-enum-10127	9466	battle_end_turn.c,battle_hold_effects.c,battle_util.c,pokemon.c,pokemon.c	Even more enums
+373	10152	보류(줄 겹침)	M	refactor	N	N	U-unused-10179	-	hunk:372#10127(file):battle_tower.c;204#10051(file):battle_tower.c	Clean up unused variables and functions
+374	10167	선진행	S	refactor	N	N	U-mapheader-9461	9080	-	rename NightSong to night_music to match json style
+375	10166	#9655 파일	S	refactor	N	N	U-10166	-	pokemon.c	Remove obsolete MAX_LEVEL_UP_MOVES
+376	8893	#9655 의존	XL	data	N	N	U-8893	10011,9429,9667,9730,10428	deps 10428(seq 293)→9655	The big grammar update
+377	10176	선진행	S	fix	N	N	U-mapheader-9461	9080	-	Remove clock-based music transition
+378	10162	#9655 파일	M	refactor	N	N	U-enum-10127	9466	battle_script_commands.c,battle_util.c,pokemon.c	A smidge of enums and type checking additions
+379	10178	unit 선행 제외	S	refactor	N	N	U-enum-10127	-	unit U-enum-10127 member seq 372 excluded	Clean up header files
+380	10170	#9655 파일	M	feature	N	N	U-weather-10170	-	battle_scripts_1.s,battle_scripts.h,battle_util.c	Starting Status for Weather
+381	10181	#9655 파일	XL	refactor	N	N	U-enum-10127	10127	battle_script_commands.c,battle_util.c,pokemon.c	Type checking paradise
+382	9147	선진행	L	refactor	N	N	U-door-9147	-	-	Door Size Refactor
+383	10145	#9655 파일	S	refactor	N	N	U-10145	9124	battle_util.c	Improve AI thinking time by removing direct ability calls in calc dmg
+384	10211	선진행	S	fix	N	N	U-debug-9890	9890	-	fix(debug): incorrect use of const
+385	10214	#9655 파일	M	fix	Y	N	U-startstatus-10170	10170	battle_end_turn.c,battle_message.c,battle_util.c	Fix Starting Status messages not printing at start of battle
+385.5	10454	#9655 파일	M	feature	Y	N	U-weather-10170	10395,10170,10214	battle_scripts_1.s,battle_scripts.h,battle_script_commands.c,battle_util.c	Add Gen 9 Overworld Weather Behavior
+386	10217	#9655 파일	L	fix	Y	N	U-10217	9494,8943,10354	battle_scripts_1.s,battle_script_commands.h,battle_scripts.h,battle_hold_effects.c,battle_message.c,battle_script_commands.c,battle_util.c	Fixes Pickpocket activation when the original attacker isn't on the field
+387	10206	선진행	S	gfx	N	N	U-10206	-	-	Add second front frames to Tadbulb and Bellibolt
+388	10117	보류(줄 겹침)	S	feature	N	N	U-relearner-9006	9006	unit 선행 seq 162 보류	Config to hide Contest Data in Summary Screen and Move Relearner
+389	10233	보류(줄 겹침)	S	fix	N	N	U-trainerbattle-8678	8678	deps #8678(seq 365) 보류	fix dynamic trainer script regression
+390	10223	보류(줄 겹침)	M	feature	N	N	U-relearner-9006	9006,10117	deps #10117(seq 388) 보류	Move relearner selection inside move relearner scene
+391	10124	보류(줄 겹침)	M	test	N	N	U-10124	9359	hunk:372#10127(file):ai_doubles.c;181#9730(dep9655):ai_doubles.c	AI triggers ally's Spicy Spray when burn is beneficial
+392	10243	보류(줄 겹침)	M	test	N	N	U-10243	-	hunk:138.5#8943(file):battle_ai_main.c	Modular AI Omniscience Flags
+393	10253	#9655 파일	S	refactor	N	N	U-10253	-	battle_hold_effects.c,battle_util.c	Remove redundant Sub checks
+394	10268	#9655 파일	M	fix	Y	N	U-10268	-	battle_scripts_1.s,battle_message.c,battle_script_commands.c	Champions Battle Messages post-mortem fixes
+395	10265	#9655 의존	S	fix	Y	N	U-statchange-9730	9168,9730	deps 9730(seq 181)→9655	Fix stat change berries showing held item anim twice
+396	10258	선진행	S	test	N	N	U-10258	-	-	AI avoids self-KOs with recoil
+397	9969	unit 선행 제외	M	feature	N	N	U-randommon-9896	9896,9927	unit U-randommon-9896 member seq 191 excluded	Add debug menu actions to quickly test randomizer results
+398	10274	보류(줄 겹침)	M	test	N	N	U-10274	-	hunk:181#9730(dep9655):all_anims.c;381#10181(file):all_anims.c	Fix anim tests
+399	9265	선진행	S	test	N	N	U-9265	-	-	New tests: Eviolite, Charge, Grassy Terrain & Misty Terrain
+400	9440	#9655 파일	L	refactor	N	N	U-trainergen-9440	9562,8943,10051,10059	pokemon.c	Use a single function for FillPartnerParty and CreateNPCTrainerPartyFromTrainer
+401	10179	#9655 파일	L	refactor	N	N	U-unused-10179	-	battle_script_commands.c,battle_util.c,pokemon.c	Remove unused functions
+402	10286	보류(줄 겹침)	S	fix	N	N	U-trainerbattle-8678	8678	deps #8678(seq 365) 보류	fix no continue script after early rival battle
+403	9970	#9655 파일	L	refactor	N	N	U-randommon-9896	8434,9879,9896,10051,8678	pokemon.c	More mon generation cleanup
+404	10294	#9655 의존	S	fix	Y	N	U-berryanim-9168	9168	deps 9168(seq 161)→9655	Fix Item Heal Animation showing recovery on the wrong target
+406	9987	선진행	S	data	N	N	U-9987	-	-	Better quality Legends Z-A cries
+407	10293	선진행	M	feature	N	N	U-10293	-	-	refactor(sprite): add sprite flag to create OBJWIN copies of oams
+409	10314	#9655 파일	M	refactor	Y	N	U-10314	-	battle_script_commands.c	Replaced original sprite print behavior with actual sprite printer
+410	10320	#9655 파일	S	fix	N	N	U-randommon-9896	9970	pokemon.c,pokemon.c	fix givemon not setting pp
+411	10297	#9655 파일	S	fix	N	N	U-10297	-	battle_util.c	New Knock Off cases
+412	10328	보류(줄 겹침)	M	refactor	N	N	U-10328	-	hunk:204#10051(file):scrcmd.c	refactor(string): consolidate stringvar arrays with getter function
+413	10321	보류(줄 겹침)	M	test	N	N	U-10321	7360,9642	hunk:138.5#8943(file):test_test_runner.c	feat(test-runner): add support for item popups
+414	10338	선진행	M	refactor	N	N	U-10338	9249,9494,9864	-	Consolidate switch in and faint clear/set data
+415	10336	보류(줄 겹침)	M	refactor	N	N	U-10336	-	hunk:372#10127(file):frontier_util.c	Consolidate Battle Frontier streak appearance lists
+416	10335	선진행	M	refactor	Y	N	U-strings-9051	9051	-	Migrated Pokedex strings
+417	9335	선진행	M	refactor	N	N	U-coins-9335	-	-	📜 Coins and money script commands update
+418	10361	선진행	S	gfx	N	N	U-10361	-	-	Updated Sticky Web to call StringShotThread
+419	10384	#9655 의존	S	refactor	N	N	U-10384	9657,9918	deps 9918(seq 188)→9655	Make GetSameTypeAttackBonusModifier a little more readable
+420	10383	deps 선행 제외	S	refactor	N	Y	U-dailyseed-9920	9877	unit U-dailyseed-9920 earlier member seq 359 blocked	Adds overworld weather enum
+421	10339	보류(줄 겹침)	S	fix	N	N	U-trainerbattle-8678	8678	deps #8678(seq 365) 보류	fix(trainerbattle): fix trainerbattle always checking the trainerflag
+422	10407	선진행	S	fix	N	N	U-coins-9335	9335	-	Make updatemoneybox actually a one-byte opcode
+423	10404	#9655 의존	M	refactor	N	N	U-statchange-9730	9730	deps 9730(seq 181)→9655	Fix argument field taking to much space in moves info
+424	10408	#9655 파일	S	feature	N	N	U-randommon-9896	9955,9970	pokemon.c	Add options to ignore total EV check
+425	10421	선진행	M	refactor	N	N	U-10421	9172	-	Updated `battle_anim_new.c` to match style guide
+426	10236	보류(줄 겹침)	M	test	N	N	U-10236	-	hunk:182#9865(file):battle.h	Adds Dragon Darts Ai
+427	10434	#9655 파일	S	fix	N	N	U-10434	10389	battle_util.c	Fix failed contact moves activating contact effects of protect moves
+428	10416	#9655 파일	S	gfx	N	N	U-10416	-	battle_scripts_1.s,battle_scripts.h,battle_script_commands.c	Add Ability Pop-Ups to Mega Sol
+429	10252	선진행	S	gfx	N	N	U-10252	-	-	Scorbunny line front anim
+430	10277	#9655 파일	S	test	N	N	U-9779	9779	battle_end_turn.c,battle_script_commands.c,battle_util.c,pokemon.c	Ai thinking time and accuracy improvements
+431	10453	#9655 파일	S	refactor	N	N	U-aicalc-9548	9548	battle_util.c	Tidy up AI_CalcDamage signature with a struct
+432	10440	#9655 의존	M	fix	N	N	U-moveargs-10404	10404	deps 10404(seq 423)→9655	Fix Solar Beam/Electro Shot not working in Primal Weather
+434	8647	#9655 의존	M	refactor	N	N	U-aicalc-9548	9460,9548,9462,9710,9779,10381	deps 10381(seq 280)→9655	Adds Round / Pledge combo attack
+434.5	10461	보류(줄 겹침)	S	refactor	N	N	U-10461	-	hunk:434#8647(dep9655):battle_ai_main.c;138.5#8943(file):battle_ai_main.c	Minor AI score calculation clean up
+435	10462	보류(줄 겹침)	S	fix	N	N	U-trainerbattle-8678	8678	deps #8678(seq 365) 보류	fix facing player snippet not checking face player param
+436	10466	#9655 의존	S	fix	N	N	U-moveargs-10404	10404,10440	deps 10440(seq 432)→9655	Fix two-turn moves firing during any weather
+437	10452	선진행	M	feature	N	N	U-10452	-	-	Show Pokémon Icons in Dynamic Multichoice
+438	10463	deps 선행 제외	M	refactor	N	N	U-10463	9440	deps #9440(seq 400)	ShouldTrainerBattlerUseGimmick rework
+439	10443	#9655 파일	L	fix	Y	N	U-10443	-	battle_scripts_1.s,battle_scripts.h,battle_message.c,battle_script_commands.c	Fixed Beak Blast, Focus Punch, and Shell Trap's incorrect interactions
+440	10471	#9655 의존	M	refactor	Y	N	U-10471	9730	deps 9730(seq 181)→9655	Remove infiniteConfusion flag
+441	10467	#9655 파일	M	fix	N	N	U-10467	-	battle_scripts_1.s,battle_util.c	Add Protect animation + bug fixes
+442	10523	deps 선행 제외	S	fix	N	N	U-partnergen-9440	9440	deps #9440(seq 400)	Fix smartTera assignment in MakePartnerGenerator
+443	10531	#9655 파일	S	refactor	N	N	U-10531	-	battle_util.c	Rename sBattleWeatherInfo to  gBattleWeatherInfo
+444	10521	선진행	S	feature	Y	N	U-10521	-	9655테스트겹침:text.c	FontIdToFit: move and ability descriptions
+445	10499	선진행	S	refactor	N	N	U-10499	-	-	Remove empty file from repo
+446	10548	보류(줄 겹침)	M	refactor	N	N	U-fieldmove-9819	9819	hunk:381#10181(file):field_move.h	Minor field move fixes (upcoming)
+447	10459	#9655 파일	M	refactor	N	N	U-absent-10459	-	battle_script_commands.c,battle_util.c,pokemon.c	Replaced / Removed some battlerAbsent checks in favor of IsBattlerAlive
+448	10025	보류(줄 겹침)	M	gfx	N	N	U-10025	-	hunk:376#8893(dep9655):battle.h	Implement opponent HP percentage display
+449	10121	#9655 파일	L	refactor	N	N	U-debugmenu-10121	8943,8434,9879,9890,9896,9927,9969,9970,10408	pokemon.c	Another debug menu refactor
+450	10610	#9655 파일	S	test	N	N	U-10610	-	battle_util.c	Minor battle_util.c fixes
+451	10619	선진행	S	test	N	N	U-10619	-	-	Fix test summary alignment for FAILED
+452	10634	unit 선행 제외	S	fix	N	N	U-absent-10459	10542,10459	unit U-absent-10459 member seq 447 excluded	Partially reversion of gAbsentBattler pr
+453	10624	#9655 의존	M	fix	Y	N	U-trainerslide-9211	10571,9211	deps 9211(seq 361)→9655	Fix gimmick slides
+454	10618	deps 선행 제외	S	fix	N	N	U-victorycatch-9008	9906,9008	deps #9008(seq 355)	fix(battle): fix memory leak when opening bag in battle
+455	10621	보류(줄 겹침)	M	gfx	N	N	U-hpdisplay-10025	10025	deps #10025(seq 448) 보류	fix(healthbar): fix hp bar elements being shown when they shouldn't be
+456	10665	선진행	S	test	N	N	U-10665	-	-	upcoming: Clear callbacks between tests
+457	10688	#9655 의존	S	test	N	N	U-10688	8647	deps 8647(seq 434)→9655	upcoming: Fix Fusion Move AI turn-order checks
+458	10659	#9655 파일	M	fix	N	N	U-10659	-	battle_util.c	Unify default move targeting between tests and in-game
+459	10690	#9655 파일	M	fix	N	N	U-10690	-	battle_util.c	Split move target selection and resolution
+460	10070	선진행	S	refactor	N	N	U-10070	-	-	28//05/26 Master to upcoming merge
+461	10113	선진행	M	refactor	Y	N	U-10113	-	-	1st of June, 2026 in [#10113](https://github.com/rh-hideout/pokeemerald-expansion/pull/10113)
+462	10159	선진행	S	refactor	N	N	U-mapheader-9461	9461,7975,9080	-	Optimize map header structure
+463	10556	#9655 의존	S	fix	N	N	U-statchange-9730	9730	deps 9730(seq 181)→9655	X items fix
+464	10721	선진행	M	fix	N	N	U-pret-10721	-	-	Pret merge (31st of August, 2026)
+465	9408	선진행	M	refactor	N	N	U-9408	-	-	Simplify Scale Shot effect activation
+466	9859	#9655 의존	L	refactor	N	N	U-calcvalue-9859	9176,9417,9249,9494,9657,9674,9784,9408	deps 9784(seq 166)→9655	Adds CalcValue struct to MoveEnd
+467	9841	#9655 의존	S	test	N	N	U-9841	9859	deps 9859(seq 466)→9655	Remove known failing for Blunder Policy/Darts interaction
+468	9898	#9655 의존	M	fix	N	N	U-9898	9784,9859	deps 9859(seq 466)→9655	IsAnyTargetAffected and GetDynamicMoveType changes
+469	9916	#9655 의존	M	refactor	Y	N	U-9916	9532,9494,9859	deps 9859(seq 466)→9655	Minor Battle Struct clean up and script clean up
+470	9939	#9655 의존	XL	refactor	Y	N	U-accuracy-9939	9176,9514,9610,9494,9657,9655,9859,9730	deps 9730(seq 181)→9655	Integrate accuracy check into canceler
+471	9983	#9655 의존	M	fix	Y	N	U-accuracy-9939	9657,9939	deps 9939(seq 470)→9655	Fix multi hit result message
+471.5	10144	#9655 의존	M	fix	Y	N	U-accuracy-9939	9657,9939,9983	deps 9983(seq 471)→9655	Fix effectiveness message order and Psychic Terrain/Magic Bounce interaction
+472	10034	#9655 의존	S	fix	Y	N	U-statchange-9730	10035,9859,9730	deps 9730(seq 181)→9655	Fix Strength Sap activation on miss and buffer correct stat
+473	10388	#9655 의존	S	data	N	N	U-10388	9898,10175	deps 10175(seq 252)→9655	Fix Aromatherapy not being blocked by Sap Sipper
+474	10606	#9655 의존	S	fix	N	N	U-accuracy-9939	9939	deps 9939(seq 470)→9655	Fix Dragon Darts checking the same target multiple times
+475	9777	#9655 의존	L	feature	Y	N	U-champmsg-9777	9655,9859,9730,9939	deps 9939(seq 470)→9655	Battle Messages from Pokémon Champions
+475.5	10151	#9655 의존	XL	feature	Y	N	U-champions-10151	9514,9657,9616,9859,9777	deps 9777(seq 475)→9655	Add Champions battle mechanics changes (v1.0.X)
+475.6	10299	#9655 의존	S	refactor	N	N	U-10299	9514,9730,9918,10151	deps 10151(seq 475.5)→9655	Adds `MOVE_EFFECT_RANDOM_FROM_LIST` to replace Tri Attack and Dire Claw
+475.7	10310	#9655 의존	S	test	N	N	U-10310	10151	deps 10151(seq 475.5)→9655	Tests for Victory Star not being ignored by Ally
+475.8	10282	#9655 의존	M	test	Y	N	U-10282	10151	deps 10151(seq 475.5)→9655	Fix failing tests using GEN_CHAMPIONS
+476	10220	#9655 의존	L	refactor	N	N	U-canceler-10220	9249,9610,9532,9657,9674,9717,9730,9918,9939,9008,9211	deps 9211(seq 361)→9655	Move pre attack effects and damage calc to canceler
+477	10311	#9655 의존	M	refactor	Y	N	U-end2-10311	9674,9680,9008,9777,10220,10151	deps 10151(seq 475.5)→9655	Remove end2 (merge end and end2)
+478	10300	#9655 의존	M	refactor	N	N	U-10300	9176,9657,9918,9983,10220,10151	deps 10151(seq 475.5)→9655	Refactor dynamic move category and remove Present script
+479	10330	#9655 의존	M	refactor	N	N	U-10330	9657,9674,9730,9939,9211,10220	deps 10220(seq 476)→9655	Adjust TargetFailure to be slightly more accurate
+480	10365	#9655 의존	S	fix	N	N	U-category-10300	10300	deps 10300(seq 478)→9655	Fixes off by one error for category icons
+481	10326	#9655 의존	L	refactor	N	N	U-terrain-10326	9446,9124,9680,9847,9730,9928,9777,10220,10151,10311	deps 10311(seq 477)→9655	Battle Terrain Refactor
+482	10362	#9655 의존	L	refactor	Y	N	U-canceler-10362	9610,9655,9730,9939,9777,10220,10300,10330	deps 10330(seq 479)→9655	Adds moveanim, sound, hitanim and hpupdate to Canceler
+483	10431	#9655 의존	M	fix	Y	N	U-canceler-10362	10268,10362	deps 10362(seq 482)→9655	Fixes Resist Berry order
+484	10426	#9655 의존	M	refactor	Y	N	U-absorb-10426	9176,9514,9680,9717,9730,9918,10220,10151,10299,10311	deps 10311(seq 477)→9655	Refactor absorb and change SetMoveEffect signature
+485	10488	#9655 의존	L	fix	Y	N	U-10488	10362	deps 10362(seq 482)→9655	Fixes Assurance inconsistencies
+486	10566	#9655 의존	M	fix	Y	N	U-canceler-10362	9730,9939,10362	deps 10362(seq 482)→9655	Fix HP bars emitting for non-present battlers and extraneous result battle messages
+487	10586	#9655 의존	S	fix	N	N	U-terrain-10326	10326	deps 10326(seq 481)→9655	Fix terrain not being reset before battle background load
+488	10595	#9655 의존	L	refactor	Y	N	U-accuracy-9939	9657,9859,9730,9939,10220,10362,10426	deps 10426(seq 484)→9655	Move Substitute check to move resolution and remove acc check in scripts
+489	10600	#9655 의존	M	fix	N	N	U-10600	9657,10220	deps 10220(seq 476)→9655	Fix Scrappy not bypassing Ghosts types if ability was changed
+490	10593	#9655 의존	XL	refactor	Y	N	U-setmoveeffect-10593	9176,9514,9657,9859,9730,9918,10220,10299,10326,10426	deps 10426(seq 484)→9655	Change SetMoveEffect into a function table and move to a new file
+491	10630	#9655 의존	M	refactor	N	N	U-10630	10593	deps 10593(seq 490)→9655	Remove redundant embargo and heal block flags
+492	10640	#9655 의존	S	refactor	Y	N	U-10640	9939	deps 9939(seq 470)→9655	Add MSG_DISPLAY constants and helper function for strings with wait
+493	10714	#9655 의존	S	fix	N	N	U-canceler-10362	10362	deps 10362(seq 482)→9655	Fix moveanim regression
+494	9641	선진행	M	feature	N	N	U-9641	-	-	feat(debug): add quickstart from titlescreen
+495	9677	선진행	M	refactor	N	N	U-9677	-	-	Converted move animation magic numbers to defines
+496	9676	선진행	M	refactor	N	N	U-9676	9172,9677	-	Created macros for fist and foot animations
+497	9924	선진행	XL	refactor	N	N	U-animcommon-9924	9142,9172,9676,9677	-	Added more common anim functions
+498	10374	선진행	M	refactor	N	N	U-10374	9142,9172,9924	-	Cleaned up some move animations
+499	10401	선진행	S	fix	N	N	U-10401	9142,9172,9924	-	Set Leafage and Seed Flare's `target_both` to FALSE
+500	9881	선진행	XL	build	Y	N	U-incgfx-9881	-	-	Merge pret#2283
+501	10036	선진행	L	gfx	N	N	U-incgfx-9881	9881	-	Describe compressed tilemaps with INCGFX
+502	10116	선진행	S	build	N	N	U-incgfx-9881	9881	-	Fix missing incgfx for Mega Garchomp Z
+503	10561	선진행	S	build	N	N	U-incgfx-9881	9881	-	Converted Mega Staraptor's icon to INCGFX_U8
+504	9518	보류(줄 겹침)	XL	refactor	Y	N	U-pokedex-9518	10116,9881	hunk:147#9761(file):pokedex_plus_hgss.c	Consolidation of Pokédex Files
+505	10184	선진행	S	gfx	N	N	U-incgfx-9881	9881	-	remove unused tilesets graphics
+506	10172	보류(줄 겹침)	M	refactor	N	N	U-pokedex-9518	9518	deps #9518(seq 504) 보류	Remove functions and variable common to both pokedex from the general pokedex interface to their own file
+507	10334	보류(줄 겹침)	M	refactor	N	N	U-incgfx-9881	9881	hunk:204#10051(file):contest_util.c	Consolidate contest values
+508	9892	선진행	L	fix	N	N	U-assert-9892	9529,9881	-	Misc Fixes/Cleanups
+509	10156	선진행	M	feature	N	N	U-assert-9892	9892	-	fatal_assertf
+510	10155	보류(줄 겹침)	L	tool	N	N	U-runnerinfra-10155	9642,9892	hunk:138.5#8943(file):test_runner_battle.c;204#10051(file):test_runner_battle.c	Test Runner: Replace :L hack
+511	9807	보류(줄 겹침)	M	test	N	N	U-runnerinfra-10155	9642,10155	hunk:204#10051(file):test_runner_battle.c;138.5#8943(file):test_runner_battle.c	Battle Test: Failure Suggestions
+512	10390	보류(줄 겹침)	S	test	N	N	U-runnerinfra-10155	9807,9892	deps #9807(seq 511) 보류	Fix Known Fails Passing showing `and 0 more` + add additional print modes
+513	10537	deps 선행 제외	S	test	N	N	U-runnerinfra-10155	9805,9642,9807	deps #9805(seq 189)	Move ResetTestInventory to fix flaky error
+514	9900	선진행	S	build	N	N	U-9900	-	-	Expansion 1.15.2 release
+515	9914	#9655 의존	S	refactor	N	N	U-berryanim-9168	9168	deps 9168(seq 161)→9655	Fix stray tab in C file
+516	9986	선진행	XL	build	N	N	U-waitstate-9986	9881	-	15th of May, 2026 in [#9986](https://github.com/rh-hideout/pokeemerald-expansion/pull/9986)
+517	10061	선진행	M	build	N	N	U-waitstate-9986	9986	-	📜 Migration script for pret#2200
+518	10555	보류(줄 겹침)	XL	refactor	Y	N	U-pret-10555	10323,9986,9881	deps #10323(seq 271) 보류	Pret merge (30th of July 2026)
