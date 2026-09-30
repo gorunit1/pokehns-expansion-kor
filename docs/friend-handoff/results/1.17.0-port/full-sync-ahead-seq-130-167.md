@@ -1,6 +1,6 @@
 # full-sync 선진행 결과 — 구간 1 (seq 130~167 중 15행)
 
-진행 중: 마지막 완료 seq 149, 다음 seq 151
+진행 중: 마지막 완료 seq 151, 다음 seq 156
 
 **순서표와 다르게 진행한 구간이다.** 순서표([`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv))의 다음 행 seq 127 #9655(배틀 메시지 리팩터)가 D1~D7 결정 대기라서, #9655와 무관한 뒤쪽 행을 앞당겨 이식한다. 선정 기준과 전체 분류는 [`ahead-of-9655/README.md`](ahead-of-9655/README.md)(`ahead_candidates.tsv`)에 있다. 이 구간은 그 "선진행" 114행 가운데 앞쪽 15행(seq 130, 131, 133, 134, 137, 143, 148, 149, 151, 156, 157, 158, 160, 165, 167)이다.
 
@@ -22,6 +22,7 @@
 | 143 | #9721 | 적용 | `f3893a4cb4` | 0 B | `Makefile` 1줄(learnables JSON order-only 의존 삭제). **seq 137 빌드와 `pokehns.gba` SHA1 동일** |
 | 148 | #9690 | 적용(문맥 수동) | `aeab20beac` | +16 B | 파운드 변환 식 현대화(`DECAGRAMS_IN_POUND` 453592, u64 식). `pokedex.h` 문맥(`IS_HNS`)만 다름. **옵션 "단위계 = 야드파운드법"일 때만** 도감 무게 일부 +0.1 lb(기본 미터법 화면 불변) |
 | 149 | #9461 | 적용(HnS 적응) | `9f6c5b5c58` | +128 B | 맵 팝업 층 번호(`MapHeader.floorNumber`, mapjson). HnS 적응 3곳: 피라미드 조건 유지, **`FONT_NARROW` 유지**, `CELADON DEPT.` 특례 `!IS_HNS`. HnS 맵 `floor_number` 0개라 팝업 문구·맵 헤더 바이트 불변. 새 테스트 `Map names fit in popup` PASS |
+| 151 | #9755 | 적용 | `ce1fc01da9` | −16 B | AI `IsDamageMoveUnusable`의 `HasWeatherEffect()` 이중 검사 제거(upstream 그대로). `ctx->weather`가 이미 날씨 무효를 반영해 사실상 동작 동일 |
 
 ## 공통 사항
 
@@ -247,6 +248,23 @@
   - **`FONT_NARROWER` 80px 테스트 경계:** 새 테스트는 한글 11px 글꼴로 재므로 현재 최장 이름 "사파리존 게이트"가 **정확히 80px**다. 팝업 이름을 한 글자라도 늘리면(또는 floor_number로 층을 붙이면: 한글 안 9개 맵, 영문 안도 "블루시티동굴 B1F/B2F" 81px) 테스트가 실패한다. 실제 팝업은 `FONT_NARROW`(한글 8px)로 그려 여유가 있다.
   - 낮음: `test/text.c` 새 테스트의 `s8 mapGroup/mapNum`은 HnS 그룹 106개·그룹당 최대 123맵이라 범위 안이다(127 초과 시 오버플로).
 - 실기 확인: 필요(아래 "실기 확인 항목" 5).
+
+## 동기화 단위: seq 151 #9755 `U-9755` Remove reundant weather check in IsDamageMoveUnusable
+
+- 현재 판정: 적용(그대로)
+- 커밋: `ce1fc01da9`
+- upstream 근거: `e6fb64d2c2`(`src/battle_ai_util.c` +4/−7). 부모 #9717(seq 150, 보류)과 파일·줄이 겹치지 않는다. `git log --grep='#9755'` 없음 → 미적용이었다.
+- 수정 파일(1): `src/battle_ai_util.c`
+- 적용 방법: 사전 분석 patch(`seq151-9755.patch`)를 `git apply`했다. 충돌 없음. 결과가 upstream·1.17.0과 같다.
+- 내용: `IsDamageMoveUnusable`에서 원시 날씨(끝의대지·시작의바다) 검사를 감싼 `if (HasWeatherEffect())` 블록을 없앤다. `ctx->weather`는 모두 `AI_GetWeather()`/`AI_GetSwitchinWeather()`에서 오고, 두 함수는 `!AI_WeatherHasEffect()`이면 `B_WEATHER_NONE`을 돌려준다(턴 시작 `HasWeatherEffect()` 스냅숏).
+- 동작: 사실상 같다. 달라지는 경우는 `AI_FLAG_NEGATE_UNAWARE` AI(HnS 트레이너 데이터 0건, 디버그로만 켤 수 있음)와, 같은 턴 안에 날씨부정·에어록이 새로 나온 뒤 원시 날씨 아래에서 AI가 다시 계산하는 드문 경우뿐이다(upstream 동작과 같음).
+- HnS 적응: 없음. 제외한 hunk: 없음.
+- 검증:
+  - `git diff --check` 통과. 한글·config·세이브 변경 0.
+  - 빌드(`build/port.log`): 종료 코드 0, **ROM 32,720,884 B(97.52%, −16 B) / EWRAM 248,940 B(0) / IWRAM 25,516 B(0)**. 사전 분석 추정 −4 B(정렬 전). `pokehns.gba` SHA1 `66559267420cdc9f58b5a73ba76c4b1d9983f794`. 경고 0줄(새 경고 0).
+- 테스트(지정 3파일: `test/battle/ai/ai_switching.c`(원시 그란돈), `test/battle/ai/ai.c`·`test/battle/ai/ai_doubles.c`(날씨부정)) → 259줄(PASS 219)이 seq 130·131 적용 뒤 결과와 **모두 같다**(사라진 PASS 0). upstream 테스트 변경 없음.
+- 남은 위험: 없음.
+- 실기 확인: 불필요.
 
 ## 한글 문구 미결
 
