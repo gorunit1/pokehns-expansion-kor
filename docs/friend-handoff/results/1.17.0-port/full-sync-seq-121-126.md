@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 121~126
 
-진행 중: 마지막 완료 seq 122, 다음 seq 123 (#9624)
+진행 중: 마지막 완료 seq 123, 다음 seq 124 (#9667)
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md), 메시지 출력 기록: [`BATTLE_MESSAGE_OUTPUT_CHANGES.md`](../../../localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md)
 시작 HEAD: `5afec6304c` (작업 트리 clean. `aa175914e9`(seq 120 코드) 뒤로는 docs만 바뀜)
@@ -69,3 +69,33 @@
   - 낮음(upstream 잠재 버그, 1.17.1까지 그대로): `TryFreeDynamicShopItemList`는 목록 포인터만 되돌리고 `sMartInfo.itemCount`는 되돌리지 않는다. 걸러지는 품목이 생기면 같은 상점에서 두 번째 구매 메뉴가 원래 목록의 앞 N개만 검사한다. 지금 HnS에는 조건 함수가 없어 드러나지 않는다. HnS가 이 기능을 쓰기 전에 고쳐야 한다.
   - 문서: `docs/localization/NON_NPC_TEXT_AUDIT.md` 17행의 `data/text/{…,mart_clerk,…}.inc` 경로가 옛 경로가 됐다. 문서 수정은 메인 판단에 맡긴다(이번에 고치지 않음).
 - 실기 확인: 필요(아래 "실기 확인 항목" 2).
+
+## 동기화 단위: seq 123 #9624 `U-9624` Consolidate decoration values
+
+- 현재 판정: 적용(HnS 적응)
+- 커밋: `5fa2bc3746`
+- upstream 근거: `1dbf630ad0`(6파일 +787/−989)
+- 수정 파일(6): `include/decoration.h`, `src/decoration.c`, `src/data/decoration/header.h`, `src/data/decoration/description.h`(삭제), `src/data/decoration/icon.h`(삭제), `migration_scripts/1.16/consolidate_decorations.py`(신규)
+- 적용 방법: 사전 분석 patch(`seq123-9624.patch`, sha1 `1bc51f35…`)를 `git apply --index`로 넣었다. 수정 파일의 모드 표기를 지우고, 삭제 파일 2개의 `deleted file mode`를 저장소의 실제 모드(100755)에 맞춘 사본을 썼다. 충돌 없음.
+- 내용:
+  - 장식 아이콘(`gDecorIconTable`)과 설명(`DecorDesc_*`)을 `gDecorations[i].icon`·`.description = COMPOUND_STRING(...)`으로 합쳤다. `header.h`는 upstream `1dbf630ad0`과 바이트 동일(sha1 `7a3ed72e…`, 사전 분석에서 HnS 사본에 마이그레이션 스크립트를 돌린 결과와도 같음). 스크립트는 저장소에서 다시 돌리지 않았다.
+  - `decoration.c`: `sDecorationMovementInfo`·`sDecorShapeSizes`를 `sDecorShapes[]` 하나로 합치고 shape별 switch/if 3곳을 표 조회로 바꿨다(13 hunk 그대로, 오프셋만 다름). 마이그레이션 스크립트 파일도 upstream과 바이트 동일.
+- HnS 적응:
+  - `include/decoration.h`: `struct DecorItem`을 HnS `enum DecorationCategory_HnS` 블록의 `#endif` **뒤**, `struct Decoration` 앞에 넣었다(upstream 문맥 `DECORCAT_COUNT, };` 바로 뒤는 HnS에서 `#if` 안이라 비 HnS 빌드에서 빠짐).
+  - HnS 추가분 9곳(`#if IS_HNS` 7곳 + 골드/크리스 팔레트 배열·`SpritePalette` 2곳)은 한 줄도 바꾸지 않았다. 확인: `diff(upstream 부모 → HnS 이식 전)`과 `diff(upstream 결과 → 이식 후)`의 `decoration.c` 추가·삭제 줄이 46줄로 **같다**.
+- 제외한 hunk: 없음.
+- 검증:
+  - `git diff --check` 통과. 비 ASCII가 든 `+`/`-` 줄 6개는 옮겨진 영문 설명의 `POKé`(3줄 삭제·3줄 추가)뿐이고, 한글이 든 줄 변경은 0. HnS 장식 이름·설명은 원래 영문이다(`NON_NPC_TEXT_AUDIT.md` 24행의 P1 미번역).
+  - **`tmp-123/verify.sh` → `VERIFY OK`:**
+    - [1] 소스 5개(`decoration.c`, `decoration.h`, `header.h`, `tiles.h`, `tilemaps.h`)가 사전 분석에서 검증한 트리와 바이트 동일, 삭제 대상 2개 없음
+    - [2] 실제 빌드 경로(cpp → preproc + charmap → cc1 → as)로 컴파일한 `gDecorations` **121개 항목의 필드 차이 0**(`id`, `name` 인코딩 바이트, `permission`, `shape`, `category`, `price`, `description` 인코딩 바이트, `tiles` 심볼·내용, 아이콘 `pic`/`pal` 심볼)
+    - [3] ID·세이브 상수 비교에서 달라진 것은 `sizeof_Decoration 40`(32 → 40, ROM 표 전용)뿐. `DECOR_*` 121개 값, `DECORCAT_*`·`DECORSHAPE_*`·`DECORPERM_*`, `SaveBlock1/2/3` 크기와 비밀기지·방 장식·교환남·TV 장식 오프셋이 모두 같다(세이브 영향 없음).
+  - 빌드(`build/port.log`): 종료 코드 0, **ROM 32,722,788 B(97.52%, −720 B) / EWRAM 248,944 B(0) / IWRAM 25,516 B(0)**. 사전 분석 추정 약 −0.7 KB. `pokehns.gba` SHA1 `366bd56c60aff2f37234927cd063ae6cdf2be3dc`. 새 경고 0(경고 7줄은 `field_specials.c`가 include하는 `battle_frontier_exchange_corner.h`의 기존 미사용 경고).
+- 테스트:
+  - 지정 파일 `test/script.c`(`checkdecorspace`/`checkdecor` 사용) → PASS 2, seq 120 기준과 같음.
+  - L 단위라 전체도 돌렸다(`build/port-check-post123.log`): 러너 요약 PASSED 2,321 / FAILED 2,243 / TOTAL 5,229로 같고, 표준 목록(5,160줄)이 `test-baseline-seq120.txt`와 **바이트 동일**.
+- 남은 위험:
+  - 낮음: 예전 switch는 shape 0–9 밖이면 아무것도 하지 않았지만 새 코드는 표 밖을 읽는다. shape는 ROM 표에서만 오고 121개 모두 0–9라 도달할 수 없다.
+  - 낮음: `rom_header_gf.c`의 `gDecorations` 포인터가 40 B 간격 구조체를 가리킨다(upstream 1.17.0과 같음, HnS는 GF 헤더 연동을 쓰지 않음).
+  - 문서: `NON_NPC_TEXT_AUDIT.md` 24행의 `src/data/decoration/{header,description}.h` 표기는 이제 `header.h` 하나다. 문서 수정은 메인 판단에 맡긴다. 번역할 때는 `header.h`의 인라인 `COMPOUND_STRING`을 바로 한글로 바꾸면 된다.
+- 실기 확인: 필요(아래 "실기 확인 항목" 3).
