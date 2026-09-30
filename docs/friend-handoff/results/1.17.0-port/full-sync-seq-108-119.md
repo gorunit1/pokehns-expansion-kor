@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 108~119
 
-진행 중: 마지막 완료 seq 111, 다음 seq 112.
+진행 중: 마지막 완료 seq 112, 다음 seq 113.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md), 메시지 출력 기록: [`BATTLE_MESSAGE_OUTPUT_CHANGES.md`](../../../localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md)
 시작 HEAD: `10077a5d70` (작업 트리 clean)
@@ -13,6 +13,7 @@
 | 109 | #9241 | 적용(HnS 적응) | `ec9dca2712` | +32 B | `#if IS_HNS` 그래픽을 새 구조체 표 HnS판으로 옮김, (class, 그래픽) 쌍·세이브 값 불변 |
 | 110 | #9595 | 이미 적용 | 없음(`5121b83c94`) | 0 | seq 83 unit에서 적용 |
 | 111 | #9610 | 적용(HnS 적응) | `47cd51facf` | +112 B | `AccuracyCheck` #9929 분기 유지, 한글 2문장 토큰만 교체(`{B_BUFF1}`→`{B_LAST_ITEM}`), 폴터가이스트+대타출동 문장 미출력(upstream대로, 출력 변화 문서 1행) |
+| 112 | #9587 | 적용 | `2d86edca81` | +16 B | upstream 그대로. 교체 후보 시뮬레이션 등 캐시 속도 미반영 경계 사례는 upstream 1.17.0과 같은 동작 |
 
 ## 공통 사항
 
@@ -129,3 +130,23 @@
   4. 행동 불가·빗나감·면역일 때 문장이 나오지 않는 것, 부자유친 2회 공격 폴터가이스트에서 두 번 출력되는 것은 이전과 같다.
 - 남은 위험: 낮음. #9657·#10220·#9939가 이 경로(공격 전 효과·명중 판정)를 캔슬러로 옮길 때 `MOVE_EFFECT_ITEM_MESSAGE`와 두 한글 문장의 토큰은 이번 결과를 기준으로 유지한다. `AccuracyCheck`의 #9929 분기를 upstream 원문으로 덮지 않는다.
 - 실기 확인: 필요(아래 "실기 확인 항목" 2).
+
+## 동기화 단위: seq 112 #9587 `U-9587` Use precalculated speedStats for AI speed comparison
+
+- 현재 판정: 적용
+- 커밋: `2d86edca81`
+- upstream 근거: `5774efaea1`(1파일 +2/−2). HnS `AI_WhoStrikesFirst`는 upstream 부모와 함수 전체가 같았고, 1.17.0 `battle_ai_util.c`도 같은 형태다.
+- 수정 파일(1): `src/battle_ai_util.c`(`speedBattlerAI/speedBattler = GetBattlerTotalSpeedStat(...)` → `gAiLogicData->speedStats[...]`)
+- HnS 적응: 없음(오프셋 +24줄). HnS 고유 AI 코드(챌린지 구 시트러스, HP 0 클램프, Supreme Overlord, #9568 Beat Up, 아군 KO `.maximum`)와 겹치는 줄이 없다. `GetBattlerTotalSpeedStat`에 HnS 챌린지 참조는 없다.
+- 동작: `speedStats[b]`는 `SetBattlerAiData`에서 `abilities[b]`·`holdEffects[b]`를 채우는 같은 순간에 같은 인자로 계산된다. 턴 시작 판단, 플레이어 기술 예측, 교체 예측 점수는 같은 값이다. **값이 달라지는 경계 사례(upstream 1.17.0과 같은 동작):**
+  1. 교체 후보 시뮬레이션(`InitializeSwitchinCandidate`): 캐시한 뒤 적용되는 끈적끈적네트 −1(더블은 상대 수만큼), 심술꾸러기+네트 +1, 스피드업 열매, 룸서비스, 부스트에너지·날씨/필드 고대활성·쿼크차지, 가상 독(속보), 치유소원·초승달춤 상태 해제가 속도 비교에 반영되지 않는다. 영향은 `GetBestMonIntegrated`의 선공 판정(1:1 승리 판정·배턴터치 후보)과 후보 대미지 계산 안의 보복·전격부리·애널라이즈 턴 순서다.
+  2. 턴 시작 시 이미 쓰러진 배틀러의 `speedStats`는 0이다(이전에는 남은 `gBattleMons` 수치). `AI_SetBattlerTurnOrder` 위치만 바뀐다(트릭룸이 아니면 맨 뒤).
+  3. 턴 도중 재판단(기절 후 교체, 탈출버튼·탈출팩, 유턴)에서 AI 파트너 속도는 턴 시작 값이다.
+  - 난수: `AI_WhoStrikesFirst`는 난수를 쓰지 않는다. 위 경계 사례에서 AI 결정이 달라질 때만 이후 난수 소비가 달라진다. 이식 전에 저장한 녹화 배틀을 재생하면 이 경계 사례에서 대미지 난수가 어긋날 수 있다(아주 드묾, 녹화는 #8943 A안으로 어차피 무효화 예정).
+- 검증:
+  - `git diff --check` 통과.
+  - 빌드: 종료 코드 0, **ROM 32,716,244 B(+16 B) / EWRAM 248,924 B(0) / IWRAM 25,516 B(0)**, 새 경고 0.
+  - 한글 줄 변경 0.
+- 테스트: AI 테스트 파일 26개 + `ability/analytic.c` + `move_effect/focus_punch.c`를 `ai-harness/run_ai_tests.sh`로 이식 직전(`pre112`, seq 111 커밋 상태)과 직후(`post112`)에 돌렸다. `pre112`는 seq 107 전체 목록과 이름·상태가 모두 같다(457건 대조, 변화 0). **`post112` 목록이 `pre112`와 바이트 동일**(485줄, PASS 354). 속도 프로브(`probe-9587-after-seq112.patch`)는 결과가 같아 돌리지 않았다.
+- 남은 위험: 낮음(위 경계 사례의 AI 판단이 upstream과 같아지고 이식 전 HnS와는 달라질 수 있음).
+- 실기 확인: 선택(아래 "실기 확인 항목" 3).
