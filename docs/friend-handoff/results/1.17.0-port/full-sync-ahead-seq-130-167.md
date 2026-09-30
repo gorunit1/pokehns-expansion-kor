@@ -1,6 +1,6 @@
 # full-sync 선진행 결과 — 구간 1 (seq 130~167 중 15행)
 
-진행 중: 마지막 완료 seq 156, 다음 seq 157
+진행 중: 마지막 완료 seq 157, 다음 seq 158
 
 **순서표와 다르게 진행한 구간이다.** 순서표([`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv))의 다음 행 seq 127 #9655(배틀 메시지 리팩터)가 D1~D7 결정 대기라서, #9655와 무관한 뒤쪽 행을 앞당겨 이식한다. 선정 기준과 전체 분류는 [`ahead-of-9655/README.md`](ahead-of-9655/README.md)(`ahead_candidates.tsv`)에 있다. 이 구간은 그 "선진행" 114행 가운데 앞쪽 15행(seq 130, 131, 133, 134, 137, 143, 148, 149, 151, 156, 157, 158, 160, 165, 167)이다.
 
@@ -24,6 +24,7 @@
 | 149 | #9461 | 적용(HnS 적응) | `9f6c5b5c58` | +128 B | 맵 팝업 층 번호(`MapHeader.floorNumber`, mapjson). HnS 적응 3곳: 피라미드 조건 유지, **`FONT_NARROW` 유지**, `CELADON DEPT.` 특례 `!IS_HNS`. HnS 맵 `floor_number` 0개라 팝업 문구·맵 헤더 바이트 불변. 새 테스트 `Map names fit in popup` PASS |
 | 151 | #9755 | 적용 | `ce1fc01da9` | −16 B | AI `IsDamageMoveUnusable`의 `HasWeatherEffect()` 이중 검사 제거(upstream 그대로). `ctx->weather`가 이미 날씨 무효를 반영해 사실상 동작 동일 |
 | 156 | #9774 | 적용 | `adb22cd5f0` | 0 B | Fallarbor 떠올리기 NPC 판정 `VAR_0x8004, 0` → `VAR_RESULT, FALSE`(upstream 그대로). HnS 실사용 검은먹시티 NPC의 같은 수정은 seq 133에 포함. Fallarbor는 HnS에서 도달 불가 |
+| 157 | #8628 | 적용 | `5381abba16` | 0 B | `setmetatileinrange` 매크로(`callnative`, 새 opcode 없음)와 `NativeFunc_SetMetatileInRange`. 쓰는 스크립트가 없어 함수는 gc로 빠짐. 공백 1줄 정리 |
 
 ## 공통 사항
 
@@ -283,6 +284,25 @@
 - 테스트: 없음(스크립트 1줄, upstream 테스트 변경 없음). 빌드(스크립트 어셈블)로 확인.
 - 남은 위험: 없음.
 - 실기 확인: 불필요(도달 불가 맵). 검은먹시티 NPC는 "실기 확인 항목" 2.
+
+## 동기화 단위: seq 157 #8628 `U-8628` Add setmetatileinrange Script Command
+
+- 현재 판정: 적용(그대로, 공백 1줄 정리)
+- 커밋: `5381abba16`
+- upstream 근거: `6045e2a3c9`(`asm/macros/event.inc`, `src/scrcmd.c`). `git log --grep='#8628'` 없음 → 미적용이었다.
+- 수정 파일(2): `asm/macros/event.inc`, `src/scrcmd.c`
+- 적용 방법: 사전 분석 patch(`seq157-8628.patch`)를 `git apply`했다. 충돌 없음(seq 133 #9006의 두 파일 삭제 hunk는 더 뒤쪽이라 겹치지 않음).
+- 내용: `setmetatile` 매크로 뒤에 `setmetatileinrange xmin, ymin, xmax, ymax, metatileId, collision=FALSE, elevation=0xFF` 매크로(`callnative NativeFunc_SetMetatileInRange` + 인자 바이트), `ScrCmd_setmetatile` 뒤에 사각형 범위 메타타일 설정 함수 `NativeFunc_SetMetatileInRange`.
+- 스크립트 명령 번호·세이브: **새 opcode를 추가하지 않는다**(기존 `SCR_OP_CALLNATIVE` + 함수 주소). `data/script_cmd_table.inc`(HnS `0x00~0xf6`, 끝의 HnS 추가분 포함) 불변. 기존 스크립트 바이트코드·opcode 번호 불변, HnS 맵은 이 매크로를 쓰지 않는다. 세이브 영향 없음.
+- HnS 적응: upstream `u32 temp;` 다음 빈 줄의 줄끝 공백 4칸을 지웠다(`git diff --check` 통과용). 그 밖에 없음.
+- 제외한 hunk: 없음.
+- 검증:
+  - `git diff --check` 통과. 한글·config 변경 0.
+  - 빌드(`build/port.log`): 종료 코드 0, **ROM 32,720,884 B(0) / EWRAM 248,940 B(0) / IWRAM 25,516 B(0)**. `pokehns.gba` SHA1 `b234b82e58c16022cafd2fe7ff094fa24be40f2b`. 경고 0줄(새 경고 0). `pokehns.map`의 Discarded input sections에 `.text.NativeFunc_SetMetatileInRange`(0xbc)가 있다(참조 없음 → gc).
+  - SHA1이 seq 156과 다른 이유(진단): 커밋 전 상태를 patch 역적용으로 다시 빌드해(`build/port-diag.log`, SHA1 `b530755d…` = seq 156 결과와 같음) ELF 심볼을 비교했다. 주소가 바뀐 심볼은 링커가 만드는 ARM/Thumb 전환 veneer 38개(`__*_from_thumb`/`__*_from_arm`, 0x08248660~ 같은 영역 안)의 **순서**뿐이고, 그 밖의 모든 심볼 주소는 같다(`CSWTCH.168` → `CSWTCH.171` 이름만 바뀜). ROM 차이 1,758 B는 이 veneer를 부르는 호출 오프셋이다. 전역 심볼이 하나 늘어 링커의 veneer 배치 순서가 바뀐 것이고 동작은 같다. 진단 뒤 patch를 다시 적용했다(작업 트리 = 커밋 내용).
+- 테스트(`test/script.c`, callnative 효과 분석 경로) → `Script_HasNoEffect control flow`·`Script_HasNoEffect variables` PASS 2, seq 126 기준과 같다. 이 PR은 테스트를 바꾸지 않는다.
+- 남은 위험: 없음. 좌표가 `u8`이라 `xmin + MAP_OFFSET`이 255를 넘으면 잘린다(upstream과 같음, 쓰는 스크립트 없음).
+- 실기 확인: 불필요(쓰는 스크립트 없음).
 
 ## 한글 문구 미결
 
