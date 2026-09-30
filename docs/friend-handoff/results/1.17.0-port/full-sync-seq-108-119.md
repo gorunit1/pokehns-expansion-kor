@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 108~119
 
-진행 중: 마지막 완료 seq 112, 다음 seq 113.
+진행 중: 마지막 완료 seq 113, 다음 seq 114.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md), 메시지 출력 기록: [`BATTLE_MESSAGE_OUTPUT_CHANGES.md`](../../../localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md)
 시작 HEAD: `10077a5d70` (작업 트리 clean)
@@ -14,6 +14,7 @@
 | 110 | #9595 | 이미 적용 | 없음(`5121b83c94`) | 0 | seq 83 unit에서 적용 |
 | 111 | #9610 | 적용(HnS 적응) | `47cd51facf` | +112 B | `AccuracyCheck` #9929 분기 유지, 한글 2문장 토큰만 교체(`{B_BUFF1}`→`{B_LAST_ITEM}`), 폴터가이스트+대타출동 문장 미출력(upstream대로, 출력 변화 문서 1행) |
 | 112 | #9587 | 적용 | `2d86edca81` | +16 B | upstream 그대로. 교체 후보 시뮬레이션 등 캐시 속도 미반영 경계 사례는 upstream 1.17.0과 같은 동작 |
+| 113 | #9596 | 부분 적용(HnS 적응) | `f6ef307f76` | −112 B | `holdEffectParams` 캐시 제거·`ShouldTryOHKO` 기합의띠 판정만. 턴 순서 hunk는 seq 100에서 1.17.0 최종형으로 이미 대체 |
 
 ## 공통 사항
 
@@ -150,3 +151,22 @@
 - 테스트: AI 테스트 파일 26개 + `ability/analytic.c` + `move_effect/focus_punch.c`를 `ai-harness/run_ai_tests.sh`로 이식 직전(`pre112`, seq 111 커밋 상태)과 직후(`post112`)에 돌렸다. `pre112`는 seq 107 전체 목록과 이름·상태가 모두 같다(457건 대조, 변화 0). **`post112` 목록이 `pre112`와 바이트 동일**(485줄, PASS 354). 속도 프로브(`probe-9587-after-seq112.patch`)는 결과가 같아 돌리지 않았다.
 - 남은 위험: 낮음(위 경계 사례의 AI 판단이 upstream과 같아지고 이식 전 HnS와는 달라질 수 있음).
 - 실기 확인: 선택(아래 "실기 확인 항목" 3).
+
+## 동기화 단위: seq 113 #9596 `U-aicalc-9548` Fix frame counter in multi battles
+
+- 현재 판정: 부분 적용(HnS 적응)
+- 커밋: `f6ef307f76`
+- upstream 근거: `b9a1dcfbde`(5파일 +47/−54). upstream 원본은 `src/battle_util.c`에서 `git apply`가 실패한다(HnS는 #9548 원형이 아니라 1.17.0 최종형).
+- 수정 파일(3): `include/battle.h`(`AiLogicData.holdEffectParams[]` 삭제), `src/battle_ai_main.c`(`SetBattlerAiData`의 대입 삭제), `src/battle_ai_util.c`(`ShouldTryOHKO`: `gAiLogicData->holdEffectParams[battlerDef]` → `GetBattlerHoldEffectParam(battlerDef)`). 사전 분석 최소 패치(`seq113-9596.patch`) 그대로. 세 줄은 1.17.0과 같다(1.17.0 `battle.h`에 `holdEffectParams`·`turnOrder` 없음, `ShouldTryOHKO` 같은 줄).
+- 제외한 hunk와 이유:
+  - `AiLogicData.turnOrder[]` 추가, `SetBattlerTurnOrder` 신설과 `SetAiLogicDataForTurn` 안의 초기화·정렬: 1.17.0에 없다(#10453이 되돌림). HnS는 seq 100(#9548)에서 1.17.0 최종형(`Ai_AttackerMoves*`가 필요할 때 `AI_SetBattlerTurnOrder`로 계산)을 넣었다. 현재 `GetAiTurnOrder`·`Ai_AttackerMovesAfterTarget`·`Ai_AttackerMovesLast`가 1.17.0과 글자까지 같다(`diff` 0).
+  - `BattleContext.aiTurnOrder` 삭제, `AI_CalcDamage` 안의 `AI_SetBattlerTurnOrder` 호출 삭제, `CalcMoveBasePower` 등 호출 3곳 시그니처: HnS에 원래 없거나 이미 새 형태(이미 동등).
+  - `SetAiLogicDataForTurn` 선언 인라인화·변수명·공백, `AI_CheckBadMove` 등 줄끝 공백: 동작·코드가 같은 정리(선택 패치와 오브젝트 바이트 동일). 계획 TSV대로 넣지 않았다.
+- 동작: 기합의띠 확률 값이 `SetBattlerAiData` 시점 캐시에서 호출 시점 `GetBattlerHoldEffectParam`로 바뀐다. AI 판단 중 대상 도구가 바뀌는 경로는 모두 `SetBattlerAiData`를 다시 부르므로 값이 같다. `Random()` 호출 횟수·순서도 같다(사전 분석 역어셈블 확인). "프레임 카운터" 회귀(#9548 원형의 `AI_CalcDamage`마다 턴 순서 계산)는 HnS에 들어온 적이 없다.
+- 검증:
+  - `git diff --check` 통과.
+  - 빌드: 종료 코드 0, **ROM 32,716,132 B(−112 B) / EWRAM 248,924 B(0) / IWRAM 25,516 B(0)**, 새 경고 0. `gAiLogicData`는 힙이라 `sizeof(struct AiLogicData)`만 4 B 줄었다(정적 배치 무관).
+  - 한글 줄 변경 0.
+- 테스트: `run_ai_tests.sh post113` 목록이 `post112`와 바이트 동일(485줄, PASS 354). 일격기 AI 테스트(`ai.c`), `ai_multi.c`, `focus_punch.c` 포함.
+- 남은 위험: 매우 낮음. 세이브 무관.
+- 실기 확인: 필요 없음.
