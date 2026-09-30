@@ -18,6 +18,10 @@
 - [2026-09-29 port 진행 회신](HANDBACK_2026-09-29_PORT_PROGRESS.md) — full-sync seq 1~62 이식, 테스트 러너 복구, 다음 seq 63
 - [2026-09-30 회신](HANDBACK_2026-09-30.md) — seq 92~101, Safari UI 한글화 버그 2건 수정(재확인 요청), 순서표 보정, 다음 seq 102
 
+## 검토 중인 제안 (확정 아님)
+
+- [AI가 mGBA MCP로 실기 확인 일부를 대신하기](PROPOSAL_AI_MGBA_CHECKS.md) — **검토 중이며 확정이 아니다.** 설치하지 않았고, 친구와 합의한 뒤 결정한다.
+
 ## 작업 목록
 
 구체적인 지시는 작업별 Markdown 파일로 추가합니다.
