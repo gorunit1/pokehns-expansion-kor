@@ -6714,13 +6714,6 @@ BattleScript_ItemNoStatLoss::
 	waitmessage B_WAIT_TIME_LONG
 	return
 
-BattleScript_ObliviousPreventsAttraction::
-	pause B_WAIT_TIME_SHORT
-	call BattleScript_AbilityPopUp
-	printstring STRINGID_PKMNPREVENTSROMANCEWITH
-	waitmessage B_WAIT_TIME_LONG
-	goto BattleScript_MoveEnd
-
 BattleScript_FlinchPrevention::
 	pause B_WAIT_TIME_SHORT
 	call BattleScript_AbilityPopUp

@@ -487,7 +487,6 @@ const u8 *const gBattleStringsTable[STRINGID_COUNT] =
     [STRINGID_PKMNSXPREVENTSYLOSS]                  = COMPOUND_STRING("{B_SCR_NAME_WITH_PREFIX}의\n{B_BUFF1}{B_TXT_EUNNEUN} 떨어지지 않는다!"), //not in gen 5+, ability popup
     [STRINGID_PKMNSXINFATUATEDY]                    = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n헤롱헤롱해졌다!"), //not in gen 5+, ability popup
     [STRINGID_PKMNSXMADEYINEFFECTIVE]               = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX}에게는\n효과가 없는 것 같다..."), //not in gen 5+, ability popup
-    [STRINGID_PKMNSXCUREDYPROBLEM]                  = COMPOUND_STRING("{B_SCR_NAME_WITH_PREFIX}{B_TXT_EUNNEUN} {B_SCR_ABILITY} 때문에\n{B_BUFF1}상태가 나았다!"), //not in gen 5+, ability popup
     [STRINGID_ITSUCKEDLIQUIDOOZE]                   = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n해감액을 흡수했다!"),
     [STRINGID_PKMNTRANSFORMED]                      = COMPOUND_STRING("{B_SCR_NAME_WITH_PREFIX}의\n모습이 변화했다!"),
     [STRINGID_ELECTRICITYWEAKENED]                  = COMPOUND_STRING("전기의 위력이 약해졌다!"),
