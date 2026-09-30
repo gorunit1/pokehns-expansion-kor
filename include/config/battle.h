@@ -167,7 +167,9 @@
 #define B_RAGE_FIST                 GEN_LATEST // In Champions, Rage Fist stacks reset upon switching out or fainting.
 #define B_HP_PERCENTAGE_DISPLAY     FALSE // Champions-style opponent HP percentage display.
 #define B_CHECK_USER_FAILURE        GEN_LATEST // In Gen5+, The user no longer checks it's own failure, e.g. Soundproof will not block it's own Perish Song
-#define B_ABSORB_MESSAGE            GEN_LATEST // In Gen5+, No absorb message is played if user is already at full hp.
+#define B_ABSORB_MESSAGE            GEN_LATEST // In Gen5+, no absorb message is played if user is already at full hp.
+// HnS: GEN_4 keeps the Uproar wake-ups from before #9616 (sleeping battlers wake before moving or at the end of the turn). Upstream uses GEN_LATEST.
+#define B_UPROAR                    GEN_4      // In Gen5+, Uproar awakens all battlers on the first turn if successful. In Gens 3-4, Uproar allows every battler to awaken before their action or at the end of a turn.
 
 // Ability settings
 #define B_GALE_WINGS                GEN_LATEST // In Gen7+ requires full HP to trigger.

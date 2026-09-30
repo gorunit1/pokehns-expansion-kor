@@ -2252,3 +2252,7 @@
 	.macro destroyitempopup
 	callnative BS_DestroyItemPopup
 	.endm
+
+	.macro trywakebattlersuproar
+	callnative BS_TryWakeBattlersUproar
+	.endm

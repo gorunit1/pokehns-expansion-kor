@@ -58,7 +58,11 @@ static bool32 HandleEndTurnVarious(enum BattlerId battler)
     for (enum BattlerId i = 0; i < gBattlersCount; i++)
     {
         if (gBattleMons[i].volatiles.throatChopTimer > 0)
+        {
             gBattleMons[i].volatiles.throatChopTimer--;
+            if (gBattleMons[i].volatiles.uproarTurns)
+                gBattleMons[i].volatiles.uproarTurns = 1; // end the move this turn
+        }
 
         if (gBattleMons[i].volatiles.lockOn > 0 && --gBattleMons[i].volatiles.lockOn == 0)
             gBattleMons[i].volatiles.battlerWithSureHit = 0;
@@ -1227,8 +1231,14 @@ static bool32 HandleEndTurnThirdEventBlock(enum BattlerId battler)
         {
             for (gEffectBattler = 0; gEffectBattler < gBattlersCount; gEffectBattler++)
             {
+                if (GetConfig(B_UPROAR) >= GEN_5) // This effect is only present in pre-Gen 5 Uproar
+                    break;
+
+                // HnS: Soundproof still blocks this end-of-turn wake-up regardless of B_UPROAR_IGNORE_SOUNDPROOF, as before #9616.
+                bool32 hasSoundproof = GetBattlerAbility(gEffectBattler) == ABILITY_SOUNDPROOF;
+
                 if ((gBattleMons[gEffectBattler].status1 & STATUS1_SLEEP)
-                 && GetBattlerAbility(gEffectBattler) != ABILITY_SOUNDPROOF)
+                 && !hasSoundproof)
                 {
                     gBattleMons[gEffectBattler].status1 &= ~STATUS1_SLEEP;
                     gBattleMons[gEffectBattler].volatiles.nightmare = FALSE;
@@ -1243,7 +1253,7 @@ static bool32 HandleEndTurnThirdEventBlock(enum BattlerId battler)
             if (effect == FALSE)
             {
                 gBattlerAttacker = battler;
-                gBattleMons[battler].volatiles.uproarTurns--;  // uproar timer goes down
+                gBattleMons[battler].volatiles.uproarTurns--; // uproar timer goes down
                 if (gBattleMons[battler].volatiles.unableToUseMove)
                 {
                     CancelMultiTurnMoves(battler);
