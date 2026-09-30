@@ -1,6 +1,6 @@
 # full-sync 선진행 결과 — 구간 1 (seq 130~167 중 15행)
 
-진행 중: 마지막 완료 seq 131, 다음 seq 133
+진행 중: 마지막 완료 seq 133, 다음 seq 134
 
 **순서표와 다르게 진행한 구간이다.** 순서표([`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv))의 다음 행 seq 127 #9655(배틀 메시지 리팩터)가 D1~D7 결정 대기라서, #9655와 무관한 뒤쪽 행을 앞당겨 이식한다. 선정 기준과 전체 분류는 [`ahead-of-9655/README.md`](ahead-of-9655/README.md)(`ahead_candidates.tsv`)에 있다. 이 구간은 그 "선진행" 114행 가운데 앞쪽 15행(seq 130, 131, 133, 134, 137, 143, 148, 149, 151, 156, 157, 158, 160, 165, 167)이다.
 
@@ -16,6 +16,7 @@
 |---|---|---|---|---:|---|
 | 130 | #9575 | 적용(HnS 적응) | `0f60183f1f` | −192 B | AI 예측 처리 통합. `battle_ai_main.c` 수동 맞춤(HnS `battlerMovesScored` 줄·무조건 디버그 타이머 유지). **예측 AI 트레이너 25명의 AI 동작이 1.17.0과 같아짐** |
 | 131 | #9462 | 부분 적용(잔여분) | `99388d6158` | +32 B | 게임 기능(`AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE`·RNG·뒤집기 로직)은 HnS에 이미 있음. `GetConfig` 2곳·`AI_CONFIG_DEFINITIONS` 2항목·테스트 4파일만 이식(`(reversed)` Choiced 테스트 값 `ABILITY_GLUTTONY`). 게임 동작 불변 |
+| 133 | #9006 | 적용(HnS 적응) | `fc205e1a40` | −640 B (EWRAM −4 B) | 기술 떠올리기를 공용 `LearnMove`로. HnS chooseboxmon·요약 START/R/L 유지, 검은먹시티 NPC `Special_HasMoveToRelearn`/`VAR_RESULT`, **#10223 1줄 선반영**, **가르침 교체 최대 PP 유지(`// HnS:`)**, **새 문자열 2개 한글 초안(미결)** |
 
 ## 공통 사항
 
@@ -90,12 +91,74 @@
 - 남은 위험: 없음(게임 동작 불변).
 - 실기 확인: 불필요.
 
+## 동기화 단위: seq 133 #9006 `U-relearner-9006` Move relearner refactor
+
+- 현재 판정: 적용(HnS 적응)
+- 커밋: `fc205e1a40`
+- upstream 근거: `780805f169`(19파일). `git log --all --grep='#9006'` 결과 0건, HEAD에 `Special_HasMoveToRelearn`·`HandleMoveRelearnerInput` 없음 → 미적용이었다.
+- 수정 파일(19): `asm/macros/event.inc`, `data/maps/BlackthornCity_House3_hns/scripts.inc`, `data/maps/FallarborTown_MoveRelearnersHouse/scripts.inc`, `data/scripts/move_relearner.inc`, `data/specials.inc`, `include/chooseboxmon.h`, `include/constants/move_relearner.h`, `include/menu_specialized.h`, `include/move_relearner.h`, `include/strings.h`, `src/chooseboxmon.c`, `src/field_specials.c`, `src/list_menu.c`, `src/menu_specialized.c`, `src/move_relearner.c`, `src/party_menu.c`, `src/pokemon_summary_screen.c`, `src/scrcmd.c`, `src/strings.c`
+- 적용 방법: 사전 분석 patch(`seq133-9006.patch`, 19파일 +508/−959, 76 hunk)를 `git apply`했다. 충돌 없음. `src/move_relearner.c`, `data/scripts/move_relearner.inc`, `include/move_relearner.h`, `include/constants/move_relearner.h`는 적용 뒤 upstream `780805f169`와 **바이트 동일**하다(HnS가 relearner 본체를 고친 적이 없어 이식 전에도 upstream 부모와 같았다).
+- 내용(upstream):
+  - relearner 자체 상태 기계(`MENU_STATE_*`)를 없애고 기술 가르침 공용 `LearnMove()`(`chooseboxmon.c`)를 쓴다. `LearnMove`에 확인 단계 `PROMPT_BEFORE_LEARNING_1/2`와 `recoverPP`(data[3]) 추가, `CanMonLearnMove(boxmon, move)`·`CanMonLearnSpecialVarMove`.
+  - 결과를 `VAR_0x8004` 대신 `gSpecialVar_Result`로 돌려준다. special `HasMovesToRelearn` → `Special_HasMoveToRelearn`(같은 자리, special 번호 불변).
+  - 요약 화면 relearner 입력을 `HandleMoveRelearnerInput`으로 분리, `UpdateMoveRelearnerState`/`UpdateRelearnPrompt`. `getmoverelearnerstate`·`istmrelearneractive`(`callnative` 매크로, 스크립트 명령 번호 무관)와 C 함수 삭제. `RELEARN_MODE_BOX_PSS_PAGE_*` 삭제.
+  - `RedrawListMenu`가 커서 콜백을 부른다(`list_menu.c`). `InitMoveRelearnerWindows(bool32)`.
+  - 떠올리기 화면의 배우기·잊기 메시지가 relearner 전용 문자열에서 공용 문자열(`gText_PkmnNeedsToReplaceMove`, `gText_WhichMoveToForget`, `gText_StopLearningMove2`, `gText_12PoofForgotMove`, `gText_PkmnLearnedMove4`, `gText_MoveNotLearned`)로 바뀐다. 모두 HnS에서 이미 한글이다. 176px 창(`RELEARNERWIN_MSG`)에 가장 넓은 기술명·닉네임 6글자로도 최대 155px라 들어간다(사전 분석 `tmp-133/width.py`).
+- HnS 적응:
+  - `chooseboxmon.c`: HnS 고유 코드(너즐록 `IsBoxMonExcluded`, `SELECT_PC_MON_PLA_TUTOR`/`CanMonLearnPLAMove`/`sPLATutorLearnsets`, `IsMatchingSpecies`의 `SPECIES_NONE`) 보존. `VALIDATE_BEFORE_LEARNING`은 upstream `switch (CanMonLearnMove(boxmon, move))` 대신 HnS `switch (IsBoxMonExcluded(boxmon))` 유지(이 상태는 가르침에서만 쓰고 relearner는 `PROMPT_BEFORE_LEARNING_1`에서 시작).
+  - `pokemon_summary_screen.c`: HnS 능력치 페이지 START/R/L(능력치/개체값/노력치 전환) 유지. `HandleMoveRelearnerInput` 호출 분기는 HnS START 분기 **앞**에 `ShouldShowMoveRelearner() && IS_MOVE_PAGE(...)` 조건으로 넣었다(`// HnS:` 주석). `P_SUMMARY_SCREEN_MOVE_RELEARNER FALSE`라 분기 전체가 컴파일에서 빠진다(`pokehns.map`에 `HandleMoveRelearnerInput` 0건). `ChangePage`의 무조건 `ShowUtilityPrompt(SUMMARY_MODE_NORMAL)` 유지.
+  - `data/maps/BlackthornCity_House3_hns/scripts.inc`(HnS 전용, 실사용 relearner 경로): `special Special_HasMoveToRelearn`, `goto_if_eq VAR_RESULT, FALSE, …ChooseMon`(이전 `VAR_0x8004, 0`). #9006 뒤 `VAR_0x8004`는 선택 파티 번호/`PC_MON_CHOSEN`으로 남으므로 고치지 않으면 하트비늘 판정이 틀린다. Fallarbor 쪽 같은 수정(#9774)은 seq 156.
+  - **`PROMPT_BEFORE_LEARNING_2` "아니오"의 `gSpecialVar_Result = FALSE;`(#10223 `42e299ed0f` 1줄 선반영, 주석 없이 upstream과 같은 줄).** #9006만 넣으면 확인에 "아니오"를 골라도 직전 `Special_HasMoveToRelearn`의 `VAR_RESULT = TRUE`가 남아, 검은먹시티 NPC가 기술을 배운 것으로 보고 **하트비늘을 가져간다**(upstream 1.16.x 버그, 1.17.0에서 #10223으로 고쳐짐). 커밋 메시지에도 적었다.
+  - `field_specials.c` `CanTeachMoveBoxMon`의 `tRecoverPp = TRUE`(upstream)와 `data[3]` 정의 추가.
+- **upstream과 다르게 둔 곳:**
+  - **`field_specials.c` `Task_ReturnToFieldWhileLearningMove`의 `tRecoverPp = TRUE`(`// HnS:`)**: 가르침에서 기술을 교체하면 새 기술이 최대 PP(현재 HnS 동작 유지). upstream은 `CanTeachMoveBoxMon`에서만 TRUE로 두는데, 교체는 항상 요약 화면을 거치고 돌아올 때 `FieldCB_ContinueLearningMove`가 새 task(data 0)를 만들어 `recoverPP`가 0이 된다. 그러면 PP가 min(잊은 기술의 남은 PP, 새 기술 최대 PP)가 된다(upstream 1.17.0·1.17.1 버그). 영향 경로: 필드 기술 가르침(`data/scripts/move_tutors.inc`, `UlaulaIsle_hns`, `BattleFrontier_Lounge7_hns`, `NewSinjoh_HotSprings_hns` PLA). upstream 1.17.0과 똑같이 하려면 이 한 줄을 빼면 된다.
+  - `VALIDATE_BEFORE_LEARNING`의 `IsBoxMonExcluded`, 요약 화면 START/R/L과 relearner 호출 분기 위치(위 "HnS 적응").
+- 제외한 hunk:
+  - `pokemon_summary_screen.c` `Task_HandleInput`의 A 버튼 hunk(`ShouldShowRename` 이름 바꾸기 분기): HnS A 버튼은 다시 작성됐고 이름 바꾸기 분기가 없다(`P_SUMMARY_SCREEN_RENAME FALSE`).
+  - 같은 파일 `ClearPageWindowTilemaps` 능력치 페이지 IV/EV 프롬프트 hunk: HnS에 해당 줄·`ShouldShowIvEvPrompt`가 없다.
+- 문자열: 새 문자열 2개는 한글 초안으로 넣었다(아래 "한글 문구 미결"). 기존 한글 줄 변경·삭제 0. 더 이상 참조되지 않는 relearner 전용 한글 6개(`gText_MoveRelearnerAndPoof` 등)는 upstream처럼 정의를 남겼다(gc-sections가 ROM에서 뺀다). 요약 화면 영문 프롬프트 `sRelearnTexts`는 숨은 창에만 그려지고 tilemap은 `ShouldShowMoveRelearner()`(HnS FALSE)일 때만 올라가 화면에 나오지 않는다.
+- 세이브: 영향 없음. `gMoveRelearnerState`·`gRelearnMode`는 세이브 밖 EWRAM이고 special·스크립트 명령 번호는 그대로다.
+- 검증:
+  - `git diff --check` 통과. 비 ASCII `+`/`−` 줄은 새 한글 문자열 2줄뿐. `HasMovesToRelearn`·`getmoverelearnerstate`·`istmrelearneractive` 남은 곳 0(`MoveRelearnerRunTextPrinters` 선언은 upstream `780805f169`에도 남아 있음).
+  - 빌드(`build/port.log`): 종료 코드 0, **ROM 32,722,052 B(97.52%, −640 B) / EWRAM 248,940 B(94.96%, −4 B) / IWRAM 25,516 B(0)**. 사전 분석 추정 약 −0.8 KB, EWRAM −4 B(`sMoveRelearnerMenuState` 6 B → `sMoveRelearnerScrollState` 4 B). 스크립트의 special 이름과 `data/specials.inc` 일치는 링크 성공으로 확인했다. `pokehns.gba` SHA1 `bcb11875cef2d6048c0098af0fc5756dbe7ff99e`. 새 경고 0(경고 151줄 모두 기준 목록의 기존 경고).
+- 테스트(지정 2파일: `test/text.c`, `test/pokemon.c`) → 63줄(PASS 37)이 seq 126 기준 목록의 같은 줄과 **모두 같다**. `Move names fit on Move Relearner Screen`은 FAIL(94/94) 유지(한글 이름 폭, 기존). `test/pokemon.c`의 `Pokémon level up learnsets fit … 1436/1573: INVALID`(disabled species)는 표준 목록 밖이고 seq 126 전체 실행(`build/port-check-post126.log`)에도 같게 있다. upstream #9006은 `test/**`를 바꾸지 않는다.
+- 남은 위험:
+  - 중간: 떠올리기 흐름 변화(upstream 설계). "배우게 하겠습니까?" 확인이 `LearnMove`로 옮겨졌고, 교체 때 팡파레가 없으며, 배운 직후 팡파레가 울리는 동안 화면이 닫힌다. 스크립트 모드는 `tRecoverPp = TRUE`라 교체 기술 최대 PP로 이전과 같다.
+  - 낮음: `RedrawListMenu`가 커서 콜백을 한 번 더 부른다. HnS 사용처(옵션·챌린지 메뉴, 커트 볼 상점)의 콜백은 멱등이다.
+  - 낮음: 요약 화면을 열 때마다 숨은 창 버퍼(BG0 타일 800~821)에 영문 프롬프트를 그린다(tilemap은 올리지 않음).
+- 실기 확인: 필요(아래 "실기 확인 항목" 2).
+
+## 한글 문구 미결
+
+**공식 문구 확인 전 임시 번역**이다. 확정되면 `src/strings.c`의 해당 줄만 바꾼다(seq 133 #9006).
+
+| ID | 초안(`src/strings.c`) | 영문 원문(upstream #9006) | HnS에서 화면에 나오지 않는 이유 |
+|---|---|---|---|
+| `gText_MoveRelearnerTeachMoveConfirmUseTm` | `{STR_VAR_2}{K_EULREUL} 배우게 하겠습니까?\n{STR_VAR_3} 1개가 없어집니다` | `Teach {STR_VAR_2}?\nThis will consume one {STR_VAR_3}.` | `ShouldConsumeTmItem`(TM 떠올리기 모드이면서 비스크립트 모드)에서만 쓴다. HnS는 `P_TM_MOVES_RELEARNER FALSE`이고 요약·파티 relearner config도 FALSE다 |
+| `gText_MoveRelearnerStop` | `{STR_VAR_1}에게 새 기술을\n배우게 하는 것을 그만두겠습니까?` | `Stop trying to learn new\nmoves for {STR_VAR_1}?` | 비스크립트 모드(요약·파티 relearner)의 목록 취소에서만 쓴다. HnS는 `P_SUMMARY_SCREEN_MOVE_RELEARNER`·`P_PARTY_MOVE_RELEARNER` FALSE. 검은먹시티 NPC(스크립트 모드)는 기존 `gText_MoveRelearnerGiveUp`을 쓴다 |
+
+- 근거 표현: `gText_MoveRelearnerTeachMoveConfirm`(`{STR_VAR_2}{K_EULREUL}\n배우게 하겠습니까?`), `gText_MoveRelearnerGiveUp`(`…에게 기술을\n배우게 하는 것을 포기하겠습니까?`), 챌린지 메뉴의 `기술머신은 한 번\n사용하면 없어집니다`(`challenge_menu.c`). 종결 마침표는 HnS 확인 문구 관례(마침표 없음)를 따랐다. upstream 줄 끝의 `;;`는 하나로 줄였다.
+- 인코딩·폭: 44 B·50 B(종단 포함). 176px 창에서 최대 172px(가장 넓은 기술명 88px 기준)·127px로 들어간다(사전 분석 계산).
+
 ## 실기 확인 항목 (친구용)
 
 이식 전 ROM(`e629de8bdf`, SHA1 `197afe07…`)과 이식 후 ROM을 같은 세이브로 비교한다.
 
 1. **예측 AI 트레이너(#9575):** 예측 AI 트레이너(예: 재대전 관장 1명, 더블배틀 `FINLEY_HNS` 또는 `MUALANI_HNS`, `STEVEN_HNS`)와 싸워 AI의 교체·기술 선택이 멈추거나 이상하지 않은지, 턴 시작 지연이 늘지 않았는지 본다. AI 판단이 1.17.0과 같아지는 변화라 이식 전과 다른 선택을 할 수 있다.
+2. **기술 떠올리기·가르침(#9006):**
+   - 검은먹시티 기술 떠올리기 NPC(`BlackthornCity_House3_hns`), 파티 포켓몬과 PC 박스 포켓몬 각각:
+     - 기술 3개 이하인 포켓몬이 배우기 → 하트비늘 1개 감소
+     - 기술 4개인 포켓몬의 교체(요약 화면 선택, PC 포켓몬 포함) → 새 기술 최대 PP
+     - "배우게 하겠습니까?"에서 아니오 → 목록으로 돌아가고 **하트비늘 유지**(#10223 1줄)
+     - 목록 취소 → 포기 → 포켓몬 선택으로 돌아가고 하트비늘 유지
+     - 교체 거절 → "결국 배우지 않았다" → 목록
+     - 메시지 줄바꿈·창 넘침(공용 문자열로 바뀜), 팡파레가 끊기는지
+   - 기술 가르침 NPC(`data/scripts/move_tutors.inc` 사용 NPC, `UlaulaIsle_hns`, `BattleFrontier_Lounge7_hns`, `NewSinjoh_HotSprings_hns` PLA 가르침)에서 PP가 적은 기술을 교체하면 새 기술이 **최대 PP**인지(`// HnS:` 줄).
+   - 요약 화면: 능력치 페이지 START/R/L 전환, 기술 페이지 오른쪽 위에 잔상·영문이 없는지, 박스 요약, 전투 중 요약.
+   - 목록 다시 그리기(`RedrawListMenu`): 옵션·챌린지 메뉴에서 값 변경 시 설명·하이라이트, 챌린지 메뉴 맨 아래로 이동, 커트 볼 상점 구매 뒤 목록 복귀(아이콘·열매 수).
 
 ## 후속 행 메모
 
-- (진행하며 추가)
+- **seq 390 #10223:** `chooseboxmon.c` `PROMPT_BEFORE_LEARNING_2` "아니오"의 `gSpecialVar_Result = FALSE;` hunk는 **이미 적용**(seq 133 커밋 `fc205e1a40`에 선반영, upstream `42e299ed0f`와 같은 줄). 나머지 hunk만 이식한다.
+- **seq 144 #7573:** `CanMonLearnMove` → `ChooseBoxMon_CanMonLearnMove`로 이름을 바꿀 때 HnS `VALIDATE_BEFORE_LEARNING`의 `switch (IsBoxMonExcluded(boxmon))`와 PLA 가르침 코드는 유지한다.
+- **#9006 이후 relearner 행:** `field_specials.c` `Task_ReturnToFieldWhileLearningMove`의 `tRecoverPp = TRUE`(`// HnS:`)는 upstream에 없는 줄이다. 후속 PR이 이 주변을 고치면 유지 여부를 본다. seq 268 #10368(`UIEndTask`의 비스크립트 TRUE 경로)은 HnS 스크립트 모드에서 닿지 않는다.
