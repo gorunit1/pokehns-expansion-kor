@@ -1,6 +1,6 @@
 # full-sync 선진행 결과 — 구간 1 (seq 130~167 중 15행)
 
-진행 중: 마지막 완료 seq 133, 다음 seq 134
+진행 중: 마지막 완료 seq 134, 다음 seq 137
 
 **순서표와 다르게 진행한 구간이다.** 순서표([`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv))의 다음 행 seq 127 #9655(배틀 메시지 리팩터)가 D1~D7 결정 대기라서, #9655와 무관한 뒤쪽 행을 앞당겨 이식한다. 선정 기준과 전체 분류는 [`ahead-of-9655/README.md`](ahead-of-9655/README.md)(`ahead_candidates.tsv`)에 있다. 이 구간은 그 "선진행" 114행 가운데 앞쪽 15행(seq 130, 131, 133, 134, 137, 143, 148, 149, 151, 156, 157, 158, 160, 165, 167)이다.
 
@@ -17,6 +17,7 @@
 | 130 | #9575 | 적용(HnS 적응) | `0f60183f1f` | −192 B | AI 예측 처리 통합. `battle_ai_main.c` 수동 맞춤(HnS `battlerMovesScored` 줄·무조건 디버그 타이머 유지). **예측 AI 트레이너 25명의 AI 동작이 1.17.0과 같아짐** |
 | 131 | #9462 | 부분 적용(잔여분) | `99388d6158` | +32 B | 게임 기능(`AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE`·RNG·뒤집기 로직)은 HnS에 이미 있음. `GetConfig` 2곳·`AI_CONFIG_DEFINITIONS` 2항목·테스트 4파일만 이식(`(reversed)` Choiced 테스트 값 `ABILITY_GLUTTONY`). 게임 동작 불변 |
 | 133 | #9006 | 적용(HnS 적응) | `fc205e1a40` | −640 B (EWRAM −4 B) | 기술 떠올리기를 공용 `LearnMove`로. HnS chooseboxmon·요약 START/R/L 유지, 검은먹시티 NPC `Special_HasMoveToRelearn`/`VAR_RESULT`, **#10223 1줄 선반영**, **가르침 교체 최대 PP 유지(`// HnS:`)**, **새 문자열 2개 한글 초안(미결)** |
+| 134 | #9903 | 부분 적용(HnS 적응) | `cf71e21e56` | 0 B | relearner hunk만 `HandleMoveRelearnerInput`(#9006)으로 옮겨 넣음. 이름 바꾸기 hunk 제외(HnS 요약 화면에 분기 없음). config로 꺼진 경로라 동작 불변(코드 바이트 동일, assert 줄 번호 문자열만 이동) |
 
 ## 공통 사항
 
@@ -128,6 +129,23 @@
   - 낮음: 요약 화면을 열 때마다 숨은 창 버퍼(BG0 타일 800~821)에 영문 프롬프트를 그린다(tilemap은 올리지 않음).
 - 실기 확인: 필요(아래 "실기 확인 항목" 2).
 
+## 동기화 단위: seq 134 #9903 `U-relearner-9006` Fix move relearner from summary screen from pc
+
+- 현재 판정: 부분 적용(HnS 적응)
+- 커밋: `cf71e21e56`
+- upstream 근거: `83c6b89760`(`src/pokemon_summary_screen.c` +2, 2 hunk). deps #9006(seq 133) 적용 뒤.
+- 수정 파일(1): `src/pokemon_summary_screen.c`
+- 적용 방법: 사전 분석 patch(`seq134-9903.patch`, 1 hunk +1)를 `git apply`했다. 충돌 없음.
+- 내용: 요약 화면에서 PC 박스 포켓몬으로 relearner에 들어갈 때 `gSpecialVar_MonBoxId = StorageGetCurrentBox();`를 넣는다(다른 박스의 포켓몬을 가리키던 버그). upstream hunk 2(START → relearner, #9006 이전 구조)를 #9006이 만든 `HandleMoveRelearnerInput`의 `isBoxMon` 블록, `gSpecialVar_MonBoxPos = …` 다음 줄로 옮겼다. 1.17.0 최종 코드와 같은 위치다(upstream은 master→upcoming 병합 `19bfea3974`에서 이 줄이 빠졌다가 #10445가 다시 넣음).
+- 제외한 hunk: hunk 1(A 버튼 → 정보 페이지 → `ShouldShowRename()` 분기). HnS `Task_HandleInput` A 버튼에는 이름 바꾸기 분기가 없다(`P_SUMMARY_SCREEN_RENAME FALSE`). 넣을 곳이 없다.
+- 검증:
+  - `git diff --check` 통과. 한글·문자열·세이브 변경 0.
+  - 빌드(`build/port.log`): 종료 코드 0, **ROM 32,722,052 B(0) / EWRAM 248,940 B(0) / IWRAM 25,516 B(0)**. `pokehns.gba` SHA1 `c737f75c5d82585baee94dc48c373a1124c0c7a5`. 새 경고 0.
+  - SHA1이 seq 133과 다른 이유: 요약 화면 파일에 한 줄이 늘어 이 파일의 assert/`errorf` 위치 문자열(`src/pokemon_summary_screen.c:NNNN`) 13개의 줄 번호가 1씩 바뀌었다. 커밋 전후 파일을 같은 옵션으로 어셈블리까지 컴파일해 비교하니 차이는 이 위치 문자열뿐이었다(코드 동일). `HandleMoveRelearnerInput`은 `ShouldShowMoveRelearner()`(`P_SUMMARY_SCREEN_MOVE_RELEARNER FALSE`) 분기에서만 불려 컴파일에서 빠진다(ELF 심볼 0건).
+- 테스트: 지정 없음(upstream 테스트 변경 없음, config로 꺼진 경로라 자동 테스트 대상 없음). 전체 테스트는 메인이 구간 끝에 돌린다.
+- 남은 위험: 없음(HnS config에서 닿지 않는 경로).
+- 실기 확인: 불필요.
+
 ## 한글 문구 미결
 
 **공식 문구 확인 전 임시 번역**이다. 확정되면 `src/strings.c`의 해당 줄만 바꾼다(seq 133 #9006).
@@ -162,3 +180,4 @@
 - **seq 390 #10223:** `chooseboxmon.c` `PROMPT_BEFORE_LEARNING_2` "아니오"의 `gSpecialVar_Result = FALSE;` hunk는 **이미 적용**(seq 133 커밋 `fc205e1a40`에 선반영, upstream `42e299ed0f`와 같은 줄). 나머지 hunk만 이식한다.
 - **seq 144 #7573:** `CanMonLearnMove` → `ChooseBoxMon_CanMonLearnMove`로 이름을 바꿀 때 HnS `VALIDATE_BEFORE_LEARNING`의 `switch (IsBoxMonExcluded(boxmon))`와 PLA 가르침 코드는 유지한다.
 - **#9006 이후 relearner 행:** `field_specials.c` `Task_ReturnToFieldWhileLearningMove`의 `tRecoverPp = TRUE`(`// HnS:`)는 upstream에 없는 줄이다. 후속 PR이 이 주변을 고치면 유지 여부를 본다. seq 268 #10368(`UIEndTask`의 비스크립트 TRUE 경로)은 HnS 스크립트 모드에서 닿지 않는다.
+- **seq 298 #10445:** `HandleMoveRelearnerInput`의 `gSpecialVar_MonBoxId = StorageGetCurrentBox();` 줄(박스 번호 줄)은 **이미 적용**(seq 134 커밋 `cf71e21e56`). 함수 앞의 중복 `gSpecialVar_MonBoxPos = sMonSummaryScreen->curMonIndex;` 삭제만 남는다.
