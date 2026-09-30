@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 108~119
 
-진행 중: 마지막 완료 seq 113, 다음 seq 114.
+진행 중: 마지막 완료 seq 114, 다음 seq 115.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md), 메시지 출력 기록: [`BATTLE_MESSAGE_OUTPUT_CHANGES.md`](../../../localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md)
 시작 HEAD: `10077a5d70` (작업 트리 clean)
@@ -15,6 +15,7 @@
 | 111 | #9610 | 적용(HnS 적응) | `47cd51facf` | +112 B | `AccuracyCheck` #9929 분기 유지, 한글 2문장 토큰만 교체(`{B_BUFF1}`→`{B_LAST_ITEM}`), 폴터가이스트+대타출동 문장 미출력(upstream대로, 출력 변화 문서 1행) |
 | 112 | #9587 | 적용 | `2d86edca81` | +16 B | upstream 그대로. 교체 후보 시뮬레이션 등 캐시 속도 미반영 경계 사례는 upstream 1.17.0과 같은 동작 |
 | 113 | #9596 | 부분 적용(HnS 적응) | `f6ef307f76` | −112 B | `holdEffectParams` 캐시 제거·`ShouldTryOHKO` 기합의띠 판정만. 턴 순서 hunk는 seq 100에서 1.17.0 최종형으로 이미 대체 |
+| 114 | #9532 | 적용(HnS 적응) | `7e4f61c927` | +32 B | opcode `UNUSED_32/33`(0xfd/0xfe, upstream과 헤더·명령 표 바이트 동일), 방출 턴 연출 `animTurn = 1`(`// HnS:`), 2·3턴째 공격 문구 생략(출력 변화 문서 1행) |
 
 ## 공통 사항
 
@@ -170,3 +171,26 @@
 - 테스트: `run_ai_tests.sh post113` 목록이 `post112`와 바이트 동일(485줄, PASS 354). 일격기 AI 테스트(`ai.c`), `ai_multi.c`, `focus_punch.c` 포함.
 - 남은 위험: 매우 낮음. 세이브 무관.
 - 실기 확인: 필요 없음.
+
+## 동기화 단위: seq 114 #9532 `U-bide-9532` Bide Refactor
+
+- 현재 판정: 적용(HnS 적응)
+- 커밋: `7e4f61c927`
+- upstream 근거: `124009500d`(부모 `b9a1dcfbde` = #9596). 1.17.0의 `CancelerBide`·스크립트와 구조가 같다(이후 이름만 바뀜). 선행 #9858(seq 3, `5470147fab`) 적용됨.
+- 수정 파일(10): `asm/macros/battle_script.inc`, `data/battle_scripts_1.s`, `include/battle_scripts.h`, `include/constants/battle_script_commands.h`, `src/battle_move_resolution.c`, `src/battle_script_commands.c`, `src/battle_util.c`, `src/data/battle_move_effects.h`, `test/battle/move_effect/bide.c`, `docs/localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md`
+- 적용 방법: 사전 분석 패치(`seq114-9532.patch`)와 선택 패치(`seq114-9532-animturn-optional.patch`, 1줄)를 차례로 `git apply`했다. 패치와 upstream의 `+`/`-` 줄 집합 차이는 두 줄뿐이다: (1) 제외한 매크로 공백 줄 hunk, (2) 옛 `BattleScript_BideAttack`에서 지우는 `clearmoveresultflags` 줄이 HnS판(EXTREMELY/MOSTLY 포함)인 것.
+- HnS 적응:
+  - `BattleScript_BideAttack`: HnS 줄 `clearmoveresultflags … | MOVE_RESULT_EXTREMELY_EFFECTIVE | MOVE_RESULT_MOSTLY_INEFFECTIVE`(Champions) 문맥 때문에 수동 적용. 스크립트 본문과 함께 이 줄도 사라지며, 새 경로에서는 `DoFixedDamageMoveCalc`가 `EFFECT_BIDE`에 고정 피해를 돌려주고 `moveResultFlags &= ~(MOVE_RESULT_LOW_EFFECTIVENESS | MOVE_RESULT_HIGH_EFFECTIVENESS)`를 한다. HnS의 두 매크로(`include/constants/battle.h`)는 EXTREMELY/MOSTLY를 포함하므로 상성 문구가 나오지 않던 동작이 추가 코드 없이 유지된다. 급소도 `criticalHit = FALSE`.
+  - **방출 턴 연출(upstream과 다름):** `CancelerBide` 방출 분기에 `gBattleScripting.animTurn = 1; // HnS: keep Bide's unleash animation (old setbyte sB_ANIM_TURN, 1)`을 넣었다. 옛 스크립트는 `setbyte sB_ANIM_TURN, 1`로 `gBattleAnimMove_Bide`의 `choosetwoturnanim BideSetUp, BideUnleash`에서 `BideUnleash`(방출 연출)를 골랐다. upstream 새 경로는 `animTurn`이 0이라 방출 턴에 준비 연출(`BideSetUp`)이 다시 나온다(upstream 1.17.0에도 남은 회귀). `CANCELER_BIDE` 뒤 캔슬러와 `BattleScript_EffectHit`의 `attackanimation` 사이에서 `animTurn`을 0으로 되돌리는 곳은 없다(초기화는 턴 행동 전환·호출 기술·매직미러 재지정 경로뿐).
+- 제외한 hunk: `asm/macros/battle_script.inc`의 `tryconfusionafterskydrop` 뒤 공백 줄 정리(HnS가 #9249 이식 때 이미 빈 줄로 만들어 결과 동일).
+- **opcode:** `include/constants/battle_script_commands.h`가 upstream `124009500d`·`bede100c3e`(#9494)와 바이트 동일, `gBattleScriptingCommandsTable`도 `124009500d`와 동일. 컴파일러로 계산한 값: `UNUSED_31` 0xfc, **`UNUSED_32` 0xfd, `UNUSED_33` 0xfe**, `CALLNATIVE` 0xff, `TWOTURNMOVESCHARGESTRINGANDANIMATION` 0x82(130). 두 명령 삭제로 뒤 opcode가 upstream과 똑같이 1~2씩 당겨진다. 스크립트는 기호로 조립되고 세이브에 저장되지 않는다. g1 plan의 "UNUSED_31/32 추가"는 #9446·#9249 이식 전 기준이라 틀렸고, 실제 추가는 `UNUSED_32/33`이다(g6 plan과 일치).
+- 검증:
+  - `git diff --check` 통과, 파일 모드 변경 없음.
+  - 빌드: 종료 코드 0, **ROM 32,716,164 B(+32 B) / EWRAM 248,924 B(0) / IWRAM 25,516 B(0)**, 새 경고 0.
+  - 한글 줄 변경: docs 밖 0(비ASCII 변경 줄 2개는 영문 테스트 이름의 "Pokémon").
+- 테스트(이식 후 12파일, 이식 전은 seq 107 확장 목록과 이름 대조): 169건 중 162건 이름 일치, 상태 변화 1(`Bide hits the last Pokémon that attacked the user, even allies`: TO_DO → **PASS**, 새 테스트로 바뀜), 새 이름 7, **PASS 손실 0**.
+  - 파일: `move_effect/bide.c`(PASS 1 / FAIL 7 / TO_DO 1), `instruct.c`(15/4/TO_DO 1), `copycat.c`(1/1/TO_DO 15), `two_turns_attack.c`(8/11), `semi_invulnerable.c`(1/3), `sky_drop.c`(14/4), `solar_beam.c`(0/2), `geomancy.c`(TO_DO 3), `focus_punch.c`(3/13/TO_DO 5/ASSUMPTION_FAIL 1), `ability/dazzling.c`(7/4/INVALID 1, INVALID는 이식 전과 같음), `sheer_force.c`(30/1), `ai/can_use_all_moves.c`(8/4).
+  - 새 FAIL 6건(`Bide fails if no damage…`, `…0 total damage…`, `…blocked by Dazzling…`, `…blocked by partner Dazzling`, `…Substitute`, `…through protect`)과 기존 `Bide deals twice…` FAIL의 사유는 모두 `Unmatched MESSAGE`. TO_DO 1건은 이름 변경(`Bide has +1 priority on following turns if called via a different move`).
+- **출력 변화(upstream 동작):** 2턴째(축적)·3턴째(방출)에 `…은(는)\n참기를 썼다!`(`sText_AttackerUsedX`)가 더 나오지 않는다(`CancelerAttackstring`이 `bideTurns` 중 건너뜀). 방출은 `…의\n참기가 풀렸다!` → 일반 공격 경로. 빗나감 경로가 `BattleScript_MoveMissed`에서 `MoveMissedPause`로 바뀌어 짧은 멈춤이 한 번 더 있다. 받은 피해 0이면 `…참기가 풀렸다!` → `그러나 실패하고 말았다!`. 설정 턴 이후 캔슬러(변환자재·리베로 등)는 설정 턴에 돌지 않는다. → `BATTLE_MESSAGE_OUTPUT_CHANGES.md` "기술·필드 상태 효과" 표에 1행 추가(이 커밋).
+- 남은 위험: 낮음~중간. 참기 축적 중인 포켓몬이 춤추기로 다른 기술을 따라 쓰면 그 기술의 공격 문구도 생략된다(upstream과 같음).
+- 실기 확인: 필요(아래 "실기 확인 항목" 4).
