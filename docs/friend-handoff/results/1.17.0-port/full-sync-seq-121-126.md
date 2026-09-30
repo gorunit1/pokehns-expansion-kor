@@ -1,9 +1,28 @@
 # full-sync 실제 port 결과 — seq 121~126
 
-진행 중: 마지막 완료 seq 126, 다음은 구간 끝 전체 테스트·요약
+완료: seq 121~126 이식·전체 테스트·기록 완료(다음 구간은 seq 127 #9655부터). 결과 커밋에 기준 목록 [`test-baseline-seq126.txt`](test-baseline-seq126.txt)를 넣었다. 메인의 커밋 리뷰는 이 문서 밖에서 진행한다.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md), 메시지 출력 기록: [`BATTLE_MESSAGE_OUTPUT_CHANGES.md`](../../../localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md)
 시작 HEAD: `5afec6304c` (작업 트리 clean. `aa175914e9`(seq 120 코드) 뒤로는 docs만 바뀜)
+
+## seq 121~126 요약
+
+| seq | PR | 판정 | 커밋 | ROM 변화 | 비고 |
+|---|---|---|---|---:|---|
+| 121 | #9594 (+#9796) | 적용(HnS 적응) | `0e6b9c22ec` | +368 B | 얼루기 점을 일반 spot 시스템으로. #9796(s32 좌표·버퍼 경계 검사)을 같은 커밋에 넣음. **spot_2 y = 25 유지(원작 3세대 값, upstream 27과 다름)**, `!isEgg` 유지, INCBIN 유지, 튜토리얼 문서 제외. 네이티브 비교 213만 개 personality에서 그림 차이 0 |
+| 122 | #9425 | 적용(HnS 적응) | `2397ef4e08` | +4,080 B (EWRAM +4 B) | 조건부 상점 품목. **`pokemart 0` NULL 분기 유지**(assertf를 HnS 목록 결정 뒤로), Build/Free를 HnS 나무열매 아이콘 줄 옆에 배치, docs 3파일(gif 포함) 제외. 품목 901개 조건 함수 모두 NULL → 판매 목록 불변 |
+| 123 | #9624 | 적용(HnS 적응) | `5fa2bc3746` | −720 B | 장식 아이콘·설명을 `header.h`로 통합, `sDecorShapes`. `struct DecorItem`을 HnS enum 블록 뒤에 배치, HnS 추가분 9곳 보존. `tmp-123/verify.sh` **VERIFY OK**(121개 필드 차이 0, ID·세이브 상수 불변) |
+| 124 | #9667 | 적용(HnS 적응) | `d77ed650ae` | −176 B | 기술 설명 공용 변수 22개 인라인. **HnS 문구 6개 유지**. `verify_move_text.py cmp` **OK (0 differences)**, "Move descriptions fit…" PASS 유지 |
+| 125 | #9616 | 적용(HnS 적응, A안) | `673240f6ae` | +240 B | **`B_UPROAR = GEN_4`**, 턴 종료 방음 줄 HnS 유지(`// HnS:`), 지옥찌르기 소란 종료 이식(출력 변화 문서 1행), `STRINGID_TARGETWOKEUP` 토큰만 DEF→EFF, `parental_bond.c` ASSUME 수정. `STRINGID_PKMNWOKEUPINUPROAR`는 그대로(결정 대기) |
+| 126 | #9668 | 이미 적용(HnS 동등) | 없음(`70eb6a4271`) | 0 | seq 108 커밋에 #9537과 함께 포함(오타 `poke_manic_frlg` 제외) |
+
+- 마지막 빌드(`673240f6ae`): 종료 코드 0, **ROM 32,722,852 B(97.52%) / EWRAM 248,944 B(94.96%) / IWRAM 25,516 B(77.87%)**. 구간 전체 ROM +3,792 B(대부분 #9425의 `gItemsInfo` 44 → 48 B × 901), EWRAM +4 B(`sDynamicShopItemListRef`), IWRAM 0. 매 빌드 새 경고 0. `pokehns.gba` SHA1 `197afe076fa94dccc2579157efc696d93ca3a63b`.
+- 한글이 든 소스 줄 변경(docs 밖): `src/battle_message.c`의 `STRINGID_TARGETWOKEUP` 1쌍(토큰만, 본문 바이트 동일). 그 밖 0. 비 ASCII 줄은 옮겨진 영문 장식 설명의 `POKé` 6줄과 upstream 테스트 이름의 `Pokémon` 3줄뿐.
+- upstream과 다르게 둔 곳(`HnS:` 표시 포함): #9594 spot_2 y = 25(원작 3세대 값 유지)·`!isEgg`·INCBIN, #9425 assertf 조건·위치(`pokemart 0`), #9624 `struct DecorItem` 위치, #9667 HnS 기술 설명 문구 6개, #9616 `B_UPROAR = GEN_4`·턴 종료 방음 줄. 제외한 파일은 docs 튜토리얼(#9594 2개, #9425 3개)뿐.
+- 세이브: 영향 없음. #9624 장식 ID 121개·`SaveBlock1/2/3` 크기·장식 관련 오프셋 불변(verify [3]), #9425 `struct ItemInfo`는 ROM 표 전용, #9594 personality → 점 위치 대응 불변.
+- `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 추가 행: 1행("기술·필드 상태 효과", #9616 지옥찌르기 소란 종료).
+- 구간 밖 행: seq 163 #9796을 seq 121 커밋에 넣었다(아래 "후속 행 메모").
+- 전체 테스트: 사라진 PASS 0(아래 "구간 끝 전체 테스트").
 
 ## 공통 사항
 
@@ -165,3 +184,63 @@
 - 커밋: 없음. seq 108 커밋 `70eb6a4271`(#9537)에 포함됐다.
 - upstream 근거: `ca828643b7`(`spritesheet_rules.mk` 3줄)
 - 근거: 현재 `spritesheet_rules.mk`에 `crush_girl.4bpp`(897행), `black_belt_frlg.4bpp`(909행), `poke_maniac_frlg.4bpp`(1113행) 규칙이 있다. upstream의 오타 `poke_manic_frlg`는 넣지 않았다(HnS는 올바른 이름을 씀, `full-sync-seq-108-119.md` seq 108 항목). 코드 변경 없음.
+
+## 구간 끝 전체 테스트
+
+`GITHUB_ACTION=1 make check BUILD=hns -j6`(`673240f6ae`, 로그 `build/port-check-post126.log`, 4분 3초, 종료 코드 2 = 실패 테스트 있음). 목록은 `PORT_INSTRUCTIONS`의 `LC_ALL=C`·`grep -a` 표준 추출로 만들었다.
+
+| 항목 | 이식 전(seq 120) | 이식 후(seq 126) |
+|---|---|---|
+| 러너 요약 | PASSED 2,321 / FAILED 2,243 / KNOWN_FAILING 10 / ASSUMPTIONS_FAILED 38 / TO_DO 611 / EXPECT_FAILING 6 / TOTAL 5,229 | PASSED 2,323 / FAILED 2,244 / KNOWN_FAILING 10 / ASSUMPTIONS_FAILED 38 / TO_DO 611 / EXPECT_FAILING 6 / TOTAL 5,232 |
+| 표준 목록 | 5,160줄(PASS 2,318 / FAIL 2,218 / TO_DO 609 / KNOWN_FAILING 10 / EXPECTED_FAIL 5) | 5,163줄(PASS 2,320 / FAIL 2,219 / TO_DO 609 / KNOWN_FAILING 10 / EXPECTED_FAIL 5) |
+| 확장 목록(`ASSUMPTION_FAIL|INVALID|TIMEOUT|CRASH` 포함) | 5,219줄(ASSUMPTION_FAIL 37 / INVALID 21 / TIMEOUT 0 / CRASH 1) | 5,222줄, 같은 분포 |
+
+- **사라진 PASS 0.** `test-baseline-seq120.txt`와의 차이는 #9616이 바꾼 테스트 7줄뿐이다.
+  - 사라진 줄 2개(모두 이전 FAIL): `Uproar status causes sleeping Pokémon to wake up during an attack (2/2): FAIL`, `Uproar wakes up other pokemon on field: FAIL`. upstream이 `uproar.c`를 다시 쓰면서 없어진 이름이다.
+  - 새 줄 5개: `Uproar doesn't wake up other pokemon on field after first turn (Gen 5+): PASS`, `Uproar status prevents any battler from falling asleep: PASS`, `Uproar status causes sleeping Pokémon to wake up before they move except those with Soundproof (Gen 3-4): FAIL`, `Uproar status causes sleeping Pokémon to wake up immediately after damage is dealt on the first turn (Gen 5+): FAIL`, `Throat Chop usage causes Uproar to end at the end of the turn: FAIL`. FAIL 3건의 사유는 모두 `Unmatched MESSAGE`(영문 기대값, 알려진 한계)다.
+- 중간 확인: seq 122·123(L 단위) 직후에도 전체를 돌렸고(`build/port-check-post122.log`, `post123.log`), 표준 목록이 두 번 모두 `test-baseline-seq120.txt`와 바이트 동일했다. seq 121·124는 지정 파일이 기준과 같았다.
+- 새 기준 목록: [`test-baseline-seq126.txt`](test-baseline-seq126.txt)(표준 추출 5,163줄).
+
+## 실기 확인 항목 (친구용)
+
+이식 전 ROM(`aa175914e9`/`5afec6304c`, SHA1 `2ef9b346…`)과 이식 후 ROM(`673240f6ae`, SHA1 `197afe07…`)을 같은 세이브로 비교한다.
+
+1. **얼루기(#9594+#9796):**
+   - 앞모습을 도감(목록·상세)·요약·배틀에서 보고, 2프레임 애니메이션 두 프레임 모두 무늬가 이식 전과 픽셀까지 같은지 본다(y = 25 유지라 같아야 한다).
+   - 가능하면 personality `& 0xF0 == 0`인 개체(왼쪽 위 무늬가 가장 위에 붙는 경우)도 본다. 이식 전에는 원작과 같은 1행 버퍼 밖 쓰기가 있었고 화면 결과는 같다.
+   - **알 상태 얼루기**에 무늬가 그려지지 않는지(`!isEgg` 유지).
+2. **마트 판매 목록(#9425):**
+   - `pokemart 0` 3곳: 체리그로브 마트(`CherrygroveCity_Mart_hns`), 도라지 마트(`VioletCity_Mart_hns`), 트레이너힐 입구(`TrainerHill_Entrance_hns`)의 배지 수별 목록이 이식 전과 같은지, 크래시 화면이 없는지. 가능하면 PC 챌린지 설정에서도.
+   - 금빛 백화점 2F(21개, 스크롤)·꽃집 민트, 같은 상점에서 사기 → 나가기 → 다시 사기(목록 같음)와 팔기 메뉴 왕복.
+   - **Kurt 볼 상점**(나무열매 아이콘·개수·구매 뒤 종료)과 **BP 상점**(배틀프런티어 교환소·트레이너힐 안뜰의 BP 가격 표시·장식 BP 상점).
+   - 여러 번 열고 닫은 뒤에도 필드로 정상 복귀하는지.
+3. **비밀기지 장식(#9624):** 이식 전 세이브로
+   - 비밀기지 내부 장식 표시(1×1·2×2·3×3·4×2·2×4, 매트·포스터, 인형·쿠션 스프라이트)
+   - PC 장식 메뉴 "봉제인형" 카테고리의 목록·이름·설명·아이콘, 배치 커서 크기와 골드/크리스 배치 스프라이트, 치우기 커서 크기·팔레트
+   - 자기 방 장식, 장식 구입 화면의 설명·아이콘
+4. **소란과 지옥찌르기(#9616, A안):**
+   - 소란피기 대 잠든 상대(상대가 빠를 때·느릴 때): 이식 전과 같은 `소란스러워서 눈을 떴다!` 시점·순서인지. 첫 턴 전원 기상 문구(`…은(는)\n눈을 떴다!`)가 **나오지 않는지**.
+   - 잠든 방음 포켓몬이 턴 종료 소란 기상으로 깨지 않는지(행동 전에는 깸, 이전과 같음).
+   - **변경점:** 소란피기 중인 포켓몬이 지옥찌르기를 맞으면 그 턴 끝에 `…은(는)\n얌전해졌다`로 끝나고 다음 턴 기술을 자유롭게 고르는지.
+   - 잠깨움뺨치기로 잠든 상대를 깨울 때 `{대상}은(는)\n눈을 떴다!`의 이름·조사와 상태 아이콘이 그대로인지(토큰 DEF→EFF 교체).
+
+## 후속 행 메모
+
+- **seq 163 #9796:** 이미 적용(seq 121 커밋 `0e6b9c22ec`에 #9594와 함께 포함, upstream `663c6bf3ae`와 같은 줄). 도달하면 커밋 없이 "이미 적용"으로 기록한다.
+- **seq 500 #9881(INCGFX):** `src/pokemon_spots.c`의 `sSpindaSpotImages` 4줄을 `INCGFX_U32("graphics/pokemon/spinda/spots/spot_N.png", ".1bpp", "-plain -data_width 2")`로 바꾸고 `graphics_file_rules.mk`의 얼루기 점 규칙을 지운다. **점 이미지 인자 `-plain -data_width 2`를 빠뜨리면 1bpp가 타일 순서로 만들어져 무늬가 깨진다**(upstream #10247이 고친 버그, #10247의 남은 부분도 이것으로 끝남). spot_2 y = 25 줄의 `// HnS:` 주석은 유지한다.
+- **seq 376 #8893(big grammar update):** #9667로 인라인된 기술 설명 가운데 **HnS 문구 6개**(`"Attack that absorbs\n"`, `"Attack that moves last\n"`, `"Attack that leaves the\n"`, `"Attack that absorbs over\n"`, `"is preparing Attack."`, `"Attack that hits foes\n"`, 원작자 `384dcb99b8` "Tm desc fixes")를 upstream이 다시 고친다. 그때 HnS 문구 유지 여부를 판단한다.
+- **#9655 담당(seq 127):** 새 `STRINGID_SCRCUREDSLEEP`(`{B_SCR_NAME_WITH_PREFIX} woke up!`)와 `STRINGID_TARGETWOKEUP`(이번에 `{B_EFF_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n눈을 떴다!`, 줄바꿈 있음)을 **합치지 말 것.** 영문이 같아도 토큰·줄바꿈이 다르고 `TARGETWOKEUP`은 #9616 결과대로 둔다. `data/battle_scripts_1.s`의 `BattleScript_TargetPoisonHealed` hunk는 `TargetWokeUp` 변경 줄과 7행 떨어져 있어 그대로 들어간다.
+- seq 372 #10127: `pokemon_spots.h`·`.c`의 `u8* dest` → `u8 *dest` hunk는 #9594 표기를 유지했으므로 그대로 맞는다.
+- seq 381 #10181: `sShopItemsListDummy` 타입과 `item.h`/`item.c` 두 함수 인자 변경은 upstream 줄 그대로라 문맥이 맞는다. HnS assertf 줄(`sMartInfo.itemList != NULL`)은 건드리지 않는다.
+- seq 475.5 #10151(deps에 #9616): `B_UPROAR = GEN_4`(HnS 유지)를 그대로 둔다.
+- 문서(메인 판단): `docs/localization/NON_NPC_TEXT_AUDIT.md`의 `data/text/{…,mart_clerk,…}.inc`(17행)와 `src/data/decoration/{header,description}.h`(24행) 경로가 각각 `data/scripts/mart_clerk.inc`, `src/data/decoration/header.h` 하나로 바뀌었다. 이번에 고치지 않았다.
+- 참고(upstream 잠재 버그, 1.17.1까지 그대로): #9425 `TryFreeDynamicShopItemList`가 `sMartInfo.itemCount`를 되돌리지 않는다. HnS가 상점 조건 함수를 쓰기 전에 고쳐야 한다.
+
+## 결정 대기
+
+- **`STRINGID_PKMNWOKEUPINUPROAR`의 이름 토큰 `{B_ATK_NAME_WITH_PREFIX}` → `{B_EFF_NAME_WITH_PREFIX}`(#9616 사전 분석 별건 1, 친구 결정 대기, 이번에 넣지 않음)**
+  - 현재 한글: `{B_ATK_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n소란스러워서 눈을 떴다!`(`battle_message.c:288`). upstream은 #7714에서 영문을 `{B_EFF_NAME_WITH_PREFIX2}`로 바꿨고 HnS 한글은 `B_ATK`를 유지했다.
+  - 문제: 턴 종료 소란 기상 경로(`HandleEndTurnThirdEventBlock` → `BattleScript_MonWokeUpInUproar`)에서 `gBattlerAttacker`가 소란 사용자라서 **깬 포켓몬 대신 소란 사용자 이름**이 나온다. 소란 첫 턴에 더 빠른 잠든 상대가 있을 때 드러난다(A안에서도 남음).
+  - 바꾸면: 행동 전 경로(`gEffectBattler = cv->battlerAtk = gBattlerAttacker`)와 배틀팰리스 경로(`gEffectBattler = gBattlerAttacker`)는 같은 배틀러라 표시가 같고, 턴 종료 경로만 깬 포켓몬 이름으로 바로잡힌다. 한글 본문·조사는 그대로다.
+  - 선택: (1) EFF로 교체(버그 수정, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 1행) / (2) 현재 유지.
+- 별건 2(기록만): 턴 종료 소란 기상의 `BtlController_EmitSetMonData(gEffectBattler, …, &gBattleMons[gBattlerAttacker].status1)`가 깬 포켓몬 파티 데이터에 소란 사용자의 status1을 보낸다. upstream 1.17.0에도 있는 기존 버그다.
