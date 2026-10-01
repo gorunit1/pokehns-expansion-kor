@@ -1,0 +1,113 @@
+STRINGID	HnS 한글 변경 여부	처리	근거
+STRINGID_ATTACKMISSED	삭제(ID·본문 제거)	삭제	D1 C안. enum·표 줄 삭제. gMissStringIds[B_MSG_MISSED]=PKMNAVOIDEDATTACK, gKOFailedStringIds[B_MSG_KO_MISS]=PKMNEVADEDATTACK(upstream 그대로, HnS·1.17.0 모두 미사용 표). resultmessage 1줄은 파트 C가 STRINGID_PKMNAVOIDEDATTACK(// HnS:)로 바꿔야 빌드됨
+STRINGID_PASTELVEILENTERS	없음(이름만 변경, 바이트 동일 28 B)	새 ID(이름 변경→STRINGID_PKMNHEALEDPOISON)	enum·표·gSwitchInAbilityStringIds[B_MSG_SWITCHIN_PASTEL_VEIL] 모두 새 이름. 스크립트 :5941 printstring은 파트 B가 새 이름으로
+STRINGID_SCRCUREDPARALYSIS	추가(기존 본문 그대로, 바이트 동일)	새 ID	new_sentences.tsv 제안 한글 = HnS PURIFYTARGETPARALYSISCURED(D5 몸저림). enum은 ZENMODEENDED 뒤(upstream·1.17.0 위치). gCureStatusStringIds 값
+STRINGID_SCRCUREDPOISON	추가(기존 본문 그대로, 바이트 동일)	새 ID	new_sentences.tsv 제안 한글 = HnS PURIFYTARGETPOISONCURED. enum은 ZENMODEENDED 뒤(upstream·1.17.0 위치). gCureStatusStringIds 값
+STRINGID_SCRCUREDBURN	추가(기존 본문 그대로, 바이트 동일)	새 ID	new_sentences.tsv 제안 한글 = HnS PURIFYTARGETBURNCURED. enum은 ZENMODEENDED 뒤(upstream·1.17.0 위치). gCureStatusStringIds 값
+STRINGID_SCRCUREDSLEEP	추가(기존 본문 그대로, 바이트 동일)	새 ID	new_sentences.tsv 제안 한글 = HnS PURIFYTARGETSLEEPCURED. enum은 ZENMODEENDED 뒤(upstream·1.17.0 위치). gCureStatusStringIds 값
+STRINGID_SCRCUREDCONFUSION	추가(PKMNHEALEDCONFUSION 본문, 토큰만 {B_SCR})	새 ID	new_sentences.tsv 제안 한글. 19 B, 줄 구성 동일. gCureStatusStringIds·gPartyCureStatusStringIds[B_MSG_CURED_CONFUSION]
+STRINGID_PARTYCUREDPARALYSIS	추가(기존 본문, 주어 {B_BUFF1})	새 ID	new_sentences.tsv 제안 한글 = PKMNPARALYSISCURED 본문(D5 몸저림). 바이트 수·줄 구성 원문과 같음. gPartyCureStatusStringIds 값
+STRINGID_PARTYCUREDPOISON	추가(기존 본문, 주어 {B_BUFF1})	새 ID	new_sentences.tsv 제안 한글 = PKMNPOISONCURED 본문. 바이트 수·줄 구성 원문과 같음. gPartyCureStatusStringIds 값
+STRINGID_PARTYCUREDBURN	추가(기존 본문, 주어 {B_BUFF1})	새 ID	new_sentences.tsv 제안 한글 = PKMNBURNCURED 본문. 바이트 수·줄 구성 원문과 같음. gPartyCureStatusStringIds 값
+STRINGID_PARTYCUREDSLEEP	추가(기존 본문, 주어 {B_BUFF1})	새 ID	new_sentences.tsv 제안 한글 = PKMNWOKEUP 본문(ITEMCUREDSPECIESSTATUS의 {B_BUFF1}{B_TXT_EUNNEUN} 형태). 바이트 수·줄 구성 원문과 같음. gPartyCureStatusStringIds 값
+STRINGID_PARTYCUREDFREEZE	추가(기존 본문, 주어 {B_BUFF1})	새 ID	new_sentences.tsv 제안 한글 = PKMNWASDEFROSTED 본문. 바이트 수·줄 구성 원문과 같음. gPartyCureStatusStringIds 값
+STRINGID_PARTYCUREDFROSTBITE	추가(기존 본문, 주어 {B_BUFF1})	새 ID	new_sentences.tsv 제안 한글 = PKMNFROSTBITEHEALED 본문. 바이트 수·줄 구성 원문과 같음. gPartyCureStatusStringIds 값
+STRINGID_PKMNATKNOTLOWERED	추가(기존 문장 조합)	새 ID	new_sentences.tsv 제안 한글 `{B_SCR_NAME_WITH_PREFIX}의\n공격은 떨어지지 않는다!` = PKMNSXPREVENTSYLOSS에 BUFF1=공격(sText_Attack)을 넣은 화면 출력과 같음(소스 28 B, 원본 26 B). 사용처는 파트 B IntimidatePrevented
+STRINGID_PKMNAURORAVEIL	추가(PKMNRAISEDDEFSPDEF 본문 복제, 41 B 동일)	새 ID(표 매핑은 HnS 유지)	enum은 PKMNRAISEDDEFSPDEF 뒤. gReflectLightScreenSafeguardStringIds[B_MSG_SET_AURORA_VEIL]=PKMNRAISEDDEFSPDEF 유지(// HnS:, 사용자 요청 행). 이 ID는 HnS에서 미사용
+STRINGID_REFLECTWOREOFF	없음	HnS 유지	HnS enum(PKMNSXWOREOFF 뒤)·한글 본문({B_ATK_PREFIX1}) 그대로. upstream 끝 추가분은 중복이라 넣지 않음(enum에 // HnS: 주석). D6-a는 이번에 고치지 않음
+STRINGID_LIGHTSCREENWOREOFF	없음	HnS 유지	HnS enum(PKMNSXWOREOFF 뒤)·한글 본문({B_ATK_PREFIX1}) 그대로. upstream 끝 추가분은 중복이라 넣지 않음(enum에 // HnS: 주석). D6-a는 이번에 고치지 않음
+STRINGID_AURORAVEILWOREOFF	없음	HnS 유지	HnS enum(PKMNSXWOREOFF 뒤)·한글 본문({B_ATK_PREFIX1}) 그대로. upstream 끝 추가분은 중복이라 넣지 않음(enum에 // HnS: 주석). D6-a는 이번에 고치지 않음
+STRINGID_STICKYWEBDISAPPEAREDFROMYOU	없음	미이식(HnS 유지)	#9777에서 삭제될 ID. enum·표에 넣지 않음(// HnS: 주석). 파트 B는 BattleScript_RemoveHazards의 YOU 분기 3줄을 빼고 printfromtable gRemoveHazardsStringIds만 둔다 → 양 진영 모두 STICKYWEBDISAPPEAREDFROMTEAM
+STRINGID_BUFFERENDS	없음	그대로(멘탈허브 표에서 빠짐)	gMentalHerbCureStringIds[TAUNT]=PKMNSHOOKOFFTHETAUNT(upstream). BUFF1=도발일 때 화면 출력 바이트 동일. 턴 종료 회복봉인은 파트 B/C BattleScript_HealBlockEndTurn
+STRINGID_HEALBLOCKEDNOMORE	없음	그대로	영문만 변경(무시). 멘탈허브·회복봉인 턴 종료에서 같은 한글({B_SCR})
+STRINGID_ATKGOTOVERINFATUATION	없음	그대로	영문만 변경(도구명 추가는 선택 개선, 하지 않음)
+STRINGID_TORMENTEDNOMORE	없음	그대로	문자열 불변. 표 순서만 비트 인덱스로 재배치
+STRINGID_PKMNMOVEDISABLEDNOMORE	없음	그대로	문장 불변(D6-b). 멘탈허브 경로의 {B_ATK} 이름은 파트 B 스크립트에서 공격자 임시 교체로 해결
+STRINGID_PKMNENCOREENDED	없음	그대로	〃(D6-b)
+STRINGID_PKMNSHOOKOFFTHETAUNT	없음	매핑	gMentalHerbCureStringIds[TAUNT]·gCureStatusStringIds[B_MSG_CURED_TAUNT]·gPartyCureStatusStringIds[TAUNT] 값(upstream)
+STRINGID_PKMNGOTOVERITSINFATUATION	없음	매핑	gCureStatusStringIds·gPartyCureStatusStringIds[B_MSG_CURED_INFATUATION] 값(upstream)
+STRINGID_PKMNMADEITRAIN	없음	매핑(표에서 STARTEDTORAIN로 교체)	gAbilityWeatherChangeStringId upstream대로. 두 한글이 문자열·바이트 동일 → 출력 불변. 기존 ID·본문은 남김
+STRINGID_PKMNSXWHIPPEDUPSANDSTORM	없음	매핑(표에서 SANDSTORMBREWED로 교체)	gAbilityWeatherChangeStringId upstream대로. 두 한글이 문자열·바이트 동일 → 출력 불변. 기존 ID·본문은 남김
+STRINGID_PKMNSXINTENSIFIEDSUN	없음	매핑(표에서 SUNLIGHTGOTBRIGHT로 교체)	gAbilityWeatherChangeStringId upstream대로. 두 한글이 문자열·바이트 동일 → 출력 불변. 기존 ID·본문은 남김
+STRINGID_SNOWWARNINGHAIL	없음	매핑(표에서 STARTEDHAIL로 교체)	gAbilityWeatherChangeStringId upstream대로. 두 한글이 문자열·바이트 동일 → 출력 불변. 기존 ID·본문은 남김
+STRINGID_SNOWWARNINGSNOW	없음	매핑(표에서 STARTEDSNOW로 교체)	gAbilityWeatherChangeStringId upstream대로. 두 한글이 문자열·바이트 동일 → 출력 불변. 기존 ID·본문은 남김
+STRINGID_EXTREMESUNLIGHTFADED	없음	매핑(새 표 항목)	gWeatherEndsStringIds[B_MSG_WEATHER_END_EXTREMELY_HARSH_SUNLIGHT]. 파트 C가 원시 날씨 제거 때 이 값 설정. D4 #16
+STRINGID_HEAVYRAINLIFTED	없음	매핑(새 표 항목)	gWeatherEndsStringIds[B_MSG_WEATHER_END_HEAVY_RAIN]. D4 #16
+STRINGID_PKMNEVADEDATTACK	없음	매핑	gKOFailedStringIds[B_MSG_KO_MISS](미사용 표, upstream 그대로). resultmessage는 D1로 PKMNAVOIDEDATTACK(파트 C). gLeechSeedStringIds 유지
+STRINGID_PKMNAVOIDEDATTACK	없음	매핑	gMissStringIds[B_MSG_MISSED] 새 값(D1, upstream과 같음). B_MSG_AVOIDED_ATK 유지
+STRINGID_PKMNSXBLOCKSY	없음	그대로	문자열 불변. 방음·방탄·치유방울 → SCR_ITDOESNTAFFECT 교체는 파트 B(D4 #4·#5)
+STRINGID_SCR_ITDOESNTAFFECT	없음	그대로	한글 유지. 사용처 추가는 파트 B
+STRINGID_PKMNSXMADEYUSELESS	없음	그대로	문자열 불변(영문 hunk 없음). 스크립트 교체는 파트 B
+STRINGID_PKMNPROTECTEDBY	없음	그대로	문자열 불변. 옹골참 → ITDOESNTAFFECT는 파트 B(D4 #6)
+STRINGID_PKMNPREVENTSUSAGE	없음	그대로	영문 주석만 변경(제외). 습기 → POKEMONCANNOTUSEMOVE(바이트 동일)는 파트 B
+STRINGID_PKMNSABILITYPREVENTSABILITY	없음	HnS 유지	이 파일 hunk 없음. DampPreventsAftermath hunk 제외는 파트 B
+STRINGID_ENDUREDSTURDY	없음	그대로	문자열 불변. → PKMNENDUREDHIT(바이트 동일)는 파트 B
+STRINGID_PKMNSXPREVENTSFLINCHING	없음	그대로	문자열 불변. 스크립트 삭제는 파트 B(D4 #7)
+STRINGID_PKMNSXTOOKATTACK	없음	그대로	영문만 변경(특성명 제거). HnS 한글은 이미 특성명 없음. 팝업 추가는 파트 B(D4 #8)
+STRINGID_PKMNPREVENTSSTATLOSSWITH	없음	그대로	영문만 변경(무시). 위협 경로 → PKMNATKNOTLOWERED는 파트 B(D4 #9)
+STRINGID_SCRIPTINGABILITYSTATRAISE	없음	그대로	문자열 hunk 없음. → SCRIPTINGSTATROSE는 파트 B(D4 #10)
+STRINGID_ATTACKERABILITYSTATRAISE	없음	그대로	주석만 변경(제외). → ATTACKERSSTATROSE(바이트 동일)는 파트 B
+STRINGID_TARGETABILITYSTATLOWER	없음	그대로	주석만 변경(제외). → DEFENDERSSTATFELL은 파트 B(D4 #11)
+STRINGID_TARGETABILITYSTATRAISE	없음	그대로	주석만 변경(제외). → DEFENDERSSTATROSE(바이트 동일)는 파트 B
+STRINGID_PKMNSXRESTOREDHPALITTLE2	없음	그대로	영문만 변경(무시). 출력 삭제는 파트 B(D4 #12)
+STRINGID_POISONHEALHPUP	없음	그대로	HnS 영문 잔존·미출력. 주석만 바뀌는 hunk 제외
+STRINGID_SOLARPOWERHPDROP	없음	그대로	〃
+STRINGID_HEALERCURE	없음	HnS 유지	영문 변경 hunk 제외. 사용자 요청 행(…은(는)\n치유되었다!). 파트 B는 HealerActivates printstring 유지
+STRINGID_PKMNFLEDUSING	없음	그대로	문자열 hunk 없음. D3 A안(파트 B가 HnS 스크립트 유지)
+STRINGID_PKMNSLEPTHEALTHY	없음	그대로	gRestUsedStringIds 두 값이 이미 같은 ID. 스크립트 printstring 교체는 파트 B
+STRINGID_PKMNHURTSWITH	없음	매핑	gHurtByStringIds[B_MSG_HURT_BY_ITEM](새 표, upstream). AFTERMATHDMG와 한글 바이트 동일
+STRINGID_AFTERMATHDMG	없음	매핑	gHurtByStringIds[B_MSG_HURT](새 표). #9856 중복 printstring은 파트 B가 넣지 않음
+STRINGID_ITEMCUREDSPECIESSTATUS	없음	그대로	주석만 변경(제외). 사용처는 파트 B가 gPartyCureStatusStringIds/gCureStatusStringIds로 교체(D4 #15) → 미사용 문자열로 남음
+STRINGID_PKMNSTATUSNORMAL	없음	매핑 해제(표에서 빠짐)	gStatusCureStringIds 삭제. 동상은 PKMNFROSTBITEHEALED, PROBLEM/NORMALIZED 대비값은 같은 본문의 {B_SCR}판 PURIFYTARGETSTATUSNORMAL(// HnS:). D4 #17
+STRINGID_PKMNPARALYSISCURED	없음	매핑 해제(→SCRCUREDPARALYSIS)	gStatusCureStringIds → gCureStatusStringIds(upstream 이름). 같은 본문, 이름 토큰만 {B_ATK}→{B_SCR}(D4 #17). 기존 ID·본문은 남김(미사용)
+STRINGID_PKMNPOISONCURED	없음	매핑 해제(→SCRCUREDPOISON)	gStatusCureStringIds → gCureStatusStringIds(upstream 이름). 같은 본문, 이름 토큰만 {B_ATK}→{B_SCR}(D4 #17). 기존 ID·본문은 남김(미사용)
+STRINGID_PKMNBURNCURED	없음	매핑 해제(→SCRCUREDBURN)	gStatusCureStringIds → gCureStatusStringIds(upstream 이름). 같은 본문, 이름 토큰만 {B_ATK}→{B_SCR}(D4 #17). 기존 ID·본문은 남김(미사용)
+STRINGID_PKMNWOKEUP	없음	매핑 해제(cure 표 →SCRCUREDSLEEP)	gWokeUpStringIds[B_MSG_WOKE_UP]는 그대로. 본문 불변
+STRINGID_PKMNHEALEDCONFUSION	없음	매핑 해제(cure 표 →SCRCUREDCONFUSION)	스크립트 직접 printstring 사용처는 그대로. 특성(마이페이스 등) 혼란 회복 이름이 {B_SCR}로 교정(D4 #17)
+STRINGID_PKMNWASDEFROSTED	없음	매핑	gCureStatusStringIds[B_MSG_CURED_FREEZE](키 이름만 FREEEZE→FREEZE). gPurifyStatusCureStringIds·gGotDefrostedStringIds 유지
+STRINGID_PKMNFROSTBITEHEALED	없음	매핑	gCureStatusStringIds[B_MSG_CURED_FROSTBITE] 새 값(이전 PKMNSTATUSNORMAL). D4 #17
+STRINGID_PKMNSITEMSNAPPEDOUT	없음	그대로	CureStatusBerryEffectStringID[B_MSG_CURED_CONFUSION] 유지(HnS가 이미 보유)
+STRINGID_PKMNSITEMCUREDPROBLEM	없음	HnS 유지	CureStatusBerryEffectStringID[B_MSG_CURED_PROBLEM] 유지(함정 3, // HnS:). 주석만 바뀌는 hunk 제외
+STRINGID_PKMNSITEMNORMALIZEDSTATUS	없음	HnS 유지	〃[B_MSG_NORMALIZED_STATUS]
+STRINGID_PKMNSITEMDEFROSTEDIT	없음	매핑	CureStatusBerryEffectStringID 키 이름만 B_MSG_CURED_FREEEZE→B_MSG_CURED_FREEZE(표 3곳 중 1곳)
+STRINGID_PKMNSXCUREDITSYPROBLEM	없음	그대로	HnS 미사용. 이 파일 hunk 없음
+STRINGID_COMMANDERACTIVATES	없음	그대로	영문 hunk 제외(D6-c 별도 과제). upstream BUFF1 준비 코드(파트 C)는 무해
+STRINGID_ITEMRESTOREDSPECIESPP	없음	그대로	영문 변경 무시(선택 개선 안 함)
+STRINGID_PKMNSXMADEYINEFFECTIVE	없음	HnS 유지	D2 A안. 영문 의미 변경 hunk 제외, gFlashFireStringIds[B_MSG_FLASH_FIRE_NO_BOOST] 매핑 유지(#10149 동등)
+STRINGID_PKMNSXMADEITINEFFECTIVE	없음	HnS 유지	HnS 스위트베일 문장. 영문 변경 hunk 제외
+STRINGID_PKMNSWILLPERISHIN3TURNS	없음	HnS 유지(영문 잔존)	BRIEF: 지금 고치지 않음(별건). upstream 영문 perish→faint hunk도 제외
+STRINGID_TARGETSSTATWASMAXEDOUT	없음	그대로	영문 변경 무시. HnS 본문의 의·줄바꿈·조사 누락은 #9730 때 별건
+STRINGID_PKMNSTAYEDAWAKEUSING	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_PKMNGOTFREE	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_PKMNSHEDLEECHSEED	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_PKMNBLEWAWAYSPIKES	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_PKMNATTACK	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_NATUREPOWERTURNEDINTO	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_PKMNANCHOREDITSELF	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_PKMNLOSTPPGRUDGE	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_PKMNMOVEBOUNCED	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_PKMNWAITSFORTARGET	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_PKMNRESTOREDHPUSING	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_PKMNCHANGEDTYPEWITH	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_PKMNPREVENTSCONFUSIONWITH	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_PKMNRAISEDFIREPOWERWITH	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_PKMNANCHORSITSELFWITH	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_PKMNCUTSATTACKWITH	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_ATTACKERSSTATROSE	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_SCRIPTINGSTATROSE	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+gText_DefendersStatRose	없음	그대로	영어 접미 이동(` sharply`, `rose{B_BUFF2}`) 따르지 않음. 한국어 어순(`크게 `, `매우 크게 `, `{B_BUFF2}올라갔다`) 유지
+gText_StatSharply	없음	그대로	영어 접미 이동(` sharply`, `rose{B_BUFF2}`) 따르지 않음. 한국어 어순(`크게 `, `매우 크게 `, `{B_BUFF2}올라갔다`) 유지
+gText_drastically	없음	그대로	영어 접미 이동(` sharply`, `rose{B_BUFF2}`) 따르지 않음. 한국어 어순(`크게 `, `매우 크게 `, `{B_BUFF2}올라갔다`) 유지
+STRINGID_ENEMYABOUTTOSWITCHPKMN	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_PKMNSXPREVENTSYLOSS	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_PKMNSXINFATUATEDY	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_ITEMSCANTBEUSEDNOW	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_USINGITEMSTATOFPKMNROSE	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_USINGITEMSTATOFPKMNFELL	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_ICEBODYHPGAIN	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_SYMBIOSISITEMPASS	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_CURSEDBODYDISABLED	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_ATTACKERACQUIREDABILITY	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_PKMNMOVEBOUNCEDABILITY	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_IMPOSTERTRANSFORM	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)
+STRINGID_PKMNTERASTALLIZEDINTO	없음	그대로	upstream은 영문 본문·주석만 변경 → hunk 제외, HnS 한글(또는 HnS 영문 잔존 줄) 한 글자도 바꾸지 않음(D4)

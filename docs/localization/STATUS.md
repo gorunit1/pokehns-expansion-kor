@@ -1,18 +1,19 @@
 # 현재 인수인계 상태
 
-## 2026-10-01 — 친구 답장 반영, seq 127 #9655 진행 중 (현재, 노트북)
+## 2026-10-01 — seq 127 #9655 unit 완료 (현재, 노트북)
 
-- **친구 답장(2026-10-01)을 받았다:** [`docs/friend-handoff/FRIEND_REPLY_2026-10-01.md`](../friend-handoff/FRIEND_REPLY_2026-10-01.md)
-  - #9655 D1~D7: 전부 HANDBACK 9절 권장안대로 확정. D4는 기존 한글을 재번역하지 않고 구조·출력 경로 변화만 반영한다. D6 c(사령탑)는 별도 과제다. D7은 승인.
-  - 선진행: 구간 1 인정, **더 선진행하지 않는다.** 선진행 행은 원래 seq에서 "이미 적용(선진행)"으로 처리한다. 일부 hunk만 선반영된 PR(#10223 1줄, #10445 박스 번호 줄)은 그 줄만 빼고 나머지를 정상 검토한다.
-  - #9819는 `#9819 → 바로 #10548`. #9006 새 한글 문장 2개는 초안 그대로 확정.
-  - AI mGBA MCP: `AI 사전 확인` 용도로 시험 도입 승인. 첫 시험은 seq 107 #7305 세이브 호환 대조(데스크탑, 아직 설치 안 함). 사람 확인 목록은 줄이지 않고 AI 통과 항목은 `AI 사전 확인 통과`만 표시한다.
-  - 친구 로컬: local-only 커밋(`dac422efb3` 포함)을 full-sync 완료까지 보존하고 pull·push·rebase·reset을 하지 않는다. full-sync가 끝나면 완료 메시지와 최신 handback을 보내야 한다.
-- **진행 중: seq 127 unit `U-battlemsg-9655` = #9655 + #9856(seq 174) + #10064(seq 206, 엔진 1줄).** #10149는 g1 plan대로 HnS 동등.
-  - 노트북에서 `254b12c226`까지 pull했다. 이식 전 기준(`fcf855d4e8`): `make hns -j8` 종료 코드 0, ROM 32,715,492 B / EWRAM 248,936 B / IWRAM 25,516 B로 데스크탑 기록과 같다(SHA1 `9e9feda9…`, 툴체인 차이). 전체 테스트 목록이 `test-baseline-seq167-ahead1.txt`와 바이트 동일(PASS 2,332 / TOTAL 5,241, 노트북 12분 20초).
-  - 현재 HEAD dry-run: 코드 hunk 112개 중 47개 실패(`battle_message.c` 24/30, `battle_scripts_1.s` 13/35), 테스트 hunk 408개 중 16개 실패(4파일). #9856은 HnS에 upstream 중복 줄이 없어 실패(흡수 예정), #10064는 성공.
-  - 진행: 읽기 전용 사전 분석 4개(A 문자열, B 배틀 스크립트, C C 코드, D 테스트·출력 변경 문서) → 적용 → 리뷰. 스크래치(저장소 밖): `/home/jinmo/hns-sync-work/chunk-127/`(`BRIEF.md`가 공통 지시, `part-X.md`·`part-X.patch`가 산출물). 이 스크래치는 노트북에만 있다.
-  - 중단되면: 커밋되지 않은 #9655 변경이 있는지 `git status`로 보고, 스크래치 `part-*.md`부터 다시 읽는다.
+- **다음 시작 seq: 128** (#9475 `U-trainerpic-9475` Refactor/trainer pic info, XL 단독). 그 뒤 seq 129 #9674(L), seq 132 #9680(XL), seq 138.5 #8943(XL)이 이어진다. 선진행한 seq 130·131·133·134·137·143·148·149·151·156·157·158·160·165는 "이미 적용(선진행)"으로 처리한다. 일부 줄만 선반영된 seq 390 #10223·seq 298 #10445는 그 줄만 빼고 정상 검토한다.
+- **친구 답장(2026-10-01):** [`docs/friend-handoff/FRIEND_REPLY_2026-10-01.md`](../friend-handoff/FRIEND_REPLY_2026-10-01.md). D1~D7 권장안 확정, 선진행 중단, #9006 문장 확정, AI mGBA MCP 시험 도입 승인(데스크탑, 첫 시험 seq 107 #7305, 아직 설치 안 함). 친구는 full-sync 완료까지 로컬 커밋(`dac422efb3` 포함)을 보존하고 pull·push하지 않는다. **full-sync가 끝나면 완료 메시지와 최신 handback을 보내야 한다.**
+- 회신: [`docs/friend-handoff/HANDBACK_2026-10-01.md`](../friend-handoff/HANDBACK_2026-10-01.md). 결과: [`full-sync-seq-127-127.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-127-127.md), 분석·리뷰 원문 `results/1.17.0-port/seq127-9655/`.
+- 커밋: #9655(+#9856 흡수) `f3b491dfc4`, #10064 `47515a949e`. #10149는 HnS 동등.
+- 결정 반영: D1 빗나감 통일(`resultmessage` HnS 1줄), D2·D3 기존 한글, D4 출력 변화 수용·재번역 0, D5 새 문장 14개 기존 본문 재사용, D6b 멘탈허브 이름(스크립트), D6a·D6c 미착수, D7 소란 기상 EFF. REPORT 함정 6개 준수.
+- HnS 보호 줄: 힐볼 포획 `MULTISTRING` 저장·복원, `HealStatusConditions()` 범위 밖 읽기 방지(둘 다 upstream 1.17.0에도 있는 문제).
+- 빌드(노트북, `47515a949e`): 종료 코드 0, ROM 32,715,764 B(97.50%, +272 B), EWRAM 248,936 B, IWRAM 25,516 B, SHA1 `a6ad839c…`. 새 경고 0. 한글 소스 줄 변경은 결정분 18줄뿐.
+- 테스트: PASS 2,335 / FAIL 2,255 / KNOWN_FAILING 10 / TOTAL 5,253. 사라진 PASS 4건(레이징불 중복 3건은 `break_screens.c` 짝이 PASS, steadfast 영문 문구 1건)은 설명됨. 새 FAIL 28건은 모두 영문 `MESSAGE`. 새 기준 목록 `test-baseline-seq127.txt`.
+- 리뷰 4개: 수정 필요 3건(범위 밖 읽기 1건이 두 리뷰에서 중복, 출력 변경 문서 1건) 반영. 경미는 기록.
+- **친구 답 대기(진행은 막지 않음):** 가방 도구 마비 표기(`몸저림` 유지), 만병통치제·회복약 헤롱헤롱 → 혼란 문장(upstream 결함) 수정 여부, 이식 전부터 있던 `BS_ItemCureStatus` 대기 포켓몬 `gBattleMons[4]` 쓰기 수정 여부.
+- 친구 mGBA 확인 대기: seq 127 항목 1~14, 이전 HANDBACK_2026-09-30 항목.
+- 노트북 스크래치 `/home/jinmo/hns-sync-work/chunk-127/`(patch·로그 사본)는 저장소 밖이다. 필요한 문서는 저장소 `seq127-9655/`에 복사했다.
 
 ## 2026-09-30 — #9655 대기 중 선진행 구간 1 완료 (현재)
 
