@@ -255,6 +255,7 @@ static enum ItemEffect TryRockyHelmet(enum BattlerId battlerDef, enum BattlerId 
     {
         SetPassiveDamageAmount(battlerAtk, GetNonDynamaxMaxHP(battlerAtk) / 6);
         PREPARE_ITEM_BUFFER(gBattleTextBuff1, item);
+        gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_HURT_BY_ITEM;
         BattleScriptCall(BattleScript_RockyHelmetActivates);
         effect = ITEM_HP_CHANGE;
     }
@@ -351,6 +352,7 @@ static enum ItemEffect TryJabocaBerry(enum BattlerId battlerDef, enum BattlerId 
         if (GetBattlerAbility(battlerDef) == ABILITY_RIPEN)
             jabocaDamage *= 2;
         SetPassiveDamageAmount(battlerAtk, jabocaDamage);
+        gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_HURT_BY_ITEM;
         BattleScriptCall(BattleScript_JabocaRowapBerryActivates);
         PREPARE_ITEM_BUFFER(gBattleTextBuff1, item);
         effect = ITEM_HP_CHANGE;
@@ -374,6 +376,7 @@ static enum ItemEffect TryRowapBerry(enum BattlerId battlerDef, enum BattlerId b
         if (GetBattlerAbility(battlerDef) == ABILITY_RIPEN)
             rowapDamage *= 2;
         SetPassiveDamageAmount(battlerAtk, rowapDamage);
+        gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_HURT_BY_ITEM;
         BattleScriptCall(BattleScript_JabocaRowapBerryActivates);
         PREPARE_ITEM_BUFFER(gBattleTextBuff1, item);
         effect = ITEM_HP_CHANGE;
@@ -422,45 +425,22 @@ static enum ItemEffect TryBlunderPolicy(enum BattlerId battlerAtk)
 static enum ItemEffect TryMentalHerb(enum BattlerId battler, ActivationTiming timing)
 {
     enum ItemEffect effect = ITEM_NO_EFFECT;
+    gBattleCommunication[MULTISTRING_CHOOSER] = 0;
 
     // Check infatuation
     if (gBattleMons[battler].volatiles.infatuation)
     {
         gBattleMons[battler].volatiles.infatuation = 0;
-        gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_MENTALHERBCURE_INFATUATION;
-        StringCopy(gBattleTextBuff1, gStatusConditionString_LoveJpn);
+        gBattleCommunication[MULTISTRING_CHOOSER] |= 1 << B_MSG_MENTALHERBCURE_INFATUATION;
         effect = ITEM_EFFECT_OTHER;
     }
     if (B_MENTAL_HERB >= GEN_5)
     {
-        // Check taunt
-        if (gBattleMons[battler].volatiles.tauntTimer != 0)
-        {
-            gBattleMons[battler].volatiles.tauntTimer = 0;
-            gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_MENTALHERBCURE_TAUNT;
-            PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_TAUNT);
-            effect = ITEM_EFFECT_OTHER;
-        }
-        // Check encore
-        if (gBattleMons[battler].volatiles.encoreTimer != 0)
-        {
-            gBattleMons[battler].volatiles.encoredMove = 0;
-            gBattleMons[battler].volatiles.encoreTimer = 0;
-            gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_MENTALHERBCURE_ENCORE;
-            effect = ITEM_EFFECT_OTHER;
-        }
         // Check torment
         if (gBattleMons[battler].volatiles.torment == TRUE)
         {
             gBattleMons[battler].volatiles.torment = FALSE;
-            gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_MENTALHERBCURE_TORMENT;
-            effect = ITEM_EFFECT_OTHER;
-        }
-        // Check heal block
-        if (gBattleMons[battler].volatiles.healBlock)
-        {
-            gBattleMons[battler].volatiles.healBlock = FALSE;
-            gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_MENTALHERBCURE_HEALBLOCK;
+            gBattleCommunication[MULTISTRING_CHOOSER] |= 1 << B_MSG_MENTALHERBCURE_TORMENT;
             effect = ITEM_EFFECT_OTHER;
         }
         // Check disable
@@ -468,7 +448,30 @@ static enum ItemEffect TryMentalHerb(enum BattlerId battler, ActivationTiming ti
         {
             gBattleMons[battler].volatiles.disableTimer = 0;
             gBattleMons[battler].volatiles.disabledMove = 0;
-            gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_MENTALHERBCURE_DISABLE;
+            gBattleCommunication[MULTISTRING_CHOOSER] |= 1 << B_MSG_MENTALHERBCURE_DISABLE;
+            effect = ITEM_EFFECT_OTHER;
+        }
+        // Check heal block
+        if (gBattleMons[battler].volatiles.healBlock)
+        {
+            gBattleMons[battler].volatiles.healBlock = FALSE;
+            gBattleCommunication[MULTISTRING_CHOOSER] |= 1 << B_MSG_MENTALHERBCURE_HEALBLOCK;
+            effect = ITEM_EFFECT_OTHER;
+        }
+        // Check encore
+        if (gBattleMons[battler].volatiles.encoreTimer != 0)
+        {
+            gBattleMons[battler].volatiles.encoredMove = 0;
+            gBattleMons[battler].volatiles.encoreTimer = 0;
+            gBattleCommunication[MULTISTRING_CHOOSER] |= 1 << B_MSG_MENTALHERBCURE_ENCORE;
+            effect = ITEM_EFFECT_OTHER;
+        }
+        // Check taunt
+        if (gBattleMons[battler].volatiles.tauntTimer != 0)
+        {
+            gBattleMons[battler].volatiles.tauntTimer = 0;
+            gBattleCommunication[MULTISTRING_CHOOSER] |= 1 << B_MSG_MENTALHERBCURE_TAUNT;
+            PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_TAUNT);
             effect = ITEM_EFFECT_OTHER;
         }
     }
@@ -717,7 +720,7 @@ static enum ItemEffect TryCureFreezeOrFrostbite(enum BattlerId battler)
     if (gBattleMons[battler].status1 & STATUS1_FREEZE)
     {
         gBattleMons[battler].status1 &= ~STATUS1_FREEZE;
-        gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_CURED_FREEEZE;
+        gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_CURED_FREEZE;
         effect = ITEM_STATUS_CHANGE;
     }
     else if (gBattleMons[battler].status1 & STATUS1_FROSTBITE)
