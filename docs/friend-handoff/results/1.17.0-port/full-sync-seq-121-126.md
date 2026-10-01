@@ -238,6 +238,8 @@
 
 ## 결정 대기
 
+> **결정(2026-10-01, 친구):** 아래 첫 항목은 (1) EFF로 교체로 승인됐다(HANDBACK 9절 D7). seq 127 #9655 때 넣는다. 한글 본문·조사는 그대로 둔다. [`../../FRIEND_REPLY_2026-10-01.md`](../../FRIEND_REPLY_2026-10-01.md)
+
 - **`STRINGID_PKMNWOKEUPINUPROAR`의 이름 토큰 `{B_ATK_NAME_WITH_PREFIX}` → `{B_EFF_NAME_WITH_PREFIX}`(#9616 사전 분석 별건 1, 친구 결정 대기, 이번에 넣지 않음)**
   - 현재 한글: `{B_ATK_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n소란스러워서 눈을 떴다!`(`battle_message.c:288`). upstream은 #7714에서 영문을 `{B_EFF_NAME_WITH_PREFIX2}`로 바꿨고 HnS 한글은 `B_ATK`를 유지했다.
   - 문제: 턴 종료 소란 기상 경로(`HandleEndTurnThirdEventBlock` → `BattleScript_MonWokeUpInUproar`)에서 `gBattlerAttacker`가 소란 사용자라서 **깬 포켓몬 대신 소란 사용자 이름**이 나온다. 소란 첫 턴에 더 빠른 잠든 상대가 있을 때 드러난다(A안에서도 남음).

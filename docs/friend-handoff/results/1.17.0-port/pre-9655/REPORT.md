@@ -22,6 +22,8 @@ g6 plan과 다른 점이 두 가지 있다.
 
 ## 사람이 결정할 사항 (D1~D6)
 
+> **결정(2026-10-01, 친구):** D1~D6 모두 아래 **굵은 권장안**으로 확정. D7(`STRINGID_PKMNWOKEUPINUPROAR` ATK→EFF)도 승인. 근거와 조건은 [`../../../FRIEND_REPLY_2026-10-01.md`](../../../FRIEND_REPLY_2026-10-01.md).
+
 ### D1. 일반 공격 빗나감 문장
 - 지금 HnS:
   - 일반 빗나감: `그러나 {B_ATK_NAME_WITH_PREFIX}의\n공격은 빗나갔다!`

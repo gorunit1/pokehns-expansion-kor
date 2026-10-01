@@ -16,7 +16,7 @@
 |---|---|---|---|---:|---|
 | 130 | #9575 | 적용(HnS 적응) | `0f60183f1f` | −192 B | AI 예측 처리 통합. `battle_ai_main.c` 수동 맞춤(HnS `battlerMovesScored` 줄·무조건 디버그 타이머 유지). **예측 AI 트레이너 25명의 AI 동작이 1.17.0과 같아짐** |
 | 131 | #9462 | 부분 적용(잔여분) | `99388d6158` | +32 B | 게임 기능(`AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE`·RNG·뒤집기 로직)은 HnS에 이미 있음. `GetConfig` 2곳·`AI_CONFIG_DEFINITIONS` 2항목·테스트 4파일만 이식(`(reversed)` Choiced 테스트 값 `ABILITY_GLUTTONY`). 게임 동작 불변 |
-| 133 | #9006 | 적용(HnS 적응) | `fc205e1a40` | −640 B (EWRAM −4 B) | 기술 떠올리기를 공용 `LearnMove`로. HnS chooseboxmon·요약 START/R/L 유지, 검은먹시티 NPC `Special_HasMoveToRelearn`/`VAR_RESULT`, **#10223 1줄 선반영**, **가르침 교체 최대 PP 유지(`// HnS:`)**, **새 문자열 2개 한글 초안(미결)** |
+| 133 | #9006 | 적용(HnS 적응) | `fc205e1a40` | −640 B (EWRAM −4 B) | 기술 떠올리기를 공용 `LearnMove`로. HnS chooseboxmon·요약 START/R/L 유지, 검은먹시티 NPC `Special_HasMoveToRelearn`/`VAR_RESULT`, **#10223 1줄 선반영**, **가르침 교체 최대 PP 유지(`// HnS:`)**, **새 문자열 2개 한글(2026-10-01 확정)** |
 | 134 | #9903 | 부분 적용(HnS 적응) | `cf71e21e56` | 0 B | relearner hunk만 `HandleMoveRelearnerInput`(#9006)으로 옮겨 넣음. 이름 바꾸기 hunk 제외(HnS 요약 화면에 분기 없음). config로 꺼진 경로라 동작 불변(코드 바이트 동일, assert 줄 번호 문자열만 이동) |
 | 137 | #9713 | 적용(HnS 적응, **B안**) | `d057cee5c2` | −1,296 B | 디버그 사운드 메뉴 `FindSong`/`sSongNames`. **곡 이름 저장 안 함(`SE_`/`MUS_` 접두어만, Korean patch 화면 유지)**. HnS GBS 전환 유지, `FIRST_PHONEME_SONG`은 `DP_MUSIC_END + 1`(값 746 불변), DP 음악 11곡·`SE_FASTER_JOY_HEAL` 목록 추가. 이름 `{0}`(EOS 없음) EWRAM 덮어쓰기 잠재 버그 해소 |
 | 143 | #9721 | 적용 | `f3893a4cb4` | 0 B | `Makefile` 1줄(learnables JSON order-only 의존 삭제). **seq 137 빌드와 `pokehns.gba` SHA1 동일** |
@@ -31,7 +31,7 @@
 | 167 | #9819 | **보류(중간 회귀 회피: #10548 직전 적용)** | 없음 | 0 | 메인 결정. #9819만 넣으면 seq 446 #10548까지 안개제거·록클라임이 파티 메뉴에 회색 항목으로 나오고 HnS 공중날기·플래시 자동 항목이 밀릴 수 있음. A안 그대로 적용 가능, `MB_ROCK_CLIMB` 0개, asm/C enum 불일치 잠재 버그, ROM +240 B 추정 |
 
 - 마지막 빌드(`4442f1a559`): 종료 코드 0, **ROM 32,715,492 B(97.50%) / EWRAM 248,936 B(94.96%) / IWRAM 25,516 B(77.87%)**. 구간 전체 ROM −7,360 B(대부분 #9765 affine 그래픽 −5,360 B, #9713 B안 −1,296 B, #9006 −640 B), EWRAM −8 B(#9006 −4, #9765 −4), IWRAM 0. 매 빌드 종료 코드 0, 새 경고 0. `pokehns.gba` SHA1 `a1aa5ea8c9c824ba1c6bfa4d068f8948392a2a8c`.
-- 한글이 든 소스 줄 변경(docs 밖): `src/strings.c`의 새 문자열 2줄(#9006, 한글 초안, 아래 "한글 문구 미결")뿐. 기존 한글 줄 변경·삭제 0. 그 밖 비 ASCII 줄은 upstream 테스트 이름의 `Pokémon` 3줄. 파일 모드 변경 0.
+- 한글이 든 소스 줄 변경(docs 밖): `src/strings.c`의 새 문자열 2줄(#9006, 2026-10-01 확정, 아래 "한글 문구 확정")뿐. 기존 한글 줄 변경·삭제 0. 그 밖 비 ASCII 줄은 upstream 테스트 이름의 `Pokémon` 3줄. 파일 모드 변경 0.
 - config 값·세이브 구조체 변경 0. 스크립트 명령 번호·special 번호 불변(#9006은 같은 자리 이름 변경, #8628은 `callnative`).
 - upstream과 다르게 둔 곳(`HnS:` 표시 포함): #9006 `Task_ReturnToFieldWhileLearningMove`의 `tRecoverPp = TRUE`(가르침 교체 최대 PP 유지)·`VALIDATE_BEFORE_LEARNING`의 `IsBoxMonExcluded`·요약 화면 START/R/L과 relearner 분기 위치·새 문자열 한글 초안, #9713 B안(곡 이름 저장 안 함)·DP 음악/`SE_FASTER_JOY_HEAL` 목록·`FIRST_PHONEME_SONG`, #9461 피라미드 조건·`FONT_NARROW`·`CELADON DEPT.` `!IS_HNS`. 제외한 hunk: #9006 요약 화면 A 버튼 이름 바꾸기·IV/EV 프롬프트, #9903 이름 바꾸기, #9461 글꼴, #9462 `config/ai.h`·`random.h`·뒤집기 로직(이미 있음).
 - 선반영: #10223(seq 390)의 `chooseboxmon.c` 1줄(#9006 커밋), #10445(seq 298)의 박스 번호 줄(#9903 커밋). 아래 "후속 행 메모".
@@ -136,7 +136,7 @@
 - 제외한 hunk:
   - `pokemon_summary_screen.c` `Task_HandleInput`의 A 버튼 hunk(`ShouldShowRename` 이름 바꾸기 분기): HnS A 버튼은 다시 작성됐고 이름 바꾸기 분기가 없다(`P_SUMMARY_SCREEN_RENAME FALSE`).
   - 같은 파일 `ClearPageWindowTilemaps` 능력치 페이지 IV/EV 프롬프트 hunk: HnS에 해당 줄·`ShouldShowIvEvPrompt`가 없다.
-- 문자열: 새 문자열 2개는 한글 초안으로 넣었다(아래 "한글 문구 미결"). 기존 한글 줄 변경·삭제 0. 더 이상 참조되지 않는 relearner 전용 한글 6개(`gText_MoveRelearnerAndPoof` 등)는 upstream처럼 정의를 남겼다(gc-sections가 ROM에서 뺀다). 요약 화면 영문 프롬프트 `sRelearnTexts`는 숨은 창에만 그려지고 tilemap은 `ShouldShowMoveRelearner()`(HnS FALSE)일 때만 올라가 화면에 나오지 않는다.
+- 문자열: 새 문자열 2개는 한글 초안으로 넣었고 2026-10-01에 확정됐다(아래 "한글 문구 확정"). 기존 한글 줄 변경·삭제 0. 더 이상 참조되지 않는 relearner 전용 한글 6개(`gText_MoveRelearnerAndPoof` 등)는 upstream처럼 정의를 남겼다(gc-sections가 ROM에서 뺀다). 요약 화면 영문 프롬프트 `sRelearnTexts`는 숨은 창에만 그려지고 tilemap은 `ShouldShowMoveRelearner()`(HnS FALSE)일 때만 올라가 화면에 나오지 않는다.
 - 세이브: 영향 없음. `gMoveRelearnerState`·`gRelearnMode`는 세이브 밖 EWRAM이고 special·스크립트 명령 번호는 그대로다.
 - 검증:
   - `git diff --check` 통과. 비 ASCII `+`/`−` 줄은 새 한글 문자열 2줄뿐. `HasMovesToRelearn`·`getmoverelearnerstate`·`istmrelearneractive` 남은 곳 0(`MoveRelearnerRunTextPrinters` 선언은 upstream `780805f169`에도 남아 있음).
@@ -419,9 +419,9 @@
 
 "수정 필요" 0건. 결과 문서 사실 오류 1건(seq 137 ROM 사용률 97.51% → 97.52%)을 고쳤다.
 
-## 한글 문구 미결
+## 한글 문구 확정 (처음 "미결")
 
-**공식 문구 확인 전 임시 번역**이다. 확정되면 `src/strings.c`의 해당 줄만 바꾼다(seq 133 #9006).
+**2026-10-01 친구 확인으로 두 문장 모두 초안 그대로 확정했다**(`src/strings.c` 변경 없음). 근거: `배우게 하겠습니까?`는 SV 공식 표현, `1개가 없어집니다`는 BDSP 소모형 기술머신 안내(`한 번 사용하면 없어져 버린단다`, `없어지게 됩니다만 괜찮겠습니까?`) 계열, `그만두겠습니까?`는 SV `[기술]을 배우는 것을 그만두겠습니까?`([`../../FRIEND_REPLY_2026-10-01.md`](../../FRIEND_REPLY_2026-10-01.md) D절). 아래는 처음 기록이다.
 
 | ID | 초안(`src/strings.c`) | 영문 원문(upstream #9006) | HnS에서 화면에 나오지 않는 이유 |
 |---|---|---|---|

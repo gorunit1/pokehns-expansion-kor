@@ -16,11 +16,12 @@
 - [2026-09-29 full-sync port 시작 인수인계](HANDBACK_2026-09-29_FULL_SYNC_PORT_START.md) — 로컬 통합·선행 이식·확정 결정을 반영한 517개 실제 port 시작점
 - [Claude full-sync 실행 지시문](CLAUDE_FULL_SYNC_PORT_PROMPT.md) — 친구가 Claude Code/Claude에 전달해 실제 port를 시작할 완성 지시문
 - [2026-09-29 port 진행 회신](HANDBACK_2026-09-29_PORT_PROGRESS.md) — full-sync seq 1~62 이식, 테스트 러너 복구, 다음 seq 63
-- [2026-09-30 회신](HANDBACK_2026-09-30.md) — seq 92~101, Safari UI 한글화 버그 2건 수정(재확인 요청), 순서표 보정, 다음 seq 102
+- [2026-09-30 회신](HANDBACK_2026-09-30.md) — seq 92~101, Safari UI 한글화 버그 2건 수정(재확인 요청), 순서표 보정, 다음 seq 102 (이후 seq 127 대기·선진행 구간 1까지 갱신)
+- [2026-10-01 친구 답장](FRIEND_REPLY_2026-10-01.md) — #9655 D1~D7 확정, 선진행 중단, #9006 문장 확정, MCP 시험 도입 승인
 
-## 검토 중인 제안 (확정 아님)
+## 시험 도입 중인 제안
 
-- [AI가 mGBA MCP로 실기 확인 일부를 대신하기](PROPOSAL_AI_MGBA_CHECKS.md) — **검토 중이며 확정이 아니다.** 설치하지 않았고, 친구와 합의한 뒤 결정한다.
+- [AI가 mGBA MCP로 실기 확인 일부를 대신하기](PROPOSAL_AI_MGBA_CHECKS.md) — **2026-10-01 시험 도입 승인**(`AI 사전 확인` 용도). 첫 시험은 seq 107 #7305 세이브 호환 대조이고, 아직 설치하지 않았다.
 
 ## 작업 목록
 
