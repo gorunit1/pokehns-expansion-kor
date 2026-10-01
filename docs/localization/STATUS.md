@@ -8,7 +8,11 @@
   - #9819는 `#9819 → 바로 #10548`. #9006 새 한글 문장 2개는 초안 그대로 확정.
   - AI mGBA MCP: `AI 사전 확인` 용도로 시험 도입 승인. 첫 시험은 seq 107 #7305 세이브 호환 대조(데스크탑, 아직 설치 안 함). 사람 확인 목록은 줄이지 않고 AI 통과 항목은 `AI 사전 확인 통과`만 표시한다.
   - 친구 로컬: local-only 커밋(`dac422efb3` 포함)을 full-sync 완료까지 보존하고 pull·push·rebase·reset을 하지 않는다. full-sync가 끝나면 완료 메시지와 최신 handback을 보내야 한다.
-- **진행 중: seq 127 #9655 + #9856(seq 174, 같은 unit).** 노트북에서 데스크탑 기록 `254b12c226`까지 pull했다. 기준 테스트 목록은 `test-baseline-seq167-ahead1.txt`다.
+- **진행 중: seq 127 unit `U-battlemsg-9655` = #9655 + #9856(seq 174) + #10064(seq 206, 엔진 1줄).** #10149는 g1 plan대로 HnS 동등.
+  - 노트북에서 `254b12c226`까지 pull했다. 이식 전 기준(`fcf855d4e8`): `make hns -j8` 종료 코드 0, ROM 32,715,492 B / EWRAM 248,936 B / IWRAM 25,516 B로 데스크탑 기록과 같다(SHA1 `9e9feda9…`, 툴체인 차이). 전체 테스트 목록이 `test-baseline-seq167-ahead1.txt`와 바이트 동일(PASS 2,332 / TOTAL 5,241, 노트북 12분 20초).
+  - 현재 HEAD dry-run: 코드 hunk 112개 중 47개 실패(`battle_message.c` 24/30, `battle_scripts_1.s` 13/35), 테스트 hunk 408개 중 16개 실패(4파일). #9856은 HnS에 upstream 중복 줄이 없어 실패(흡수 예정), #10064는 성공.
+  - 진행: 읽기 전용 사전 분석 4개(A 문자열, B 배틀 스크립트, C C 코드, D 테스트·출력 변경 문서) → 적용 → 리뷰. 스크래치(저장소 밖): `/home/jinmo/hns-sync-work/chunk-127/`(`BRIEF.md`가 공통 지시, `part-X.md`·`part-X.patch`가 산출물). 이 스크래치는 노트북에만 있다.
+  - 중단되면: 커밋되지 않은 #9655 변경이 있는지 `git status`로 보고, 스크래치 `part-*.md`부터 다시 읽는다.
 
 ## 2026-09-30 — #9655 대기 중 선진행 구간 1 완료 (현재)
 
