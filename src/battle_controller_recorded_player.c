@@ -298,12 +298,7 @@ static void RecordedPlayerHandleDrawTrainerPic(enum BattlerId battler)
         else
             gender = gLinkPlayers[0].gender;
 
-#if IS_HNS
-        // HnS: recorded battles drew Brendan/May here before #9475. Keep it until a Gold/Kris switch is approved.
-        trainerPicId = (gender == MALE) ? TRAINER_PIC_BRENDAN : TRAINER_PIC_MAY;
-#else
         trainerPicId = GetPlayerTrainerPic(gender, GAME_VERSION);
-#endif
         if (gBattleTypeFlags & BATTLE_TYPE_MULTI)
         {
             if ((GetBattlerPosition(battler) & BIT_FLANK) != 0) // second mon

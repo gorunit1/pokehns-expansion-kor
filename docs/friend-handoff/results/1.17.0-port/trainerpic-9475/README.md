@@ -29,5 +29,5 @@ python3 ~/tp-verify/trainer_pic_verify.py --repo "$PWD" --work ~/tp-verify/work 
 
 - 새 구조끼리(이식 후 덤프 ↔ 지금 덤프) 비교할 때는 `compare --identity`와 `--player player_cases_new.tsv`를 쓴다(`player_cases.tsv`를 주면 옛 이름을 찾느라 [3]에 MISSING 16건이 나온다). 2026-10-03에 같은 ELF로 확인한 기대 출력은 `RESULT: 차이 0 (OK)`다. INCGFX 전환(seq 500 #9881) 등 트레이너 그림 INCBIN·표를 건드리는 PR 뒤에 돌려 그림 데이터가 그대로인지 본다. 의도한 그림 추가·변경이 있으면 그 항목만 차이로 나와야 한다.
 - 옛 구조 ↔ 새 구조 비교(`run`)는 이식 전 ELF가 필요하다. 이식 전 ELF는 저장소에 없고, 그 덤프가 `old_dump.tsv.gz`다(`run --old-dump`로 준다).
-- 녹화 배틀 재생의 플레이어 뒷모습을 Gold/Kris로 바꾸면(결과 문서 "친구에게 물을 것" 1) `player_cases.tsv`의 `RECORDED_LINK_DRAW_MALE/FEMALE` 두 행을 `new_id=TRAINER_PIC_GOLD_HNS/KRIS_HNS`, `expect=changed`로 고친다.
+- 2026-10-04 친구 결정으로 녹화 배틀 재생의 플레이어 뒷모습을 Gold/Kris로 바꿨다. `player_cases.tsv`의 `RECORDED_LINK_DRAW_MALE/FEMALE` 두 행은 `new_id=TRAINER_PIC_GOLD_HNS/KRIS_HNS`, `expect=changed`(의도한 변화), `player_cases_new.tsv`는 두 칸 모두 GOLD/KRIS다. 이 표의 ID는 코드가 실제로 고르는 값을 사람이 적은 것이고, 도구는 그 ID의 그림 데이터만 비교한다.
 - 도구는 데이터만 본다. 코드가 어느 ID를 고르는지, 태그·팔레트 슬롯, 위치 계산은 범위 밖이라 실기 확인으로 본다.
