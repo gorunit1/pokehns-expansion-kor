@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 135~138
 
-진행 중: 마지막 완료 seq 135, 다음 seq 136 #9711.
+진행 중: 마지막 완료 seq 136, 다음 seq 137 #9713(이미 적용)·138 #9707(이미 적용) 기록과 구간 끝 전체 테스트.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md), 메시지 출력 기록: [`BATTLE_MESSAGE_OUTPUT_CHANGES.md`](../../../localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md)
 시작 HEAD: `90ae8c6774`(작업 트리 clean, 코드는 seq 132 `5f580ab12e`와 같음). 작업 컴퓨터: 데스크탑(`/usr/bin` 툴체인).
@@ -10,6 +10,7 @@
 | seq | PR | 판정 | 커밋 | ROM 변화 | 비고 |
 |---|---|---|---|---:|---|
 | 135 | #9709 | 부분 적용 | `a642657907` | +16 B | `BattlePokemon.affectionHearts` 추가(끝 패딩, `sizeof` 144 그대로). `GetBattlerAffectionHearts`가 `gBattleMons`를 읽는다. `include/config/ai.h` 테스트 전용 프레임 상한 hunk 제외(HnS 값 유지) |
+| 136 | #9711 | 적용 | `62d1876d6f` | +32 B | `BattlePokemon` 오프셋 주석 삭제 **+ `u8 metLevel:7; u8 isShiny:1;` 비트필드 압축**(주석만의 변경이 아님). `affectionHearts` 오프셋 142 → 141, `sizeof` 144 그대로. 구조체가 1.17.0과 같아짐 |
 
 ## 공통 사항
 
@@ -46,3 +47,25 @@
 - 테스트: `GITHUB_ACTION=1 make check BUILD=hns -j6 TESTS="AI thinking time"`(`build/port-check-135-ai.log`) → 6개 모두 **PASS**, `test-baseline-seq132.txt`의 같은 6줄과 같다. upstream·HnS 모두 친밀도·마음 테스트는 없다.
 - 남은 위험: 없음(게임 동작은 config로 막혀 있고 구조체 크기 불변). `B_AFFECTION_MECHANICS`를 켜면 위 참고 2가지가 upstream과 같게 달라진다.
 - 실기 확인: 불필요.
+
+## 동기화 단위: seq 136 #9711 `U-9711` Remove hex values from BattlePokemon
+
+- 현재 판정: 적용(upstream 그대로)
+- 커밋: `62d1876d6f`
+- upstream 근거: `52d8b6b801`(`include/pokemon.h` 1파일 +34/−34), 부모 `ed3557ed04`(#9709). `git log --grep=9711` 없음, `struct BattlePokemon`에 `/*0x..*/` 주석이 그대로 있었다 → 미적용이었다. 선행: seq 135 #9709(문맥에 `affectionHearts` 줄).
+- 수정 파일(1): `include/pokemon.h`
+- 적용 방법: 사전 분석 patch(`seq136-9711.patch`, seq 135 patch 위에 쌓이는 patch)를 `git apply`했다. 충돌 없음. `git diff --check` 통과. 적용 뒤 `struct BattlePokemon` 블록이 upstream `expansion/1.17.0`의 같은 블록과 **diff 0**이다(HnS 고유 필드 없음).
+- 내용:
+  - 34필드 앞의 `/*0x..*/` 오프셋 주석을 지웠다. 주석은 이미 실제 오프셋과 맞지 않았다(예: `isShiny` 주석 `0x62`, 실제 141).
+  - **주석 외 변경:** `u8 metLevel;` / `bool8 isShiny;` → `u8 metLevel:7;` / `u8 isShiny:1;`. 두 필드가 바이트 140 하나를 함께 쓴다(`metLevel` 비트 0–6, `isShiny` 비트 7). 그래서 **g5 plan의 "주석만 34줄, 빌드 산출물 불변"은 틀렸다**: 비트필드를 읽고 쓰는 코드가 바뀌어 ROM이 +32 B 늘었다.
+- **구조체 측정(저장소 헤더로 스크래치 컴파일, `-DPOKEMON_HNS`, apcs-gnu):** 게임 빌드 `sizeof` **144 그대로**, `offsetof(pp)` 37 그대로(변신 복사 범위 불변), `otId` 136, **`affectionHearts` 142 → 141**. 테스트 빌드(`TESTING=1`)는 `sizeof` 140, `affectionHearts` 137. ELF의 `gBattleMons`는 `0x240` 그대로, EWRAM·IWRAM 0.
+- 의미 변화: 없음.
+  - `metLevel` 값 원천은 `struct BoxPokemon`의 `u16 metLevel:7`(0..127)이라 7비트에 들어간다. 읽는 곳은 `battle_util.c` 복종 판정의 `>= GEN_8` 분기뿐인데 HnS `B_OBEDIENCE_MECHANICS GEN_7`이라 컴파일 시 제거된다. `PokemonToBattleMon`은 이전처럼 `metLevel`을 채우지 않는다(upstream과 같음).
+  - `isShiny`에는 `IsMonShiny()`/`MON_DATA_IS_SHINY`의 0/1만 들어간다. 읽는 곳은 변신 색 복사(`battle_script_commands.c`, `B_TRANSFORM_SHINY`)다.
+  - 비트필드 주소를 잡는 코드(`&…metLevel`, `&…isShiny`)는 `src`·`include`·`test`에 없다(빌드 성공으로도 확인).
+- 세이브·녹화·링크: 세이브와 녹화 배틀은 무관하다(`BattlePokemon`은 SaveBlock·`RecordedBattleSave`에 없음). 링크 전송 크기는 144 B 그대로다. 140~141번 바이트 배치만 바뀌어 이식 전 ROM과 이식 후 ROM 사이 링크만 어긋난다(다른 full-sync PR과 같은 "다른 버전 간 링크 불가", 같은 ROM끼리는 영향 없음).
+- 한글·config·HnS 전용 코드: 해당 없음(비 ASCII 줄 0, config 변경 0).
+- 빌드(`build/port.log`): 종료 코드 0, **ROM 32,716,948 B(97.50%, +32 B) / EWRAM 248,936 B(94.96%, 0) / IWRAM 25,516 B(77.87%, 0)**. `pokehns.gba` SHA1 `dfeec48834b4b1ca000cc2b09b39b6175834357b`(사전 분석 스크래치 빌드 `dfeec488…`와 같음). 경고 163줄, 새 경고 0. 크기가 바뀐 함수: `GetBattlerMonData` 0x5cc → 0x5e8, `PokemonToBattleMon` 0x230 → 0x23c(사전 분석 4개 오브젝트 변화와 같은 방향).
+- 테스트(파일별 `GITHUB_ACTION=1 make check BUILD=hns -j6 TESTS="<파일>"`, 로그 `build/port-check-136-{transform,imposter,trainer_control,pokemon}.log`): `test/battle/move_effect/transform.c`, `test/battle/ability/imposter.c`, `test/battle/trainer_control.c`, `test/pokemon.c` → **55줄(PASS 47)이 `test-baseline-seq132.txt`의 같은 이름 줄과 모두 같다.** 비 PASS 8건(FAIL 6, TO_DO 2)은 기준과 같은 기존 실패다.
+- 남은 위험: 없음. 구조체가 1.17.0과 같아져 뒤 PR의 `BattlePokemon` hunk 문맥이 upstream과 맞는다.
+- 실기 확인: 불필요. 원하면 이로치 상대에게 변신(메타몽)했을 때 색이 맞는지 본다.
