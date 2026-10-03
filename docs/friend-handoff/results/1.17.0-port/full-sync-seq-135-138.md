@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 135~138
 
-진행 중: 마지막 완료 seq 136, 다음 seq 137 #9713(이미 적용)·138 #9707(이미 적용) 기록과 구간 끝 전체 테스트.
+완료: seq 135~138 이식·전체 테스트·기록 완료(다음 구간은 seq 139 #9714부터). 이식 커밋 2개(#9709, #9711), 이미 적용 2개(#9713, #9707). 결과 커밋에 기준 목록 [`test-baseline-seq138.txt`](test-baseline-seq138.txt)를 넣었다. 메인의 커밋 리뷰는 이 문서 밖에서 진행한다.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md), 메시지 출력 기록: [`BATTLE_MESSAGE_OUTPUT_CHANGES.md`](../../../localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md)
 시작 HEAD: `90ae8c6774`(작업 트리 clean, 코드는 seq 132 `5f580ab12e`와 같음). 작업 컴퓨터: 데스크탑(`/usr/bin` 툴체인).
@@ -11,6 +11,15 @@
 |---|---|---|---|---:|---|
 | 135 | #9709 | 부분 적용 | `a642657907` | +16 B | `BattlePokemon.affectionHearts` 추가(끝 패딩, `sizeof` 144 그대로). `GetBattlerAffectionHearts`가 `gBattleMons`를 읽는다. `include/config/ai.h` 테스트 전용 프레임 상한 hunk 제외(HnS 값 유지) |
 | 136 | #9711 | 적용 | `62d1876d6f` | +32 B | `BattlePokemon` 오프셋 주석 삭제 **+ `u8 metLevel:7; u8 isShiny:1;` 비트필드 압축**(주석만의 변경이 아님). `affectionHearts` 오프셋 142 → 141, `sizeof` 144 그대로. 구조체가 1.17.0과 같아짐 |
+| 137 | #9713 | 이미 적용(선진행) | 없음(`d057cee5c2`) | 0 | 선진행 구간에서 B안으로 이식(`full-sync-ahead-seq-130-167.md`) |
+| 138 | #9707 | 이미 적용 | 없음(`8e6f16bf71`) | 0 | 예전 구간에서 #9407 unit으로 이식(`full-sync-seq-063-082.md`) |
+
+- 마지막 빌드(`62d1876d6f` 작업 트리): 종료 코드 0, **ROM 32,716,948 B(97.50%) / EWRAM 248,936 B(94.96%) / IWRAM 25,516 B(77.87%)**. 구간 전체 ROM +48 B(#9709 +16 B, #9711 +32 B), EWRAM 0, IWRAM 0. 매 빌드 새 경고 0. `pokehns.gba` SHA1 `dfeec48834b4b1ca000cc2b09b39b6175834357b`(사전 분석 스크래치 빌드와 같음).
+- `sizeof(struct BattlePokemon)`은 이식 전후 **144 그대로**(게임 빌드), `gBattleMons` `0x240` 그대로. 링크 전송 버퍼 크기·세이브·녹화 배틀 영향 없음.
+- 한글이 든 소스 줄 변경: **0**(두 커밋 모두 비 ASCII `+`/`-` 줄 0). config 기본값 변경 0(`include/config/ai.h`는 건드리지 않음).
+- upstream과 다르게 둔 곳: #9709의 `include/config/ai.h` 프레임 상한 hunk 제외(HnS 값 유지). 그 밖에는 upstream 그대로이고, `struct BattlePokemon`이 1.17.0과 같아졌다.
+- `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 추가 행: 없음.
+- 전체 테스트: 표준 목록이 `test-baseline-seq132.txt`와 **바이트 동일**, 사라진 PASS 0(아래 "구간 끝 전체 테스트").
 
 ## 공통 사항
 
@@ -60,7 +69,7 @@
   - **주석 외 변경:** `u8 metLevel;` / `bool8 isShiny;` → `u8 metLevel:7;` / `u8 isShiny:1;`. 두 필드가 바이트 140 하나를 함께 쓴다(`metLevel` 비트 0–6, `isShiny` 비트 7). 그래서 **g5 plan의 "주석만 34줄, 빌드 산출물 불변"은 틀렸다**: 비트필드를 읽고 쓰는 코드가 바뀌어 ROM이 +32 B 늘었다.
 - **구조체 측정(저장소 헤더로 스크래치 컴파일, `-DPOKEMON_HNS`, apcs-gnu):** 게임 빌드 `sizeof` **144 그대로**, `offsetof(pp)` 37 그대로(변신 복사 범위 불변), `otId` 136, **`affectionHearts` 142 → 141**. 테스트 빌드(`TESTING=1`)는 `sizeof` 140, `affectionHearts` 137. ELF의 `gBattleMons`는 `0x240` 그대로, EWRAM·IWRAM 0.
 - 의미 변화: 없음.
-  - `metLevel` 값 원천은 `struct BoxPokemon`의 `u16 metLevel:7`(0..127)이라 7비트에 들어간다. 읽는 곳은 `battle_util.c` 복종 판정의 `>= GEN_8` 분기뿐인데 HnS `B_OBEDIENCE_MECHANICS GEN_7`이라 컴파일 시 제거된다. `PokemonToBattleMon`은 이전처럼 `metLevel`을 채우지 않는다(upstream과 같음).
+  - `metLevel` 값 원천은 `struct PokemonSubstruct3`의 `u16 metLevel:7`(0..127, `include/pokemon.h:187`)이라 7비트에 들어간다. 읽는 곳은 `battle_util.c` 복종 판정의 `>= GEN_8` 분기뿐인데 HnS `B_OBEDIENCE_MECHANICS GEN_7`이라 컴파일 시 제거된다. `PokemonToBattleMon`은 이전처럼 `metLevel`을 채우지 않는다(upstream과 같음).
   - `isShiny`에는 `IsMonShiny()`/`MON_DATA_IS_SHINY`의 0/1만 들어간다. 읽는 곳은 변신 색 복사(`battle_script_commands.c`, `B_TRANSFORM_SHINY`)다.
   - 비트필드 주소를 잡는 코드(`&…metLevel`, `&…isShiny`)는 `src`·`include`·`test`에 없다(빌드 성공으로도 확인).
 - 세이브·녹화·링크: 세이브와 녹화 배틀은 무관하다(`BattlePokemon`은 SaveBlock·`RecordedBattleSave`에 없음). 링크 전송 크기는 144 B 그대로다. 140~141번 바이트 배치만 바뀌어 이식 전 ROM과 이식 후 ROM 사이 링크만 어긋난다(다른 full-sync PR과 같은 "다른 버전 간 링크 불가", 같은 ROM끼리는 영향 없음).
@@ -69,3 +78,44 @@
 - 테스트(파일별 `GITHUB_ACTION=1 make check BUILD=hns -j6 TESTS="<파일>"`, 로그 `build/port-check-136-{transform,imposter,trainer_control,pokemon}.log`): `test/battle/move_effect/transform.c`, `test/battle/ability/imposter.c`, `test/battle/trainer_control.c`, `test/pokemon.c` → **55줄(PASS 47)이 `test-baseline-seq132.txt`의 같은 이름 줄과 모두 같다.** 비 PASS 8건(FAIL 6, TO_DO 2)은 기준과 같은 기존 실패다.
 - 남은 위험: 없음. 구조체가 1.17.0과 같아져 뒤 PR의 `BattlePokemon` hunk 문맥이 upstream과 맞는다.
 - 실기 확인: 불필요. 원하면 이로치 상대에게 변신(메타몽)했을 때 색이 맞는지 본다.
+
+## 동기화 단위: seq 137 #9713 `U-9713` Support non-contiguous SE/MUS IDs in debug menu
+
+- 현재 판정: 이미 적용(선진행)
+- 커밋: 없음. 선진행 커밋 `d057cee5c2`("Port upstream #9713: Support non-contiguous SE/MUS IDs in debug menu", 진행 기록 `b6a564cf7c`).
+- upstream 근거: `48a165c403`(`include/constants/songs.h`, `src/debug.c`)
+- 근거: `d057cee5c2`가 HEAD의 조상이고, `src/debug.c`에 `FindSong`·`sSongNames`가 있다. 선진행 때 B안(곡 이름 저장 안 함, `SE_`/`MUS_` 접두어만)으로 넣었다. 판정·검증·실기 확인 항목은 [`full-sync-ahead-seq-130-167.md`](full-sync-ahead-seq-130-167.md)의 seq 137 항목에 있다. 재이식하지 않았다.
+
+## 동기화 단위: seq 138 #9707 `U-fade-9407` Reset objPaletteToggle after Software Fade
+
+- 현재 판정: 이미 적용
+- 커밋: 없음. 예전 구간 커밋 `8e6f16bf71`("Port upstream #9707: Reset objPaletteToggle after Software Fade", #9407 unit).
+- upstream 근거: `833f1de49a`(`src/palette.c` +1줄 `gPaletteFade.objPaletteToggle = 0;`)
+- 근거: `8e6f16bf71`이 HEAD의 조상이다. 뒤 커밋 `f76c7bf7ed`(#10573)가 `src/palette.c`를 다시 고쳤지만 그 줄은 남아 있다(`src/palette.c:839`, 1.17.0 `:837`과 같은 위치). [`full-sync-seq-063-082.md`](full-sync-seq-063-082.md)의 "unit U-fade-9407: #9707" 항목에 기록돼 있다. 재이식하지 않았다.
+
+## 구간 끝 전체 테스트
+
+`GITHUB_ACTION=1 make check BUILD=hns -j6 > build/port-check-post136.log 2>&1`(작업 트리 = `62d1876d6f` 코드, 4분 47초, `make` 종료 코드 2 = 실패 테스트가 있을 때의 정상 종료). `Killed`·러너 크래시 0. 목록은 `PORT_INSTRUCTIONS`의 `LC_ALL=C`·`grep -a` 표준 추출로 만들었다.
+
+| 항목 | 이식 전(seq 132) | 이식 후(seq 136) |
+|---|---|---|
+| 러너 요약 | PASSED 2,344 / FAILED 2,256 / KNOWN_FAILING 10 / ASSUMPTIONS_FAILED 38 / TO_DO 607 / EXPECT_FAILING 6 / TOTAL 5,261 | **같음** |
+| 표준 목록 | 5,192줄(PASS 2,341 / FAIL 2,231 / TO_DO 605 / KNOWN_FAILING 10 / EXPECTED_FAIL 5) | **바이트 동일** |
+| 확장 상태(`ASSUMPTION_FAIL`·`INVALID`·`TIMEOUT`·`CRASH`) | 60줄(ASSUMPTION_FAIL 38 / INVALID 21 / CRASH 1) | `build/port-check-post132.log`와 같은 줄 |
+
+- **사라진 PASS 0, 새 PASS 0, 상태가 바뀐 테스트 0.** 로그 끝 실패 위치 목록(`  - test/…` 줄)도 seq 132 로그와 같다.
+- `AI thinking time doesn't explode` 6개는 HnS 상한(`include/config/ai.h` 유지)으로 모두 PASS다.
+- 새 기준 목록: [`test-baseline-seq138.txt`](test-baseline-seq138.txt)(5,192줄, `test-baseline-seq132.txt`와 내용 같음).
+
+## 실기 확인 항목 (친구용)
+
+- 필요한 항목 없음. #9709는 `B_AFFECTION_MECHANICS FALSE`로 게임 동작이 막혀 있고, #9711은 값 범위 안의 비트필드 압축이다.
+- 선택: 이로치 상대에게 메타몽이 변신했을 때 이로치 색이 맞는지(#9711 `isShiny:1` 읽기 경로).
+
+## 후속 행 메모
+
+- **g4 plan `9709` 행 정정:** "버퍼 전송 구조가 1 B 늘어 구버전 ROM과 링크 호환이 깨진다"는 해당하지 않는다(끝 패딩에 들어가 `sizeof` 144 그대로). 또 "HnS 조건은 `!IsOnPlayerSide`만"은 seq 115 #9494가 `notOnField` 조건을 넣어 이미 upstream 문맥과 같았다.
+- **g5 plan `9711` 행 정정:** "주석만 34줄, 빌드 산출물 불변"이 아니다. `metLevel:7`/`isShiny:1` 비트필드 압축으로 ROM +32 B(EWRAM·IWRAM 0), `affectionHearts` 오프셋 142 → 141.
+- **seq 154 #9779(Isolate AI thinking time tests):** `include/config/ai.h`의 `AI_FRAME_CEILING_*`를 `test/battle/ai/ai_thinking_time.c`로 옮길 때 HnS 값(3/8/21/38/29/31)을 출발점으로 하고, HnS 실측으로 다시 맞춘다. upstream #9709 값(3/7/22/37/26/30)이나 merge 보정 `e913b13acd` 값(23/40/32)을 그대로 쓰지 않는다. 사전 분석 실측(이식 전 = 이식 후): singles 2/7, doubles 14/27, Steven multi 19/22.
+- **seq 228 #10161:** `GetBattlerAffectionHearts`의 첫 조건에 `|| gSpecialStatuses[battler].attackerInParty`를 더한다. 이번에 넣지 않았다. 그 줄의 나머지 문맥(`gBattleMons[battler].species`, `notOnField`)은 1.17.0과 같다.
+- `struct BattlePokemon`이 1.17.0과 같아졌으므로, 뒤 PR의 이 구조체 hunk는 upstream 문맥 그대로 맞는다.
