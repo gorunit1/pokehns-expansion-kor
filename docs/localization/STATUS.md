@@ -1,6 +1,15 @@
 # 현재 인수인계 상태
 
-## 2026-10-03 — seq 127 친구 답 반영: HnS 보호 수정 2건 (현재, 데스크탑)
+## 2026-10-03 — seq 128 #9475 진행 중 (현재, 데스크탑)
+
+- 대상: seq 128 #9475 `U-trainerpic-9475` Refactor/trainer pic info(upstream `becfa70a97`, 37파일, XL 단독). 트레이너 앞·뒤 그림 표를 `gTrainerPicInfo`로 합치고, `TrainerPicID`에서 FRONT/BACK 구분을 없앤다.
+- 진행 방식: 영역별 병렬 사전 분석 4개 → 메인이 patch를 합침 → 적용 1커밋 → 병렬 리뷰 → 메인 확인. 영역은 A(상수·표·도구), B(배틀 호출부), C(배틀 밖 호출부·세이브 호환), D(이식 전후 그림 데이터 비교 도구)다. 스크래치는 `/home/hjm0725/hns-sync-work/chunk-128/`이다(`ANALYZE.md`, 이식 전 ELF `base/`).
+- 공통 결정
+  - ID 이름: upstream 새 이름을 쓴다. HnS 뒷모습 4개는 같은 인물의 앞모습 ID에 합친다(GOLD·KRIS·SILVER, 목호는 `CHAMPION_LANCE_HNS`).
+  - 모든 트레이너 그림 데이터는 이식 전과 바이트 동일해야 한다.
+- 시작 기준: `bc7c625b79`(코드 `fdc110d528`), 데스크탑 ROM 32,715,796 B, SHA1 `817f500d…`, 테스트 기준 `test-baseline-seq127.txt`.
+
+## 2026-10-03 — seq 127 친구 답 반영: HnS 보호 수정 2건 (데스크탑)
 
 - **다음 시작 seq: 128** (#9475 `U-trainerpic-9475` Refactor/trainer pic info, XL 단독). 선진행한 seq 130·131·133·134·137·143·148·149·151·156·157·158·160·165는 "이미 적용(선진행)"으로 처리한다.
 - 친구 답(HANDBACK_2026-10-01 3절): [`docs/friend-handoff/FRIEND_REPLY_2026-10-03.md`](../friend-handoff/FRIEND_REPLY_2026-10-03.md). seq 127 결과 승인. 가방 도구 마비는 `몸저림` 유지, 소란 status1은 기록만.
