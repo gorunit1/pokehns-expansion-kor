@@ -53,7 +53,7 @@
   - 하양허브: `RestoreWhiteHerbStats()`의 `timing` 인자와 HnS 내던지기 분기(`BattleScript_WhiteHerbFling`, `removeitem` 없음)를 유지하고, 나머지 두 분기만 `BattleScriptCall(BattleScript_WhiteHerbRet)` 하나로 합쳤다(팝업은 `WhiteHerbRet` 첫 줄이라 유지).
   - 나이트메어: upstream 팝업 블록 재배치를 따르고 HnS 선이식분 `setbyte sFIXED_ABILITY_POPUP, FALSE`를 유지(1.17.0 본문과 같음). 시럽봄 `BS_TARGET`(선이식 #10042), 멘탈허브 HnS 비트마스크 본문 유지.
   - 젖은접시·건조피부(비): `RainDishActivates`는 `call AbilityHpHeal`/`end2`일 뿐이라 upstream처럼 `AbilityHpHeal` 직접 Call로 합쳤다(같은 명령, 문구 없음 유지).
-  - 문맥만 다른 hunk: 미래예지 4인자(`SetTypeBeforeUsingMove`), 탁탁폭탄 대상 2줄(#10042 선반영), 전자부유(#10318 선반영), 변덕쟁이(`isFirstTurn != 2` 감싸기 없음), `endturnevents` 매크로 위치(HnS `destroyitempopup` 뒤), `battle_main.c` 뒤 함수 문맥.
+  - 문맥만 다른 hunk: 미래예지 4인자(`SetTypeBeforeUsingMove`), 탁탁폭탄 대상 2줄(#10042 선반영), 전자부유(#10318 선반영), 변덕쟁이(`isFirstTurn != 2` 감싸기 없음 — #9798이 이미 HnS 이력에 있어 1.17.0과 같은 상태, 커밋 리뷰 C), `endturnevents` 매크로 위치(HnS `destroyitempopup` 뒤), `battle_main.c` 뒤 함수 문맥.
 - 제외한 hunk(3):
   - `battle_hold_effects.c` `RestoreWhiteHerbStats(battler, timing)` → `(battler)` 시그니처와 호출부 2곳: HnS 내던지기 분기에 `timing`이 필요하다.
   - `battle_script_commands.c` 안개제거 `DEFOG_CLEAR`의 `SideStatusWoreOffReturn` → `SideStatusWoreOff`: HnS는 방벽별 `*WoreOffReturn`·`SafeguardEndsReturn`(원래 `return`형)을 쓴다.
@@ -63,10 +63,10 @@
 - 검증: 아래 "D 출력 순서 회귀 테스트", "관련 테스트", "전체 테스트".
 - 남은 위험:
   - **upstream 본문에서도 `return`으로 끝나지 않는 경로 3개**(위 정적 검사, upstream과 같음).
-    - 배틀아레나 판정 `ArenaDoJudgment`가 `end2`로 `EndTurnEvents` 스크립트 전체를 끝낸다(스크립트 스택 1칸 남음, 다음 턴 시작에 정리). 테스트 러너가 아레나 배틀을 만들 수 없어 실기로만 볼 수 있다.
-    - **미래예지·파멸의소원이 빗나가면** `MonTookFutureAttack`의 `accuracycheck` → `MoveMissedPause` → `MoveEnd`의 `end`에 닿는다. D 테스트(2-11·2-17)와 관련 테스트(`future_sight.c`)는 맞히는 경우와 대상 기절만 다뤄 **빗나감 경로는 확인하지 못했다.** upstream #9939(seq 470)가 이 `accuracycheck`를 없앤다.
+    - 배틀아레나 판정 `ArenaDoJudgment`는 `end2`로 끝난다(스크립트 스택 1칸 남음, 다음 턴 시작에 정리). 그 뒤 `BattleTurnPassed`가 턴 종료 스크립트를 다시 시작해 `ENDTURN_FAINTED_MON_ACTIONS`부터 이어간다(커밋 리뷰 A 코드 대조). 테스트 러너가 아레나 배틀을 만들 수 없어 실기로만 볼 수 있다.
+    - **미래예지·파멸의소원이 빗나가면** `MonTookFutureAttack`의 `accuracycheck` → `MoveMissedPause` → `MoveEnd`의 `end`에 닿는다. 빗나갈 때마다 스크립트 스택에 `endturnevents` 커서 1칸이 남고, 다음 턴 행동 시작(`battle_main.c`)에 정리된다. **커밋 리뷰 A·B가 실측했다:** 싱글 1회·더블 4회 빗나감은 턴 종료가 끝까지 진행되고 이식 전과 trace가 같다(PASS). 다만 더블 4회 빗나감 → 위기회피 교체 → 위협 → 오기처럼 깊은 연쇄가 이어지면 9번째 push에서 8칸을 넘는다(assert, assert를 빼면 소프트락). 이식 전에는 같은 경우가 PASS(최대 깊이 5)였다. upstream `611ed45952`와 같은 코드이고 실제 게임에서는 사실상 도달하지 않는다. upstream #9939(seq 470)가 이 `accuracycheck`를 없애 해소된다.
     - 야생 배틀 턴 종료 위기회피(`setteleportoutcome` 뒤 `finishaction`). 트레이너 배틀 경로는 D 4-04·4-05로 고정했다.
-  - 기절 처리(`HandleFaintedMonActions`)는 upstream처럼 여전히 `BattleScriptExecute(GiveExp/HandleFaintedMon)`다. 스크립트 스택이 0일 때만 안전하며, 기절 처리 앞의 Call 스크립트가 모두 `return`하는 것을 위 정적 검사로 확인했다.
+  - 기절 처리(`HandleFaintedMonActions`)는 upstream처럼 여전히 `BattleScriptExecute(GiveExp/HandleFaintedMon)`다. `BattleScriptExecute`는 스크립트 스택을 쓰지 않고, 두 스크립트는 `end2`로 끝나 콜백 두 번 pop 뒤 `BattleTurnPassed`로 돌아간다. 아레나 판정 뒤처럼 스크립트 스택이 1칸 남은 상태에서 들어가도 정상 동작한다(커밋 리뷰 A 정정).
   - 승패 결정 뒤 점프 대상이 `ENDTURN_TRAINER_A_SLIDES`라 #9211(seq 361)에서 슬라이드가 맨 뒤로 가면 아레나·기절·다이맥스 처리도 건너뛰는 쪽으로 바뀐다(그때 재확인).
   - 맹독·화염구슬 꼬리가 upstream 공용 꼬리와 다르다(싱크로·상태 회복 도구 검사 없음, 이식 전과 같은 동작). #9777(seq 475)에서 다시 정한다.
   - 턴 종료 단계가 컨트롤러 대기 뒤에 진행되고 `end2`→`return` 처리 프레임이 1~2프레임 다르다. 화면 순서는 D 테스트·trace로 같음을 확인했지만 대기 시간은 실기로만 볼 수 있다.
@@ -100,7 +100,7 @@
 
 ## 출력 변화
 
-- **`BATTLE_MESSAGE_OUTPUT_CHANGES.md` 새 행 1개(「특성·도구·도주」): 실행 중인 배틀 스크립트 안에서 하양허브가 강제 발동하는 경로**(트릭·스위처로 받음, 나눔으로 줌, 나쁜손으로 훔침, 매직룸 종료 루프). 이전에는 `BattleScriptExecute(WhiteHerbEnd2)`가 커서를 덮어써 호출한 스크립트의 나머지(받은 도구 발동, 공생, `MoveEnd`, 매직룸 루프의 나머지 배틀러)가 실행되지 않고 아이템 팝업 태스크가 남았다. 이식 뒤에는 이어서 실행된다. upstream 1.17.0과 같은 동작이라 D4로 받아들였다(메인 결정). 새 한글 문장 없음. 근거: 사전 분석 C의 스크래치 임시 테스트 5개(트릭 3·매직룸 1·턴 종료 순서 1)가 이식 전 PASS 1·FAIL 4(`Unmatched ANIMATION` 1, `task not freed` 3) → 이식 뒤 PASS 5, D 3-16.
+- **`BATTLE_MESSAGE_OUTPUT_CHANGES.md` 새 행 1개(「특성·도구·도주」): 실행 중인 배틀 스크립트 안에서 하양허브가 강제 발동하는 경로**(트릭·스위처로 받음, 나눔으로 줌, 나쁜손으로 훔침, 매직룸 종료 루프). 이전에는 `BattleScriptExecute(WhiteHerbEnd2)`가 커서를 덮어써 호출한 스크립트의 나머지가 그 자리에서 실행되지 않았다. 이식 뒤에는 이어서 실행된다. upstream 1.17.0과 같은 동작이라 D4로 받아들였다(메인 결정). 새 한글 문장 없음. 실측한 화면 차이는 셋이다(커밋 리뷰 C 정정): 트릭·스위처로 받은 자뭉열매가 상대 행동 뒤로 늦게 발동하던 것 → 바로 발동, 나눔 뒤 공생이 발동하지 않던 것 → 발동, 매직룸 종료 루프(D 3-16). 사전 분석의 `task not freed` 실패 3개는 테스트가 팝업 직후 끝나서 생긴 현상이라 화면 차이가 아니다.
 - 다이맥스 종료 위치·승리 시 해제(위 D 4-14·4-16·4-18): HnS 미도달이라 이 문서에만 적는다.
 - 승패가 정해진 뒤에도 트레이너 슬라이드 단계가 실행된다(upstream). HnS `sTrainerSlides`·`sFrontierTrainerSlides`가 비어 있어 게임 출력은 없다.
 - 턴 종료 효과의 HnS 출력은 바뀌지 않는다(D 66개 PASS). 맹독구슬·화염구슬 팝업과 문장, 아이스바디·포이즌힐·선파워·젖은접시·건조피부 무문구, 치유의마음 HnS 문장, 방벽별 해제 문구, 스위트베일 하품 문구, 나이트메어 팝업 재표시, 소란 Gen 4 깨우기·방음, 하양허브 턴 종료 경로(팝업 포함) 모두 이식 전과 같다.
@@ -130,12 +130,25 @@
 - 새 전역 변수·구조체 필드 없음. 정적 EWRAM·IWRAM 변화 0 B.
 - 배틀 스크립트 opcode 표 불변(`endturnevents`는 `callnative BS_EndTurnEvents`). 뒤 PR(#10311 `END2`→`UNUSED_39`, #10426 `UNUSED_40`)의 번호도 맞는다(사전 분석 B 2.7).
 
+## 커밋 리뷰 (병렬 3개, 읽기 전용)
+
+리뷰 지시: 저장소 밖 `/home/hjm0725/hns-sync-work/chunk-132/REVIEW.md`. 리뷰어는 커밋 기준 코드를 upstream·1.17.0·사전 분석과 대조하고, 스크래치 사본에서 D 테스트·임시 테스트·스크립트 스택 깊이 계측으로 실측했다.
+
+| 리뷰 | 대상 | 판정 | 내용 |
+|---|---|---|---|
+| A | 엔진(`battle_end_turn.c`·`battle_main.c` 등) | 경미 | HnS↔upstream 차이가 이식 전후 같고 새 차이는 의도한 2곳(스위트베일·방벽). 새 처리기·`BS_EndTurnEvents`는 1.17.0과 같다. 턴 종료 Call 스크립트를 `call`까지 재귀 추적: `return` 외 종결자는 upstream과 같은 3개뿐. 미래예지 빗나감 실측(1회·4회 정상, 깊은 연쇄에서만 8칸 초과)과 기절 처리·아레나 문구 정정을 위 "남은 위험"에 반영. D 재실행 70/70 → 66/4, 8칸 초과 0 |
+| B | 스크립트, 트리 전체 호출·종료 짝 | 문제 없음 | upstream이 바꾼 라벨 105개 빠짐 0, 다른 것은 의도한 4개. 호출 546곳(Call 399·Push 113·Execute 17·PushCursorAndCallback 17) 전수 조사: 예외는 upstream 3개와 이식 전부터 있던 행동 중 경로뿐, 같은 스크립트를 두 방식으로 여는 곳 0. HnS 스크립트는 끝 줄만 바뀜. 젖은접시 통합 출력 같음. 스택 계측으로 턴 종료 3,711회 중 8칸 초과·`return` assert 0. 미래예지 빗나감·야생 위기회피 실측 |
+| C | 호출부, 결과 문서 | 코드 문제 없음 / 문서 경미 | 커밋 = part-A/B/C 적용 결과(바이트 동일), 남은 `BattleScriptExecute` 집합이 1.17.0과 같음, 맹독구슬·화염구슬 팝업 순서 이식 전후 같음(더블 실측). 문서 정정 2건 반영: 불바다 질문 → seq 385 #10214 메모, 하양허브 출력 변화 행의 "이전" 칸을 실측대로 고침(아래 "출력 변화"). 하양허브 내던지기 분기 유지가 맞다는 근거 추가(#9784 메모) |
+
+"수정 필요" 0건. 코드 변경 없이 결과 문서와 출력 변화 문서만 고쳤다.
+
 ## 친구에게 물을 것
 
-이식 전부터 있던 특이 출력 2개다. upstream `611ed45952`·1.17.0도 같은 코드라 이번 이식에서 고치지 않았다(D 테스트 3-07·2-13이 지금 동작을 고정한다). 고친다면 각각 `battle_end_turn.c` 한 줄 정도의 HnS 수정이며, seq 127처럼 친구 승인 뒤 별도 커밋으로 한다.
+이식 전부터 있던 특이 출력 1개다. upstream `611ed45952`·1.17.0도 같은 코드라 이번 이식에서 고치지 않았다(D 테스트 3-07이 지금 동작을 고정한다). 고친다면 `battle_end_turn.c` 한 줄 정도의 HnS 수정이며, seq 127처럼 친구 승인 뒤 별도 커밋으로 한다.
 
 1. **전자부유 종료 문장의 이름이 다른 배틀러다.** 내가 쓴 전자부유가 끝났는데 `상대 마자는 전자부유의 효과가 풀렸다!`처럼 다른 포켓몬 이름이 나올 수 있다. `HandleEndTurnMagnetRise`가 `gBattleScripting.battler`를 정하지 않고, `BattleScript_BufferEndTurn`이 `{B_SCR_NAME_WITH_PREFIX}`를 쓴다.
-2. **불바다 종료 문장의 진영이 반대다.** 상대 쪽 불바다가 끝났는데 `우리 편 주변의 불바다가 사라졌다!`가 나온다. 합체기 필드 종료 가운데 `SECOND_EVENT_BLOCK_SEA_OF_FIRE`만 `gBattlerAttacker`를 정하지 않는다(무지개·습지는 정함).
+
+(처음에 함께 적었던 "불바다 종료 문장의 진영이 반대" 문제는 1.17.0에서 이미 고쳐져 있다. seq 385 #10214(`62bed2d523`)가 `gBattlerAttacker = GetBattlerSideForMessage(side);`를 넣는다. 아래 "후속 행 메모"로 옮겼다(커밋 리뷰 C).)
 
 ## 실기 확인 항목 (친구용)
 
@@ -154,11 +167,12 @@
 ## 후속 행 메모
 
 - **seq 150 #9717(EndTurn queued switches):** `ENDTURN_EMERGENCY_EXIT_1~4` → `SEND_OUT_REPLACEMENTS_*`, `DoEndTurnEffects()` 첫머리 비상탈출 루프가 이번 승패 점프 줄과 문맥이 겹친다. 1.17.0 `TrySwitchInEjectPack`은 `BattleScript_EjectPackActivates_SendReplacement`를 쓴다(이번 `EjectPackActivate_NoQueuedSwitch` 자리). HnS 탈출버튼·탈출팩 아이템 팝업 유지.
-- **seq 166 #9784(Eject Items / Mirror Herb / White Herb):** 하양허브 hunk를 HnS `RestoreWhiteHerbStats(battler, timing)`·`WhiteHerbFling` 분기에 맞춘다.
+- **seq 166 #9784(Eject Items / Mirror Herb / White Herb):** 하양허브 hunk를 HnS `RestoreWhiteHerbStats(battler, timing)`·`WhiteHerbFling` 분기에 맞춘다. **1.17.0 형태로 맞추지 않는다:** upstream 1.17.0은 1.16.0 release 병합(`d52631c8a9`)에서 #9782의 `BattleScriptCall(BattleScript_WhiteHerbFling)` 분기를 잃어, 내던지기 하양허브가 `WhiteHerbRet`의 `removeitem`으로 대상 도구를 지운다(커밋 리뷰 C). HnS 내던지기 분기가 맞다.
 - **seq 181 #9730(Stat Change Refactor):** `EndTurnEvents()`에 `gQueuedStatBoosts` memset 1줄이 들어온다(이번 함수는 1.17.0과 이 줄만 다름).
 - **seq 303 #10433(Opportunist / Mirror Herb end turn):** 턴 종료 단계 enum과 처리기 표에 단계가 끼어든다.
 - **seq 361 #9211(Additional trainer slides):** 슬라이드 단계를 맨 뒤(다이맥스 뒤)로 옮긴다. 승패 결정 뒤 점프 대상(`ENDTURN_TRAINER_A_SLIDES`) 때문에 아레나·기절·다이맥스 처리가 건너뛰어지는지 확인한다.
 - **seq 440 #10471(Remove infiniteConfusion flag):** upstream `92845d3304`의 `battle_end_turn.c` hunk는 난동 혼란(`FIRST_EVENT_BLOCK_THRASH`)의 `confusionTurns` → `confusionTimer` 2줄이고, 문맥이 이번에 들어온 `BattleScriptCall(BattleScript_ThrashConfuses)`다(HnS는 `B_RAMPAGE_CONFUSION`이 `GEN_LATEST`라 이 경로에 도달하지 않음). `battle_hold_effects.c`·`battle_util.c` hunk도 이번 커밋 뒤 문맥에 맞춘다.
+- **seq 385 #10214:** 불바다 종료 문장 진영 수정(`gBattlerAttacker = GetBattlerSideForMessage(side);`)과 무지개 줄 위치 이동이 들어온다. 그때 D 회귀 테스트 2-13 기대값(지금은 진영이 반대인 이식 전 출력 고정)과 출력 변화 문서에 행을 갱신한다.
 - **seq 470 #9939(accuracy check into canceler):** `MonTookFutureAttack`의 `accuracycheck`를 없애 미래예지 빗나감 `end` 경로가 사라진다(남은 위험 해소 확인).
 - **seq 475 #9777(Champions battle messages):** 1.17.0 `TryToxicOrb`는 `BattleScript_ToxicOrbActivates`(아이템 팝업 + `MoveEffectToxic`)를 부른다. HnS `BattleScript_ToxicOrb`·`FlameOrb`(`STRINGID_PKMNPOISONEDBY`/`BURNEDBY`)와 꼬리 `UpdateEffectStatusIconOrbRet`의 관계를 이때 다시 정한다. (사전 분석 C가 함께 적은 #9782 내던지기 + 하양허브·멘탈허브 수정은 1.15.2에 들어간 history 안 PR이라(`all_prs_master.tsv` `in-history`) 따로 이식할 행이 없다.)
 - **seq 477 #10311(Remove end2):** `end2` → `end`. 이번에 남은 HnS `end2`(첫 턴 `ArenaTurnBeginning`·`PalacePrintFlavorText` 래퍼, `Trainer*SlideMsgEnd2`, `BattleScript_EndTurnEvents`, `ArenaDoJudgment` 등)와 HnS 전용 라벨 이름의 `End2`→`End`를 함께 바꾼다. 이번에 `return`형으로 바꾼 HnS 스크립트(`AbilityMadeIneffectiveRet`, `*WoreOff`, `UpdateEffectStatusIconOrbRet`)는 대상이 아니다.
