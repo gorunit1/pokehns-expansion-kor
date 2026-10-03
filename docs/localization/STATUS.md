@@ -1,6 +1,16 @@
 # 현재 인수인계 상태
 
-## 2026-10-03 — seq 132 #9680 완료 (현재, 데스크탑)
+## 2026-10-03 — 구간 seq 135~138 진행 중 (현재, 데스크탑)
+
+- 대상
+  - seq 135 #9709 Improve AI calc speed with affection hearts(S): `BattlePokemon`에 `affectionHearts`를 추가한다.
+  - seq 136 #9711 Remove hex values from BattlePokemon(S): 주석만 바꾼다.
+  - 처리하지 않는 행: seq 137은 선진행으로, seq 138 #9707은 예전에 이미 적용됐다.
+  - 다음 구간은 seq 138.5 #8943 12v12(XL, 세이브 영향)다.
+- 진행 방식: PR별 병렬 사전 분석 2개 → 적용 1개 → 병렬 리뷰 → 메인 확인. 스크래치는 `/home/hjm0725/hns-sync-work/chunk-135/`다.
+- 시작 기준: `4f1e6b529c`(코드 `5f580ab12e`), 데스크탑 ROM 32,716,900 B, SHA1 `512ccdbe…`, 테스트 기준 `test-baseline-seq132.txt`.
+
+## 2026-10-03 — seq 132 #9680 완료 (데스크탑)
 
 - **다음 시작 seq: 135** (#9709 `U-9709` Improve AI calc speed with affection hearts, S). seq 133·134는 선진행으로 이미 적용이다. 그 뒤로 136 #9711, 138.5 #8943(XL), 139 #9714가 있다.
   - 선진행한 seq 130·131·133·134·137·143·148·149·151·156·157·158·160·165와 선반영한 seq 274는 "이미 적용"이다.
