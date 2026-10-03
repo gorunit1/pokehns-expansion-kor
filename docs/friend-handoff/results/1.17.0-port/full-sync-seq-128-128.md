@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 128 (#9475 트레이너 그림 정보 리팩터)
 
-완료: seq 128 unit `U-trainerpic-9475` 이식·그림 데이터 비교·전체 테스트·기록 완료. 다음 seq는 **129 #9674**다. 선진행으로 넣은 seq 130·131·133·134·137·143·148·149·151·156·157·158·160·165는 닿으면 "이미 적용(선진행)"으로 처리한다.
+완료: seq 128 unit `U-trainerpic-9475` 이식·그림 데이터 비교·전체 테스트·커밋 리뷰(병렬 3개, 수정 필요 0)·기록 완료. 다음 seq는 **129 #9674**다. 선진행으로 넣은 seq 130·131·133·134·137·143·148·149·151·156·157·158·160·165는 닿으면 "이미 적용(선진행)"으로 처리한다.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), group plan: [`g6_overworld_refactors_plan.tsv`](../1.17.0-sync-plan/g6_overworld_refactors_plan.tsv)
 시작 HEAD: `ea90cbff3a`(작업 트리 clean, 코드는 `fdc110d528`과 같음). 작업 컴퓨터: 데스크탑(`/usr/bin` 툴체인).
@@ -64,7 +64,7 @@
   - 멀티 테스트 경로 2곳(`battle_controller_player.c`, `battle_controller_recorded_player.c`의 `IsMultibattleTest()`): upstream은 `TRAINER_PIC_BRENDAN`이지만 HnS가 Gold로 고쳐 둔 줄을 지켜 `GetPlayerTrainerPic(MALE, GAME_VERSION)`으로 했다(메인 결정, `// HnS:`). 테스트 빌드 전용이다.
   - **`battle_controller_recorded_player.c` 녹화 재생 그리기**(메인 결정): 이식 전 HnS는 이 줄만 `gender + TRAINER_PIC_BACK_BRENDAN`으로 Brendan/May를 그렸다. upstream 새 코드(`GetPlayerTrainerPic`)를 그대로 쓰면 Gold/Kris로 바뀐다. 이번에는 표시를 바꾸지 않도록 `#if IS_HNS (gender == MALE) ? TRAINER_PIC_BRENDAN : TRAINER_PIC_MAY` / `#else` upstream으로 두었다(`// HnS:` 주석). Gold/Kris로 바꿀지는 아래 "친구에게 물을 것" 1.
   - `include/field_effect.h`: HnS `#if IS_HNS AddNewGameOakObject` 3줄 때문에 문맥만 맞췄다. `src/battle_gfx_sfx_util.c`(HnS Gen4 체력바 UI +196줄)·`include/battle_gfx_sfx_util.h`(HnS 선언 3줄)·`src/battle_controllers.c`(`fastIntro` 분기)는 HnS 줄을 건드리지 않고 upstream hunk만 넣었다(사전 분석 patch가 HnS 문맥에 맞춰 둠).
-  - `migration_scripts/1.9/convert_partner_parties.py`: HnS는 #8789 이전 정규식(`TRAINER_BACK_PIC_(\w+)`)이었다. upstream 1.17.0 최종값과 같게 맞췄다(빌드와 무관).
+  - `migration_scripts/1.9/convert_partner_parties.py`: HnS는 #8789 이전 정규식(`TRAINER_BACK_PIC_(\w+)`)이었다. upstream 1.17.0 최종값과 같게 맞췄다(빌드와 무관). 이식 전 HnS 값은 HnS 이력에 있는 upstream #9749(`dbce4df2f6`)가 되돌린 값이고, 1.17.0 값은 1.16.0 release 병합(`d52631c8a9`)에서 왔다(리뷰 A 참고).
   - 그대로 둔 HnS 코드: `PlayerGenderToFrontTrainerPicId`의 `IS_HNS` 분기(시설 클래스 GOLD/KRIS_HNS), `PlayerGenderToFrontTrainerPicId_Debug`, `AddNewGameOakObject`, `GetUnionRoomTrainerPic`, `GetSecretBaseTrainerPicIndex`.
 - 제외한 hunk: 없음(이미 동등한 migration 스크립트 2개만 넣지 않음).
 - 검증:
@@ -73,12 +73,13 @@
   - 빌드(`build/port.log`): 종료 코드 0, ROM 32,715,956 B(+160 B) / EWRAM 248,936 B(0) / IWRAM 25,516 B(0), 새 경고 0. 빌드가 새 trainerproc로 party 7개를 다시 만들고 none 그림 3개를 일반 규칙(`%.4bpp: %.png`, `%.gbapal: %.pal`, `%.smol`)으로 변환했다.
   - 그림 데이터 비교(`verify/trainer_pic_verify.py run`): 차이 0(아래 절).
   - 생성 헤더(`.gitignore` 대상, 커밋 안 함): 빌드가 만든 `src/data/{battle_partners,trainers,trainers_frlg,trainers_hns,debug_trainers}.h`와 `test/battle/{trainer,partner}_control.h` 7개가 사전 분석 A의 스크래치 생성 결과(`tmp-A/gen/new/`)와 `cmp`로 **모두 같다**. 사전 분석 A는 HEAD 도구로 만든 결과가 저장소의 이식 전 생성 헤더와 바이트 동일함을 확인했고, 새 결과는 옛 결과와 `TRAINER_PIC_FRONT_` → `TRAINER_PIC_` 변경과 `.trainerBackPic` 줄 삭제만 다르다.
-  - Emerald·FRLG 컴파일(기본 `make`는 쓰지 않음, 아래 "후속 행 메모" 별건): 사전 분석 C의 `tmp-C/cc.sh`(Makefile과 같은 `cpp | preproc | cc1 -Werror`, 출력 버림)를 실제 작업 트리에 돌렸다. 대상은 이번에 바뀐 C 파일 전부와 그림 번호를 쓰는 호출 파일(`battle_controller_link_opponent.c`, `frontier_util.c`, `battle_special.c`, `trainer_hill.c`, `trainer_tower.c`, `union_room.c`, `battle_main.c`, `main_menu.c`, `trainer_card.c`, `battle_dome.c`, `hall_of_fame.c`, `pokedex.c`, `pokenav_match_call_list.c`) 33개다. EMERALD·FIRERED 각 33개 가운데 32개 성공, 실패는 `src/pokemon.c:7749` `FLAG_DEFEATED_RED` undeclared 1건씩뿐이다. 이 오류는 HEAD에도 있다(사전 분석 C `tmp-C/real-head.txt`: HEAD `pokemon.c:7748` 같은 오류, 줄 번호 차이는 `#include "trainer.h"` 1줄). 사전 분석 C의 `HEAD + A + B + C` 결과(`tmp-C/real-abc.txt`, `real-abc-b.txt`)와 같다. **이번 이식이 만든 새 오류는 0이다.**
+  - Emerald·FRLG 컴파일(기본 `make`는 쓰지 않음, 아래 "후속 행 메모" 별건): 사전 분석 C의 `tmp-C/cc.sh`(Makefile과 같은 `cpp | preproc | cc1 -Werror`, 출력 버림)를 실제 작업 트리에 돌렸다. 대상은 이번에 바뀐 C 파일 전부와 그림 번호를 쓰는 호출 파일(`battle_controller_link_opponent.c`, `frontier_util.c`, `battle_special.c`, `trainer_hill.c`, `trainer_tower.c`, `union_room.c`, `battle_main.c`, `main_menu.c`, `trainer_card.c`, `battle_dome.c`, `hall_of_fame.c`, `pokedex.c`, `pokenav_match_call_list.c`) 33개다. 리뷰 C가 그림 표를 정의·생성하는 `src/graphics.c`(`gTrainerPicInfo`, Makefile처럼 `-Wno-missing-braces`), `src/data.c`, `src/battle_partner.c`와 `debug.c`, `oak_speech_hns.c`, `pokedex(_plus_hgss).c`, `hall_of_fame_frlg.c`를 EMERALD·FIRERED·HNS로 더 컴파일했고 모두 성공했다(실패는 알려진 `party_menu.c:4943` `FLAG_DEFEATED_RED`뿐, 저장소 밖 `chunk-128/review-C/cc-extra*.txt`). EMERALD·FIRERED 각 33개 가운데 32개 성공, 실패는 `src/pokemon.c:7749` `FLAG_DEFEATED_RED` undeclared 1건씩뿐이다. 이 오류는 HEAD에도 있다(사전 분석 C `tmp-C/real-head.txt`: HEAD `pokemon.c:7748` 같은 오류, 줄 번호 차이는 `#include "trainer.h"` 1줄). 사전 분석 C의 `HEAD + A + B + C` 결과(`tmp-C/real-abc.txt`, `real-abc-b.txt`)와 같다. **이번 이식이 만든 새 오류는 0이다.**
 - 테스트: 아래 "전체 테스트".
 - 남은 위험:
   - **비 RELEASE assert.** `make hns`는 `RELEASE=0`이다. `GetTrainerBack*`·`GetTrainerFront*`에 그림이 없는 ID가 들어오면 assertf 크래시 화면이 뜬다(이전에는 0칸을 조용히 읽음). 지금 데이터는 도구로 누락 0을 확인했다. **새 파트너·트레이너를 추가할 때 그 `Pic:` ID에 앞모습(파트너면 뒷모습도)이 있는지 확인해야 한다.** 예: 뒷모습이 없는 `BURGLAR_HNS`를 파트너 `Pic:`으로 쓰면 배틀 시작 때 멈춘다. 테스트 빌드에서는 `INVALID`가 된다.
   - 녹화 배틀 + AI 파트너 멀티(프런티어) 재생의 플레이어 앞모습 경로는 이식 전에 표 범위 밖(`gTrainerSprites[210/211]`)을 읽던 정의되지 않은 동작이었다. 이제 Brendan/May 앞모습이 나온다(Gold/Kris로 바꾸면 Gold/Kris 앞모습). 이전 표시는 재현할 수 없다.
   - 통신 상대 앞모습(`battle_controller_link_opponent.c`)은 버전별로 Red/Leaf·RS를 고르고 뒷모습은 버전과 무관하게 Gold/Kris다. 이식 전부터 있던 차이이며 바꾸지 않았다.
+  - trainerproc에서 `Pic:` 값이 비면 `.trainerPic`이 빠져 0이 된다. 0의 뜻이 이식 전 HIKER에서 이제 NONE이다(upstream 같음). `Pic: Pokedude`/`Old Man`은 컴파일되지만 앞모습이 없어 assertf가 뜬다. 지금 데이터에는 해당 줄이 없다(리뷰 A).
   - 그림 번호를 `u8`로 돌려주는 함수 4개(`GetFrontierTrainerFrontSpriteId` 등)는 `TRAINER_PIC_COUNT`가 256을 넘으면 잘린다. 지금 213이다(upstream도 같은 타입).
   - 이후 HnS 그림 enum 항목을 `#if IS_HNS`로 감싸면 `if (IS_HNS)` 식 참조(`GetPlayerTrainerPic`, 시설 클래스 표)가 Emerald 빌드를 깬다. 지금은 무조건 정의라 문제없다.
   - 코드 경로(어느 ID를 고르는지, 태그·팔레트 슬롯, y 위치 계산)는 데이터 비교 밖이다. 실기 확인이 필요하다.
@@ -113,11 +114,23 @@
 - 관련 테스트(같은 목록 안): 트레이너 슬라이드·멀티 배틀 테스트 경로(`IsMultibattleTest`의 Gold 뒷모습), 파트너 Steven 뒷모습(`ai_multi.c` 등), `trainer_control.c`/`partner_control.party`를 쓰는 테스트가 모두 이전과 같은 상태다. 테스트 party는 upstream 출신 그림(Hiker·Red·Leaf, 파트너 Brendan·Steven)만 쓰므로 **_HNS 그림은 테스트로 검증되지 않는다.** _HNS 그림은 위 데이터 비교와 실기 확인으로 본다.
 - 새 기준 목록: [`test-baseline-seq128.txt`](test-baseline-seq128.txt). 내용은 `test-baseline-seq127.txt`와 같다.
 
+## 커밋 리뷰 (병렬 3개, 읽기 전용)
+
+리뷰 지시: 저장소 밖 `/home/hjm0725/hns-sync-work/chunk-128/REVIEW.md`. 리뷰어는 `git show`로 커밋 기준 내용을 읽고 upstream `becfa70a97`·1.17.0·사전 분석·메인 결정과 대조했다. 검증 도구 결과를 그대로 믿지 않고 소스·ROM·ELF 역어셈블로 따로 확인했다.
+
+| 리뷰 | 영역 | 판정 | 확인한 것 |
+|---|---|---|---|
+| A | 상수·표·도구 | 문제 없음 | 도구 없이 소스로 옛 앞 210·뒤 14 → 새 213 대조(불일치·누락 0, INCBIN 심볼→경로 442쌍 동일), ROM 구조체를 직접 읽어 224개 내용 해시 차이 0, HnS 합친 ID 4개의 뒷모습 전용 팔레트·좌표·애니메이션, 비기본 머그샷 9개, 시설 클래스 139개, `GetPlayerTrainerPic` 역어셈블(성별 0 → 172 Gold, 그 밖 → 175 Kris), party 7개 `Pic:` 2,159줄, 파트너 6명. 참고 2건(migration 정규식 출처, trainerproc 빈 `Pic:`)은 위에 반영 |
+| B | 배틀 호출부 | 문제 없음 | upstream B diff와 줄 단위 비교(차이는 의도한 HnS 적응 3가지), HnS 고유 줄 수 보존, 경로별 ID(플레이어·사파리·reshow·통신·파트너 슬롯·녹화 재생·목호·실버·성호·웰리) 이식 전과 같은 인물, 태그 범위(앞 0~212, 뒤 213~425)와 짝 호출, assertf 대상 ID 모두 그림 있음. 정보 2건·문서 1건은 위에 반영 |
+| C | 배틀 밖·호환성 | 문제 없음 | C 8파일이 upstream C diff와 같고 HnS 차이가 이식 전후 같음, 배틀 밖 그림 경로, 옛 이름 0건, 그림 번호를 돌려주는 함수 13종 호출부와 세이브·통신 구조체 필드(`RecordedBattleSave`, `TrainerCard`, `LinkPlayer`, 배틀 타워 기록, `Apprentice`, `SecretBase`, `TrainerHillSave`)를 직접 확인해 숫자 저장 없음, Emerald·FRLG 추가 컴파일, 결과 문서 수치. 경미 3건·정보 1건은 위에 반영 |
+
+"수정 필요" 0건. 코드 변경 없이 결과 문서만 고쳤다.
+
 ## 친구에게 물을 것
 
 1. **녹화 배틀 재생의 플레이어 뒷모습(Brendan/May 유지 vs Gold/Kris).**
-   - 지금(이식 전과 같음): 배틀 프런티어 기록 재생 등 녹화 배틀에서 플레이어 뒷모습만 **Brendan/May**로 그린다(`battle_controller_recorded_player.c` `RecordedPlayerHandleDrawTrainerPic`, `#if IS_HNS`). 같은 함수의 볼 던지기 팔레트, 실시간 배틀·통신·사파리 뒷모습, 녹화 통신 상대 앞모습은 모두 Gold/Kris다.
-   - upstream처럼 바꾸면: `#if IS_HNS … #else … #endif` 5줄을 `trainerPicId = GetPlayerTrainerPic(gender, GAME_VERSION);` 한 줄로 바꾼다. HnS에서 Gold/Kris가 나온다.
+   - 지금(이식 전과 같음): 배틀 프런티어 기록 재생 등 녹화 배틀에서 플레이어 뒷모습만 **Brendan/May**로 그린다(`battle_controller_recorded_player.c` `RecordedPlayerHandleDrawTrainerPic`, `#if IS_HNS`). 같은 파일의 볼 던지기 팔레트 인자(`RecordedPlayerHandleIntroTrainerBallThrow`, `BtlController_HandleIntroTrainerBallThrow`가 읽지 않아 화면에 쓰이지 않음), 실시간 배틀·통신·사파리 뒷모습, 녹화 통신 상대 앞모습은 모두 Gold/Kris다.
+   - upstream처럼 바꾸면: `#if IS_HNS … #else … #endif` 6줄(주석 포함)을 `trainerPicId = GetPlayerTrainerPic(gender, GAME_VERSION);` 한 줄로 바꾼다. HnS에서 Gold/Kris가 나온다.
    - 바꾸기를 권한다. 이식 전 HnS가 목호·실버 파트너를 넣을 때(`f206a6c007`) 이웃 줄만 Gold/Kris로 고치고 이 줄을 빠뜨린 것으로 보인다. AI 파트너 멀티 기록의 앞모습 경로도 실시간 프런티어 태그 배틀(Gold/Kris)과 맞게 된다.
    - 바꾸면 그림 데이터 비교 도구의 `player_cases.tsv`에서 `RECORDED_LINK_DRAW_MALE/FEMALE` 두 행을 `new_id=TRAINER_PIC_GOLD_HNS/KRIS_HNS`, `expect=changed`로 고치고 다시 돌린다(기대: [3] EXPECTED 2, 차이 0).
 
@@ -126,18 +139,18 @@
 이식 전 ROM(`fdc110d528` 코드, SHA1 `817f500d…`)과 이식 후 ROM(`06c6bac8c2`)을 같은 `.sav`로 비교한다. 그림·팔레트(색)·위치(높이)·애니메이션과 크래시 화면 여부를 본다. 데이터는 도구로 바이트 동일을 확인했으므로 주로 **코드가 고르는 ID와 화면 배치**를 본다.
 
 1. **_HNS 트레이너 앞모습 표본:** 체육관 관장(꼭두·비상 등), 로켓단 조무래기·간부, 사천왕·챔피언 목호, 레드, 실버(라이벌전), 일반 트레이너 몇 명. 배틀 시작 슬라이드 인과 배틀 중 트레이너 슬라이드(대사) 인/아웃.
-2. **머그샷:** 사천왕·챔피언 목호·레드 배틀 전환의 머그샷 좌표·회전.
+2. **머그샷:** 사천왕·챔피언 목호·레드, 그리고 관장 1명(HnS는 `Mugshot:`이 있는 트레이너가 107명)의 배틀 전환 머그샷 좌표·회전. 상대 B·파트너 머그샷 위치(`x-240`)는 로켓단 아지트 멀티배틀 `TRAINER_ARIANA_1_HNS + GRUNT_23_HNS` + 파트너 목호(`data/maps/RocketHideout_B2F_hns/scripts.inc:310`, 아테나 `Mugshot: Dark Red`)로 본다.
 3. **플레이어 뒷모습 Gold/Kris(남·여 각각):** 일반 트레이너전·야생전의 슬라이드, 볼 던지기 동작과 색.
 4. **사파리존:** 플레이어 뒷모습, HnS 가방(볼 주머니)을 열었다 닫은 뒤(reshow)에도 같은 그림·색.
 5. **파트너 뒷모습:** 로켓단 아지트 목호 태그 배틀, 실버 파트너전 3종(메가니움·블레이범·장크로다일). 파트너 뒷모습·색·높이와 시작 머그샷.
-6. **녹화 배틀 재생(배틀 프런티어 기록):** 지금은 플레이어 뒷모습이 Brendan/May여야 한다(이식 전과 같음). AI 파트너 멀티 기록은 이전에 깨졌던 경로이므로 새 표시(앞모습)를 확인한다. 친구 답에 따라 Gold/Kris로 바꾸면 다시 본다.
+6. **녹화 배틀 재생(배틀 프런티어 기록):** 지금은 플레이어 뒷모습이 Brendan/May여야 한다(이식 전과 같음). AI 파트너 멀티 기록은 이전에 깨졌던 경로이므로 새 표시(앞모습)를 확인한다. 코드상 이 경우 파트너 자리(B2)도 RecordedPlayer 컨트롤러로 그려져 B0·B2 모두 `gLinkPlayers[0].gender` 기준 Brendan/May 앞모습이 x=90에 나오는 것으로 보인다(upstream 같은 구조, 리뷰 B). 친구 답에 따라 Gold/Kris로 바꾸면 다시 본다.
 7. **트레이너 카드:** 자신의 카드(Gold/Kris), 유니언룸 상대 카드.
 8. **포켓기어 전화:** 등록된 트레이너 확인 화면의 그림.
 9. **전당:** 전당 등록 화면의 플레이어 앞모습.
 10. **배틀 프런티어:** 배틀 타워·돔 등 상대 앞모습, 돔 대진표 정보 카드, 프런티어 AI 파트너 멀티(실시간)의 플레이어·파트너 앞모습.
 11. **트레이너힐(트레이너 타워):** 상대 앞모습.
 12. **유니언룸·통신 배틀(가능하면):** 상대 앞모습, 내 쪽·상대 쪽 뒷모습(Gold/Kris).
-13. **오박사 강의(새 게임):** Gold/Kris 그림과 사무엘 오박사 그림·색.
+13. **오박사 강의(새 게임):** Gold/Kris 그림. 사무엘 오박사는 트레이너 그림 표가 아니라 `AddNewGameOakObject`의 자체 그림(`field_effect.c`)이라 이번 이식과 무관하다(리뷰 C).
 14. **도감 크기 비교:** 플레이어 실루엣.
 15. **(선택) 포획 튜토리얼:** HnS 맵 스크립트에서는 쓰지 않고 디버그 스크립트 `Debug_EventScript_WallyTutorial`로만 열린다. 열면 Wally 뒷모습과 가방을 연 뒤(reshow) 같은 그림인지 본다.
 
@@ -147,4 +160,6 @@
 - **새 파트너·트레이너 추가 때:** `Pic:` ID에 그림이 있는지 확인한다(위 "남은 위험" 1). `Back Pic:` 키는 이제 trainerproc 파싱 오류다. 파트너 뒷모습은 `Pic:` ID의 `backPic`이다.
 - **upstream 후속 PR이 같은 파일을 문맥으로 쓴다:** #8943(`field_effect.c` 1줄, `pokemon.c` 여러 곳, seq 138.5), #10656, INCGFX 전환(seq 500 #9881 등), #9518·#10172(도감 `CreateSizeScreenTrainerPic` 이동), #9788(migration 스크립트). `becfa70a97..expansion/1.17.0`에서 #9475 hunk 줄 자체를 다시 바꾸는 커밋은 없다(사전 분석 C `-S`/`-G` 검색).
 - 녹화 재생 그림을 Gold/Kris로 바꾸면(친구에게 물을 것 1) `player_cases.tsv` 두 행도 함께 고친다.
+- **지금은 닿지 않는 경로(리뷰 B):** 프런티어 AI 파트너 멀티에서 `PlayerPartnerHandleTrainerSlide`(`battle_controller_player_partner.c:261`)·`RecordedPartnerHandleTrainerSlide`(`battle_controller_recorded_partner.c:251`)가 불리면 파트너 번호가 아닌 프런티어 트레이너 번호로 `gBattlePartners`를 표 밖에서 읽는다. 이식 뒤에는 assertf로 이어질 수 있다. HnS는 `sTrainerSlides`·`sFrontierTrainerSlides`가 비어 있어 실행되지 않는다(upstream 같은 구조). 프런티어 파트너 슬라이드 대사를 넣을 때 다시 본다.
+- 그림 데이터 비교 도구는 저장소 [`trainerpic-9475/`](trainerpic-9475/)에 보존했다(README에 재실행 방법). INCGFX 전환(seq 500 #9881) 등 트레이너 그림 INCBIN을 건드리는 PR 뒤에 다시 돌린다.
 - 선택(넣지 않음): `src/trainer.c`에 `STATIC_ASSERT(TRAINER_PIC_COUNT <= 256)`. upstream에 없는 줄이고 지금 213이라 급하지 않다.

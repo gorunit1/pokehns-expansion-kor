@@ -1,13 +1,24 @@
 # 현재 인수인계 상태
 
-## 2026-10-03 — seq 128 #9475 진행 중 (현재, 데스크탑)
+## 2026-10-03 — seq 128 #9475 완료 (현재, 데스크탑)
 
-- 대상: seq 128 #9475 `U-trainerpic-9475` Refactor/trainer pic info(upstream `becfa70a97`, 37파일, XL 단독). 트레이너 앞·뒤 그림 표를 `gTrainerPicInfo`로 합치고, `TrainerPicID`에서 FRONT/BACK 구분을 없앤다.
-- 진행 방식: 영역별 병렬 사전 분석 4개 → 메인이 patch를 합침 → 적용 1커밋 → 병렬 리뷰 → 메인 확인. 영역은 A(상수·표·도구), B(배틀 호출부), C(배틀 밖 호출부·세이브 호환), D(이식 전후 그림 데이터 비교 도구)다. 스크래치는 `/home/hjm0725/hns-sync-work/chunk-128/`이다(`ANALYZE.md`, 이식 전 ELF `base/`).
-- 공통 결정
-  - ID 이름: upstream 새 이름을 쓴다. HnS 뒷모습 4개는 같은 인물의 앞모습 ID에 합친다(GOLD·KRIS·SILVER, 목호는 `CHAMPION_LANCE_HNS`).
-  - 모든 트레이너 그림 데이터는 이식 전과 바이트 동일해야 한다.
-- 시작 기준: `bc7c625b79`(코드 `fdc110d528`), 데스크탑 ROM 32,715,796 B, SHA1 `817f500d…`, 테스트 기준 `test-baseline-seq127.txt`.
+- **다음 시작 seq: 129** (#9674 `U-magicbounce-9674` Magic Bounce / Magic Coat / Snatch refactor, L, korean_touch Y). 그 뒤로 seq 132 #9680(XL), 135 #9709, 136 #9711, 138.5 #8943(XL)이 있다. 선진행한 seq 130·131·133·134·137·143·148·149·151·156·157·158·160·165는 "이미 적용(선진행)"으로 처리한다.
+- seq 128 #9475(`06c6bac8c2`): 트레이너 앞·뒤 그림 표를 `gTrainerPicInfo`(213칸)로 합치고 `TrainerPicID`의 FRONT/BACK 구분을 없앴다. HnS 앞모습 55개와 뒷모습 4개(GOLD·KRIS·SILVER, 목호 → `CHAMPION_LANCE_HNS`)를 같은 그림·팔레트로 옮겼다. HnS 플레이어 분기는 `GetPlayerTrainerPic`(`src/trainer.c`) 한 곳에 모았다.
+- 결과 문서: `docs/friend-handoff/results/1.17.0-port/full-sync-seq-128-128.md`. 그림 데이터 비교 도구: `results/1.17.0-port/trainerpic-9475/`(README에 재실행 방법).
+- 진행: 영역별 병렬 사전 분석 4개 → 적용 1커밋 → 영역별 병렬 리뷰 3개(**전부 문제 없음**). 결과 문서만 리뷰 지적대로 고쳤다.
+- 검증
+  - 그림 데이터: 이식 전후 ELF 내용 비교 차이 0. 리뷰 A가 소스·ROM으로 따로 224개를 대조해도 차이 0이었다.
+  - 빌드(데스크탑): 종료 코드 0, ROM 32,715,956 B(+160 B), EWRAM 248,936 B, IWRAM 25,516 B, SHA1 `4b3b96bf…`. 새 경고 0.
+  - 변경 없음: 한글 줄·config·기존 파일 모드 변경 0, 세이브 영향 없음(그림 번호를 숫자로 저장하는 곳 없음).
+  - 테스트: 전체 목록이 `test-baseline-seq127.txt`와 바이트 동일(PASS 2,335 / TOTAL 5,253). 새 기준 목록 `test-baseline-seq128.txt`(내용 같음).
+- **친구에게 물을 것:** 녹화 배틀 재생의 플레이어 뒷모습이 이식 전과 같이 Brendan/May다(`#if IS_HNS`로 유지). upstream처럼 Gold/Kris로 바꿀지 묻는다. 한 줄 변경이고, 분석은 HnS가 빠뜨린 줄로 보고 변경을 권한다.
+- 별건(기록만): 기본 `make`(Emerald)·FRLG 빌드는 이식 전부터 HnS 전용 `FLAG_DEFEATED_RED`(`pokemon.c`, `party_menu.c`) 때문에 실패한다.
+- 실기 확인 추가: 결과 문서 "실기 확인 항목" 1~15.
+  - _HNS 트레이너 앞모습·머그샷
+  - Gold/Kris 뒷모습
+  - 파트너 목호·실버
+  - 녹화 배틀
+  - 트레이너 카드·포켓기어·전당·프런티어·트레이너힐·유니언룸
 
 ## 2026-10-03 — seq 127 친구 답 반영: HnS 보호 수정 2건 (데스크탑)
 

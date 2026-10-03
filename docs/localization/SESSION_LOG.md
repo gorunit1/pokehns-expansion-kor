@@ -2,6 +2,29 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-03 — full-sync port seq 128 #9475 (데스크탑)
+
+- 요청: 순서표대로 seq 128 #9475(Refactor/trainer pic info, XL)를 이식한다.
+- 진행: 영역별 병렬 사전 분석 4개 → 적용 1개 → 영역별 병렬 리뷰 3개 → 메인 확인.
+  - 분석 영역: A 상수·표·도구, B 배틀 호출부, C 배틀 밖·세이브 호환, D 이식 전후 그림 데이터 비교 도구
+  - 스크래치: `/home/hjm0725/hns-sync-work/chunk-128/`(이식 전 ELF `base/` 포함)
+- 커밋: #9475 `06c6bac8c2`(35파일), 결과 문서 `0c3f45b29a`. 시작 기록 `ea90cbff3a`.
+- 결정
+  - ID 이름: upstream 새 이름을 쓴다. HnS 뒷모습 4개는 같은 인물 앞모습 ID에 합친다(목호 → `CHAMPION_LANCE_HNS`).
+  - `GetPlayerTrainerPic`: `IS_HNS`이면 성별만 보고 Gold/Kris를 돌려준다.
+  - 녹화 배틀 재생: Brendan/May를 유지한다(친구에게 질문).
+  - 멀티 테스트 2곳: `GetPlayerTrainerPic(MALE, GAME_VERSION)`
+  - Emerald·FRLG 기존 빌드 실패(`FLAG_DEFEATED_RED`): 기록만 한다.
+- 검증
+  - 메인 검사: 한글 줄·config·기존 파일 모드 변경 0. HnS 항목과 `GetPlayerTrainerPic` 분기를 확인했다.
+  - 그림 데이터 비교: 차이 0. 리뷰 A가 소스·ROM으로 따로 224개를 대조해도 차이 0이었다.
+  - 빌드: 종료 코드 0, ROM 32,715,956 B(+160 B), SHA1 `4b3b96bf…`. 새 경고 0.
+  - 전체 테스트: `test-baseline-seq127.txt`와 바이트 동일. 새 기준 `test-baseline-seq128.txt`.
+  - 리뷰 3개: 전부 문제 없음. 경미·정보 사항은 결과 문서에 반영했다(Emerald 추가 컴파일 대상, 볼 던지기 팔레트 설명, 머그샷 확인 대상, 닿지 않는 파트너 슬라이드 경로 등).
+- 도구 보존: 그림 데이터 비교 도구와 이식 전후 덤프를 `docs/friend-handoff/results/1.17.0-port/trainerpic-9475/`에 넣었다. 새 구조끼리 비교용 `player_cases_new.tsv`를 더했다. README 명령으로 같은 ELF를 비교해 차이 0을 확인했다.
+- 게임 화면 확인: 안 했다. 친구 확인 항목은 결과 문서 1~15다.
+- 다음 시작점: **seq 129 #9674**(L, korean_touch Y). 사용자 지시를 받은 뒤 진행한다.
+
 ### 2026-10-03 — seq 127 친구 답 반영, HnS 보호 수정 2건 (데스크탑)
 
 - 시작: 노트북 세션의 `e43d6fc997`(seq 127 완료)까지 fast-forward로 pull했다.

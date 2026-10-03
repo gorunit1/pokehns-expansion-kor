@@ -1,0 +1,19 @@
+== 트레이너 그림 대조 ==
+[1] gTrainers 앞모습: 비교 1959, 같음 651, 차이 0, 미사용 슬롯(party=NULL 양쪽) 차이 1308
+[1] sDebugTrainers 앞모습: 비교 6, 같음 2, 차이 0, 미사용 슬롯(party=NULL 양쪽) 차이 4
+[1] gBattlePartners 앞모습: 비교 18, 같음 6, 차이 0, 미사용 슬롯(party=NULL 양쪽) 차이 12
+[2] gBattlePartners 뒷모습(옛 trainerBackPic <-> 새 trainerPic.backPic): 비교 18, 같음 6, 차이 0, 미사용 슬롯(party=NULL 양쪽) 차이 12
+[3] 플레이어·고정 뒷모습 경우: 비교 16, 차이 0, 의도한 변화(expect=changed) 0
+[4] gFacilityClassToPicIndex 경유 앞모습: 비교 139, 같음 139, 차이 0, 미사용 슬롯(party=NULL 양쪽) 차이 0
+[5] 옛 그림 ID -> 새 그림 ID(규칙 2) 전체: 비교 224, 차이 0, 새 쪽에만 있는 항목 2
+  INFO new-only TRAINER_PIC_NONE BACK  syms=gTrainerBackPic_None,gTrainerPalette_None
+  INFO new-only TRAINER_PIC_NONE FRONT  syms=gTrainerFrontPic_None,gTrainerPalette_None
+[6] 성별 짝 인접성(gender + 남자 ID 산술이 안전한지):
+  TRAINER_PIC_BRENDAN=1 TRAINER_PIC_MAY=2 인접
+  TRAINER_PIC_RED=3 TRAINER_PIC_LEAF=4 인접
+  TRAINER_PIC_RS_BRENDAN=5 TRAINER_PIC_RS_MAY=6 인접
+  TRAINER_PIC_GOLD_HNS=172 TRAINER_PIC_KRIS_HNS=175 인접 아님 (gender + TRAINER_PIC_GOLD_HNS 금지)
+  새 소스 TRAINER_PIC_* 덧셈 0곳, 그중 HnS 짝처럼 이웃하지 않는 남자 ID 에 더한 곳(BAD) 0곳
+[7] 새 소스에 남은 옛 이름(주석·비활성 #if 포함, 차이 수에는 넣지 않음): 0곳
+
+RESULT: 차이 0 (OK) (미사용 슬롯 정보 1336)

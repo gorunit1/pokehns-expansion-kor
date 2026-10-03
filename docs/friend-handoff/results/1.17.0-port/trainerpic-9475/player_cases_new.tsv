@@ -1,0 +1,21 @@
+# 새 구조끼리 비교(compare --identity)용: old_id·new_id 칸 모두 새 이름(빈 new_id는 pic_name_map으로 채움)을 넣은 player_cases.tsv 사본. 이식 후 덤프 ↔ 지금 덤프 비교에 쓴다.
+# (3) 플레이어/고정 뒷모습 경우: 이식 전 코드가 고르던 old_id 의 뒷모습 데이터와 이식 뒤 코드가 고르는 new_id 의 뒷모습 데이터를 비교한다.
+# new_id 가 비면 pic_name_map 대응을 쓴다. 메인은 A 의 GetPlayerTrainerPic(HnS 분기)과 B 호출부를 읽고 new_id 가 실제 반환값인지 확인한다.
+# expect=changed 는 메인이 의도한 변화로 확정한 경우만 쓴다(차이로 세지 않고 EXPECTED 로 보고).
+#case	old_id	new_id	expect	where
+PLAYER_MALE	TRAINER_PIC_GOLD_HNS	TRAINER_PIC_GOLD_HNS	same	old TRAINER_BACK_PIC_PLAYER_MALE(IS_HNS): player.c:1899, safari.c:323, reshow_battle_screen.c:285/334 / new GetPlayerTrainerPic(MALE, GAME_VERSION) (part-A 0절)
+PLAYER_FEMALE	TRAINER_PIC_KRIS_HNS	TRAINER_PIC_KRIS_HNS	same	old TRAINER_BACK_PIC_PLAYER_FEMALE(IS_HNS) / new GetPlayerTrainerPic(FEMALE, GAME_VERSION)
+PARTNER_SLOT_PLAYER_MALE	TRAINER_PIC_GOLD_HNS	TRAINER_PIC_GOLD_HNS	same	old gender + TRAINER_BACK_PIC_PLAYER_MALE: player_partner.c:207, recorded_partner.c:203
+PARTNER_SLOT_PLAYER_FEMALE	TRAINER_PIC_KRIS_HNS	TRAINER_PIC_KRIS_HNS	same	위와 같음(gender=1)
+LINK_ANYVER_MALE	TRAINER_PIC_GOLD_HNS	TRAINER_PIC_GOLD_HNS	same	old LinkPlayerGetTrainerPicId #if IS_HNS gender + BACK_GOLD_HNS (버전 무시): player.c:1877, link_partner.c:150/163 / new GetPlayerTrainerPic(gender, version) HnS 분기
+LINK_ANYVER_FEMALE	TRAINER_PIC_KRIS_HNS	TRAINER_PIC_KRIS_HNS	same	위와 같음(gender=1)
+RECORDED_LINK_DRAW_MALE	TRAINER_PIC_BRENDAN	TRAINER_PIC_BRENDAN	same	old gender + TRAINER_PIC_BACK_BRENDAN(IS_HNS 분기 없음): recorded_player.c:292-297. part-A 결정 M1: (가) 유지면 그대로, (나) upstream대로면 new_id=TRAINER_PIC_GOLD_HNS, expect=changed
+RECORDED_LINK_DRAW_FEMALE	TRAINER_PIC_MAY	TRAINER_PIC_MAY	same	위와 같음(gender=1). M1 (나)면 new_id=TRAINER_PIC_KRIS_HNS, expect=changed
+RECORDED_LINK_INTRO_PAL_MALE	TRAINER_PIC_GOLD_HNS	TRAINER_PIC_GOLD_HNS	same	old TRAINER_BACK_PIC_PLAYER_MALE 팔레트: recorded_player.c:405 (이식 전 그림=BRENDAN, 팔레트=GOLD 불일치)
+RECORDED_LINK_INTRO_PAL_FEMALE	TRAINER_PIC_KRIS_HNS	TRAINER_PIC_KRIS_HNS	same	위와 같음(gender=1)
+MULTIBATTLE_TEST_PLAYER	TRAINER_PIC_GOLD_HNS	TRAINER_PIC_GOLD_HNS	same	old TRAINER_BACK_PIC_PLAYER_MALE: player.c:1915, recorded_player.c:280 (테스트 전용, part-A 결정 M2)
+MULTIBATTLE_TEST_PARTNER	TRAINER_PIC_STEVEN	TRAINER_PIC_STEVEN	same	player_partner.c:225 (테스트 전용)
+CATCH_TUTORIAL	TRAINER_PIC_WALLY	TRAINER_PIC_WALLY	same	CATCH_TUTORIAL_TRAINER_PIC_BACK(!IS_FRLG): reshow_battle_screen.c:27/287/345, battle_controller_wally.c:285/369
+FIRST_BATTLE_MALE_FRLG	TRAINER_PIC_RED	TRAINER_PIC_RED	same	oak_old_man.c:680/686 (IS_FRLG 전용 컨트롤러, HnS 미실행 — ID 데이터만 확인)
+FIRST_BATTLE_FEMALE_FRLG	TRAINER_PIC_LEAF	TRAINER_PIC_LEAF	same	위와 같음
+CATCH_TUTORIAL_FRLG	TRAINER_PIC_OLD_MAN	TRAINER_PIC_OLD_MAN	same	CATCH_TUTORIAL_TRAINER_PIC_BACK(IS_FRLG) (HnS 미실행)
