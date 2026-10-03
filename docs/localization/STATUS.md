@@ -1,6 +1,15 @@
 # 현재 인수인계 상태
 
-## 2026-10-03 — seq 128 #9475 완료 (현재, 데스크탑)
+## 2026-10-03 — seq 129 #9674 진행 중 (현재, 데스크탑)
+
+- 대상: seq 129 #9674 `U-magicbounce-9674` Magic Bounce / Magic Coat / Snatch refactor(upstream `c532ceac79`, 14파일, L, korean_touch Y). 선행 #9176·#9657·#9655는 적용돼 있다.
+- 진행 방식: 영역별 병렬 사전 분석 3개 → 메인이 patch를 합침 → 적용 1커밋 → 병렬 리뷰 → 메인 확인.
+  - 영역: A 판정·캔슬러·moveend, B 스크립트 명령·배틀 스크립트, C 메시지 한글 토큰 증명·테스트·출력 변화·기타 사용처
+  - 스크래치: `/home/hjm0725/hns-sync-work/chunk-129/`(`ANALYZE.md`)
+- 한글 원칙: `STRINGID_PKMNSNATCHEDMOVE`·`PKMNMOVEBOUNCEDABILITY` 본문은 그대로 둔다. 토큰을 바꾸면 화면 이름이 같은지 코드 경로로 증명하고, 다르면 출력 변화로 기록한다.
+- 시작 기준: `0b5e8af26d`(코드 `06c6bac8c2`), 데스크탑 ROM 32,715,956 B, SHA1 `4b3b96bf…`, 테스트 기준 `test-baseline-seq128.txt`.
+
+## 2026-10-03 — seq 128 #9475 완료 (데스크탑)
 
 - **다음 시작 seq: 129** (#9674 `U-magicbounce-9674` Magic Bounce / Magic Coat / Snatch refactor, L, korean_touch Y). 그 뒤로 seq 132 #9680(XL), 135 #9709, 136 #9711, 138.5 #8943(XL)이 있다. 선진행한 seq 130·131·133·134·137·143·148·149·151·156·157·158·160·165는 "이미 적용(선진행)"으로 처리한다.
 - seq 128 #9475(`06c6bac8c2`): 트레이너 앞·뒤 그림 표를 `gTrainerPicInfo`(213칸)로 합치고 `TrainerPicID`의 FRONT/BACK 구분을 없앴다. HnS 앞모습 55개와 뒷모습 4개(GOLD·KRIS·SILVER, 목호 → `CHAMPION_LANCE_HNS`)를 같은 그림·팔레트로 옮겼다. HnS 플레이어 분기는 `GetPlayerTrainerPic`(`src/trainer.c`) 한 곳에 모았다.
