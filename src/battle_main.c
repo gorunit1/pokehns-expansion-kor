@@ -3395,6 +3395,10 @@ void SwitchInClearSetData(enum BattlerId battler, struct Volatiles *volatilesCop
 
     if (GetProtectType(gProtectStructs[battler].protected) == PROTECT_TYPE_SINGLE) // Side type protects expire at the end of the turn
         gProtectStructs[battler].protected = PROTECT_NONE;
+    // HnS: the replacement must not inherit the previous mon's Magic Coat / Snatch (as on faint). Upstream #10338 (seq 414)
+    // clears both in ClearSetDataOnLeave for every switch-in; drop this block when porting it.
+    gProtectStructs[battler].bounceMove = FALSE;
+    gProtectStructs[battler].stealMove = FALSE;
 
     if (effect == EFFECT_BATON_PASS)
     {

@@ -1014,7 +1014,11 @@ static void Cmd_attackcanceler(void)
     assertf(gBattlerAttacker < MAX_BATTLERS_COUNT, "invalid gBattlerAttacker: %d\nmove: %S", gBattlerAttacker, GetMoveName(gCurrentMove));
     assertf(gBattlerTarget < MAX_BATTLERS_COUNT, "invalid gBattlerTarget: %d\nmove: %S", gBattlerTarget, GetMoveName(gCurrentMove));
 
-    if (gBattleStruct->battlerState[gBattlerAttacker].usedEjectItem)
+    // HnS: do not drop a bounced/snatched move whose user came in by Eject Button/Pack this turn; the attacker/target saved by
+    // MoveEndBouncedMove/CancelerSnatch would never be restored (ValidateBattlers assert). usedEjectItem stays set for its own action.
+    if (gBattleStruct->battlerState[gBattlerAttacker].usedEjectItem
+     && !gBattleStruct->bouncedMoveIsUsed
+     && !gBattleStruct->snatchedMoveIsUsed)
     {
         gBattleStruct->battlerState[gBattlerAttacker].usedEjectItem = FALSE;
         gCurrentActionFuncId = B_ACTION_TRY_FINISH;
