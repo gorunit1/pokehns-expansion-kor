@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 135~138
 
-완료: seq 135~138 이식·전체 테스트·기록 완료(다음 구간은 seq 139 #9714부터). 이식 커밋 2개(#9709, #9711), 이미 적용 2개(#9713, #9707). 결과 커밋에 기준 목록 [`test-baseline-seq138.txt`](test-baseline-seq138.txt)를 넣었다. 메인의 커밋 리뷰는 이 문서 밖에서 진행한다.
+완료: seq 135~138 이식·전체 테스트·커밋 리뷰(병렬 2개, 모두 문제 없음)·기록 완료. **다음 구간은 seq 138.5 #8943(12v12, XL)**이고 그 뒤가 seq 139 #9714다. 이식 커밋 2개(#9709, #9711), 이미 적용 2개(#9713, #9707). 결과 커밋에 기준 목록 [`test-baseline-seq138.txt`](test-baseline-seq138.txt)를 넣었다.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), [`CLAUDE_FULL_SYNC_PORT_PROMPT.md`](../../CLAUDE_FULL_SYNC_PORT_PROMPT.md), 메시지 출력 기록: [`BATTLE_MESSAGE_OUTPUT_CHANGES.md`](../../../localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md)
 시작 HEAD: `90ae8c6774`(작업 트리 clean, 코드는 seq 132 `5f580ab12e`와 같음). 작업 컴퓨터: 데스크탑(`/usr/bin` 툴체인).
@@ -50,11 +50,11 @@
   - `BattlePokemon`은 SaveBlock에 없다. 녹화 배틀(`RecordedBattleSave`)은 `struct Pokemon` 파티와 입력만 저장한다.
   - 링크 전송 구조의 바이트 수가 같다(144). **g4 plan의 "버퍼 전송 구조 1 B 증가로 링크 호환 깨짐"은 해당하지 않는다.** 142번 바이트의 의미만 바뀐다(이식 전에는 초기화하지 않은 스택 값). 링크·녹화 링크·프런티어 배틀에서는 `GetBattlerAffectionHearts`가 이 값을 읽기 전에 `AFFECTION_NO_HEARTS`를 돌려준다.
 - **게임 동작:** `B_AFFECTION_MECHANICS FALSE`(`include/config/battle.h:377`)라 결과를 쓰는 곳(`battle_util.c:8000` 급소 랭크, `:8159` `GetAdjustedDamage` 버티기, `:10581` 명중률, `battle_end_turn.c:213` 턴 끝 상태 회복, `battle_anim_new.c:7787` 마음 버티기 애니메이션 — 이 애니메이션은 TRUE일 때만 재생)이 모두 막혀 있다. **이식 전후 같다.** `GetAdjustedDamage`의 `Random()` 호출 횟수도 같다. 빌드에서는 LTO가 `GetAdjustedDamage` 안의 쓰이지 않는 호출을 없애 `GetBattlerAffectionHearts` 호출 지점이 1곳(`AnimTask_AffectionHangedOn`)만 남았다(`objdump` 확인).
-  - 참고(`B_AFFECTION_MECHANICS`를 켤 때만, upstream 1.17.0과 같음): 종 판정이 파티 종에서 배틀 종으로 바뀌고(변신·괴짜로 메가 복사 시 마음 없음), 값이 등장할 때 정해진다(배틀 중 레벨업 친밀도 상승은 다시 나올 때 반영).
+  - 참고(`B_AFFECTION_MECHANICS`를 켤 때만, upstream 1.17.0과 같음): 종 판정이 파티 종에서 배틀 종으로 바뀌고(변신·괴짜로 메가 복사 시 마음 없음), 값이 등장할 때 정해진다(배틀 중 레벨업 친밀도 상승은 다시 나올 때 반영). 또 AI가 교체 후보를 `gBattleMons`에 넣고 계산할 때(`battle_ai_switch.c`, `battle_ai_main.c`) 현재 몬이 아니라 후보의 마음 값을 쓴다(커밋 리뷰 보충).
 - 한글·config·HnS 전용 코드: 한글 문자열·`STRINGID`·조사 토큰 변경 0(patch에 비 ASCII 줄 없음). config 기본값 변경 0. HnS 표식 구간과 겹치지 않는다. 출력 변화(`BATTLE_MESSAGE_OUTPUT_CHANGES.md`) 없음.
 - 빌드(`build/port.log`): 종료 코드 0, **ROM 32,716,916 B(97.50%, +16 B) / EWRAM 248,936 B(94.96%, 0) / IWRAM 25,516 B(77.87%, 0)**. `pokehns.gba` SHA1 `d71b4f61559bc7e5a7313791012b4ec02c45bea3`(사전 분석 스크래치 빌드와 같음). 경고 163줄, 새 경고 0. 함수 크기 `GetBattlerAffectionHearts` 0x70, `PokemonToBattleMon` 0x230, `GetBattlerMonData` 0x5cc(사전 분석 실측과 같음).
 - 테스트: `GITHUB_ACTION=1 make check BUILD=hns -j6 TESTS="AI thinking time"`(`build/port-check-135-ai.log`) → 6개 모두 **PASS**, `test-baseline-seq132.txt`의 같은 6줄과 같다. upstream·HnS 모두 친밀도·마음 테스트는 없다.
-- 남은 위험: 없음(게임 동작은 config로 막혀 있고 구조체 크기 불변). `B_AFFECTION_MECHANICS`를 켜면 위 참고 2가지가 upstream과 같게 달라진다.
+- 남은 위험: 없음(게임 동작은 config로 막혀 있고 구조체 크기 불변). `B_AFFECTION_MECHANICS`를 켜면 위 참고 3가지가 upstream과 같게 달라진다.
 - 실기 확인: 불필요.
 
 ## 동기화 단위: seq 136 #9711 `U-9711` Remove hex values from BattlePokemon
@@ -106,6 +106,15 @@
 - **사라진 PASS 0, 새 PASS 0, 상태가 바뀐 테스트 0.** 로그 끝 실패 위치 목록(`  - test/…` 줄)도 seq 132 로그와 같다.
 - `AI thinking time doesn't explode` 6개는 HnS 상한(`include/config/ai.h` 유지)으로 모두 PASS다.
 - 새 기준 목록: [`test-baseline-seq138.txt`](test-baseline-seq138.txt)(5,192줄, `test-baseline-seq132.txt`와 내용 같음).
+
+## 커밋 리뷰 (병렬 2개, 읽기 전용)
+
+| 리뷰 | 커밋 | 판정 | 확인한 것 |
+|---|---|---|---|
+| #9709 | `a642657907` | 문제 없음 | upstream hunk(`config/ai.h` 제외)와 줄 단위 동일. `AI_FRAME_CEILING_*`는 테스트 6곳에서만 쓰이고 HnS 값은 #9592 그대로라 제외가 맞음. `affectionHearts`를 채우는 경로(전투 시작·교체·사파리·변신·괴짜·아군 교대) 확인, 되돌려 쓰는 경로 없음. `B_AFFECTION_MECHANICS FALSE`라 ELF에서 `GetBattlerAffectionHearts` 호출이 애니메이션 태스크 1곳만 남음. `sizeof` 144·통신 패킷 4+144 B 이식 전과 같음. 정보 1건(TRUE일 때 세 번째 차이)은 위에 반영 |
+| #9711 | `62d1876d6f` | 문제 없음 | `struct BattlePokemon`이 1.17.0과 diff 0. 비트필드 두 필드에 쓰는 값이 범위 안(`metLevel` 0..127, `isShiny` 0/1), 주소·오프셋 접근 없음, 바이트 복사는 구조체 전체 또는 `pp` 앞까지. seq 137·138 이미 적용 판정 확인. 변신 이로치 색 복사 경로는 테스트가 직접 보지 않으므로 아래 선택 실기 항목으로 본다 |
+
+"수정 필요" 0건.
 
 ## 실기 확인 항목 (친구용)
 

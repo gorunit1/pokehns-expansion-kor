@@ -1,14 +1,19 @@
 # 현재 인수인계 상태
 
-## 2026-10-03 — 구간 seq 135~138 진행 중 (현재, 데스크탑)
+## 2026-10-03 — 구간 seq 135~138 완료 (현재, 데스크탑)
 
-- 대상
-  - seq 135 #9709 Improve AI calc speed with affection hearts(S): `BattlePokemon`에 `affectionHearts`를 추가한다.
-  - seq 136 #9711 Remove hex values from BattlePokemon(S): 주석만 바꾼다.
-  - 처리하지 않는 행: seq 137은 선진행으로, seq 138 #9707은 예전에 이미 적용됐다.
-  - 다음 구간은 seq 138.5 #8943 12v12(XL, 세이브 영향)다.
-- 진행 방식: PR별 병렬 사전 분석 2개 → 적용 1개 → 병렬 리뷰 → 메인 확인. 스크래치는 `/home/hjm0725/hns-sync-work/chunk-135/`다.
-- 시작 기준: `4f1e6b529c`(코드 `5f580ab12e`), 데스크탑 ROM 32,716,900 B, SHA1 `512ccdbe…`, 테스트 기준 `test-baseline-seq132.txt`.
+- **다음 시작 seq: 138.5** (#8943 `U-12v12-8943` 12v12 capability, XL, 세이브 영향 Y, korean_touch Y).
+  - 확정 결정 A안: upstream 1.17.0 녹화 배틀 구조를 쓴다. 기존 녹화 기록은 무효화를 허용한다. 일반 게임 세이브 호환은 유지한다(`CLAUDE_FULL_SYNC_PORT_PROMPT.md` 4절).
+  - 같은 unit 후속 행: seq 140 #9725, 141 #9729, 180 #9843, 215 #10102. 그다음 seq 139 #9714(deps #8943)다.
+- 구간 결과: `docs/friend-handoff/results/1.17.0-port/full-sync-seq-135-138.md`
+  - #9709 `a642657907`: `BattlePokemon.affectionHearts`. 구조체 크기 144 B 그대로, 통신·세이브 영향 없음. `config/ai.h` 테스트 hunk는 제외했다.
+  - #9711 `62d1876d6f`: 주석 삭제에 더해 `metLevel:7`/`isShiny:1` 비트필드 압축. ROM +32 B, 구조체가 1.17.0과 같아졌다.
+  - seq 137·138: 이미 적용
+- 검증
+  - 리뷰 2개: 모두 문제 없음.
+  - 빌드: ROM 32,716,948 B(+48 B), EWRAM·IWRAM 0, SHA1 `dfeec488…`. 새 경고 0, 한글 줄 0.
+  - 전체 테스트: `test-baseline-seq132.txt`와 바이트 동일. 기준 목록은 `test-baseline-seq138.txt`(내용 같음)다.
+- 실기 확인(선택): 이로치 상대에게 메타몽 변신 색
 
 ## 2026-10-03 — seq 132 #9680 완료 (데스크탑)
 
