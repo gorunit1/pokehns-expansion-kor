@@ -2952,6 +2952,8 @@ static enum MoveEndResult MoveEndBouncedMove(void)
                 gBattleStruct->magicCoatPending &= ~(1u << bounceBattler);
             }
 
+            // HnS: 1.17.0 (#9859) form moveTarget[cv->battlerAtk] = cv->battlerDef; set before the swap so the bouncer keeps its own chosen target
+            gBattleStruct->moveTarget[gBattlerAttacker] = gBattlerTarget;
             SaveBattlerAttacker(gBattlerAttacker);
             SaveBattlerTarget(gBattlerTarget);
             gBattlerTarget = gBattlerAttacker;
@@ -2966,7 +2968,6 @@ static enum MoveEndResult MoveEndBouncedMove(void)
             ClearDamageCalcResults();
             gBattleStruct->eventState.atkCanceler = CANCELER_SET_TARGETS;
             gBattleStruct->eventState.atkCancelerBattler = 0;
-            gBattleStruct->moveTarget[gBattlerAttacker] = gBattlerTarget;
             gBattleScripting.moveendState = 0;
             gBattleScripting.animTurn = 0;
             gBattleScripting.animTargetsHit = 0;
@@ -4023,6 +4024,9 @@ static enum MoveEndResult MoveEndClearBits(void)
     // go to next Bouncer or original attacker if possible
     if (gBattleStruct->bouncedMoveIsUsed)
     {
+        // HnS: clear the bouncer's targetsDone so they do not leak into its own next move (skipped target failure checks)
+        for (enum BattlerId i = B_BATTLER_0; i < gBattlersCount; i++)
+            gBattleStruct->battlerState[gBattlerAttacker].targetsDone[i] = FALSE;
         RestoreAttacker();
         RestoreTarget();
         gBattleStruct->bouncedMoveIsUsed = FALSE;
