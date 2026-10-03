@@ -10282,11 +10282,14 @@ bool32 ItemHealMonVolatile(enum BattlerId battler, enum Item itemId)
     const u8 *effect = GetItemEffect(itemId);
     if (effect[3] & ITEM3_STATUS_ALL)
     {
-        statusChanged = (gBattleMons[battler].volatiles.infatuation || gBattleMons[battler].volatiles.confusionTurns > 0 || gBattleMons[battler].volatiles.infiniteConfusion);
+        bool32 confused = (gBattleMons[battler].volatiles.confusionTurns > 0 || gBattleMons[battler].volatiles.infiniteConfusion);
+        // HnS: upstream 1.17.0 always picks the confusion message here; print the infatuation message when only infatuation was cured.
+        bool32 infatuatedOnly = (gBattleMons[battler].volatiles.infatuation && !confused);
+        statusChanged = (gBattleMons[battler].volatiles.infatuation || confused);
         gBattleMons[battler].volatiles.infatuation = 0;
         gBattleMons[battler].volatiles.confusionTurns = 0;
         gBattleMons[battler].volatiles.infiniteConfusion = FALSE;
-        gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_CURED_CONFUSION;
+        gBattleCommunication[MULTISTRING_CHOOSER] = infatuatedOnly ? B_MSG_CURED_INFATUATION : B_MSG_CURED_CONFUSION;
     }
     else if (effect[0] & ITEM0_INFATUATION)
     {
