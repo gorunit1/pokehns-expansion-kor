@@ -171,10 +171,8 @@ static enum ItemEffect RestoreWhiteHerbStats(enum BattlerId battler, ActivationT
     {
         if (timing == IsOnFlingActivation)
             BattleScriptCall(BattleScript_WhiteHerbFling);
-        else if (timing == IsWhiteHerbActivation)
-            BattleScriptCall(BattleScript_WhiteHerbRet);
         else
-            BattleScriptExecute(BattleScript_WhiteHerbEnd2);
+            BattleScriptCall(BattleScript_WhiteHerbRet);
     }
 
     return effect;
@@ -600,7 +598,7 @@ static enum ItemEffect TryStickyBarbOnEndTurn(enum BattlerId battler, enum Item 
     {
         SetPassiveDamageAmount(battler, GetNonDynamaxMaxHP(battler) / 8);
         PREPARE_ITEM_BUFFER(gBattleTextBuff1, item);
-        BattleScriptExecute(BattleScript_ItemHurtEnd2);
+        BattleScriptCall(BattleScript_ItemHurtWithAnim);
         effect = ITEM_HP_CHANGE;
     }
 
@@ -612,10 +610,10 @@ static enum ItemEffect TryToxicOrb(enum BattlerId battler)
     enum ItemEffect effect = ITEM_NO_EFFECT;
     enum Ability ability = GetBattlerAbility(battler);
 
-    if (CanBePoisoned(battler, battler, ability, ability)) // Can corrosion trigger toxic orb on itself?
+    if (CanBePoisoned(battler, battler, ability, ability)) // Corrosion bypasses Poison/Steel-type poison immunity
     {
         gBattleMons[battler].status1 = STATUS1_TOXIC_POISON;
-        BattleScriptExecute(BattleScript_ToxicOrb);
+        BattleScriptCall(BattleScript_ToxicOrb); // HnS: keep item popup + STRINGID_PKMNPOISONEDBY script instead of BattleScript_MoveEffectToxic
         effect = ITEM_STATUS_CHANGE;
     }
 
@@ -630,7 +628,7 @@ static enum ItemEffect TryFlameOrb(enum BattlerId battler)
     if (CanBeBurned(battler, battler, ability))
     {
         gBattleMons[battler].status1 = STATUS1_BURN;
-        BattleScriptExecute(BattleScript_FlameOrb);
+        BattleScriptCall(BattleScript_FlameOrb); // HnS: keep item popup + STRINGID_PKMNBURNEDBY script instead of BattleScript_MoveEffectBurn
         effect = ITEM_STATUS_CHANGE;
     }
 
@@ -646,7 +644,7 @@ static enum ItemEffect TryLeftovers(enum BattlerId battler, enum HoldEffect hold
     {
         SetHealAmount(battler, GetNonDynamaxMaxHP(battler) / 16);
         RecordItemEffectBattle(battler, holdEffect);
-        BattleScriptExecute(BattleScript_ItemHealHP_End2);
+        BattleScriptCall(BattleScript_ItemHealHP_Ret);
         effect = ITEM_HP_CHANGE;
     }
 
@@ -661,7 +659,7 @@ static enum ItemEffect TryBlackSludgeDamage(enum BattlerId battler, enum HoldEff
     {
         SetPassiveDamageAmount(battler, GetNonDynamaxMaxHP(battler) / 8);
         RecordItemEffectBattle(battler, holdEffect);
-        BattleScriptExecute(BattleScript_ItemHurtEnd2);
+        BattleScriptCall(BattleScript_ItemHurtWithAnim);
         effect = ITEM_HP_CHANGE;
     }
 
