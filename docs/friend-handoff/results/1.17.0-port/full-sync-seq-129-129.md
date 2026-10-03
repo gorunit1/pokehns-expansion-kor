@@ -1,6 +1,6 @@
 # full-sync 실제 port 결과 — seq 129 (#9674 매직미러·매직코트·가로채기 리팩터, + seq 274 #10386 선반영)
 
-완료: seq 129 unit `U-magicbounce-9674`를 이식했다. 같은 unit의 후속 수정 seq 274 #10386을 바로 다음 커밋으로 선반영했다. 두 커밋 뒤 전체 테스트와 기록까지 마쳤다. 다음 seq는 **130**이다(선진행으로 이미 적용, 실제로 이식할 다음 행은 seq 132). 선진행으로 넣은 seq 130·131·133·134·137·143·148·149·151·156·157·158·160·165와 이번에 선반영한 **seq 274**는 닿으면 "이미 적용"으로 처리한다.
+완료: seq 129 unit `U-magicbounce-9674`를 이식했다. 같은 unit의 후속 수정 seq 274 #10386을 바로 다음 커밋으로 선반영했다. 두 커밋 뒤 전체 테스트와 기록까지 마쳤다. 커밋 리뷰(병렬 3개)에서 나온 회귀 2건(반사자의 대상 상태)은 HnS 수정 커밋 `587f4e7cdc`로 고쳤다(아래 "리뷰 후 HnS 수정"). 다음 seq는 **130**이다(선진행으로 이미 적용, 실제로 이식할 다음 행은 seq 132). 선진행으로 넣은 seq 130·131·133·134·137·143·148·149·151·156·157·158·160·165와 이번에 선반영한 **seq 274**는 닿으면 "이미 적용"으로 처리한다.
 
 기준: [`port_sequence.tsv`](../1.17.0-sync-plan/port_sequence.tsv), 지시: [`PORT_INSTRUCTIONS.md`](PORT_INSTRUCTIONS.md), 메시지 출력 기록: [`BATTLE_MESSAGE_OUTPUT_CHANGES.md`](../../../localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md)
 시작 HEAD: `eb9c747212`(작업 트리 clean, 코드는 `06c6bac8c2`과 같음). 작업 컴퓨터: 데스크탑(`/usr/bin` 툴체인).
@@ -10,9 +10,10 @@
 | seq | PR | 판정 | 커밋 | ROM 변화 | 비고 |
 |---|---|---|---|---:|---|
 | 129 | #9674 | 적용(HnS 적응) | `49415e3007` | +848 B | 매직미러·매직코트 반사를 move end `MOVEEND_BOUNCED_MOVE`로, 가로채기를 캔슬러 `CANCELER_SNATCH`로 옮겼다. 습기·비비드바디 계열은 공용 `BattleScript_PokemonCannotUseMove`, 다크홀 판정은 `CancelerMoveFailure`로 옮겼다. HnS 적응 4곳: 캔슬러 순서 1.17.0형, 빈 비트 이름 `unused5`, 한글 이름 토큰 2개(본문 불변), 가로채기 연출 `gEffectBattler` HnS 1줄 |
+| — | HnS 수정(리뷰) | 반사자 대상 상태 유지 | `587f4e7cdc` | +16 B | 튕긴 기술 뒤 반사자의 `targetsDone` 초기화, `moveTarget`을 교체 전에 기록(1.17.0 #9859 형태). 아래 "리뷰 후 HnS 수정" |
 | 274 | #10386 | 적용(선반영, **seq 274 도달 시 이미 적용**) | `887c8e9ef8` | +64 B | 반사된 기술이 반사자 기준으로 move end를 `MOVEEND_CLEAR_BITS` 직전까지 돈 뒤 원래 사용자로 돌아간다(반사자 목스프레이 등). #9674 단독 중간 상태(반사자 move end 후반 생략)를 남기지 않으려고 같은 unit으로 바로 이었다. #9730·#9859 전 문맥에 맞췄다 |
 
-- 빌드(최종, 작업 트리 = `887c8e9ef8`): 종료 코드 0, **ROM 32,716,868 B(97.50%, +912 B) / EWRAM 248,936 B(94.96%, 0) / IWRAM 25,516 B(77.87%, 0)**. `pokehns.gba` SHA1 `b5be6485b965ddd7e29ec63923c02c2c6cb3c5ad`.
+- 빌드(최종, 작업 트리 = `587f4e7cdc`): 종료 코드 0, **ROM 32,716,884 B(97.50%, +928 B) / EWRAM 248,936 B(94.96%, 0) / IWRAM 25,516 B(77.87%, 0)**. `pokehns.gba` SHA1 `f453524c011ec4ed23dc7ff3e1225d98c9752c05`. (#10386 뒤 리뷰 전: 32,716,868 B, SHA1 `b5be6485…`)
 - 새 경고 0(두 빌드 모두).
 - 한글이 든 소스 줄 변경: `battle_message.c` 2줄의 이름 토큰만(`STRINGID_PKMNMOVEBOUNCEDABILITY` ATK→DEF, `STRINGID_PKMNSNATCHEDMOVE` DEF→ATK). 본문·조사·바이트 길이 불변. #10386 커밋은 비 ASCII 줄 변경 0.
 - 세이브: 영향 없음. 바뀐 구조체는 배틀 중 힙에 잡히는 `struct BattleStruct`뿐이다.
@@ -60,6 +61,9 @@
   - **중간 상태(seq 181 #9730 전까지):** 가로채기 재진입이 `CANCELER_SNATCH - 1`(= `CANCELER_CHARGING`)이라, 가로챈 쪽에 대해서는 `CancelerMoveFailure`(HP 가득일 때 회복 실패 등)를 다시 보지 않고 원래 사용자 기준 판정이 적용된다. #9730이 `CANCELER_SET_TARGETS - 1`로 바꾼다.
   - 막말내뱉기 반사 중간 상태(seq 181까지, 아래 #10386 절).
   - 가로챈 멀리짖기 assert(아래 "친구에게 물을 것" 1).
+  - **커밋 리뷰 A가 찾은 것(upstream 로직, 1.17.0도 같은 코드):**
+    - 탈출버튼·탈출팩으로 들어온 포켓몬이 같은 턴에 반사하거나 가로채면, 저장한 공격자가 복원되지 않아 `make hns`에서 그 배틀 끝까지 기술마다 assert 화면이 뜬다(아래 "친구에게 물을 것" 2).
+    - **중간 상태(seq 181 #9730 전까지):** 가로챈 쪽은 `CANCELER_SET_TARGETS`를 건너뛰므로 대상 판정이 엉뚱한 포켓몬에 적용된다(원래 사용자의 전기엔진·방음 등 팝업, 사이코필드 문구, 더블에서 다른 포켓몬의 방어·공중 상태 문구). 출력 변화 문서에 행을 넣었다.
   - pending 비트는 처리될 때만 지워진다(upstream 같음). `MOVEEND_BOUNCED_MOVE`를 건너뛰는 범위 지정(`moveendto MOVEEND_NEXT_TARGET` 등)으로 끝나는 스크립트는 모두 TargetFailure 전에 끝나거나 반사할 수 없는 기술이다(사전 분석 A 위험 3, B 적용 뒤 목록이 upstream과 같음).
   - `CancelerSnatch`의 else 분기(대상이 자기 자신이 아닌 가로챈 기술)는 `{B_SCR}`를 설정하지 않는다. HnS config(`B_UPDATED_MOVE_FLAGS`·`B_UPDATED_MOVE_DATA` = `GEN_LATEST`)에서는 도달하지 않는다. config를 낮추면 다시 검토한다.
 - 실기 확인: 필요(아래 "실기 확인 항목").
@@ -87,6 +91,25 @@
   - `bouncedMoveIsUsed` 유지 구간이 반사자의 `MOVEEND_CLEAR_BITS`까지 길어진다. `moveendall` 없이 끝나는 반사 가능한 기술 경로는 없다(사전 분석 D 위험 5).
   - 가로챈 멀리짖기 assert는 그대로다(#10386은 `bouncedMoveIsUsed` 경로만 바꿈, 사전 분석 D 실측 D8).
 - 실기 확인: 필요(아래 "실기 확인 항목" 6·7).
+
+## 리뷰 후 HnS 수정: 반사자의 대상 상태 (`587f4e7cdc`)
+
+커밋 리뷰 D가 #9674/#10386 뒤 생긴 회귀 2건을 찾았다. 둘 다 이식 전 HnS에서는 정상이던 동작이다. 리뷰어가 스크래치에서 만든 수정안을 메인이 넣었다.
+
+| 문제 | 원인 | 수정 |
+|---|---|---|
+| 매직미러·매직코트로 튕긴 포켓몬의 **다음 행동**에서 대상 판정(방어·무효·면역)이 빠진다. 예: 튕긴 다음 턴 반사자의 몸통박치기가 내 방어를 뚫음, 같은 턴 반사자의 전기자석파가 땅 타입을 마비시킴, 더블에서 반사자의 범위기가 한 대상을 빠뜨림 | `MoveEndClearBits()`의 반사 조기 반환이 반사자의 `targetsDone`을 지우지 않는다. 초기화는 일반 경로에만 있고, 그때 `gBattlerAttacker`는 이미 원래 사용자다. `ShouldSkipFailureCheckOnBattler()`가 그 대상을 건너뛴다 | 조기 반환 분기에서 `RestoreAttacker()` **앞에** 반사자의 `targetsDone`을 지운다(`// HnS:` 2줄). upstream 1.17.0도 원인이 같고 증상만 다르다(반사자의 다음 공격 피해 0). upstream master에도 아직 수정이 없다 |
+| 더블배틀에서 단일 대상 변화기를 튕긴 반사자의 **같은 턴 행동**이 원래 사용자에게 간다 | `MoveEndBouncedMove()`가 공격자·대상을 바꾼 **뒤** `moveTarget[gBattlerAttacker] = gBattlerTarget`을 써서 반사자의 선택 대상을 덮어쓴다(`HandleAction_UseMove`가 읽음) | 같은 줄을 교체 **전**으로 옮겼다(`// HnS:` 주석). upstream 1.17.0(#9859)의 `moveTarget[cv->battlerAtk] = cv->battlerDef`와 같은 의미다 |
+
+- 검증
+  - 빌드: 종료 코드 0, ROM +16 B, 새 경고 0.
+  - 리뷰어 임시 테스트 16개를 저장소에 잠시 두고 돌려 모두 PASS했다(커밋하지 않음, 돌린 뒤 지움).
+    - 싱글: 매직미러·매직코트 뒤 다음 턴 방어, 같은 턴 땅 타입 전기자석파, 가로채기 뒤 방어·땅 타입
+    - 더블: 범위기 대상, 같은 반사자의 두 번 반사, 반사자 둘, 반사자의 선택 대상 유지(단일·범위)
+    - 수정 전 커밋에서는 같은 테스트가 FAIL했다(리뷰 D 실측).
+  - 전체 테스트(`587f4e7cdc`, `build/port-check-post129fix.log`): PASSED 2,340 / FAILED 2,260 / TOTAL 5,261. 추출 목록 5,192줄이 `test-baseline-seq129.txt`와 **바이트 단위로 같다**. INVALID 21개 같음, Killed 0.
+- 1.17.0과의 관계: `moveTarget`은 1.17.0 형태가 됐다. `targetsDone`은 반사자 기준 HnS 형태다. 1.17.0 형태(`cv->battlerAtk`)로 바꾸면 같은 반사자가 한 턴에 두 번 반사하는 경우(리뷰 D R3)가 FAIL한다.
+- 사전 분석 D 3.2의 D10("두 대상 모두 맞음")은 HP 바만 봐서 이 문제를 잡지 못했다(범위 피해는 첫 패스에서 모든 대상의 HP를 깎음).
 
 ## 지정 테스트
 
@@ -125,7 +148,7 @@
 
 ## 출력 변화
 
-`BATTLE_MESSAGE_OUTPUT_CHANGES.md`에 새 행 10개를 넣었다. 모든 행에서 문자열 ID·한글 본문 변화는 없고(이름 토큰 2개는 표시 같음), 순서·발동 조건·주체만 바뀐다. 새 한글 문장은 없다. seq 128 → #10386 뒤 기준으로 적었다.
+`BATTLE_MESSAGE_OUTPUT_CHANGES.md`에 새 행 10개를 넣었고, 커밋 리뷰 뒤 2행(가로챈 쪽 대상 판정 중간 상태, 탈출버튼·탈출팩 뒤 반사·가로채기 assert)을 더해 12개다. 모든 행에서 문자열 ID·한글 본문 변화는 없고(이름 토큰 2개는 표시 같음), 순서·발동 조건·주체만 바뀐다. 새 한글 문장은 없다. seq 128 → #10386 뒤 기준으로 적었다.
 
 - 「기술·필드 상태 효과」 4행: 다크라이가 아닌 다크홀(사용 문구·PP 소모), 가로챈 쪽의 회복봉인·지옥찌르기 재판정, **막말내뱉기 반사 중간 상태(seq 129~180)**, **더블 가로챈 멀리짖기 assert**.
 - 「특성·도구·도주」 6행: 더블 범위기 한쪽 반사 순서, 상대 둘 다 반사(두 번 반사, 순서는 seq 166 #9784 뒤 실제 스피드 순), 상대 필드 기술 반사자(실제 스피드 최고), 변환자재·리베로 + 습기(습기 먼저), 더블 소리 변화 범위기의 반사자 목스프레이, 소리 변화 범위기가 둘 다 막힐 때 사용자 목스프레이 미발동(#10386).
@@ -147,7 +170,19 @@
   - **상태가 바뀐 기존 테스트 1개:** `Snatch does not steal moves that cannot be snatched` TO_DO → FAIL(`Unmatched MESSAGE`, upstream이 TO_DO를 실제 테스트로 바꿈).
   - 그 밖에 PASS↔FAIL로 바뀐 테스트는 0이다. 매직코트·매직미러·가로채기·습기·비비드바디·변환자재·다크홀·목스프레이·탈출팩을 함께 쓰는 Damp·Dazzling·Protean·Libero·Dark Void·Sleep Clause·Dancer·Pressure·Prankster·Eject Pack 등도 기준과 같다.
 - INVALID(추출 목록 밖): 이름 21개가 seq 128 로그(`build/port-check-post128.log`)와 같다. 새 assert 0(가로챈 멀리짖기 경로는 upstream 테스트에 없음).
-- 새 기준 목록: [`test-baseline-seq129.txt`](test-baseline-seq129.txt)(5,192줄).
+- 새 기준 목록: [`test-baseline-seq129.txt`](test-baseline-seq129.txt)(5,192줄). 리뷰 후 HnS 수정(`587f4e7cdc`) 뒤 전체 테스트도 이 목록과 바이트 단위로 같다(위 "리뷰 후 HnS 수정").
+
+## 커밋 리뷰 (병렬 3개, 읽기 전용)
+
+리뷰 지시: 저장소 밖 `/home/hjm0725/hns-sync-work/chunk-129/REVIEW.md`. 리뷰어는 커밋 기준 코드를 upstream·1.17.0·사전 분석·메인 결정과 대조하고, 스크래치 사본에서 임시 테스트로 이식 전·후·1.17.0을 실측했다.
+
+| 리뷰 | 대상 | 판정 | 내용 |
+|---|---|---|---|
+| A | `49415e3007` 판정 영역 | 경미 | 3파일이 upstream `c532ceac79`와 같고 HnS 차이는 이식 전후 같음(새 차이는 메가솔 함수 위치 이동, 가로채기 연출 1줄). 캔슬러 순서 1.17.0형, `unused5`, `// HnS:` 보존 확인. 문서에 없던 upstream 동작 2건을 실측으로 찾음: 탈출버튼·탈출팩 뒤 반사·가로채기 assert("친구에게 물을 것" 2), 가로챈 쪽 대상 판정 중간 상태(출력 변화 행). 둘 다 문서에 반영 |
+| B | `49415e3007` 스크립트·메시지·테스트 | 문제 없음 | upstream hunk 대조(차이는 공백 hunk 5개 제외·문맥 1·한글 2줄), 지운 심볼 잔존 0, opcode 표 upstream과 같음, 튕긴 기술 89개의 `attackcanceler` 앞 명령 재실행 안전. 한글 토큰을 임시 한글 테스트 6개로 이식 전·`49415e3007`·`887c8e9ef8`에서 모두 PASS 확인. 이전 토큰을 넣으면 매직미러 3개가 FAIL(변경 필요 입증). 테스트 4파일 upstream과 바이트 동일 |
+| D | `887c8e9ef8`, 결과 문서 | 수정 필요 2 → 반영 | 반사자의 `targetsDone` 미초기화, 반사자 `moveTarget` 덮어쓰기(위 "리뷰 후 HnS 수정", `587f4e7cdc`). 손으로 맞춘 4곳은 문제 없음(HnS 반사자 기준 `targetsDone`이 1.17.0보다 나음). 결과 문서 사실(빌드·테스트·출력 변화 6행 코드 확인·후속 메모 번호)은 맞음. D10 결론 보충과 seq 466 메모 정정을 반영 |
+
+리뷰 B의 참고 2건: `Cmd_attackcanceler`의 `!IsStatChangeMove` 조건은 #9730(seq 181) 몫, `BattleScript_DampStopsExplosion` extern 잔존은 upstream 1.17.0과 같음(조치 없음).
 
 ## 친구에게 물을 것
 
@@ -158,9 +193,21 @@
    - 발생 조건은 좁다. 가로채기를 쓰는 쪽과 멀리짖기를 쓰는 상대가 같은 더블배틀에 있어야 한다. HnS 트레이너 파티 명시 기술에는 둘 다 없지만, 기술을 적지 않은 트레이너 포켓몬은 레벨업 기술로 멀리짖기를 쓸 수 있다.
    - 선택지: (a) 그대로 둔다(지금). (b) HnS 보호 수정. 단순 가드(저장 스택이 비어 있으면 Restore 생략)는 두 번째 대상이 원래 사용자의 파트너가 되어 올바른 동작이 아니다. 가로챈 쪽과 그 파트너가 오르게 하려면 설계가 더 필요하다. 수정한다면 seq 127처럼 친구 승인 뒤 별도 커밋으로 한다.
 
+2. **탈출버튼·탈출팩으로 들어온 포켓몬의 반사·가로채기 → 그 배틀 끝까지 assert 화면(upstream대로 둠, 커밋 리뷰 A).**
+   - 무슨 일: 탈출버튼·탈출팩으로 교체돼 들어온 포켓몬이 같은 턴에 매직미러로 반사하거나, 이전 포켓몬에게서 남은 매직코트·가로채기 상태로 반사·가로채면 문제가 생긴다.
+     - 공격자를 저장한 뒤 `Cmd_attackcanceler`의 `usedEjectItem` 분기가 기술을 버리므로 복원이 일어나지 않는다.
+     - 그래서 `make hns`(RELEASE=0)에서는 그 배틀이 끝날 때까지 이후 모든 기술의 move end에서 `ValidateBattlers` assert 화면이 다시 뜬다.
+     - 반사 대기 비트가 둘이면 남은 비트가 다음 기술로 넘어갈 수 있다(코드로만 확인).
+   - 이식 전: 기술만 사라지고 assert는 없었다(리뷰 A 실측 R3·R3b·R4: 이식 전 PASS, 이식 뒤 INVALID). upstream 1.17.0도 같은 코드다.
+   - 덧붙여, `gProtectStructs`의 `bounceMove`·`stealMove`가 교체 때 지워지지 않아 새로 들어온 포켓몬이 이전 포켓몬의 매직코트·가로채기를 물려받는다. 이것은 이전부터 있던 동작이다.
+   - 선택지
+     - (a) 그대로 둔다(지금).
+     - (b) HnS 보호 수정. 예: `usedEjectItem` 조기 반환을 `!bouncedMoveIsUsed && !snatchedMoveIsUsed`일 때만 한다(1줄). 이 경우 교체돼 들어온 매직미러 포켓몬이 그대로 반사한다. 물려받은 매직코트·가로채기도 그대로 발동하므로, 교체 때 두 상태를 지우는 수정도 함께 검토하는 편이 좋다.
+   - 멀리짖기(1)보다 화면이 반복해서 뜨므로 고칠 가치가 더 크다고 본다. 고친다면 seq 127처럼 친구 승인 뒤 별도 커밋으로 한다.
+
 ## 실기 확인 항목 (친구용)
 
-이식 전 ROM(`06c6bac8c2` 코드, SHA1 `4b3b96bf…`)과 이식 후 ROM(`887c8e9ef8`, SHA1 `b5be6485…`)을 같은 `.sav`로 비교한다. 문장 주체(이름)·조사, 팝업 주체, 애니메이션 방향, 순서를 본다.
+이식 전 ROM(`06c6bac8c2` 코드, SHA1 `4b3b96bf…`)과 이식 후 ROM(`587f4e7cdc`, SHA1 `f453524c…`, 데스크탑 툴체인)을 같은 `.sav`로 비교한다. 문장 주체(이름)·조사, 팝업 주체, 애니메이션 방향, 순서를 본다.
 
 1. **매직미러:** OBC 뒤 나츠메(`TRAINER_SABRINA_POSTOBC_HNS`, 에브이)·추(`TRAINER_WILL_POSTOBC_HNS`, 네이티오)에게 독가루·전기자석파·스텔스록 → 팝업 뒤 `[내 포켓몬]의 [기술]을(를) 되받아쳤다!`(원래 사용자 이름)와 반사된 효과.
 2. **매직코트:** 상대 변화기를 튕김 → `[매직코트 사용자]은(는) [기술]을(를) 되받아쳤다!`
@@ -170,6 +217,7 @@
 6. **매직미러에 막말내뱉기(#10386 뒤 중간 상태):** 지금은 반사자가 아니라 **내 포켓몬(원래 사용자)이 교체**되고 반사자는 남는 것이 예상 동작이다. 반사자가 교체되는 원래 동작은 seq 181 #9730 뒤에 돌아온다. 교체할 포켓몬이 없으면 능력 하락만 일어나는지도 본다.
 7. **반사자 목스프레이:** 목스프레이를 지닌 매직미러 포켓몬에게 울음소리 → 팝업 → 반사 → **반사자의 목스프레이 발동**(특공↑).
 8. (가능하면) 다크라이가 아닌 포켓몬이 손가락흔들기 등으로 다크홀 → `X는 다크홀을 썼다!` → `하지만 X는 사용할 수 없었다!`
+9. **반사자의 다음 행동(리뷰 후 HnS 수정 확인):** 매직미러 포켓몬에게 변화기를 튕기게 한 뒤, 다음 턴에 내가 방어 → 반사자의 공격이 막히는지. 같은 턴 반사자가 느릴 때 땅 타입에게 전기자석파 → `효과가 없는 것 같다`. 더블에서 반사자가 다른 상대를 노렸을 때 그 대상에게 가는지.
 
 ## 후속 행 메모
 
@@ -182,9 +230,10 @@
   - `IsTargetingBothFoes`: 조건은 이미 없다. 남은 한 줄의 값만 `MOVE_RESULT_DOESNT_AFFECT_FOE`로 바꾼다.
   - `include/battle.h`: `noResultString`만 지운다(위에 `savedMoveResultFlags`가 있음).
   - 가로채기 재진입 `CANCELER_SNATCH - 1` → `CANCELER_SET_TARGETS - 1`, PP 차감 제외에 `snatchedMoveIsUsed` 추가(위 "중간 상태" 해소).
+  - 가로챈 쪽 대상 판정 중간 상태(커밋 리뷰 A 실측: 가로챈 충전 → 상대 전기엔진, 가로챈 치유방울 → 상대 방음)가 풀리는지 확인하고 출력 변화 행을 고치거나 지운다.
   - 막말내뱉기 교체가 move end로 옮겨지면 되살린 parting_shot 테스트 2개 PASS를 확인한다. 그때 `BATTLE_MESSAGE_OUTPUT_CHANGES.md`의 "막말내뱉기를 튕김 (seq 129~180 중간 상태)" 행을 고치거나 지운다.
 - **seq 193 #9957(Guard Dog):** `SortBattlersByRawSpeed` 함수의 남은 정의를 지운다(D hunk와 겹치지 않음).
-- **seq 466 #9859(CalcValue to MoveEnd):** `MoveEndBouncedMove`·`MoveEndClearBits`는 #10386 뒤 형태라 upstream hunk가 기대하는 문맥이 없다. `cv` 치환을 손으로 한다. upstream은 반사 직전 `targetsDone`·`moveTarget`을 `cv->battlerAtk`(원래 사용자) 기준으로 초기화하고 HnS는 지금 반사자 기준이다. 반사된 기술의 대상 계산은 반사자의 `targetsDone`을 쓰므로 그때 인자 변경을 그대로 받을지 검토한다(사전 분석 D 3.2).
+- **seq 466 #9859(CalcValue to MoveEnd):** `MoveEndBouncedMove`·`MoveEndClearBits`는 #10386과 리뷰 후 HnS 수정(`587f4e7cdc`) 뒤 형태라 upstream hunk가 기대하는 문맥이 없다. `cv` 치환을 손으로 한다. **`targetsDone`은 HnS 반사자 형태를 유지**한다(1.17.0의 `cv->battlerAtk` 형태면 같은 반사자의 두 번 반사, 리뷰 D R3이 FAIL). **`moveTarget`은 이미 1.17.0 형태**(교체 전 기록)라 그대로 둔다. `MoveEndClearBits` 조기 반환의 `targetsDone` 초기화 2줄(`// HnS:`)도 유지한다.
 - **seq 479 #10330(TargetFailure):** 단계형 `TARGET_FAILURE_BOUNCE`, 반사 대상의 `gLastLandedMoves`·`gLastHitByType` 초기화. 이번 `CancelerTargetFailure`의 반사 판정 구간이 문맥이다.
-- 가로챈 멀리짖기 assert를 HnS 보호 수정으로 고치기로 하면 별도 커밋으로 하고, 출력 변화 행을 고친다.
+- 가로챈 멀리짖기 assert, 탈출버튼·탈출팩 뒤 반사·가로채기 assert를 HnS 보호 수정으로 고치기로 하면 별도 커밋으로 하고, 출력 변화 행을 고친다.
 - 사전 분석 문서(`chunk-129/part-A.md` 4절, `part-C.md` 4.1)의 "#9957(193)" 표기는 "#9784(166)"가 맞다.
