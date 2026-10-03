@@ -1,6 +1,21 @@
 # 현재 인수인계 상태
 
-## 2026-10-01 — seq 127 #9655 unit 완료 (현재, 노트북)
+## 2026-10-03 — seq 127 친구 답 반영: HnS 보호 수정 2건 (현재, 데스크탑)
+
+- **다음 시작 seq: 128** (#9475 `U-trainerpic-9475` Refactor/trainer pic info, XL 단독). 선진행한 seq 130·131·133·134·137·143·148·149·151·156·157·158·160·165는 "이미 적용(선진행)"으로 처리한다.
+- 친구 답(HANDBACK_2026-10-01 3절): [`docs/friend-handoff/FRIEND_REPLY_2026-10-03.md`](../friend-handoff/FRIEND_REPLY_2026-10-03.md). seq 127 결과 승인. 가방 도구 마비는 `몸저림` 유지, 소란 status1은 기록만.
+- **upstream 1.17.0에도 있는 기존 버그에 대한 HnS 보호 수정(#9655 커밋과 분리)**
+  - `2cba47a010`: 모든 상태를 고치는 도구로 헤롱헤롱만 풀 때 기존 헤롱헤롱 문장이 나온다(`ItemHealMonVolatile`, `// HnS:`). 다른 선택 순서는 그대로다.
+  - `fdc110d528`: 잠든 대기 포켓몬에게 잠깨는약·만병통치제를 써도 `gBattleMons[4]`에 쓰지 않는다(`BS_ItemCureStatus`, `// HnS:`, 1줄).
+- 검증
+  - 빌드(데스크탑): 종료 코드 0, ROM 32,715,796 B(+32 B), EWRAM 248,936 B, IWRAM 25,516 B, SHA1 `817f500d…`. 새 경고 0. 한글 줄 변경 0.
+  - 툴체인: 데스크탑의 seq 127 빌드 SHA1은 `f12d5c8e…`다(노트북 `a6ad839c…`와 다름, 툴체인 차이. ROM 크기는 같음).
+  - 임시 테스트(커밋 안 함): 4개 PASS. 헤롱헤롱 수정을 빼면 혼란 문장이 나와 FAIL한다.
+  - 전체 테스트: `test-baseline-seq127.txt`와 바이트 동일(PASS 2,335 / TOTAL 5,253).
+- 결과 기록: `full-sync-seq-127-127.md` "친구 답"·"HnS 보호 수정", `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 가방 도구 행, `HANDBACK_2026-10-01.md` 5절.
+- AI mGBA MCP는 시험 도입만 유지한다(데스크탑, 첫 시험 seq 107, 아직 설치 안 함). 친구 로컬 커밋은 full-sync가 끝날 때까지 건드리지 않는다.
+
+## 2026-10-01 — seq 127 #9655 unit 완료 (노트북)
 
 - **다음 시작 seq: 128** (#9475 `U-trainerpic-9475` Refactor/trainer pic info, XL 단독). 그 뒤 seq 129 #9674(L), seq 132 #9680(XL), seq 138.5 #8943(XL)이 이어진다. 선진행한 seq 130·131·133·134·137·143·148·149·151·156·157·158·160·165는 "이미 적용(선진행)"으로 처리한다. 일부 줄만 선반영된 seq 390 #10223·seq 298 #10445는 그 줄만 빼고 정상 검토한다.
 - **친구 답장(2026-10-01):** [`docs/friend-handoff/FRIEND_REPLY_2026-10-01.md`](../friend-handoff/FRIEND_REPLY_2026-10-01.md). D1~D7 권장안 확정, 선진행 중단, #9006 문장 확정, AI mGBA MCP 시험 도입 승인(데스크탑, 첫 시험 seq 107 #7305, 아직 설치 안 함). 친구는 full-sync 완료까지 로컬 커밋(`dac422efb3` 포함)을 보존하고 pull·push하지 않는다. **full-sync가 끝나면 완료 메시지와 최신 handback을 보내야 한다.**

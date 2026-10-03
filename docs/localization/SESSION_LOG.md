@@ -2,6 +2,29 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-03 — seq 127 친구 답 반영, HnS 보호 수정 2건 (데스크탑)
+
+- 시작: 노트북 세션의 `e43d6fc997`(seq 127 완료)까지 fast-forward로 pull했다.
+  - 데스크탑 `make hns -j8`: 종료 코드 0, ROM 32,715,764 B로 노트북 기록과 같다.
+  - SHA1 `f12d5c8e…`는 노트북 `a6ad839c…`와 다르다. 툴체인 차이다.
+- 요청: 친구 답(HANDBACK_2026-10-01 3절)을 사용자가 전달했다. 기록은 `docs/friend-handoff/FRIEND_REPLY_2026-10-03.md`다.
+  - 2번(헤롱헤롱 문장)과 3번(대기 포켓몬 범위 밖 쓰기)은 HnS 보호 수정으로 넣는다.
+  - 1번은 `몸저림` 유지, 4번은 기록만 한다.
+- 수정 파일과 커밋(#9655와 분리)
+  - `src/battle_util.c` `ItemHealMonVolatile`: `2cba47a010`
+  - `src/battle_script_commands.c` `BS_ItemCureStatus`: `fdc110d528`
+- 결정 이유: upstream 1.17.0에도 있는 기존 버그다. 친구 지시대로 최소 수정으로 고쳤다.
+  - 헤롱헤롱만 풀 때만 문장을 바꾸고, 혼란·상태이상 우선 순서는 그대로 두었다.
+  - 대기 포켓몬 경로에는 `targetBattler != MAX_BATTLERS_COUNT` 조건 1줄을 더했다.
+- 검증
+  - 빌드: 종료 코드 0, ROM 32,715,796 B(+32 B), SHA1 `817f500d…`. 새 경고 0, 한글 줄 0.
+  - 임시 테스트 4개(`test/battle/item_effect/`에 잠시 두고 지움): 모두 PASS다. 헤롱헤롱 수정을 되돌리면 2개가 `Matched MESSAGE`로 FAIL한다.
+  - 관련 5파일 110줄이 기준과 같다.
+  - 전체 테스트: `test-baseline-seq127.txt`와 바이트 동일, 로그 `build/port-check-hnsfix127.log`.
+- 문서: `full-sync-seq-127-127.md`("친구 답"·"HnS 보호 수정"·실기 확인 7번), `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 가방 도구 행, `HANDBACK_2026-10-01.md` 5절, STATUS.
+- 게임 화면 확인: 안 했다. 친구 확인은 seq 127 실기 확인 7번이다.
+- 다음 시작점: **seq 128 #9475**(XL). 사용자 지시를 받은 뒤 병렬 사전 분석 → 적용 → 리뷰 순서로 진행한다.
+
 ### 2026-10-01 — 친구 답장 반영, full-sync port seq 127 #9655 unit (노트북)
 
 - 요청: 친구 답장(D1~D7 결정, 선진행 중단, MCP 시험 도입)을 기록하고 seq 127 #9655로 돌아가 진행한다. 노트북에서 진행하기로 사용자가 정했다.
