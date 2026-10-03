@@ -12370,7 +12370,8 @@ void BS_ItemCureStatus(void)
     if (!HealStatusConditions(&party[gBattleStruct->itemPartyIndex[gBattlerAttacker]], GetItemStatus1Mask(gLastUsedItem), targetBattler))
     {
         statusChanged = TRUE;
-        if (GetItemStatus1Mask(gLastUsedItem) & STATUS1_SLEEP)
+        // HnS: a benched target has no battler (targetBattler == MAX_BATTLERS_COUNT); upstream 1.17.0 writes past gBattleMons here.
+        if (targetBattler != MAX_BATTLERS_COUNT && (GetItemStatus1Mask(gLastUsedItem) & STATUS1_SLEEP))
             gBattleMons[targetBattler].volatiles.nightmare = FALSE;
     }
 
