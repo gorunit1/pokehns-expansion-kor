@@ -4638,8 +4638,11 @@ bool32 NoAliveMonsForPlayer(void)
                 HP_count += GetMonData(&gParties[B_TRAINER_2][i], MON_DATA_HP);
             }
             // Get the number of fainted mons or eggs (not empty slots) in the first three party slots.
-            if ((GetMonData(&gParties[B_TRAINER_2][i], MON_DATA_SPECIES) && !GetMonData(&gParties[B_TRAINER_2][i], MON_DATA_HP))
-            || GetMonData(&gParties[B_TRAINER_2][i], MON_DATA_IS_EGG))
+            // HnS: in half-team multis only the player's own mons count towards the whiteout check,
+            // as before 12v12 (the partner's fainted mons used to sit in party slots 3-5 and were not counted).
+            if (AreMultiPartiesFullTeams()
+             && ((GetMonData(&gParties[B_TRAINER_2][i], MON_DATA_SPECIES) && !GetMonData(&gParties[B_TRAINER_2][i], MON_DATA_HP))
+              || GetMonData(&gParties[B_TRAINER_2][i], MON_DATA_IS_EGG)))
                 ineligibleMonsCount++;
         }
 
