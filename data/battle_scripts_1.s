@@ -7197,6 +7197,8 @@ BattleScript_BerryCureConfusionRet::
 	return
 
 BattleScript_MentalHerbCureRet::
+	@ HnS: item pop-up as in Champions (upstream 1.17.0 has none here); same order as BattleScript_WhiteHerbRet
+	call BattleScript_ItemPopUp_ScriptingNoFlush
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT
 	call BattleScript_MentalHerbCureMessages
 	updatestatusicon BS_SCRIPTING
@@ -7205,6 +7207,8 @@ BattleScript_MentalHerbCureRet::
 
 @ HnS: the Fling path (no removeitem) shares the bitmask messages below; cMULTISTRING_CHOOSER is a bitmask, never a table index
 BattleScript_MentalHerbCureFling::
+	@ HnS: same pop-up as BattleScript_WhiteHerbFling
+	call BattleScript_ItemPopUp_ScriptingNoFlush
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT
 	call BattleScript_MentalHerbCureMessages
 	updatestatusicon BS_SCRIPTING
