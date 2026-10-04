@@ -1,16 +1,32 @@
 # 현재 인수인계 상태
 
-## 2026-10-05 — full-sync 묶음 1: seq 142~147 (진행 중, 데스크탑)
+## 2026-10-05 — full-sync 묶음 1(seq 142~147) 적용 커밋까지, 검증 전 중단 (현재, 데스크탑)
 
-- 사용자 지시(2026-10-05): 친구에게 보고를 보냈고, 친구 답 없이 할 수 있는 것을 진행한다. 친구 답 대기 항목(팝업 Q1~Q11, 조사 2곳)은 건드리지 않는다.
-- 계획: 순서표대로 묶음 단위로 진행한다.
-  - 묶음 1: seq 142 #8930, 144 #7573, 145 #8472, 146 #9735, 147 #9761(143은 이미 적용)
-  - 이어서 150~155, 159~162, 166~170. 163은 이미 적용, 167 #9819는 #10548 직전으로 보류
-  - 묶음마다 사전 분석(병렬) → 적용 1개 → 리뷰 → 메인 검증 → 결과 문서 → push. 결정이 필요하면 멈추고 묻는다.
-- 시작 HEAD `0b6dbf8183`(코드 `32b62b550f`). 기준 ROM 32,715,348 B, SHA1 `900161aa…`. 테스트 기준 `test-baseline-seq139.txt`.
-- 사전 분석: `/home/hjm0725/hns-sync-work/chunk-142-147/`
+- **중단 상태(사용자가 데스크탑을 꺼야 해서 멈춤):** 묶음 1 커밋 6개는 **로컬에만** 있다. **push 안 함**, 리뷰·전체 테스트 전이다. 저장소 작업 트리는 깨끗하다(임시 테스트 파일 없음).
+  - `713e6499d7` #8930 도감 순서 자동화(조토 도감 그대로, ROM 0 B, 표·enum 바이트 동일)
+  - `811d70a039` #7573 이벤트 진화(D1 = A안: 스핀 진화의 파티 확인 HnS 유지, +144 B)
+  - `0742d9306b` #8472 Wish Passing(+336 B)
+  - `ebf537b3a8` #9735 잔여분(바다의 몸 A안, 메가니움 기본 폼 hunk 제외, +16 B)
+  - `f243869c9d` #9761, `26e66ff4ad` #9780(주석만, ROM 바이트 동일)
+  - 적용 담당 빌드: ROM 32,715,844 B(+496), EWRAM·IWRAM 0, SHA1 `2ba170869cd8df84c13b7244f3ff28f3b1ec737c`, 새 경고 0. 한글 줄 변경 0. 기록 `/home/hjm0725/hns-sync-work/chunk-142-147/apply/PROGRESS.md`
+- **다음에 할 일(순서대로)**
+  1. 커밋 리뷰 3개를 다시 돌린다(지시 `/home/hjm0725/hns-sync-work/chunk-142-147/REVIEW.md`).
+     - 이름 `dex`: #8930
+     - 이름 `evo`: #7573
+     - 이름 `battle`: #8472·#9735·#9761·#9780
+     - 중단된 결과물은 `review-*/`에 일부 남아 있을 수 있다.
+     - 사본은 `/home/hjm0725/hns-sync-work/chunk-150-155/base`(= HEAD 코드)에서 뜬다.
+  2. 메인 검증
+     - `make hns -j8`(SHA1 `2ba17086…` 기대), `python3 /home/hjm0725/hns-sync-work/chunk-1385/verify/save_compat.py run`
+     - 전체 `GITHUB_ACTION=1 make check BUILD=hns -j6`: `test-baseline-seq139.txt` 대비 사라진 PASS 0. 새 PASS·FAIL 예상: #8472 Wish 4 PASS, #9735 mega_sol·dragonize 새 FAIL 12(`Unmatched MESSAGE`), growth TO_DO→PASS 1
+     - 한글 회귀 `ALLOW_REPO=1 /home/hjm0725/hns-sync-work/chunk-132/D-tests/run.sh <저장소> <라벨>`(66/4), `ALLOW_REPO=1 /home/hjm0725/hns-sync-work/chunk-139/B-tests/run.sh <저장소> <라벨>`(31/3)
+  3. 결과 문서 `docs/friend-handoff/results/1.17.0-port/full-sync-seq-142-147.md`, 새 테스트 기준 목록, SESSION_LOG, `HANDBACK_2026-10-04.md`(또는 새 HANDBACK)에 기록한 뒤 push.
+  4. 묶음 2(seq 150 #9717, 152 #9757, 153 #9710, 154 #9779) 사전 분석을 **처음부터 다시** 한다. 지시 `/home/hjm0725/hns-sync-work/chunk-150-155/ANALYZE.md`의 "묶음 1 적용 중" 문구는 "적용됨"으로 고친다. 기준 사본 `chunk-150-155/base` = HEAD 코드. 중단된 부분 산출물(`tmp-150/` 등)은 참고만 한다.
+  5. 이어서 묶음 3(159·161·162), 묶음 4(166·168·169·170)를 진행한다. 163은 이미 적용, 167 #9819는 #10548 직전으로 보류.
+- 친구 답 대기(손대지 않음): 팝업 Q1~Q11(`HANDBACK_2026-10-04.md` 3절), 조사 문제 2곳(재확인 목록 10b).
+- 사용자 지시(2026-10-05): 친구 답 없이 할 수 있는 것을 진행한다. 묶음마다 사전 분석 → 적용 → 리뷰 → 검증 → 문서 → push 순서로 하고, 결정이 필요하면 멈춘다.
 
-## 2026-10-04 — 친구 요청 A·B·C 완료, seq 139 #9714 완료 — 사용자 확인 대기 (현재, 데스크탑)
+## 2026-10-04 — 친구 요청 A·B·C 완료, seq 139 #9714 완료 (데스크탑)
 
 - **멈춘 지점:** 사용자 지시대로 (1) A·B·C와 (2) seq 139까지 하고 멈췄다. 다음은 사용자 확인 뒤 **seq 142 #8930**(Automate regional Pokedex orders, L)이다. seq 140·141·143은 이미 적용됐다.
 - **(1) 친구 요청 A·B·C:** 결과 `docs/friend-handoff/results/1.17.0-port/friend-requests-abc-2026-10-04.md`, 친구 회신 `HANDBACK_2026-10-04.md` 6절
