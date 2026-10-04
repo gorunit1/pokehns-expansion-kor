@@ -2,6 +2,40 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-04 — #8943 사전 분석, 친구 mGBA 결과 수신 (데스크탑, 세션 종료)
+
+- #8943 사전 분석 5개를 끝냈다(스크래치 `/home/hjm0725/hns-sync-work/chunk-1385/`, STATUS의 "#8943 사전 분석 완료" 항목).
+  - A+B+C를 스크래치에서 빌드·테스트했다.
+  - 세이브 호환을 실측했다.
+  - 같은 단위 후속 7개와 HnS 보호 수정 후보 4개를 정했다.
+- 친구 mGBA 결과(`60b32d674d`): 전부 정상. 새 요청 3건이 있다. 기록은 `docs/friend-handoff/results/1.17.0-port/mgba-check-seq127-138.md`다.
+- 사용자에게 `B_MULTI_HALF_TEAMS`(TRUE 권장)와 진행 순서를 물었다. 답을 받기 전에 컨텍스트가 차서 세션을 넘긴다.
+- **다음 세션 시작 프롬프트:**
+
+```text
+HnS 한글화 저장소에서 pokeemerald-expansion 1.17.0 full-sync 이식을 이어서 해.
+1. git status --short --branch가 깨끗하면 git pull --ff-only origin pokehns-expansion-kor.
+2. AGENTS.md, docs/localization/STATUS.md 맨 위 3개 항목,
+   docs/friend-handoff/results/1.17.0-port/PORT_INSTRUCTIONS.md,
+   docs/friend-handoff/results/1.17.0-port/mgba-check-seq127-138.md,
+   docs/friend-handoff/results/1.17.0-port/RECHECK_BEFORE_COMPLETION.md를 읽어.
+3. 스크래치 /home/hjm0725/hns-sync-work/chunk-1385/ 의 part-A~E.md(+patch, verify/)가
+   seq 138.5 #8943 사전 분석 결과야. 이식 전 빌드는 chunk-1385/base/.
+4. 할 일 (내 결정: B_MULTI_HALF_TEAMS = [TRUE/FALSE], 순서는 아래대로)
+   (1) #8943 적용: part-A→B→C(+#9725 포함) 한 커밋, 이어서 같은 단위 후속 7개
+       (#9729, #9811, #9843, #10102, #10415, #10536, #10662, E-*.patch)를 PR별 커밋,
+       그 뒤 HnS 보호 수정(강제 교체 오른쪽 트레이너, 멀티 경험치 참가 비트,
+       반 팀 멀티 화이트아웃, #10536 상대 B 경험치 인덱스)을 리뷰 거쳐 별도 커밋.
+       빌드, 세이브 검증(chunk-1385/verify/save_compat.py run), 전체 테스트를
+       test-baseline-seq138.txt와 비교(LC_ALL=C 추출).
+   (2) 동시에 친구 요청 C(지닌 도구 팝업 전수 대조) 읽기 전용 분석을 병렬로.
+   (3) 친구 요청 A·B 문장 수정과 C 팝업 수정을 HnS 커밋으로(한글 임시 테스트로 확인).
+5. 방식: 병렬 사전 분석 → 적용 에이전트 1개 → 커밋별 병렬 리뷰 → 메인이 한글 줄 검사·재빌드·테스트
+   → 결과 문서·STATUS/SESSION_LOG·HANDBACK 갱신 → push. 에이전트는 저장소에 파일을 만들지 말고
+   스크래치 절대 경로(/home/hjm0725/hns-sync-work/)만 쓰게 해. 단위 하나가 끝나면 보고하고 멈춰.
+   멀티 에이전트 병렬 오케스트레이션을 써.
+```
+
 ### 2026-10-04 — 친구 답 반영 HnS 수정 3건, 재확인 목록 (데스크탑)
 
 - 요청: 친구 답장(HANDBACK_2026-10-01 5~9절에 대한 답)을 사용자가 전달했다. 기록은 `docs/friend-handoff/FRIEND_REPLY_2026-10-04.md`다.
