@@ -977,7 +977,7 @@ static bool32 HandleEndTurnSecondEventBlock(enum BattlerId battler)
     case SECOND_EVENT_BLOCK_REFLECT:
         if (gSideTimers[side].reflectTimer > 0 && --gSideTimers[side].reflectTimer == 0)
         {
-            gBattlerAttacker = GetBattlerSideForMessage(side);
+            gBattleScripting.battler = GetBattlerSideForMessage(side);
             gSideStatuses[side] &= ~SIDE_STATUS_REFLECT;
             BattleScriptCall(BattleScript_ReflectWoreOff);
             gBattleCommunication[MULTISTRING_CHOOSER] = side;
@@ -989,7 +989,7 @@ static bool32 HandleEndTurnSecondEventBlock(enum BattlerId battler)
     case SECOND_EVENT_BLOCK_LIGHT_SCREEN:
         if (gSideTimers[side].lightscreenTimer > 0 && --gSideTimers[side].lightscreenTimer == 0)
         {
-            gBattlerAttacker = GetBattlerSideForMessage(side);
+            gBattleScripting.battler = GetBattlerSideForMessage(side);
             gSideStatuses[side] &= ~SIDE_STATUS_LIGHTSCREEN;
             BattleScriptCall(BattleScript_LightScreenWoreOff);
             gBattleCommunication[MULTISTRING_CHOOSER] = side;
@@ -1011,7 +1011,7 @@ static bool32 HandleEndTurnSecondEventBlock(enum BattlerId battler)
     case SECOND_EVENT_BLOCK_MIST:
         if (gSideTimers[side].mistTimer > 0 && --gSideTimers[side].mistTimer == 0)
         {
-            gBattlerAttacker = GetBattlerSideForMessage(side);
+            gBattleScripting.battler = GetBattlerSideForMessage(side);
             gSideStatuses[side] &= ~SIDE_STATUS_MIST;
             BattleScriptCall(BattleScript_MistWoreOff);
             gBattleCommunication[MULTISTRING_CHOOSER] = side;
@@ -1072,7 +1072,7 @@ static bool32 HandleEndTurnSecondEventBlock(enum BattlerId battler)
     case SECOND_EVENT_BLOCK_AURORA_VEIL:
         if (gSideTimers[side].auroraVeilTimer > 0 && --gSideTimers[side].auroraVeilTimer == 0)
         {
-            gBattlerAttacker = GetBattlerSideForMessage(side);
+            gBattleScripting.battler = GetBattlerSideForMessage(side);
             gSideStatuses[side] &= ~SIDE_STATUS_AURORA_VEIL;
             BattleScriptCall(BattleScript_AuroraVeilWoreOff);
             gBattleCommunication[MULTISTRING_CHOOSER] = side;
@@ -1190,6 +1190,7 @@ static bool32 EndTurnTerrain(u32 terrainFlag, u32 stringTableId)
         gFieldStatuses &= ~terrainFlag;
         TryToRevertMimicryAndFlags();
         gBattleCommunication[MULTISTRING_CHOOSER] = stringTableId;
+        gBattleScripting.battler = gBattlerAttacker;
         BattleScriptCall(BattleScript_TerrainEnds);
         return TRUE;
     }
