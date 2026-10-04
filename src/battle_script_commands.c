@@ -9159,6 +9159,13 @@ static void Cmd_healpartystatus(void)
         {
             gBattleMons[partner].status1 = 0;
             gBattleMons[partner].volatiles.nightmare = FALSE;
+            // HnS: since #8943 a partner from another trainer (in-game partner, other opponent) is not in the loop
+            // below, so also clear its party status (status icon, re-entry). Its benched mons stay as they are.
+            if (!BattlersShareParty(gBattlerAttacker, partner))
+            {
+                BtlController_EmitSetMonData(partner, B_COMM_TO_CONTROLLER, REQUEST_STATUS_BATTLE, 0, sizeof(zero), &zero);
+                MarkBattlerForControllerExec(partner);
+            }
         }
         else
         {
@@ -12150,7 +12157,7 @@ void BS_ItemRestoreHP(void)
     enum BattlerId battler = MAX_BATTLERS_COUNT;
     u32 healParam = GetItemEffect(gLastUsedItem)[6];
     u32 partyIndex;
-    enum BattlerId owner = GetItemTargetPartyOwner(gBattlerAttacker, &partyIndex);
+    enum BattlerId owner = GetItemTargetPartyOwner(gBattlerAttacker, &partyIndex); // HnS: see GetItemTargetPartyOwner
     struct Pokemon *party = GetBattlerParty(owner);
     u16 hp = GetMonData(&party[partyIndex], MON_DATA_HP);
     u16 maxHP = GetMonData(&party[partyIndex], MON_DATA_MAX_HP);
@@ -12167,7 +12174,7 @@ void BS_ItemRestoreHP(void)
             gBattleResults.numRevivesUsed++;
 
         // Check if the recipient is an active battler.
-        battler = GetItemTargetBattler(owner, partyIndex);
+        battler = GetItemTargetBattler(owner, partyIndex); // HnS: see GetItemTargetPartyOwner
 
         // Get amount to heal.
         switch (healParam)

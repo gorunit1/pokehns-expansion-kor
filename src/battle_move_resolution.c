@@ -4395,6 +4395,10 @@ static enum Move GetAssistMove(void)
     {
         if (!IsBattlerAlly(battler, gBattlerAttacker))
             continue;
+        // HnS: party is the user's own party. Since #8943 an in-game partner (or the other opponent trainer) uses
+        // slots 0-2 of its own party, so its party index does not name one of these mons.
+        if (!BattlersShareParty(battler, gBattlerAttacker))
+            continue;
 
         if (gBattlerPartyIndexes[battler] < PARTY_SIZE)
             battlerByPartyId[gBattlerPartyIndexes[battler]] = battler;

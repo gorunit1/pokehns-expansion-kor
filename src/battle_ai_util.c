@@ -4097,9 +4097,13 @@ bool32 AnyPartyMemberStatused(enum BattlerId battlerId, bool32 checkSoundproof)
         if ((GetConfig(B_HEAL_BELL_SOUNDPROOF) == GEN_5
             || gAiLogicData->abilities[BATTLE_PARTNER(battlerId)] != ABILITY_SOUNDPROOF
             || !checkSoundproof)
-         && GetMonData(&party[battlerOnField2], MON_DATA_STATUS) != STATUS1_NONE
+         && GetMonData(&GetBattlerParty(GetPartnerBattler(battlerId))[battlerOnField2], MON_DATA_STATUS) != STATUS1_NONE // HnS: partner's own party
          && ShouldCureStatus(battlerId, BATTLE_PARTNER(battlerId), gAiLogicData))
             hasStatusToCure = TRUE;
+        // HnS: since #8943 an in-game partner (or the other opponent trainer) uses slots 0-2 of its own party, so its
+        // party index does not name a mon of this battler's party.
+        if (!BattlersShareParty(battlerId, GetPartnerBattler(battlerId)))
+            battlerOnField2 = battlerOnField1;
     }
     else // In singles there's only one battlerId by side.
     {
@@ -4867,6 +4871,9 @@ s32 CountUsablePartyMons(enum BattlerId battlerId)
     {
         battlerOnField1 = gBattlerPartyIndexes[battlerId];
         battlerOnField2 = gBattlerPartyIndexes[GetPartnerBattler(battlerId)];
+        // HnS: see AnyPartyMemberStatused; a partner with its own party takes no slot of this one.
+        if (!BattlersShareParty(battlerId, GetPartnerBattler(battlerId)))
+            battlerOnField2 = battlerOnField1;
     }
     else // In singles there's only one battlerId by side.
     {
