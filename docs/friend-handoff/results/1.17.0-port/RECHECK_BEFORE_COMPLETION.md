@@ -20,6 +20,9 @@
 | 6 | 불바다 종료 문장의 진영이 반대 | seq 385 #10214 | D 회귀 테스트 2-13 기대값, 출력 변화 문서 행 | |
 | 7 | #9819(록클라임·안개제거 항상 정의) 미적용 | seq 446 #10548 **직전**에 #9819 → #10548 | 파티 메뉴 필드 기술 항목 | |
 | 8 | 일부만 선반영된 PR: #10223(seq 390) 1줄, #10445(seq 298) 1줄 | 해당 seq | 선반영 줄만 빼고 나머지 hunk 정상 검토 | |
+| 8b | seq 138.5 #8943 단위 뒤 남은 같은 unit 행: #9799(171) 링크 인트로 문장 `sText_LinkTrainerSentOutPkmn` 토큰과 HnS 교체 등장 왼쪽 우회 정리·AI `IsSwitchinValid` 파티 인덱스, #10051(204) `B_TRAINER_*` 이름 변경(HnS 전용 줄 약 160줄과 E-215·E-287 적응 포함), #10059(207) 풀 팀 멀티 파티 메뉴 | seq 171·204·207 | `full-sync-seq-138.5-138.5.md` "후속 행 메모" | |
+| 8c | 멀티 화이트아웃: HnS 보호 수정 `cc0576a543`(반 팀은 파트너 기절 수를 세지 않음)이 들어간 `NoAliveMonsForPlayer`를 #10039가 다시 쓰고 #10568이 `WillPlayerWhiteOutIfPartnerWinsAlone`으로 대체한다. 209~315 사이에는 다른 쓸 포켓몬이 없는 플레이어가 목호가 남은 동안 계속 진행하는 중간 상태가 생길 수 있다 | seq 209 #10039, 315 #10568(+340 #10674) | 두 행 모두 HnS 보정 필요 여부, 로켓단 아지트 실기(3마리/4마리 이상) | |
+| 8d | **#10711 HnS 적응 필요:** `AreMultiPartiesFullTeams`의 새 조기 반환(`B_MULTI_HALF_TEAMS` TRUE, `gBattleTypeFlags`에 TRAINER 없음)이 `gSpecialVar_Result`를 설정하지 않는다. `multi_do`는 배틀 전에 부르므로 직전 배틀이 야생이거나 이어하기 직후면 지난 `VAR_RESULT=1`을 읽어 로켓단 아지트에서 3마리 선택을 건너뛴다 | seq 348 #10711 | 조기 반환에서도 `gSpecialVar_Result`를 세우고 트레이너 여부는 `TRAINER_BATTLE_PARAM.opponentA`로 보는 HnS 보정. `AreOpponentsFacilityTrainers()` 두 줄(`b43032bf03`, 배틀타워 상대 141 분리)을 유지한 채 손 병합한다. TRAINER 조기 반환의 HnS 판정은 `multi_do`(필드, 지난 플래그)와 따라오기 NPC(필드, 새 플래그)를 구분한다. seq 170 #9751 뒤에는 이 판정을 테스트 러너로 실측할 수 없다(TESTING 분기) | |
 
 ## 3. 한글 문구 (이식과 무관하게 찾은 것, 친구 확인 대상)
 
@@ -41,3 +44,14 @@
 | 15 | `make hns`는 RELEASE=0이라 그림 없는 트레이너 ID, 비어 있는 저장 스택 등에서 assertf 화면이 뜬다. 새 파트너·트레이너 추가 때 그림 존재 확인(`full-sync-seq-128-128.md`) | |
 | 16 | 프런티어 AI 파트너 멀티의 트레이너 슬라이드가 `gBattlePartners`를 표 밖에서 읽을 수 있음(지금은 슬라이드 대사가 없어 도달 안 함, `full-sync-seq-128-128.md`) | |
 | 17 | 한글 출력 회귀 테스트(턴 종료 70개 등)가 저장소 밖에만 있다. 저장소에 둘지 친구와 정한다 | |
+
+## 5. HnS가 upstream과 다르게 둔 곳 (뒤 PR을 이식할 때 다시 맞출 것)
+
+| # | 내용 | 위치 | 다시 볼 때 | 해결 |
+|---|---|---|---|---|
+| 18 | **녹화 배틀 섹터 여유 0 B.** `RecordedBattleSave` 4,092 B = `SECTOR_COUNTER_OFFSET`(seq 138.5 #8943, A안) | `include/recorded_battle.h`, `STATIC_ASSERT(RecordedBattleSaveFreeSpace)` | `struct Pokemon`·`BATTLER_RECORD_SIZE`·`MAX_BATTLE_TRAINERS`를 바꾸는 PR. `/home/hjm0725/hns-sync-work/chunk-1385/verify/save_compat.py run` 재실행 | |
+| 19 | **`struct Trainer` 비트필드 HnS 5/4**(`encounterMusic:5`, `mugshotColor:4`, upstream 1.17.0은 4/3). HnS 곡 0~26·`MUGSHOT_COLOR_LIGHT_BLUE` 때문이며 upstream 폭이면 `data.c` 빌드 실패 | `include/data.h` | `struct Trainer`를 바꾸는 PR | |
+| 20 | **녹화 시작 파티 정적 저장:** `sSavedParties`를 upstream 힙 포인터 대신 정적 EWRAM 배열(+2,400 B)로 둔다. upstream 형식은 재생 때 힙 초기화로 저장 파티가 덮여 재생 뒤 플레이어 파티가 깨지고, 녹화에 전투 뒤 파티를 저장한다(1.17.0·master 같음, 미병합 `grintoul-recorded-battle-fix`) | `src/recorded_battle.c` | `recorded_battle.c`를 바꾸는 PR, upstream이 이 버그를 고칠 때 | |
+| 21 | HnS 보호 수정(upstream 1.17.0에도 남은 #8943 결함): 강제 교체 오른쪽 트레이너 `70fe10ecd8`, 멀티 경험치 참가 비트 `c68e8e13ba`, 반 팀 화이트아웃 `cc0576a543`, 리뷰 후 수정 파티 번호 충돌 `8bcf557c20`(도구 대상·기술 습득·레벨업 연출·기사회생의기원·미래예지·급소 횟수·치유방울)·목호 포켓몬 도구 사용 `624ef7d4bd`(도우미 `GetItemTargetPartyOwner`)·배틀 밖 가드 `6c15064bce`. #10536 `givenExpMons` `>> 1` 보정 2곳(`93656e609b`) | `battle_script_commands.c` `Cmd_forcerandomswitch`·`NoAliveMonsForPlayer`, `battle_util.c` 참가 비트·경험치 | 같은 함수를 고치는 upstream PR이 들어오면 그쪽을 우선하고 HnS 줄을 정리 | |
+| 22 | 1.17.0에도 남은 #8943 결함(고치지 않음): 링크 비멀티 `SetBattlePartyIds`가 컨트롤러 설정 전에 `GetBattlerParty`를 부른다(선두가 알·기절일 때만). 녹화 통신 멀티 재생에서 `BattleSideHasTwoTrainers`가 상대를 트레이너 1명으로 판정(배틀러 3이 상대 A 파티를 읽음, 실기 불가). `AreMultiPartiesFullTeams`가 `0xFFFF`(2vs1)로 HnS `gTrainers`를 읽는다(범위 밖 ROM 읽기, 크래시 없음. 프런티어 번호로 읽던 것은 `b43032bf03`에서 시설 배틀이면 읽지 않게 분리). side 기준 `itemLost[B_SIDE_PLAYER]`·`activeGimmick[GetBattlerSide]`(목호 배틀러가 플레이어 칸 표시를 건드림, 배틀 뒤 도구 복원 결과 영향 없음, 공생만 극히 드물게 다름). (레벨업 연출·체력 상자 충돌은 `8bcf557c20`으로 해결) | `battle_main.c`, `battle_controllers.c`, `battle_util.c`, `battle_move_resolution.c` | upstream 수정 여부 확인 | |
+| 23 | **`B_MULTI_HALF_TEAMS FALSE`(친구 확정 2026-10-04, `FRIEND_REPLY_2026-10-04.md` 2절).** 친구가 mGBA로 배틀타워 멀티 UI·6쌍을 확인한다. 두 트레이너 동시 발견 6쌍의 4마리 트레이너가 4마리를 내고 배틀타워 멀티룸이 풀 팀 UI. TRUE면 이식 전과 같다 | `include/config/battle.h` | 친구 답에 따라 config 1줄 | |

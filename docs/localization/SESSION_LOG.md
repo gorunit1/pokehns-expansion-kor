@@ -2,6 +2,45 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-04 — seq 138.5 #8943 단위 적용, 지닌 도구 팝업 대조, 친구 디스코드 답 반영 (데스크탑)
+
+- **요청/범위:** 사용자 지시 (1) #8943 적용 + 같은 단위 후속 7개 + HnS 보호 수정, (2) 친구 요청 C 읽기 전용 분석(병렬). (3) A·B·C 코드 수정은 다음 단계. 작업 중 사용자가 친구 디스코드 답을 전달했다(`B_MULTI_HALF_TEAMS` (a) FALSE 확정, 상대 141 분리 검토, 인트로 주인공 Y 통일). 사용자는 데스크탑을 켜 둔 채 랩탑에서 원격으로 지시했다.
+- **진행 방식:** 사전 분석(이전 세션, `chunk-1385/part-A~E`) → 적용 에이전트 1개 → 커밋 리뷰 5개(A·B·C·E·H) → 수정 에이전트(R1~R3) → 수정 커밋 리뷰 FR1·FR2 → 상대 141 에이전트 → R4 → 리뷰 FR3. 팝업 분석 P1(경로 전수)·P2(Champions 근거·멘탈허브 patch)·P3(통합). 메인은 재빌드·세이브 검증·전체 테스트·한글 회귀·문서를 맡았다. 에이전트는 저장소 밖 스크래치만 썼고, 임시 테스트는 저장소에 잠시 넣었다 지웠다.
+- **커밋(코드):** `022e666847` #8943(+#9725), 후속 `4b437cd5da` #9729, `8e205d9e92` #9811, `7db72aa705` #9843, `4616fac998` #10102, `262bd0abd7` #10415, `93656e609b` #10536, `b09e11c9b5` #10662, HnS `70fe10ecd8`·`c68e8e13ba`·`cc0576a543`, 리뷰 후 HnS `8bcf557c20`·`624ef7d4bd`·`6c15064bce`·`f3a58f9939`, 친구 요청 `b43032bf03`(상대 141)·`5bbd01e69f`(인트로 Y).
+- **결정과 이유**
+  - `B_MULTI_HALF_TEAMS FALSE` + 로켓단 아지트 4명 Half(사용자 결정 → 친구 확정, HGSS도 각자 파티 사용).
+  - `struct Trainer` 5/4, 녹화 시작 파티 정적 배열, #10536 `>> 1`, `sText_LinkTrainerSentOutPkmn` 유지(#9799 때): 사전 분석 권장 그대로.
+  - 리뷰가 찾은 "목호 파티 번호가 플레이어 파티 번호와 겹침" 결함 묶음(upstream 1.17.0·master·upcoming 같음)은 이식 전 HnS 동작을 기준으로 HnS 보호 수정했다. 지금 구조에서 불가능한 이식 전 동작 3곳은 차이로 기록했다(목호 자리가 빈 뒤 내 포켓몬 기력의조각, 조수 후보, 치유방울의 목호 대기 포켓몬).
+  - 상대 141: 배틀 자원이 있을 때만 시설 배틀 플래그를 믿는 조건(필드의 `multi_do`가 지난 플래그를 읽는 문제를 실측으로 기각).
+- **검증(최종 코드 `f3a58f9939`)**
+  - 빌드 `make hns -j8` 종료 0: ROM 32,715,172 B(−1,872) / EWRAM 250,128(+1,192) / IWRAM 25,516. SHA1 `4f87458453ed4d9f701debe458f1a038531ad2ef`, 새 경고 0. 로그 `build/localization-logs/hns-20261004-174522-post8943r4.log`
+  - `python3 /home/hjm0725/hns-sync-work/chunk-1385/verify/save_compat.py run`: PASS(FAIL 0, WARN 3)
+  - 세이브 왕복 `verify/savetest/run_all.sh`: PASS(`cc0576a543`에서)
+  - 전체 테스트 `make check BUILD=hns -j6`: PASS 2,350 / TOTAL 5,271, 사라진 PASS 0. 목록이 세 번 모두 같다 → `test-baseline-seq138.5.txt`
+  - 한글 회귀 `ALLOW_REPO=1 chunk-132/D-tests/run.sh`: 66/4
+- **게임 화면 확인:** 하지 않았다(mGBA 없음). 친구 확인 목록은 `HANDBACK_2026-10-04.md` 5절이다(로켓단 아지트 멀티 위주).
+- **문서:** 결과 문서 `full-sync-seq-138.5-138.5.md`, 팝업 대조 `popup-champions-compare.md`, 친구 회신 `HANDBACK_2026-10-04.md`(+README 링크), `FRIEND_REPLY_2026-10-04.md` 2절, `RECHECK_BEFORE_COMPLETION.md` 8b~8d·18~23, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 2행, `test-baseline-seq138.5.txt`.
+- **남은 문제**
+  - 실기 확인
+  - 친구 Champions 확인 답(Q1~Q11)
+  - 계획서 열매 이름 오기 3곳(애슈·랑사로 정정할지)
+  - #10711(seq 348) HnS 적응, #10039~#10568 화이트아웃 중간 상태
+- **다음 세션 시작 프롬프트:**
+
+```text
+HnS 한글화 저장소에서 pokeemerald-expansion 1.17.0 full-sync 이식을 이어서 해.
+1. git status --short --branch가 깨끗하면 git pull --ff-only origin pokehns-expansion-kor.
+2. AGENTS.md, docs/localization/STATUS.md 맨 위 항목, docs/friend-handoff/HANDBACK_2026-10-04.md,
+   docs/friend-handoff/results/1.17.0-port/popup-champions-compare.md,
+   docs/friend-handoff/results/1.17.0-port/PORT_INSTRUCTIONS.md를 읽어.
+3. 할 일: 친구 요청 A(순풍 시작 문장)·B(그래스필드 회복 문장)·C(멘탈허브 팝업,
+   /home/hjm0725/hns-sync-work/chunk-popup/p2-mentalherb.patch; 친구가 Q1~Q11에 답했으면 선택 patch도)를
+   HnS 커밋으로. 새 한글 문장 금지, 한글 임시 테스트로 문장·팝업 순서 확인, BATTLE_MESSAGE_OUTPUT_CHANGES.md 기록.
+   그 뒤 seq 139 #9714.
+4. 방식: 병렬 사전 분석 → 적용 에이전트 1개 → 커밋별 병렬 리뷰 → 메인이 한글 줄 검사·재빌드·테스트
+   → 결과 문서·STATUS/SESSION_LOG·HANDBACK 갱신 → push. 에이전트는 스크래치 절대 경로만 쓰게 해.
+```
+
 ### 2026-10-04 — #8943 사전 분석, 친구 mGBA 결과 수신 (데스크탑, 세션 종료)
 
 - #8943 사전 분석 5개를 끝냈다(스크래치 `/home/hjm0725/hns-sync-work/chunk-1385/`, STATUS의 "#8943 사전 분석 완료" 항목).

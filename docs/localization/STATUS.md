@@ -1,20 +1,39 @@
 # 현재 인수인계 상태
 
-## 2026-10-04 — seq 138.5 #8943 적용 + 친구 요청 A·B·C (진행 중, 데스크탑)
+## 2026-10-04 — seq 138.5 #8943 단위 완료, 팝업 대조 분석, 친구 디스코드 답 반영 (현재, 데스크탑)
 
-- 시작: HEAD `1925d84801`(코드 `b07fd88953`). 기준 빌드 ROM 32,717,044 B, SHA1 `04c307c5…` 재확인.
-- **사용자 결정(2026-10-04)**
-  - #8943은 A안 그대로: 녹화 배틀 기록 무효화 허용, 일반 세이브 호환 유지.
-  - `B_MULTI_HALF_TEAMS = FALSE` + 로켓단 아지트 멀티 트레이너 4명(ARIANA_1, GRUNT_23, LANCE_3, CLAIR_3)에 `Multi Party: Half`.
-  - FALSE로 생기는 변화(part-C 6절: 두 트레이너 동시 발견 6쌍이 4마리, 배틀타워 멀티룸 풀 팀 UI)는 출력·동작 변화로 기록하고 친구 보고 때 질문으로 올린다.
-- **할 일(순서, 단위마다 보고 후 멈춤)**
-  1. #8943: part-A→B→C(+#9725) 1커밋 → 후속 7개 PR별 커밋(#9729, #9811, #9843, #10102, #10415, #10536(+`>> 1`), #10662) → HnS 보호 수정 별도 커밋(강제 교체 오른쪽 트레이너, 멀티 경험치 참가 비트, 반 팀 멀티 화이트아웃). 검증: 빌드·새 경고 0, `save_compat.py run`, 전체 테스트 vs `test-baseline-seq138.txt`, seq 132 한글 회귀 66/4.
-  2. (1)과 병렬: 친구 요청 C(지닌 도구 팝업 Champions 대조) 읽기 전용 분석. 스크래치 `/home/hjm0725/hns-sync-work/chunk-popup/`.
-  3. 친구 요청 A(순풍 시작 문장)·B(그래스필드 회복 문장)·C 팝업 수정 HnS 커밋.
-- 사전 분석 산출물: `/home/hjm0725/hns-sync-work/chunk-1385/`(part-A~E.md, patch, `verify/`, `base/`).
-- 완료 기준: 위 커밋과 검증, 결과 문서 `full-sync-seq-138.5-138.5.md`, 출력 변화 문서, 재확인 목록, STATUS/SESSION_LOG/HANDBACK 갱신, push.
+- **다음 할 일: 친구 요청 A·B·C 코드 수정**(사용자 지시 순서 (3), 사용자 확인 뒤 시작). 그다음 **seq 139 #9714**(Defog/Tidy Up restructure, L).
+  - A 순풍 시작 문장: `STRINGID_TAILWINDBLEW`의 `{B_ATK_PREFIX2}에게` → `우리 편`/`상대`를 내는 팀 토큰. 문장 본문은 그대로다.
+  - B 그래스필드 회복 문장: `STRINGID_GRASSYTERRAINHEALS` 본문을 공용 `{B_ATK_NAME_WITH_PREFIX}의\n체력이 회복되었다!`로 바꾼다.
+  - C 멘탈허브 팝업: 확정 patch `/home/hjm0725/hns-sync-work/chunk-popup/p2-mentalherb.patch`(Ret+Fling). Fling은 친구 Q1 답에 따라 뺄 수 있다.
+  - 선택 patch(`p3-opt-*.patch`)는 친구 답(`HANDBACK_2026-10-04.md` 3절 Q1~Q11)을 받은 뒤 정한다.
+  - 한글 임시 테스트로 확인하고 `BATTLE_MESSAGE_OUTPUT_CHANGES.md`에 기록한다.
+- **#8943 단위 결과:** `docs/friend-handoff/results/1.17.0-port/full-sync-seq-138.5-138.5.md`. 시작 HEAD `1ce2b6d4bf` 뒤 커밋은 다음과 같다.
+  - #8943 `022e666847`(+#9725)
+  - 같은 단위 후속 7개(선반영 seq 141·164·180·215·287·307·342): `4b437cd5da`·`8e205d9e92`·`7db72aa705`·`4616fac998`·`262bd0abd7`·`93656e609b`·`b09e11c9b5`
+  - HnS 보호 수정 3개: `70fe10ecd8`·`c68e8e13ba`·`cc0576a543`
+  - 리뷰 후 HnS 수정 4개: `8bcf557c20`·`624ef7d4bd`·`6c15064bce`·`f3a58f9939`. 원인은 목호 멀티 파티 번호 충돌이고, upstream 1.17.0에도 같은 결함이 있다.
+  - 친구 요청 상대 141 분리 `b43032bf03`
+  - 단위 밖 인트로 주인공 Y좌표 `5bbd01e69f`
+- **검증(최종 코드 `f3a58f9939`)**
+  - 빌드: ROM 32,715,172 B(−1,872), EWRAM 250,128 B(+1,192, 여유 12,016), IWRAM 0. SHA1 `4f874584…`, 새 경고 0
+  - 세이브: `save_compat.py run` PASS(FAIL 0, WARN 3 = 의도된 차이). 세이브 왕복 PASS(이식 전 세이브 바이트 동일 복원). 녹화 배틀만 A안대로 무효
+  - 전체 테스트: PASS 2,350 / TOTAL 5,271, 사라진 PASS 0. 새 기준 목록 `test-baseline-seq138.5.txt`
+  - 한글 턴 종료 회귀: 66/4(이전과 같음)
+  - 한글 소스 줄: 통신 교체 문장 3쌍의 토큰만
+  - 리뷰: 커밋 리뷰 5개 → 수정 커밋 리뷰 FR1·FR2 → FR3(상대 141·R4)
+  - **실기(mGBA) 미확인.** 확인 목록은 결과 문서 "실기 확인 항목"과 `HANDBACK_2026-10-04.md` 5절이다.
+- **친구 결정(디스코드, `FRIEND_REPLY_2026-10-04.md` 2절)**
+  - `B_MULTI_HALF_TEAMS` (a) FALSE 유지. 6쌍 4마리와 배틀타워 멀티 UI 변화는 기록했다.
+  - 상대 141 분리를 검토해 달라고 했다 → `b43032bf03`
+  - 인트로 Y 통일 → `5bbd01e69f`
+- **요청 C 분석 완료(코드 미변경):** `docs/friend-handoff/results/1.17.0-port/popup-champions-compare.md`
+  - 경로 56개 가운데 Champions와 다른 곳은 7개다. 확정은 멘탈허브 1개이고, 나머지 6개는 친구 확인이 필요하다.
+  - 계획서의 열매 이름 "이스타·캄라"는 오기다(실제 #10268 대상은 애슈·미클·자보·애터·랑사). 3곳에 있고 아직 고치지 않았다.
+- 재확인 목록 추가: `RECHECK_BEFORE_COMPLETION.md` 8b~8d(#9799·#10051·#10059, 화이트아웃 #10039~#10568, **#10711 HnS 적응**), 18~23(녹화 섹터 여유 0 B, `struct Trainer` 5/4, `sSavedParties` 정적 배열, HnS 보호 수정 목록, 남은 1.17.0 결함, FALSE 결정).
+- 스크래치: `/home/hjm0725/hns-sync-work/chunk-1385/`(적용·리뷰·수정 기록, `verify/`), `/home/hjm0725/hns-sync-work/chunk-popup/`(P1~P3, patch).
 
-## 2026-10-04 — 친구 mGBA 결과 수신, 다음 작업 대기 (현재, 데스크탑)
+## 2026-10-04 — 친구 mGBA 결과 수신, 다음 작업 대기 (데스크탑)
 
 - **친구 mGBA 결과(`60b32d674d` ROM, seq 127~138): 확인 항목 전부 정상.** 기록은 `docs/friend-handoff/results/1.17.0-port/mgba-check-seq127-138.md`다. 10-04 HnS 수정 3건은 아직 실기 확인 전이다.
 - **친구 새 요청 3건**(같은 문서 2·3절)
