@@ -11132,3 +11132,8 @@ enum Stat GetDownloadStat(enum BattlerId battler)
     else
         return STAT_SPATK;
 }
+
+struct PartyState *GetBattlerPartyState(enum BattlerId battler)
+{
+    return &gBattleStruct->partyState[GetBattlerTrainer(battler)][gBattlerPartyIndexes[battler]];
+}
