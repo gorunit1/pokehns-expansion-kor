@@ -1826,6 +1826,7 @@ bool32 HandleFaintedMonActions(void)
             do
             {
                 gBattlerFainted = gBattlerTarget = gBattleStruct->eventState.faintedActionBattler;
+                // HnS: same >> 1 as Cmd_getexp; upstream (GetBattlerTrainer() & BIT_FLANK) is 2 for B_TRAINER_3 and overruns givenExpMons[2].
                 if (gBattleMons[gBattlerFainted].hp == 0
                  && !(gBattleStruct->givenExpMons[(GetBattlerTrainer(gBattlerFainted) & BIT_FLANK) >> 1] & (1u << gBattlerPartyIndexes[gBattlerFainted]))
                  && !(gAbsentBattlerFlags & (1u << gBattlerFainted)))
@@ -7884,7 +7885,9 @@ bool32 IsFutureSightAttackerInParty(enum BattlerId battlerAtk, enum BattlerId ba
         return FALSE;
 
     struct Pokemon *party = GetBattlerParty(battlerAtk);
-    if (IsDoubleBattle())
+    // HnS: the ally can only hold the attacker's mon when both battlers share a party; since #8943 an in-game partner's
+    // (or second opponent's) mons use indexes 0-2 of their own party (upstream 1.17.0 compares the index alone).
+    if (IsDoubleBattle() && BattlersShareParty(battlerAtk, BATTLE_PARTNER(battlerAtk)))
     {
         return &party[gBattleStruct->futureSight[battlerDef].partyIndex] != &party[gBattlerPartyIndexes[battlerAtk]]
             && &party[gBattleStruct->futureSight[battlerDef].partyIndex] != &party[gBattlerPartyIndexes[BATTLE_PARTNER(battlerAtk)]];
@@ -8076,8 +8079,11 @@ static bool32 IsCriticalHit(struct DamageContext *ctx)
         isCrit = RandomChance(RNG_CRITICAL_HIT, 1, GetCriticalHitOdds(critChance));
 
     // Counter for IF_CRITICAL_HITS_GE evolution condition.
+    // HnS: gPartyCriticalHits is indexed by player party slot; since #8943 an in-game partner's mons use indexes 0-2
+    // of their own party, so only count battlers owned by B_TRAINER_0 (upstream 1.17.0 lets the partner's crits land on the player's mons).
     if (isCrit && IsOnPlayerSide(ctx->battlerAtk)
-     && !(gBattleTypeFlags & BATTLE_TYPE_MULTI && GetBattlerPosition(ctx->battlerAtk) == B_POSITION_PLAYER_LEFT))
+     && !(gBattleTypeFlags & BATTLE_TYPE_MULTI && GetBattlerPosition(ctx->battlerAtk) == B_POSITION_PLAYER_LEFT)
+     && GetBattlerTrainer(ctx->battlerAtk) == B_TRAINER_0)
         gPartyCriticalHits[gBattlerPartyIndexes[ctx->battlerAtk]]++;
 
     gSpecialStatuses[ctx->battlerDef].criticalHit = isCrit;

@@ -6015,7 +6015,9 @@ static void Cmd_handlelearnnewmove(void)
         if (IsDoubleBattle())
         {
             battler = GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT);
-            if (gBattlerPartyIndexes[battler] == monId
+            // HnS: monId is a player party index. Since #8943 an in-game partner's mons use indexes 0-2 of their
+            // own party, so only a right battler owned by B_TRAINER_0 can be this mon (upstream 1.17.0 checks the index alone).
+            if (gBattlerPartyIndexes[battler] == monId && GetBattlerTrainer(battler) == B_TRAINER_0
                 && !(gBattleMons[battler].volatiles.transformed))
             {
                 GiveMoveToBattleMon(&gBattleMons[battler], learnMove);
@@ -6120,6 +6122,7 @@ static void Cmd_yesnoboxlearnmove(void)
                     }
                     if (IsDoubleBattle()
                         && gBattlerPartyIndexes[2] == gBattleStruct->expGetterMonId
+                        && GetBattlerTrainer(B_BATTLER_2) == B_TRAINER_0 // HnS: see Cmd_handlelearnnewmove
                         && MOVE_IS_PERMANENT(2, movePosition))
                     {
                         RemoveBattleMonPPBonus(&gBattleMons[2], movePosition);
@@ -6933,7 +6936,8 @@ static bool32 IsMonGettingExpSentOut(void)
 {
     if (gBattlerPartyIndexes[0] == gBattleStruct->expGetterMonId)
         return TRUE;
-    if (IsDoubleBattle() && gBattlerPartyIndexes[2] == gBattleStruct->expGetterMonId)
+    if (IsDoubleBattle() && gBattlerPartyIndexes[2] == gBattleStruct->expGetterMonId
+     && GetBattlerTrainer(B_BATTLER_2) == B_TRAINER_0) // HnS: see Cmd_handlelearnnewmove
         return TRUE;
 
     return FALSE;
@@ -9174,7 +9178,8 @@ static void Cmd_healpartystatus(void)
         {
             enum Ability ability;
             bool32 isAttacker = gBattlerPartyIndexes[gBattlerAttacker] == i;
-            bool32 isDoublesPartner = gBattlerPartyIndexes[partner] == i && IsBattlerAlive(partner);
+            // HnS: party[i] is the user's party; since #8943 an in-game partner's mons use indexes 0-2 of their own party.
+            bool32 isDoublesPartner = gBattlerPartyIndexes[partner] == i && IsBattlerAlive(partner) && BattlersShareParty(gBattlerAttacker, partner);
 
             if (GetConfig(B_HEAL_BELL_SOUNDPROOF) == GEN_5
              || (GetConfig(B_HEAL_BELL_SOUNDPROOF) >= GEN_8 && isAttacker))
@@ -12128,9 +12133,12 @@ void BS_ItemRestoreHP(void)
             gBattleResults.numRevivesUsed++;
 
         // Check if the recipient is an active battler.
+        // HnS: since #8943 an in-game partner's mons use indexes 0-2 of their own party, so the ally only holds the
+        // recipient when both battlers share a party (upstream 1.17.0 pairs by index alone). Same in the other BS_Item* below.
         if (gBattleStruct->itemPartyIndex[gBattlerAttacker] == gBattlerPartyIndexes[gBattlerAttacker])
             battler = gBattlerAttacker;
-        else if (IsDoubleBattle() && gBattleStruct->itemPartyIndex[gBattlerAttacker] == gBattlerPartyIndexes[BATTLE_PARTNER(gBattlerAttacker)])
+        else if (IsDoubleBattle() && gBattleStruct->itemPartyIndex[gBattlerAttacker] == gBattlerPartyIndexes[BATTLE_PARTNER(gBattlerAttacker)]
+              && BattlersShareParty(gBattlerAttacker, BATTLE_PARTNER(gBattlerAttacker)))
             battler = BATTLE_PARTNER(gBattlerAttacker);
 
         // Get amount to heal.
@@ -12171,7 +12179,8 @@ void BS_ItemRestoreHP(void)
 
             enum BattlerId partner = BATTLE_PARTNER(gBattlerAttacker);
             // Absent battlers on the field need to be replaced
-            if (IsDoubleBattle() && (gAbsentBattlerFlags & (1u << partner)))
+            // HnS: only from a shared party; an in-game partner's slot would send out its own mon with this index.
+            if (IsDoubleBattle() && (gAbsentBattlerFlags & (1u << partner)) && BattlersShareParty(gBattlerAttacker, partner))
             {
                 gAbsentBattlerFlags &= ~(1u << partner);
                 gBattleCommunication[MULTIUSE_STATE] = TRUE;
@@ -12197,7 +12206,8 @@ void BS_ItemCureStatus(void)
         targetBattler = gBattlerAttacker;
     }
     else if (IsDoubleBattle()
-     && gBattleStruct->itemPartyIndex[gBattlerAttacker] == gBattlerPartyIndexes[BATTLE_PARTNER(gBattlerAttacker)])
+     && gBattleStruct->itemPartyIndex[gBattlerAttacker] == gBattlerPartyIndexes[BATTLE_PARTNER(gBattlerAttacker)]
+     && BattlersShareParty(gBattlerAttacker, BATTLE_PARTNER(gBattlerAttacker))) // HnS: see BS_ItemRestoreHP
     {
         statusChanged = ItemHealMonVolatile(BATTLE_PARTNER(gBattlerAttacker), gLastUsedItem);
         targetBattler = BATTLE_PARTNER(gBattlerAttacker);
@@ -12321,7 +12331,8 @@ void BS_ItemRestorePP(void)
     if (gBattleStruct->itemPartyIndex[gBattlerAttacker] == gBattlerPartyIndexes[gBattlerAttacker])
         battler = gBattlerAttacker;
     else if (IsDoubleBattle()
-                && gBattleStruct->itemPartyIndex[gBattlerAttacker] == gBattlerPartyIndexes[BATTLE_PARTNER(gBattlerAttacker)])
+                && gBattleStruct->itemPartyIndex[gBattlerAttacker] == gBattlerPartyIndexes[BATTLE_PARTNER(gBattlerAttacker)]
+                && BattlersShareParty(gBattlerAttacker, BATTLE_PARTNER(gBattlerAttacker))) // HnS: see BS_ItemRestoreHP
         battler = BATTLE_PARTNER(gBattlerAttacker);
 
     // Heal PP!
@@ -13088,8 +13099,11 @@ void BS_TryRevivalBlessing(void)
         PREPARE_SPECIES_BUFFER(gBattleTextBuff1, GetMonData(&party[gSelectedMonPartyId], MON_DATA_SPECIES));
 
         // If an on-field battler is revived, it needs to be sent out again.
+        // HnS: only an ally sharing the user's party can hold this mon; since #8943 a second trainer's mons
+        // (in-game partner, two opponents) use indexes 0-2 of their own party (upstream 1.17.0 compares the index alone).
         if (IsDoubleBattle() &&
-            gBattlerPartyIndexes[BATTLE_PARTNER(gBattlerAttacker)] == gSelectedMonPartyId)
+            gBattlerPartyIndexes[BATTLE_PARTNER(gBattlerAttacker)] == gSelectedMonPartyId
+            && BattlersShareParty(gBattlerAttacker, BATTLE_PARTNER(gBattlerAttacker)))
         {
             enum BattlerId i = BATTLE_PARTNER(gBattlerAttacker);
             gAbsentBattlerFlags &= ~(1u << i);
@@ -13900,7 +13914,8 @@ void BS_ResetSwitchInAbilityBits(void)
 void BS_UpdateChoiceMoveOnLvlUp(void)
 {
     NATIVE_ARGS();
-    if (gBattlerPartyIndexes[0] == gBattleStruct->expGetterMonId || gBattlerPartyIndexes[2] == gBattleStruct->expGetterMonId)
+    if (gBattlerPartyIndexes[0] == gBattleStruct->expGetterMonId
+     || (gBattlerPartyIndexes[2] == gBattleStruct->expGetterMonId && GetBattlerTrainer(B_BATTLER_2) == B_TRAINER_0)) // HnS: see Cmd_handlelearnnewmove
     {
         enum BattlerId battler;
         if (gBattlerPartyIndexes[0] == gBattleStruct->expGetterMonId)
