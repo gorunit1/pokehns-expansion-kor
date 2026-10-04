@@ -2045,7 +2045,7 @@ static const u32 sNationalToSpeciesOrder[NATIONAL_DEX_COUNT] =
 #endif
 };
 
-// In Battle Palace, moves are chosen based on the Pokémons nature rather than by the player
+// In Battle Palace, moves are chosen based on the Pokémon's nature rather than by the player
 // Moves are grouped into "Attack", "Defense", or "Support" (see PALACE_MOVE_GROUP_*)
 // Each nature has a certain percent chance of selecting a move from a particular group
 // and a separate percent chance for each group when at or below 50% HP
