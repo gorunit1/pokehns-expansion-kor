@@ -33,7 +33,7 @@ static bool32 IsMonValidSpecies(struct Pokemon *pokemon)
 static bool32 AllMonsFainted(void)
 {
     int i;
-    struct Pokemon *pokemon = gPlayerParty;
+    struct Pokemon *pokemon = gParties[B_TRAINER_0];
 
     for (i = 0; i < PARTY_SIZE; i++, pokemon++)
     {
@@ -45,7 +45,7 @@ static bool32 AllMonsFainted(void)
 
 static void FaintFromFieldPoison(u8 partyIdx)
 {
-    struct Pokemon *pokemon = &gPlayerParty[partyIdx];
+    struct Pokemon *pokemon = &gParties[B_TRAINER_0][partyIdx];
     u32 status = STATUS1_NONE;
 
     if (gSaveBlock3Ptr->challengeSettings.tx_Mode_PoisonSurvive == 0)
@@ -60,7 +60,7 @@ static void FaintFromFieldPoison(u8 partyIdx)
 
 static bool32 MonFaintedFromPoison(u8 partyIdx)
 {
-    struct Pokemon *pokemon = &gPlayerParty[partyIdx];
+    struct Pokemon *pokemon = &gParties[B_TRAINER_0][partyIdx];
     u32 threshold = (gSaveBlock3Ptr->challengeSettings.tx_Mode_PoisonSurvive == 0) ? 0 : 1;
     if (IsMonValidSpecies(pokemon) && GetMonData(pokemon, MON_DATA_HP) == threshold && GetAilmentFromStatus(GetMonData(pokemon, MON_DATA_STATUS)) == AILMENT_PSN)
         return TRUE;
@@ -134,7 +134,7 @@ s32 DoPoisonFieldEffect(void)
 {
     int i;
     u32 hp;
-    struct Pokemon *pokemon = gPlayerParty;
+    struct Pokemon *pokemon = gParties[B_TRAINER_0];
     u32 numPoisoned = 0;
     u32 numFainted = 0;
 
@@ -146,7 +146,7 @@ s32 DoPoisonFieldEffect(void)
             hp = GetMonData(pokemon, MON_DATA_HP);
             if (gSaveBlock3Ptr->challengeSettings.tx_Mode_PoisonSurvive == 0 && (hp == 0 || --hp == 0))
             {
-                TryFormChange(&gPlayerParty[i], FORM_CHANGE_FAINT);
+                TryFormChange(&gParties[B_TRAINER_0][i], FORM_CHANGE_FAINT, B_TRAINER_0);
                 numFainted++;
             }
             else if (gSaveBlock3Ptr->challengeSettings.tx_Mode_PoisonSurvive == 1 && (hp == 1 || --hp == 1))

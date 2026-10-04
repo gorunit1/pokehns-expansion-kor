@@ -1445,7 +1445,7 @@ void ItemUseInBattle_BagMenu(u8 taskId)
     // slotId is a battle-order slot, not a party index: the mon in the menu is
     // only in party slot 0 until the player switches something else in.
     gPartyMenu.slotId = GetPartyIdFromBattlePartyId(partyIndex);
-    if (CannotUseItemsInBattle(gSpecialVar_ItemId, &gPlayerParty[partyIndex]))
+    if (CannotUseItemsInBattle(gSpecialVar_ItemId, &gParties[B_TRAINER_0][partyIndex]))
     {
         if (CurrentBattlePyramidLocation() == PYRAMID_LOCATION_NONE)
             DisplayItemMessage(taskId, FONT_NORMAL, gStringVar4, CloseItemMessage);
@@ -1711,7 +1711,7 @@ void ItemUseOutOfBattle_PokeFlute(u8 taskId)
 
     for (i = 0; i < CalculatePlayerPartyCount(); i++)
     {
-        if (!ExecuteTableBasedItemEffect(&gPlayerParty[i], ITEM_AWAKENING, i, 0))
+        if (!ExecuteTableBasedItemEffect(&gParties[B_TRAINER_0][i], ITEM_AWAKENING, i, 0))
             wokeSomeoneUp = TRUE;
     }
 

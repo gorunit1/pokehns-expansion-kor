@@ -85,15 +85,15 @@ static UNUSED bool32 IsTrueIfUndiscoveredEggGroup(enum Species species)
 
 static bool32 IsSynchronizeActive(void)
 {
-    return ((!GetMonData(&gPlayerParty[0], MON_DATA_SANITY_IS_EGG)
-        && GetMonAbility(&gPlayerParty[0]) == ABILITY_SYNCHRONIZE));
+    return ((!GetMonData(&gParties[B_TRAINER_0][0], MON_DATA_SANITY_IS_EGG)
+        && GetMonAbility(&gParties[B_TRAINER_0][0]) == ABILITY_SYNCHRONIZE));
 }
 
 bool32 DoesLeadingMonHaveAbilityEffect(const enum Ability *abilityArray)
 {
-    if (GetMonData(&gPlayerParty[0], MON_DATA_SANITY_IS_EGG))
+    if (GetMonData(&gParties[B_TRAINER_0][0], MON_DATA_SANITY_IS_EGG))
         return FALSE;
-    enum Ability leadingMonAbility = GetMonAbility(&gPlayerParty[0]);
+    enum Ability leadingMonAbility = GetMonAbility(&gParties[B_TRAINER_0][0]);
     for (u32 i = 0; abilityArray[i] != ABILITY_NONE; i++)
     {
         if (leadingMonAbility == abilityArray[i])
@@ -104,11 +104,11 @@ bool32 DoesLeadingMonHaveAbilityEffect(const enum Ability *abilityArray)
 
 bool32 DoesPartyMemberHaveAbilityEffect(const enum Ability *abilityArray)
 {
-    for (u32 j = 0; j < gPlayerPartyCount; j++)
+    for (u32 j = 0; j < gPartiesCount[B_TRAINER_0]; j++)
     {
-        if (GetMonData(&gPlayerParty[j], MON_DATA_SANITY_IS_EGG))
+        if (GetMonData(&gParties[B_TRAINER_0][j], MON_DATA_SANITY_IS_EGG))
             continue;
-        enum Ability monAbility = GetMonAbility(&gPlayerParty[j]);
+        enum Ability monAbility = GetMonAbility(&gParties[B_TRAINER_0][j]);
         for (u32 i = 0; abilityArray[i] != ABILITY_NONE; i++)
         {
             if (monAbility == abilityArray[i])
@@ -129,7 +129,7 @@ u32 GetSynchronizedNature(enum GeneratedMonOrigin origin, enum Species species)
     }
     else if (!(sSynchronizeModes[origin](species)))
         return NATURE_RANDOM;
-    return GetMonData(&gPlayerParty[0], MON_DATA_PERSONALITY) % NUM_NATURES;
+    return GetMonData(&gParties[B_TRAINER_0][0], MON_DATA_PERSONALITY) % NUM_NATURES;
 }
 
 u32 GetSynchronizedGender(enum GeneratedMonOrigin origin, enum Species species)
@@ -149,7 +149,7 @@ u32 GetSynchronizedGender(enum GeneratedMonOrigin origin, enum Species species)
     }
     // A genderless lead has no gender to invert. Normally impossible, but randomizer
     // settings can hand cute charm to a genderless species.
-    u8 leadingMonGender = GetMonGender(&gPlayerParty[0]);
+    u8 leadingMonGender = GetMonGender(&gParties[B_TRAINER_0][0]);
     if (leadingMonGender == MON_GENDERLESS)
         return MON_GENDER_RANDOM;
     if (leadingMonGender == MON_FEMALE)

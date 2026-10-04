@@ -195,9 +195,9 @@ static u8 CountLegendariesInParty(void)
     u8 count = 0;
     u32 i;
 
-    for (i = 0; i < gPlayerPartyCount; i++)
+    for (i = 0; i < gPartiesCount[B_TRAINER_0]; i++)
     {
-        u16 species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES);
+        u16 species = GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_SPECIES);
         if (species != SPECIES_NONE
             && (gSpeciesInfo[species].isRestrictedLegendary
                 || gSpeciesInfo[species].isSubLegendary
@@ -281,21 +281,21 @@ static void CreateInitialRoamerMon(u8 index, enum Species species, u8 level, u8 
         GetSynchronizedGender(ROAMER_ORIGIN, species),
         GetSynchronizedNature(ROAMER_ORIGIN, species),
         RANDOM_UNOWN_LETTER);
-    CreateMonWithIVs(&gEnemyParty[0], species, level, personality, OTID_STRUCT_PLAYER_ID, USE_RANDOM_IVS);
-    GiveMonInitialMoveset(&gEnemyParty[0]);
-    ROAMER(index)->ivs = GetMonData(&gEnemyParty[0], MON_DATA_IVS);
-    ROAMER(index)->personality = GetMonData(&gEnemyParty[0], MON_DATA_PERSONALITY);
+    CreateMonWithIVs(&gParties[B_TRAINER_1][0], species, level, personality, OTID_STRUCT_PLAYER_ID, USE_RANDOM_IVS);
+    GiveMonInitialMoveset(&gParties[B_TRAINER_1][0]);
+    ROAMER(index)->ivs = GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_IVS);
+    ROAMER(index)->personality = GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_PERSONALITY);
     ROAMER(index)->species = species;
     ROAMER(index)->level = level;
     ROAMER(index)->statusA = 0;
     ROAMER(index)->statusB = 0;
-    ROAMER(index)->hp = GetMonData(&gEnemyParty[0], MON_DATA_MAX_HP);
-    ROAMER(index)->cool = GetMonData(&gEnemyParty[0], MON_DATA_COOL);
-    ROAMER(index)->beauty = GetMonData(&gEnemyParty[0], MON_DATA_BEAUTY);
-    ROAMER(index)->cute = GetMonData(&gEnemyParty[0], MON_DATA_CUTE);
-    ROAMER(index)->smart = GetMonData(&gEnemyParty[0], MON_DATA_SMART);
-    ROAMER(index)->tough = GetMonData(&gEnemyParty[0], MON_DATA_TOUGH);
-    ROAMER(index)->shiny = GetMonData(&gEnemyParty[0], MON_DATA_IS_SHINY);
+    ROAMER(index)->hp = GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_MAX_HP);
+    ROAMER(index)->cool = GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_COOL);
+    ROAMER(index)->beauty = GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_BEAUTY);
+    ROAMER(index)->cute = GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_CUTE);
+    ROAMER(index)->smart = GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_SMART);
+    ROAMER(index)->tough = GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_TOUGH);
+    ROAMER(index)->shiny = GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_IS_SHINY);
     ROAMER(index)->active = TRUE;
     sRoamerLocation[index][MAP_GRP] = ROAMER_MAP_GROUP;
     const u8 (*locs)[6] = GetRoamerLocations(index);
@@ -453,7 +453,7 @@ bool8 IsRoamerAt(u32 roamerIndex, u8 mapGroup, u8 mapNum)
 void CreateRoamerMonInstance(u32 roamerIndex)
 {
     u32 status = ROAMER(roamerIndex)->statusA + (ROAMER(roamerIndex)->statusB << 8);
-    struct Pokemon *mon = &gEnemyParty[0];
+    struct Pokemon *mon = &gParties[B_TRAINER_1][0];
     ZeroEnemyPartyMons();
     CreateMonWithIVsPersonality(mon, ROAMER(roamerIndex)->species, ROAMER(roamerIndex)->level, ROAMER(roamerIndex)->ivs, ROAMER(roamerIndex)->personality);
     SetMonData(mon, MON_DATA_STATUS, &status);

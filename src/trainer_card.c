@@ -1488,11 +1488,11 @@ static void UpdateTrainerCardMonIcons(void)
     u8 x = 40;
 
     LoadMonIconPalettes();
-    for (i = 0; i < gPlayerPartyCount; i++, x += 32)
+    for (i = 0; i < gPartiesCount[B_TRAINER_0]; i++, x += 32)
     {
-        species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES);
-        personality = GetMonData(&gPlayerParty[i], MON_DATA_PERSONALITY);
-        isEgg = GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG);
+        species = GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_SPECIES);
+        personality = GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_PERSONALITY);
+        isEgg = GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_IS_EGG);
         sMonIconSpriteIds[i] = CreateMonIconIsEgg(species, SpriteCB_MonIcon, x, 124, 1, personality, isEgg); // This will also set the palette, no need to also set it later
         gSprites[sMonIconSpriteIds[i]].oam.priority = 0;
         StartSpriteAnim(&gSprites[sMonIconSpriteIds[i]], 4);
@@ -1503,7 +1503,7 @@ static void DestroyTrainerCardMonIcons(void)
 {
     u8 i;
 
-    for (i = 0; i < gPlayerPartyCount; i++)
+    for (i = 0; i < gPartiesCount[B_TRAINER_0]; i++)
         FreeAndDestroyMonIconSprite(&gSprites[sMonIconSpriteIds[i]]);
     FreeMonIconPalettes();
 }

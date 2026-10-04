@@ -344,14 +344,14 @@ void NuzlockeDeletePartyMon(u8 position)
 
     if (!cs->tx_Nuzlocke_Deletion)
     {
-        CopyMonToPC(&gPlayerParty[position]);
+        CopyMonToPC(&gParties[B_TRAINER_0][position]);
     }
     PurgeMonOrBoxMon(TOTAL_BOXES_COUNT, position);
 }
 
 void NuzlockeDeletePartyMonOption(u8 position)
 {
-    CopyMonToPC(&gPlayerParty[position]);
+    CopyMonToPC(&gParties[B_TRAINER_0][position]);
     PurgeMonOrBoxMon(TOTAL_BOXES_COUNT, position);
 }
 
@@ -371,7 +371,7 @@ void NuzlockeDeleteFaintedPartyPokemon(void)
 
     for (i = 0; i < PARTY_SIZE; i++)
     {
-        pokemon = &gPlayerParty[i];
+        pokemon = &gParties[B_TRAINER_0][i];
         if (GetMonData(pokemon, MON_DATA_SANITY_HAS_SPECIES, NULL)
             && !GetMonData(pokemon, MON_DATA_IS_EGG, NULL))
         {
@@ -442,17 +442,17 @@ u8 NuzlockeIsCaptureBlockedBySpeciesClause(u16 species)
 void SetNuzlockeChecks(void)
 {
     OneTypeChallengeCaptureBlocked = !DoesSpeciesPassOneTypeChallenge(
-        GetMonData(&gEnemyParty[0], MON_DATA_SPECIES));
+        GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_SPECIES));
 
     if (IsNuzlockeActive() && !IsNuzlockeCaptureSuspended())
     {
         NuzlockeIsSpeciesClauseActive = NuzlockeIsCaptureBlockedBySpeciesClause(
-            GetMonData(&gEnemyParty[0], MON_DATA_SPECIES));
+            GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_SPECIES));
 
         NuzlockeIsCaptureBlocked = NuzlockeFlagGet(NuzlockeGetCurrentRegionMapSectionId());
 
-        if ((IsMonShiny(&gEnemyParty[0]) && gSaveBlock3Ptr->challengeSettings.tx_Nuzlocke_ShinyClause)
-            || (GetMonData(&gEnemyParty[0], MON_DATA_MODERN_FATEFUL_ENCOUNTER, NULL)))
+        if ((IsMonShiny(&gParties[B_TRAINER_1][0]) && gSaveBlock3Ptr->challengeSettings.tx_Nuzlocke_ShinyClause)
+            || (GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_MODERN_FATEFUL_ENCOUNTER, NULL)))
         {
             NuzlockeIsCaptureBlocked = FALSE;
             NuzlockeIsSpeciesClauseActive = FALSE;

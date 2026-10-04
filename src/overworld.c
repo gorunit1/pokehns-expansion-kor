@@ -400,9 +400,9 @@ void DoWhiteOut(void)
         if (GetFirstAliveBoxPokemon() == IN_BOX_COUNT * TOTAL_BOXES_COUNT)
         {
             ZeroPlayerPartyMons();
-            CreateMon(&gPlayerParty[0], SPECIES_RATTATA, 1, 0, OTID_STRUCT_PLAYER_ID);
-            CalculateMonStats(&gPlayerParty[0]);
-            gPlayerPartyCount = 1;
+            CreateMon(&gParties[B_TRAINER_0][0], SPECIES_RATTATA, 1, 0, OTID_STRUCT_PLAYER_ID);
+            CalculateMonStats(&gParties[B_TRAINER_0][0]);
+            gPartiesCount[B_TRAINER_0] = 1;
         }
         else
         {
@@ -1520,8 +1520,8 @@ void UpdateAmbientCry(s16 *state, u16 *delayCounter)
         monsCount = CalculatePlayerPartyCount();
         for (i = 0; i < monsCount; i++)
         {
-            if (!GetMonData(&gPlayerParty[i], MON_DATA_SANITY_IS_EGG)
-                && GetMonAbility(&gPlayerParty[0]) == ABILITY_SWARM)
+            if (!GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_SANITY_IS_EGG)
+                && GetMonAbility(&gParties[B_TRAINER_0][0]) == ABILITY_SWARM)
             {
                 divBy = 2;
                 break;

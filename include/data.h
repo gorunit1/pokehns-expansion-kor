@@ -94,6 +94,12 @@ enum TrainerBattleType
     TRAINER_BATTLE_TYPE_DOUBLES,
 };
 
+enum MultiTeamSize
+{
+    MULTI_TEAM_SIZE_FULL,
+    MULTI_TEAM_SIZE_HALF,
+};
+
 #define UNPACK_STARTING_STATUSES_STRUCT(_enum, _fieldName, _typeMaxValue, ...) INVOKE_WITH_(UNPACK_STARTING_STATUSES_STRUCT_, _fieldName, UNPACK_B(_typeMaxValue));
 #define UNPACK_STARTING_STATUSES_STRUCT_(_fieldName, _type, ...) _type FIRST(__VA_OPT__(_fieldName:BIT_SIZE(FIRST(__VA_ARGS__)),) _fieldName)
 
@@ -125,13 +131,14 @@ struct Trainer
     enum Item items[MAX_TRAINER_ITEMS];
     struct StartingStatuses startingStatus; // this trainer starts a battle with a given status. see include/constants/battle.h for values
     u8 trainerClass;
-    u8 encounterMusic:7;
-    u8 gender:1;
+    u16 encounterMusic:5; // HnS: 4 in upstream; HnS uses TRAINER_ENCOUNTER_MUSIC_* up to 26 (HG/RG music)
+    u16 multiTeamSize:1;
+    u16 gender:1;
+    u16 battleType:2;
+    u16 mugshotColor:4; // HnS: 3 in upstream; HnS uses MUGSHOT_COLOR_* up to 8 (MUGSHOT_COLOR_LIGHT_BLUE)
+    u16 partySize:3;
     enum TrainerPicID trainerPic;
     u8 trainerName[TRAINER_NAME_LENGTH + 1];
-    u8 battleType:2;
-    u8 mugshotColor:6;
-    u8 partySize;
     u8 poolSize;
     u8 poolRuleIndex;
     u8 poolPickIndex;

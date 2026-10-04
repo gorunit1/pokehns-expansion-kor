@@ -965,7 +965,7 @@ static u8 GetBattleEnvironmentOverride(void)
         return BATTLE_ENVIRONMENT_FRONTIER;
     else if (gBattleTypeFlags & BATTLE_TYPE_LEGENDARY)
     {
-        switch (GetMonData(&gEnemyParty[0], MON_DATA_SPECIES))
+        switch (GetMonData(&gParties[B_TRAINER_1][0], MON_DATA_SPECIES))
         {
     #if !IS_HNS
         case SPECIES_GROUDON:

@@ -93,11 +93,11 @@ bool8 CheckRelicanthWailord(void)
 {
     // Emerald change: why did they flip it?
     // First comes Wailord
-    if (GetMonData(&gPlayerParty[0], MON_DATA_SPECIES_OR_EGG, 0) == SPECIES_WAILORD)
+    if (GetMonData(&gParties[B_TRAINER_0][0], MON_DATA_SPECIES_OR_EGG, 0) == SPECIES_WAILORD)
     {
         CalculatePlayerPartyCount();
         // Last comes Relicanth
-        if (GetMonData(&gPlayerParty[gPlayerPartyCount - 1], MON_DATA_SPECIES_OR_EGG, 0) == SPECIES_RELICANTH)
+        if (GetMonData(&gParties[B_TRAINER_0][gPartiesCount[B_TRAINER_0] - 1], MON_DATA_SPECIES_OR_EGG, 0) == SPECIES_RELICANTH)
             return TRUE;
     }
     return FALSE;
@@ -346,28 +346,28 @@ bool8 ShouldDoBrailleRegicePuzzle(void)
 
 bool8 CheckHooh(void)
 {
-    if (GetMonData(&gPlayerParty[0], MON_DATA_SPECIES_OR_EGG, 0) == SPECIES_HO_OH)
+    if (GetMonData(&gParties[B_TRAINER_0][0], MON_DATA_SPECIES_OR_EGG, 0) == SPECIES_HO_OH)
         return TRUE;
     return FALSE;
 }
 
 bool8 CheckAerodactyl(void)
 {
-    if (GetMonData(&gPlayerParty[0], MON_DATA_SPECIES_OR_EGG, 0) == SPECIES_AERODACTYL)
+    if (GetMonData(&gParties[B_TRAINER_0][0], MON_DATA_SPECIES_OR_EGG, 0) == SPECIES_AERODACTYL)
         return TRUE;
     return FALSE;
 }
 
 bool8 CheckKabuto(void)
 {
-    if (GetMonData(&gPlayerParty[0], MON_DATA_SPECIES_OR_EGG, 0) == SPECIES_KABUTO)
+    if (GetMonData(&gParties[B_TRAINER_0][0], MON_DATA_SPECIES_OR_EGG, 0) == SPECIES_KABUTO)
         return TRUE;
     return FALSE;
 }
 
 bool8 CheckOmanyte(void)
 {
-    if (GetMonData(&gPlayerParty[0], MON_DATA_SPECIES_OR_EGG, 0) == SPECIES_OMANYTE)
+    if (GetMonData(&gParties[B_TRAINER_0][0], MON_DATA_SPECIES_OR_EGG, 0) == SPECIES_OMANYTE)
         return TRUE;
     return FALSE;
 }
@@ -378,9 +378,9 @@ bool8 CheckTogepi(void)
     // After that, even if it's not hatched, if you somehow got a Togepi or its evolutions, Elm's script will trigger
     if (FlagGet(FLAG_GOT_TOGEPI_EGG) == TRUE)
     {
-        if (   GetMonData(&gPlayerParty[0], MON_DATA_SPECIES_OR_EGG, 0) == SPECIES_TOGEPI
-            || GetMonData(&gPlayerParty[0], MON_DATA_SPECIES_OR_EGG, 0) == SPECIES_TOGETIC
-            || GetMonData(&gPlayerParty[0], MON_DATA_SPECIES_OR_EGG, 0) == SPECIES_TOGEKISS)
+        if (   GetMonData(&gParties[B_TRAINER_0][0], MON_DATA_SPECIES_OR_EGG, 0) == SPECIES_TOGEPI
+            || GetMonData(&gParties[B_TRAINER_0][0], MON_DATA_SPECIES_OR_EGG, 0) == SPECIES_TOGETIC
+            || GetMonData(&gParties[B_TRAINER_0][0], MON_DATA_SPECIES_OR_EGG, 0) == SPECIES_TOGEKISS)
         {
             return TRUE;
         }
@@ -390,7 +390,7 @@ bool8 CheckTogepi(void)
 
 bool8 CheckCelebi(void)
 {
-    struct Pokemon *mon = &gPlayerParty[0];
+    struct Pokemon *mon = &gParties[B_TRAINER_0][0];
 
     if (GetMonData(mon, MON_DATA_SPECIES_OR_EGG, NULL) != SPECIES_CELEBI)
         return FALSE;

@@ -2544,6 +2544,7 @@ Gender: Male
 Music: Rocket
 Double Battle: No
 AI: Check Bad Move
+Multi Party: Half
 
 Golbat
 Level: 25
@@ -9372,6 +9373,7 @@ Double Battle: No
 AI: Basic Trainer
 Items: Full Restore / Full Restore
 Mugshot: Blue
+Multi Party: Half
 
 Gyarados @ Quick Claw
 Level: 68
@@ -9404,6 +9406,7 @@ Double Battle: No
 AI: Basic Trainer
 Mugshot: Blue
 Items: Full Restore / Full Restore
+Multi Party: Half
 
 Dragonair @ Metal Coat
 Level: 52
@@ -10895,6 +10898,7 @@ Double Battle: No
 AI: Basic Trainer
 Mugshot: Dark Red
 Items: Full Restore / Full Restore
+Multi Party: Half
 
 Arbok
 Level: 31

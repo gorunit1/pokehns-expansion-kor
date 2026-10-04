@@ -44,7 +44,7 @@ static u16 GetSurfMonSpecies(void)
 	u16 species;
 	
 	i = VarGet(VAR_SURF_MON_SLOT);
-	species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES);
+	species = GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_SPECIES);
     return species;
 }
 
@@ -83,7 +83,7 @@ u32 CreateSurfablePokemonSprite(void)
     bool8 isShiny;
     struct Sprite *sprite;
 
-    isShiny = IsMonShiny(&gPlayerParty[VarGet(VAR_SURF_MON_SLOT)]);
+    isShiny = IsMonShiny(&gParties[B_TRAINER_0][VarGet(VAR_SURF_MON_SLOT)]);
 
     SetSpritePosToOffsetMapCoords((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 8);
 

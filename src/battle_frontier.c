@@ -21,7 +21,7 @@
 #include "constants/battle_frontier.h"
 #include "constants/battle_frontier_mons.h"
 
-static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount);
+static void FillTrainerParty(u16 trainerId, enum BattleTrainer trainer, u8 monCount);
 
 // EWRAM vars.
 EWRAM_DATA const struct BattleFrontierTrainer *gFacilityTrainers = NULL;
@@ -43,7 +43,7 @@ static void HandleFacilityTrainerBattleEnd(void)
     case FACILITY_BATTLE_FACTORY:
         FlagClear(FLAG_LIMIT_TO_50);
         for (i = 0; i < PARTY_SIZE; i++)
-            CalculateMonStats(&gPlayerParty[i]);
+            CalculateMonStats(&gParties[B_TRAINER_0][i]);
         if (gSaveBlock2Ptr->frontier.battlesCount < 0xFFFFFF)
         {
             gSaveBlock2Ptr->frontier.battlesCount++;
@@ -95,7 +95,7 @@ static void DoFacilityTrainerBattleInternal(u8 facility)
     {
         FlagSet(FLAG_LIMIT_TO_50);
         for (i = 0; i < PARTY_SIZE; i++)
-            CalculateMonStats(&gPlayerParty[i]);
+            CalculateMonStats(&gParties[B_TRAINER_0][i]);
     }
 
     gBattleScripting.specialTrainerBattleType = facility;
@@ -214,17 +214,17 @@ void FacilityTrainerBattle(struct ScriptContext *ctx)
 void FillFrontierTrainerParty(u8 monsCount)
 {
     ZeroEnemyPartyMons();
-    FillTrainerParty(TRAINER_BATTLE_PARAM.opponentA, 0, monsCount);
+    FillTrainerParty(TRAINER_BATTLE_PARAM.opponentA, B_TRAINER_1, monsCount);
 }
 
 void FillFrontierTrainersParties(u8 monsCount)
 {
     ZeroEnemyPartyMons();
-    FillTrainerParty(TRAINER_BATTLE_PARAM.opponentA, 0, monsCount);
-    FillTrainerParty(TRAINER_BATTLE_PARAM.opponentB, 3, monsCount);
+    FillTrainerParty(TRAINER_BATTLE_PARAM.opponentA, B_TRAINER_1, monsCount);
+    FillTrainerParty(TRAINER_BATTLE_PARAM.opponentB, B_TRAINER_3, monsCount);
 }
 
-static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
+static void FillTrainerParty(u16 trainerId, enum BattleTrainer trainer, u8 monCount)
 {
     s32 i, j;
     u16 chosenMonIndices[MAX_FRONTIER_PARTY_SIZE];
@@ -238,13 +238,13 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
     {
         // Normal battle frontier trainer.
         fixedIV = GetFrontierTrainerFixedIvs(trainerId);
-        monSet = gFacilityTrainers[TRAINER_BATTLE_PARAM.opponentA].monSet;
+        monSet = gFacilityTrainers[trainerId].monSet;
     }
     else if (trainerId == TRAINER_EREADER)
     {
     #if FREE_BATTLE_TOWER_E_READER == FALSE
-        for (i = firstMonId; i < firstMonId + FRONTIER_PARTY_SIZE; i++)
-            CreateBattleTowerMon(&gEnemyParty[i], &gSaveBlock2Ptr->frontier.ereaderTrainer.party[i - firstMonId]);
+        for (i = 0; i < FRONTIER_PARTY_SIZE; i++)
+            CreateBattleTowerMon(&gParties[trainer][i], &gSaveBlock2Ptr->frontier.ereaderTrainer.party[i]);
     #endif //FREE_BATTLE_TOWER_E_READER
         return;
     }
@@ -256,12 +256,12 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
     else if (trainerId < TRAINER_RECORD_MIXING_APPRENTICE)
     {
         // Record mixed player.
-        for (j = 0, i = firstMonId; i < firstMonId + monCount; j++, i++)
+        for (j = 0, i = 0; i < monCount; j++, i++)
         {
             if (gSaveBlock2Ptr->frontier.towerRecords[trainerId - TRAINER_RECORD_MIXING_FRIEND].party[j].species != SPECIES_NONE
                 && gSaveBlock2Ptr->frontier.towerRecords[trainerId - TRAINER_RECORD_MIXING_FRIEND].party[j].level <= level)
             {
-                CreateBattleTowerMon_HandleLevel(&gEnemyParty[i], &gSaveBlock2Ptr->frontier.towerRecords[trainerId - TRAINER_RECORD_MIXING_FRIEND].party[j], FALSE);
+                CreateBattleTowerMon_HandleLevel(&gParties[trainer][i], &gSaveBlock2Ptr->frontier.towerRecords[trainerId - TRAINER_RECORD_MIXING_FRIEND].party[j], FALSE);
             }
         }
         return;
@@ -269,8 +269,8 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
     else
     {
         // Apprentice.
-        for (i = firstMonId; i < firstMonId + FRONTIER_PARTY_SIZE; i++)
-            CreateApprenticeMon(&gEnemyParty[i], &gSaveBlock2Ptr->apprentices[trainerId - TRAINER_RECORD_MIXING_APPRENTICE], i - firstMonId);
+        for (i = 0; i < FRONTIER_PARTY_SIZE; i++)
+            CreateApprenticeMon(&gParties[trainer][i], &gSaveBlock2Ptr->apprentices[trainerId - TRAINER_RECORD_MIXING_APPRENTICE], i);
         return;
     }
 
@@ -292,22 +292,22 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
             continue;
 
         // Ensure this Pokémon species isn't a duplicate.
-        for (j = 0; j < i + firstMonId; j++)
+        for (j = 0; j < i; j++)
         {
-            if (GetMonData(&gEnemyParty[j], MON_DATA_SPECIES) == gFacilityTrainerMons[monId].species)
+            if (GetMonData(&gParties[trainer][j], MON_DATA_SPECIES) == gFacilityTrainerMons[monId].species)
                 break;
         }
-        if (j != i + firstMonId)
+        if (j != i)
             continue;
 
         // Ensure this Pokemon's held item isn't a duplicate.
-        for (j = 0; j < i + firstMonId; j++)
+        for (j = 0; j < i; j++)
         {
-            if (GetMonData(&gEnemyParty[j], MON_DATA_HELD_ITEM) != ITEM_NONE
-             && GetMonData(&gEnemyParty[j], MON_DATA_HELD_ITEM) == gFacilityTrainerMons[monId].heldItem)
+            if (GetMonData(&gParties[trainer][j], MON_DATA_HELD_ITEM) != ITEM_NONE
+             && GetMonData(&gParties[trainer][j], MON_DATA_HELD_ITEM) == gFacilityTrainerMons[monId].heldItem)
                 break;
         }
-        if (j != i + firstMonId)
+        if (j != i)
             continue;
 
         // Ensure this exact Pokémon index isn't a duplicate. This check doesn't seem necessary
@@ -323,7 +323,7 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
         chosenMonIndices[i] = monId;
 
         // Place the chosen Pokémon into the trainer's party.
-        CreateFacilityMon(&gFacilityTrainerMons[monId], level, fixedIV, otID, 0, &gEnemyParty[i + firstMonId]);
+        CreateFacilityMon(&gFacilityTrainerMons[monId], level, fixedIV, otID, 0, &gParties[trainer][i]);
 
         // The Pokémon was successfully added to the trainer's party, so it's safe to move on to
         // the next party slot.
