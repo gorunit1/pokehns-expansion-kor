@@ -3312,7 +3312,7 @@ enum BattleTrainer GetBattlerTrainer(enum BattlerId battler)
 #if TESTING
     return (gBattleTestRunnerState->data.battlerTrainers >> (2 * battler)) & 0x3;
 #else
-    if (gBattleTypeFlags & BATTLE_TYPE_LINK && gBattleTypeFlags & BATTLE_TYPE_MULTI)
+    if (gBattleTypeFlags & BATTLE_TYPE_LINK)
     {
         switch (gBattlerBattleController[battler])
         {
@@ -3325,7 +3325,9 @@ enum BattleTrainer GetBattlerTrainer(enum BattlerId battler)
         case BATTLE_CONTROLLER_LINK_OPPONENT:
         case BATTLE_CONTROLLER_RECORDED_OPPONENT:
         case BATTLE_CONTROLLER_OPPONENT:
-            return (battler & BIT_FLANK) ? B_TRAINER_3 : B_TRAINER_1;
+            if (gBattleTypeFlags & BATTLE_TYPE_MULTI)
+                return (battler & BIT_FLANK) ? B_TRAINER_3 : B_TRAINER_1;
+            return B_TRAINER_1;
         default:
             break;
         }
