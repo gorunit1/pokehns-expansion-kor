@@ -1001,7 +1001,7 @@ static void Task_NewGameHnsSpeech_FadeInPlayer(u8 taskId)
             spriteId = gTasks[taskId].tGoldSpriteId;
 
         gSprites[spriteId].x = 120;
-        gSprites[spriteId].y = 80; // 바닥에 맞게 주인공 Y좌표 80으로 고정
+        gSprites[spriteId].y = NEW_GAME_SPEECH_PLAYER_Y; // 바닥에 맞게 주인공 Y좌표 80으로 고정
         gSprites[spriteId].invisible = FALSE;
         gSprites[spriteId].oam.objMode = ST_OAM_OBJ_BLEND;
         gTasks[taskId].tPlayerSpriteId = spriteId;
@@ -1119,7 +1119,7 @@ static void CB2_NewGameHnsSpeech_ReturnFromNamingScreen(void)
         spriteId = gTasks[taskId].tGoldSpriteId;
     }
     gSprites[spriteId].x = 120;
-    gSprites[spriteId].y = 60;
+    gSprites[spriteId].y = NEW_GAME_SPEECH_PLAYER_Y;
     gSprites[spriteId].invisible = FALSE;
     gTasks[taskId].tPlayerSpriteId = spriteId;
     SetGpuReg(REG_OFFSET_BG1HOFS, -60);
@@ -1207,12 +1207,12 @@ static void AddHnsSpeechObjects(u8 taskId)
     gSprites[monSpriteId].oam.priority = 0;
     gSprites[monSpriteId].invisible = TRUE;
     gTasks[taskId].tMonSpriteId = monSpriteId;
-    goldSpriteId = CreateTrainerSprite(FacilityClassToPicIndex(FACILITY_CLASS_GOLD_HNS), 120, 60, 0, NULL);
+    goldSpriteId = CreateTrainerSprite(FacilityClassToPicIndex(FACILITY_CLASS_GOLD_HNS), 120, NEW_GAME_SPEECH_PLAYER_Y, 0, NULL);
     gSprites[goldSpriteId].callback = SpriteCB_Null;
     gSprites[goldSpriteId].invisible = TRUE;
     gSprites[goldSpriteId].oam.priority = 0;
     gTasks[taskId].tGoldSpriteId = goldSpriteId;
-    krisSpriteId = CreateTrainerSprite(FacilityClassToPicIndex(FACILITY_CLASS_KRIS_HNS), 120, 60, 0, NULL);
+    krisSpriteId = CreateTrainerSprite(FacilityClassToPicIndex(FACILITY_CLASS_KRIS_HNS), 120, NEW_GAME_SPEECH_PLAYER_Y, 0, NULL);
     gSprites[krisSpriteId].callback = SpriteCB_Null;
     gSprites[krisSpriteId].invisible = TRUE;
     gSprites[krisSpriteId].oam.priority = 0;
