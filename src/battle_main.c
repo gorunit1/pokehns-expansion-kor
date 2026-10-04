@@ -3947,7 +3947,7 @@ static void TryDoEventsBeforeFirstTurn(void)
     {
     case FIRST_TURN_EVENTS_START:
         LoadIndicatorSpritesGfx();
-        // Set invalid mons as absent(for example when starting a double battle with only one pokemon).
+        // Set invalid mons as absent(for example when starting a double battle with only one Pokémon).
         if (!(gBattleTypeFlags & BATTLE_TYPE_SAFARI))
         {
             for (enum BattlerId battler = 0; battler < gBattlersCount; battler++)
@@ -4166,7 +4166,7 @@ bool32 EndTurnEvents(void) // Called from Battle Script
     {
         if (gSideTimers[i].retaliateTimer > 0)
             gSideTimers[i].retaliateTimer--;
-    }    
+    }
 
     gFieldStatuses &= ~STATUS_FIELD_ION_DELUGE;
 
@@ -4203,7 +4203,7 @@ static u8 IsRunningFromBattleImpossibleInternal(enum BattlerId battler, bool32 c
         return BATTLE_RUN_FORBIDDEN;
     }
     if (GetBattlerPosition(battler) == B_POSITION_PLAYER_RIGHT && WILD_DOUBLE_BATTLE
-        && IsBattlerAlive(GetBattlerAtPosition(B_POSITION_PLAYER_LEFT))) // The second pokemon cannot run from a double wild battle, unless it's the only alive mon.
+        && IsBattlerAlive(GetBattlerAtPosition(B_POSITION_PLAYER_LEFT))) // The second Pokémon cannot run from a double wild battle, unless it's the only alive mon.
     {
         gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_CANT_ESCAPE;
         return BATTLE_RUN_FORBIDDEN;
@@ -5390,7 +5390,7 @@ static bool32 TryDoMoveEffectsBeforeMoves(void)
     return FALSE;
 }
 
-// In gen7, priority and speed are recalculated during the turn in which a pokemon mega evolves
+// In gen7, priority and speed are recalculated during the turn in which a Pokémon mega evolves
 static void TryChangeTurnOrder(void)
 {
     enum BattlerId i, j;
