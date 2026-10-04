@@ -12111,15 +12111,49 @@ void ApplyExperienceMultipliers(s32 *expAmount, u8 expGetterMonId, u8 faintedBat
         *expAmount = (*expAmount * 3) / 2;
 }
 
+// HnS: in half-team multis the in-battle party menu hands over a combined party id (player 0-2, in-game partner 3-5;
+// see GetPartyIdFromBattleSlot / CombinedToIndividualPartyId). Before #8943 ids 3-5 were the partner's mons inside the
+// player's party; now they live in the partner's own party, so ids 3-5 go to the partner battler's party slots 0-2.
+// upstream 1.17.0 reads the player's emptied slots 3-5 and the item is used up for nothing. Full-team multis and every
+// other battle type keep the id as is.
+static enum BattlerId GetItemTargetPartyOwner(enum BattlerId battler, u32 *partyIndex)
+{
+    u32 index = gBattleStruct->itemPartyIndex[battler];
+
+    if (index >= MULTI_PARTY_SIZE && index < PARTY_SIZE
+     && IsOnPlayerSide(battler) && (GetBattlerPosition(battler) & BIT_FLANK) == B_FLANK_LEFT
+     && IsMultiBattle() && !AreMultiPartiesFullTeams())
+    {
+        *partyIndex = index - MULTI_PARTY_SIZE;
+        return BATTLE_PARTNER(battler);
+    }
+    *partyIndex = index;
+    return battler;
+}
+
+// HnS: the active battler holding slot partyIndex of owner's party, or MAX_BATTLERS_COUNT. Since #8943 an in-game
+// partner's mons use indexes 0-2 of their own party, so the ally only counts when both share a party.
+static enum BattlerId GetItemTargetBattler(enum BattlerId owner, u32 partyIndex)
+{
+    if (partyIndex == gBattlerPartyIndexes[owner])
+        return owner;
+    if (IsDoubleBattle() && partyIndex == gBattlerPartyIndexes[BATTLE_PARTNER(owner)]
+     && BattlersShareParty(owner, BATTLE_PARTNER(owner)))
+        return BATTLE_PARTNER(owner);
+    return MAX_BATTLERS_COUNT;
+}
+
 void BS_ItemRestoreHP(void)
 {
     NATIVE_ARGS(const u8 *alreadyMaxHpInstr, const u8 *restoreBattlerInstr);
     u16 healAmount;
     enum BattlerId battler = MAX_BATTLERS_COUNT;
     u32 healParam = GetItemEffect(gLastUsedItem)[6];
-    struct Pokemon *party = GetBattlerParty(gBattlerAttacker);
-    u16 hp = GetMonData(&party[gBattleStruct->itemPartyIndex[gBattlerAttacker]], MON_DATA_HP);
-    u16 maxHP = GetMonData(&party[gBattleStruct->itemPartyIndex[gBattlerAttacker]], MON_DATA_MAX_HP);
+    u32 partyIndex;
+    enum BattlerId owner = GetItemTargetPartyOwner(gBattlerAttacker, &partyIndex);
+    struct Pokemon *party = GetBattlerParty(owner);
+    u16 hp = GetMonData(&party[partyIndex], MON_DATA_HP);
+    u16 maxHP = GetMonData(&party[partyIndex], MON_DATA_MAX_HP);
     gBattleCommunication[MULTIUSE_STATE] = 0;
 
     if (hp == maxHP)
@@ -12133,13 +12167,7 @@ void BS_ItemRestoreHP(void)
             gBattleResults.numRevivesUsed++;
 
         // Check if the recipient is an active battler.
-        // HnS: since #8943 an in-game partner's mons use indexes 0-2 of their own party, so the ally only holds the
-        // recipient when both battlers share a party (upstream 1.17.0 pairs by index alone). Same in the other BS_Item* below.
-        if (gBattleStruct->itemPartyIndex[gBattlerAttacker] == gBattlerPartyIndexes[gBattlerAttacker])
-            battler = gBattlerAttacker;
-        else if (IsDoubleBattle() && gBattleStruct->itemPartyIndex[gBattlerAttacker] == gBattlerPartyIndexes[BATTLE_PARTNER(gBattlerAttacker)]
-              && BattlersShareParty(gBattlerAttacker, BATTLE_PARTNER(gBattlerAttacker)))
-            battler = BATTLE_PARTNER(gBattlerAttacker);
+        battler = GetItemTargetBattler(owner, partyIndex);
 
         // Get amount to heal.
         switch (healParam)
@@ -12164,7 +12192,7 @@ void BS_ItemRestoreHP(void)
             healAmount = maxHP - hp;
 
         gBattleScripting.battler = battler;
-        PREPARE_SPECIES_BUFFER(gBattleTextBuff1, GetMonData(&party[gBattleStruct->itemPartyIndex[gBattlerAttacker]], MON_DATA_SPECIES));
+        PREPARE_SPECIES_BUFFER(gBattleTextBuff1, GetMonData(&party[partyIndex], MON_DATA_SPECIES));
 
         // Heal is applied as move damage if battler is active.
         if (battler != MAX_BATTLERS_COUNT && hp != 0)
@@ -12175,17 +12203,18 @@ void BS_ItemRestoreHP(void)
         else
         {
             hp += healAmount;
-            SetMonData(&party[gBattleStruct->itemPartyIndex[gBattlerAttacker]], MON_DATA_HP, &hp);
+            SetMonData(&party[partyIndex], MON_DATA_HP, &hp);
 
             enum BattlerId partner = BATTLE_PARTNER(gBattlerAttacker);
             // Absent battlers on the field need to be replaced
-            // HnS: only from a shared party; an in-game partner's slot would send out its own mon with this index.
-            if (IsDoubleBattle() && (gAbsentBattlerFlags & (1u << partner)) && BattlersShareParty(gBattlerAttacker, partner))
+            // HnS: only from the revived mon's own party: the in-game partner's slot takes the partner's mons (owner is
+            // the partner battler, as before #8943), never the player's.
+            if (IsDoubleBattle() && (gAbsentBattlerFlags & (1u << partner)) && BattlersShareParty(owner, partner))
             {
                 gAbsentBattlerFlags &= ~(1u << partner);
                 gBattleCommunication[MULTIUSE_STATE] = TRUE;
                 gBattleScripting.battler = partner;
-                BtlController_EmitChosenMonReturnValue(partner, B_COMM_TO_ENGINE, gBattleStruct->itemPartyIndex[gBattlerAttacker], NULL);
+                BtlController_EmitChosenMonReturnValue(partner, B_COMM_TO_ENGINE, partyIndex, NULL);
             }
             gBattlescriptCurrInstr = cmd->nextInstr;
         }
@@ -12197,24 +12226,17 @@ void BS_ItemCureStatus(void)
     NATIVE_ARGS(const u8 *noStatusInstr, const u8 *restoreBattlerInstr);
     u32 targetBattler = MAX_BATTLERS_COUNT;
     bool32 statusChanged = FALSE;
-    struct Pokemon *party = GetBattlerParty(gBattlerAttacker);
+    u32 partyIndex;
+    enum BattlerId owner = GetItemTargetPartyOwner(gBattlerAttacker, &partyIndex); // HnS: see GetItemTargetPartyOwner
+    struct Pokemon *party = GetBattlerParty(owner);
 
     // Heal volatile conditions if battler is active.
-    if (gBattleStruct->itemPartyIndex[gBattlerAttacker] == gBattlerPartyIndexes[gBattlerAttacker])
-    {
-        statusChanged = ItemHealMonVolatile(gBattlerAttacker, gLastUsedItem);
-        targetBattler = gBattlerAttacker;
-    }
-    else if (IsDoubleBattle()
-     && gBattleStruct->itemPartyIndex[gBattlerAttacker] == gBattlerPartyIndexes[BATTLE_PARTNER(gBattlerAttacker)]
-     && BattlersShareParty(gBattlerAttacker, BATTLE_PARTNER(gBattlerAttacker))) // HnS: see BS_ItemRestoreHP
-    {
-        statusChanged = ItemHealMonVolatile(BATTLE_PARTNER(gBattlerAttacker), gLastUsedItem);
-        targetBattler = BATTLE_PARTNER(gBattlerAttacker);
-    }
+    targetBattler = GetItemTargetBattler(owner, partyIndex);
+    if (targetBattler != MAX_BATTLERS_COUNT)
+        statusChanged = ItemHealMonVolatile(targetBattler, gLastUsedItem);
 
     // Heal Status1 conditions.
-    if (!HealStatusConditions(&party[gBattleStruct->itemPartyIndex[gBattlerAttacker]], GetItemStatus1Mask(gLastUsedItem), targetBattler))
+    if (!HealStatusConditions(&party[partyIndex], GetItemStatus1Mask(gLastUsedItem), targetBattler))
     {
         statusChanged = TRUE;
         // HnS: a benched target has no battler (targetBattler == MAX_BATTLERS_COUNT); upstream 1.17.0 writes past gBattleMons here.
@@ -12228,7 +12250,7 @@ void BS_ItemCureStatus(void)
         return;
     }
 
-    PREPARE_SPECIES_BUFFER(gBattleTextBuff1, GetMonData(&party[gBattleStruct->itemPartyIndex[gBattlerAttacker]], MON_DATA_SPECIES));
+    PREPARE_SPECIES_BUFFER(gBattleTextBuff1, GetMonData(&party[partyIndex], MON_DATA_SPECIES));
     if (targetBattler == MAX_BATTLERS_COUNT)
     {
         gBattlescriptCurrInstr = cmd->nextInstr;
@@ -12312,7 +12334,9 @@ void BS_ItemRestorePP(void)
     const u8 *effect = GetItemEffect(gLastUsedItem);
     u32 i, pp, maxPP, loopEnd;
     enum BattlerId battler = MAX_BATTLERS_COUNT;
-    struct Pokemon *mon = &gParties[GetBattlerTrainer(gBattlerAttacker)][gBattleStruct->itemPartyIndex[gBattlerAttacker]];
+    u32 partyIndex;
+    enum BattlerId owner = GetItemTargetPartyOwner(gBattlerAttacker, &partyIndex); // HnS: see GetItemTargetPartyOwner
+    struct Pokemon *mon = &GetBattlerParty(owner)[partyIndex];
     enum Move moveId = MOVE_NONE;
 
     // Check whether to apply to all moves.
@@ -12328,12 +12352,7 @@ void BS_ItemRestorePP(void)
     }
 
     // Check if the recipient is an active battler.
-    if (gBattleStruct->itemPartyIndex[gBattlerAttacker] == gBattlerPartyIndexes[gBattlerAttacker])
-        battler = gBattlerAttacker;
-    else if (IsDoubleBattle()
-                && gBattleStruct->itemPartyIndex[gBattlerAttacker] == gBattlerPartyIndexes[BATTLE_PARTNER(gBattlerAttacker)]
-                && BattlersShareParty(gBattlerAttacker, BATTLE_PARTNER(gBattlerAttacker))) // HnS: see BS_ItemRestoreHP
-        battler = BATTLE_PARTNER(gBattlerAttacker);
+    battler = GetItemTargetBattler(owner, partyIndex);
 
     // Heal PP!
     for (; i < loopEnd; i++)
@@ -12350,7 +12369,7 @@ void BS_ItemRestorePP(void)
 
             // Update battler PP if needed.
             if (battler != MAX_BATTLERS_COUNT
-                && gBattleStruct->itemPartyIndex[gBattlerAttacker] == gBattlerPartyIndexes[battler]
+                && partyIndex == gBattlerPartyIndexes[battler]
                 && MOVE_IS_PERMANENT(battler, i))
             {
                 gBattleMons[battler].pp[i] = pp;

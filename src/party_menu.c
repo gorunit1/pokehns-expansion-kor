@@ -5559,7 +5559,9 @@ static void ShowMoveSelectWindow(u8 slot)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        move = GetMonData(&gParties[B_TRAINER_0][slot], MON_DATA_MOVE1 + i);
+        // HnS: slot is a party menu id; in a half-team multi menu ids 1/4/5 are the in-game partner's mons and the
+        // player's mons sit at 0/2/3 (upstream 1.17.0 reads gParties[B_TRAINER_0][slot]). Same mon in the field layouts.
+        move = GetMonData(GetPartyMonFromPartyMenuId(slot), MON_DATA_MOVE1 + i);
         u8 fontId = GetFontIdToFit(GetMoveName(move), FONT_NORMAL, 0, 72);
         AddTextPrinterParameterized(windowId, fontId, GetMoveName(move), 8, (i * 16) + 1, TEXT_SKIP_DRAW, NULL);
         if (move != MOVE_NONE)
