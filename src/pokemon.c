@@ -9214,6 +9214,12 @@ bool32 SpeciesHasGenderDifferences(enum Species species)
 
 static struct PartyState *GetBattlerPartyStateByPokemon(struct Pokemon *partyMon, enum BattleTrainer trainer)
 {
+    // HnS: keep the pre-#8943 guard. Outside battle gBattleStruct is NULL and &gBattleStruct->partyState[...] is not,
+    // so field poison fainting (FORM_CHANGE_FAINT) on Zygarde Complete / Ultra Necrozma would read changedSpecies from
+    // low memory and corrupt the species (upstream 1.17.0 has no guard).
+    if (gBattleStruct == NULL)
+        return NULL;
+
     struct Pokemon *party = GetTrainerParty(trainer);
 
     for (int i = 0; i < PARTY_SIZE; i++)
