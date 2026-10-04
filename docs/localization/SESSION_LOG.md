@@ -2,6 +2,24 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-04 — full-sync seq 139 #9714 (데스크탑)
+
+- 요청/범위: 사용자 지시 (2). 사용자가 쉬는 동안 A·B·C에 이어 진행했고, 끝나면 멈춘다.
+- 진행: 사전 분석 2개(A 이식 patch, B 한글 출력 회귀 테스트 34개)를 A·B·C 적용과 병렬로 진행했다(저장소 밖 사본). 이어서 적용 에이전트 1개 → 리뷰 2개(C 코드, 스크립트·한글) → 메인 재빌드·전체 테스트·세이브 비교 순서로 진행했다.
+- 커밋: `32b62b550f` Port upstream #9714. 수정 파일 5개: `data/battle_scripts_1.s`, `include/battle_scripts.h`, `src/battle_end_turn.c`, `src/battle_message.c`, `src/battle_script_commands.c`.
+- 결정
+  - HnS 고유 스크립트 9개와 `RemoveHazards`에 upstream과 같은 저장/복사/복원을 넣어 한글 진영 문구를 유지했다.
+  - 방벽 `*WoreOff`/`*WoreOffReturn` 4쌍은 합치지 않았다(seq 132 결정).
+  - 안개제거 확인 단계 결함 수정과 거다이풍격 변화는 upstream 동작으로 받아들였다. 안개제거는 출력 변화 문서에, 거다이풍격(HnS 미도달)은 결과 문서에만 적었다.
+- 검증
+  - 빌드: `make hns -j8` 종료 0, ROM 32,715,348 B, SHA1 `900161aa4719a126211e11751d6d4d6d6884e7f6`, 새 경고 0. 로그 `build/localization-logs/hns-20261004-211044-seq139.log`
+  - 전체 테스트: `build/port-check-seq139.log`가 기준과 같다 → `test-baseline-seq139.txt`
+  - 세이브: `save_compat.py run` 판정 줄 68개가 기대 보고서와 같다
+  - 한글 회귀: `chunk-139/B-tests` 이식 전 34/34, 이식 후 31/3. `chunk-132/D-tests` 66/4
+- 게임 화면 확인: 하지 않았다.
+- 문서: `full-sync-seq-139-139.md`(새 파일), `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 1행, `HANDBACK_2026-10-04.md` 7절, STATUS.
+- 다음 시작점: seq 142 #8930. 시작 프롬프트는 바로 아래 A·B·C 항목의 "다음 세션 시작 프롬프트"와 같은 형식이고, 할 일만 "seq 142 #8930부터"로 바꾼다. 친구 답이 왔으면 팝업 선택 patch와 조사 2곳을 먼저 넣는다.
+
 ### 2026-10-04 — 친구 요청 A·B·C 수정, 계획서 열매 이름 정정 (데스크탑)
 
 - 요청/범위: 사용자가 "추천대로" 진행을 지시했다. 순서는 A·B·C → seq 139이고, (1) 보고를 남긴 뒤 (2)까지 이어서 한다.
