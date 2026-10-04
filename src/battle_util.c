@@ -1254,8 +1254,13 @@ void ResetSentPokesToOpponentValue(void)
     gSentPokesToOpponent[0] = 0;
     gSentPokesToOpponent[1] = 0;
 
+    // HnS: the bits are indexes into the player's own party. Since #8943 an in-game partner's mons use
+    // indexes 0-2 of their own party, so they must not mark the player's mons as sent in.
     for (i = 0; i < gBattlersCount; i += 2)
-        bits |= 1u << gBattlerPartyIndexes[i];
+    {
+        if (GetBattlerTrainer(i) == B_TRAINER_0)
+            bits |= 1u << gBattlerPartyIndexes[i];
+    }
 
     for (i = 1; i < gBattlersCount; i += 2)
         gSentPokesToOpponent[(i & BIT_FLANK) >> 1] = bits;
@@ -1273,7 +1278,7 @@ void OpponentSwitchInResetSentPokesToOpponentValue(enum BattlerId battler)
 
         for (i = 0; i < gBattlersCount; i += 2)
         {
-            if (!(gAbsentBattlerFlags & (1u << i)))
+            if (!(gAbsentBattlerFlags & (1u << i)) && GetBattlerTrainer(i) == B_TRAINER_0) // HnS: see ResetSentPokesToOpponentValue
                 bits |= 1u << gBattlerPartyIndexes[i];
         }
         gSentPokesToOpponent[flank] = bits;
@@ -1286,7 +1291,7 @@ void UpdateSentPokesToOpponentValue(enum BattlerId battler)
     {
         OpponentSwitchInResetSentPokesToOpponentValue(battler);
     }
-    else
+    else if (GetBattlerTrainer(battler) == B_TRAINER_0) // HnS: see ResetSentPokesToOpponentValue
     {
         s32 i;
         for (i = 1; i < gBattlersCount; i++)
