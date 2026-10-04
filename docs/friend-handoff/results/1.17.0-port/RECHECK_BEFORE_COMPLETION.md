@@ -30,6 +30,8 @@
 |---|---|---|---|
 | 9 | 텔레키네시스 문장 조사 고정: `{B_DEF_NAME_WITH_PREFIX}는\n높이 뛰어올랐다!` → 받침 뒤에서 `마자용는`(→ `{B_TXT_EUNNEUN}`) | `src/battle_message.c` `STRINGID_HURLEDINTOTHEAIR` (2026-10-04 턴 종료 테스트에서 발견) | |
 | 10 | 섬광 문장 조사 고정: `{B_ATK_NAME_WITH_PREFIX}로부터` → 받침 뒤에서 `으로부터`여야 함 | `src/battle_message.c` `STRINGID_CLOAKEDINAHARSHLIGHT` | |
+| 10b | **`{B_ATK_PREFIX2}` 뒤 조사(친구 요청 A와 같은 유형, 2026-10-04 리뷰 발견):** 주술 시작 `STRINGID_SHIELDEDFROMCRITICALHITS` `주술의 힘으로\n우리 편은의 급소가 숨겨졌다!`/`상대는의`, 팀 가드 `STRINGID_PROTECTEDTEAM` `우리 편은을\n와이드가드가 지켜 줬다!`/`상대는을`(패스트가드·마룻바닥세워막기·트릭가드 공용). 제안: 토큰만 `{B_ATK_TEAM1}의`, `{B_ATK_PREFIX3}`(+`{B_TXT_EULREUL}` 삭제) | `src/battle_message.c` 567·577 | |
+| 10c | `Time to Gigantamax!` 영문(HnS 미도달, seq 139 회귀 테스트에서 발견) | `src/battle_message.c` | |
 | 11 | 멸망의바디 `STRINGID_PKMNSWILLPERISHIN3TURNS` 영문 | `full-sync-seq-127-127.md` 별건 | |
 | 12 | 분노의경혈 `TARGETSSTATWASMAXEDOUT` 본문 누락(`의`, 줄바꿈, 조사) | seq 181 #9730 때 함께(`full-sync-seq-127-127.md`) | |
 | 13 | D6a 방벽 해제 진영 이름(실기 확인 뒤 결정), D6c 사령탑 두 번째 이름(별도 과제) | `HANDBACK_2026-09-30.md` 9절, `FRIEND_REPLY_2026-10-01.md` | |

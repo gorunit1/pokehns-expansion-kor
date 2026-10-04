@@ -119,7 +119,7 @@
 | #10217 | `PKMNSTOLEITEM`(325)의 `{B_DEF_NAME_WITH_PREFIX}{B_TXT_EU}` | 기존 ID는 그대로 둔다. 원래 공격자가 필드에 없는 경우만 같은 문장을 `{B_BUFF2}`로 쓴 새 ID를 추가한다. 조사 처리(`GetJongCode`, 3238)는 버퍼 이름에도 동작한다. 끈적끈적바늘 즉시 전이는 보존한다. |
 | #10443 | `PKMNTIGHTENINGFOCUS`/`HEATUPBEAK`/`PREPARESHELLTRAP`(357/770/795)의 `{B_ATK_…}` | 기본 경로는 `gBattlerAttacker`=battler를 유지한다. 앵콜 경로는 `saveattacker`/`restoreattacker`로 감싸 같은 문장을 쓴다. |
 | #10432 | `WALLYUSEDITEM`(435 "민진은…") 삭제 | 삭제하지 않는다. FRLG 노인 분기만 새 ID로 둔다. 공식 한국어가 없어 문구는 미결이다. |
-| #10268 | 열매·거친피부 팝업 스크립트 | `waitabilitypopup`을 추가한다. 팝업이 없는 이스타·미클·자보/애터·캄라 열매에는 HnS 아이템 팝업 helper를 붙인다. 거친피부는 HnS의 메시지판(`BattleScript_HurtAttacker`)을 유지한다. |
+| #10268 | 열매·거친피부 팝업 스크립트 | `waitabilitypopup`을 추가한다. 팝업이 없는 애슈·미클·자보/애터·랑사 열매(2026-10-04 이름 정정)에는 HnS 아이템 팝업 helper를 붙인다. 거친피부는 HnS의 메시지판(`BattleScript_HurtAttacker`)을 유지한다. |
 | #10431 | 반감열매(`BerryReduceDmg`, 7234) | HnS 팝업 helper를 유지한다. 출력 순서는 '팝업·열매 애니 → 공격 애니·HP → 반감 문구'가 된다. |
 | #10315 | 드래곤애로우 상성 문구·`HITXTIMES` | Champions 분기 4곳에 `TARGET_SMART` 조건을 추가한다. 문장은 바꾸지 않는다. |
 | #10325·#10436·#10536·#10566·#10569·#10687 | 출력 조건·주체만 변경 | 문장과 지정 코드를 바꾸지 않는다. |

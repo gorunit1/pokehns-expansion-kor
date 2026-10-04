@@ -2,6 +2,28 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-04 — 친구 요청 A·B·C 수정, 계획서 열매 이름 정정 (데스크탑)
+
+- 요청/범위: 사용자가 "추천대로" 진행을 지시했다. 순서는 A·B·C → seq 139이고, (1) 보고를 남긴 뒤 (2)까지 이어서 한다.
+- 수정 파일
+  - `src/battle_message.c`(A·B 각 1줄), `data/battle_scripts_1.s`(C 4줄)
+  - 계획서 3곳: `pokeemerald-expansion-1.17.0-full-sync-plan.md:167`, `g2_battle_fixed_b_plan.md:122`, `g2_battle_fixed_b_plan.tsv:59`
+  - 문서: `friend-requests-abc-2026-10-04.md`(새 파일), `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 3행, `popup-champions-compare.md`, `RECHECK_BEFORE_COMPLETION.md` 10b·10c, `HANDBACK_2026-10-04.md` 6절
+- 커밋: `3464fa89b6`(A), `ef8c779b55`(B), `f79f3baf2b`(C). 적용 에이전트 1개 → 리뷰 1개(문제 없음) → 메인 재빌드·전체 테스트.
+- 결정
+  - A는 친구 제안대로 `{B_ATK_TEAM1}`을 썼다(종료 문장과 같은 토큰).
+  - B는 친구가 지정한 공용 본문을 썼다.
+  - C는 하양허브와 같은 NoFlush 팝업을 지닌 경우와 내던지기 모두에 넣었다. 내던지기는 친구 Q1에 따라 뺄 수 있다.
+  - A·B는 원래 출력 변화 문서 범위 밖(문자열만 변경)이지만, 사용자 지시에 따라 기록했다.
+- 검증
+  - 빌드: `make hns -j8` 종료 0, ROM 32,715,172 B, SHA1 `b826980d2c2dda90f76c1bfe99d3482ee66c1557`, 로그 `build/localization-logs/hns-20261004-204651-abc.log`
+  - 전체 테스트: `build/port-check-abc.log`가 기준 목록과 같다
+  - 임시 한글 테스트: A 4개, B 2개가 수정 전 FAIL → 수정 뒤 PASS. C는 trace 12시나리오(리뷰에서 다시 실측)
+  - 한글 회귀: `chunk-132/D-tests` 2-10 기대 문장을 갱신한 뒤 66/4
+- 게임 화면 확인: 하지 않았다.
+- 남은 문제: 같은 유형의 조사 문제 2곳(주술 시작, 팀 가드)은 친구 확인 대기다. 선택 팝업 patch는 친구 Q3~Q8 답을 받은 뒤 정한다.
+- 다음 시작점: seq 139 #9714 적용(`/home/hjm0725/hns-sync-work/chunk-139/part-A.patch`, 회귀 `B-tests/run.sh`).
+
 ### 2026-10-04 — seq 138.5 #8943 단위 적용, 지닌 도구 팝업 대조, 친구 디스코드 답 반영 (데스크탑)
 
 - **요청/범위:** 사용자 지시 (1) #8943 적용 + 같은 단위 후속 7개 + HnS 보호 수정, (2) 친구 요청 C 읽기 전용 분석(병렬). (3) A·B·C 코드 수정은 다음 단계. 작업 중 사용자가 친구 디스코드 답을 전달했다(`B_MULTI_HALF_TEAMS` (a) FALSE 확정, 상대 141 분리 검토, 인트로 주인공 Y 통일). 사용자는 데스크탑을 켜 둔 채 랩탑에서 원격으로 지시했다.
