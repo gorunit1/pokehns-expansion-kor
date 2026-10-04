@@ -9948,6 +9948,16 @@ bool32 IsSleepClauseEnabled(void)
     return FALSE;
 }
 
+// HnS: frontier (and Trainer Hill / e-Reader) opponent ids are facility trainer numbers, not gTrainers ids, so
+// AreMultiPartiesFullTeams must not read their multiTeamSize (frontier trainer 141 picked up TRAINER_GRUNT_23_HNS's
+// Multi Party: Half). gBattleTypeFlags is trusted only while battle resources exist: multi_do calls
+// AreMultiPartiesFullTeams in the field, where the flags are still those of the previous battle.
+static bool32 AreOpponentsFacilityTrainers(void)
+{
+    return gBattleStruct != NULL
+        && (gBattleTypeFlags & (BATTLE_TYPE_FRONTIER | BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_TRAINER_HILL));
+}
+
 bool32 AreMultiPartiesFullTeams(void)
 {
     enum DifficultyLevel difficulty = GetCurrentDifficultyLevel();
@@ -9955,8 +9965,8 @@ bool32 AreMultiPartiesFullTeams(void)
     if (B_MULTI_HALF_TEAMS
      || TRAINER_BATTLE_PARAM.opponentA == TRAINER_LINK_OPPONENT
      || gBattleTypeFlags & BATTLE_TYPE_TOWER_LINK_MULTI
-     || (gTrainers[difficulty][TRAINER_BATTLE_PARAM.opponentA].multiTeamSize == MULTI_TEAM_SIZE_HALF)
-     || (gTrainers[difficulty][TRAINER_BATTLE_PARAM.opponentB].multiTeamSize == MULTI_TEAM_SIZE_HALF))
+     || (!AreOpponentsFacilityTrainers() && gTrainers[difficulty][TRAINER_BATTLE_PARAM.opponentA].multiTeamSize == MULTI_TEAM_SIZE_HALF)
+     || (!AreOpponentsFacilityTrainers() && gTrainers[difficulty][TRAINER_BATTLE_PARAM.opponentB].multiTeamSize == MULTI_TEAM_SIZE_HALF))
     {
         gSpecialVar_Result = FALSE;
         return FALSE;
