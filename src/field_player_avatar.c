@@ -808,7 +808,6 @@ static void WindUpSpinTimer(enum Direction direction)
 bool32 CanTriggerSpinEvolution()
 {
     gSpecialVar_0x8000 = EVO_NONE;
-    bool32 canStopEvo = TRUE;
     if (gPlayerSpinData.triggerEvo)
     {
         u32 seconds = gPlayerSpinData.VBlanksSpinning / 60;
@@ -832,16 +831,15 @@ bool32 CanTriggerSpinEvolution()
             else if (direction == SPIN_DIRECTION_COUNTER_CLOCKWISE)
                 gSpecialVar_0x8000 = SPIN_CCW_SHORT;
         }
-        gSpecialVar_0x8001 = FALSE; //canStopEvo
-        canStopEvo = FALSE;
-        gSpecialVar_0x8002 = TRUE; //tryMultiple
         gPlayerSpinData.triggerEvo = FALSE;
     }
+    // HnS: keep the party check removed by upstream #7573. Without it every full spin in place
+    // returns TRUE and TrySpecialOverworldEvo reloads the field (CB2_ReturnToField) even if nothing evolves.
     if (gSpecialVar_0x8000 != EVO_NONE)
     {
         for (u32 i = 0; i < PARTY_SIZE; i++)
         {
-            enum Species species = GetEvolutionTargetSpecies(&gParties[B_TRAINER_0][i], EVO_MODE_OVERWORLD_SPECIAL, 0, NULL, &canStopEvo, CHECK_EVO);
+            enum Species species = GetEvolutionTargetSpecies(&gParties[B_TRAINER_0][i], EVO_MODE_OVERWORLD_SPECIAL, 0, NULL, NULL, CHECK_EVO);
             if (species != SPECIES_NONE)
             {
                 return TRUE;
