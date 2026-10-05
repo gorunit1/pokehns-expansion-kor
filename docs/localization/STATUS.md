@@ -2,7 +2,7 @@
 
 ## 2026-10-05 — full-sync seq 142~175 완료(167 보류, 199 선반영) + 친구 답 반영, 다음 seq 176 (현재, 데스크탑)
 
-- **멈춘 지점:** seq 175 #8434(+#10020 선반영)까지 끝내고 push했다. 다음은 **seq 176 #9864**(S, 교체 화면 뒤 체력 상자), 177 #9879(M, wild_encounter config 이동 — #8434 HnS 이로치 줄 손 병합, 재확인 8s), 178 #9911(S), 179 #9906(M), 181 #9730(XL, Stat Change Refactor). 180 #9843 선반영, 199 #10020 선반영(seq 175와 함께), 167 #9819 보류.
+- **멈춘 지점:** seq 175 #8434(+#10020 선반영)까지 끝내고 push했다. 사용자 지시로 여기서 멈추고(2026-10-06 새벽) 친구에게 보고했다(내용 = `HANDBACK_2026-10-05.md` 1~7절 요약). **친구 답 대기:** 질문 5개(재확인 3b 춤추기, 10d `apdlf`, 3c 불복종 HP, 10e `내보냈다!!`, 10f 유니온룸 문장 형식)와 보고 2건(#9847 기본 교체 HnS 유지 `cc8fa0418a`, #8434 OWE 꺼 둠). 답이 오면 그 반영부터 하고, 이어서 다음은 **seq 176 #9864**(S, 교체 화면 뒤 체력 상자), 177 #9879(M, wild_encounter config 이동 — #8434 HnS 이로치 줄 손 병합, 재확인 8s), 178 #9911(S), 179 #9906(M), 181 #9730(XL, Stat Change Refactor). 180 #9843 선반영, 199 #10020 선반영(seq 175와 함께), 167 #9819 보류.
   - 테스트 기준: `docs/friend-handoff/results/1.17.0-port/test-baseline-seq174.txt`(seq 175 뒤에도 목록 같음). 빌드 기준: ROM 32,738,308 B, SHA1 `4d8ecf63…`.
   - 경고 기준: `/home/hjm0725/hns-sync-work/chunk-ahead-130-167/warn-base.txt` + 알려진 도구 경고 `libpng warning: bKGD: invalid index`(#8434 `shiny_sparkle.png`).
   - 세이브 정적 비교: `save_compat.py run --pre <직전 기준>`을 쓰면 묶음별 차이만 본다(예: `chunk-175/tmp-175-impact/savecompat-pre175`, `collect`로 만든 이식 전 사실). 기본 `run`은 묶음 1 이전 기준이라 #7573 표시(FAIL 2)와 #8434 종 데이터 WARN이 섞인다.
