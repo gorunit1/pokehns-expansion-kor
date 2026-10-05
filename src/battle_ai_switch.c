@@ -1269,6 +1269,59 @@ static bool32 ShouldSwitchIfAttackingStatsLowered(struct SwitchAiContext *switch
     return FALSE;
 }
 
+// HnS: #9847 removed this default switch. Trainers without AI_FLAG_SMART_SWITCHING (gym leaders, rivals and
+// most HnS trainers) keep using it so their switching stays as before the port.
+static bool32 FindMonWithFlagsAndSuperEffective(struct SwitchAiContext *switchContext, u32 flags, u32 percentChance)
+{
+    enum BattlerId battler = switchContext->battler;
+    enum Move move;
+
+    // Similar functionality handled more thoroughly by ShouldSwitchIfHasBadOdds
+    if (gAiThinkingStruct->aiFlags[battler] & AI_FLAG_SMART_SWITCHING)
+        return FALSE;
+
+    if (gLastLandedMoves[battler] == MOVE_NONE)
+        return FALSE;
+    if (gLastLandedMoves[battler] == MOVE_UNAVAILABLE)
+        return FALSE;
+    if (gLastHitBy[battler] == 0xFF)
+        return FALSE;
+    if (IsBattleMoveStatus(gLastLandedMoves[battler]))
+        return FALSE;
+
+    for (u32 monIndex = 0; monIndex < switchContext->lastId; monIndex++)
+    {
+        enum Species species;
+        enum Ability monAbility;
+        uq4_12_t typeMultiplier;
+        u32 moveFlags = 0;
+
+        if (!(switchContext->eligiblePartyMons & (1u << monIndex)))
+            continue;
+
+        species = GetMonData(&switchContext->party[monIndex], MON_DATA_SPECIES_OR_EGG);
+        monAbility = GetPartyMonAbilityForSwitchCalc(battler, monIndex, &switchContext->party[monIndex]);
+        typeMultiplier = CalcPartyMonTypeEffectivenessMultiplier(gLastLandedMoves[battler], species, monAbility);
+        UpdateMoveResultFlags(typeMultiplier, &moveFlags);
+        if (moveFlags & flags)
+        {
+            enum BattlerId lastHitBy = gLastHitBy[battler];
+
+            for (u32 moveIndex = 0; moveIndex < MAX_MON_MOVES; moveIndex++)
+            {
+                move = GetMonData(&switchContext->party[monIndex], MON_DATA_MOVE1 + moveIndex);
+                if (move == MOVE_NONE)
+                    continue;
+
+                if (AI_GetMoveEffectiveness(move, battler, lastHitBy) >= UQ_4_12(2.0) && (RandomPercentage(RNG_AI_SWITCH_SE_DEFENSIVE, percentChance) || gAiLogicData->aiPredictionInProgress))
+                    return SetSwitchinAndSwitch(battler, monIndex);
+            }
+        }
+    }
+
+    return FALSE;
+}
+
 bool32 ShouldSwitchIfLoses1v1(struct SwitchAiContext *switchContext)
 {
     if (IsDoubleBattle())
@@ -1463,6 +1516,20 @@ bool32 ShouldSwitch(enum BattlerId battler)
         return TRUE;
     if (ShouldSwitchIfLoses1v1(&switchContext))
         return TRUE;
+
+    // HnS: the pre-#9847 default switch for AI without AI_FLAG_SMART_SWITCHING.
+    // It prompts a switch to a party mon that resists the opponent's last move and has a super effective move.
+    if (gAiThinkingStruct->aiFlags[switchContext.battler] & AI_FLAG_SMART_SWITCHING)
+        return FALSE;
+    if ((IsBattlerAlive(switchContext.opposingBattler) && CanUseSuperEffectiveMoveAgainstOpponent(switchContext.battler, switchContext.opposingBattler))
+     || (IsDoubleBattle() && IsBattlerAlive(BATTLE_PARTNER(switchContext.opposingBattler)) && CanUseSuperEffectiveMoveAgainstOpponent(switchContext.battler, BATTLE_PARTNER(switchContext.opposingBattler))))
+        return FALSE;
+    if (AreStatsRaised(switchContext.battler))
+        return FALSE;
+    if (FindMonWithFlagsAndSuperEffective(&switchContext, MOVE_RESULT_DOESNT_AFFECT_FOE, 50)
+     || FindMonWithFlagsAndSuperEffective(&switchContext, MOVE_RESULT_NOT_VERY_EFFECTIVE, 33))
+        return TRUE;
+
     return FALSE;
 }
 
