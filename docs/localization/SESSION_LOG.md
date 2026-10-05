@@ -2,6 +2,20 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-05 — full-sync seq 175 #8434 Overworld Encounters (+ seq 199 #10020 선반영) (데스크탑, 밤)
+
+- 진행: 사전 분석 2개(patch·impact, 병렬, 같은 문제 5건을 독립적으로 찾음) → 메인 결정 → 적용 1개(커밋 2개, 손 수정은 D4 1곳) → 메인 검증 + 리뷰 2개(code·runtime) 병렬.
+- 결정: `WE_OW_ENCOUNTERS FALSE` 유지, HnS 적응 전부 승인(색조 회귀·16칸·배열 밖 읽기·이로치 줄·이동 타입 번호), D4(`LoadObjectEvents` 호출을 `if (WE_OW_ENCOUNTERS)`로), ROM +21 KB 수용, png 도구 경고 허용, #10020을 seq 199에서 선반영.
+- 검증
+  - 빌드: `4d8ecf63…`, ROM 32,738,308 B, 새 경고 0(`build/localization-logs/hns-20261005-232717-seq175.log`)
+  - 전체 테스트: `build/port-check-seq175.log`, 목록이 `test-baseline-seq174.txt`와 같음
+  - 한글 회귀 328개: 이식 전후 요약 같음
+  - 세이브: 정적 비교 `--pre` seq 174 기준 PASS(FAIL 0, WARN 5 = 종 데이터 간격), 세이브 왕복 PASS
+  - 메인 검증 스크립트: `/home/hjm0725/hns-sync-work/chunk-175/apply/main-verify.sh`
+- 문서: `full-sync-seq-175-175.md`, 재확인 8s·24, `HANDBACK_2026-10-05.md` 7절, README, STATUS.
+- 게임 화면 확인: 하지 않았다.
+- 다음 시작점: seq 176 #9864(STATUS "멈춘 지점").
+
 ### 2026-10-05 — full-sync 묶음 5(seq 171·172·173, 174 이미 적용) (데스크탑, 밤)
 
 - 사용자가 컨텍스트 여유(37%)를 보고 이 세션에서 계속하자고 했다. 친구 문자(묶음 1~4·친구 답 반영 보고, 새 질문 3개)는 사용자가 따로 보내고, 사전 분석은 바로 시작했다.

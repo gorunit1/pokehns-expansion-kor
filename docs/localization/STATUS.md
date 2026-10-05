@@ -1,10 +1,16 @@
 # 현재 인수인계 상태
 
-## 2026-10-05 — full-sync seq 142~174 완료(167 보류) + 친구 답 반영, 다음 seq 175 (현재, 데스크탑)
+## 2026-10-05 — full-sync seq 142~175 완료(167 보류, 199 선반영) + 친구 답 반영, 다음 seq 176 (현재, 데스크탑)
 
-- **멈춘 지점:** 묶음 5(seq 171~174)까지 끝내고 push했다. 다음은 **seq 175 #8434(XL, Overworld Encounters)** — 묶음에 섞지 않고 단독 단위로 사전 분석부터. 그 뒤 176 #9864(S), 177 #9879(M), 178 #9911(S), 179 #9906(M), 181 #9730(XL, Stat Change Refactor). 180 #9843은 #8943 단위에서 선반영, 167 #9819는 #10548 직전까지 보류.
-  - 테스트 기준: `docs/friend-handoff/results/1.17.0-port/test-baseline-seq174.txt`. 빌드 기준: ROM 32,716,836 B, SHA1 `1a03f47f…`(B안 커밋 수정은 테스트 파일 주석만이라 게임 ROM 같음).
-  - 한글 통합 회귀: `ALLOW_REPO=1 /home/hjm0725/hns-sync-work/chunk-171-174/tmp-171/kortests/run.sh <저장소> <라벨>`(328개, 기대 요약 `runs/chunk171-main-summary.txt`). **할 일:** HNS9799 K2-02를 플레이어 MaxHP 999 형태로 바꿔(#9847 뒤 FAIL이라 #9799 수정을 더는 지키지 못함, 리뷰 권고) 기대 요약을 다시 만든다.
+- **멈춘 지점:** seq 175 #8434(+#10020 선반영)까지 끝내고 push했다. 다음은 **seq 176 #9864**(S, 교체 화면 뒤 체력 상자), 177 #9879(M, wild_encounter config 이동 — #8434 HnS 이로치 줄 손 병합, 재확인 8s), 178 #9911(S), 179 #9906(M), 181 #9730(XL, Stat Change Refactor). 180 #9843 선반영, 199 #10020 선반영(seq 175와 함께), 167 #9819 보류.
+  - 테스트 기준: `docs/friend-handoff/results/1.17.0-port/test-baseline-seq174.txt`(seq 175 뒤에도 목록 같음). 빌드 기준: ROM 32,738,308 B, SHA1 `4d8ecf63…`.
+  - 경고 기준: `/home/hjm0725/hns-sync-work/chunk-ahead-130-167/warn-base.txt` + 알려진 도구 경고 `libpng warning: bKGD: invalid index`(#8434 `shiny_sparkle.png`).
+  - 세이브 정적 비교: `save_compat.py run --pre <직전 기준>`을 쓰면 묶음별 차이만 본다(예: `chunk-175/tmp-175-impact/savecompat-pre175`, `collect`로 만든 이식 전 사실). 기본 `run`은 묶음 1 이전 기준이라 #7573 표시(FAIL 2)와 #8434 종 데이터 WARN이 섞인다.
+  - 한글 통합 회귀: `ALLOW_REPO=1 /home/hjm0725/hns-sync-work/chunk-171-174/tmp-171/kortests/run.sh <저장소> <라벨>`(328개, 기대 요약 `runs/post175-summary.txt`). **할 일:** HNS9799 K2-02를 플레이어 MaxHP 999 형태로 바꿔 기대 요약을 다시 만든다.
+- **seq 175 #8434(+199 #10020):** `full-sync-seq-175-175.md`
+  - 커밋: `9d0e2f51ee` #8434(`WE_OW_ENCOUNTERS FALSE`, HnS 적응 3곳 + D4 + 이동 타입 번호 + 이로치 줄), `2e148e3122` #10020
+  - 빌드 ROM +21,472 B, EWRAM·IWRAM 0, 새 경고 0(허용 도구 경고 1). 전체 테스트 목록 동일, 한글 회귀 328개 같음, 세이브 정적 비교 FAIL 0(`--pre` seq 174), 세이브 왕복 PASS. 리뷰 2개 문제 없음(기계어 비교)
+  - 재확인: 8s(뒤 행 손 병합), 24(이동 타입 번호·OWE 켤 때 조건)
 - **묶음 5(seq 171·172·173, 174 이미 적용):** `full-sync-seq-171-174.md`
   - 커밋: `729674ecf5` #9799, `0b29f4e551` #9850, `482d67210b` #9847, `cc8fa0418a` HnS B안(스마트 교체가 없는 AI의 기본 교체 유지, 사용자 승인 — 친구에게 보고)
   - 빌드: ROM 32,716,836 B(+384), EWRAM·IWRAM 0, 새 경고 0. 전체 테스트 사라진 PASS 0(이름 변경 1 제외). 한글 회귀 328개 의도한 1개 말고 같음. 리뷰 2개 코드 결함 0
