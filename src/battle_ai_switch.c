@@ -1704,14 +1704,20 @@ bool32 IsSwitchinValid(enum BattlerId battler)
         enum BattlerId partner = BATTLE_PARTNER(battler);
         if (gBattleStruct->AI_monToSwitchIntoId[battler] == PARTY_SIZE) // Generic switch
         {
-            if ((gAiLogicData->shouldSwitch & (1u << partner)) && gAiLogicData->monToSwitchInId[partner] == gAiLogicData->mostSuitableMonId[battler])
+            if ((gAiLogicData->shouldSwitch & (1u << partner))
+             && gAiLogicData->monToSwitchInId[partner] == gAiLogicData->mostSuitableMonId[battler]
+             && BattlersShareParty(battler, partner))
             {
                 return FALSE;
             }
         }
         else // Override switch
         {
-            if ((gAiLogicData->shouldSwitch & (1u << partner)) && gAiLogicData->monToSwitchInId[partner] == gBattleStruct->AI_monToSwitchIntoId[battler])
+            // HnS: compares the override switch-in (upstream #9799: mostSuitableMonId), which AI_TrySwitchOrUseItem sends
+            // out; otherwise a second absorb/override switch into the partner's mon is let through and that turn is lost.
+            if ((gAiLogicData->shouldSwitch & (1u << partner))
+             && gAiLogicData->monToSwitchInId[partner] == gBattleStruct->AI_monToSwitchIntoId[battler]
+             && BattlersShareParty(battler, partner))
             {
                 return FALSE;
             }

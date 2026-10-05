@@ -103,10 +103,14 @@ static const u8 sText_TwoLinkTrainersWantToBattle[] = _("{B_LINK_OPPONENT1_NAME}
 static const u8 sText_Trainer1SentOutPkmn[] = _("{B_TRAINER1_CLASS} {B_TRAINER1_NAME}{B_TXT_EUNNEUN}\n{B_OPPONENT_MON1_NAME}{B_TXT_EULREUL} 내보냈다!");
 static const u8 sText_Trainer1SentOutTwoPkmn[] = _("{B_TRAINER1_CLASS} {B_TRAINER1_NAME}{B_TXT_EUNNEUN}\n{B_OPPONENT_MON1_NAME}{B_TXT_WAGWA} {B_OPPONENT_MON2_NAME}{B_TXT_EULREUL} 내보냈다!");
 static const u8 sText_Trainer1SentOutPkmn2[] = _("{B_TRAINER1_CLASS} {B_TRAINER1_NAME}{B_TXT_EUNNEUN}\n{B_BUFF1}{B_TXT_EULREUL} 내보냈다!");
-static const u8 sText_LinkTrainerSentOutPkmn[] = _("{B_LINK_OPPONENT1_NAME}{B_TXT_EUNNEUN}\n{B_OPPONENT_MON1_NAME}{B_TXT_EULREUL} 내보냈다!");
+static const u8 sText_LinkTrainerIntroSendOutPkmn[] = _("{B_LINK_OPPONENT1_NAME}{B_TXT_EUNNEUN}\n{B_LINK_OPPONENT_MON1_NAME}{B_TXT_EULREUL} 내보냈다!");
+static const u8 sText_LinkTrainerSentOutPkmn[] = _("{B_LINK_OPPONENT1_NAME}{B_TXT_EUNNEUN}\n{B_BUFF1}{B_TXT_EULREUL} 내보냈다!");
 static const u8 sText_LinkTrainer2SentOutPkmn2[] = _("{B_LINK_OPPONENT2_NAME}{B_TXT_EUNNEUN}\n{B_BUFF1}{B_TXT_EULREUL} 내보냈다!!");
 static const u8 sText_LinkTrainerSentOutTwoPkmn[] = _("{B_LINK_OPPONENT1_NAME}{B_TXT_EUNNEUN}\n{B_OPPONENT_MON1_NAME}{B_TXT_WAGWA} {B_OPPONENT_MON2_NAME}{B_TXT_EULREUL} 내보냈다!");
-static const u8 sText_TwoLinkTrainersSentOutPkmn[] = _("{B_LINK_OPPONENT1_NAME}{B_TXT_EUNNEUN}\n{B_LINK_OPPONENT_MON1_NAME}{B_TXT_EULREUL} 내보냈다!\p{B_LINK_OPPONENT2_NAME}{B_TXT_EUNNEUN}\n{B_LINK_OPPONENT_MON2_NAME}{B_TXT_EULREUL} 내보냈다!");
+static const u8 sText_TwoLinkTrainersIntroSendOutPkmn[] = _("{B_LINK_OPPONENT1_NAME}{B_TXT_EUNNEUN}\n{B_LINK_OPPONENT_MON1_NAME}{B_TXT_EULREUL} 내보냈다!\p{B_LINK_OPPONENT2_NAME}{B_TXT_EUNNEUN}\n{B_LINK_OPPONENT_MON2_NAME}{B_TXT_EULREUL} 내보냈다!");
+// HnS: keeps {B_BUFF1} (upstream #9799: {B_LINK_OPPONENT_MON2_NAME}). In a link battle only the master runs the battle
+// engine; on the other console gBattlerPartyIndexes of a switching foe is set by switchinanim, after STRINGID_SWITCHINMON
+// is printed, so a {B_..._MON_NAME} token would name the previous mon. gBattleTextBuff1 travels with the message.
 static const u8 sText_LinkTrainerSentOutPkmn2[] = _("{B_LINK_OPPONENT1_NAME}{B_TXT_EUNNEUN}\n{B_BUFF1}{B_TXT_EULREUL} 내보냈다!");
 static const u8 sText_LinkTrainerMultiSentOutPkmn[] = _("{B_LINK_SCR_TRAINER_NAME}{B_TXT_EUNNEUN}\n{B_BUFF1}{B_TXT_EULREUL} 내보냈다!");
 static const u8 sText_GoPkmn[] = _("가랏! {B_PLAYER_MON1_NAME}!");
@@ -2495,29 +2499,22 @@ void BufferStringBattle(enum StringID stringID, enum BattlerId battler)
                 {
                     stringPtr = sText_TwoTrainersWantToBattle;
                 }
+                else if (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS)
+                {
+                    stringPtr = sText_TwoLinkTrainersWantToBattle;
+                }
                 else if (gBattleTypeFlags & BATTLE_TYPE_MULTI)
                 {
                     if (gBattleTypeFlags & BATTLE_TYPE_RECORDED)
                     {
-                        if (TESTING && gBattleTypeFlags & BATTLE_TYPE_MULTI)
-                        {
-                            if (!(gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS))
-                                stringPtr = sText_Trainer1WantsToBattle;
-                            else
-                                stringPtr = sText_TwoTrainersWantToBattle;
-                        }
-                        else if (TESTING && gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS)
-                        {
+                        if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK)
+                            stringPtr = sText_LinkTrainerWantsToBattle;
+                        else if (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS)
                             stringPtr = sText_TwoTrainersWantToBattle;
-                        }
                         else if (!(gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS))
-                        {
                             stringPtr = sText_LinkTrainerWantsToBattlePause;
-                        }
                         else
-                        {
                             stringPtr = sText_TwoLinkTrainersWantToBattlePause;
-                        }
                     }
                     else
                     {
@@ -2548,7 +2545,7 @@ void BufferStringBattle(enum StringID stringID, enum BattlerId battler)
         }
         else
         {
-            if (gBattleTypeFlags & BATTLE_TYPE_GHOST && IsGhostBattleWithoutScope())
+            if (IsGhostBattleWithoutScope())
                 stringPtr = sText_GhostAppearedCantId;
             else if (gBattleTypeFlags & BATTLE_TYPE_GHOST)
                 stringPtr = sText_TheGhostAppeared;
@@ -2572,23 +2569,19 @@ void BufferStringBattle(enum StringID stringID, enum BattlerId battler)
         {
             if (IsDoubleBattle() && IsValidForBattle(GetBattlerMon(BATTLE_PARTNER(battler))))
             {
-                if (gBattleTypeFlags & BATTLE_TYPE_INGAME_PARTNER)
-                {
-                    if (BattlerIsPlayer(battler) && (battler & BIT_FLANK) == B_FLANK_LEFT) // Player is battler 0
-                        stringPtr = sText_InGamePartnerSentOutZGoN;
-                    else // Player is battler 2
-                        stringPtr = sText_InGamePartnerSentOutNGoZ;
-                }
-                else if (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS)
-                {
-                    stringPtr = sText_GoTwoPkmn;
-                }
-                else if (gBattleTypeFlags & BATTLE_TYPE_MULTI)
+                if (gBattleTypeFlags & BATTLE_TYPE_MULTI && (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK || gBattleTypeFlags & BATTLE_TYPE_LINK))
                 {
                     if (BattlerIsPlayer(battler))
-                        stringPtr = sText_LinkPartnerSentOutPkmn2GoPkmn;
+                        stringPtr = sText_LinkPartnerSentOutPkmn2GoPkmn; // Player is on left
                     else
-                        stringPtr = sText_LinkPartnerSentOutPkmn1GoPkmn;
+                        stringPtr = sText_LinkPartnerSentOutPkmn1GoPkmn; // Link Partner on left
+                }
+                else if (gBattleTypeFlags & BATTLE_TYPE_INGAME_PARTNER)
+                {
+                    if (BattlerIsPlayer(battler) && (battler & BIT_FLANK) == B_FLANK_LEFT)
+                        stringPtr = sText_InGamePartnerSentOutZGoN; // Player is on left
+                    else
+                        stringPtr = sText_InGamePartnerSentOutNGoZ; // Partner on left
                 }
                 else
                 {
@@ -2604,27 +2597,31 @@ void BufferStringBattle(enum StringID stringID, enum BattlerId battler)
         {
             if (IsDoubleBattle() && IsValidForBattle(GetBattlerMon(BATTLE_PARTNER(battler))))
             {
-                if (BATTLE_TWO_VS_ONE_OPPONENT)
+                if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK && BATTLE_TWO_VS_ONE_OPPONENT)
+                    stringPtr = sText_LinkTrainerSentOutTwoPkmn;
+                else if (BATTLE_TWO_VS_ONE_OPPONENT)
                     stringPtr = sText_Trainer1SentOutTwoPkmn;
-                else if (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS)
+                else if (gBattleTypeFlags & BATTLE_TYPE_TOWER_LINK_MULTI) // HnS: before the link line below; these foes are frontier trainers, not link players
                     stringPtr = sText_TwoTrainersSentPkmn;
-                else if (gBattleTypeFlags & BATTLE_TYPE_TOWER_LINK_MULTI)
+                else if ((gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK && gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS) || (gBattleTypeFlags & BATTLE_TYPE_MULTI && (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK || gBattleTypeFlags & BATTLE_TYPE_LINK)))
+                    stringPtr = sText_TwoLinkTrainersIntroSendOutPkmn;
+                else if (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS || gBattleTypeFlags & BATTLE_TYPE_TOWER_LINK_MULTI)
                     stringPtr = sText_TwoTrainersSentPkmn;
-                else if (gBattleTypeFlags & BATTLE_TYPE_MULTI)
-                    stringPtr = sText_TwoLinkTrainersSentOutPkmn;
-                else if (BattlerIsLink(battler) || (BattlerIsRecorded(battler) && BattlerIsOpponent(battler))) // Link Opponent 1 and test opponent
+                else if (BattlerIsLink(battler) || (BattlerIsRecorded(battler) && BattlerIsOpponent(battler))) // Link Opponent doubles and test opponent
                     stringPtr = sText_LinkTrainerSentOutTwoPkmn;
                 else
                     stringPtr = sText_Trainer1SentOutTwoPkmn;
             }
-            else
+            else if (BattlerIsLink(battler) || (BattlerIsRecorded(battler) && BattlerIsOpponent(battler)))
             {
-                if (!(BattlerIsLink(battler) || (BattlerIsRecorded(battler) && BattlerIsOpponent(battler))))
-                    stringPtr = sText_Trainer1SentOutPkmn;
-                else if (TRAINER_BATTLE_PARAM.opponentA == TRAINER_UNION_ROOM)
+                if (TRAINER_BATTLE_PARAM.opponentA == TRAINER_UNION_ROOM)
                     stringPtr = sText_Trainer1SentOutPkmn;
                 else
-                    stringPtr = sText_LinkTrainerSentOutPkmn;
+                    stringPtr = sText_LinkTrainerIntroSendOutPkmn;
+            }
+            else
+            {
+                stringPtr = sText_Trainer1SentOutPkmn;
             }
         }
         break;
@@ -2642,19 +2639,18 @@ void BufferStringBattle(enum StringID stringID, enum BattlerId battler)
                 else
                     stringPtr = sText_PkmnGoodComeBack;
             }
-            else if (BattlerIsPartner(battler))
+            else if (BattlerIsPartner(battler)) // Link or Ingame Partner
             {
-                if (BattlerIsLink(battler)) // Link Partner
-                {
+                if (BattlerIsLink(battler) || gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK)
                     stringPtr = sText_LinkPartnerWithdrewPkmn1;
-                }
-                else // In-game Partner
-                {
+                else
                     stringPtr = sText_InGamePartnerWithdrewPkmn1;
-                }
             }
-            else if (BattlerIsLink(battler) || TRAINER_BATTLE_PARAM.opponentA == TRAINER_LINK_OPPONENT
-            || gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK) // Link Opponent 1 and test opponent
+            // HnS: upstream #9799 drops BattlerIsLink() here and in STRINGID_SWITCHINMON. Union Room foes (opponentA is
+            // TRAINER_UNION_ROOM) would then get sText_Trainer1SentOutPkmn, whose {B_OPPONENT_MON1_NAME} names the previous mon
+            // on the non-master console (see sText_LinkTrainerSentOutPkmn2). Kept so link output stays as before the port.
+            else if (BattlerIsLink(battler) || TRAINER_BATTLE_PARAM.opponentA == TRAINER_LINK_OPPONENT // HnS: keeps BattlerIsLink (Union Room, see above)
+             || gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK) // Link Opponent A and test opponent
             {
                 stringPtr = sText_LinkTrainer1WithdrewPkmn;
             }
@@ -2668,7 +2664,7 @@ void BufferStringBattle(enum StringID stringID, enum BattlerId battler)
             if (BattlerIsPlayer(battler)) // Player
             {
                 if (*(&gBattleStruct->hpScale) == 0)
-                stringPtr = sText_PkmnThatsEnough;
+                    stringPtr = sText_PkmnThatsEnough;
                 else if (*(&gBattleStruct->hpScale) == 1 || IsDoubleBattle())
                     stringPtr = sText_PkmnComeBack;
                 else if (*(&gBattleStruct->hpScale) == 2)
@@ -2676,21 +2672,17 @@ void BufferStringBattle(enum StringID stringID, enum BattlerId battler)
                 else
                     stringPtr = sText_PkmnGoodComeBack;
             }
-            else if (BattlerIsPartner(battler))
+            else if (BattlerIsPartner(battler)) // Link or Ingame Partner
             {
-                if (BattlerIsLink(battler)) // Link Partner
-                {
+                if (BattlerIsLink(battler) || gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK)
                     stringPtr = sText_LinkPartnerWithdrewPkmn2;
-                }
-                else // In-game Partner
-                {
+                else
                     stringPtr = sText_InGamePartnerWithdrewPkmn2;
-                }
             }
-            else if (BattlerIsLink(battler) || TRAINER_BATTLE_PARAM.opponentA == TRAINER_LINK_OPPONENT
+            else if (BattlerIsLink(battler) || TRAINER_BATTLE_PARAM.opponentA == TRAINER_LINK_OPPONENT // HnS: keeps BattlerIsLink, see STRINGID_RETURNMON
              || gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK) // Link Opponent B and test opponent
             {
-                if (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS || gBattleTypeFlags & BATTLE_TYPE_MULTI)
+                if (BattleSideHasTwoTrainers(B_SIDE_OPPONENT))
                     stringPtr = sText_LinkTrainer2WithdrewPkmn;
                 else
                     stringPtr = sText_LinkTrainer1WithdrewPkmn;
@@ -2719,28 +2711,17 @@ void BufferStringBattle(enum StringID stringID, enum BattlerId battler)
                 else
                     stringPtr = sText_YourFoesWeakGetEmPkmn;
             }
-            else if (BattlerIsPartner(gBattleScripting.battler))
+            else if (BattlerIsPartner(gBattleScripting.battler)) // Link or Ingame Partner
             {
-                if (BattlerIsLink(gBattleScripting.battler)) // Link Partner
-                {
+                if (BattlerIsLink(gBattleScripting.battler) || gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK)
                     stringPtr = sText_LinkPartnerSentOutPkmn1;
-                }
-                else // In-game Partner
-                {
+                else
                     stringPtr = sText_InGamePartnerSentOutPkmn1;
-                }
             }
-            else if (BattlerIsLink(gBattleScripting.battler) || TRAINER_BATTLE_PARAM.opponentA == TRAINER_LINK_OPPONENT
-            || gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK) // Link Opponent 1 and test opponent
+            else if (BattlerIsLink(gBattleScripting.battler) || TRAINER_BATTLE_PARAM.opponentA == TRAINER_LINK_OPPONENT // HnS: keeps BattlerIsLink, see STRINGID_RETURNMON
+             || gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK) // Link Opponent A and test opponent
             {
-                // Must use the {B_BUFF1} variant, like the battler 2/3 case below does.
-                // {B_OPPONENT_MON1_NAME} is resolved from this console's own
-                // gBattlerPartyIndexes at print time, but over a link the authoritative
-                // index does not arrive until switchinanim, which runs after this
-                // printstring -- so it named the opponent's previous mon. gBattleTextBuff1
-                // was just filled with the right nickname by Cmd_switchindataupdate and
-                // travels with the message.
-                stringPtr = sText_LinkTrainerSentOutPkmn2;
+                stringPtr = sText_LinkTrainerSentOutPkmn;
             }
             else // Opponent A
             {
@@ -2752,7 +2733,7 @@ void BufferStringBattle(enum StringID stringID, enum BattlerId battler)
             if (BattlerIsPlayer(gBattleScripting.battler)) // Player
             {
                 if (*(&gBattleStruct->hpScale) == 0)
-                stringPtr = sText_GoPkmn2;
+                    stringPtr = sText_GoPkmn2;
                 else if (*(&gBattleStruct->hpScale) == 1 || IsDoubleBattle())
                     stringPtr = sText_DoItPkmn;
                 else if (*(&gBattleStruct->hpScale) == 2)
@@ -2760,21 +2741,17 @@ void BufferStringBattle(enum StringID stringID, enum BattlerId battler)
                 else
                     stringPtr = sText_YourFoesWeakGetEmPkmn;
             }
-            else if (BattlerIsPartner(gBattleScripting.battler))
+            else if (BattlerIsPartner(gBattleScripting.battler)) // Link or Ingame Partner
             {
-                if (BattlerIsLink(gBattleScripting.battler)) // Link Partner
-                {
+                if (BattlerIsLink(gBattleScripting.battler) || gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK)
                     stringPtr = sText_LinkPartnerSentOutPkmn2;
-                }
-                else // In-game Partner
-                {
+                else
                     stringPtr = sText_InGamePartnerSentOutPkmn2;
-                }
             }
-            else if (BattlerIsLink(gBattleScripting.battler) || TRAINER_BATTLE_PARAM.opponentA == TRAINER_LINK_OPPONENT
+            else if (BattlerIsLink(gBattleScripting.battler) || TRAINER_BATTLE_PARAM.opponentA == TRAINER_LINK_OPPONENT // HnS: keeps BattlerIsLink, see STRINGID_RETURNMON
              || gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK) // Link Opponent B and test opponent
             {
-                if (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS || gBattleTypeFlags & BATTLE_TYPE_MULTI)
+                if (BattleSideHasTwoTrainers(B_SIDE_OPPONENT))
                     stringPtr = sText_LinkTrainer2SentOutPkmn2;
                 else
                     stringPtr = sText_LinkTrainerSentOutPkmn2;
@@ -2783,87 +2760,11 @@ void BufferStringBattle(enum StringID stringID, enum BattlerId battler)
             {
                 stringPtr = sText_Trainer2SentOutPkmn;
             }
-            else // Opponent A
+            else // Single trainer double Opponent A
             {
                 stringPtr = sText_Trainer1SentOutPkmn2;
             }
         }
-        /*if (IsOnPlayerSide(gBattleScripting.battler))
-        {
-            if ((gBattleTypeFlags & BATTLE_TYPE_INGAME_PARTNER) && (BattlerIsPartner(gBattleScripting.battler)))
-                stringPtr = sText_InGamePartnerSentOutPkmn2;
-            else if (*(&gBattleStruct->hpScale) == 0 || IsDoubleBattle())
-                stringPtr = sText_GoPkmn2;
-            else if (*(&gBattleStruct->hpScale) == 1)
-                stringPtr = sText_DoItPkmn;
-            else if (*(&gBattleStruct->hpScale) == 2)
-                stringPtr = sText_GoForItPkmn;
-            else
-                stringPtr = sText_YourFoesWeakGetEmPkmn;
-        }
-        else
-        {
-            if (gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK))
-            {
-                if (gBattleTypeFlags & BATTLE_TYPE_TOWER_LINK_MULTI)
-                {
-                    if (gBattleScripting.battler == 1)
-                        stringPtr = sText_Trainer1SentOutPkmn2;
-                    else
-                        stringPtr = sText_Trainer2SentOutPkmn;
-                }
-                else
-                {
-                    if (TESTING && gBattleTypeFlags & BATTLE_TYPE_MULTI)
-                    {
-                        if (gBattleScripting.battler == 1)
-                        {
-                            stringPtr = sText_Trainer1SentOutPkmn;
-                        }
-                        else
-                        {
-                            if (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS)
-                                stringPtr = sText_Trainer2SentOutPkmn;
-                            else
-                                stringPtr = sText_Trainer1SentOutPkmn2;
-                        }
-                    }
-                    else if (TESTING && gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS)
-                    {
-                        if (gBattleScripting.battler == 1)
-                            stringPtr = sText_Trainer1SentOutPkmn;
-                        else
-                            stringPtr = sText_Trainer2SentOutPkmn;
-                    }
-                    else if (gBattleTypeFlags & BATTLE_TYPE_MULTI)
-                    {
-                        stringPtr = sText_LinkTrainerMultiSentOutPkmn;
-                    }
-                    else if (TRAINER_BATTLE_PARAM.opponentA == TRAINER_UNION_ROOM)
-                    {
-                        stringPtr = sText_Trainer1SentOutPkmn2;
-                    }
-                    else
-                    {
-                        stringPtr = sText_LinkTrainerSentOutPkmn2;
-                    }
-                }
-            }
-            else
-            {
-                if (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS)
-                {
-                    if (gBattleScripting.battler == 1)
-                        stringPtr = sText_Trainer1SentOutPkmn2;
-                    else
-                        stringPtr = sText_Trainer2SentOutPkmn;
-                }
-                else
-                {
-                    stringPtr = sText_Trainer1SentOutPkmn2;
-                }
-            }
-        }*/
         break;
     case STRINGID_USEDMOVE: // Pokémon used a move msg
         if (gBattleMsgDataPtr->currentMove >= MOVES_COUNT

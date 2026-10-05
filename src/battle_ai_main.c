@@ -252,8 +252,13 @@ static u64 GetAiFlags(u16 trainerId, enum BattlerId battler)
 {
     u64 flags = 0;
 
-    if (!(gBattleTypeFlags & BATTLE_TYPE_HAS_AI) && !IsWildMonSmart())
+    // HnS: also require BATTLE_TYPE_TRAINER. opponentA is not reset after a link/Union Room battle, so without it a
+    // later wild, Safari, roamer or smart wild battle (before any trainer battle) would lose its AI flags.
+    if ((!(gBattleTypeFlags & BATTLE_TYPE_HAS_AI) && !IsWildMonSmart())
+     || (gBattleTypeFlags & BATTLE_TYPE_TRAINER && IsSpecialTrainer(TRAINER_BATTLE_PARAM.opponentA))) // Don't set flags for link battle unless Battle Tower link multi mode
+    {
         return 0;
+    }
     if (trainerId == 0xFFFF)
     {
         flags = GetWildAiFlags();
