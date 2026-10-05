@@ -2,6 +2,23 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-05 — full-sync 묶음 4(seq 166·168·169·170) (데스크탑)
+
+- 진행: 적용 1개(커밋 4개, 손으로 맞춘 곳 0) → 메인 검증 + 리뷰 3개(ejectcode·ejectout·misc) 병렬. 대화 컨텍스트가 묶음 3 리뷰 대기 중 한 번 압축됐고, 압축 뒤 git·PROGRESS·리뷰 결과 파일로 상태를 다시 맞췄다. 묶음 3 문서 커밋이 `git diff --check`에 걸린 사이 같은 명령의 push가 먼저 실행돼 코드 커밋 3개가 문서보다 먼저 올라갔다(검증 끝난 커밋이라 문제 없음, 바로 문서 커밋 push).
+- 결정
+  - #9784: HnS `BS_EffectsAfterFormChange` 루프 유지(seq 193), 출력 변화 upstream대로 수용.
+  - #9832: Acrobatics 제외. #9751: 가드 A(`#if !TESTING`).
+  - 리뷰 발견은 모두 문서 보완(코드 수정 없음).
+- 검증
+  - 빌드: `32883308…`, ROM 32,716,452 B, 새 경고 0(`build/localization-logs/hns-20261005-173107-chunk166.log`)
+  - 전체 테스트: `build/port-check-chunk166.log`, 사라진 PASS 0
+  - 한글 회귀: `tmp-166/kortests` 316개 요약이 적용 담당 seq 168 뒤와 같음
+  - 세이브: 정적 비교 새 차이 `gBattlersByRawSpeed`뿐, 왕복 PASS
+  - 메인 검증 스크립트: `/home/hjm0725/hns-sync-work/chunk-166-170/apply/main-verify.sh`
+- 문서: `full-sync-seq-166-170.md`, `test-baseline-seq170.txt`, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 4행 추가·3행 수정, 재확인 3b·8f~8j, `HANDBACK_2026-10-05.md` 4절, STATUS.
+- 게임 화면 확인: 하지 않았다.
+- 다음 시작점: 사용자 확인 뒤 seq 171 #9799(STATUS "멈춘 지점").
+
 ### 2026-10-05 — full-sync 묶음 3(seq 159·161·162) (데스크탑, 사용자 복귀 뒤)
 
 - 사용자가 자러 가기 전에 멈춘 지점(묶음 3 적용 전)에서 재개했다.
