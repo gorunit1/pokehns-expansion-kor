@@ -2,6 +2,24 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-05 — full-sync 묶음 1 검증·리뷰 마무리 (데스크탑, 오후)
+
+- 사용자 복귀 뒤 중단 지점부터 재개했다.
+- 진행: 리뷰 3개(dex·evo·battle) + 메인 검증 + 묶음 2 사전 분석 3개를 병렬로 돌렸다.
+- 검증
+  - 재빌드: SHA1 `2ba17086…`(적용 담당과 같음)
+  - 전체 테스트: `build/port-check-chunk142.log` PASS 2,366 / TOTAL 5,298, 사라진 PASS 0
+  - 한글 회귀: D 66/4, B 31/3
+  - 세이브: 정적 비교는 FAIL 2·WARN 4(#7573 `ZeroPlayerPartyMons` 파티 수 초기화 1줄 + `gTriedEvolving` 이동). 세이브 왕복 `verify/savetest/run_all.sh`(사본 `tmp-D/post142`)는 두 이미지 모두 PASS다.
+- 리뷰 결과
+  - dex 문제 없음
+  - evo 경미 F1(슬레이트포트 텐트 이어하기 파티 수 0)
+  - battle: #8472 결과 문서 문장 오류 1건(실제로 닿는 경로 2개)
+- 수정: `9eae3b51dc`(텐트 스크립트 `special CalculatePlayerPartyCount`). 빌드 SHA1 `b223236e…`, ROM 크기 같음, 새 경고 0. 맵 스크립트 1줄이라 전체 테스트는 다시 돌리지 않았다(테스트 러너는 맵 스크립트를 쓰지 않음).
+- 문서: `full-sync-seq-142-147.md`(새 파일), `test-baseline-seq147.txt`, `HANDBACK_2026-10-05.md`(새 파일, README 링크), STATUS
+- 게임 화면 확인: 하지 않았다.
+- 다음 시작점: 묶음 2 사전 분석 결과(`chunk-150-155/seq*.md`)를 받으면 적용 지시서 → 적용 → 리뷰 → 검증 → 문서 → push 순서로 진행한다.
+
 ### 2026-10-05 — full-sync 묶음 1(seq 142~147) 적용, 검증 전 중단 (데스크탑)
 
 - 요청/범위: 친구에게 보고를 보낸 뒤, 친구 답 없이 할 수 있는 이식을 진행하라는 지시. 묶음 단위로 진행.
