@@ -3495,7 +3495,6 @@ static bool32 TryRedCard(enum BattlerId battlerAtk, enum BattlerId redCardBattle
      || !IsBattlerAlive(battlerAtk)
      || gBattleStruct->redCardActivated
      || !IsBattlerTurnDamaged(redCardBattler, EXCLUDING_SUBSTITUTES)
-     || (GetBattlerHoldEffect(redCardBattler) != HOLD_EFFECT_RED_CARD)
      || !CanBattlerSwitch(battlerAtk))
         return FALSE;
 
@@ -3520,7 +3519,6 @@ static bool32 TryEjectButton(enum BattlerId battlerAtk, u32 ejectButtonBattler)
     if (!IsBattlerTurnDamaged(ejectButtonBattler, EXCLUDING_SUBSTITUTES)
      || HasAnyBattlerQueuedSwitch()
      || !IsBattlerAlive(ejectButtonBattler)
-     || GetBattlerHoldEffect(ejectButtonBattler) != HOLD_EFFECT_EJECT_BUTTON
      || !CanBattlerSwitch(ejectButtonBattler))
         return FALSE;
 
@@ -3542,11 +3540,19 @@ static enum MoveEndResult MoveEndCardButton(void)
         if (battler == gBattlerAttacker)
             continue;
 
-        if (TryRedCard(gBattlerAttacker, battler, gCurrentMove))
-            return MOVEEND_RESULT_RUN_SCRIPT;
-
-        if (TryEjectButton(gBattlerAttacker, battler))
-            return MOVEEND_RESULT_RUN_SCRIPT;
+        switch (GetBattlerHoldEffect(battler))
+        {
+        case HOLD_EFFECT_EJECT_BUTTON:
+            if (TryEjectButton(gBattlerAttacker, battler))
+                return MOVEEND_RESULT_RUN_SCRIPT;
+            break;
+        case HOLD_EFFECT_RED_CARD:
+            if (TryRedCard(gBattlerAttacker, battler, gCurrentMove))
+                return MOVEEND_RESULT_RUN_SCRIPT;
+            break;
+        default:
+            break;
+        }
     }
 
     gBattleStruct->redCardActivated = FALSE;
