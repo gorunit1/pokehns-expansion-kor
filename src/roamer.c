@@ -4,7 +4,7 @@
 #include "field_effect.h"
 #include "field_player_avatar.h"
 #include "fieldmap.h"
-#include "ow_synchronize.h"
+#include "ow_abilities.h"
 #include "pokemon.h"
 #include "random.h"
 #include "roamer.h"

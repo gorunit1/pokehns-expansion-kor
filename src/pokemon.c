@@ -32,7 +32,7 @@
 #include "move_relearner.h"
 #include "naming_screen.h"
 #include "overworld.h"
-#include "ow_synchronize.h"
+#include "ow_abilities.h"
 #include "party_menu.h"
 #include "pokedex.h"
 #include "pokeblock.h"

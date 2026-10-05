@@ -1,5 +1,5 @@
 #include "global.h"
-#include "ow_synchronize.h"
+#include "ow_abilities.h"
 #include "pokemon.h"
 #include "random.h"
 #include "save.h"
@@ -83,12 +83,6 @@ static UNUSED bool32 IsTrueIfUndiscoveredEggGroup(enum Species species)
     return (gSpeciesInfo[species].eggGroups[0] == EGG_GROUP_NO_EGGS_DISCOVERED);
 }
 
-static bool32 IsSynchronizeActive(void)
-{
-    return ((!GetMonData(&gParties[B_TRAINER_0][0], MON_DATA_SANITY_IS_EGG)
-        && GetMonAbility(&gParties[B_TRAINER_0][0]) == ABILITY_SYNCHRONIZE));
-}
-
 bool32 DoesLeadingMonHaveAbilityEffect(const enum Ability *abilityArray)
 {
     if (GetMonData(&gParties[B_TRAINER_0][0], MON_DATA_SANITY_IS_EGG))
@@ -120,7 +114,7 @@ bool32 DoesPartyMemberHaveAbilityEffect(const enum Ability *abilityArray)
 
 u32 GetSynchronizedNature(enum GeneratedMonOrigin origin, enum Species species)
 {
-    if (!IsSynchronizeActive())
+    if (!DoesLeadingMonHaveAbilityEffect(sForceNatureAbilities))
         return NATURE_RANDOM;
     if (gSaveBlock3Ptr->challengeSettings.tx_Mode_Synchronize == 0)
     {

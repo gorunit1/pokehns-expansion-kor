@@ -19,7 +19,7 @@
 #include "main.h"
 #include "menu.h"
 #include "overworld.h"
-#include "ow_synchronize.h"
+#include "ow_abilities.h"
 #include "palette.h"
 #include "party_menu.h"
 #include "pokedex.h"
