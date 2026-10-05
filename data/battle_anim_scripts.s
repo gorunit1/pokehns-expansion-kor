@@ -12321,6 +12321,7 @@ gBattleAnimMove_JawLock::
 	delay 1
 	end
 
+gBattleAnimGeneral_HeldItemBerry::
 gBattleAnimMove_StuffCheeks::
 	playsewithpan SE_M_METRONOME, 192
 	createsprite gFloatingBerryTemplate, ANIM_ATTACKER, 1, 0
