@@ -54,6 +54,7 @@
 #include "constants/weather.h"
 #include "randomizer.h"
 #include "constants/pokemon.h"
+#include "test/battle.h"
 
 static u32 TryRemoveScreens(enum BattlerId battler);
 static bool32 IsUnnerveAbilityOnOpposingSide(enum BattlerId battler);
@@ -9951,14 +9952,40 @@ bool32 IsSleepClauseEnabled(void)
 // AreMultiPartiesFullTeams must not read their multiTeamSize (frontier trainer 141 picked up TRAINER_GRUNT_23_HNS's
 // Multi Party: Half). gBattleTypeFlags is trusted only while battle resources exist: multi_do calls
 // AreMultiPartiesFullTeams in the field, where the flags are still those of the previous battle.
+#if !TESTING // HnS: test builds take the TESTING branch of AreMultiPartiesFullTeams (#9751), which does not use this
 static bool32 AreOpponentsFacilityTrainers(void)
 {
     return gBattleStruct != NULL
         && (gBattleTypeFlags & (BATTLE_TYPE_FRONTIER | BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_TRAINER_HILL));
 }
+#endif
 
 bool32 AreMultiPartiesFullTeams(void)
 {
+#if TESTING
+    if (IsAITest())
+    {
+        u8 *partySizes = gBattleTestRunnerState->data.partySizes;
+        bool32 fullTeam = FALSE;
+
+        if (partySizes[B_TRAINER_0] && partySizes[B_TRAINER_2]
+         && (partySizes[B_TRAINER_0] > MULTI_PARTY_SIZE || partySizes[B_TRAINER_2] > MULTI_PARTY_SIZE))
+        {
+            fullTeam = TRUE;
+        }
+        if (partySizes[B_TRAINER_1] && partySizes[B_TRAINER_3]
+         && (partySizes[B_TRAINER_1] > MULTI_PARTY_SIZE || partySizes[B_TRAINER_3] > MULTI_PARTY_SIZE))
+        {
+            fullTeam = TRUE;
+        }
+
+        if (!fullTeam)
+        {
+            gSpecialVar_Result = FALSE;
+            return FALSE;
+        }
+    }
+#else
     enum DifficultyLevel difficulty = GetCurrentDifficultyLevel();
 
     if (B_MULTI_HALF_TEAMS
@@ -9970,6 +9997,7 @@ bool32 AreMultiPartiesFullTeams(void)
         gSpecialVar_Result = FALSE;
         return FALSE;
     }
+#endif
 
     gSpecialVar_Result = TRUE;
     return TRUE;
