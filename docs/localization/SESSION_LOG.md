@@ -2,6 +2,21 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-05 — 친구 답(팝업 Q1~Q11·조사 10b) 반영 (데스크탑)
+
+- 사용자가 묶음 4 뒤 친구 답(묶음 1 전에 온 것)을 전달했다. 메인이 질문별 처리(지금 / 그대로 / 뒤 seq)를 제안했고 사용자가 추천대로 승인했다(Q10도 seq 394 때).
+- 진행: 적용 1개(커밋 3개, 손으로 맞춘 곳은 `@ HnS:` 주석 문구 하나) → 메인 검증 + 리뷰 1개 병렬.
+- 검증
+  - 빌드: `1c4a6c81…`, ROM 32,716,452 B, 새 경고 0(`build/localization-logs/hns-20261005-194948-friend1005.log`). 가드 커밋은 게임 ROM SHA1 불변
+  - 전체 테스트: `build/port-check-friend1005.log`, 사라진 PASS 0, FAIL → PASS 37
+  - 한글 회귀 316개 같음, 팝업 trace(`chunk-friend-1005/apply/check_c3.py`) 새 팝업 44개 말고 같음, 조사 임시 테스트 20개 + 리뷰 6개
+  - 세이브 정적 비교: 이전과 같은 표시
+  - 메인 검증 스크립트: `/home/hjm0725/hns-sync-work/chunk-friend-1005/apply/main-verify.sh`
+- 리뷰 경미 2(특성 팝업 → 새 도구 팝업 겹침, 기본 설정에서 팝업 앞 문장이 짧게 보임)는 기록만.
+- 문서: `friend-reply-2026-10-05.md`, `test-baseline-seq170-friend1005.txt`, `FRIEND_REPLY_2026-10-04.md` 3절, `popup-champions-compare.md`, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 4행, 재확인 10b 해결·8k~8o, `HANDBACK_2026-10-05.md` 5절, README, STATUS.
+- 게임 화면 확인: 하지 않았다.
+- 다음 시작점: 사용자 확인 뒤 seq 171 #9799(테스트 기준 `test-baseline-seq170-friend1005.txt`).
+
 ### 2026-10-05 — full-sync 묶음 4(seq 166·168·169·170) (데스크탑)
 
 - 진행: 적용 1개(커밋 4개, 손으로 맞춘 곳 0) → 메인 검증 + 리뷰 3개(ejectcode·ejectout·misc) 병렬. 대화 컨텍스트가 묶음 3 리뷰 대기 중 한 번 압축됐고, 압축 뒤 git·PROGRESS·리뷰 결과 파일로 상태를 다시 맞췄다. 묶음 3 문서 커밋이 `git diff --check`에 걸린 사이 같은 명령의 push가 먼저 실행돼 코드 커밋 3개가 문서보다 먼저 올라갔다(검증 끝난 커밋이라 문제 없음, 바로 문서 커밋 push).

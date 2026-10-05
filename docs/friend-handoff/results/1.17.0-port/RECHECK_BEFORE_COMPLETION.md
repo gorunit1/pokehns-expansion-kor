@@ -30,6 +30,11 @@
 | 8h | 미래예지 피격과 레드카드·탈출버튼: HnS 미래예지 스크립트는 `MOVEEND_CARD_BUTTON`에 닿지 않아 #10344의 `EFFECT_FUTURE_SIGHT` 조건을 뺐다(seq 166 뒤에도 같음, 한글 K9-01·02) | seq 228 #10161(미래예지 `moveendall`) | 그 조건을 `TryRedCard`·`TryEjectButton`에 넣는다(1.17.0 형태). 8e와 같은 때 | |
 | 8i | **seq 170 #9751 뒤 테스트 빌드:** `AreMultiPartiesFullTeams`가 AI 테스트 말고는 항상 `TRUE`라 반 팀 판정에 기대는 HnS 수정 둘 — 배틀타워 상대 141 분리(`b43032bf03`, 스크래치 `zz_f141.c` 18/18 → 9/18)와 목호 포켓몬 도구 사용(`624ef7d4bd`, 스크래치 `zz_fix_r2.c` 14/14 → 7/14) — 을 테스트 러너로 잴 수 없다(게임 코드는 같음). 반환값이 바뀐 저장소 두 트레이너 테스트 64개(17파일)는 결과가 같았다 | seq 209 #10039(`IsAITest` 조건 제거, `multi_battle_whiteout.c`) | 64개 결과 다시 비교(`chunk-166-170/tmp-170/probe/zzmdiff-files.txt`). 두 HnS 수정은 사본에서 `#if TESTING` → `#if 0`, `#if !TESTING` → `#if 1`로 바꿔 `chunk-1385/f141/zz_f141.c`·`chunk-1385/fix/zz_fix_r2.c`(seq 348 #10711 손 병합 때도) | |
 | 8j | 편승 문장 주체: 사용자 자신을 대상으로 하는 기술(껍질깨기·칼춤)을 편승이 따라 하면 편승 팝업 뒤 문장이 원래 사용자 이름으로 나온다(`BattleScript_OpportunistCopyStatChange`가 `B_DEF` 사용, 이식 전부터) | seq 181 #9730(`trybattlerstatchange`) | 그 뒤에도 남으면 HnS 수정 여부 결정(12번과 같은 때) | |
+| 8k | **친구 답 Q3~Q5(2026-10-05): 먹다남은음식·조개껍질방울·자뭉열매·오랭열매는 팝업만, 별도 HP 회복 문장 없음.** 지금은 팝업 + 회복 문장(`STRINGID_PKMNSITEMRESTOREDHPALITTLE`·`STRINGID_PKMNSITEMRESTOREDHEALTH`) | seq 475 #9777(아이템 회복 문장 삭제·회복 연출) | #9777의 회복 문장 삭제 hunk를 upstream대로 받는다(HnS가 2026-09-20 별도 이식 때 남긴 회복 문장도 이때 정리). HnS 팝업 줄(`e5a5630635` 등)과 3-way 병합 | |
+| 8l | **친구 답 Q9: 반감열매는 팝업·열매 연출을 공격 애니메이션 전, "데미지를 약하게 했다" 처리를 그 뒤 명중 처리 쪽.** 지금은 셋 다 공격 애니메이션 전 | seq 483 #10431 | upstream대로 받는다 | |
+| 8m | **친구 답 Q10: 특성 팝업이 끝난 뒤 도구 팝업(겹치지 않게).** 지금은 `waitabilitypopup`이 없어 숙성 → 열매, 헤롱헤롱바디·저주받은바디 → 멘탈허브 경로에서 두 팝업이 겹쳐 보일 수 있다 | seq 394 #10268 | `waitabilitypopup`·`BS_DestroyItemPopup` 대기를 받고 위 경로 확인. **HnS 팝업 추가 `e5a5630635`로 생긴 겹침(턴 끝 젖은접시·건조피부·아이스바디·선파워 → 먹다남은음식·검은오물, 기본 설정에서 일렉트릭·사이코메이커 → 시드, 자기과신 → 조개껍질방울)은 #10268만으로 풀리지 않는다** — HnS 추가로 `ItemHealHP_Ret`·`ConsumableItemStatRaise`·`AirBalloonMsgInRet`의 팝업 호출 앞(또는 `_Attacker`/`_Scripting` 헬퍼 안)에 `waitabilitypopup`(`friend-reply-2026-10-05.md` 리뷰) | |
+| 8n | upstream #10321(seq 413)의 헤드리스 팝업 가드 1줄을 HnS `66c1e55f3d`로 선반영(테스트 전용, 게임 ROM 불변) | seq 413 #10321 | 가드 3줄을 upstream 블록(기록 호출 포함)으로 바꾸고 나머지 hunk 적용 | |
+| 8o | HnS 팝업 `e5a5630635`과 뒤 PR 문맥: 시드·룸서비스 팝업 줄(`ConsumableItemStatRaise`), 회복 팝업 줄(`ItemHealHP_Ret`), 풍선 등장 팝업 줄 | seq 181 #9730, seq 475 #9777, upcoming #10759 | #9730이 능력 상승 블록을 옮길 때 시드 팝업 줄도 함께 옮긴다(빠뜨리면 seq 475까지 시드·룸서비스 팝업이 사라짐). #9777-001은 시드 팝업을 두 번 넣지 않고, #9777-024는 `@ HnS:` 주석 한 줄 3-way. #10759 풍선 hunk는 helper 이름만 다름 | |
 
 ## 3. 한글 문구 (이식과 무관하게 찾은 것, 친구 확인 대상)
 
@@ -37,7 +42,7 @@
 |---|---|---|---|
 | 9 | 텔레키네시스 문장 조사 고정: `{B_DEF_NAME_WITH_PREFIX}는\n높이 뛰어올랐다!` → 받침 뒤에서 `마자용는`(→ `{B_TXT_EUNNEUN}`) | `src/battle_message.c` `STRINGID_HURLEDINTOTHEAIR` (2026-10-04 턴 종료 테스트에서 발견) | |
 | 10 | 섬광 문장 조사 고정: `{B_ATK_NAME_WITH_PREFIX}로부터` → 받침 뒤에서 `으로부터`여야 함 | `src/battle_message.c` `STRINGID_CLOAKEDINAHARSHLIGHT` | |
-| 10b | **`{B_ATK_PREFIX2}` 뒤 조사(친구 요청 A와 같은 유형, 2026-10-04 리뷰 발견):** 주술 시작 `STRINGID_SHIELDEDFROMCRITICALHITS` `주술의 힘으로\n우리 편은의 급소가 숨겨졌다!`/`상대는의`, 팀 가드 `STRINGID_PROTECTEDTEAM` `우리 편은을\n와이드가드가 지켜 줬다!`/`상대는을`(패스트가드·마룻바닥세워막기·트릭가드 공용). 제안: 토큰만 `{B_ATK_TEAM1}의`, `{B_ATK_PREFIX3}`(+`{B_TXT_EULREUL}` 삭제) | `src/battle_message.c` 567·577 | |
+| 10b | **`{B_ATK_PREFIX2}` 뒤 조사(친구 요청 A와 같은 유형, 2026-10-04 리뷰 발견):** 주술 시작 `STRINGID_SHIELDEDFROMCRITICALHITS` `주술의 힘으로\n우리 편은의 급소가 숨겨졌다!`/`상대는의`, 팀 가드 `STRINGID_PROTECTEDTEAM` `우리 편은을\n와이드가드가 지켜 줬다!`/`상대는을`(패스트가드·마룻바닥세워막기·트릭가드 공용). 제안: 토큰만 `{B_ATK_TEAM1}의`, `{B_ATK_PREFIX3}`(+`{B_TXT_EULREUL}` 삭제) | `src/battle_message.c` 567·577 | **해결** 2026-10-05 HnS `0dd9022851`(친구 답: `우리 편의/상대의`, `우리 편을/상대를`, 토큰만 `{B_ATK_TEAM1}의`·`{B_ATK_PREFIX3}`) |
 | 10c | `Time to Gigantamax!` 영문(HnS 미도달, seq 139 회귀 테스트에서 발견) | `src/battle_message.c` | |
 | 10d | 파티 메뉴 "메일" 항목 문자열이 `apdlf`(한글 자판이 아닐 때 "메일"을 친 것으로 보임, seq 162 #9693 이식 중 발견). 메일을 지닌 포켓몬을 필드 파티 메뉴에서 고르면 화면에 나온다. 제안: `메일` | `src/data/party_menu.h` `MENU_MAIL` | |
 | 11 | 멸망의바디 `STRINGID_PKMNSWILLPERISHIN3TURNS` 영문 | `full-sync-seq-127-127.md` 별건 | |
