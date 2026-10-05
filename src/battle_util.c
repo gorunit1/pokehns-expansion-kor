@@ -3703,7 +3703,7 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
                 }
                 break;
             case ABILITY_SPEED_BOOST:
-                if (CompareStat(battler, STAT_SPEED, MAX_STAT_STAGE, CMP_LESS_THAN, gLastUsedAbility) && gBattleStruct->battlerState[battler].isFirstTurn != 2)
+                if (CompareStat(battler, STAT_SPEED, MAX_STAT_STAGE, CMP_LESS_THAN, gLastUsedAbility) && !BattlerJustSwitchedIn(battler))
                 {
                     SET_STATCHANGER(STAT_SPEED, 1, FALSE);
                     BattleScriptCall(BattleScript_AttackerAbilityStatRaise);
@@ -6387,7 +6387,7 @@ static inline u32 CalcMoveBasePower(struct DamageContext *ctx)
                 basePower *= 2;
         }
         else if (HasBattlerActedThisTurn(battlerDef)
-            && (B_PAYBACK_SWITCH_BOOST < GEN_5 || gBattleStruct->battlerState[battlerDef].isFirstTurn != 2))
+            && (B_PAYBACK_SWITCH_BOOST < GEN_5 || !BattlerJustSwitchedIn(battlerDef)))
         {
             basePower *= 2;
         }
@@ -6399,7 +6399,7 @@ static inline u32 CalcMoveBasePower(struct DamageContext *ctx)
                 basePower *= 2;
         }
         else if (!HasBattlerActedThisTurn(battlerDef)
-              || gBattleStruct->battlerState[battlerDef].isFirstTurn == 2)
+              || BattlerJustSwitchedIn(battlerDef))
         {
             basePower *= 2;
         }
@@ -6970,7 +6970,7 @@ static inline u32 CalcAttackStat(struct DamageContext *ctx)
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.5));
         break;
     case ABILITY_STAKEOUT:
-        if (gBattleStruct->battlerState[battlerDef].isFirstTurn == 2) // just switched in
+        if (BattlerJustSwitchedIn(battlerDef))
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(2.0));
         break;
     case ABILITY_GUTS:
@@ -10544,7 +10544,7 @@ u32 GetTotalAccuracy(struct BattleCalcValues *cv, u32 weather)
         calc = (calc * (100 + atkParam)) / 100;
         break;
     case HOLD_EFFECT_ZOOM_LENS:
-        if (HasBattlerActedThisTurn(battlerDef) && gBattleStruct->battlerState[battlerDef].isFirstTurn != 2)
+        if (HasBattlerActedThisTurn(battlerDef) && !BattlerJustSwitchedIn(battlerDef))
             calc = (calc * (100 + atkParam)) / 100;
         break;
     default:
@@ -11138,6 +11138,17 @@ enum Stat GetDownloadStat(enum BattlerId battler)
         return STAT_ATK;
     else
         return STAT_SPATK;
+}
+
+bool32 BattlerJustSwitchedIn(enum BattlerId battler)
+{
+    return gBattleStruct->battlerState[battler].isFirstTurn == 2;
+}
+
+bool32 IsBattlersFirstTurn(enum BattlerId battler)
+{
+    return gBattleStruct->battlerState[battler].isFirstTurn == 1
+        || gBattleStruct->battlerState[battler].isFirstTurn == 2;
 }
 
 struct PartyState *GetBattlerPartyState(enum BattlerId battler)
