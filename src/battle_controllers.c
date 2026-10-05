@@ -3067,10 +3067,13 @@ static void AnimateMonAfterKnockout(enum BattlerId battler)
     enum BattlerId partnerBattler = BATTLE_PARTNER(oppositeBattler);
     bool32 wasPlayerSideKnockedOut = (IsOnPlayerSide(battler));
 
-    if (IsBattlerAlive(oppositeBattler))
+    // HnS: skip a mon that is back in its ball and waits for a queued replacement (e.g. Eject Button, end-of-turn
+    // Emergency Exit/Wimp Out). Its KO animation never ends there and waitanimation softlocks. Upstream (#9494, #9717,
+    // 1.17.0 and master) still checks IsBattlerAlive here.
+    if (IsBattlerPresent(oppositeBattler))
         LaunchKOAnimation(oppositeBattler, ReturnAnimIdForBattler(wasPlayerSideKnockedOut, oppositeBattler), wasPlayerSideKnockedOut);
 
-    if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE && IsBattlerAlive(partnerBattler))
+    if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE && IsBattlerPresent(partnerBattler))
         LaunchKOAnimation(partnerBattler, ReturnAnimIdForBattler(wasPlayerSideKnockedOut, partnerBattler), wasPlayerSideKnockedOut);
 }
 
