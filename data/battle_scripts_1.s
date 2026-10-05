@@ -7326,6 +7326,8 @@ BattleScript_BerryPPHeal_Anim:
 	return
 
 BattleScript_AirBalloonMsgInRet::
+	@ HnS: item pop-up as in Champions (none in upstream 1.17.0; upcoming #10759 adds the same call here)
+	call BattleScript_ItemPopUp_Scripting
 	printstring STRINGID_AIRBALLOONFLOAT
 	waitmessage B_WAIT_TIME_LONG
 	return
@@ -7360,6 +7362,8 @@ BattleScript_ItemHurtWithAnim::
 	return
 
 BattleScript_ItemHealHP_Ret::
+	@ HnS: item pop-up as in Champions (Leftovers, Shell Bell; Black Sludge heal shares this label). upstream 1.17.0 has it here (#9777); the HP message goes with #9777 at seq 475
+	call BattleScript_ItemPopUp_Attacker
 	playanimation BS_ATTACKER, B_ANIM_HELD_ITEM_EFFECT
 	printstring STRINGID_PKMNSITEMRESTOREDHPALITTLE
 	waitmessage B_WAIT_TIME_LONG
@@ -7437,6 +7441,8 @@ BattleScript_ConsumableStatRaiseRet_BerryItemAnim:
 
 BattleScript_ConsumableItemStatRaise::
 	statbuffchange BS_SCRIPTING, STAT_CHANGE_ALLOW_PTR | STAT_CHANGE_ONLY_CHECKING, BattleScript_ConsumableStatRaiseRet_End
+	@ HnS: item pop-up as in Champions (terrain seeds; Room Service shares this label). upstream 1.17.0 has it here (#9777)
+	call BattleScript_ItemPopUp_Scripting
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT, sB_ANIM_ARG1
 	call BattleScript_ConsumableStatRaiseRet_AnimContinue
 	return
