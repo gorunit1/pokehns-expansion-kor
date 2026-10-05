@@ -124,6 +124,8 @@ SlateportCity_BattleTentCorridor_hns_EventScript_PauseChallenge::
 SlateportCity_BattleTentCorridor_hns_EventScript_ResumeChallenge::
 	special SavePlayerParty
 	factory_setparties 0
+	@ HnS: since #7573 ZeroPlayerPartyMons also clears the party count; recount like the Battle Factory resume
+	special CalculatePlayerPartyCount
 	goto SlateportCity_BattleTentCorridor_hns_EventScript_AskReadyForOpponent
 
 SlateportCity_BattleTentCorridor_hns_Movement_PlayerEnter:
