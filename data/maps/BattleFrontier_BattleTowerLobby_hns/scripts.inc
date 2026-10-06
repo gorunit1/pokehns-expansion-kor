@@ -702,19 +702,19 @@ BattleFrontier_BattleTowerLobby_EventScript_SetAttendantTalkedTo_hns::
 	return
 
 BattleFrontier_BattleTowerLobby_EventScript_TalkedToSinglesAttendant_hns::
-	setvar VAR_LAST_TALKED, LOCALID_TOWER_ATTENDANT_SINGLES
+	setvar VAR_LAST_TALKED, LOCALID_TOWER_ATTENDANT_SINGLES_HNS
 	return
 
 BattleFrontier_BattleTowerLobby_EventScript_TalkedToDoublesAttendant_hns::
-	setvar VAR_LAST_TALKED, LOCALID_TOWER_ATTENDANT_DOUBLES
+	setvar VAR_LAST_TALKED, LOCALID_TOWER_ATTENDANT_DOUBLES_HNS
 	return
 
 BattleFrontier_BattleTowerLobby_EventScript_TalkedToMultisAttendant_hns::
-	setvar VAR_LAST_TALKED, LOCALID_TOWER_ATTENDANT_MULTIS
+	setvar VAR_LAST_TALKED, LOCALID_TOWER_ATTENDANT_MULTIS_HNS
 	return
 
 BattleFrontier_BattleTowerLobby_EventScript_TalkedToLinkMultisAttendant_hns::
-	setvar VAR_LAST_TALKED, LOCALID_TOWER_ATTENDANT_LINK_MULTIS
+	setvar VAR_LAST_TALKED, LOCALID_TOWER_ATTENDANT_LINK_MULTIS_HNS
 	return
 
 BattleFrontier_BattleTowerLobby_EventScript_GetDoorXCoord_hns::

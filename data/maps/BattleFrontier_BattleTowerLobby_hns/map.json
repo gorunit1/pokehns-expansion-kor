@@ -15,6 +15,7 @@
   "connections": null,
   "object_events": [
     {
+      "local_id": "LOCALID_TOWER_ATTENDANT_SINGLES_HNS",
       "graphics_id": "OBJ_EVENT_GFX_WORKER_F_HNS",
       "x": 6,
       "y": 5,
@@ -80,6 +81,7 @@
       "flag": "FLAG_HIDE_BATTLE_TOWER_REPORTER"
     },
     {
+      "local_id": "LOCALID_TOWER_ATTENDANT_DOUBLES_HNS",
       "graphics_id": "OBJ_EVENT_GFX_WORKER_F_HNS",
       "x": 10,
       "y": 5,
@@ -93,6 +95,7 @@
       "flag": "0"
     },
     {
+      "local_id": "LOCALID_TOWER_ATTENDANT_MULTIS_HNS",
       "graphics_id": "OBJ_EVENT_GFX_WORKER_F_HNS",
       "x": 14,
       "y": 5,
@@ -106,6 +109,7 @@
       "flag": "0"
     },
     {
+      "local_id": "LOCALID_TOWER_ATTENDANT_LINK_MULTIS_HNS",
       "graphics_id": "OBJ_EVENT_GFX_WORKER_F_HNS",
       "x": 18,
       "y": 5,
