@@ -1477,7 +1477,8 @@ const struct TrainerPicInfo gTrainerPicInfo[TRAINER_PIC_COUNT] =
     [TRAINER_PIC_KRIS_HNS] =
     {
         .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_KrisHns, gTrainerPalette_KrisHns),
-        .backPic = TRAINER_BACK_PIC(4, gTrainerBackPic_KrisHns, gTrainerBackPicPalette_KrisHns, sBackAnims_Hoenn),
+        // HnS: HGSS Lyra back pic (5 frames, y offset 5, throw 1-2-3-4-0)
+        .backPic = TRAINER_BACK_PIC(5, gTrainerBackPic_KrisHns, gTrainerBackPicPalette_KrisHns, sBackAnims_Kanto),
     },
     [TRAINER_PIC_LEADER_BLAINE_HNS] =
     {
