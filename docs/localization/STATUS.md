@@ -1,8 +1,21 @@
 # 현재 인수인계 상태
 
-## 2026-10-07 — 친구 지시서 3건 + 엔진 수정 3건(3b·3c·10f) + full-sync 묶음 6(seq 176~179, 198 선반영) (현재, 데스크탑)
+## 2026-10-07 새벽 — 프런티어패스 2건 완료·push, #9730 사전 분석 준비까지 하고 종료 (현재, 데스크탑)
 
-- **다음 할 일 1 — 친구 프런티어패스 요청 2건(사용자 확인 대기, 아직 작업 전):** 요청 [`FRIEND_REQUEST_2026-10-07.md`](../friend-handoff/FRIEND_REQUEST_2026-10-07.md) 2부. 사용자는 "바로 작업하지 말고 먼저 보라"고 했고, 분석(읽기 전용)까지 끝냈다. 진행 확인을 받은 뒤 커밋 2개로 넣는다.
+- **다음 할 일(순서)**
+  1. **프런티어패스 렌더링 마무리:** 수정은 커밋·push했고, 남은 것은 테스트 러너 렌더링 비교 그림이다. 스크래치 `/home/hjm0725/hns-sync-work/frontierpass-1007/render/`(사본 `before`=`3d76ed478b`, `after`=두 PNG 교체, 계측 `instr.patch`, 덤프 `run-before.log`·`run-after.log`, 렌더러 `tools/`, 있으면 `RENDER.md`). 세션 종료 직전 에이전트에 "10분 안에 정리"를 요청했으니 `RENDER.md`·PNG가 있는지 먼저 본다. 없으면 덤프 로그로 렌더러를 마저 만든다(패스 본체·맵 화면 남/여, 친구 스크린샷 `screenshot-pass-main.png`·`screenshot-pass-map.png`와 나란히). 결과를 [`frontier-pass-2026-10-07.md`](../friend-handoff/results/frontier-pass-2026-10-07.md) 3절에 적는다.
+  2. **친구 문자(아직 안 보냄):** `HANDBACK_2026-10-07.md` 1~7절(지시서 3건·엔진 3건·묶음 6·질문 5개·mGBA·프런티어패스 7절)을 디스코드용 2,000자 이하 메시지 여러 개로 나눈다. 초안 `/home/hjm0725/hns-sync-work/frontierpass-1007/discord-2026-10-07.md`(있으면 그것부터 확인·보완, 렌더 그림은 첨부용).
+  3. **seq 181 #9730(XL, Stat Change Refactor) 사전 분석:** 지시서 `/home/hjm0725/hns-sync-work/chunk-181/ANALYZE.md`(영역 A 엔진 코어 / B 스크립트 / C 나머지 호출부 / D AI·기술 데이터 / E 한글 메시지·한글 회귀 세트 / F upstream 테스트·후속 행). 기준 사본 `chunk-181/base`(HEAD `364ab51c7f` 코드, ROM 32,754,564 B, SHA1 `5876c53d…`). upstream diff `chunk-181/upstream-9730.diff`, 파일별 `--check` 결과 `chunk-181/tmp/check.txt`(155 통과 / 21 실패). 에이전트 6개를 띄웠다가 사용자 종료로 몇 분 만에 멈췄다 — `tmp-A`~`tmp-F`의 중간 파일은 지우고 다시 띄운다(각 영역에 "ANALYZE.md를 읽고 영역 X 담당" 지시, 선례 프롬프트는 SESSION_LOG 이 날 항목). 결정이 필요한 건 적용 전에 사용자에게 짧게 보여 준다.
+- **프런티어패스(친구 요청 2부):** 결과 [`frontier-pass-2026-10-07.md`](../friend-handoff/results/frontier-pass-2026-10-07.md), 회신 `HANDBACK_2026-10-07.md` 7절
+  - `00461d5cf6` 머리 아이콘(친구 첨부본 그대로, 팔레트 같음), `364ab51c7f` `bg.png` → 8bpp·128색(upstream `bg.png` PLTE = kr `tiles.pal`), 픽셀 인덱스 그대로
+  - 확인: `bg.4bpp` 바이트 동일, `bg.gbapal` 256 B = upstream, ROM `gFrontierPassBg_Pal` = upstream
+  - 빌드: ROM 32,754,564 B(+224), EWRAM·IWRAM 0, SHA1 `5876c53d…`, 새 경고 0. 전체 테스트 목록이 `test-baseline-seq179.txt`와 바이트 동일
+  - 실기 미확인(친구)
+- 테스트 기준은 그대로 `test-baseline-seq179.txt`(PASS 2,429 / TOTAL 5,332). 빌드 기준(데스크탑)은 위 ROM·SHA1.
+
+## 2026-10-07 — 친구 지시서 3건 + 엔진 수정 3건(3b·3c·10f) + full-sync 묶음 6(seq 176~179, 198 선반영) (데스크탑)
+
+- **(완료 → 위 새벽 절) 친구 프런티어패스 요청 2건:** 요청 [`FRIEND_REQUEST_2026-10-07.md`](../friend-handoff/FRIEND_REQUEST_2026-10-07.md) 2부. 사용자는 "바로 작업하지 말고 먼저 보라"고 했고, 분석(읽기 전용)까지 끝냈다. 진행 확인을 받은 뒤 커밋 2개로 넣는다.
   - **머리 아이콘:** 첨부본 `/home/hjm0725/hns-sync-work/frontierpass-1007/map_heads_hns_friend.png`는 지금 `graphics/frontier_pass/map_heads_hns.png`와 크기(16×32)·팔레트(16색, 순서까지 같음)가 같고 그림만 다르다 → 그대로 교체.
   - **색 깨짐 원인(확정):** HnS `graphics/frontier_pass/bg.png`는 pokeemerald-kr `graphics/frontier_pass/tiles.png`와 바이트 같은 4bpp·**16색 팔레트** PNG다. kr(옛 구조)은 배경 팔레트를 별도 `tiles.pal`(JASC 128색)에서 만들었지만, expansion은 `bg.png`의 PLTE로 `bg.gbapal`을 만들어 지금 32 B(1뱅크)뿐이다. 코드는 `gFrontierPassBg_Pal`을 8뱅크로 읽는다(`include/config/general.h` `BUGFIX` → `NUM_BG_PAL_SLOTS 8`, 트레이너 별 색은 뱅크 1~5). 뱅크 1~7이 ROM 뒤 데이터로 채워져 8bpp `map_and_card`(작은 맵·트레이너카드)와 맵 화면(같은 팔레트 사용)이 깨지고, 뱅크 0만 쓰는 틀·글자 상자·심볼·배틀포인트는 정상 — 친구 스크린샷과 일치. kr `tiles.pal` 128색은 upstream 1.17.0 `bg.png`(8bpp, PLTE 128) 팔레트와 128색 모두 같다.
   - **수정안:** `bg.png`를 upstream 구조(8bpp, PLTE 128 = kr `tiles.pal`)로 바꾸되 픽셀 인덱스는 그대로(→ `bg.4bpp` 바이트 동일, `bg.gbapal` 32 → 256 B, ROM 약 +224 B). 검증: `bg.4bpp` 동일·`bg.gbapal` = upstream 팔레트, 테스트 러너로 패스 본체·맵 화면 팔레트 RAM/화면 덤프 → 렌더링 전후 비교(HP 박스 때 방법, `hnsfix-1007/tmp-hp/` 참고). 실기는 친구.

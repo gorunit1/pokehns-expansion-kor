@@ -30,7 +30,9 @@
 
 ---
 
-# 2부 — 프런티어패스 실기 확인 중 발견 2건 (같은 날 추가 전달, 아직 작업 전)
+# 2부 — 프런티어패스 실기 확인 중 발견 2건 (같은 날 추가 전달)
+
+결과: [`results/frontier-pass-2026-10-07.md`](results/frontier-pass-2026-10-07.md) — 커밋 `00461d5cf6`(머리 아이콘), `364ab51c7f`(배경 팔레트 8뱅크 복원). 실기 미확인.
 
 친구 요청 원문 요약. 첨부(저장소 밖): `/home/hjm0725/hns-sync-work/frontierpass-1007/map_heads_hns_friend.png`(수정한 머리 아이콘), 스크린샷 `screenshot-pass-main.webp`(패스 본체), `screenshot-pass-map.webp`(배틀프런티어 맵).
 

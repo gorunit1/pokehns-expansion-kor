@@ -2,6 +2,22 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-07 새벽 — 프런티어패스 2건, #9730 사전 분석 준비 (데스크탑)
+
+- 요청: STATUS "다음 할 일" 순서대로 (1) 친구 프런티어패스 2건(커밋 2개, 테스트 러너 렌더 전후 비교) → (2) 친구 문자 정리(HANDBACK에 프런티어패스 절) → (3) seq 181 #9730 사전 분석. 시작 HEAD `3d76ed478b`, origin과 같고 깨끗함.
+- 수정 파일: `graphics/frontier_pass/map_heads_hns.png`(`00461d5cf6`), `graphics/frontier_pass/bg.png`(`364ab51c7f`)
+- 결정
+  - `bg.png`는 upstream 1.17.0 `bg.png`의 PLTE(384 B)를 그대로 쓰고 HnS 픽셀 인덱스로 8bpp PNG를 새로 썼다(`frontierpass-1007/work/mkbg.py`). kr `tiles.pal` 128색과 upstream PLTE가 같음을 스크립트로 확인.
+  - 렌더링은 스크래치 사본 두 개(`render/before`·`render/after`)에서 에이전트 1개가 진행(계측 `instr.patch`, 덤프 `run-*.log`).
+- 검증
+  - `make hns -j8` 두 번 모두 종료 코드 0, ROM 32,754,340 → 32,754,564 B, SHA1 `5876c53d…`, 새 경고 0
+  - `bg.4bpp` 바이트 동일, `bg.gbapal` = upstream gbagfx 결과 = kr `tiles.pal` 결과, ROM `gFrontierPassBg_Pal` 256 B = upstream
+  - 전체 테스트 `build/port-check-fpass.log`(250 s): 목록이 `test-baseline-seq179.txt`와 바이트 동일, INVALID 21(이전과 같음). 스크립트 `frontierpass-1007/apply/fulltest.sh`
+- 문서: `results/frontier-pass-2026-10-07.md`(새), `HANDBACK_2026-10-07.md` 7절, `FRIEND_REQUEST_2026-10-07.md` 2부 결과 링크, README, STATUS. 디스코드 초안(5개, 각 2,000자 이하) `/home/hjm0725/hns-sync-work/frontierpass-1007/discord-2026-10-07.md` — 사용자 아직 안 보냄.
+- #9730: 지시서 `chunk-181/ANALYZE.md`, 기준 사본 `chunk-181/base`, upstream diff·`--check` 결과를 만들고 영역 에이전트 6개(A~F)를 띄웠으나 사용자가 자러 가서 몇 분 만에 멈췄다(산출물 없음).
+- 게임 화면 확인: 하지 않았다. 렌더 비교 그림은 미완(STATUS 다음 할 일 1).
+- 다음 시작점: STATUS 맨 위 "다음 할 일" 1 → 2 → 3.
+
 ### 2026-10-07 — 친구 지시서 3건, 엔진 수정 3건, full-sync 묶음 6 (데스크탑)
 
 - 노트북 작업(`4501e7cc47`..`ba9824bba9`, 10커밋)을 `git pull --ff-only`로 받았다.
