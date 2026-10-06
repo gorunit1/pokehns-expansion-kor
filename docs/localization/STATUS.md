@@ -1,5 +1,22 @@
 # 현재 인수인계 상태
 
+## 2026-10-07 — 친구 지시서 3건 + 엔진 수정 3건(3b·3c·10f) + full-sync 묶음 6(seq 176~179, 198 선반영) (현재, 데스크탑)
+
+- **멈춘 지점:** 노트북 작업(`ba9824bba9`)을 pull한 뒤 이어서 모두 끝내고 push했다. 다음은 **seq 181 #9730(XL, Stat Change Refactor)** — 단독 단위로 사전 분석부터. 선반영해 둔 행: 180 #9843, 198 #10014, 199 #10020(그 자리에서는 "이미 적용"). 167 #9819는 #10548 직전까지 보류.
+  - 테스트 기준: `docs/friend-handoff/results/1.17.0-port/test-baseline-seq179.txt`(PASS 2,429 / TOTAL 5,332). 빌드 기준(데스크탑): ROM 32,754,340 B, SHA1 `94079f56…`. 노트북 툴체인은 SHA1이 다르다(크기는 같음).
+  - 한글 통합 회귀: `ALLOW_REPO=1 /home/hjm0725/hns-sync-work/chunk-171-174/tmp-171/kortests/run.sh <저장소> <라벨>`(328개, 기대 요약 `runs/post1007b-summary.txt` = `post179`). K1-05·K1-09(`!!`→`!`)·K8-04·K8-05(3b)·K2-02(HP 999) 기대값 갱신, 원본 `*.bak-before-1007`.
+  - 세이브 왕복 도구 주의: 이미지를 바꾼 뒤 테스트를 다시 빌드하지 않아 다른 이미지를 읽은 적이 있다(`LOAD image=` 줄로 확인, 재실행 PASS).
+- **친구 지시서 3건(2026-10-07):** [`FRIEND_REQUEST_2026-10-07.md`](../friend-handoff/FRIEND_REQUEST_2026-10-07.md), 결과 [`full-sync-hnsfix-2026-10-07.md`](../friend-handoff/results/1.17.0-port/full-sync-hnsfix-2026-10-07.md)
+  - `eeb44ec376` 금선 앞모습·목호·실버 뒷모습 교체, `301f2b59ed` 배틀타워 엘리베이터 직원 (1,5), `58a6e9649f` Gen4 HP 박스 기믹 레벨 한 번만(친구 예시와 달리 SoulGold식 오른쪽 정렬 — 예시대로면 숫자가 아이콘 아래에 깔림, 실측)
+- **엔진 수정 3건(친구 결정 2026-10-06):** 같은 결과 문서
+  - `ee2da89a61` 3b 탈출 아이템으로 들어온 춤추기(+테스트 4), `6aa0a1b778` 3c 불복종 자해 데미지(+테스트 6, `#if TESTING` 훅·러너 `OTName_`), `0d4f52ea20` 10f 유니온룸·배틀타워 통신 멀티 직업+이름(+오른쪽 상대 애드온)
+  - 빌드 ROM 32,754,084 B(+464), 전체 테스트 새 PASS 10·사라진 PASS 0 → `test-baseline-hnsfix1007.txt`, 세이브 왕복 PASS, 리뷰 2개 문제 없음
+- **묶음 6:** [`full-sync-seq-176-179.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-176-179.md)
+  - 176 #9864 이미 적용, `44465dc322` 177 #9879, `eb8263e754` 178 #9911, `e2a8dbc7ef` 179 #9906(+HnS 사파리 1줄), `519ccf7ef6` 198 #10014 선반영
+  - ROM +256 B, 테스트 TO_DO 이름 1줄 말고 같음, 한글 회귀 같음, 세이브 왕복 PASS(재실행), 리뷰 문제 없음
+- 문서: 출력 변화 문서 3행(3b·3c·10f), 재확인 3b·3c·10f 해결, 3d·10g·8t 추가, 8r 갱신, 17 이전 검토 메모. 2026-09-28 Gen4 레벨 기록(c327)에 정정 주석. 친구 회신 [`HANDBACK_2026-10-07.md`](../friend-handoff/HANDBACK_2026-10-07.md)(질문 5개: 금선 앞모습 출처, 직업 이름 깨짐 10g, 불복종 난수 3d, 위기회피 춤추기, 도구 저장소 이전 17).
+- 실기 미확인.
+
 ## 2026-10-06 — 친구 답(2026-10-06) 반영 1차: 문자열 4줄, 프런티어 로비 직원 번호, 심향·금선 그래픽 (현재, 노트북)
 
 - **친구 답:** [`docs/friend-handoff/FRIEND_REPLY_2026-10-06.md`](../friend-handoff/FRIEND_REPLY_2026-10-06.md). AI 기본 교체 HnS 유지, OWE OFF 유지, 질문 5개 모두 "고친다"(3b 춤추기, 10d `메일`, 3c 불복종 자해 데미지, 10e `!`, 10f 직업+이름 형식) + `MENU_READ` `메일을 읽는다`. 배틀타워 질문 3개(직원 통과, `아니`, 프런티어 동선). 그래픽 작업 지시서(심향·금선) [`ETHAN_LYRA_PLAYER_GRAPHICS.md`](../friend-handoff/ETHAN_LYRA_PLAYER_GRAPHICS.md) — **사용자 추가 지시: 심향 배틀 앞모습은 바꾸지 않는다.**
@@ -432,6 +449,7 @@
 - 원인: `src/battle_interface.c:917`의 Gen4 체력박스 레벨 복사 경로가 메가 아이콘 여백을 위해 `xPos -= 5`를 항상 수행했다. 세 자리 레벨에서는 기본 `xPos`가 0이라 unsigned underflow가 발생해 레벨 타일이 잘못된 위치로 복사됐다.
 - 조치: 레벨 자릿수가 3자리 미만일 때만 레벨 텍스트를 5px 왼쪽으로 이동하고, 레벨 100은 SoulGold와 같이 `UpdateIndicatorLevelData()`의 아이콘 -4px 보정만 적용하도록 수정했다. SoulGold의 아이콘 기준 좌표(`sIndicatorPositions`)와 자릿수별 보정 동작은 유지했다.
 - 검증: `build/hns/src/battle_interface.o` 컴파일 및 `make hns -j8` 성공(`BUILD_EXIT=0`). ROM 32,723,668 B(97.52%), EWRAM 249,112 B(95.03%), IWRAM 25,644 B(78.26%). 기존 미사용 함수·변수 경고 17건 외에 수정 파일의 새 경고는 없다. 레벨 1·10·99·100 화면은 mGBA에서 직접 확인해야 한다.
+- **2026-10-07 정정·대체(`58a6e9649f`):** 이 항목의 원인·수정 설명은 맞지 않게 됐다. 실제 원인은 기믹 아이콘이 있을 때 숫자만 든 `text`를 Gen4 분기가 `text + 2`에 다시 써서 `"5050"`·`"10100"`이 되던 것(`88cd5dc06e`, 2026-05-09부터)이고, Lv.10~99는 `5[아이콘]50`, Lv.1~9는 `9[아이콘]`으로 이 수정 뒤에도 남아 있었다. 이제 Gen4 UI는 숫자만 한 번 써서 24px 레벨 창에 오른쪽 정렬(`24 - GetStringWidth()`)하고 "두 자리 이하 5px 왼쪽" 규칙은 없앴다. 아이콘 보정(Lv.100 −4, Lv.1~9 +5)과 `sIndicatorPositions` 설명은 그대로 맞다. 결과 `docs/friend-handoff/results/1.17.0-port/full-sync-hnsfix-2026-10-07.md`.
 
 ## 2026-09-28 — 전체 엔진 동기화 1단계 완료: 이식 계획 확정 (현재)
 

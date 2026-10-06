@@ -2,6 +2,24 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-07 — 친구 지시서 3건, 엔진 수정 3건, full-sync 묶음 6 (데스크탑)
+
+- 노트북 작업(`4501e7cc47`..`ba9824bba9`, 10커밋)을 `git pull --ff-only`로 받았다.
+- 사용자 요청 순서: (1) 엔진 수정 3건(바꿀 내용을 먼저 보여 주고 승인) → (2) 묶음 6 → (3) 도구 저장소 이전 검토. 도중에 친구 지시서(그림 3장·엘리베이터·HP 박스)가 와서 엔진 수정과 함께 보여 주고 승인("ㄱㄱ")받았다.
+- 진행: 분석 6개(3b·3c·10f·HP 박스·도구 이전 + 묶음 6 분석 3개) → 적용(커밋 6개) → 메인 검증 + 리뷰 2개 → 묶음 6 적용(커밋 4개) → 메인 검증 + 리뷰 1개.
+- 결정
+  - HP 박스: 친구 예시(자릿수만 계산, 기존 xPos 유지)를 쓰면 숫자가 아이콘 아래에 깔려(실측 0/60) SoulGold식 오른쪽 정렬로 했다. 친구 보고에 차이를 적었다.
+  - 3b A안(교체 뒤 들어온 춤추기 판정), 위기회피 춤추기는 범위 밖(친구 질문). 3c 테스트 훅·러너 수정 포함. 10f 애드온 포함.
+  - #9879 A안(upstream 형태, +224 B 죽은 코드), #9906 HnS 사파리 1줄, #10014 seq 198에서 선반영.
+- 검증
+  - 수정 6개: ROM 32,754,084 B(`0c10bfbb…`), `build/port-check-hnsfix1007.log` 새 PASS 10, 세이브 왕복 PASS
+  - 묶음 6: ROM 32,754,340 B(`94079f56…`), `build/port-check-chunk179.log` TO_DO 이름 1줄, 세이브 왕복은 도구 이미지 문제로 첫 실행 FAIL → 새 사본 재실행 PASS
+  - 한글 회귀: 기대값 갱신 뒤 `post1007b` = `post179`
+  - 메인 검증 스크립트: `/home/hjm0725/hns-sync-work/hnsfix-1007/apply/main-verify.sh`, `chunk-176-179/apply/main-verify.sh`
+- 문서: `FRIEND_REQUEST_2026-10-07.md`, `full-sync-hnsfix-2026-10-07.md`, `full-sync-seq-176-179.md`, `test-baseline-hnsfix1007.txt`, `test-baseline-seq179.txt`, 출력 변화 3행, 재확인 갱신, `HANDBACK_2026-10-07.md`, README, STATUS(c327 정정 주석 포함).
+- 게임 화면 확인: 하지 않았다.
+- 다음 시작점: seq 181 #9730(STATUS "멈춘 지점").
+
 ### 2026-10-06 — 심향·금선 플레이어 그래픽 이식 (노트북)
 
 - 요청: 친구 지시서 `ETHAN_LYRA_PLAYER_GRAPHICS.md`대로 HGSS 심향·금선 그래픽을 Gold·Kris 자리에 넣는다. 사용자 추가 지시: 심향 배틀 앞모습은 바꾸지 않는다. 사용자 결정: 단계별 커밋을 push한다.
@@ -698,6 +716,7 @@ HnS 한글화 저장소에서 pokeemerald-expansion 1.17.0 full-sync 이식을 �
 - 원인/비교: SoulGold는 `sIndicatorPositions`를 기준으로 아이콘을 배치하고 레벨 자릿수에 따라 `UpdateIndicatorLevelData()`에서 아이콘을 보정한다. HNS의 Gen4 레벨 타일 복사 경로는 같은 보정을 사용하면서도 세 자리 레벨의 `xPos=0`에 다시 5px를 빼 unsigned underflow를 일으켰다.
 - 수정: `src/battle_interface.c`에서 메가/기믹 아이콘이 있을 때 두 자리 이하 레벨만 텍스트를 5px 왼쪽으로 옮기고, 레벨 100은 텍스트를 더 이동하지 않도록 했다. 아이콘의 레벨 100 -4px 보정은 그대로 둔다.
 - 검증: `build/hns/src/battle_interface.o` 컴파일과 `make hns -j8`가 종료 코드 0으로 통과했다. ROM 32,723,668 B, EWRAM 249,112 B, IWRAM 25,644 B. 빌드 경고는 기존 미사용 함수·변수 17건이며 `battle_interface.c` 새 경고는 없다. mGBA에서 메가진화 포켓몬의 레벨 1·10·99·100을 직접 확인하는 작업이 남았다.
+- **2026-10-07 정정·대체(`58a6e9649f`):** 이 항목의 원인·수정 설명은 맞지 않게 됐다. 실제 원인은 기믹 아이콘이 있을 때 숫자만 든 `text`를 Gen4 분기가 `text + 2`에 다시 써서 `"5050"`·`"10100"`이 되던 것(`88cd5dc06e`, 2026-05-09부터)이고, Lv.10~99는 `5[아이콘]50`, Lv.1~9는 `9[아이콘]`으로 이 수정 뒤에도 남아 있었다. 이제 Gen4 UI는 숫자만 한 번 써서 24px 레벨 창에 오른쪽 정렬(`24 - GetStringWidth()`)하고 "두 자리 이하 5px 왼쪽" 규칙은 없앴다. 아이콘 보정(Lv.100 −4, Lv.1~9 +5)과 `sIndicatorPositions` 설명은 그대로 맞다. 결과 `docs/friend-handoff/results/1.17.0-port/full-sync-hnsfix-2026-10-07.md`.
 
 ### 2026-09-28 — 전체 엔진 동기화 1단계: 인벤토리 재확정·이식 계획
 
