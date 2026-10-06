@@ -2,6 +2,19 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-06 — 친구 답 반영 1차: 문자열 4줄, 프런티어 로비 직원 번호 (노트북)
+
+- 요청: 친구 답(2026-10-06)을 정리하고, 노트북에서 할 수 있는 1(답 기록)·2(작은 문자열 수정)·3(배틀타워 로비 직원)을 먼저 한다.
+- 시작: `e43d6fc997..4501e7cc47`(데스크탑 96커밋) fast-forward pull. 데스크탑 세션 마지막 정리를 사용자가 붙여 넣었고 커밋·HANDBACK_2026-10-05 7절·재확인 24와 맞음을 확인했다.
+- 기록: `FRIEND_REPLY_2026-10-06.md`(결정), `ETHAN_LYRA_PLAYER_GRAPHICS.md`(지시서 원문 + 사용자 추가 지시 "심향 앞모습 유지")
+- 수정
+  - `0276c7310f`: `src/data/party_menu.h`(`MENU_MAIL`, `MENU_READ`), `src/battle_message.c`(`sText_LinkTrainer2SentOutPkmn2`), `src/data/script_menu.h`(`MultichoiceList_YesNo` → `gText_No`). 네 값 모두 `1821fd6749` 업로드 때부터 있었다. `메일을 읽는다` 폭 59 px ≤ 64 px(`FONT_NORMAL` 한글 8 px, 공백 3 px, 커서 8 px)
+  - `9126e5f8df`: 배틀타워·배틀돔 HnS 로비 `map.json`에 `local_id` `*_HNS`, HnS 스크립트 8줄. 빌드 뒤 `map_event_ids.h` 값 1·6·7·8 / 1·5 확인
+- 조사: HnS 맵이 다른 맵의 `LOCALID_*`를 빌려 쓰는 89곳을 오브젝트 위치·스크립트로 대조(일회성 스크립트). 별건 `TinTower_RoofDay_hns` 기모노 번호를 재확인 25로 올렸다. 프런티어 동선은 `OlivineCity_PortInside_hns`·`VermilionCity_PortInside_hns` 선원 스크립트(`VAR_SSAQUA_STATE` ≥ 7, `MULTI_OLIVINE_HARBOR` 5번째)
+- 검증: `make hns -j8` 종료 코드 0, ROM 32,738,292 B. 전체 테스트(13분 10초) 목록이 `test-baseline-seq174.txt`와 바이트 동일, Killed 0
+- 게임 화면 확인: 하지 않았다(친구용 항목은 HANDBACK_2026-10-06 5절)
+- 다음 시작점: STATUS 맨 위 "다음 할 일" 1(엔진 수정 3건) 또는 2(그래픽, push 여부 확인 뒤)
+
 ### 2026-10-06 — 작업 중단, 친구 보고 (데스크탑, 새벽)
 
 - seq 175 문서 push(`838886f00e`) 뒤 사용자가 멈추기로 했다. 친구 보고용 디스코드 메시지 3개(진행·친구 답 반영 / 메인 결정 보고(#9847 HnS 유지, #8434 꺼 둠, #9799) / mGBA 확인·질문 5개)를 만들어 사용자에게 넘겼다. 내용은 `HANDBACK_2026-10-05.md` 1~7절과 같다.
