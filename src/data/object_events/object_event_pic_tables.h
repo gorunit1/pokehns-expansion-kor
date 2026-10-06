@@ -4567,6 +4567,10 @@ static const struct SpriteFrameImage sPicTable_KrisSurfing_hns[] = {
     overworld_frame(gObjectEventPic_KrisSurfing_hns, 4, 4, 1),
     overworld_frame(gObjectEventPic_KrisSurfing_hns, 4, 4, 3),
     overworld_frame(gObjectEventPic_KrisSurfing_hns, 4, 4, 5),
+    // HnS: Lyra east frames
+    overworld_frame(gObjectEventPic_KrisSurfing_hns, 4, 4, 6),
+    overworld_frame(gObjectEventPic_KrisSurfing_hns, 4, 4, 6),
+    overworld_frame(gObjectEventPic_KrisSurfing_hns, 4, 4, 7),
 };
 
 static const struct SpriteFrameImage sPicTable_KrisUnderwater_hns[] = {
@@ -4579,6 +4583,8 @@ static const struct SpriteFrameImage sPicTable_KrisUnderwater_hns[] = {
     overworld_frame(gObjectEventPic_KrisUnderwater_hns, 4, 4, 1),
     overworld_frame(gObjectEventPic_KrisUnderwater_hns, 4, 4, 2),
     overworld_frame(gObjectEventPic_KrisUnderwater_hns, 4, 4, 2),
+    // HnS: Lyra east frames
+    overworld_frame(gObjectEventPic_KrisUnderwater_hns, 4, 4, 3),
 };
 
 static const struct SpriteFrameImage sPicTable_KrisFieldMove_hns[] = {
@@ -4599,6 +4605,9 @@ static const struct SpriteFrameImage sPicTable_KrisWatering_hns[] = {
     overworld_frame(gObjectEventPic_KrisWatering_hns, 4, 4, 3),
     overworld_frame(gObjectEventPic_KrisWatering_hns, 4, 4, 5),
     overworld_frame(gObjectEventPic_KrisWatering_hns, 4, 4, 5),
+    // HnS: Lyra east frames
+    overworld_frame(gObjectEventPic_KrisWatering_hns, 4, 4, 6),
+    overworld_frame(gObjectEventPic_KrisWatering_hns, 4, 4, 7),
 };
 
 static const struct SpriteFrameImage sPicTable_KrisDecorating_hns[] = {

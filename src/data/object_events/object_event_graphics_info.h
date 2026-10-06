@@ -7661,7 +7661,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_KrisNormal_hns = {
     .tracks = TRACKS_FOOT,
     .oam = &gObjectEventBaseOam_16x32,
     .subspriteTables = sOamTables_16x32,
-    .anims = sAnimTable_BrendanMayNormal,
+    .anims = sAnimTable_WalkRun_Asymmetric, // HnS: Lyra
     .images = sPicTable_KrisNormal_hns,
 };
 
@@ -7679,7 +7679,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_KrisMachBike_hns =
     .tracks = TRACKS_BIKE_TIRE,
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
-    .anims = sAnimTable_Standard,
+    .anims = sAnimTable_MachBike_Asymmetric, // HnS: Lyra
     .images = sPicTable_KrisMachBike_hns,
 };
 
@@ -7697,7 +7697,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_KrisAcroBike_hns =
     .tracks = TRACKS_BIKE_TIRE,
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
-    .anims = sAnimTable_AcroBike,
+    .anims = sAnimTable_AcroBike_Asymmetric, // HnS: Lyra
     .images = sPicTable_KrisAcroBike_hns,
 };
 
@@ -7715,7 +7715,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_KrisSurfing_hns = 
     .tracks = TRACKS_FOOT,
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
-    .anims = sAnimTable_Surfing,
+    .anims = sAnimTable_Surfing_Asymmetric, // HnS: Lyra
     .images = sPicTable_KrisSurfing_hns,
 };
 
@@ -7733,7 +7733,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_KrisUnderwater_hns
     .tracks = TRACKS_FOOT,
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
-    .anims = sAnimTable_Standard,
+    .anims = sAnimTable_Underwater_Asymmetric, // HnS: Lyra
     .images = sPicTable_KrisUnderwater_hns,
 };
 
@@ -7769,7 +7769,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_KrisFishing_hns = 
     .tracks = TRACKS_FOOT,
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
-    .anims = sAnimTable_Fishing,
+    .anims = sAnimTable_Fishing_Asymmetric, // HnS: Lyra
     .images = sPicTable_KrisFishing_hns,
 };
 
@@ -7787,7 +7787,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_KrisWatering_hns =
     .tracks = TRACKS_FOOT,
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
-    .anims = sAnimTable_Standard,
+    .anims = sAnimTable_Watering_Asymmetric, // HnS: Lyra
     .images = sPicTable_KrisWatering_hns,
 };
 
