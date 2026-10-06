@@ -122,6 +122,7 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 ## Other Credits
 ### HnS Player Sprite Credits (HGSS Ethan/Lyra, taken from [RafaPierangeli/pokemonemeraldrp](https://github.com/RafaPierangeli/pokemonemeraldrp) `RHH-Expansion-Costume-Slawter` `bcc37fa723`):
 - Ethan player sprites: POKABBIE, RichardPT, robloxmaster376
+- Lyra player sprites: RichardPT, robloxmaster376
 - pokeemerald-expansion adaptation / additional sprite work: Rafa Pierangeli
 - Costume asset lineage: Slawter666
 
