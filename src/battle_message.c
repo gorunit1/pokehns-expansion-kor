@@ -2646,10 +2646,7 @@ void BufferStringBattle(enum StringID stringID, enum BattlerId battler)
                 else
                     stringPtr = sText_InGamePartnerWithdrewPkmn1;
             }
-            // HnS: upstream #9799 drops BattlerIsLink() here and in STRINGID_SWITCHINMON. Union Room foes (opponentA is
-            // TRAINER_UNION_ROOM) would then get sText_Trainer1SentOutPkmn, whose {B_OPPONENT_MON1_NAME} names the previous mon
-            // on the non-master console (see sText_LinkTrainerSentOutPkmn2). Kept so link output stays as before the port.
-            else if (BattlerIsLink(battler) || TRAINER_BATTLE_PARAM.opponentA == TRAINER_LINK_OPPONENT // HnS: keeps BattlerIsLink (Union Room, see above)
+            else if (TRAINER_BATTLE_PARAM.opponentA == TRAINER_LINK_OPPONENT
              || gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK) // Link Opponent A and test opponent
             {
                 stringPtr = sText_LinkTrainer1WithdrewPkmn;
@@ -2679,7 +2676,7 @@ void BufferStringBattle(enum StringID stringID, enum BattlerId battler)
                 else
                     stringPtr = sText_InGamePartnerWithdrewPkmn2;
             }
-            else if (BattlerIsLink(battler) || TRAINER_BATTLE_PARAM.opponentA == TRAINER_LINK_OPPONENT // HnS: keeps BattlerIsLink, see STRINGID_RETURNMON
+            else if (TRAINER_BATTLE_PARAM.opponentA == TRAINER_LINK_OPPONENT
              || gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK) // Link Opponent B and test opponent
             {
                 if (BattleSideHasTwoTrainers(B_SIDE_OPPONENT))
@@ -2687,7 +2684,9 @@ void BufferStringBattle(enum StringID stringID, enum BattlerId battler)
                 else
                     stringPtr = sText_LinkTrainer1WithdrewPkmn;
             }
-            else if (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS) // Opponent B
+            // HnS: Battle Tower link multi has no TWO_OPPONENTS flag, but its right foe belongs to opponentB
+            // (BattleSideHasTwoTrainers). Upstream #9799 names opponentA here.
+            else if (gBattleTypeFlags & (BATTLE_TYPE_TWO_OPPONENTS | BATTLE_TYPE_TOWER_LINK_MULTI)) // Opponent B
             {
                 stringPtr = sText_Trainer2WithdrewPkmn;
             }
@@ -2718,10 +2717,17 @@ void BufferStringBattle(enum StringID stringID, enum BattlerId battler)
                 else
                     stringPtr = sText_InGamePartnerSentOutPkmn1;
             }
-            else if (BattlerIsLink(gBattleScripting.battler) || TRAINER_BATTLE_PARAM.opponentA == TRAINER_LINK_OPPONENT // HnS: keeps BattlerIsLink, see STRINGID_RETURNMON
+            else if (TRAINER_BATTLE_PARAM.opponentA == TRAINER_LINK_OPPONENT
              || gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK) // Link Opponent A and test opponent
             {
                 stringPtr = sText_LinkTrainerSentOutPkmn;
+            }
+            // HnS: Union Room foe, and Battle Tower link multi foe on the non-master console. Upstream #9799 gives them
+            // sText_Trainer1SentOutPkmn, whose {B_OPPONENT_MON1_NAME} names the previous mon on the non-master console
+            // (see sText_LinkTrainerSentOutPkmn2); this line has the same class + name with {B_BUFF1}.
+            else if (BattlerIsLink(gBattleScripting.battler))
+            {
+                stringPtr = sText_Trainer1SentOutPkmn2;
             }
             else // Opponent A
             {
@@ -2748,7 +2754,7 @@ void BufferStringBattle(enum StringID stringID, enum BattlerId battler)
                 else
                     stringPtr = sText_InGamePartnerSentOutPkmn2;
             }
-            else if (BattlerIsLink(gBattleScripting.battler) || TRAINER_BATTLE_PARAM.opponentA == TRAINER_LINK_OPPONENT // HnS: keeps BattlerIsLink, see STRINGID_RETURNMON
+            else if (TRAINER_BATTLE_PARAM.opponentA == TRAINER_LINK_OPPONENT
              || gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK) // Link Opponent B and test opponent
             {
                 if (BattleSideHasTwoTrainers(B_SIDE_OPPONENT))
@@ -2756,7 +2762,7 @@ void BufferStringBattle(enum StringID stringID, enum BattlerId battler)
                 else
                     stringPtr = sText_LinkTrainerSentOutPkmn2;
             }
-            else if (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS) // Opponent B
+            else if (gBattleTypeFlags & (BATTLE_TYPE_TWO_OPPONENTS | BATTLE_TYPE_TOWER_LINK_MULTI)) // Opponent B; HnS: see STRINGID_RETURNMON
             {
                 stringPtr = sText_Trainer2SentOutPkmn;
             }
