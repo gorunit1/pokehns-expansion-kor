@@ -213,7 +213,9 @@ static enum CancelerResult CancelerObedience(struct BattleCalcValues *cv)
             // HnS: CalculateMoveDamage no longer reads these and upstream leaves them 0 here; keep the attacker's own, as CancelerConfused does
             dmgCtx.abilities[cv->battlerAtk] = cv->abilities[cv->battlerAtk];
             dmgCtx.holdEffects[cv->battlerAtk] = cv->holdEffects[cv->battlerAtk];
-            gBattleStruct->moveDamage[cv->battlerAtk] = CalculateMoveDamage(&dmgCtx);
+            // HnS: BattleScript_IgnoresAndHitsItself ends in BattleScript_DoSelfConfusionDmg, which applies passiveHpUpdate,
+            // so store the self-hit there as CancelerConfused does (upstream 1.17.1 still writes moveDamage and no HP is lost)
+            gBattleStruct->passiveHpUpdate[cv->battlerAtk] = CalculateMoveDamage(&dmgCtx);
             gBattlescriptCurrInstr = BattleScript_IgnoresAndHitsItself;
             return CANCELER_RESULT_FAILURE; // Move doesn't fail but mon hits itself
         case DISOBEYS_FALL_ASLEEP:

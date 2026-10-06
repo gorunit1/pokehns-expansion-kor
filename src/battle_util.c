@@ -5650,6 +5650,28 @@ u32 GetBattleMoveTarget(enum Move move, enum MoveTarget moveTarget)
     return targetBattler;
 }
 
+// HnS: battle tests run as recorded link battles, which always obey. The test runner skips those two checks so a player
+// mon from another trainer (OTName) above the badge level can disobey in a test; test mons share the player's OT by default.
+static inline bool32 IsObedienceTestRun(void)
+{
+#if TESTING
+    return gTestRunnerEnabled;
+#else
+    return FALSE;
+#endif
+}
+
+// HnS: Random() cannot be rigged in tests. There the roll defaults to 0xFFFF (both level rolls fail, so the mon
+// disobeys) and MOVE(..., WITH_RNG(RNG_HNS_OBEDIENCE, value)) sets it for that move.
+static inline s32 ObedienceRandom(void)
+{
+#if TESTING
+    if (gTestRunnerEnabled)
+        return RandomUniform(RNG_HNS_OBEDIENCE, 0, 0xFFFF);
+#endif
+    return Random();
+}
+
 enum Obedience GetAttackerObedienceForAction(void)
 {
     s32 rnd;
@@ -5657,7 +5679,7 @@ enum Obedience GetAttackerObedienceForAction(void)
     u8 obedienceLevel = 0;
     u8 levelReferenced;
 
-    if (gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK))
+    if ((gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK)) && !IsObedienceTestRun())
         return OBEYS;
     if (BattlerHasAi(gBattlerAttacker))
         return OBEYS;
@@ -5666,7 +5688,7 @@ enum Obedience GetAttackerObedienceForAction(void)
         return OBEYS;
     if (gBattleTypeFlags & BATTLE_TYPE_FRONTIER)
         return OBEYS;
-    if (gBattleTypeFlags & BATTLE_TYPE_RECORDED)
+    if ((gBattleTypeFlags & BATTLE_TYPE_RECORDED) && !IsObedienceTestRun())
         return OBEYS;
     if (B_OBEDIENCE_MECHANICS < GEN_8 && !IsOtherTrainer(gBattleMons[gBattlerAttacker].otId, gBattleMons[gBattlerAttacker].otName))
         return OBEYS;
@@ -5699,7 +5721,7 @@ enum Obedience GetAttackerObedienceForAction(void)
     if (levelReferenced <= obedienceLevel)
         return OBEYS;
 
-    rnd = Random();
+    rnd = ObedienceRandom();
     calc = (levelReferenced + obedienceLevel) * (rnd & 255) >> 8;
     if (calc < obedienceLevel)
         return OBEYS;

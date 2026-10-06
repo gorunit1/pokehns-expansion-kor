@@ -2367,7 +2367,8 @@ void Status1_(u32 sourceLine, u32 status1)
 void OTName_(u32 sourceLine, const u8 *otName)
 {
     INVALID_IF(!DATA.currentMon, "OTName outside of PLAYER/OPPONENT");
-    SetMonData(DATA.currentMon, MON_DATA_OT_NAME, &otName);
+    // HnS: pass the name itself; upstream passes &otName, which stores the bytes of the pointer as the OT name
+    SetMonData(DATA.currentMon, MON_DATA_OT_NAME, otName);
 }
 
 void DynamaxLevel_(u32 sourceLine, s16 dynamaxLevel)
