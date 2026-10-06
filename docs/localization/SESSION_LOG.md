@@ -2,6 +2,19 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-06 — 심향·금선 플레이어 그래픽 이식 (노트북)
+
+- 요청: 친구 지시서 `ETHAN_LYRA_PLAYER_GRAPHICS.md`대로 HGSS 심향·금선 그래픽을 Gold·Kris 자리에 넣는다. 사용자 추가 지시: 심향 배틀 앞모습은 바꾸지 않는다. 사용자 결정: 단계별 커밋을 push한다.
+- 원본: `RafaPierangeli/pokemonemeraldrp` `RHH-Expansion-Costume-Slawter`를 `--filter=blob:none` + sparse checkout으로 스크래치(`/home/jinmo/hns-sync-work/sprites-ethan-lyra/src-repo`)에 받았다. HEAD `bcc37fa723…`가 지시서 기준과 같았다.
+- 커밋: `fe939d6456`(1단계), `eb46975ff9`(2단계), `f24bfd60de`(3단계), `1a17daf00f`(4단계)
+- 결정·조사
+  - 반사 팔레트: 1.17.0은 `ApplyPondFilter()`로 본 팔레트에서 반사 색을 만든다. `LoadPlayerObjectReflectionPalette()`는 호출하는 곳이 없다. 반사 `.pal`은 같은 필터로 계산했다(스크래치 `mkpal.py pond`).
+  - 원본 PNG의 잘못된 `bKGD` 청크(libpng 경고 7개)를 지웠다(`stripbkgd.py`). 나머지 청크가 원본과 같음을 확인했다.
+  - 금선 회전 4개는 지시서 순서로 새로 만들었다(원본에는 `ANIM_SPIN` 없음).
+- 검증: 4단계 빌드 모두 종료 코드 0, 새 경고 0. Kris 애니메이션 프레임 번호와 표 항목을 스크립트로 대조했다. 전체 테스트(`1a17daf00f`) 목록이 `test-baseline-seq174.txt`와 바이트 동일.
+- 게임 화면 확인: 하지 않았다(친구, 결과 문서 끝 체크리스트)
+- 다음 시작점: STATUS 맨 위 "다음 할 일" 1(엔진 수정 3건)
+
 ### 2026-10-06 — 친구 답 반영 1차: 문자열 4줄, 프런티어 로비 직원 번호 (노트북)
 
 - 요청: 친구 답(2026-10-06)을 정리하고, 노트북에서 할 수 있는 1(답 기록)·2(작은 문자열 수정)·3(배틀타워 로비 직원)을 먼저 한다.

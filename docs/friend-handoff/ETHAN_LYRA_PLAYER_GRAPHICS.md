@@ -1,10 +1,10 @@
 # HnS 심향(Ethan)·금선(Lyra) 플레이어 그래픽 이식 작업 지시서
 
-> 상태: **대기(아직 시작하지 않음).** 친구가 2026-10-06에 보낸 지시서 원문을 옮겼다([`FRIEND_REPLY_2026-10-06.md`](FRIEND_REPLY_2026-10-06.md) 3절).
+> 상태: **적용 완료(2026-10-06), 실기 확인 대기.** 결과: [`results/ethan-lyra-player-graphics-2026-10-06.md`](results/ethan-lyra-player-graphics-2026-10-06.md). 친구가 2026-10-06에 보낸 지시서 원문을 옮겼다([`FRIEND_REPLY_2026-10-06.md`](FRIEND_REPLY_2026-10-06.md) 3절).
 >
 > **사용자 추가 지시(2026-10-06): 남자 주인공(심향)의 배틀 앞모습은 바꾸지 않는다.** 아래 1-1의 12번(`ethan_front_pic.png` → `gold_hns.png`)과 2절의 "배틀 앞모습 팔레트"(`graphics/trainers/palettes/gold_hns.pal`), 10절의 Ethan 줄은 적용하지 않는다. 금선(Kris) 앞모습은 지시서대로 바꾼다.
 >
-> 시작 전 확인: 0절의 "pull·push 하지 말고 수정·빌드·검증까지만" 문구를 이 브랜치의 커밋·push 절차와 어떻게 맞출지 사용자에게 확인한다.
+> push: 사용자가 실기 확인을 위해 커밋을 단계별로 나눠 push하기로 정했다(2026-10-06). pull·rebase·reset은 하지 않았다.
 
 ## 0. 작업 기준
 

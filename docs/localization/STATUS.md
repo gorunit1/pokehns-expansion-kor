@@ -1,6 +1,6 @@
 # 현재 인수인계 상태
 
-## 2026-10-06 — 친구 답(2026-10-06) 반영 1차: 문자열 4줄, 프런티어 로비 직원 번호 (현재, 노트북)
+## 2026-10-06 — 친구 답(2026-10-06) 반영 1차: 문자열 4줄, 프런티어 로비 직원 번호, 심향·금선 그래픽 (현재, 노트북)
 
 - **친구 답:** [`docs/friend-handoff/FRIEND_REPLY_2026-10-06.md`](../friend-handoff/FRIEND_REPLY_2026-10-06.md). AI 기본 교체 HnS 유지, OWE OFF 유지, 질문 5개 모두 "고친다"(3b 춤추기, 10d `메일`, 3c 불복종 자해 데미지, 10e `!`, 10f 직업+이름 형식) + `MENU_READ` `메일을 읽는다`. 배틀타워 질문 3개(직원 통과, `아니`, 프런티어 동선). 그래픽 작업 지시서(심향·금선) [`ETHAN_LYRA_PLAYER_GRAPHICS.md`](../friend-handoff/ETHAN_LYRA_PLAYER_GRAPHICS.md) — **사용자 추가 지시: 심향 배틀 앞모습은 바꾸지 않는다.**
 - **이번에 한 것(노트북):** 결과 [`full-sync-hnsfix-2026-10-06.md`](../friend-handoff/results/1.17.0-port/full-sync-hnsfix-2026-10-06.md), 회신 [`HANDBACK_2026-10-06.md`](../friend-handoff/HANDBACK_2026-10-06.md)
@@ -8,10 +8,14 @@
   - `9126e5f8df` 배틀타워·배틀돔 로비 직원 번호: HnS 로비가 Emerald 번호(`LOCALID_TOWER_ATTENDANT_*`, `LOCALID_DOME_ATTENDANT_*`)를 빌려 써 엉뚱한 직원이 움직였다. HnS `map.json`에 `*_HNS` 번호 이름(타워 1·6·7·8, 돔 1·5)을 붙였다. 다른 빌려 쓰는 번호 89곳 대조, 프런티어 이상은 이 두 곳뿐. 별건: 방울탑 옥상 기모노 소녀 번호(재확인 25)
   - 빌드: 종료 코드 0, ROM 32,738,292 B(−16 B), EWRAM 250,132 B, IWRAM 25,516 B. 고친 파일 경고 0. 전체 테스트 목록이 `test-baseline-seq174.txt`와 바이트 동일(PASS 2,419 / TOTAL 5,322, 노트북)
   - 프런티어 동선(질문 C): 아쿠아호 첫 관동 도착(`VAR_SSAQUA_STATE` 7) 뒤 담청시티·갈색시티 항구 선원 메뉴로 간다(표 없음). 실제 콘텐츠다
+- **심향·금선 플레이어 그래픽(같은 날, 노트북):** 결과 [`ethan-lyra-player-graphics-2026-10-06.md`](../friend-handoff/results/ethan-lyra-player-graphics-2026-10-06.md). 사용자 결정으로 단계별 커밋을 push했다(지시서의 "push 하지 말 것"은 친구 로컬과 섞지 말라는 뜻으로 봄).
+  - 커밋: `fe939d6456` 심향 → Gold(**앞모습·앞모습 팔레트 유지**), `eb46975ff9` 금선 → Kris 그림·팔레트, `f24bfd60de` 금선 비대칭 애니메이션(원본 43 + 회전 4, 표 7), `1a17daf00f` Kris 뒷모습
+  - 빌드: ROM 32,753,620 B(+15,328 B), EWRAM·IWRAM 변화 0, SHA1 `60542673…`. 새 경고 0(원본 PNG `bKGD` 청크 제거)
+  - 정적 확인: Kris 애니메이션 프레임 번호 전부 범위 안, 동쪽 `hFlip` 0, 표 항목 누락 0. 1.17.0은 반사 팔레트 파일을 읽지 않고 본 팔레트에 `ApplyPondFilter`를 씌운다(반사 `.pal`은 같은 필터 값으로 갱신)
+  - 실기 미확인(친구). 스크래치: `/home/jinmo/hns-sync-work/sprites-ethan-lyra/`(원본 sparse clone·도구)
 - **다음 할 일(순서)**
   1. 엔진 수정 3건(3b 춤추기 + 탈출버튼·탈출팩 회귀 테스트, 3c 불복종 자해 데미지, 10f 통신 멀티 교체 문장 직업+이름). 데스크탑 한글 회귀(328개)로 같이 확인 권장
-  2. 심향·금선 그래픽(지시서대로, 심향 앞모습 제외). **시작 전 사용자에게 커밋·push 여부 확인**(지시서에 "pull·push 하지 말 것" 문구)
-  3. full-sync seq 176 #9864부터(아래 2026-10-05 절의 순서·기준 그대로)
+  2. full-sync seq 176 #9864부터(아래 2026-10-05 절의 순서·기준 그대로)
 - 노트북에는 데스크탑 스크래치 도구(`save_compat.py`, `kortests/run.sh`)가 없다. full-sync 묶음과 엔진 수정의 한글 회귀는 데스크탑에서 하거나, 도구를 저장소로 옮긴 뒤 한다(재확인 17).
 
 ## 2026-10-05 — full-sync seq 142~175 완료(167 보류, 199 선반영) + 친구 답 반영, 다음 seq 176 (현재, 데스크탑)
