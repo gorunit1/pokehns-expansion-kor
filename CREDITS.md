@@ -120,6 +120,11 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
 ## Other Credits
+### HnS Player Sprite Credits (HGSS Ethan/Lyra, taken from [RafaPierangeli/pokemonemeraldrp](https://github.com/RafaPierangeli/pokemonemeraldrp) `RHH-Expansion-Costume-Slawter` `bcc37fa723`):
+- Ethan player sprites: POKABBIE, RichardPT, robloxmaster376
+- pokeemerald-expansion adaptation / additional sprite work: Rafa Pierangeli
+- Costume asset lineage: Slawter666
+
 ### Mega Evolution Overworld Sprite Credits:
 - [princess-phoenix](https://www.deviantart.com/princess-phoenix)
 - [larryturbo](https://www.deviantart.com/larryturbo)
