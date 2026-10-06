@@ -2,7 +2,12 @@
 
 ## 2026-10-07 — 친구 지시서 3건 + 엔진 수정 3건(3b·3c·10f) + full-sync 묶음 6(seq 176~179, 198 선반영) (현재, 데스크탑)
 
-- **멈춘 지점:** 노트북 작업(`ba9824bba9`)을 pull한 뒤 이어서 모두 끝내고 push했다. 다음은 **seq 181 #9730(XL, Stat Change Refactor)** — 단독 단위로 사전 분석부터. 선반영해 둔 행: 180 #9843, 198 #10014, 199 #10020(그 자리에서는 "이미 적용"). 167 #9819는 #10548 직전까지 보류.
+- **다음 할 일 1 — 친구 프런티어패스 요청 2건(사용자 확인 대기, 아직 작업 전):** 요청 [`FRIEND_REQUEST_2026-10-07.md`](../friend-handoff/FRIEND_REQUEST_2026-10-07.md) 2부. 사용자는 "바로 작업하지 말고 먼저 보라"고 했고, 분석(읽기 전용)까지 끝냈다. 진행 확인을 받은 뒤 커밋 2개로 넣는다.
+  - **머리 아이콘:** 첨부본 `/home/hjm0725/hns-sync-work/frontierpass-1007/map_heads_hns_friend.png`는 지금 `graphics/frontier_pass/map_heads_hns.png`와 크기(16×32)·팔레트(16색, 순서까지 같음)가 같고 그림만 다르다 → 그대로 교체.
+  - **색 깨짐 원인(확정):** HnS `graphics/frontier_pass/bg.png`는 pokeemerald-kr `graphics/frontier_pass/tiles.png`와 바이트 같은 4bpp·**16색 팔레트** PNG다. kr(옛 구조)은 배경 팔레트를 별도 `tiles.pal`(JASC 128색)에서 만들었지만, expansion은 `bg.png`의 PLTE로 `bg.gbapal`을 만들어 지금 32 B(1뱅크)뿐이다. 코드는 `gFrontierPassBg_Pal`을 8뱅크로 읽는다(`include/config/general.h` `BUGFIX` → `NUM_BG_PAL_SLOTS 8`, 트레이너 별 색은 뱅크 1~5). 뱅크 1~7이 ROM 뒤 데이터로 채워져 8bpp `map_and_card`(작은 맵·트레이너카드)와 맵 화면(같은 팔레트 사용)이 깨지고, 뱅크 0만 쓰는 틀·글자 상자·심볼·배틀포인트는 정상 — 친구 스크린샷과 일치. kr `tiles.pal` 128색은 upstream 1.17.0 `bg.png`(8bpp, PLTE 128) 팔레트와 128색 모두 같다.
+  - **수정안:** `bg.png`를 upstream 구조(8bpp, PLTE 128 = kr `tiles.pal`)로 바꾸되 픽셀 인덱스는 그대로(→ `bg.4bpp` 바이트 동일, `bg.gbapal` 32 → 256 B, ROM 약 +224 B). 검증: `bg.4bpp` 동일·`bg.gbapal` = upstream 팔레트, 테스트 러너로 패스 본체·맵 화면 팔레트 RAM/화면 덤프 → 렌더링 전후 비교(HP 박스 때 방법, `hnsfix-1007/tmp-hp/` 참고). 실기는 친구.
+- **아직 안 보낸 친구 문자:** `HANDBACK_2026-10-07.md` 요약 문자를 사용자가 아직 보내지 않았다. 프런티어패스 2건 결과를 합쳐 다시 정리해 보낸다.
+- **다음 할 일 2 — seq 181 #9730(XL, Stat Change Refactor)** — 단독 단위로 사전 분석부터. 선반영해 둔 행: 180 #9843, 198 #10014, 199 #10020(그 자리에서는 "이미 적용"). 167 #9819는 #10548 직전까지 보류.
   - 테스트 기준: `docs/friend-handoff/results/1.17.0-port/test-baseline-seq179.txt`(PASS 2,429 / TOTAL 5,332). 빌드 기준(데스크탑): ROM 32,754,340 B, SHA1 `94079f56…`. 노트북 툴체인은 SHA1이 다르다(크기는 같음).
   - 한글 통합 회귀: `ALLOW_REPO=1 /home/hjm0725/hns-sync-work/chunk-171-174/tmp-171/kortests/run.sh <저장소> <라벨>`(328개, 기대 요약 `runs/post1007b-summary.txt` = `post179`). K1-05·K1-09(`!!`→`!`)·K8-04·K8-05(3b)·K2-02(HP 999) 기대값 갱신, 원본 `*.bak-before-1007`.
   - 세이브 왕복 도구 주의: 이미지를 바꾼 뒤 테스트를 다시 빌드하지 않아 다른 이미지를 읽은 적이 있다(`LOAD image=` 줄로 확인, 재실행 PASS).
