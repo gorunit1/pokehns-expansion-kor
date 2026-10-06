@@ -3,8 +3,8 @@
 ## 2026-10-07 새벽 — 프런티어패스 2건 완료·push, #9730 사전 분석 준비까지 하고 종료 (현재, 데스크탑)
 
 - **다음 할 일(순서)**
-  1. **프런티어패스 렌더링 마무리:** 수정은 커밋·push했고, 남은 것은 테스트 러너 렌더링 비교 그림이다. 스크래치 `/home/hjm0725/hns-sync-work/frontierpass-1007/render/`(사본 `before`=`3d76ed478b`, `after`=두 PNG 교체, 계측 `instr.patch`, 덤프 `run-before.log`·`run-after.log`, 렌더러 `tools/`, 있으면 `RENDER.md`). 세션 종료 직전 에이전트에 "10분 안에 정리"를 요청했으니 `RENDER.md`·PNG가 있는지 먼저 본다. 없으면 덤프 로그로 렌더러를 마저 만든다(패스 본체·맵 화면 남/여, 친구 스크린샷 `screenshot-pass-main.png`·`screenshot-pass-map.png`와 나란히). 결과를 [`frontier-pass-2026-10-07.md`](../friend-handoff/results/frontier-pass-2026-10-07.md) 3절에 적는다.
-  2. **친구 문자(아직 안 보냄):** `HANDBACK_2026-10-07.md` 1~7절(지시서 3건·엔진 3건·묶음 6·질문 5개·mGBA·프런티어패스 7절)을 디스코드용 2,000자 이하 메시지 여러 개로 나눈다. 초안 `/home/hjm0725/hns-sync-work/frontierpass-1007/discord-2026-10-07.md`(있으면 그것부터 확인·보완, 렌더 그림은 첨부용).
+  1. ~~프런티어패스 렌더링~~ 끝(종료 직전 완료, 결과 문서 3절). 수정 전 렌더가 친구 스크린샷과 맞고, 수정 후에는 뱅크 1~7 픽셀과 머리 아이콘만 바뀐다. 그림은 `/home/hjm0725/hns-sync-work/frontierpass-1007/render/png/compare-*.png`.
+  2. **친구 문자(아직 안 보냄):** 초안 5개(각 2,000자 이하)가 `/home/hjm0725/hns-sync-work/frontierpass-1007/discord-2026-10-07.md`에 있다. 사용자가 보낼 때 3번 메시지에 `render/png/compare-pass.png`·`compare-map.png`를 첨부한다.
   3. **seq 181 #9730(XL, Stat Change Refactor) 사전 분석:** 지시서 `/home/hjm0725/hns-sync-work/chunk-181/ANALYZE.md`(영역 A 엔진 코어 / B 스크립트 / C 나머지 호출부 / D AI·기술 데이터 / E 한글 메시지·한글 회귀 세트 / F upstream 테스트·후속 행). 기준 사본 `chunk-181/base`(HEAD `364ab51c7f` 코드, ROM 32,754,564 B, SHA1 `5876c53d…`). upstream diff `chunk-181/upstream-9730.diff`, 파일별 `--check` 결과 `chunk-181/tmp/check.txt`(155 통과 / 21 실패). 에이전트 6개를 띄웠다가 사용자 종료로 몇 분 만에 멈췄다 — `tmp-A`~`tmp-F`의 중간 파일은 지우고 다시 띄운다(각 영역에 "ANALYZE.md를 읽고 영역 X 담당" 지시, 선례 프롬프트는 SESSION_LOG 이 날 항목). 결정이 필요한 건 적용 전에 사용자에게 짧게 보여 준다.
 - **프런티어패스(친구 요청 2부):** 결과 [`frontier-pass-2026-10-07.md`](../friend-handoff/results/frontier-pass-2026-10-07.md), 회신 `HANDBACK_2026-10-07.md` 7절
   - `00461d5cf6` 머리 아이콘(친구 첨부본 그대로, 팔레트 같음), `364ab51c7f` `bg.png` → 8bpp·128색(upstream `bg.png` PLTE = kr `tiles.pal`), 픽셀 인덱스 그대로

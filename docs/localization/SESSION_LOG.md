@@ -15,8 +15,9 @@
   - 전체 테스트 `build/port-check-fpass.log`(250 s): 목록이 `test-baseline-seq179.txt`와 바이트 동일, INVALID 21(이전과 같음). 스크립트 `frontierpass-1007/apply/fulltest.sh`
 - 문서: `results/frontier-pass-2026-10-07.md`(새), `HANDBACK_2026-10-07.md` 7절, `FRIEND_REQUEST_2026-10-07.md` 2부 결과 링크, README, STATUS. 디스코드 초안(5개, 각 2,000자 이하) `/home/hjm0725/hns-sync-work/frontierpass-1007/discord-2026-10-07.md` — 사용자 아직 안 보냄.
 - #9730: 지시서 `chunk-181/ANALYZE.md`, 기준 사본 `chunk-181/base`, upstream diff·`--check` 결과를 만들고 영역 에이전트 6개(A~F)를 띄웠으나 사용자가 자러 가서 몇 분 만에 멈췄다(산출물 없음).
-- 게임 화면 확인: 하지 않았다. 렌더 비교 그림은 미완(STATUS 다음 할 일 1).
-- 다음 시작점: STATUS 맨 위 "다음 할 일" 1 → 2 → 3.
+- 렌더링(종료 직전 완료): 수정 전 렌더가 친구 스크린샷과 일치(패스 96.8%, 맵 93.4%)하고, 수정 후에는 뱅크 1~7 픽셀과 머리 아이콘 OBJ만 바뀌었다. 기록은 `frontierpass-1007/render/RENDER.md`·`report.txt`, 결과 문서 3절에 있다.
+- 게임 화면 확인: 하지 않았다.
+- 다음 시작점: STATUS 맨 위 "다음 할 일" 2(문자 전송은 사용자) → 3(#9730 분석).
 
 ### 2026-10-07 — 친구 지시서 3건, 엔진 수정 3건, full-sync 묶음 6 (데스크탑)
 

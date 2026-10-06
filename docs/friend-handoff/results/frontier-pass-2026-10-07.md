@@ -36,8 +36,22 @@
 
 ## 3. 테스트 러너 렌더링 (수정 전후)
 
-- 방법: 스크래치 사본 두 개(`render/before` = `3d76ed478b`, `render/after` = 두 PNG 교체)에 테스트(`HNSFP` 접두사)와 `#if TESTING` 계측을 넣어 패스 본체·맵 화면을 띄우고 팔레트 RAM·VRAM·OAM·GPU 레지스터를 덤프했다. 덤프 로그 `render/run-before.log`·`run-after.log`.
-- 렌더링·비교 그림: 세션 종료로 정리가 끝나지 않았다. 남은 기록은 `/home/hjm0725/hns-sync-work/frontierpass-1007/render/`(`RENDER.md`가 있으면 그것을 따른다). **다음 세션에서 마무리**한다(STATUS "다음 할 일").
+- 방법: 스크래치 사본 두 개(`render/before` = `3d76ed478b`, `render/after` = 두 PNG 교체)에 테스트 `HNSFP`(`render/zz_fpass_dump.c`)와 `#if TESTING` 계측(`render/instr.patch`)을 넣었다. 패스 본체·맵 화면·대전 기록 화면을 띄워 페이드가 끝난 뒤 팔레트 RAM·VRAM·OAM·GPU 레지스터를 덤프했다(`run-before.log`·`run-after.log`). 그다음 Python 렌더러(`render/tools/gbarender.py`, text·affine BG, OBJ, 우선순위·창·블렌딩)로 240×160 화면을 그렸다. 경우는 남/여, 트레이너 별 0/1개다. 자세한 내용·재현 명령은 `/home/hjm0725/hns-sync-work/frontierpass-1007/render/RENDER.md`에 있다.
+- **수정 전 렌더가 친구 스크린샷을 재현한다**(허용 오차 40, webp 손실 이미지 기준).
+  - 패스 본체: 전체 96.8%, 뱅크 1~7 영역 87.5%, 나머지 99.7% 일치
+  - 맵 화면: 전체 93.4%, 뱅크 1~7 영역 75.5%, 나머지 99.0% 일치
+- **팔레트 RAM:** 수정 뒤 뱅크 0~7이 upstream 팔레트와 같다. 뱅크 1은 `1 + 별 수` 뱅크다(별 1개면 upstream 뱅크 2). 수정 전 뱅크 1~7은 `gFrontierPassBg_Pal` 뒤 ROM 바이트였다. 뱅크 15(글자 창)와 OBJ 팔레트는 전후가 같다.
+- **바뀐 픽셀:** 뱅크 1~7을 쓰는 곳만 바뀌었다.
+  - 패스 본체: BG1 뱅크 1·7(작은 맵·트레이너카드) 9,208픽셀
+  - 맵 화면: BG2 뱅크 6(맵 그림) 9,096픽셀과 머리 아이콘 OBJ(남 6·여 41픽셀)
+  - 대전 기록 화면: 뒤에 보이는 BG1 9,160픽셀
+  - 틀·글자 상자·심볼·배틀포인트·글자 색은 픽셀까지 같다.
+- 수정 뒤 화면: 작은 맵·트레이너카드·맵 화면이 upstream 색(파랑·초록 계열)으로 나온다. 맵 화면 머리는 심향·금선이다.
+- 그림(저장소 밖, 친구에게 첨부): `render/png/compare-pass.png`·`compare-map.png`(친구 | 수정 전 | 수정 후), `compare-heads.png`, 경우별 `*-before-after.png`
+- 렌더러 한계: 모자이크, 스캔라인 단위 레지스터 변경, 줄당 OBJ 수 제한은 구현하지 않았다(이번 화면에는 해당 없음). 색은 mGBA 기본 5→8비트 변환이고 색 보정은 없다. 뱅크 1~7 영역의 남은 불일치(패스 12.5%, 맵 24.5%)는 webp 손실·화면 배율·덤프 시점으로 보이지만 원인을 따로 나누지는 않았다.
+- 수정 전 뱅크 1~7의 실제 내용: HnS 링크 순서에서는 `gFrontierPassBg_Gfx`가 팔레트 **앞**에 있다. 그래서 코드 주석과 달리 그 뒤의 타이틀 화면 데이터(`gTitleScreenPokemonLogoTilemap` 28 B, 이어서 `gTitleScreenPressStartGfx`)를 읽었다. 덤프의 `gPlttBufferUnfaded`가 이 ROM 바이트와 같다.
+- 미완: 트레이너카드 확대 화면과 확대·축소 중간 프레임(BG2 8bpp)은 덤프하지 못했다. 코드상 같은 팔레트를 쓰므로 같이 고쳐졌을 것으로 보지만 실측은 없다(mGBA 확인 항목).
+- 참고: 맵 화면 오른쪽 시설 목록의 선택되지 않은 글자가 테두리만 보이는 모양은 친구 스크린샷·수정 전·수정 후가 같다. 이번 팔레트 문제와는 관계없다(뱅크 0·15만 쓰고 바뀐 픽셀 없음, `map_screen.png`·`.bin`·뱅크 0이 upstream 1.17.0과 바이트 같음). 이상하면 따로 알려 달라고 회신에 적는다.
 
 ## 4. mGBA 확인 (친구)
 
