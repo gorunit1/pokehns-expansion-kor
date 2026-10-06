@@ -105,7 +105,7 @@ static const u8 sText_Trainer1SentOutTwoPkmn[] = _("{B_TRAINER1_CLASS} {B_TRAINE
 static const u8 sText_Trainer1SentOutPkmn2[] = _("{B_TRAINER1_CLASS} {B_TRAINER1_NAME}{B_TXT_EUNNEUN}\n{B_BUFF1}{B_TXT_EULREUL} 내보냈다!");
 static const u8 sText_LinkTrainerIntroSendOutPkmn[] = _("{B_LINK_OPPONENT1_NAME}{B_TXT_EUNNEUN}\n{B_LINK_OPPONENT_MON1_NAME}{B_TXT_EULREUL} 내보냈다!");
 static const u8 sText_LinkTrainerSentOutPkmn[] = _("{B_LINK_OPPONENT1_NAME}{B_TXT_EUNNEUN}\n{B_BUFF1}{B_TXT_EULREUL} 내보냈다!");
-static const u8 sText_LinkTrainer2SentOutPkmn2[] = _("{B_LINK_OPPONENT2_NAME}{B_TXT_EUNNEUN}\n{B_BUFF1}{B_TXT_EULREUL} 내보냈다!!");
+static const u8 sText_LinkTrainer2SentOutPkmn2[] = _("{B_LINK_OPPONENT2_NAME}{B_TXT_EUNNEUN}\n{B_BUFF1}{B_TXT_EULREUL} 내보냈다!");
 static const u8 sText_LinkTrainerSentOutTwoPkmn[] = _("{B_LINK_OPPONENT1_NAME}{B_TXT_EUNNEUN}\n{B_OPPONENT_MON1_NAME}{B_TXT_WAGWA} {B_OPPONENT_MON2_NAME}{B_TXT_EULREUL} 내보냈다!");
 static const u8 sText_TwoLinkTrainersIntroSendOutPkmn[] = _("{B_LINK_OPPONENT1_NAME}{B_TXT_EUNNEUN}\n{B_LINK_OPPONENT_MON1_NAME}{B_TXT_EULREUL} 내보냈다!\p{B_LINK_OPPONENT2_NAME}{B_TXT_EUNNEUN}\n{B_LINK_OPPONENT_MON2_NAME}{B_TXT_EULREUL} 내보냈다!");
 // HnS: keeps {B_BUFF1} (upstream #9799: {B_LINK_OPPONENT_MON2_NAME}). In a link battle only the master runs the battle

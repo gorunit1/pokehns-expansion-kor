@@ -665,7 +665,7 @@ static const struct MenuAction MultichoiceList_FossilHns[] =
 static const struct MenuAction MultichoiceList_YesNo[] =
 {
     {gText_Yes},
-    {COMPOUND_STRING("아니")},
+    {gText_No},
 };
 
 static const struct MenuAction MultichoiceList_FrontierRules[] =
