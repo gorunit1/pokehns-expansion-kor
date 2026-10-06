@@ -892,3 +892,151 @@ DOUBLE_BATTLE_TEST("Dancer doesn't activate Feather Dance if it was reflected by
         EXPECT_EQ(playerLeft->statStages[STAT_ATK], DEFAULT_STAT_STAGE - 2);
     }
 }
+
+// HnS: Eject Button/Pack switches resolve before Dancer, and Dancer follows the battlers on the field after them. A Dancer
+// sent in by an Eject item dances in that turn (but does not take the action chosen for the slot); one that left does not.
+DOUBLE_BATTLE_TEST("Dancer sent in by Eject Button or Eject Pack copies a later dance move of the turn but skips its own action")
+{
+    enum Item item;
+    enum Move move;
+
+    PARAMETRIZE { item = ITEM_EJECT_BUTTON; move = MOVE_SCRATCH; }
+    PARAMETRIZE { item = ITEM_EJECT_PACK; move = MOVE_CHARM; }
+    GIVEN {
+        ASSUME(IsDanceMove(MOVE_DRAGON_DANCE));
+        ASSUME(GetItemHoldEffect(ITEM_EJECT_BUTTON) == HOLD_EFFECT_EJECT_BUTTON);
+        ASSUME(GetItemHoldEffect(ITEM_EJECT_PACK) == HOLD_EFFECT_EJECT_PACK);
+        ASSUME(GetMoveEffect(MOVE_CHARM) == EFFECT_ATTACK_DOWN_2);
+        PLAYER(SPECIES_WOBBUFFET) { Speed(1); Item(item); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
+        PLAYER(SPECIES_ORICORIO) { Speed(5); Ability(ABILITY_DANCER); Moves(MOVE_CELEBRATE); }
+        PLAYER(SPECIES_ORICORIO) { Speed(1); Ability(ABILITY_DANCER); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(50); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(40); }
+    } WHEN {
+        TURN {
+            MOVE(playerLeft, MOVE_SWORDS_DANCE);
+            MOVE(opponentLeft, move, target: playerLeft);
+            SEND_OUT(playerLeft, 2);
+            MOVE(opponentRight, MOVE_DRAGON_DANCE);
+            MOVE(playerRight, MOVE_CELEBRATE);
+        }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, move, opponentLeft);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, playerLeft);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_DRAGON_DANCE, opponentRight);
+        ABILITY_POPUP(playerLeft, ABILITY_DANCER);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_DRAGON_DANCE, playerLeft);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, playerRight);
+        NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_SWORDS_DANCE, playerLeft);
+    } THEN {
+        EXPECT_EQ(playerLeft->species, SPECIES_ORICORIO);
+        EXPECT_EQ(playerLeft->statStages[STAT_ATK], DEFAULT_STAT_STAGE + 1); // +3 if it had used Swords Dance
+        EXPECT_EQ(playerLeft->statStages[STAT_SPEED], DEFAULT_STAT_STAGE + 1);
+        // The Dancer already on the field still dances (the replacement's copy no longer ends the action)
+        EXPECT_EQ(playerRight->statStages[STAT_ATK], DEFAULT_STAT_STAGE + 1);
+        EXPECT_EQ(playerRight->statStages[STAT_SPEED], DEFAULT_STAT_STAGE + 1);
+    }
+}
+
+DOUBLE_BATTLE_TEST("Dancer sent in by Eject Button copies the dance move that made the holder switch out")
+{
+    GIVEN {
+        ASSUME(IsDanceMove(MOVE_AQUA_STEP));
+        ASSUME(GetMoveCategory(MOVE_AQUA_STEP) != DAMAGE_CATEGORY_STATUS);
+        ASSUME(GetItemHoldEffect(ITEM_EJECT_BUTTON) == HOLD_EFFECT_EJECT_BUTTON);
+        PLAYER(SPECIES_WOBBUFFET) { Speed(1); Item(ITEM_EJECT_BUTTON); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
+        PLAYER(SPECIES_WYNAUT) { Speed(5); }
+        PLAYER(SPECIES_ORICORIO) { Speed(1); Ability(ABILITY_DANCER); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(50); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(40); }
+    } WHEN {
+        TURN {
+            MOVE(playerLeft, MOVE_SWORDS_DANCE);
+            MOVE(opponentLeft, MOVE_AQUA_STEP, target: playerLeft);
+            SEND_OUT(playerLeft, 2);
+        }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, opponentLeft);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, playerLeft);
+        ABILITY_POPUP(playerLeft, ABILITY_DANCER);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, playerLeft);
+        HP_BAR(opponentLeft);
+        NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_SWORDS_DANCE, playerLeft);
+    } THEN {
+        EXPECT_EQ(playerLeft->species, SPECIES_ORICORIO);
+        EXPECT_EQ(playerLeft->statStages[STAT_SPEED], DEFAULT_STAT_STAGE + 1);
+        EXPECT_EQ(playerLeft->statStages[STAT_ATK], DEFAULT_STAT_STAGE);
+    }
+}
+
+DOUBLE_BATTLE_TEST("Dancer sent in by Eject Pack copies the dance move that made the holder switch out")
+{
+    GIVEN {
+        ASSUME(IsDanceMove(MOVE_FEATHER_DANCE));
+        ASSUME(GetMoveEffect(MOVE_FEATHER_DANCE) == EFFECT_ATTACK_DOWN_2);
+        ASSUME(GetItemHoldEffect(ITEM_EJECT_PACK) == HOLD_EFFECT_EJECT_PACK);
+        PLAYER(SPECIES_WOBBUFFET) { Speed(1); Item(ITEM_EJECT_PACK); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
+        PLAYER(SPECIES_WYNAUT) { Speed(5); }
+        PLAYER(SPECIES_ORICORIO) { Speed(1); Ability(ABILITY_DANCER); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(50); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(40); }
+    } WHEN {
+        TURN {
+            MOVE(playerLeft, MOVE_SWORDS_DANCE);
+            MOVE(opponentLeft, MOVE_FEATHER_DANCE, target: playerLeft);
+            SEND_OUT(playerLeft, 2);
+        }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_FEATHER_DANCE, opponentLeft);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, playerLeft);
+        ABILITY_POPUP(playerLeft, ABILITY_DANCER);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_FEATHER_DANCE, playerLeft);
+        NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_SWORDS_DANCE, playerLeft);
+    } THEN {
+        EXPECT_EQ(playerLeft->species, SPECIES_ORICORIO);
+        EXPECT_EQ(playerLeft->statStages[STAT_ATK], DEFAULT_STAT_STAGE);
+        EXPECT_EQ(opponentLeft->statStages[STAT_ATK], DEFAULT_STAT_STAGE - 2);
+    }
+}
+
+DOUBLE_BATTLE_TEST("Dancer that leaves by Eject Button or Eject Pack doesn't copy the dance move")
+{
+    enum Item item;
+    enum Move move;
+    u32 species;
+
+    PARAMETRIZE { item = ITEM_EJECT_BUTTON; move = MOVE_AQUA_STEP;    species = SPECIES_WYNAUT; }
+    PARAMETRIZE { item = ITEM_EJECT_BUTTON; move = MOVE_AQUA_STEP;    species = SPECIES_ORICORIO; }
+    PARAMETRIZE { item = ITEM_EJECT_PACK;   move = MOVE_FEATHER_DANCE; species = SPECIES_WYNAUT; }
+    PARAMETRIZE { item = ITEM_EJECT_PACK;   move = MOVE_FEATHER_DANCE; species = SPECIES_ORICORIO; }
+    GIVEN {
+        ASSUME(IsDanceMove(MOVE_AQUA_STEP));
+        ASSUME(IsDanceMove(MOVE_FEATHER_DANCE));
+        ASSUME(GetSpeciesAbility(SPECIES_ORICORIO, 0) == ABILITY_DANCER);
+        ASSUME(GetSpeciesAbility(SPECIES_WYNAUT, 0) != ABILITY_DANCER);
+        PLAYER(SPECIES_ORICORIO) { Speed(1); Ability(ABILITY_DANCER); Item(item); }
+        PLAYER(SPECIES_WOBBUFFET) { Speed(5); }
+        PLAYER(species) { Speed(1); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(50); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(40); }
+    } WHEN {
+        TURN { MOVE(opponentLeft, move, target: playerLeft); SEND_OUT(playerLeft, 2); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, move, opponentLeft);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, playerLeft);
+        if (species == SPECIES_ORICORIO) { // only the Dancer sent in copies the move, once
+            ABILITY_POPUP(playerLeft, ABILITY_DANCER);
+            ANIMATION(ANIM_TYPE_MOVE, move, playerLeft);
+        }
+        NONE_OF {
+            ABILITY_POPUP(playerLeft, ABILITY_DANCER);
+            ANIMATION(ANIM_TYPE_MOVE, move, playerLeft);
+        }
+    } THEN {
+        EXPECT_EQ(gBattlerPartyIndexes[B_POSITION_PLAYER_LEFT], 2);
+        if (move == MOVE_AQUA_STEP)
+            EXPECT_EQ(playerLeft->statStages[STAT_SPEED], DEFAULT_STAT_STAGE + (species == SPECIES_ORICORIO));
+        else
+            EXPECT_EQ(opponentLeft->statStages[STAT_ATK], DEFAULT_STAT_STAGE - 2 * (species == SPECIES_ORICORIO));
+    }
+}

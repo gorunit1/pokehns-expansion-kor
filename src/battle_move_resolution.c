@@ -3525,6 +3525,8 @@ static bool32 TryEjectButton(enum BattlerId battlerAtk, u32 ejectButtonBattler)
     gBattleScripting.battler = ejectButtonBattler;
     gLastUsedItem = gBattleMons[ejectButtonBattler].item;
     gBattleStruct->battlerState[ejectButtonBattler].usedEjectItem = TRUE;
+    if (IsDanceMove(gCurrentMove)) // HnS: see MoveEndDancer
+        gBattleStruct->battlerState[ejectButtonBattler].dancerAfterEjectItem = TRUE;
     gSpecialStatuses[ejectButtonBattler].queuedSwitch = QUEUED_SWITCH_OPEN_PARTY_SCREEN;
     BattleScriptCall(BattleScript_EjectItemActivates);
     gAiLogicData->ejectButtonSwitch = TRUE;
@@ -3802,6 +3804,8 @@ static inline bool32 TryEjectPack(enum BattlerId battlerAtk, enum BattlerId ejec
     gBattleScripting.battler = ejectPackBattler;
     gLastUsedItem = gBattleMons[ejectPackBattler].item;
     gBattleStruct->battlerState[ejectPackBattler].usedEjectItem = TRUE;
+    if (IsDanceMove(gCurrentMove)) // HnS: see MoveEndDancer
+        gBattleStruct->battlerState[ejectPackBattler].dancerAfterEjectItem = TRUE;
     gSpecialStatuses[ejectPackBattler].queuedSwitch = QUEUED_SWITCH_OPEN_PARTY_SCREEN;
     BattleScriptCall(BattleScript_EjectItemActivates);
     gAiLogicData->ejectPackSwitch = TRUE;
@@ -4049,6 +4053,22 @@ static enum MoveEndResult MoveEndClearBits(void)
 static enum MoveEndResult MoveEndDancer(void)
 {
     enum MoveEndResult result = MOVEEND_RESULT_CONTINUE;
+
+    // HnS: Eject Button/Pack switches (MOVEEND_CARD_BUTTON/ITEM_ON_STAT_CHANGE/SEND_OUT_REPLACEMENTS) resolve before Dancer.
+    // A Dancer that left lost its queue on switch-in (volatiles cleared); queue a Dancer sent in for it during this dance move,
+    // so Dancer follows the battlers now on the field. Dancers that were already there keep MOVEEND_QUEUE_DANCER's queue.
+    for (enum BattlerId battler = 0; battler < gBattlersCount; battler++)
+    {
+        if (!gBattleStruct->battlerState[battler].dancerAfterEjectItem)
+            continue;
+        gBattleStruct->battlerState[battler].dancerAfterEjectItem = FALSE;
+        if (IsDanceMove(gCurrentMove)
+         && battler != gBattlerAttacker
+         && IsBattlerAlive(battler)
+         && !gSpecialStatuses[battler].dancerUsedMove
+         && GetBattlerAbility(battler) == ABILITY_DANCER)
+            gBattleMons[battler].volatiles.activateDancer = TRUE;
+    }
 
     if (AbilityBattleEffects(ABILITYEFFECT_DANCER, gBattlerAttacker, ABILITY_DANCER, gCurrentMove, TRUE))
         result = MOVEEND_RESULT_RUN_SCRIPT;

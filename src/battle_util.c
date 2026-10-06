@@ -488,6 +488,7 @@ void HandleAction_UseMove(void)
     {
         gBattleStruct->battlerState[battler].wasAboveHalfHp = gBattleMons[battler].hp > gBattleMons[battler].maxHP / 2;
         gBattleMons[battler].volatiles.activateDancer = FALSE;
+        gBattleStruct->battlerState[battler].dancerAfterEjectItem = FALSE; // HnS: see MoveEndDancer
     }
 
     gCurrentActionFuncId = B_ACTION_EXEC_SCRIPT;

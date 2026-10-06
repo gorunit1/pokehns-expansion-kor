@@ -512,7 +512,8 @@ struct BattlerState
     u16 notOnField:1;
     u16 redCardSwitched:1;
     u16 isFirstTurn:2; // Starts at 2 on switch in and counts down during end turn
-    u16 padding:11;
+    u16 dancerAfterEjectItem:1; // HnS: Eject Button/Pack sent this slot out during a dance move; MOVEEND_DANCER checks its replacement
+    u16 padding:10;
 };
 
 struct PartyState

@@ -1016,9 +1016,12 @@ static void Cmd_attackcanceler(void)
 
     // HnS: do not drop a bounced/snatched move whose user came in by Eject Button/Pack this turn; the attacker/target saved by
     // MoveEndBouncedMove/CancelerSnatch would never be restored (ValidateBattlers assert). usedEjectItem stays set for its own action.
+    // HnS: the same for its Dancer copy (TryDancer sets dancerUsedMove first): it dances, and the rest of the original move's
+    // Dancer queue still runs. Its own action stays skipped (switchineffects cancels it; usedEjectItem stays set too).
     if (gBattleStruct->battlerState[gBattlerAttacker].usedEjectItem
      && !gBattleStruct->bouncedMoveIsUsed
-     && !gBattleStruct->snatchedMoveIsUsed)
+     && !gBattleStruct->snatchedMoveIsUsed
+     && !gSpecialStatuses[gBattlerAttacker].dancerUsedMove)
     {
         gBattleStruct->battlerState[gBattlerAttacker].usedEjectItem = FALSE;
         gCurrentActionFuncId = B_ACTION_TRY_FINISH;
