@@ -14555,6 +14555,30 @@ void BS_RaiseCritStatChangeAnim(void)
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
+// HnS: BattleScript_TotemBoost raises the totem boosts one stat at a time, so every stat keeps its own animation and
+//      message after the aura message as before #9730 (upstream sets the stages in TryDoEventsBeforeFirstTurn silently).
+//      Queues the next boosted stat of gBattlerAttacker for trybattlerstatchange, or jumps when none is left.
+void BS_QueueTotemBoost(void)
+{
+    NATIVE_ARGS(const u8 *jumpInstr);
+
+    enum BattlerId battler = gBattlerAttacker;
+
+    for (enum Stat stat = STAT_ATK; stat < NUM_BATTLE_STATS; stat++)
+    {
+        if (gQueuedStatBoosts[battler].stats & (1 << stat))
+        {
+            gQueuedStatBoosts[battler].stats &= ~(1 << stat);
+            SetStatChange(battler, stat, gQueuedStatBoosts[battler].statChanges[stat]);
+            gBattlescriptCurrInstr = cmd->nextInstr;
+            return;
+        }
+    }
+
+    gQueuedStatBoosts[battler].stats = 0;
+    gBattlescriptCurrInstr = cmd->jumpInstr;
+}
+
 void BS_RestoreStatChangeQueue(void)
 {
     NATIVE_ARGS();

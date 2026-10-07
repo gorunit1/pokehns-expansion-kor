@@ -1573,6 +1573,12 @@
     callnative BS_RestoreStatChangeQueue
     .endm
 
+	@ HnS: queues the next totem boost of gBattlerAttacker for trybattlerstatchange, jumps when none is left
+	.macro queuetotemboost jumpInstr:req
+	callnative BS_QueueTotemBoost
+	.4byte \jumpInstr
+	.endm
+
 @ helpful macros
 	.macro setmoveeffect effect:req
 	sethword sMOVE_EFFECT, \effect

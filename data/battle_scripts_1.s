@@ -5874,6 +5874,12 @@ BattleScript_TotemBoost::
 	playanimation BS_ATTACKER, B_ANIM_TOTEM_FLARE, NULL
 	printstring STRINGID_AURAFLAREDTOLIFE
 	waitmessage B_WAIT_TIME_LONG
+	@ HnS: raise the boosted stats one by one, each with its stat animation and message, as before #9730
+BattleScript_TotemBoostLoop:
+	queuetotemboost BattleScript_TotemBoostEnd
+	trybattlerstatchange BS_ATTACKER, STAT_CHANGE_NO_FLAGS
+	goto BattleScript_TotemBoostLoop
+BattleScript_TotemBoostEnd:
     end3
 
 BattleScript_AnnounceAirLockCloudNine::

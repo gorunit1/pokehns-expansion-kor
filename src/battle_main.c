@@ -4000,28 +4000,24 @@ static void TryDoEventsBeforeFirstTurn(void)
     case FIRST_TURN_EVENTS_TOTEM_BOOST:
         for (enum BattlerId battler = 0; battler < gBattlersCount; battler++)
         {
-            if (gQueuedStatBoosts[battler].stats == 0)
+            if (gQueuedStatBoosts[battler].stats == 0
+             || gProtectStructs[battler].eatMirrorHerb || gProtectStructs[battler].activateOpportunist) // HnS: a Mirror Herb/Opportunist copy of a totem boost, see below
                 continue;
 
-            for (enum Stat stat = STAT_ATK; stat < NUM_BATTLE_STATS; stat++)
-            {
-                if (gQueuedStatBoosts[battler].stats & (1 << stat))
-                {
-                    s32 stage = gQueuedStatBoosts[battler].statChanges[stat];
-                    gBattleMons[battler].statStages[stat] += stage;
-                    if (gBattleMons[battler].statStages[stat] > MAX_STAT_STAGE)
-                        gBattleMons[battler].statStages[stat] = MAX_STAT_STAGE;
-                    else if (gBattleMons[battler].statStages[stat] < MIN_STAT_STAGE)
-                        gBattleMons[battler].statStages[stat] = MIN_STAT_STAGE;
-                }
-            }
-
+            // HnS: BattleScript_TotemBoost raises the stats one at a time (queuetotemboost + trybattlerstatchange), so every stat
+            //      keeps its animation and message after the aura message as before #9730. upstream sets the stages here silently.
             gBattlerAttacker = battler;
-            gQueuedStatBoosts[battler].stats = 0;
             BattleScriptPushCursorAndCallback(BattleScript_TotemBoost);
             return;
         }
         memset(gQueuedStatBoosts, 0, sizeof(gQueuedStatBoosts)); // erase all totem boosts for Mirror Herb and Opportunist
+        for (enum BattlerId battler = 0; battler < gBattlersCount; battler++)
+        {
+            // HnS: the totem boosts went through the stat change engine, which asks the foes' Mirror Herb and Opportunist to copy them.
+            //      Drop those requests so neither reacts to a totem boost, as with upstream's silent stages (nothing sets them earlier).
+            gProtectStructs[battler].eatMirrorHerb = 0;
+            gProtectStructs[battler].activateOpportunist = 0;
+        }
         gBattleStruct->eventState.beforeFirstTurn++;
         break;
     case FIRST_TURN_SWITCH_IN_EVENTS:
