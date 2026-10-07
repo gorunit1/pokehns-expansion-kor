@@ -1569,6 +1569,12 @@
 	callnative BS_SetBlockedIntimidateBattler
 	.endm
 
+	@ HnS: TRUE marks gEffectBattler as the Intimidate user while its Intimidate is applied, FALSE clears the mark
+	.macro setusingintimidate on:req
+	callnative BS_SetUsingIntimidate
+	.byte \on
+	.endm
+
     .macro raisecritstatchangeanim battler:req
     callnative BS_RaiseCritStatChangeAnim
     .byte \battler

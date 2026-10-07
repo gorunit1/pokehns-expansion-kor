@@ -4867,7 +4867,11 @@ BattleScript_ActivateWeatherAbilities_Loop:
 
 BattleScript_IntimidateActivates::
 	call BattleScript_AbilityPopUp
+	@ HnS: the Intimidate user's own Adrenaline Orb does not react to its Intimidate reflected by Mirror Armor (main series,
+	@      HnS before #9730). Only reflection can change the user's stats while its Intimidate is applied
+	setusingintimidate TRUE
 	trystatchanges BS_EFFECT_BATTLER, STAT_CHANGE_INTIMIDATE
+	setusingintimidate FALSE
 	destroyabilitypopup
 	return
 

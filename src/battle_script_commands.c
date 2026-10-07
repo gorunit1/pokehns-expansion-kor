@@ -14546,7 +14546,8 @@ void BS_TryAdrenalineOrb(void)
     if (gBattleStruct->intimidateActivated
      && !gBattleStruct->adrenalineOrbActivated // there might be a better way to solve this
      && holdEffect == HOLD_EFFECT_ADRENALINE_ORB
-     && CompareStat(battler, STAT_SPEED, MAX_STAT_STAGE, CMP_LESS_THAN, GetBattlerAbility(battler))) // HnS: not used up when Speed can't change (+6, -6 with Contrary), as in the main series and HnS before #9730
+     && CompareStat(battler, STAT_SPEED, MAX_STAT_STAGE, CMP_LESS_THAN, GetBattlerAbility(battler)) // HnS: not used up when Speed can't change (+6, -6 with Contrary), as in the main series and HnS before #9730
+     && !gBattleStruct->battlerState[battler].usingIntimidate) // HnS: not for the Intimidate user's own Intimidate reflected by Mirror Armor (main series, HnS before #9730)
     {
         gBattleStruct->adrenalineOrbActivated = TRUE;
         SetStatChange2(battler, STAT_SPEED, 1);
@@ -14573,6 +14574,19 @@ void BS_SetBlockedIntimidateBattler(void)
             gBattleScripting.battler = battler;
         }
     }
+    gBattlescriptCurrInstr = cmd->nextInstr;
+}
+
+// HnS: BattleScript_IntimidateActivates marks the Intimidate user (gEffectBattler) while its Intimidate is applied, so that
+//      BS_TryAdrenalineOrb skips the user's own orb when Mirror Armor reflects the Attack drop; FALSE clears every mark
+void BS_SetUsingIntimidate(void)
+{
+    NATIVE_ARGS(u8 on);
+
+    for (enum BattlerId battler = B_BATTLER_0; battler < gBattlersCount; battler++)
+        gBattleStruct->battlerState[battler].usingIntimidate = FALSE;
+    if (cmd->on)
+        gBattleStruct->battlerState[gEffectBattler].usingIntimidate = TRUE;
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
