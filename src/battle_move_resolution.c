@@ -3711,6 +3711,8 @@ static enum MoveEndResult MoveEndEmergencyExit(void)
 
         gBattleScripting.battler = battler;
         gSpecialStatuses[battler].queuedSwitch = QUEUED_SWITCH_OPEN_PARTY_SCREEN;
+        if (IsDanceMove(gCurrentMove)) // HnS: see MoveEndDancer (same as Eject Button/Pack)
+            gBattleStruct->battlerState[battler].dancerAfterEjectItem = TRUE;
         BattleScriptCall(BattleScript_EmergencyExit);
         result = MOVEEND_RESULT_RUN_SCRIPT;
         break; // Only the fastest Emergency Exit / Wimp Out activates
@@ -4163,7 +4165,8 @@ static enum MoveEndResult MoveEndDancer(void)
 {
     enum MoveEndResult result = MOVEEND_RESULT_CONTINUE;
 
-    // HnS: Eject Button/Pack switches (MOVEEND_CARD_BUTTON/ITEM_ON_STAT_CHANGE/SEND_OUT_REPLACEMENTS) resolve before Dancer.
+    // HnS: Eject Button/Pack and Emergency Exit/Wimp Out switches (MOVEEND_CARD_BUTTON/EMERGENCY_EXIT/ITEM_ON_STAT_CHANGE/
+    // SEND_OUT_REPLACEMENTS) resolve before Dancer.
     // A Dancer that left lost its queue on switch-in (volatiles cleared); queue a Dancer sent in for it during this dance move,
     // so Dancer follows the battlers now on the field. Dancers that were already there keep MOVEEND_QUEUE_DANCER's queue.
     for (enum BattlerId battler = 0; battler < gBattlersCount; battler++)
