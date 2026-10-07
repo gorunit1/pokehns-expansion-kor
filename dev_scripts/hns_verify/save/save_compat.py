@@ -16,14 +16,17 @@ A안 확정 결정: RecordedBattleSave(녹화 배틀 기록)만 바뀌어도 되
                         → 같으면 "이식 뒤에도 같은 RAM 바이트를 같은 세이브 자리로 복사한다"는 기계 증명이 된다.
   (4) RAM 정적 변수     ELF 심볼표(OBJECT)와 .map(입력 섹션→오브젝트 파일)로 EWRAM/IWRAM 변수별 크기·합계를 비교한다.
 
-부속 명령
-  run       (메인이 이식 뒤 돌리는 명령) 이식 전 사실(verify/pre/, 없으면 base/ + HEAD 헤더로 생성)과
-            이식 후 사실(--post-src 작업 트리 헤더 + --post-elf/--post-map)을 모아 비교한다.
-  collect   한쪽 사실만 모은다.   compare   사실 디렉터리 둘을 비교한다.
-  selftest  도구 자체 검증(이식 전끼리 차이 0, 일부러 바꾼 헤더/ELF 사본에서 차이 검출).
+부속 명령(dev_scripts/hns_verify/README.md 참고)
+  collect   한쪽 사실만 모은다. 이식 전(묶음 직전 깨끗한 HEAD를 make hns -j8 한 뒤) 같은 기계에서 만든다.
+            기계어·RAM 사실은 툴체인에 따라 달라질 수 있어 다른 기계의 사실 폴더를 기준으로 쓰지 않는다.
+  run       --pre <collect 폴더>(필수)와 이식 후 사실(--post-src 작업 트리 헤더 + --post-elf/--post-map)을 비교한다.
+  compare   사실 디렉터리 둘을 비교한다.
+  (옛 기본 run의 verify/pre·base/ 자동 생성, selftest는 저장소판에 없다 — 2단계.)
 
-저장소는 읽기만 한다(헤더를 -iquote로 읽고 git show/archive만 쓴다). 산출물은 --out(기본 chunk-1385/tmp-D/…)에만 쓴다.
-필요: arm-none-eabi-gcc/objdump/readelf(PATH), python3. 종료 코드 0=PASS(정보·주의만 있음), 1=FAIL, 2=도구 오류.
+저장소는 읽기만 한다(헤더를 -iquote로 읽고 git archive/rev-parse/status만 쓴다). 산출물은 --out
+(run 기본: $HNS_VERIFY_OUT/save/run-<시각>)에만 쓴다. 경로 규칙은 ../hnsverify_paths.py(HNS_REPO 등).
+필요: arm-none-eabi-gcc/objdump/readelf(PATH 또는 $DEVKITARM/bin), python3. 종료 코드 0=PASS(정보·주의만 있음),
+1=FAIL, 2=도구 오류.
 """
 import argparse
 import bisect
@@ -39,14 +42,14 @@ import subprocess
 import sys
 import tarfile
 
+sys.dont_write_bytecode = True   # 저장소 안에 __pycache__를 남기지 않는다
 HERE = os.path.dirname(os.path.abspath(__file__))
-CHUNK = os.path.dirname(HERE)
-REPO = '/home/hjm0725/pokehns-expansion-kor'
-BASE_DIR = os.path.join(CHUNK, 'base')
-PRE_DIR = os.path.join(HERE, 'pre')
-TMP = os.path.join(CHUNK, 'tmp-D')
 sys.path.insert(0, HERE)
+sys.path.insert(0, os.path.dirname(HERE))
+import hnsverify_paths  # noqa: E402  (DEVKITARM → PATH도 여기서)
 import dwarf_layout  # noqa: E402
+REPO = hnsverify_paths.REPO                       # 기본 HNS_REPO = 이 도구가 든 저장소
+TMP = os.path.join(hnsverify_paths.OUT, 'save')   # 기본 $HNS_VERIFY_OUT/save
 
 GCC = os.environ.get('ARM_GCC', 'arm-none-eabi-gcc')
 OBJDUMP = os.environ.get('ARM_OBJDUMP', 'arm-none-eabi-objdump')
@@ -1026,19 +1029,11 @@ def ram_compare(rep, ra, rb, out):
 # 명령
 # ---------------------------------------------------------------------------------------------
 def default_out(tag):
-    return os.path.join(TMP, 'runs', '%s-%s' % (tag, datetime.datetime.now().strftime('%Y%m%d-%H%M%S')))
-
-
-def ensure_pre(args):
-    if os.path.exists(os.path.join(PRE_DIR, 'meta.txt')) and not getattr(args, 'refresh_pre', False):
-        return PRE_DIR
-    src = materialize_rev(REPO, args.pre_rev, os.path.join(TMP, 'src-pre'))
-    collect(src, os.path.join(BASE_DIR, 'pokehns.elf'), os.path.join(BASE_DIR, 'pokehns.map'), PRE_DIR,
-            'pre: HEAD %s 헤더 + base/pokehns.elf' % args.pre_rev)
-    return PRE_DIR
+    return os.path.join(TMP, '%s-%s' % (tag, datetime.datetime.now().strftime('%Y%m%d-%H%M%S')))
 
 
 def cmd_collect(args):
+    hnsverify_paths.check_out_dir(args.out)
     src = args.src
     if args.rev:
         src = materialize_rev(REPO, args.rev, os.path.join(args.out + '-src'))
@@ -1071,17 +1066,19 @@ def check_expect(txt, expect_path):
     a = norm_report(open(expect_path).read())
     b = norm_report(txt)
     if a == b:
-        print('기대 결과(%s)와 판정 줄 %d개가 모두 같다.' % (os.path.relpath(expect_path, CHUNK), len(b)))
+        print('기대 결과(%s)와 판정 줄 %d개가 모두 같다.' % (expect_path, len(b)))
     else:
-        print('기대 결과(%s)와 판정 줄이 다르다(아래 -기대 +이번). 다른 줄만 사람이 읽으면 된다:' % os.path.relpath(expect_path, CHUNK))
+        print('기대 결과(%s)와 판정 줄이 다르다(아래 -기대 +이번). 다른 줄만 사람이 읽으면 된다:' % expect_path)
         for x in difflib.unified_diff(a, b, 'expected', 'this-run', lineterm='', n=0):
             if not x.startswith(('---', '+++', '@@')):
                 print('    ' + x)
 
 
 def cmd_run(args):
-    pre = args.pre or ensure_pre(args)
-    out = args.out or default_out('run')
+    pre = args.pre
+    if not os.path.exists(os.path.join(pre, 'meta.txt')):
+        die('%s 에 meta.txt가 없다 — 먼저 collect로 이식 전 사실을 만든다' % pre)
+    out = hnsverify_paths.check_out_dir(args.out or default_out('run'))
     post = os.path.join(out, 'post-facts')
     elf = args.post_elf
     mp = args.post_map or os.path.splitext(elf)[0] + '.map'
@@ -1113,12 +1110,10 @@ def main():
     p.add_argument('--post-src', default=REPO, help='이식 후 헤더 트리(기본: 저장소 작업 트리)')
     p.add_argument('--post-elf', default=os.path.join(REPO, 'pokehns.elf'))
     p.add_argument('--post-map', default=None)
-    p.add_argument('--pre', default=None, help='이식 전 사실 디렉터리(기본: verify/pre)')
-    p.add_argument('--pre-rev', default='7c38348bca', help='verify/pre가 없을 때 이식 전 헤더 rev')
-    p.add_argument('--refresh-pre', action='store_true')
-    p.add_argument('--expect', default=os.path.join(HERE, 'expected', 'report-abc.txt'),
-                   help='기대 보고서(기본: A+B+C 리허설 결과). 판정 줄만 비교해 같은지 알려 준다')
-    p.add_argument('--out', default=None)
+    p.add_argument('--pre', required=True, help='이식 전 사실 디렉터리(같은 기계에서 collect로 만든 것)')
+    p.add_argument('--expect', default=None,
+                   help='기대 보고서(선택). 판정 줄만 비교해 같은지 알려 준다')
+    p.add_argument('--out', default=None, help='기본: $HNS_VERIFY_OUT/save/run-<시각>')
     p = sub.add_parser('collect')
     p.add_argument('--src', default=REPO)
     p.add_argument('--rev', default=None, help='작업 트리 대신 git rev 헤더를 풀어 쓴다')
@@ -1130,18 +1125,14 @@ def main():
     p.add_argument('pre')
     p.add_argument('post')
     p.add_argument('--out', required=True)
-    p = sub.add_parser('selftest')
-    p.add_argument('--out', default=os.path.join(TMP, 'selftest'))
     args = ap.parse_args()
     if args.cmd == 'run':
         sys.exit(cmd_run(args))
     if args.cmd == 'collect':
         cmd_collect(args)
     if args.cmd == 'compare':
+        hnsverify_paths.check_out_dir(args.out)
         sys.exit(cmd_compare(args))
-    if args.cmd == 'selftest':
-        import save_compat_selftest
-        sys.exit(save_compat_selftest.run(args.out))
 
 
 if __name__ == '__main__':

@@ -1,16 +1,23 @@
 #!/usr/bin/env python3
-"""#8943 일반 세이브 왕복 확인 (테스트 러너 = mgba-rom-test 안의 실제 저장·불러오기 코드). 영역 D 스크래치 도구.
+"""#8943 일반 세이브 왕복 확인 (테스트 러너 = mgba-rom-test 안의 실제 저장·불러오기 코드).
+(옛 chunk-1385/verify/savetest/savetest.py. 경로·가드·이미지 확인만 바뀜)
 
-  run <tree> <label> [--image X.sav] [--jobs N]
-      스크래치 사본 <tree>의 test/에 zz_hns8943_savecompat.c(+ --image가 있으면 zz_hns8943_savimage.h)를 넣고
-      `make check BUILD=hns TESTS="HNS8943 SAVE"`를 돌려 결과를 chunk-1385/tmp-D/savetest-runs/<label>/ 에 남긴다.
+  run <tree> <label> [--image X.sav|X-flash.bin] [--image-name NAME] [--jobs N]
+      <tree>의 test/에 zz_hns8943_savecompat.c(+ --image가 있으면 zz_hns8943_savimage.h)를 넣고
+      `make check BUILD=hns TESTS="HNS8943 SAVE"`를 돌려 결과를 $HNS_VERIFY_OUT/savetest/<label>/ 에 남긴다.
+        <tree>: mkcopy.sh 사본(.git 없음). 실제 체크아웃(.git 있음)은 ALLOW_REPO=1일 때만. 어느 쪽이든 넣은 .c/.h와
+                그 오브젝트를 실행 뒤(중간에 끊겨도) 지운다.
+        매번 테스트 오브젝트(build/hns-test/test/zz_hns8943_savecompat.o/.d)를 지워 다시 컴파일하고, LOAD 테스트가
+        출력한 "LOAD image=<이름>@<sha1 12자리>"가 이번 --image와 같은지 확인한다(다르면 FAIL — 옛 도구에서
+        이미지를 바꾼 뒤 테스트가 다시 빌드되지 않아 앞 이미지를 읽은 적이 있다).
         make.sav  : MAKE 테스트가 이 빌드의 TrySavingData(SAVE_NORMAL)로 쓴 플래시 128KB(+ 이 빌드 형식의 녹화 기록 섹터 31)
         load.txt  : LOAD 테스트가 --image 세이브를 이 빌드의 LoadGameSave로 읽은 결과(파티·박스 원시 바이트와
                     GetMonData 전 필드, 플레이어 정보, 세이브 블록 해시, 녹화 기록 유효 여부, 다시 저장한 섹터 해시)
         make.log  : make check 전체 출력
-      저장소(/home/hjm0725/pokehns-expansion-kor) 안에서는 돌지 않는다(사본 전용).
   compare <labelA|dir> <labelB|dir>
       make.sav: 섹터별 바이트 비교(섹터 31 녹화 기록은 A안이라 따로 표시)
+        (기준 폴더 baseline/pre-load-*/에는 .sav가 없고 baseline/pre-make-flash.bin·pre-newgame-flash.bin을 읽는다:
+         .gitignore의 *.sa* 때문에 이름을 바꿨다. 내용은 이식 전 make.sav·newgame.sav와 바이트 같다)
       load.txt: 줄 비교(RECORDED_BATTLE_VALID 줄은 A안 기대값으로 따로 판정)
   reparse <dir>
       <dir>/make.log를 다시 읽어 load.txt 등을 다시 만든다(출력 형식을 고친 뒤 옛 결과에 적용)
@@ -18,18 +25,29 @@
       .sav(128KB, mGBA 실기 세이브도 됨) → 테스트가 읽는 C 헤더(0xFF가 아닌 섹터만)
 """
 import argparse
+import hashlib
 import os
 import re
 import shutil
+import signal
 import subprocess
 import sys
 
+sys.dont_write_bytecode = True   # 저장소 안에 __pycache__를 남기지 않는다
 HERE = os.path.dirname(os.path.abspath(__file__))
-RUNS = os.path.join(os.path.dirname(os.path.dirname(HERE)), 'tmp-D', 'savetest-runs')  # chunk-1385/tmp-D/savetest-runs
-REPO = '/home/hjm0725/pokehns-expansion-kor'
+sys.path.insert(0, os.path.dirname(os.path.dirname(HERE)))
+import hnsverify_paths  # noqa: E402
+RUNS = os.path.join(hnsverify_paths.OUT, 'savetest')   # 기본 $HNS_VERIFY_OUT/savetest
+TEST_C = 'zz_hns8943_savecompat.c'
+TEST_H = 'zz_hns8943_savimage.h'
 SECTOR = 4096
 NSEC = 32
 SAV_SIZE = 0x20000
+
+
+def image_tag(sav_path, name=None):
+    """LOAD 테스트가 출력하는 이미지 이름: <이름>@<sha1 앞 12자리>(이미지가 바뀌었는지 확인용)."""
+    return '%s@%s' % (name or os.path.basename(sav_path), hashlib.sha1(open(sav_path, 'rb').read()).hexdigest()[:12])
 
 
 def make_image_header(sav_path, out_h, name=None):
@@ -39,7 +57,7 @@ def make_image_header(sav_path, out_h, name=None):
     secs = [s for s in range(NSEC) if data[s * SECTOR:(s + 1) * SECTOR] != b'\xff' * SECTOR]
     with open(out_h, 'w') as f:
         f.write('// 자동 생성: savetest.py image %s\n#define HNS8943_SAVIMAGE 1\n' % os.path.basename(sav_path))
-        f.write('#define HNS8943_SAVIMAGE_NAME "%s"\n' % (name or os.path.basename(sav_path)))
+        f.write('#define HNS8943_SAVIMAGE_NAME "%s"\n' % image_tag(sav_path, name))
         f.write('static const u8 sSavImageSectors[] = {%s};\n' % ', '.join(map(str, secs)))
         f.write('static const u8 sSavImageData[%d][%d] = {\n' % (len(secs), SECTOR))
         for s in secs:
@@ -95,26 +113,56 @@ def parse_log(log):
     return bytes(sav), nsav, bytes(savn), nsavn, dump, info, results
 
 
+def _sigterm(_signum, _frame):
+    raise SystemExit(143)
+
+
 def cmd_run(a):
     tree = os.path.realpath(a.tree)
-    if tree == REPO or tree.startswith(REPO + '/'):
-        raise SystemExit('저장소 안에서는 돌지 않는다(스크래치 사본 전용): %s' % tree)
-    out = os.path.join(RUNS, a.label)
+    if not os.path.isfile(os.path.join(tree, 'test', 'test_runner.c')):
+        raise SystemExit('HnS 트리가 아니다: %s' % tree)
+    in_repo = hnsverify_paths.is_checkout(tree)
+    if in_repo and os.environ.get('ALLOW_REPO') != '1':
+        raise SystemExit('%s 는 실제 체크아웃(.git)이다. ALLOW_REPO=1이면 테스트 파일을 넣고 실행한 뒤 지운다' % tree)
+    test_c = os.path.join(tree, 'test', TEST_C)
+    h = os.path.join(tree, 'test', TEST_H)
+    objs = [os.path.join(tree, 'build', 'hns-test', 'test', TEST_C[:-2] + ext) for ext in ('.o', '.d')]
+    if in_repo:
+        for rel in ('test/' + TEST_C, 'test/' + TEST_H):
+            if subprocess.run(['git', '-C', tree, 'ls-files', '--error-unmatch', rel],
+                              capture_output=True).returncode == 0:
+                raise SystemExit('%s 가 %s 에서 추적 파일이다 — 덮어쓰거나 지우지 않는다' % (rel, tree))
+        if os.path.exists(test_c) and open(test_c, 'rb').read() != open(os.path.join(HERE, TEST_C), 'rb').read():
+            raise SystemExit('%s 가 이미 있고 이 도구의 파일과 다르다 — 먼저 치운다' % test_c)
+    out = hnsverify_paths.check_out_dir(os.path.join(RUNS, a.label))
     if os.path.exists(out):
         shutil.rmtree(out)
     os.makedirs(out)
-    shutil.copy(os.path.join(HERE, 'zz_hns8943_savecompat.c'), os.path.join(tree, 'test'))
-    h = os.path.join(tree, 'test', 'zz_hns8943_savimage.h')
-    if a.image:
-        secs = make_image_header(a.image, h, a.image_name or os.path.basename(a.image))
-        shutil.copy(a.image, os.path.join(out, 'input.sav'))
-        print('image %s: sectors %s' % (a.image, secs))
-    elif os.path.exists(h):
-        os.remove(h)
-    log = os.path.join(out, 'make.log')
-    with open(log, 'w') as f:
-        r = subprocess.run(['make', 'check', 'BUILD=hns', '-j%d' % a.jobs, 'TESTS=HNS8943 SAVE'], cwd=tree,
-                           stdout=f, stderr=subprocess.STDOUT)
+    want = None
+    old_term = signal.signal(signal.SIGTERM, _sigterm)
+    try:
+        shutil.copy(os.path.join(HERE, TEST_C), test_c)
+        if a.image:
+            secs = make_image_header(a.image, h, a.image_name or os.path.basename(a.image))
+            want = image_tag(a.image, a.image_name)
+            shutil.copy(a.image, os.path.join(out, 'input.sav'))
+            print('image %s: sectors %s, tag %s' % (a.image, secs, want))
+        elif os.path.exists(h):
+            os.remove(h)
+        for o in objs:          # 이미지 헤더는 make 의존성에 안 잡힐 수 있어 매번 다시 컴파일한다
+            if os.path.exists(o):
+                os.remove(o)
+        log = os.path.join(out, 'make.log')
+        with open(log, 'w') as f:
+            r = subprocess.run(['make', 'check', 'BUILD=hns', '-j%d' % a.jobs, 'TESTS=HNS8943 SAVE'], cwd=tree,
+                               stdout=f, stderr=subprocess.STDOUT)
+    finally:   # 사본·실제 저장소 모두 넣은 파일과 오브젝트를 지운다(사본에 남으면 kortests의 TESTS=HNS 등에 섞인다)
+        for p in [test_c, h] + objs:
+            if os.path.exists(p):
+                os.remove(p)
+        print('removed %s, %s and their objects from %s%s' % (TEST_C, TEST_H, tree,
+              ' (git status should be clean again)' if in_repo else ''))
+        signal.signal(signal.SIGTERM, old_term)
     sav, nsav, savn, nsavn, dump, info, results = parse_log(log)
     if nsav:
         open(os.path.join(out, 'make.sav'), 'wb').write(sav)
@@ -125,14 +173,33 @@ def cmd_run(a):
                                                              + info + results) + '\n')
     sys.stdout.write(open(os.path.join(out, 'summary.txt')).read())
     print('SAV lines %d, SAVN lines %d, DUMP lines %d → %s' % (nsav, nsavn, len(dump), out))
-    return 0 if r.returncode == 0 else 1
+    bad = r.returncode != 0
+    loads = [l.split()[1][len('image='):] for l in info if l.startswith('LOAD image=')]
+    if want is not None:
+        if loads != [want]:
+            print('[FAIL] LOAD 테스트가 읽은 이미지 %s ≠ 이번 이미지 %s (테스트가 다시 빌드되지 않았다?)' % (loads or '없음', want))
+            bad = True
+        else:
+            print('[PASS] LOAD 테스트가 읽은 이미지 = %s' % want)
+    elif loads:
+        print('[FAIL] --image 없이 돌렸는데 LOAD 테스트가 이미지 %s 를 읽었다' % loads)
+        bad = True
+    return 1 if bad else 0
+
+
+def flash_file(d, kind):
+    """<d>/<kind>.sav, 없으면 기준 폴더(baseline/pre-load-*)용 <d>/../pre-<kind>-flash.bin."""
+    for p in (os.path.join(d, kind + '.sav'), os.path.join(os.path.dirname(os.path.abspath(d)), 'pre-%s-flash.bin' % kind)):
+        if os.path.exists(p):
+            return p
+    return os.path.join(d, kind + '.sav')
 
 
 def cmd_compare(a):
     A = a.a if os.path.isdir(a.a) else os.path.join(RUNS, a.a)
     B = a.b if os.path.isdir(a.b) else os.path.join(RUNS, a.b)
     bad = 0
-    pa, pb = os.path.join(A, 'make.sav'), os.path.join(B, 'make.sav')
+    pa, pb = flash_file(A, 'make'), flash_file(B, 'make')
     if os.path.exists(pa) and os.path.exists(pb):
         da, db = open(pa, 'rb').read(), open(pb, 'rb').read()
         diff = [s for s in range(NSEC) if da[s * SECTOR:(s + 1) * SECTOR] != db[s * SECTOR:(s + 1) * SECTOR]]
@@ -143,7 +210,7 @@ def cmd_compare(a):
         print('[INFO] make.sav 섹터 31(녹화 기록, A안) %s' % ('동일' if 31 not in diff else '다름(형식이 바뀌면 기대)'))
     else:
         print('[INFO] make.sav 한쪽 없음 — 건너뜀')
-    pa, pb = os.path.join(A, 'newgame.sav'), os.path.join(B, 'newgame.sav')
+    pa, pb = flash_file(A, 'newgame'), flash_file(B, 'newgame')
     if os.path.exists(pa) and os.path.exists(pb):
         da, db = open(pa, 'rb').read(), open(pb, 'rb').read()
         diff = [s for s in range(NSEC) if da[s * SECTOR:(s + 1) * SECTOR] != db[s * SECTOR:(s + 1) * SECTOR]]
@@ -193,7 +260,7 @@ def main():
     p.add_argument('label')
     p.add_argument('--image')
     p.add_argument('--image-name')
-    p.add_argument('--jobs', type=int, default=16)
+    p.add_argument('--jobs', type=int, default=hnsverify_paths.default_jobs(), help='기본 $HNS_JOBS 또는 nproc')
     p = sub.add_parser('compare')
     p.add_argument('a')
     p.add_argument('b')

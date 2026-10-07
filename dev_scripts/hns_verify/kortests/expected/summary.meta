@@ -1,0 +1,25 @@
+summary.txt = 한글 회귀 기대 요약(kortests/run.sh 출력 그대로: 정렬된 상태 줄 + "- Tests" 합계 + hydra 실패 목록 앞 50줄)
+만든 코드: HnS 820148e779 (= 9b22b2c3dc, 그 사이는 docs만 바뀜), 2026-10-07 데스크탑
+  원본: hns-sync-work/hnsfix-1007b/kortests-final/runs/finalx5-summary.txt (post1007b2-summary.txt와 바이트 동일)
+  실행: ALLOW_REPO=1, make check BUILD=hns -j8 TESTS=HNS (Ubuntu gcc-arm-none-eabi 13.2.1; 테스트 결과는 툴체인과 무관)
+합계: 584개, PASS 494 / FAIL 84 / INVALID 6
+세트          PASS / 전체   파일(kortests/sets/)
+  HNS9680      66 /  70    zz_hns9680_endturn1~4.c
+  HNS9714      29 /  34    zz_hns9714_b1_defog.c, b2_tidyup_sub.c, b3_endturn.c, b4_doubles_gmax.c
+  HNSFIX1      14 /  16    zz_hnsfix1_tmp.c
+  HNSFIXOBS     0 /   1    zz_hnsfix1_obs.c (관찰용)
+  HNSREV        8 /   8    zz_hnsreview_tmp.c
+  HNS9717      22 /  37    zz_hns9717_k1_ee.c, k2_eject.c, k3_faint.c
+  HNS9717P      5 /   6    zz_hns9717_probe.c
+  HNS9168      36 /  36    zz_hns9168_k1_berry.c
+  HNSPOPUP     32 /  35    zz_hnspopup_mentalherb.c, zz_hnspopup_p3.c
+  HNSSW        17 /  21    zz_hnssw_probe.c (INVALID 4)
+  HNS9784      33 /  52    zz_hns9784_k1_items.c (INVALID 1: K3-06)
+  HNS9799      12 /  12    zz_hns9799_k1_switchmsg.c, k2_aiswitch.c
+  HNS9730     199 / 235    zz_hns9730_k1_moves.c(80) k2_abilities.c(69) k3_items.c(25) k4_interact.c(57) k5_totem.c(4)
+  HNSX1        21 /  21    zz_hnsx1_kor.c (충전·주눅구슬·토템·한계 문장, 2026-10-07 X1)
+저장소 테스트가 없는 문장을 지키는 것(리뷰 R3): HNS9730 K1-51 충전 PASS, K2-16 위협 vs 주눅구슬 PASS,
+  K3-25 심술꾸러기 주눅구슬 FAIL(받아들인 변화: 도구 이름이 든 문장 `…주눅구슬로 스피드가 떨어졌다!`), HNSX1 21개 PASS
+FAIL·INVALID 90개는 이름의 `UPSTREAM (ORDER) CHANGE EXPECTED`·`CHANGE EXPECTED`(뒤 PR이 들어오면 바뀔 것),
+  관찰용(HNSFIXOBS O1, HNS9717P P4), seq 181 #9730에서 받아들인 출력 변화(HNS9730), INVALID 6(HNSSW 4, HNS9784 K3-06, HNSFIX1 T13)
+요약 줄에 test/battle/<파일>.c:<줄>이 들어가므로 sets/의 .c를 고치면 같은 커밋에서 이 요약도 다시 만든다(README "기준 갱신").
