@@ -4,7 +4,7 @@
 
 - **다음 할 일(순서)**
   1. ~~검증 도구 저장소 이전~~ **끝**: `2e60559d0b`·`a368916c5c` → `dev_scripts/hns_verify/`(README 참고). 이제 검증 명령은 저장소 도구로: 한글 `ALLOW_REPO=1 dev_scripts/hns_verify/kortests/run.sh <트리> <라벨>`(기대 494/584 = `kortests/expected/summary.txt`), 세이브 정적 비교 `save/save_compat.py collect … && run --pre …`, 세이브 왕복 `save/savetest/run_all.sh`, 경고 `warncheck.sh`, 테스트 목록 `testlist.sh`. 노트북 실측은 아직(정적 비교가 ARM 13.2.Rel1 objdump에서 같은 커밋끼리 WARN 0인지, 한글 기대 요약이 노트북에서도 맞는지). 스크래치 원본(`chunk-1385/verify`, `hnsfix-1007b/kortests-final`)은 남아 있다.
-  2. **친구 문자(아직 안 보냄):** 초안 `/home/hjm0725/hns-sync-work/chunk-181/discord-2026-10-07-result.md`(3개, = HANDBACK 9절: 결과 + 새 질문 1개(막힌 위협 + 주눅구슬, 재확인 28) + mGBA 목록 + 도구 이전).
+  2. ~~친구 문자~~ 보냄(사용자, `chunk-181/discord-2026-10-07-result.md` 3개). 친구 답은 위 X6.
   3. **full-sync 다음 seq 182 #9865**(Mega Sol test adjustments). 순서표상 이미 적용: 183·193·194·195·201·203·210·211·212·213·234·247·252·258·314·324·326·344·347·395·472(#9730 단위 선반영), 198·199(선반영), 266은 부분(끈적끈적네트 config — 기본 Gen9면 동작 변화, 결정 필요), 433 #10282는 `toxic_thread.c` hunk만. 167 #9819 보류 그대로.
 - **이번에 한 것:** 결과 [`full-sync-seq-181-181.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-181-181.md), [`full-sync-hnsfix-2026-10-07b.md`](../friend-handoff/results/1.17.0-port/full-sync-hnsfix-2026-10-07b.md), 친구 답 [`FRIEND_REPLY_2026-10-07.md`](../friend-handoff/FRIEND_REPLY_2026-10-07.md), 회신 `HANDBACK_2026-10-07.md` 9절
   - `f9fe99ab1f` CREDITS(금선 앞모습 예외), `24ff546631` 친구 답 기록
@@ -12,7 +12,8 @@
   - HnS 10커밋: `7687b9acf4` 주눅구슬·충전 문장, `0a28f4489b` 아드레날린오브·약점보험 한계, `7acf285ccf` 눈덩이·충전지·구근·빛이끼 한계, `453256d19d` 토템 문장, `09f14a68d6` 1단계 공백, `c1e44ade43` 불복종 난수, `1e9f3254f9` 위기회피 춤추기, `feeabe2388` 토템 주석, `33fb8df0fd` 경혈찌르기 심술꾸러기·단순, `820148e779` 비축하기 심술꾸러기
   - 검증(최종 `820148e779`): ROM 32,752,244 B(seq 181 전 −2,320), EWRAM 250,404 B(+272, `gSpecialStatuses`), IWRAM 25,516 B, SHA1 `eab66f3f…`, 새 경고 0. 전체 테스트 PASS 2,494 / TOTAL 5,400, 사라진 PASS 0(이름 변경 2 제외) → **기준 [`test-baseline-hnsfix1007b.txt`](../friend-handoff/results/1.17.0-port/test-baseline-hnsfix1007b.txt)**. 한글 회귀 584개 = 기대(494 PASS). 세이브 정적 비교 PASS(WARN 3 설명됨)·왕복 PASS. 리뷰 3개 수정 필요 0. AI 실측 `chunk-181/ai-compare/AI_COMPARE.md`.
   - 메인 검증 스크립트: `/home/hjm0725/hns-sync-work/chunk-181/main/main-verify.sh`, `main-verify2.sh`(세이브 정적 비교 `--pre chunk-181/main/savecompat-pre181`)
-- **친구 답 대기:** 재확인 28(특성·흰안개로 막힌 위협에도 주눅구슬 발동 — 본가대로 맞출지).
+- **친구 답(저녁):** 재확인 28 → "본가대로(전부 발동)"(`FRIEND_REPLY_2026-10-07.md` 3절). **진행 중:** HnS 수정 X6 분석·patch(`/home/hjm0725/hns-sync-work/hnsfix-1007b/X6.md`·`X6.patch`) → 적용·검증·문서.
+- **진행 중: full-sync 묶음 7 사전 분석**(사용자 승인 "같이 ㄱㄱ"): seq 182 #9865, 184 #9857, 185 #9910, 186 #9890, **186.5 #9920**(외부결정 확정 A: SaveBlock3 끝 `u32 dailySeed`, 세이브 영향), 187 #9877(`WEATHER_DYNAMIC=24`, `WEATHER_LEAVES=23` 유지). 지시 `/home/hjm0725/hns-sync-work/chunk-182-187/ANALYZE.md`, 기준 사본 `chunk-182-187/base`(HEAD `e34512d599`), 영역 A(182)·B(184)·C(185·186)·D(186.5·187). 결정이 필요한 것은 적용 전에 사용자에게 보인다.
 - 실기 미확인(친구 계획: 위협·미러아머·흉내허브·하양허브·승기/오기·토템, 주요 트레이너 AI).
 
 ## 2026-10-07 낮 — #9730 사전 분석 완료, 친구 결정 대기 (데스크탑 — 랩탑에서 Remote Control로 진행)
