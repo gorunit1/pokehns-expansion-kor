@@ -1,6 +1,17 @@
 # 현재 인수인계 상태
 
-## 2026-10-07 밤 — full-sync 묶음 7(seq 182~187, 384 선반영) 완료·push (현재, 데스크탑 — 랩탑에서 Remote Control)
+## 2026-10-08 새벽 — full-sync 묶음 8(seq 188~192) 완료·push (현재, 데스크탑 — 랩탑에서 Remote Control)
+
+- **다음 할 일**
+  1. **친구 문자(아직 안 보냄):** HANDBACK 10절(주눅구슬 본가 맞춤), 11절(묶음 7), 12절(묶음 8 + 맹세 가드). 사용자에게 문안을 준다.
+  2. **full-sync 다음 seq 196 #9988**(Dancer activation order config + upcoming bugfixes, L, unit `U-dancer-9988` — 3b `ee2da89a61`·X4 `1e9f3254f9` HnS 춤추기 코드와 겹침, 재확인 8t), 197 #9861(M), 200 #10024(dancer unit), 202 #10050(`dailySeed` → `gSaveBlock3Ptr`, 재확인 31), 204 #10051(XL) … 이미 적용 목록은 아래 묶음 7 절과 같다(+193~195·198·199·201·203).
+- **이번 묶음:** 결과 [`full-sync-seq-188-192.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-188-192.md), 회신 `HANDBACK_2026-10-07.md` 12절
+  - 커밋: `2250518d81` 한글 회귀 HNS9918(23개), `55e6738f64` #9918(팀 토큰 hunk 제외), `538a1256d8` #9805, `cbc37d06d5` #9968, `1b6f5e19eb` #9896, `66bbc9b5cf` #9965, `b857f809e0` HnS 맹세 가드(리뷰 R1 발견, assert 9종), `a1f5e58f85` HNS9918 K07 보강
+  - 사용자 결정(2026-10-07 밤 "ㄱㄱ"): 토큰 hunk 제외, P1~P4 수용, 불바다 진영 버그는 seq 385, 새 config TRUE. 맹세 가드는 크래시 방지·이식 전 동작 유지 원칙(메인)
+  - 검증(최종 `a1f5e58f85`): ROM 32,752,756 B, EWRAM 250,408 B, IWRAM 25,516 B, SHA1 `e617f3b1…`, 새 경고 0. 전체 테스트 PASS 2,547 / TOTAL 5,457(사라진 PASS 0) → **기준 [`test-baseline-seq192.txt`](../friend-handoff/results/1.17.0-port/test-baseline-seq192.txt)**. 한글 607개 기대와 같음(517/607). 세이브 정적 비교 PASS(WARN 2)·왕복 PASS. 리뷰 2개.
+  - 스크래치: `/home/hjm0725/hns-sync-work/chunk-188-192/`(분석·APPLY·REVIEW·apply·main-verify*.sh·review-R1/R2·X7 patch)
+
+## 2026-10-07 밤 — full-sync 묶음 7(seq 182~187, 384 선반영) 완료·push (데스크탑 — 랩탑에서 Remote Control)
 
 - **다음 할 일**
   1. **친구 문자(아직 안 보냄):** HANDBACK 10절(주눅구슬 본가 맞춤 — 사용자에게 문안 줌)·11절(묶음 7, AI 변화 보고 2건).
