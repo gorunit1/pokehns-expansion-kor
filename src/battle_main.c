@@ -4014,7 +4014,10 @@ static void TryDoEventsBeforeFirstTurn(void)
         for (enum BattlerId battler = 0; battler < gBattlersCount; battler++)
         {
             // HnS: the totem boosts went through the stat change engine, which asks the foes' Mirror Herb and Opportunist to copy them.
-            //      Drop those requests so neither reacts to a totem boost, as with upstream's silent stages (nothing sets them earlier).
+            //      Drop those requests so neither reacts to a totem boost, as with upstream's silent stages. This runs in every battle,
+            //      so it would also drop requests made earlier in the first turn (starting terrain seeds, starting Tailwind + Wind
+            //      Rider); HnS sets up neither before this step (no trainer starting status or setstartingstatus, no overworld
+            //      weather terrain). Revisit if that changes.
             gProtectStructs[battler].eatMirrorHerb = 0;
             gProtectStructs[battler].activateOpportunist = 0;
         }
