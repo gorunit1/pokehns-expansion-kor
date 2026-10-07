@@ -520,6 +520,7 @@ extern const u8 BattleScript_SkyDropNoTarget[];
 extern const u8 BattleScript_MegaSolActivatesTwoTurnMove[];
 extern const u8 BattleScript_IncreaseStatChangeMessage[];
 extern const u8 BattleScript_DecreaseStatChangeMessage[];
+extern const u8 BattleScript_DecreaseStatChangeMessageMinStat[];
 extern const u8 BattleScript_StatDidntChangeMessagePause[];
 extern const u8 BattleScript_MissedTarget[];
 
