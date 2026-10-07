@@ -751,6 +751,7 @@ static bool32 IsMirrorArmorReflected(struct BattleCalcValues *cv, struct StatCha
 
     if (gBattleStruct->moveResultFlags[cv->battlerDef] & MOVE_RESULT_MIRROR_ARMOR_PENDING || !st->ignoreCertainFailure)
     {
+        st->silentFailure = FALSE; // Mirror Armor still deflects damaging move stat drops
         st->script = BattleScript_MirrorArmorReflect;
         gBattlerAbility = cv->battlerDef;
         RecordAbilityBattle(cv->battlerDef, cv->abilities[cv->battlerDef]);
@@ -769,10 +770,10 @@ static bool32 IsMirrorArmorReflected(struct BattleCalcValues *cv, struct StatCha
         }
         else
         {
-            if (cv->battlerAtk == cv->battlerDef)
-                gBattleScripting.battler = cv->battlerDef;
-            else
-                gBattleScripting.battler = cv->battlerAtk;
+            gBattleScripting.battler = cv->battlerAtk;
+
+            if (IsBattlerAlly(cv->battlerAtk, cv->battlerDef))
+                gBattleStruct->ignoreDefiant = TRUE;
 
             gBattleStruct->allowPartingShot = TRUE;
         }
