@@ -21,7 +21,8 @@
 #define WEATHER_ROUTE123_CYCLE          21
 #define WEATHER_FOG                     22  // Aggregate of WEATHER_FOG_HORIZONTAL and WEATHER_FOG_DIAGONAL
 #define WEATHER_LEAVES                  23
-#define WEATHER_COUNT                   24
+#define WEATHER_DYNAMIC                 24  // HnS: upstream #9877 uses 23, which is WEATHER_LEAVES here
+#define WEATHER_COUNT                   25
 
 // These are used in maps' coord_weather_event entries.
 // They are not a one-to-one mapping with the engine's
