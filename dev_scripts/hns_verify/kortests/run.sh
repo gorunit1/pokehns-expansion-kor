@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# HnS 한글 배틀 출력 통합 회귀(584개). 테스트 .c는 sets/에 있고 test/ 밖이라 평소 빌드·make check·CI에 들어가지 않는다.
+# HnS 한글 배틀 출력 통합 회귀(607개). 테스트 .c는 sets/에 있고 test/ 밖이라 평소 빌드·make check·CI에 들어가지 않는다.
 # 실행 때만 <tree>/test/battle/에 같은 파일 이름으로 복사해 `make check BUILD=hns TESTS=HNS`를 돌린다.
 #
 # usage: [ALLOW_REPO=1] kortests/run.sh <tree> <label> [jobs] [filter]
@@ -11,7 +11,7 @@
 #   [filter]  TESTS= 접두어(기본 "HNS" = 전부, 예 "HNS9730" = 그 세트만. 전부일 때만 기대 요약과 비교한다)
 #
 # 세트(모든 테스트 이름이 "HNS"로 시작, 저장소 테스트에는 없음): HNS9680 HNS9714 HNSFIX1 HNSFIXOBS HNSREV HNS9717
-#   HNS9168 HNSPOPUP HNSSW HNS9717P HNS9784 HNS9799(옛 328개, 22파일) + HNS9730(235) + HNSX1(21)
+#   HNS9168 HNSPOPUP HNSSW HNS9717P HNS9784 HNS9799(옛 328개, 22파일) + HNS9730(235) + HNSX1(21) + HNS9918(23)
 #
 # 끝에 kortests/compare.py로 expected/summary.txt(또는 $HNS_KOR_EXPECT)와 비교한다.
 #   종료 코드: 0 = 기대와 같음, 1 = 다름, 2 = 도구·빌드 오류(요약 없음)

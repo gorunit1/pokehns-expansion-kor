@@ -32,9 +32,11 @@
   - test/battle/zz_hns9730_k4_interact.c:950: Unmatched ANIMATION - HNS9730 K4-44 Growl into a Mirror Armor foe and a plain foe.
   - test/battle/zz_hns9784_k1_items.c:213: TURN 1 incomplete - HNS9784 K2-02 CHANGE EXPECTED: Eject Button: raw-faster holder under Slow Start should activate (pre: effective-Speed holder).
   - test/battle/zz_hns9784_k1_items.c:233: TURN 1 incomplete - HNS9784 K2-03 CHANGE EXPECTED: Eject Button: all four Speed tied, raw sort should pick the right foe (pre: left foe).
+  - test/battle/zz_hns9784_k1_items.c:316: TURN 1 incomplete - HNS9784 K3-02 CHANGE EXPECTED: Eject Pack: raw-faster holder under Slow Start should activate (pre: effective-Speed holder).
   - test/battle/zz_hns9784_k1_items.c:352: Unmatched ANIMATION - HNS9784 K3-03 CHANGE EXPECTED: faster Eject Pack should come before slower White Herb (pre: White Herb first).
   - test/battle/zz_hns9784_k1_items.c:396: Unmatched MESSAGE - HNS9784 K3-05 CHANGE EXPECTED: user Throat Spray, then foes Eject Pack and White Herb by raw Speed (pre: White Herb, Throat Spray, Eject Pack).
   - test/battle/zz_hns9784_k1_items.c:410: SEND_OUT not required (is the send out random?) - HNS9784 K3-06 CHANGE EXPECTED: Weak Armor on U-turn: Eject Pack should not activate (pre: it fires at the U-turn replacement switch-in).
+  - test/battle/zz_hns9784_k1_items.c:492: Unmatched ABILITY_POPUP - HNS9784 K4-02 CHANGE EXPECTED: Shell Smash: foe Opportunist should come before the user White Herb (pre: White Herb first).
   - test/battle/zz_hns9784_k1_items.c:511: Unmatched ANIMATION - HNS9784 K4-03 CHANGE EXPECTED: Snarl: user Throat Spray should come before the foe White Herb (pre: White Herb first).
   - test/battle/zz_hns9784_k1_items.c:530: Unmatched MESSAGE - HNS9784 K4-04 CHANGE EXPECTED: two foes White Herb by raw Speed, right foe faster should go first (pre: battler order, left first).
   - test/battle/zz_hns9784_k1_items.c:640: EXPECT_EQ(808, 708) failed - HNS9784 K5-07 CHANGE EXPECTED: Clangorous Soul with Throat Spray vs Mirror Herb, reveal only (pre 708 = Mirror Herb copies before Throat Spray; 1.17.0 808).
@@ -43,14 +45,12 @@
   - test/battle/zz_hns9784_k1_items.c:694: Unmatched ANIMATION - HNS9784 K5-05 CHANGE EXPECTED: two Mirror Herb holders by raw Speed, right one faster should go first (pre: battler order).
   - test/battle/zz_hns9784_k1_items.c:792: Unmatched MESSAGE - HNS9784 K7-01 CHANGE EXPECTED: Magician steals a Sitrus Berry below half HP: should eat it in the same move end (pre: after the foe acts).
   - test/battle/zz_hns9784_k1_items.c:87: Matched MESSAGE - HNS9784 K1-04 CHANGE EXPECTED: faster Eject Button, then slower Red Card should also activate (pre: only Eject Button).
-  - test/battle/zz_hnsfix1_obs.c:27: EXPECT_EQ(707, 0) failed - HNSFIXOBS O1 Dancer replacement after Eject Button and a plain dance move.
   - test/battle/zz_hnsfix1_tmp.c:610: MOVE not required - HNSFIX1 T13 Parting Shot bounced by an Eject Button replacement 1/2.
   - test/battle/zz_hnspopup_p3.c:256: Unmatched ANIMATION - HNSPOPUP S05 side effect: Salac Berry (R35).
-  - test/battle/zz_hnspopup_p3.c:273: Unmatched ANIMATION - HNSPOPUP S06 side effect: Ripen Liechi Berry (ability pop-up, then item pop-up).
-  - test/battle/zz_hnssw_probe.c:242: MOVE not required - HNSSW S1t foe EE wiped by the second Future Sight: next turn both use Tackle.
+  - test/battle/zz_hnssw_probe.c:317: MOVE not required - HNSSW S1pk player EE wiped by the second Future Sight: the mon in its ball is knocked out next turn.
 - Tests FAILED :         90    Add TESTS='X' to run tests with the defined prefix.
-- Tests PASSED:          494
-- Tests TOTAL:           584
+- Tests PASSED:          517
+- Tests TOTAL:           607
 HNS9168 K01 status cure berries (Cheri, Rawst, Pecha, Chesto) after the status move: PASS
 HNS9168 K02 Aspear Berry thaws the holder on switch-in (opponent side): PASS
 HNS9168 K03 Lum Berry cures paralysis: PASS
@@ -533,6 +533,29 @@ HNS9799 K1-09 1v2 CHANGE EXPECTED (runner only): PASS
 HNS9799 K1-10 AI 1v2 CHANGE EXPECTED (AI fix): PASS
 HNS9799 K2-01 one trainer: both foes absorb-switch into the same mon, only the first does: PASS
 HNS9799 K2-02 two trainers: both foes absorb-switch into their own slot 1: PASS
+HNS9918 K01 Water + Fire Pledge by the player: rainbow on the player's side, then it disappears: PASS
+HNS9918 K02 Fire + Water Pledge by the opponent: rainbow on the opposing side, then it disappears: PASS
+HNS9918 K03 Fire + Grass Pledge by the player: sea of fire on the opposing side and its damage: PASS
+HNS9918 K04 Grass + Fire Pledge by the opponent: sea of fire on the player's side and its damage: PASS
+HNS9918 K05 Grass + Water Pledge by the player: swamp on the opposing side, then it disappears: PASS
+HNS9918 K06 Water + Grass Pledge by the opponent: swamp on the player's side, then it disappears: PASS
+HNS9918 K07 Rainbow doubles a 50% secondary effect (Poison Fang always badly poisons): PASS
+HNS9918 K08 Swamp quarters the Speed of the opposing side (turn order flips): PASS
+HNS9918 K09 Sea of fire deals 1/8 of max HP at the end of the turn: PASS
+HNS9918 K10 Pledge user waits, then its partner is asleep: no combined move: PASS
+HNS9918 K11 Sea of fire on the opposing side and swamp on the player's side end in the same turn: PASS
+HNS9918 K12 Sea of fire on the opposing side ends; the player is faster, the foe hit last (#10214 CHANGE EXPECTED): PASS
+HNS9918 K13 Swamp on the player's side ends after the opponent hit on the last turn: PASS
+HNS9918 K14 Starting status: swamp on the opposing side (4 turns): PASS
+HNS9918 K15 Starting status: swamp on the player's side (4 turns): PASS
+HNS9918 K16 Starting status: sea of fire on the opposing side and its damage: PASS
+HNS9918 K17 Starting status: sea of fire on the player's side (4 turns): PASS
+HNS9918 K18 Starting status: rainbow on the player's side (4 turns): PASS
+HNS9918 K19 Starting status: rainbow on the opposing side (4 turns): PASS
+HNS9918 K20 Future Sight is foreseen and hits two turns later: PASS
+HNS9918 K21 Doom Desire is chosen as destiny and hits two turns later: PASS
+HNS9918 K22 Sea of fire on the player's side ends; the foe is faster, the player hit last (#10214 CHANGE EXPECTED): PASS
+HNS9918 K23 Starting status: sea of fire on the opposing side ends (#10214 CHANGE EXPECTED): PASS
 HNSFIX1 T1 Eject Button replacement with Magic Bounce bounces in the same turn: PASS
 HNSFIX1 T10 Magic Coat user faints, replacement is unaffected: PASS
 HNSFIX1 T11 controls: Magic Coat, Snatch and Magic Bounce without a switch: PASS

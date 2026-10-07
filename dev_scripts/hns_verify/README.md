@@ -14,10 +14,10 @@ full-sync 묶음과 HnS 수정 때 쓰는 **세이브 호환·한글 배틀 출�
 | 경로 | 내용 |
 |---|---|
 | `common.sh`, `hnsverify_paths.py` | 경로 규칙(환경 변수·기본값), 실제 체크아웃 판정(`.git`), 출력 폴더 검사, `DEVKITARM` → `PATH` |
-| `kortests/run.sh` | 한글 배틀 출력 회귀 584개 실행·요약·기대 비교 |
+| `kortests/run.sh` | 한글 배틀 출력 회귀 607개 실행·요약·기대 비교 |
 | `kortests/compare.py` | 요약 두 개 비교(테스트별 상태 + 합계, `-j`와 무관) |
-| `kortests/sets/*.c` (28) | 테스트(이름이 모두 `HNS`로 시작). 옛 328개 세트 22파일 + `zz_hns9730_k1~k5`(235) + `zz_hnsx1_kor.c`(21) |
-| `kortests/expected/summary.txt`, `summary.meta` | 현재 HEAD 기대 요약(494/584)과 그 설명 |
+| `kortests/sets/*.c` (29) | 테스트(이름이 모두 `HNS`로 시작). 옛 328개 세트 22파일 + `zz_hns9730_k1~k5`(235) + `zz_hnsx1_kor.c`(21) + `zz_hns9918_pledge.c`(23) |
+| `kortests/expected/summary.txt`, `summary.meta` | 현재 HEAD 기대 요약(517/607)과 그 설명 |
 | `kortests/tools/` | `trace.patch`(사본 전용 이벤트 출력), `trace_decode.py`, `tracecmp.py`, `tracediff.py`, `showtrace.sh`, `gen_scene.py`(trace로 새 테스트 SCENE 채우기) |
 | `save/save_compat.py`, `save/dwarf_layout.py` | 세이브 정적 비교(구조체 레이아웃·섹터 배치·세이브 경로 기계어·RAM 변수) |
 | `save/savetest/` | 세이브 왕복(`savetest.py`, `run_all.sh`, 테스트 `zz_hns8943_savecompat.c`, 기준 `baseline/`) |
@@ -58,7 +58,7 @@ ALLOW_REPO=1 $V/kortests/run.sh $R <label> 8          # 저장소에서(복사 �
 $V/kortests/run.sh <사본> <label> 8                    # mkcopy.sh 사본에서
 ```
 
-- 기대: `- Tests PASSED: 494`, `- Tests TOTAL: 584`, 세트별 PASS(`HNS9730 199/235`, `HNSX1 21/21` 등, `kortests/expected/summary.meta`), 끝에 `status lines that differ from expected: 0`, `whole summary file byte-identical to expected: yes`, `판정: PASS (기대와 같음)`. 종료 코드 0(다르면 1, 빌드 오류 2). `make check exit 2`는 정상이다(기대 FAIL·INVALID 90개).
+- 기대: `- Tests PASSED: 517`, `- Tests TOTAL: 607`, 세트별 PASS(`HNS9730 199/235`, `HNSX1 21/21`, `HNS9918 23/23` 등, `kortests/expected/summary.meta`), 끝에 `status lines that differ from expected: 0`, `whole summary file byte-identical to expected: yes`, `판정: PASS (기대와 같음)`. 종료 코드 0(다르면 1, 빌드 오류 2). `make check exit 2`는 정상이다(기대 FAIL·INVALID 90개).
 - 출력: `$HNS_VERIFY_OUT/kortests/<label>.log`, `<label>-summary.txt`.
 - 판정은 테스트별 상태와 합계로 한다. 요약 끝의 `  - test/…` 줄은 hydra가 실패 앞 50개만 runner 순서로 적는 것이라 `-j`가 다르면 달라진다 → 기대 요약과 바이트까지 맞추려면 `-j8`.
 - 저장소 테스트가 없는 문장을 지키는 테스트(리뷰 R3): `HNS9730 K1-51`(충전), `K2-16`(위협 vs 주눅구슬), `K3-25`(심술꾸러기 주눅구슬, 받아들인 FAIL), `HNSX1` 21개.
@@ -69,7 +69,7 @@ $V/kortests/run.sh <사본> <label> 8                    # mkcopy.sh 사본에�
 
 ```sh
 $V/mkcopy.sh $O/copy-pre --trace                   # 사본 + trace.patch (.git 있는 트리·git 작업 트리 안에는 만들지 않는다)
-$V/kortests/run.sh $O/copy-pre pre 8                # → $O/kortests/pre-trace.txt (584 블록). 요약은 trace 없이와 같다
+$V/kortests/run.sh $O/copy-pre pre 8                # → $O/kortests/pre-trace.txt (607 블록). 요약은 trace 없이와 같다
 python3 $V/kortests/tools/tracecmp.py $O/kortests/pre-trace.txt $O/kortests/post-trace.txt   # 테스트별 SAME/DIFF
 python3 $V/kortests/tools/tracediff.py <a-trace> <b-trace> 'HNS9730 K4-06'                   # 한 테스트 diff
 $V/kortests/tools/showtrace.sh <trace> "K1-03"                                                # 한 테스트 이벤트

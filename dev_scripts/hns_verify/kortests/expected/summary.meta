@@ -1,10 +1,12 @@
 summary.txt = 한글 회귀 기대 요약(kortests/run.sh 출력 그대로: 정렬된 상태 줄 + "- Tests" 합계 + hydra 실패 목록 앞 50줄)
-만든 코드: HnS 820148e779 + X6 묶음(막힌 위협에도 주눅구슬 발동, 주눅구슬 자기 스피드 변화 STAT_CHANGE_CERTAIN,
-  더블에서 번견 뒤 대상도 위협) + 이 세트의 HNSX1 16 고침 — 이 summary.txt와 같은 커밋들, 2026-10-07 데스크탑
-  원본: hns-sync-work/hnsfix-1007b/tmp-X6/verify-out/kortests/x6kset-summary.txt (X6 묶음 전 요약과 HNSX1 16 이름 줄만 다름)
+만든 코드: HnS 1f773c7038(코드 ccbf3123a9) + seq 188 #9918 이식(맹세 기술) + HNS9918 세트 23개 — 이 summary.txt와 같은 커밋,
+  2026-10-07 데스크탑. 이식 전 기준 사본(1f773c7038)과 이식 후 사본의 요약이 바이트 동일했고 607개 trace도 모두 같았다.
+  원본: hns-sync-work/chunk-188-192/tmp-188/verify-runs/kortests/full-post-summary.txt (= full-pre-summary.txt)
   실행: mkcopy.sh 사본(+trace.patch), make check BUILD=hns -j8 TESTS=HNS (Ubuntu gcc-arm-none-eabi 13.2.1;
-  테스트 결과는 툴체인·trace와 무관. 그 전 기준은 ALLOW_REPO=1 저장소 실행)
-합계: 584개, PASS 494 / FAIL 84 / INVALID 6
+  테스트 결과는 툴체인·trace와 무관). 그 전 기준(584개)은 HnS 820148e779 + X6 묶음 + HNSX1 16 고침
+  (hnsfix-1007b/tmp-X6/verify-out/kortests/x6kset-summary.txt). HNS9918 파일이 늘어 hydra 실패 목록(앞 50줄)의
+  선택만 바뀌었고 그 전 584개의 상태 줄은 그대로다.
+합계: 607개, PASS 517 / FAIL 84 / INVALID 6
 세트          PASS / 전체   파일(kortests/sets/)
   HNS9680      66 /  70    zz_hns9680_endturn1~4.c
   HNS9714      29 /  34    zz_hns9714_b1_defog.c, b2_tidyup_sub.c, b3_endturn.c, b4_doubles_gmax.c
@@ -20,10 +22,14 @@ summary.txt = 한글 회귀 기대 요약(kortests/run.sh 출력 그대로: 정�
   HNS9799      12 /  12    zz_hns9799_k1_switchmsg.c, k2_aiswitch.c
   HNS9730     199 / 235    zz_hns9730_k1_moves.c(80) k2_abilities.c(69) k3_items.c(25) k4_interact.c(57) k5_totem.c(4)
   HNSX1        21 /  21    zz_hnsx1_kor.c (충전·주눅구슬·토템·한계 문장, 2026-10-07 X1; 16번은 X6 막힌 위협 + 주눅구슬)
+  HNS9918      23 /  23    zz_hns9918_pledge.c (맹세 콤보·무지개·불바다·습지 시작/턴 끝/종료 문장과 진영 이름, 시작 상태 경로,
+                           무지개 2배·습지 1/4·불바다 1/8, 미래예지·파멸의소원; seq 188 이식 전 출력 고정)
 저장소 테스트가 없는 문장을 지키는 것(리뷰 R3): HNS9730 K1-51 충전 PASS, K2-16 위협 vs 주눅구슬 PASS,
   K3-25 심술꾸러기 주눅구슬 FAIL(받아들인 변화: 도구 이름이 든 문장 `…주눅구슬로 스피드가 떨어졌다!`), HNSX1 21개 PASS
   (HNSX1 16: 정신력에 막힌 위협 → `…공격은 떨어지지 않는다!` → 도구 애니 → 상승 애니 → `…주눅구슬로 스피드가 올라갔다!`,
   X6 친구 결정 2026-10-07 저녁 본가대로. X6 전에는 HEAD의 미발동을 확인하던 탐침 `HNSX1 16 probe: …`였다)
 FAIL·INVALID 90개는 이름의 `UPSTREAM (ORDER) CHANGE EXPECTED`·`CHANGE EXPECTED`(뒤 PR이 들어오면 바뀔 것),
   관찰용(HNSFIXOBS O1, HNS9717P P4), seq 181 #9730에서 받아들인 출력 변화(HNS9730), INVALID 6(HNSSW 4, HNS9784 K3-06, HNSFIX1 T13)
+HNS9918 K12·K22·K23(`#10214 CHANGE EXPECTED`)은 불바다 종료 문장의 진영이 반대인 이식 전 출력(재확인 6)을 고정한다.
+  seq 385 #10214가 턴 끝 불바다 블록에 gBattlerAttacker를 넣으면 바뀐다(K11은 우연히 맞는 진영이라 그대로).
 요약 줄에 test/battle/<파일>.c:<줄>이 들어가므로 sets/의 .c를 고치면 같은 커밋에서 이 요약도 다시 만든다(README "기준 갱신").
