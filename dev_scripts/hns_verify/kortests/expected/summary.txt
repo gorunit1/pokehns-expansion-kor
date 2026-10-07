@@ -1,0 +1,637 @@
+  - test/battle/zz_hns9680_endturn3.c:381: Unmatched ANIMATION - HNS9680 3-16 UPSTREAM CHANGE EXPECTED (part-C 5.2): Magic Room end loop stops after White Herb, foe Sitrus waits for next turn.
+  - test/battle/zz_hns9680_endturn4.c:344: Unmatched MESSAGE - HNS9680 4-16 UPSTREAM ORDER CHANGE EXPECTED: Dynamax end before the trainer slide of the same turn.
+  - test/battle/zz_hns9680_endturn4.c:396: Matched ANIMATION - HNS9680 4-18 UPSTREAM CHANGE EXPECTED: last foe faints at end of turn while the player is Dynamaxed, no Dynamax end animation.
+  - test/battle/zz_hns9714_b1_defog.c:510: Unmatched MESSAGE - HNS9714 1-14 Defog check pass against minimum evasion: nothing (fails), only the user's hazards (works), only the user's own Reflect (fails) 1/3.
+  - test/battle/zz_hns9714_b4_doubles_gmax.c:101: Matched MESSAGE - HNS9714 4-03 UPSTREAM CHANGE EXPECTED: G-Max Wind Rage against foe-side screens (and the user's own) 1/2.
+  - test/battle/zz_hns9717_k1_ee.c:146: Unmatched MESSAGE - HNS9717 K1-06 UPSTREAM CHANGE EXPECTED: Leech Seed, then poison and Salt Cure still hit before Emergency Exit.
+  - test/battle/zz_hns9717_k1_ee.c:183: Unmatched ABILITY_POPUP - HNS9717 K1-07 UPSTREAM CHANGE EXPECTED: Sea of Fire with Air Balloon, no Grassy Terrain heal for the Emergency Exit mon.
+  - test/battle/zz_hns9717_k1_ee.c:273: Unmatched MESSAGE - HNS9717 K1-11 UPSTREAM CHANGE EXPECTED: Perish Song count of the Emergency Exit mon is shown before it leaves.
+  - test/battle/zz_hns9717_k1_ee.c:296: Unmatched ABILITY_POPUP - HNS9717 K1-12 UPSTREAM ORDER CHANGE EXPECTED: Octolock drops the Emergency Exit mon's stats before it leaves.
+  - test/battle/zz_hns9717_k1_ee.c:433: Unmatched ABILITY_POPUP - HNS9717 K1-18 UPSTREAM ORDER CHANGE EXPECTED: doubles, burned faster foe Emergency Exit, partner burn and player burn before replacement.
+  - test/battle/zz_hns9717_k2_eject.c:95: Unmatched ABILITY_POPUP - HNS9717 K2-04 UPSTREAM ORDER CHANGE EXPECTED: Emergency Exit (burn) and Eject Pack (Octolock) in the same end of turn.
+  - test/battle/zz_hns9717_k3_faint.c:84: Matched ABILITY_POPUP - HNS9717 K3-04 UPSTREAM CHANGE EXPECTED (softlock without the HnS KO-animation fix): faster player Emergency Exit (poison) and the last foe faints from poison.
+  - test/battle/zz_hns9717_probe.c:54: Unmatched MESSAGE - HNS9717P P4 wild: faster player Emergency Exit (poison) and the wild mon faints from poison.
+  - test/battle/zz_hns9730_k1_moves.c:1104: Unmatched MESSAGE - HNS9730 K1-58 Shift Gear.
+  - test/battle/zz_hns9730_k1_moves.c:1439: Unmatched ANIMATION - HNS9730 K1-75 Spit Up drops the Stockpile boosts.
+  - test/battle/zz_hns9730_k1_moves.c:392: Unmatched MESSAGE - HNS9730 K1-20 Contrary: Dragon Dance at -6 both.
+  - test/battle/zz_hns9730_k1_moves.c:705: Unmatched MESSAGE - HNS9730 K1-36 Noble Roar with both stats at -6.
+  - test/battle/zz_hns9730_k1_moves.c:884: Unmatched MESSAGE - HNS9730 K1-45 Defog at -6 evasion, nothing to clear.
+  - test/battle/zz_hns9730_k2_abilities.c:1143: Unmatched MESSAGE - HNS9730 K2-65 Intimidate vs Guard Dog at +6 Attack (pre: names the Intimidate user).
+  - test/battle/zz_hns9730_k2_abilities.c:429: Unmatched ANIMATION - HNS9730 K2-25 Tickle vs Mirror Armor with the user at -6 Attack.
+  - test/battle/zz_hns9730_k2_abilities.c:665: Unmatched MESSAGE - HNS9730 K2-38 Anger Shell below half.
+  - test/battle/zz_hns9730_k2_abilities.c:968: Unmatched MESSAGE - HNS9730 K2-56 Opportunist copies a foe's Swords Dance.
+  - test/battle/zz_hns9730_k3_items.c:347: Unmatched MESSAGE - HNS9730 K3-18 Weakness Policy holder with Contrary.
+  - test/battle/zz_hns9730_k3_items.c:482: Unmatched MESSAGE - HNS9730 K3-25 Adrenaline Orb with Contrary.
+  - test/battle/zz_hns9730_k4_interact.c:1047: Unmatched ABILITY_POPUP - HNS9730 K4-49 Syrup Bomb vs Mirror Armor.
+  - test/battle/zz_hns9730_k4_interact.c:110: Unmatched MESSAGE - HNS9730 K4-03 Parting Shot vs Contrary with both stats at +6.
+  - test/battle/zz_hns9730_k4_interact.c:124: Unmatched ANIMATION - HNS9730 K4-04 Parting Shot vs Clear Body (no switch).
+  - test/battle/zz_hns9730_k4_interact.c:229: TURN 1 incomplete - HNS9730 K4-10 Magic Bounce bounces Parting Shot (seq 129 interim: the user is switched).
+  - test/battle/zz_hns9730_k4_interact.c:435: Unmatched ANIMATION - HNS9730 K4-19 Howl raises user and ally.
+  - test/battle/zz_hns9730_k4_interact.c:66: Unmatched MESSAGE - HNS9730 K4-02 Parting Shot with both stats at -6 (no switch).
+  - test/battle/zz_hns9730_k4_interact.c:872: TURN 1 incomplete - HNS9730 K4-41 Magic Coat bounces Parting Shot (seq 129 interim: the user is switched).
+  - test/battle/zz_hns9730_k4_interact.c:950: Unmatched ANIMATION - HNS9730 K4-44 Growl into a Mirror Armor foe and a plain foe.
+  - test/battle/zz_hns9784_k1_items.c:213: TURN 1 incomplete - HNS9784 K2-02 CHANGE EXPECTED: Eject Button: raw-faster holder under Slow Start should activate (pre: effective-Speed holder).
+  - test/battle/zz_hns9784_k1_items.c:233: TURN 1 incomplete - HNS9784 K2-03 CHANGE EXPECTED: Eject Button: all four Speed tied, raw sort should pick the right foe (pre: left foe).
+  - test/battle/zz_hns9784_k1_items.c:352: Unmatched ANIMATION - HNS9784 K3-03 CHANGE EXPECTED: faster Eject Pack should come before slower White Herb (pre: White Herb first).
+  - test/battle/zz_hns9784_k1_items.c:396: Unmatched MESSAGE - HNS9784 K3-05 CHANGE EXPECTED: user Throat Spray, then foes Eject Pack and White Herb by raw Speed (pre: White Herb, Throat Spray, Eject Pack).
+  - test/battle/zz_hns9784_k1_items.c:410: SEND_OUT not required (is the send out random?) - HNS9784 K3-06 CHANGE EXPECTED: Weak Armor on U-turn: Eject Pack should not activate (pre: it fires at the U-turn replacement switch-in).
+  - test/battle/zz_hns9784_k1_items.c:511: Unmatched ANIMATION - HNS9784 K4-03 CHANGE EXPECTED: Snarl: user Throat Spray should come before the foe White Herb (pre: White Herb first).
+  - test/battle/zz_hns9784_k1_items.c:530: Unmatched MESSAGE - HNS9784 K4-04 CHANGE EXPECTED: two foes White Herb by raw Speed, right foe faster should go first (pre: battler order, left first).
+  - test/battle/zz_hns9784_k1_items.c:640: EXPECT_EQ(808, 708) failed - HNS9784 K5-07 CHANGE EXPECTED: Clangorous Soul with Throat Spray vs Mirror Herb, reveal only (pre 708 = Mirror Herb copies before Throat Spray; 1.17.0 808).
+  - test/battle/zz_hns9784_k1_items.c:657: Unmatched ANIMATION - HNS9784 K5-03 CHANGE EXPECTED: Shell Smash: faster foe Mirror Herb should come before the user White Herb (pre: White Herb first).
+  - test/battle/zz_hns9784_k1_items.c:65: Unmatched ANIMATION - HNS9784 K1-03 CHANGE EXPECTED: Red Card: raw-faster holder under Slow Start should activate (pre: effective-Speed holder).
+  - test/battle/zz_hns9784_k1_items.c:694: Unmatched ANIMATION - HNS9784 K5-05 CHANGE EXPECTED: two Mirror Herb holders by raw Speed, right one faster should go first (pre: battler order).
+  - test/battle/zz_hns9784_k1_items.c:792: Unmatched MESSAGE - HNS9784 K7-01 CHANGE EXPECTED: Magician steals a Sitrus Berry below half HP: should eat it in the same move end (pre: after the foe acts).
+  - test/battle/zz_hns9784_k1_items.c:87: Matched MESSAGE - HNS9784 K1-04 CHANGE EXPECTED: faster Eject Button, then slower Red Card should also activate (pre: only Eject Button).
+  - test/battle/zz_hnsfix1_obs.c:27: EXPECT_EQ(707, 0) failed - HNSFIXOBS O1 Dancer replacement after Eject Button and a plain dance move.
+  - test/battle/zz_hnsfix1_tmp.c:610: MOVE not required - HNSFIX1 T13 Parting Shot bounced by an Eject Button replacement 1/2.
+  - test/battle/zz_hnspopup_p3.c:256: Unmatched ANIMATION - HNSPOPUP S05 side effect: Salac Berry (R35).
+  - test/battle/zz_hnspopup_p3.c:273: Unmatched ANIMATION - HNSPOPUP S06 side effect: Ripen Liechi Berry (ability pop-up, then item pop-up).
+  - test/battle/zz_hnssw_probe.c:242: MOVE not required - HNSSW S1t foe EE wiped by the second Future Sight: next turn both use Tackle.
+- Tests FAILED :         90    Add TESTS='X' to run tests with the defined prefix.
+- Tests PASSED:          494
+- Tests TOTAL:           584
+HNS9168 K01 status cure berries (Cheri, Rawst, Pecha, Chesto) after the status move: PASS
+HNS9168 K02 Aspear Berry thaws the holder on switch-in (opponent side): PASS
+HNS9168 K03 Lum Berry cures paralysis: PASS
+HNS9168 K04 Lum Berry cures confusion only (HnS pop-up R30): PASS
+HNS9168 K05 Lum Berry received by Switcheroo cures paralysis and confusion (two messages): PASS
+HNS9168 K06 Persim Berry cures confusion: PASS
+HNS9168 K07 Oran and Sitrus Berry restore HP after a hit: PASS
+HNS9168 K08 Berry Juice restores HP after a hit (not a berry: animation id unchanged): PASS
+HNS9168 K09 Oran Berry with Ripen (ability pop-up, item pop-up, animation): PASS
+HNS9168 K10 [RIPEN POPUP] Berry Juice held by a Ripen Pokemon: PASS
+HNS9168 K11 Figy Berry, flavor not disliked: PASS
+HNS9168 K12 Figy Berry, disliked flavor (BerryConfuseHeal, no item pop-up in HnS): PASS
+HNS9168 K13 Enigma Berry after a super effective hit: PASS
+HNS9168 K14 Leppa Berry restores PP: PASS
+HNS9168 K15 pinch stat berries (Liechi, Ganlon, Salac, Petaya, Apicot): PASS
+HNS9168 K16 Liechi Berry with Ripen: PASS
+HNS9168 K17 Starf Berry: PASS
+HNS9168 K18 Kee Berry (physical) and Maranga Berry (special): PASS
+HNS9168 K19 Room Service under Trick Room (not a berry): PASS
+HNS9168 K20 Electric Seed when Electric Terrain starts (not a berry): PASS
+HNS9168 K21 Lansat Berry: PASS
+HNS9168 K22 Micle Berry: PASS
+HNS9168 K23 Custap Berry: PASS
+HNS9168 K24 Jaboca Berry (physical) and Rowap Berry (special): PASS
+HNS9168 K25 Colbur Berry weakens a super effective Bite: PASS
+HNS9168 K26 [ANIM ADDED] Fling throws a berry that the target eats (Oran, Cheri, Liechi): PASS
+HNS9168 K27 [ANIM ADDED] Bug Bite eats the target's berry (Sitrus, Liechi): PASS
+HNS9168 K28 [ANIM ADDED] Bug Bite eats a disliked Figy Berry (confusion animation too): PASS
+HNS9168 K29 [ANIM ADDED] Stuff Cheeks (Oran, Liechi): PASS
+HNS9168 K30 Cud Chew eats the Oran Berry again on the next turn: PASS
+HNS9168 K31 Teatime: both sides eat their Liechi Berry: PASS
+HNS9168 K32 Harvest restores the Sitrus Berry in sunlight: PASS
+HNS9168 K33 Cheek Pouch after an Oran Berry: PASS
+HNS9168 K34 control: Mental Herb, White Herb, Leftovers: PASS
+HNS9168 K35 control: Growl without an item (BattleScript_StatDownDoAnim): PASS
+HNS9168 K36 doubles: two Sitrus Berries after a spread move: PASS
+HNS9680 1-01 Toxic Orb: HnS message at end of turn, poison damage next turn: PASS
+HNS9680 1-02 Flame Orb: HnS message at end of turn, burn damage next turn: PASS
+HNS9680 1-03 Poison Heal (poison, Toxic Orb): pop-up, status and heal animations, HP bar, no text: PASS
+HNS9680 1-04 Ice Body (hail, snow): pop-up, heal animation, HP bar, no text: PASS
+HNS9680 1-05 Solar Power and Dry Skin in sun: pop-up then HP bar, no text: PASS
+HNS9680 1-06 Rain Dish and Dry Skin in rain: pop-up, heal animation, HP bar, no text: PASS
+HNS9680 1-07 Leftovers heal and Black Sludge damage: PASS
+HNS9680 1-08 Black Sludge heals a Poison type, Sticky Barb damage: PASS
+HNS9680 1-09 White Herb end-of-turn path after Moody lowers a stat: PASS
+HNS9680 1-10 White Herb end-of-turn path after Octolock lowers stats: PASS
+HNS9680 1-11 Shed Skin and Hydration cure messages: PASS
+HNS9680 1-12 Healer: HnS (SV/Champions) cure text: PASS
+HNS9680 1-13 Speed Boost and Moody: PASS
+HNS9680 1-14 Harvest, then Cud Chew next turn: PASS
+HNS9680 1-15 Pickup: PASS
+HNS9680 1-16 Bad Dreams: one pop-up per turn for two sleeping foes, two turns: PASS
+HNS9680 1-17 Slow Start ends after five turns: PASS
+HNS9680 1-18 Bad Dreams knocks out a sleeping foe, replacement, next turn pop-up again: PASS
+HNS9680 2-01 Rain continues each turn and stops after five turns: PASS
+HNS9680 2-02 Sandstorm damage by speed order, then subsides: PASS
+HNS9680 2-03 Hail damage and end, sun end, snow end texts: PASS
+HNS9680 2-04 Poison, Toxic, Burn, Frostbite damage: text, status animation, HP bar: PASS
+HNS9680 2-05 Leech Seed: drain, Liquid Ooze, receiver under Heal Block: PASS
+HNS9680 2-06 Wrap: turn damage five times, then freed: PASS
+HNS9680 2-07 Nightmare and Curse damage: PASS
+HNS9680 2-08 Salt Cure, Octolock and Syrup Bomb end-of-turn effects: PASS
+HNS9680 2-09 Aqua Ring and Ingrain heal: PASS
+HNS9680 2-10 Grassy Terrain heals each turn, then ends: PASS
+HNS9680 2-11 Wish comes true, Future Sight hits two turns later: PASS
+HNS9680 2-12 Wish at full HP and under Heal Block: PASS
+HNS9680 2-13 Pledge field effects: sea of fire damage and end, rainbow end, swamp end: PASS
+HNS9680 2-14 Perish Song count, both faint, replacements: PASS
+HNS9680 2-15 Yawn: falls asleep, Electric/Misty Terrain prevent, Sweet Veil (HnS text): PASS
+HNS9680 2-16 G-Max Wildfire residual damage at end of turn: PASS
+HNS9680 2-17 Future Sight knocks out the foe at end of turn, replacement: PASS
+HNS9680 2-18 Yawn on both foes with Sleep Clause: one falls asleep, the other is kept awake: PASS
+HNS9680 3-01 Taunt ends: PASS
+HNS9680 3-02 Encore ends: PASS
+HNS9680 3-03 Disable ends: PASS
+HNS9680 3-04 Torment (G-Max Meltdown) ends, then Dynamax ends: PASS
+HNS9680 3-05 Heal Block and Embargo end: PASS
+HNS9680 3-06 Embargo ends and a Sitrus Berry activates: PASS
+HNS9680 3-07 Telekinesis ends, Magnet Rise ends (name token as in HnS): PASS
+HNS9680 3-08 Reflect, Light Screen, Safeguard, Mist, Tailwind, Lucky Chant end (HnS texts): PASS
+HNS9680 3-09 Aurora Veil ends on both sides (HnS text): PASS
+HNS9680 3-10 Trick Room, Gravity, Water Sport, Mud Sport, Wonder Room, Magic Room end: PASS
+HNS9680 3-11 Magic Room ends and a Sitrus Berry activates: PASS
+HNS9680 3-12 Electric, Misty, Psychic Terrain end: PASS
+HNS9680 3-13 Uproar continues, then calms down: PASS
+HNS9680 3-14 Uproar (B_UPROAR Gen 4) wakes a sleeping foe at end of turn instead of the continue text: PASS
+HNS9680 3-15 Uproar end-of-turn wake-up skips a Soundproof sleeper (HnS rule from #9616): PASS
+HNS9680 3-16 UPSTREAM CHANGE EXPECTED (part-C 5.2): Magic Room end loop stops after White Herb, foe Sitrus waits for next turn: FAIL
+HNS9680 4-01 Zen Mode (pop-up, animation, text) and Hunger Switch (animation only): PASS
+HNS9680 4-02 Power Construct at end of turn: PASS
+HNS9680 4-03 Schooling and Shields Down revert at end of turn (pop-up, animation, no text): PASS
+HNS9680 4-04 Emergency Exit at end of turn (foe): replacement sent out: PASS
+HNS9680 4-05 Emergency Exit at end of turn (player): replacement sent out: PASS
+HNS9680 4-06 Eject Pack at end of turn after Octolock (foe): PASS
+HNS9680 4-07 Eject Pack at end of turn after Moody (player): PASS
+HNS9680 4-08 Foe faints from poison: later end-turn effects, then replacement: PASS
+HNS9680 4-09 Player mon faints from poison: foe Speed Boost, then replacement: PASS
+HNS9680 4-10 Two foes faint at end of turn (doubles): remaining effects, then both replacements: PASS
+HNS9680 4-11 Last foe faints from poison: battle won, no later end-turn effects: PASS
+HNS9680 4-12 Sandstorm knocks out the last foe: battle won before Leftovers and Speed Boost: PASS
+HNS9680 4-13 Dynamax ends after three turns: PASS
+HNS9680 4-14 UPSTREAM ORDER CHANGE EXPECTED: Dynamax ends before the fainted foe is replaced: FAIL
+HNS9680 4-15 Trainer slide at end of turn comes after Speed Boost: PASS
+HNS9680 4-16 UPSTREAM ORDER CHANGE EXPECTED: Dynamax end before the trainer slide of the same turn: FAIL
+HNS9680 4-17 Stage order in one end of turn (doubles): weather, abilities, items, seed, status, Speed Boost, orbs: PASS
+HNS9680 4-18 UPSTREAM CHANGE EXPECTED: last foe faints at end of turn while the player is Dynamaxed, no Dynamax end animation: FAIL
+HNS9714 1-01 Defog by the player removes each foe-side screen: Reflect, Light Screen, Mist, Aurora Veil, Safeguard: PASS
+HNS9714 1-02 Defog by the foe removes each player-side screen: Reflect, Light Screen, Mist, Aurora Veil, Safeguard: PASS
+HNS9714 1-03 Defog (left or right player) removes all five foe-side screens in order, user's own screens stay: PASS
+HNS9714 1-04 Defog (left or right foe) removes all five player-side screens in order, user's own screens stay: PASS
+HNS9714 1-05 Defog by the player removes each hazard from both sides: own side first: PASS
+HNS9714 1-06 Defog by the foe removes each hazard from both sides: player side first: PASS
+HNS9714 1-07 Defog removes all five hazards from both sides in table order (player or foe user): PASS
+HNS9714 1-08 Defog removes each terrain: text and background animation (player or foe user): PASS
+HNS9714 1-09 Defog order with mixed effects: hazards and screens per side, terrain between the sides: PASS
+HNS9714 1-10 Defog against a Substitute (Gen5+): no evasion drop, screens and hazards still go: PASS
+HNS9714 1-11 UPSTREAM CHANGE EXPECTED: foe Defog against a Substitute with only terrain to clear (attacker overwritten before #9714): FAIL
+HNS9714 1-12 Defog removes Electric Terrain: Booster Energy activates Quark Drive afterwards: PASS
+HNS9714 1-13 Defog reflected by Magic Bounce or Magic Coat: the reflector's Defog clears the original user's side 1/2: FAIL
+HNS9714 1-14 Defog check pass against minimum evasion: nothing (fails), only the user's hazards (works), only the user's own Reflect (fails) 1/3: FAIL
+HNS9714 2-01 Tidy Up removes each hazard from both sides (player or foe user), then raises the user's stats: PASS
+HNS9714 2-02 Tidy Up removes Substitutes: foe's, user's own, both (fade animation and text per battler): PASS
+HNS9714 2-03 Tidy Up with nothing to clear: no tidy text, stats rise: PASS
+HNS9714 2-04 Tidy Up in doubles (right-side user): hazards both sides, four Substitutes in battler order, user's stats: PASS
+HNS9714 2-05 Rapid Spin removes each hazard from the user's side (player or foe user): PASS
+HNS9714 2-06 Rapid Spin frees from Wrap and Leech Seed, then removes two hazards (order and names): PASS
+HNS9714 2-07 Mortal Spin (right-side user) removes the user's side hazards: PASS
+HNS9714 2-08 Substitute broken by damage: foe's and player's (fade animation and text): PASS
+HNS9714 2-09 Spread move breaks two Substitutes in doubles (names in hit order): PASS
+HNS9714 2-10 Multi-hit move breaks a Substitute on the second hit: PASS
+HNS9714 3-01 Player-side Reflect, Light Screen, Mist, Aurora Veil, Safeguard, Tailwind, Lucky Chant expire: PASS
+HNS9714 3-02 Foe-side Reflect, Light Screen, Mist, Aurora Veil, Safeguard, Tailwind, Lucky Chant expire: PASS
+HNS9714 3-03 Doubles: both sides expire in the same end of turn, player side first, block order per side: PASS
+HNS9714 3-04 Pledge fields end: sea of fire, rainbow, swamp on the player side, the foe side, both: PASS
+HNS9714 3-05 Terrain ends at end of turn (set by player or foe): text and background animation: PASS
+HNS9714 3-06 Electric Terrain ends at end of turn: Booster Energy activates Quark Drive: PASS
+HNS9714 4-01 Doubles: right-side Defog users (player and foe), screens, hazards both sides, later movers keep their names: PASS
+HNS9714 4-02 UPSTREAM CHANGE EXPECTED: right-side player Defog against a Substitute with only terrain to clear: FAIL
+HNS9714 4-03 UPSTREAM CHANGE EXPECTED: G-Max Wind Rage against foe-side screens (and the user's own) 1/2: FAIL
+HNS9714 4-04 G-Max Wind Rage removes hazards on both sides and terrain: PASS
+HNS9717 K1-01 Sandstorm, slower foe Emergency Exit: both hits, exit, replacement (same): PASS
+HNS9717 K1-02 UPSTREAM ORDER CHANGE EXPECTED: Sandstorm, faster foe Emergency Exit waits for the player's hit: FAIL
+HNS9717 K1-03 UPSTREAM ORDER CHANGE EXPECTED: Sandstorm, faster player Wimp Out waits for the foe's hit: FAIL
+HNS9717 K1-04 UPSTREAM ORDER CHANGE EXPECTED: both burned, faster foe Emergency Exit waits for the player's burn: FAIL
+HNS9717 K1-05 both burned, slower foe Emergency Exit: burns, exit, replacement (same): PASS
+HNS9717 K1-06 UPSTREAM CHANGE EXPECTED: Leech Seed, then poison and Salt Cure still hit before Emergency Exit: FAIL
+HNS9717 K1-07 UPSTREAM CHANGE EXPECTED: Sea of Fire with Air Balloon, no Grassy Terrain heal for the Emergency Exit mon: FAIL
+HNS9717 K1-08 UPSTREAM CHANGE EXPECTED: Sea of Fire, Grassy Terrain and Leftovers bring HP back above half, no Emergency Exit: FAIL
+HNS9717 K1-09 Sandstorm then Sitrus Berry back above half: no Emergency Exit (same): PASS
+HNS9717 K1-10 UPSTREAM ORDER CHANGE EXPECTED: Yawn puts the Emergency Exit mon (Leech Seed) to sleep before it leaves: FAIL
+HNS9717 K1-11 UPSTREAM CHANGE EXPECTED: Perish Song count of the Emergency Exit mon is shown before it leaves: FAIL
+HNS9717 K1-12 UPSTREAM ORDER CHANGE EXPECTED: Octolock drops the Emergency Exit mon's stats before it leaves: FAIL
+HNS9717 K1-13 UPSTREAM ORDER CHANGE EXPECTED: Taunt end text of the Emergency Exit mon comes before it leaves: FAIL
+HNS9717 K1-14 UPSTREAM ORDER CHANGE EXPECTED: two foe Emergency Exits in one Sandstorm, each leaves and is replaced in turn: FAIL
+HNS9717 K1-15 Wild Emergency Exit flees at end of turn (same): PASS
+HNS9717 K1-16 Player Emergency Exit at end of turn sends in an Intimidate mon (same): PASS
+HNS9717 K1-17 Emergency Exit at weather damage: the replacement gets the Wish heal of the same end of turn (same): PASS
+HNS9717 K1-18 UPSTREAM ORDER CHANGE EXPECTED: doubles, burned faster foe Emergency Exit, partner burn and player burn before replacement: FAIL
+HNS9717 K2-01 Eject Pack at end of turn after Octolock (foe), replacement right after (same): PASS
+HNS9717 K2-02 Eject Pack at end of turn: only the fastest of two holders (same): PASS
+HNS9717 K2-03 Eject Pack at end of turn: the replacement's Intimidate triggers the player's Eject Pack (same): PASS
+HNS9717 K2-04 UPSTREAM ORDER CHANGE EXPECTED: Emergency Exit (burn) and Eject Pack (Octolock) in the same end of turn: FAIL
+HNS9717 K2-05 Eject Button after a hit (move end), replacement before the next action (same): PASS
+HNS9717 K2-06 Eject Pack after a self stat drop (move end) (same): PASS
+HNS9717 K2-07 Eject Pack while rooted by Ingrain still switches (#9946 case) (same): PASS
+HNS9717 K2-08 Eject Pack on a foe switch-in Intimidate (switch-in path, EjectPackActivates_SendReplacement) (same): PASS
+HNS9717 K2-09 Eject Pack at end of turn with nothing to switch in does not activate (same): PASS
+HNS9717 K2-10 RECHECK 3b related: foe Dancer replacement sent in by Eject Button copies a later dance of the turn (same): PASS
+HNS9717 K2-11 Eject Button holder with nothing to switch in does not activate (same): PASS
+HNS9717 K2-12 Eject Pack while trapped by Mean Look still switches (move end) (same): PASS
+HNS9717 K3-01 Foe faints from poison, other foe Emergency Exit from burn: EE replacement, then fainted replacement (same): PASS
+HNS9717 K3-02 Player Emergency Exit (burn) while the partner faints from poison (same): PASS
+HNS9717 K3-03 Emergency Exit foe at weather damage: replacement comes in before the player's Leftovers (same): PASS
+HNS9717 K3-04 UPSTREAM CHANGE EXPECTED (softlock without the HnS KO-animation fix): faster player Emergency Exit (poison) and the last foe faints from poison: FAIL
+HNS9717 K3-05 slower player Emergency Exit (poison): the last foe faints first, no Emergency Exit (same): PASS
+HNS9717 K3-06 Emergency Exit foe with a fainted-and-replaced player mon in the same end of turn (same): PASS
+HNS9717 K3-07 UPSTREAM CHANGE EXPECTED (softlock without the HnS KO-animation fix): faster foe Emergency Exit (poison) and the player's last mon faints from poison: FAIL
+HNS9717P P1 K3-04 with SEND_OUT(player, 1): PASS
+HNS9717P P2 foe Emergency Exit (poison, faster) and the player's last mon faints from poison: PASS
+HNS9717P P3 faster player Emergency Exit (Sandstorm) and the last foe faints from Sandstorm: PASS
+HNS9717P P4 wild: faster player Emergency Exit (poison) and the wild mon faints from poison: FAIL
+HNS9717P P6 move end (#9494, before #9717): Eject Button target leaves, then the attacker faints from Life Orb recoil: PASS
+HNS9717P P7 move end (#9494, before #9717): Emergency Exit target leaves, then the attacker faints from Life Orb recoil: PASS
+HNS9730 K1-01 self +1: Harden: PASS
+HNS9730 K1-02 self +2: Swords Dance (sharply = 크게 in front): PASS
+HNS9730 K1-03 self +3: Cotton Guard (drastically = 매우 크게 in front): PASS
+HNS9730 K1-04 foe -1: Growl: PASS
+HNS9730 K1-05 foe -2: Screech: PASS
+HNS9730 K1-06 foe -4 with Simple: Charm (severely): PASS
+HNS9730 K1-07 opponent uses Growl on the player: PASS
+HNS9730 K1-08 opponent self +2: Swords Dance: PASS
+HNS9730 K1-09 self at +6: Swords Dance won't go higher: PASS
+HNS9730 K1-10 foe at -6: Growl won't go lower: PASS
+HNS9730 K1-11 Dragon Dance: two stats up: PASS
+HNS9730 K1-12 Quiver Dance: three stats up: PASS
+HNS9730 K1-13 Shell Smash: two down, three sharply up: PASS
+HNS9730 K1-14 Dragon Dance with both stats at +6: FAIL
+HNS9730 K1-15 Dragon Dance with Attack at +6 only: PASS
+HNS9730 K1-16 Contrary: Swords Dance lowers: PASS
+HNS9730 K1-17 Contrary: Leaf Storm raises Sp. Atk: PASS
+HNS9730 K1-18 Contrary foe: Growl raises its Attack: PASS
+HNS9730 K1-19 Contrary at -6: Swords Dance won't go lower: PASS
+HNS9730 K1-20 Contrary: Dragon Dance at -6 both: FAIL
+HNS9730 K1-21 Simple: Harden +2: PASS
+HNS9730 K1-22 self-lowering: Close Combat: PASS
+HNS9730 K1-23 self-lowering: Leaf Storm -2: PASS
+HNS9730 K1-24 self-lowering: Superpower by the foe: PASS
+HNS9730 K1-25 self-lowering at -6: Leaf Storm x4: PASS
+HNS9730 K1-26 secondary 100%: Mud-Slap lowers accuracy: PASS
+HNS9730 K1-27 secondary chance: Bubble Beam lowers Speed: PASS
+HNS9730 K1-28 secondary at -6: Rock Tomb when Speed is at -6: PASS
+HNS9730 K1-29 self-raising secondary: Flame Charge: PASS
+HNS9730 K1-30 all stats up: Ominous Wind secondary: FAIL
+HNS9730 K1-31 all stats up: No Retreat: FAIL
+HNS9730 K1-32 Clangorous Soul: FAIL
+HNS9730 K1-33 Belly Drum message: PASS
+HNS9730 K1-34 Belly Drum with Contrary: PASS
+HNS9730 K1-35 Tickle: two stats down: PASS
+HNS9730 K1-36 Noble Roar with both stats at -6: FAIL
+HNS9730 K1-37 Memento: PASS
+HNS9730 K1-38 Curse (non-Ghost): PASS
+HNS9730 K1-39 Swagger: PASS
+HNS9730 K1-40 Flatter: PASS
+HNS9730 K1-41 Strength Sap: PASS
+HNS9730 K1-42 Strength Sap at -6 Attack: PASS
+HNS9730 K1-43 Fell Stinger KO: Attack drastically: PASS
+HNS9730 K1-44 Defog lowers evasion: PASS
+HNS9730 K1-45 Defog at -6 evasion, nothing to clear: FAIL
+HNS9730 K1-46 Venom Drench on a poisoned foe: PASS
+HNS9730 K1-47 Toxic Thread: FAIL
+HNS9730 K1-48 Tar Shot: PASS
+HNS9730 K1-49 Autotomize (became nimble): PASS
+HNS9730 K1-50 Autotomize by the foe: PASS
+HNS9730 K1-51 Charge: PASS
+HNS9730 K1-52 Stockpile: PASS
+HNS9730 K1-53 Minimize and Defense Curl: PASS
+HNS9730 K1-54 Growth in sun: PASS
+HNS9730 K1-55 Spicy Extract: PASS
+HNS9730 K1-56 Acupressure: PASS
+HNS9730 K1-57 Fillet Away: PASS
+HNS9730 K1-58 Shift Gear: FAIL
+HNS9730 K1-59 V-create: PASS
+HNS9730 K1-60 Spin Out (Speed -2 self): PASS
+HNS9730 K1-61 Psych Up copies foe stat changes: PASS
+HNS9730 K1-62 Mist blocks Growl: PASS
+HNS9730 K1-63 Substitute blocks Growl: PASS
+HNS9730 K1-64 Aurora Veil in snow: PASS
+HNS9730 K1-65 Lash Out after Growl: PASS
+HNS9730 K1-66 Octolock end turn: PASS
+HNS9730 K1-67 Syrup Bomb end turn: PASS
+HNS9730 K1-68 Topsy-Turvy and Haze (no stat message): PASS
+HNS9730 K1-69 Stuff Cheeks: PASS
+HNS9730 K1-70 Power-Up Punch at +6: PASS
+HNS9730 K1-71 Belly Drum at low HP fails: PASS
+HNS9730 K1-72 Belly Drum at +6 Attack: PASS
+HNS9730 K1-73 Clangorous Soul at low HP fails: PASS
+HNS9730 K1-74 clamps: Swords Dance at +5, Charm at -5, Cotton Guard at +4: PASS
+HNS9730 K1-75 Spit Up drops the Stockpile boosts: FAIL
+HNS9730 K1-76 Contrary: Close Combat and Superpower raise: PASS
+HNS9730 K1-77 Strength Sap vs Contrary: PASS
+HNS9730 K1-78 Growth outside sun, Defense Curl at +6: PASS
+HNS9730 K1-79 Memento vs Clear Body: PASS
+HNS9730 K1-80 Tickle and Mud-Slap through a Substitute: PASS
+HNS9730 K2-01 Intimidate lowers the foe's Attack (pre: single space, PKMNCUTSATTACKWITH): PASS
+HNS9730 K2-02 foe Intimidate lowers the player's Attack: PASS
+HNS9730 K2-03 Intimidate in doubles hits both foes: PASS
+HNS9730 K2-04 Intimidate vs Clear Body: PASS
+HNS9730 K2-05 Intimidate vs Hyper Cutter: PASS
+HNS9730 K2-06 Intimidate vs Inner Focus: PASS
+HNS9730 K2-07 Intimidate vs Oblivious: PASS
+HNS9730 K2-08 Intimidate vs Guard Dog: PASS
+HNS9730 K2-09 Intimidate vs Mirror Armor: PASS
+HNS9730 K2-10 Intimidate vs Rattled: PASS
+HNS9730 K2-11 Intimidate vs Defiant: PASS
+HNS9730 K2-12 Intimidate vs Competitive: PASS
+HNS9730 K2-13 Intimidate vs Contrary: PASS
+HNS9730 K2-14 Intimidate vs Attack already at -6: PASS
+HNS9730 K2-15 Intimidate vs Clear Amulet: PASS
+HNS9730 K2-16 Intimidate vs Adrenaline Orb: PASS
+HNS9730 K2-17 Intimidate vs Mist: PASS
+HNS9730 K2-18 Intimidate vs White Herb: PASS
+HNS9730 K2-19 Intimidate vs Defiant and White Herb: PASS
+HNS9730 K2-20 Growl vs Clear Body: PASS
+HNS9730 K2-21 Growl vs Hyper Cutter: PASS
+HNS9730 K2-22 Leer vs Big Pecks, Sand Attack vs Keen Eye: PASS
+HNS9730 K2-23 Clear Body does not block the user's own Close Combat: PASS
+HNS9730 K2-24 Growl vs Mirror Armor reflects: PASS
+HNS9730 K2-25 Tickle vs Mirror Armor with the user at -6 Attack: FAIL
+HNS9730 K2-26 Rock Tomb secondary vs Mirror Armor: PASS
+HNS9730 K2-27 Growl vs Defiant: PASS
+HNS9730 K2-28 Tickle vs Competitive: PASS
+HNS9730 K2-29 Growl vs Defiant at +6 Attack: FAIL
+HNS9730 K2-30 Defiant does not activate on a partner's drop: PASS
+HNS9730 K2-31 Speed Boost end of turn: PASS
+HNS9730 K2-32 Moxie on KO: PASS
+HNS9730 K2-33 Weak Armor: PASS
+HNS9730 K2-34 Stamina: PASS
+HNS9730 K2-35 Justified: PASS
+HNS9730 K2-36 Steam Engine: PASS
+HNS9730 K2-37 Anger Point on a critical hit (pre: no 의 in TARGETSSTATWASMAXEDOUT): FAIL
+HNS9730 K2-38 Anger Shell below half: FAIL
+HNS9730 K2-39 Berserk below half: PASS
+HNS9730 K2-40 Download: PASS
+HNS9730 K2-41 Intrepid Sword and Dauntless Shield: PASS
+HNS9730 K2-42 Beast Boost on KO: PASS
+HNS9730 K2-43 Sap Sipper absorbs a Grass move: PASS
+HNS9730 K2-44 Motor Drive absorbs an Electric move: PASS
+HNS9730 K2-45 Lightning Rod at +6 Sp. Atk: PASS
+HNS9730 K2-46 Cotton Down: PASS
+HNS9730 K2-47 Gooey: PASS
+HNS9730 K2-48 Moody end of turn: PASS
+HNS9730 K2-49 Supersweet Syrup: PASS
+HNS9730 K2-50 Electromorphosis: PASS
+HNS9730 K2-51 Wind Power: PASS
+HNS9730 K2-52 Wind Rider absorbs a wind move: PASS
+HNS9730 K2-53 Flower Veil protects a Grass ally from Growl: PASS
+HNS9730 K2-54 Flower Veil vs Intimidate: PASS
+HNS9730 K2-55 Flower Veil vs Rock Tomb secondary: PASS
+HNS9730 K2-56 Opportunist copies a foe's Swords Dance: FAIL
+HNS9730 K2-57 Costar copies the ally's boosts: PASS
+HNS9730 K2-58 Infiltrator ignores Mist: PASS
+HNS9730 K2-59 Steadfast on flinch: PASS
+HNS9730 K2-60 Water Compaction and Thermal Exchange: PASS
+HNS9730 K2-61 Contrary Intimidate with Defiant-like raise blocked at +6: PASS
+HNS9730 K2-62 Mind's Eye blocks accuracy drop: PASS
+HNS9730 K2-63 Full Metal Body vs Rock Tomb secondary: PASS
+HNS9730 K2-64 reflected Growl from Mirror Armor triggers the user's Defiant: PASS
+HNS9730 K2-65 Intimidate vs Guard Dog at +6 Attack (pre: names the Intimidate user): FAIL
+HNS9730 K2-66 Intimidate vs Rattled at +6 Speed: PASS
+HNS9730 K2-67 Defiant at +6 Attack after Intimidate: PASS
+HNS9730 K2-68 Speed Boost at +6 prints nothing: PASS
+HNS9730 K2-69 Cotton Down hits everyone else, one with Mirror Armor: FAIL
+HNS9730 K3-01 White Herb after Growl: PASS
+HNS9730 K3-02 White Herb after the user's Close Combat: PASS
+HNS9730 K3-03 White Herb after Shell Smash: PASS
+HNS9730 K3-04 Mirror Herb copies the foe's Swords Dance: PASS
+HNS9730 K3-05 Mirror Herb copies Dragon Dance: PASS
+HNS9730 K3-06 Liechi Berry at low HP: PASS
+HNS9730 K3-07 Weakness Policy: PASS
+HNS9730 K3-08 Kee Berry on a physical hit: PASS
+HNS9730 K3-09 Throat Spray: PASS
+HNS9730 K3-10 Blunder Policy: PASS
+HNS9730 K3-11 Cell Battery: PASS
+HNS9730 K3-12 Electric Seed on Electric Terrain: PASS
+HNS9730 K3-13 Room Service on Trick Room: PASS
+HNS9730 K3-14 Adrenaline Orb at max Speed does not activate: PASS
+HNS9730 K3-15 Clear Amulet vs Growl: PASS
+HNS9730 K3-16 Maranga Berry on a special hit: PASS
+HNS9730 K3-17 Snowball: PASS
+HNS9730 K3-18 Weakness Policy holder with Contrary: FAIL
+HNS9730 K3-19 Liechi Berry with Ripen: PASS
+HNS9730 K3-20 Mirror Herb holder at +6 copies nothing new: PASS
+HNS9730 K3-21 X Attack from the bag: PASS
+HNS9730 K3-22 X Attack at +6 Attack: PASS
+HNS9730 K3-23 Dire Hit from the bag: PASS
+HNS9730 K3-24 Weakness Policy at +6 Attack and Sp. Atk: PASS
+HNS9730 K3-25 Adrenaline Orb with Contrary: FAIL
+HNS9730 K4-01 Parting Shot lowers and switches: PASS
+HNS9730 K4-02 Parting Shot with both stats at -6 (no switch): FAIL
+HNS9730 K4-03 Parting Shot vs Contrary with both stats at +6: FAIL
+HNS9730 K4-04 Parting Shot vs Clear Body (no switch): FAIL
+HNS9730 K4-05 Parting Shot vs Mirror Armor: FAIL
+HNS9730 K4-06 Magic Coat bounces Growl: PASS
+HNS9730 K4-07 Magic Bounce bounces Charm: PASS
+HNS9730 K4-08 Snatch steals Swords Dance: PASS
+HNS9730 K4-09 Snatch steals Dragon Dance: PASS
+HNS9730 K4-10 Magic Bounce bounces Parting Shot (seq 129 interim: the user is switched): FAIL
+HNS9730 K4-11 Sticky Web on switch-in: PASS
+HNS9730 K4-12 Sticky Web vs Mirror Armor on switch-in: PASS
+HNS9730 K4-13 Sticky Web vs Contrary and Defiant: PASS
+HNS9730 K4-14 Rototiller: Grass types only, others not affected: PASS
+HNS9730 K4-15 Rototiller with no Grass type on the field: FAIL
+HNS9730 K4-16 Flower Shield: PASS
+HNS9730 K4-17 Coaching: PASS
+HNS9730 K4-18 Gear Up and Magnetic Flux with Plus/Minus: PASS
+HNS9730 K4-19 Howl raises user and ally: FAIL
+HNS9730 K4-20 Aromatic Mist and Decorate on the ally: PASS
+HNS9730 K4-21 Icy Wind lowers both foes: PASS
+HNS9730 K4-22 Growl on both foes, one Clear Body: FAIL
+HNS9730 K4-23 Captivate vs Oblivious: FAIL
+HNS9730 K4-24 Insomnia blocks Hypnosis: PASS
+HNS9730 K4-25 Insomnia blocks Rest: PASS
+HNS9730 K4-26 Sweet Veil ally blocks Hypnosis: PASS
+HNS9730 K4-27 Sweet Veil ally that came in blocks Yawn sleep at end of turn: PASS
+HNS9730 K4-28 Leaf Guard blocks Rest in sun: PASS
+HNS9730 K4-29 Sweet Veil blocks Rest: PASS
+HNS9730 K4-30 Swagger vs Own Tempo: PASS
+HNS9730 K4-31 Swagger on a confused foe at +6 Attack: FAIL
+HNS9730 K4-32 Rage builds Attack: PASS
+HNS9730 K4-33 Spectral Thief steals boosts: PASS
+HNS9730 K4-34 Defiant activates on Sticky Web set by the foe: PASS
+HNS9730 K4-35 Bulk Up, Calm Mind, Coil, Work Up, Hone Claws: PASS
+HNS9730 K4-36 Victory Dance, Cosmic Power, Tail Glow: PASS
+HNS9730 K4-37 Contrary Shell Smash at mixed limits: PASS
+HNS9730 K4-38 Clangorous Soul with Throat Spray: FAIL
+HNS9730 K4-39 Snarl vs Competitive: PASS
+HNS9730 K4-40 Trailblaze and Lunge: PASS
+HNS9730 K4-41 Magic Coat bounces Parting Shot (seq 129 interim: the user is switched): FAIL
+HNS9730 K4-42 Magic Bounce bounces Growl back onto Contrary user: PASS
+HNS9730 K4-43 Snatch steals Swords Dance at +6 for the snatcher: PASS
+HNS9730 K4-44 Growl into a Mirror Armor foe and a plain foe: FAIL
+HNS9730 K4-45 Icy Wind into Flower Veil Grass foes: PASS
+HNS9730 K4-46 Flower Veil blocks Hypnosis on a Grass ally (status path): PASS
+HNS9730 K4-47 Octolock vs Mirror Armor: FAIL
+HNS9730 K4-48 Octolock and Syrup Bomb vs Mist: PASS
+HNS9730 K4-49 Syrup Bomb vs Mirror Armor: FAIL
+HNS9730 K4-50 Curse after the user's own Mist: PASS
+HNS9730 K4-51 Coaching onto an ally behind a Substitute: PASS
+HNS9730 K4-52 Screech vs Mirror Armor: PASS
+HNS9730 K4-53 Parting Shot vs Mist (no switch): FAIL
+HNS9730 K4-54 Rototiller in singles with no Grass type: FAIL
+HNS9730 K4-55 Flower Veil vs Leaf Storm by the Grass ally (self drop): PASS
+HNS9730 K4-56 Flower Veil vs Octolock on the Grass ally: PASS
+HNS9730 K4-57 Flower Veil vs Gooey on a Grass attacker (not the move target): PASS
+HNS9730 K5-01 totem boost: foe Attack +1: PASS
+HNS9730 K5-02 totem boost: foe Defense +2 and Sp. Def +2: PASS
+HNS9730 K5-03 totem boost: all five stats +1: PASS
+HNS9730 K5-04 totem boost in doubles: right foe Speed +1: PASS
+HNS9784 K1-01 Red Card drags the attacker's replacement out (same): PASS
+HNS9784 K1-02 Red Card: spread move, only the fastest of two holders (same): PASS
+HNS9784 K1-03 CHANGE EXPECTED: Red Card: raw-faster holder under Slow Start should activate (pre: effective-Speed holder): FAIL
+HNS9784 K1-04 CHANGE EXPECTED: faster Eject Button, then slower Red Card should also activate (pre: only Eject Button): FAIL
+HNS9784 K1-05 CHANGE EXPECTED: faster Red Card, then slower Eject Button should also activate (pre: only Red Card): FAIL
+HNS9784 K1-06 Red Card before the attacker's Eject Pack (same): PASS
+HNS9784 K1-07 Red Card does not activate if the attacker faints from recoil (#9976 line kept) (same): PASS
+HNS9784 K1-08 Red Card does not activate behind a Substitute (same): PASS
+HNS9784 K1-09 Red Card: two attackers in one turn, each target's card activates (same): PASS
+HNS9784 K2-01 Eject Button: spread move, only the fastest of two holders (same): PASS
+HNS9784 K2-02 CHANGE EXPECTED: Eject Button: raw-faster holder under Slow Start should activate (pre: effective-Speed holder): FAIL
+HNS9784 K2-03 CHANGE EXPECTED: Eject Button: all four Speed tied, raw sort should pick the right foe (pre: left foe): FAIL
+HNS9784 K2-04 Eject Button, then the attacker's Life Orb recoil, then the replacement (same): PASS
+HNS9784 K2-05 Eject Button and Eject Pack hit by the same move: only Eject Button (same): PASS
+HNS9784 K3-01 Eject Pack: spread stat drop, only the fastest of two holders (same): PASS
+HNS9784 K3-02 CHANGE EXPECTED: Eject Pack: raw-faster holder under Slow Start should activate (pre: effective-Speed holder): FAIL
+HNS9784 K3-03 CHANGE EXPECTED: faster Eject Pack should come before slower White Herb (pre: White Herb first): FAIL
+HNS9784 K3-04 faster White Herb before slower Eject Pack (same): PASS
+HNS9784 K3-05 CHANGE EXPECTED: user Throat Spray, then foes Eject Pack and White Herb by raw Speed (pre: White Herb, Throat Spray, Eject Pack): FAIL
+HNS9784 K3-06 CHANGE EXPECTED: Weak Armor on U-turn: Eject Pack should not activate (pre: it fires at the U-turn replacement switch-in): INVALID
+HNS9784 K3-07 Weak Armor lowers Defense on a plain hit: Eject Pack activates (same): PASS
+HNS9784 K3-08 Parting Shot on an Eject Pack holder while the user can switch: no Eject Pack, also not at the replacement switch-in (same): PASS
+HNS9784 K4-01 White Herb after the user's Close Combat (same): PASS
+HNS9784 K4-02 CHANGE EXPECTED: Shell Smash: foe Opportunist should come before the user White Herb (pre: White Herb first): FAIL
+HNS9784 K4-03 CHANGE EXPECTED: Snarl: user Throat Spray should come before the foe White Herb (pre: White Herb first): FAIL
+HNS9784 K4-04 CHANGE EXPECTED: two foes White Herb by raw Speed, right foe faster should go first (pre: battler order, left first): FAIL
+HNS9784 K4-05 two foes' White Herb, left foe faster (same): PASS
+HNS9784 K4-06 White Herb on switch-in Intimidate (not move end) (same): PASS
+HNS9784 K4-07 Mega Evolution Intimidate on turn 1: both foes' White Herb in battler order (BS_EffectsAfterFormChange kept) (same): FAIL
+HNS9784 K5-01 Mirror Herb copies the foe's Swords Dance (same): PASS
+HNS9784 K5-02 CHANGE EXPECTED: Clangorous Soul: user Throat Spray should come before the foe Mirror Herb (pre: Mirror Herb first, reveal 708): FAIL
+HNS9784 K5-03 CHANGE EXPECTED: Shell Smash: faster foe Mirror Herb should come before the user White Herb (pre: White Herb first): FAIL
+HNS9784 K5-04 Shell Smash: faster user's White Herb before the foe's Mirror Herb (same): PASS
+HNS9784 K5-05 CHANGE EXPECTED: two Mirror Herb holders by raw Speed, right one faster should go first (pre: battler order): FAIL
+HNS9784 K5-06 Opportunist before Mirror Herb on the same Swords Dance (same): PASS
+HNS9784 K5-07 CHANGE EXPECTED: Clangorous Soul with Throat Spray vs Mirror Herb, reveal only (pre 708 = Mirror Herb copies before Throat Spray; 1.17.0 808): FAIL
+HNS9784 K6-01 CHANGE EXPECTED: both foes bounce Growl, right foe faster should bounce first (pre: battler order): FAIL
+HNS9784 K6-02 both foes bounce Growl, left foe faster (same): PASS
+HNS9784 K6-03 Stealth Rock on two Magic Bounce foes: fastest bounces (already raw Speed) (same): PASS
+HNS9784 K7-01 CHANGE EXPECTED: Magician steals a Sitrus Berry below half HP: should eat it in the same move end (pre: after the foe acts): FAIL
+HNS9784 K7-02 burned Pickpocket steals a Lum Berry and eats it at once (BattleScript_Pickpocket activateitemeffects) (same): PASS
+HNS9784 K7-03 Sitrus Berry of the target dropping below half (same): PASS
+HNS9784 K7-04 Red Card drags in a poisoned Lum Berry holder (Lum eaten at the switch-in, before the foe acts) (same): PASS
+HNS9784 K8-01 Pain Split with Life Orb: no recoil (EFFECT_PAIN_SPLIT exception removed) (same): PASS
+HNS9784 K8-02 Pain Split with Shell Bell: no heal (EFFECT_PAIN_SPLIT exception removed) (same): PASS
+HNS9784 K8-03 Throat Spray of a mon dragged in by Red Card does not activate (upstream new test) (same): PASS
+HNS9784 K8-04 RECHECK 3b FIXED (ee2da89a61): player Dancer sent in by Eject Button dances: PASS
+HNS9784 K8-05 RECHECK 3b FIXED (ee2da89a61): foe Dancer sent in by Eject Button dances: PASS
+HNS9784 K8-06 RECHECK 3b control: Dancer already on the field dances (same): PASS
+HNS9784 K9-01 second Future Sight of the end turn hits the Eject Button holder while the foe Emergency Exit is queued: no Eject Button (same): PASS
+HNS9784 K9-02 Future Sight alone hits the Eject Button holder at end of turn: no Eject Button (same): PASS
+HNS9784 K9-03 Eject Button in move end, then Eject Pack of the slower foe waits (queued switch) (same): PASS
+HNS9799 K1-01 Singles (same): PASS
+HNS9799 K1-02 AI Singles (same): PASS
+HNS9799 K1-03 Doubles (same): PASS
+HNS9799 K1-04 AI Doubles (same): PASS
+HNS9799 K1-05 Multi CHANGE EXPECTED (runner only): PASS
+HNS9799 K1-06 AI Multi CHANGE EXPECTED (AI fix): PASS
+HNS9799 K1-07 2v1 CHANGE EXPECTED (runner only): PASS
+HNS9799 K1-08 AI 2v1 (same): PASS
+HNS9799 K1-09 1v2 CHANGE EXPECTED (runner only): PASS
+HNS9799 K1-10 AI 1v2 CHANGE EXPECTED (AI fix): PASS
+HNS9799 K2-01 one trainer: both foes absorb-switch into the same mon, only the first does: PASS
+HNS9799 K2-02 two trainers: both foes absorb-switch into their own slot 1: PASS
+HNSFIX1 T1 Eject Button replacement with Magic Bounce bounces in the same turn: PASS
+HNSFIX1 T10 Magic Coat user faints, replacement is unaffected: PASS
+HNSFIX1 T11 controls: Magic Coat, Snatch and Magic Bounce without a switch: PASS
+HNSFIX1 T12a Magic Coat from Instruct is not passed by Baton Pass: PASS
+HNSFIX1 T12b Snatch from Instruct is not passed by Baton Pass: PASS
+HNSFIX1 T13 Parting Shot bounced by an Eject Button replacement 1/2: INVALID
+HNSFIX1 T2 Eject Pack replacement with Magic Bounce bounces in the same turn: PASS
+HNSFIX1 T3 Eject Button replacement bounces and still skips the slot's own action: PASS
+HNSFIX1 T4 Magic Coat is not inherited by an Eject Button replacement: PASS
+HNSFIX1 T5 Snatch is not inherited by an Eject Button replacement: PASS
+HNSFIX1 T6a Magic Coat is not inherited by an Eject Pack replacement: PASS
+HNSFIX1 T6b Snatch is not inherited by an Eject Pack replacement: PASS
+HNSFIX1 T7a Magic Coat is not inherited by an Emergency Exit replacement: PASS
+HNSFIX1 T7b Snatch is not inherited by an Emergency Exit replacement: PASS
+HNSFIX1 T8 Magic Coat is not inherited by a Dragon Tail replacement: PASS
+HNSFIX1 T9 Leer at two Magic Bounce mons after Eject Button 2/2: FAIL
+HNSFIXOBS O1 Dancer replacement after Eject Button and a plain dance move: FAIL
+HNSPOPUP 01 Mental Herb target: Taunt: PASS
+HNSPOPUP 02 Mental Herb target: Encore: PASS
+HNSPOPUP 03 Mental Herb target: Attract: PASS
+HNSPOPUP 04 Mental Herb target: Torment: PASS
+HNSPOPUP 05 Mental Herb target: Disable: PASS
+HNSPOPUP 06 Mental Herb target: Heal Block and Psychic Noise: PASS
+HNSPOPUP 07 Mental Herb attacker: Cute Charm infatuation: PASS
+HNSPOPUP 08 Mental Herb attacker: Cursed Body disable: PASS
+HNSPOPUP 09 Mental Herb attacker after foe's Destiny Knot (two item pop-ups): PASS
+HNSPOPUP 10 Mental Herb Fling: Taunt and Torment on the target (Fling path, two messages): PASS
+HNSPOPUP 11 Mental Herb target after Trick: six statuses, one pop-up, messages in order: PASS
+HNSPOPUP 12 control: White Herb keeps pop-up, animation, message order: PASS
+HNSPOPUP B01 Air Balloon at battle start: PASS
+HNSPOPUP B02 Air Balloon on switch-in: PASS
+HNSPOPUP B03 Air Balloon on both sides at battle start: PASS
+HNSPOPUP D01 Destiny Knot held by the target of Attract: PASS
+HNSPOPUP D02 control: Destiny Knot held by the attacker that touched Cute Charm (R41): PASS
+HNSPOPUP D03 Destiny Knot held by the right-hand foe targeted by Attract: PASS
+HNSPOPUP H01 Leftovers end of turn: PASS
+HNSPOPUP H02 Shell Bell after a hit: PASS
+HNSPOPUP H03 Black Sludge heals a Poison type: PASS
+HNSPOPUP H04 control: Black Sludge hurts a non-Poison type (no pop-up in HnS): PASS
+HNSPOPUP H05 Leftovers on two battlers, end of turn order: PASS
+HNSPOPUP P01 Air Balloon pops: PASS
+HNSPOPUP P02 Air Balloon pops on two targets of a spread move: PASS
+HNSPOPUP P03 Air Balloon pops when the holder faints: PASS
+HNSPOPUP S01 Electric Seed on Electric Terrain: PASS
+HNSPOPUP S02 Grassy Seed on switch-in into Grassy Terrain: PASS
+HNSPOPUP S03 Psychic Seed on two battlers: PASS
+HNSPOPUP S04 Misty Seed after the foe's Misty Surge at battle start (ability pop-up first): PASS
+HNSPOPUP S05 side effect: Salac Berry (R35): FAIL
+HNSPOPUP S06 side effect: Ripen Liechi Berry (ability pop-up, then item pop-up): FAIL
+HNSPOPUP S07 side effect: Room Service on Trick Room (R01): PASS
+HNSPOPUP S08 side effect: Kee Berry (R19): FAIL
+HNSPOPUP S09 control: Electric Seed at +6 Defense does not activate: PASS
+HNSREV M1 Magnet Rise end names the player after the opponent's Disable ends: PASS
+HNSREV M2 Magnet Rise end names the opponent after the player's Disable ends: PASS
+HNSREV X1 Magic Coat user ejected, Magic Bounce replacement bounces by its ability: PASS
+HNSREV X2 Two Eject Buttons in one slot with a bounce in between: PASS
+HNSREV X3 Replacement bounces after its slot acted and acts normally next turn: PASS
+HNSREV X4 Bounced Scary Face ejects the attacker by Eject Pack (bouncer came by Eject Button): PASS
+HNSREV X5 Snatch survives an ally's Eject Button switch in the same turn: PASS
+HNSREV X6 Baton Pass still passes stat stages and Magnet Rise: PASS
+HNSSW S1 foe EE from Future Sight, then the second Future Sight of the same end turn: PASS
+HNSSW S10 wild: faster player EE (poison) and the wild mon would faint from poison: PASS
+HNSSW S11 Liquid Ooze drain: seeded last foe faints, EE receiver drops below half: PASS
+HNSSW S12 doubles: Future Sight on the foe EE mon, Doom Desire on the player's mon, same end turn: PASS
+HNSSW S13 doubles: player EE (poison) waits, the player's partner and a foe faint from poison: PASS
+HNSSW S14 doubles: player EE (poison) waits, both last foes faint from poison: PASS
+HNSSW S15 singles: player EE (poison) waits, a non-last foe faints from poison: PASS
+HNSSW S1ai foe EE from Future Sight (trainer AI), then the second Future Sight: PASS
+HNSSW S1k foe EE wiped by the second Future Sight: the mon in its ball is knocked out next turn: INVALID
+HNSSW S1p player EE from Future Sight, then the second Future Sight of the same end turn: PASS
+HNSSW S1pk player EE wiped by the second Future Sight: the mon in its ball is knocked out next turn: INVALID
+HNSSW S1pt player EE wiped by the second Future Sight: next turn both use Tackle: INVALID
+HNSSW S1t foe EE wiped by the second Future Sight: next turn both use Tackle: INVALID
+HNSSW S2 player EE (poison) then the last foe faints: experience and level-up for the mon in its ball: PASS
+HNSSW S3 player Eject Button leaves, the last foe faints from Life Orb: KO animation and experience: PASS
+HNSSW S4 foe EE (poison) then the player's last mon faints (trainer AI): PASS
+HNSSW S5 two foe EE in one Sandstorm, one bench mon (trainer AI): PASS
+HNSSW S6 multi: partner EE and opponent B EE in one Sandstorm: PASS
+HNSSW S7 multi: player EE in Sandstorm: PASS
+HNSSW S8 two opponents: opponent B EE in Sandstorm: PASS
+HNSSW S9 player EE and the fainted partner share the only bench mon: PASS
+HNSX1 01 Charge at +6 Sp. Def: PASS
+HNSX1 02 Charge with Contrary: PASS
+HNSX1 03 Charge by the foe: PASS
+HNSX1 04 Charge twice at +6 Sp. Def: PASS
+HNSX1 05 Adrenaline Orb after Defiant: PASS
+HNSX1 06 Intimidate on two Adrenaline Orb holders, left one at +6 Speed: PASS
+HNSX1 07 Weakness Policy with only Attack at +6: PASS
+HNSX1 08 totem boost: the six stats of the HnS Alola/Kanto totems: PASS
+HNSX1 09 totem boost: +3 Defense and Sp. Def (Route 50 boss pattern): PASS
+HNSX1 10 totem boost vs the player's Mirror Herb: PASS
+HNSX1 11 totem boost on a Simple holder: PASS
+HNSX1 12 Adrenaline Orb with Contrary at -6 Speed: PASS
+HNSX1 13 probe: totem boost then the player's Mirror Herb: PASS
+HNSX1 14 probe: totem boost then the player's Opportunist: PASS
+HNSX1 15 probe: Snowball at +6 Attack: PASS
+HNSX1 16 probe: Intimidate blocked by Inner Focus vs Adrenaline Orb: PASS
+HNSX1 17 Cell Battery at +6 Attack: PASS
+HNSX1 18 Absorb Bulb at +6 Sp. Atk: PASS
+HNSX1 19 Luminous Moss at +6 Sp. Def: PASS
+HNSX1 20 Snowball with Contrary at -6 Attack: PASS
+HNSX1 21 Snowball at +4 Attack still activates: PASS

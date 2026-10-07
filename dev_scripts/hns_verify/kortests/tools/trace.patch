@@ -1,0 +1,134 @@
+--- a/test/test_runner_battle.c
++++ b/test/test_runner_battle.c
+@@ -21,6 +21,33 @@
+ #include "constants/trainers.h"
+ #include "constants/abilities.h"
+ 
++// HNS9784-TRACE (scratch only, never committed): print every recorded battle event.
++static void HnsTrace_Message(const u8 *s)
++{
++    static const char hex[] = "0123456789ABCDEF";
++    char buf[121];
++    u32 n = 0;
++    bool32 first = TRUE;
++    while (TRUE)
++    {
++        u8 c = *s++;
++        if (c != EOS)
++        {
++            buf[n++] = hex[c >> 4];
++            buf[n++] = hex[c & 0xF];
++        }
++        if (c == EOS || n >= 120)
++        {
++            buf[n] = '\0';
++            Test_MgbaPrintf(first ? "TR:M %s" : "TR:M+ %s", buf);
++            first = FALSE;
++            n = 0;
++            if (c == EOS)
++                break;
++        }
++    }
++}
++
+ #if defined(__INTELLISENSE__)
+ #undef TestRunner_Battle_RecordAbilityPopUp
+ #undef TestRunner_Battle_RecordAnimation
+@@ -578,6 +605,7 @@
+     STATE->checkProgressTurn = 0;
+ 
+     PrintTestName();
++    Test_MgbaPrintf("TR:RUN p=%d t=%d", STATE->runParameter + 1, STATE->runTrial + 1);
+ }
+ 
+ static bool32 IsTieBreakTag(enum RandomTag tag)
+@@ -844,6 +872,7 @@
+ 
+ void TestRunner_Battle_RecordAbilityPopUp(enum BattlerId battlerId, enum Ability ability)
+ {
++    Test_MgbaPrintf("TR:A b=%d ab=%d", battlerId, ability);
+     s32 queuedEvent;
+     s32 match;
+     struct QueuedEvent *event;
+@@ -909,6 +938,7 @@
+ 
+ void TestRunner_Battle_RecordAnimation(u32 animType, u32 animId)
+ {
++    Test_MgbaPrintf("TR:N t=%d id=%d atk=%d tgt=%d", animType, animId, gBattleAnimAttacker, gBattleAnimTarget);
+     s32 queuedEvent;
+     s32 match;
+     struct QueuedEvent *event;
+@@ -1001,6 +1031,7 @@
+ 
+ void TestRunner_Battle_RecordHP(enum BattlerId battlerId, u32 oldHP, u32 newHP)
+ {
++    Test_MgbaPrintf("TR:H b=%d %d->%d", battlerId, oldHP, newHP);
+     s32 queuedEvent;
+     s32 match;
+     struct QueuedEvent *event;
+@@ -1082,6 +1113,7 @@
+ 
+ void TestRunner_Battle_RecordSubHit(enum BattlerId battlerId, u32 damage, bool32 broke)
+ {
++    Test_MgbaPrintf("TR:B b=%d dmg=%d broke=%d", battlerId, damage, broke);
+     s32 queuedEvent;
+     s32 match;
+     struct QueuedEvent *event;
+@@ -1482,6 +1514,7 @@
+ 
+ void TestRunner_Battle_RecordExp(enum BattlerId battlerId, u32 oldExp, u32 newExp)
+ {
++    Test_MgbaPrintf("TR:X b=%d %d->%d", battlerId, oldExp, newExp);
+     s32 queuedEvent;
+     s32 match;
+     struct QueuedEvent *event;
+@@ -1574,6 +1607,7 @@
+ 
+ void TestRunner_Battle_RecordMessage(const u8 *string)
+ {
++    HnsTrace_Message(string);
+     s32 queuedEvent;
+     s32 match;
+     struct QueuedEvent *event;
+@@ -1641,6 +1675,7 @@
+ 
+ void TestRunner_Battle_RecordStatus1(enum BattlerId battlerId, u32 status1)
+ {
++    Test_MgbaPrintf("TR:S b=%d st=%d", battlerId, status1);
+     s32 queuedEvent;
+     s32 match;
+     struct QueuedEvent *event;
+@@ -1867,6 +1902,7 @@
+     if (++STATE->runTrial < STATE->trials)
+     {
+         PrintTestName();
++        Test_MgbaPrintf("TR:RUN p=%d t=%d", STATE->runParameter + 1, STATE->runTrial + 1);
+         gTestRunnerState.result = TEST_RESULT_PASS;
+         DATA.recordedBattle.rngSeed = MakeRngValue(STATE->runTrial);
+         memset(&DATA.trial, 0, sizeof(DATA.trial));
+@@ -3595,6 +3631,7 @@
+ 
+ void TestRunner_Battle_RecordEffectivenessSound(u32 battlerId, u32 soundId)
+ {
++    Test_MgbaPrintf("TR:E b=%d se=%d", battlerId, soundId);
+     s32 queuedEvent;
+     s32 match;
+     struct QueuedEvent *event;
+--- a/src/battle_interface.c
++++ b/src/battle_interface.c
+@@ -2947,8 +2947,15 @@
+     PrintAbilityOnAbilityPopUp(ability, spriteIds[0], spriteIds[1]);
+ }
+ 
++#if TESTING
++s32 Test_MgbaPrintf(const char *fmt, ...); // HNS9784-TRACE
++#endif
+ void CreateItemPopUp(enum BattlerId battler)
+ {
++#if TESTING
++    if (gTestRunnerEnabled)
++        Test_MgbaPrintf("TR:I b=%d item=%d", battler, gLastUsedItem); // HNS9784-TRACE
++#endif
+     u8 *spriteIds;
+     u32 xSlide, tileTag;
+     enum BattlerPosition battlerPosition = GetBattlerPosition(battler);

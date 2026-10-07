@@ -1,0 +1,12 @@
+tree /home/hjm0725/hns-sync-work/chunk-1385/tmp-D/wb
+make_exit 0
+NEWGAME save_status=1 damaged=0 counter=1
+LOAD image=pre-newgame.sav sectors=14
+MAKE save_status=1 damaged=0 counter=1
+MAKE recorded_battle_write=1 size=4008
+HNS8943 SAVE NEWGAME: PASS
+HNS8943 SAVE LOAD: PASS
+HNS8943 SAVE MAKE: PASS
+HNS8943 SAVE RESAVE: PASS
+- Tests PASSED:          4
+- Tests TOTAL:           4
