@@ -23,7 +23,7 @@
 - [2026-10-05 회신](HANDBACK_2026-10-05.md) — full-sync 묶음 1~4(seq 142~170, 167 보류), 슬레이트포트 텐트 파티 수·KO 애니 소프트락 등 HnS 수정, 친구 답(팝업 Q1~Q11·조사 문제) 반영, 묶음 5(seq 171~174, AI 기본 교체 HnS 유지 보고), seq 175 #8434 OWE(꺼 둠, +#10020), 다음 seq 176
 - [2026-10-06 친구 답장](FRIEND_REPLY_2026-10-06.md) — AI 교체·OWE 유지, 질문 5개 모두 수정, 배틀타워 질문 3개, 심향·금선 그래픽 지시서([`ETHAN_LYRA_PLAYER_GRAPHICS.md`](ETHAN_LYRA_PLAYER_GRAPHICS.md), 2026-10-06 적용·실기 대기)
 - [2026-10-06 회신](HANDBACK_2026-10-06.md) — 문자열 4줄(`메일`·`메일을 읽는다`·`!`·`아니오`), 배틀타워·배틀돔 로비 직원 번호, 배틀프런티어 동선, 심향·금선 그래픽([결과](results/ethan-lyra-player-graphics-2026-10-06.md)), 다음 엔진 수정 3건
-- [2026-10-07 회신](HANDBACK_2026-10-07.md) — 친구 지시서 3건(금선 앞모습·목호·실버 뒷모습, 배틀타워 엘리베이터 직원, Gen4 HP 박스 레벨), 엔진 수정 3건(3b 춤추기·3c 불복종 자해·10f 통신 문장), full-sync 묶음 6(seq 176~179, 198 선반영), 프런티어패스 머리 아이콘·색 깨짐 2건([결과](results/frontier-pass-2026-10-07.md)), #9730 결정 요청 → [네 답](FRIEND_REPLY_2026-10-07.md) 반영: seq 181 #9730 단위([결과](results/1.17.0-port/full-sync-seq-181-181.md))·HnS 수정 7개([결과](results/1.17.0-port/full-sync-hnsfix-2026-10-07b.md))
+- [2026-10-07 회신](HANDBACK_2026-10-07.md) — 친구 지시서 3건(금선 앞모습·목호·실버 뒷모습, 배틀타워 엘리베이터 직원, Gen4 HP 박스 레벨), 엔진 수정 3건(3b 춤추기·3c 불복종 자해·10f 통신 문장), full-sync 묶음 6(seq 176~179, 198 선반영), 프런티어패스 머리 아이콘·색 깨짐 2건([결과](results/frontier-pass-2026-10-07.md)), #9730 결정 요청 → [네 답](FRIEND_REPLY_2026-10-07.md) 반영: seq 181 #9730 단위([결과](results/1.17.0-port/full-sync-seq-181-181.md))·HnS 수정([결과](results/1.17.0-port/full-sync-hnsfix-2026-10-07b.md), 주눅구슬 본가 맞춤 포함), full-sync 묶음 7 seq 182~187([결과](results/1.17.0-port/full-sync-seq-182-187.md)), 검증 도구 `dev_scripts/hns_verify/`
 
 ## 시험 도입 중인 제안
 

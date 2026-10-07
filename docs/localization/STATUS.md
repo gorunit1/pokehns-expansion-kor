@@ -1,6 +1,18 @@
 # 현재 인수인계 상태
 
-## 2026-10-07 저녁 — 친구 답 반영: seq 181 #9730 단위(23커밋) + HnS 수정 10개 완료·push (현재, 데스크탑 — 랩탑에서 Remote Control)
+## 2026-10-07 밤 — full-sync 묶음 7(seq 182~187, 384 선반영) 완료·push (현재, 데스크탑 — 랩탑에서 Remote Control)
+
+- **다음 할 일**
+  1. **친구 문자(아직 안 보냄):** HANDBACK 10절(주눅구슬 본가 맞춤 — 사용자에게 문안 줌)·11절(묶음 7, AI 변화 보고 2건).
+  2. **full-sync 다음 seq 188 #9918**(Customizeable Pledge Moves, L, **korean_touch Y**, deps 9176·9446·9514·9494·9657·9674·9730 모두 적용됨). 그 뒤 189 #9805(M, 한글 Y), 190 #9968, 191 #9896(L), 192 #9965, 196 #9988(L, 춤추기 — 3b·X4 HnS 코드와 겹침), 197 #9861, 200 #10024, 202 #10050(`dailySeed`를 `gSaveBlock3Ptr`로, 재확인 31), 204 #10051(XL) … 이미 적용: 183·193~195·198·199·201·203·210~213·234·247·252·258·314·324·326·344·347·384·395·472, 266 부분, 433 `toxic_thread.c` hunk. 167 #9819 보류.
+- **이번 묶음:** 결과 [`full-sync-seq-182-187.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-182-187.md), 회신 `HANDBACK_2026-10-07.md` 11절
+  - 커밋 `d82b5d252f` #9865, `a867e4e056` #9857, `fc0d223782` #9910, `5b878273c2` #9890(+HnS `TRAINER1 = 1`), `d4c0f3f1c7` #10211(seq 384 선반영), `e3637df42b` #9920(SaveBlock3 끝 `dailySeed`), `ccbf3123a9` #9877(`WEATHER_DYNAMIC=24`)
+  - 사용자 결정(2026-10-07 밤 "ㄱㄱ"): 위 HnS 1줄·384 선반영·#9865/#9857 AI 변화 수용(친구 보고)·디버그 날씨 이름표 미추가
+  - 검증: ROM 32,751,812 B, EWRAM 250,408 B(+4), IWRAM 25,516 B, SHA1 `b6626f5b…`, 새 경고 0. 전체 테스트 PASS 2,521 / TOTAL 5,426(사라진 PASS 0) → **기준 [`test-baseline-seq187.txt`](../friend-handoff/results/1.17.0-port/test-baseline-seq187.txt)**. 한글 584개 기대와 같음(494). 세이브: SaveBlock3 52 → 56 B만(이식 전 세이브 호환 실측), 세이브 왕복 기준 sb3 해시 갱신(`dev_scripts/hns_verify` README 5절). 리뷰 2개 수정 필요 0.
+  - 스크래치: `/home/hjm0725/hns-sync-work/chunk-182-187/`(분석·APPLY·REVIEW·apply·main-verify.sh·review-R1/R2)
+- **검증 명령(저장소 도구):** `V=dev_scripts/hns_verify`; 빌드 뒤 `$V/warncheck.sh <로그>`, 전체 테스트 뒤 `$V/testlist.sh <로그> docs/friend-handoff/results/1.17.0-port/test-baseline-seq187.txt`, `ALLOW_REPO=1 $V/kortests/run.sh <저장소> <라벨> 8`(기대 494/584), 세이브 `python3 $V/save/save_compat.py collect --src … --elf … --out <pre>` → `run --pre <pre>`, `$V/save/savetest/run_all.sh <사본> <라벨> 8`.
+
+## 2026-10-07 저녁 — 친구 답 반영: seq 181 #9730 단위(23커밋) + HnS 수정 10개 완료·push (데스크탑 — 랩탑에서 Remote Control)
 
 - **다음 할 일(순서)**
   1. ~~검증 도구 저장소 이전~~ **끝**: `2e60559d0b`·`a368916c5c` → `dev_scripts/hns_verify/`(README 참고). 이제 검증 명령은 저장소 도구로: 한글 `ALLOW_REPO=1 dev_scripts/hns_verify/kortests/run.sh <트리> <라벨>`(기대 494/584 = `kortests/expected/summary.txt`), 세이브 정적 비교 `save/save_compat.py collect … && run --pre …`, 세이브 왕복 `save/savetest/run_all.sh`, 경고 `warncheck.sh`, 테스트 목록 `testlist.sh`. 노트북 실측은 아직(정적 비교가 ARM 13.2.Rel1 objdump에서 같은 커밋끼리 WARN 0인지, 한글 기대 요약이 노트북에서도 맞는지). 스크래치 원본(`chunk-1385/verify`, `hnsfix-1007b/kortests-final`)은 남아 있다.

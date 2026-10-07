@@ -2,6 +2,15 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-07 밤 — full-sync 묶음 7 적용 (데스크탑, 랩탑에서 Remote Control)
+
+- 사용자 결정 6개 "ㄱㄱ"(`chunk-182-187/APPLY.md`). 적용 1개(커밋 7개, 손 맞춤 0) → 리뷰 2개(R1 배틀·AI, R2 필드·디버그·세이브, 수정 필요 0) → 메인 검증(`chunk-182-187/main-verify.sh`: 재빌드·전체 테스트·한글·세이브 정적·왕복).
+- 세이브 왕복 기준 갱신: `dev_scripts/hns_verify/save/savetest/baseline/pre-load-{make,newgame}/load.txt` sb3 해시 `3b703d18` → `919cf698`(#9920 확정 형식 변화, README 5절). 이전 기준이면 이 1줄로 FAIL.
+- 결과: ROM 32,751,812 B, SHA1 `b6626f5b…`, PASS 2,521 / 5,426, 사라진 PASS 0(Growth 이름 변경), 한글 494/584 = 기대 → 기준 `test-baseline-seq187.txt`.
+- 문서: 결과 `full-sync-seq-182-187.md`, 재확인 8p 갱신·31 추가, HANDBACK 11절, README, STATUS.
+- 게임 화면 확인: 하지 않았다.
+- 다음 시작점: seq 188 #9918(Pledge, 한글 Y).
+
 ### 2026-10-07 밤 — 친구 답(저녁) 주눅구슬 본가 맞춤 X6, 묶음 7 사전 분석 (데스크탑, 랩탑에서 Remote Control)
 
 - 친구 답: 막힌 위협에도 주눅구슬 → "본가대로(전부 발동)"(`e34512d599`로 기록). 사용자가 묶음 7(seq 182~187)도 "같이 ㄱㄱ".
