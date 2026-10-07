@@ -2,6 +2,7 @@
 #include "item_use.h"
 #include "battle.h"
 #include "battle_anim.h"
+#include "battle_stat_change.h"
 #include "battle_pyramid.h"
 #include "battle_pyramid_bag.h"
 #include "berry.h"
@@ -1373,6 +1374,7 @@ bool32 CannotUseItemsInBattle(enum Item itemId, struct Pokemon *mon)
         }
         break;
     case EFFECT_ITEM_INCREASE_ALL_STATS:
+    // Never called
     {
         if (hp == 0 || battlerTarget >= MAX_BATTLERS_COUNT)
         {

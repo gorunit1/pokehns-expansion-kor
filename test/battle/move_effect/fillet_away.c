@@ -3,7 +3,7 @@
 
 ASSUMPTIONS
 {
-    ASSUME(GetMoveEffect(MOVE_FILLET_AWAY) == EFFECT_FILLET_AWAY);
+    ASSUME(GetMoveEffect(MOVE_FILLET_AWAY) == EFFECT_STAT_CHANGE_HALF_HP);
 }
 
 SINGLE_BATTLE_TEST("Fillet Away cuts the user's HP in half")

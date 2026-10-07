@@ -276,7 +276,7 @@ DOUBLE_BATTLE_TEST("Dancer doesn't trigger when an ally snatches the move")
 DOUBLE_BATTLE_TEST("Dancer doesn't activate if the original move missed")
 {
     GIVEN {
-        ASSUME(GetMoveEffect(MOVE_DOUBLE_TEAM) == EFFECT_EVASION_UP);
+        ASSUME_STAT_CHANGE(MOVE_DOUBLE_TEAM, evasion: +1);
         PLAYER(SPECIES_WOBBUFFET);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); }
@@ -639,7 +639,7 @@ SINGLE_BATTLE_TEST("Dancer copies a status Z-Move's base move without gaining an
 {
     GIVEN {
         ASSUME(IsDanceMove(MOVE_SWORDS_DANCE));
-        ASSUME(GetMoveEffect(MOVE_SCREECH) == EFFECT_DEFENSE_DOWN_2);
+        ASSUME_STAT_CHANGE(MOVE_SCREECH, defense: -2);
         ASSUME(GetMoveZEffect(MOVE_SWORDS_DANCE) == Z_EFFECT_RESET_STATS);
         PLAYER(SPECIES_WOBBUFFET) { Item(ITEM_NORMALIUM_Z); }
         OPPONENT(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); }
@@ -906,7 +906,7 @@ DOUBLE_BATTLE_TEST("Dancer sent in by Eject Button or Eject Pack copies a later 
         ASSUME(IsDanceMove(MOVE_DRAGON_DANCE));
         ASSUME(GetItemHoldEffect(ITEM_EJECT_BUTTON) == HOLD_EFFECT_EJECT_BUTTON);
         ASSUME(GetItemHoldEffect(ITEM_EJECT_PACK) == HOLD_EFFECT_EJECT_PACK);
-        ASSUME(GetMoveEffect(MOVE_CHARM) == EFFECT_ATTACK_DOWN_2);
+        ASSUME_STAT_CHANGE(MOVE_CHARM, attack: -2);
         PLAYER(SPECIES_WOBBUFFET) { Speed(1); Item(item); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
         PLAYER(SPECIES_ORICORIO) { Speed(5); Ability(ABILITY_DANCER); Moves(MOVE_CELEBRATE); }
         PLAYER(SPECIES_ORICORIO) { Speed(1); Ability(ABILITY_DANCER); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
@@ -973,7 +973,7 @@ DOUBLE_BATTLE_TEST("Dancer sent in by Eject Pack copies the dance move that made
 {
     GIVEN {
         ASSUME(IsDanceMove(MOVE_FEATHER_DANCE));
-        ASSUME(GetMoveEffect(MOVE_FEATHER_DANCE) == EFFECT_ATTACK_DOWN_2);
+        ASSUME_STAT_CHANGE(MOVE_FEATHER_DANCE, attack: -2);
         ASSUME(GetItemHoldEffect(ITEM_EJECT_PACK) == HOLD_EFFECT_EJECT_PACK);
         PLAYER(SPECIES_WOBBUFFET) { Speed(1); Item(ITEM_EJECT_PACK); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
         PLAYER(SPECIES_WYNAUT) { Speed(5); }

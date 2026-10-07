@@ -100,9 +100,9 @@ enum
     MULTI_FRONTIER_GAMBLER_BET                       = 87,
     MULTI_TENT                                       = 88,
     MULTI_UNUSED_SSTIDAL_1                           = 89, // These 4 were replaced by CreateLilycoveSSTidalMultichoice
-    MULTI_UNUSED_SSTIDAL_2                           = 90, //
-    MULTI_UNUSED_SSTIDAL_3                           = 91, //
-    MULTI_UNUSED_SSTIDAL_4                           = 92, //
+    MULTI_UNUSED_SSTIDAL_2                           = 90,
+    MULTI_UNUSED_SSTIDAL_3                           = 91,
+    MULTI_UNUSED_SSTIDAL_4                           = 92,
     MULTI_FOSSIL                                     = 93,
     MULTI_YESNO                                      = 94,
     MULTI_FRONTIER_RULES                             = 95,
