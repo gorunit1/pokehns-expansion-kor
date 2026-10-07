@@ -289,7 +289,8 @@ static enum ItemEffect TrySnowball(enum BattlerId battlerDef)
     enum ItemEffect effect = ITEM_NO_EFFECT;
 
     if (IsBattlerTurnDamaged(battlerDef, EXCLUDING_SUBSTITUTES)
-     && GetBattleMoveType(gCurrentMove) == TYPE_ICE)
+     && GetBattleMoveType(gCurrentMove) == TYPE_ICE
+     && CompareStat(battlerDef, STAT_ATK, MAX_STAT_STAGE, CMP_LESS_THAN, GetBattlerAbility(battlerDef))) // HnS: not used up when the stat can't change (+6, -6 with Contrary), as in the main series and HnS before #9730
     {
         SetStatChange(battlerDef, STAT_ATK, 1);
         BattleScriptCall(BattleScript_ItemStatChange);
@@ -304,7 +305,8 @@ static enum ItemEffect TryLuminousMoss(enum BattlerId battlerDef)
     enum ItemEffect effect = ITEM_NO_EFFECT;
 
     if (IsBattlerTurnDamaged(battlerDef, EXCLUDING_SUBSTITUTES)
-     && GetBattleMoveType(gCurrentMove) == TYPE_WATER)
+     && GetBattleMoveType(gCurrentMove) == TYPE_WATER
+     && CompareStat(battlerDef, STAT_SPDEF, MAX_STAT_STAGE, CMP_LESS_THAN, GetBattlerAbility(battlerDef))) // HnS: not used up when the stat can't change (+6, -6 with Contrary), as in the main series and HnS before #9730
     {
         SetStatChange(battlerDef, STAT_SPDEF, 1);
         BattleScriptCall(BattleScript_ItemStatChange);
@@ -319,7 +321,8 @@ static enum ItemEffect TryCellBattery(enum BattlerId battlerDef)
     enum ItemEffect effect = ITEM_NO_EFFECT;
 
     if (IsBattlerTurnDamaged(battlerDef, EXCLUDING_SUBSTITUTES)
-     && GetBattleMoveType(gCurrentMove) == TYPE_ELECTRIC)
+     && GetBattleMoveType(gCurrentMove) == TYPE_ELECTRIC
+     && CompareStat(battlerDef, STAT_ATK, MAX_STAT_STAGE, CMP_LESS_THAN, GetBattlerAbility(battlerDef))) // HnS: not used up when the stat can't change (+6, -6 with Contrary), as in the main series and HnS before #9730
     {
         SetStatChange(battlerDef, STAT_ATK, 1);
         BattleScriptCall(BattleScript_ItemStatChange);
@@ -334,7 +337,8 @@ static enum ItemEffect TryAbsorbBulb(enum BattlerId battlerDef)
     enum ItemEffect effect = ITEM_NO_EFFECT;
 
     if (IsBattlerTurnDamaged(battlerDef, EXCLUDING_SUBSTITUTES)
-     && GetBattleMoveType(gCurrentMove) == TYPE_WATER)
+     && GetBattleMoveType(gCurrentMove) == TYPE_WATER
+     && CompareStat(battlerDef, STAT_SPATK, MAX_STAT_STAGE, CMP_LESS_THAN, GetBattlerAbility(battlerDef))) // HnS: not used up when the stat can't change (+6, -6 with Contrary), as in the main series and HnS before #9730
     {
         SetStatChange(battlerDef, STAT_SPATK, 1);
         BattleScriptCall(BattleScript_ItemStatChange);

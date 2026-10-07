@@ -213,3 +213,100 @@ SINGLE_BATTLE_TEST("Weakness Policy (HnS): still used by a Contrary holder with 
         EXPECT_EQ(opponent->item, ITEM_NONE);
     }
 }
+
+// Snowball, Cell Battery, Absorb Bulb and Luminous Moss follow the same rule (main series; HnS before #9730 checked
+// them first with STAT_CHANGE_ONLY_CHECKING).
+
+SINGLE_BATTLE_TEST("Snowball, Cell Battery, Absorb Bulb, Luminous Moss (HnS): not used up when the stat is already +6")
+{
+    u32 item, setupMove, hitMove, stat;
+
+    PARAMETRIZE { item = ITEM_SNOWBALL;      setupMove = MOVE_SWORDS_DANCE; hitMove = MOVE_ICE_SHARD;     stat = STAT_ATK; }
+    PARAMETRIZE { item = ITEM_CELL_BATTERY;  setupMove = MOVE_SWORDS_DANCE; hitMove = MOVE_THUNDER_SHOCK; stat = STAT_ATK; }
+    PARAMETRIZE { item = ITEM_ABSORB_BULB;   setupMove = MOVE_NASTY_PLOT;   hitMove = MOVE_WATER_GUN;     stat = STAT_SPATK; }
+    PARAMETRIZE { item = ITEM_LUMINOUS_MOSS; setupMove = MOVE_AMNESIA;      hitMove = MOVE_WATER_GUN;     stat = STAT_SPDEF; }
+    GIVEN {
+        ASSUME(GetItemHoldEffect(ITEM_SNOWBALL) == HOLD_EFFECT_SNOWBALL);
+        ASSUME(GetItemHoldEffect(ITEM_CELL_BATTERY) == HOLD_EFFECT_CELL_BATTERY);
+        ASSUME(GetItemHoldEffect(ITEM_ABSORB_BULB) == HOLD_EFFECT_ABSORB_BULB);
+        ASSUME(GetItemHoldEffect(ITEM_LUMINOUS_MOSS) == HOLD_EFFECT_LUMINOUS_MOSS);
+        ASSUME(GetMoveType(MOVE_ICE_SHARD) == TYPE_ICE);
+        ASSUME(GetMoveType(MOVE_THUNDER_SHOCK) == TYPE_ELECTRIC);
+        ASSUME(GetMoveType(MOVE_WATER_GUN) == TYPE_WATER);
+        ASSUME_STAT_CHANGE(MOVE_SWORDS_DANCE, attack: 2);
+        ASSUME_STAT_CHANGE(MOVE_NASTY_PLOT, spAtk: 2);
+        ASSUME_STAT_CHANGE(MOVE_AMNESIA, spDef: 2);
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET) { Item(item); HP(500); MaxHP(500); }
+    } WHEN {
+        TURN { MOVE(opponent, setupMove); }
+        TURN { MOVE(opponent, setupMove); }
+        TURN { MOVE(opponent, setupMove); }
+        TURN { MOVE(player, hitMove); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, hitMove, player);
+        HP_BAR(opponent);
+        NONE_OF {
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, opponent);
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
+        }
+    } THEN {
+        EXPECT_EQ(opponent->statStages[stat], MAX_STAT_STAGE);
+        EXPECT_EQ(opponent->item, item);
+    }
+}
+
+SINGLE_BATTLE_TEST("Snowball, Cell Battery, Absorb Bulb, Luminous Moss (HnS): still used when the stat is below +6")
+{
+    u32 item, setupMove, hitMove, stat;
+
+    PARAMETRIZE { item = ITEM_SNOWBALL;      setupMove = MOVE_SWORDS_DANCE; hitMove = MOVE_ICE_SHARD;     stat = STAT_ATK; }
+    PARAMETRIZE { item = ITEM_CELL_BATTERY;  setupMove = MOVE_SWORDS_DANCE; hitMove = MOVE_THUNDER_SHOCK; stat = STAT_ATK; }
+    PARAMETRIZE { item = ITEM_ABSORB_BULB;   setupMove = MOVE_NASTY_PLOT;   hitMove = MOVE_WATER_GUN;     stat = STAT_SPATK; }
+    PARAMETRIZE { item = ITEM_LUMINOUS_MOSS; setupMove = MOVE_AMNESIA;      hitMove = MOVE_WATER_GUN;     stat = STAT_SPDEF; }
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET) { Item(item); HP(500); MaxHP(500); }
+    } WHEN {
+        TURN { MOVE(opponent, setupMove); }
+        TURN { MOVE(opponent, setupMove); }
+        TURN { MOVE(player, hitMove); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, hitMove, player);
+        HP_BAR(opponent);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, opponent);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
+    } THEN {
+        EXPECT_EQ(opponent->statStages[stat], DEFAULT_STAT_STAGE + 5);
+        EXPECT_EQ(opponent->item, ITEM_NONE);
+    }
+}
+
+SINGLE_BATTLE_TEST("Snowball, Cell Battery, Absorb Bulb, Luminous Moss (HnS): not used up when a Contrary holder has the stat at -6")
+{
+    u32 item, setupMove, hitMove, stat;
+
+    PARAMETRIZE { item = ITEM_SNOWBALL;      setupMove = MOVE_SWORDS_DANCE; hitMove = MOVE_ICE_SHARD;     stat = STAT_ATK; }
+    PARAMETRIZE { item = ITEM_CELL_BATTERY;  setupMove = MOVE_SWORDS_DANCE; hitMove = MOVE_THUNDER_SHOCK; stat = STAT_ATK; }
+    PARAMETRIZE { item = ITEM_ABSORB_BULB;   setupMove = MOVE_NASTY_PLOT;   hitMove = MOVE_WATER_GUN;     stat = STAT_SPATK; }
+    PARAMETRIZE { item = ITEM_LUMINOUS_MOSS; setupMove = MOVE_AMNESIA;      hitMove = MOVE_WATER_GUN;     stat = STAT_SPDEF; }
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_SPINDA) { Ability(ABILITY_CONTRARY); Item(item); HP(500); MaxHP(500); }
+    } WHEN {
+        TURN { MOVE(opponent, setupMove); }
+        TURN { MOVE(opponent, setupMove); }
+        TURN { MOVE(opponent, setupMove); }
+        TURN { MOVE(player, hitMove); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, hitMove, player);
+        HP_BAR(opponent);
+        NONE_OF {
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, opponent);
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
+        }
+    } THEN {
+        EXPECT_EQ(opponent->statStages[stat], MIN_STAT_STAGE);
+        EXPECT_EQ(opponent->item, item);
+    }
+}
