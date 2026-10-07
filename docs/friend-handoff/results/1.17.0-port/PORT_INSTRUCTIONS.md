@@ -42,6 +42,8 @@ upstream은 저장소 옆 폴더 `../pokeemerald-expansion-upstream` (없으면 
 - `STATUS.md`·`SESSION_LOG.md`는 건드리지 않는다(메인이 통합한다).
 
 ## 테스트
+
+**검증 도구(2026-10-07부터 저장소 안):** `dev_scripts/hns_verify/`(사용법 `README.md`). 한글 배틀 출력 회귀 `kortests/run.sh`, 세이브 정적 비교 `save/save_compat.py`(`collect`로 직전 기준을 만들고 `run --pre`), 세이브 왕복 `save/savetest/run_all.sh`, 새 경고 `warncheck.sh`, 전체 테스트 목록·사라진 PASS `testlist.sh`. 빌드·테스트·ROM에는 들어가지 않는다. 아래 명령은 같은 일을 손으로 하는 방법이다.
 `make check BUILD=hns`는 쓸 수 있는 상태다. 테스트 러너 복구 seq 1과 힙 수정 `7df90335e4`·`a04eae0499`가 반영되어 있다. 원인과 분류는 [`TEST_RUNNER_FIX.md`](TEST_RUNNER_FIX.md)에 있다.
 - 파일 하나만 실행: `make check BUILD=hns -j4 TESTS="test/battle/weather/hail.c"`
 - 이름 접두어로 실행: `make check BUILD=hns -j4 TESTS="Hail deals 1/16"`

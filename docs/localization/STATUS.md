@@ -3,8 +3,8 @@
 ## 2026-10-07 저녁 — 친구 답 반영: seq 181 #9730 단위(23커밋) + HnS 수정 10개 완료·push (현재, 데스크탑 — 랩탑에서 Remote Control)
 
 - **다음 할 일(순서)**
-  1. **검증 도구 저장소 이전(친구 질문 5 승인):** `dev_scripts/hns_verify/`에 세이브 정적 비교(`save_compat.py`+`dwarf_layout.py`)·세이브 왕복(`savetest/` + 기준 세이브 2개)·한글 회귀(최신 584개 세트 `/home/hjm0725/hns-sync-work/hnsfix-1007b/kortests-final/` + 기대 요약 `runs/finalx5-summary.txt`)·경고 기준·사본 도구를 넣는다. 설계는 `/home/hjm0725/hns-sync-work/hnsfix-1007/tools-migration.md`(빌드·CI가 보지 않는 폴더, 한글 `.c`는 `test/` 밖에 두고 실행 때 복사, 경로는 환경 변수, 실제 저장소 가드는 `.git` 판정). 리뷰 R3: 한글 세트에 K1-51·K2-16·K3-25·HNSX1을 꼭 포함(주눅구슬·충전 문장은 저장소 테스트가 없음).
-  2. **친구 문자(아직 안 보냄):** `HANDBACK_2026-10-07.md` 9절 = 이번 결과 + 새 질문 1개(막힌 위협 + 주눅구슬, 재확인 28) + mGBA 목록. 디스코드용으로 나눠 사용자에게 준다.
+  1. ~~검증 도구 저장소 이전~~ **끝**: `2e60559d0b`·`a368916c5c` → `dev_scripts/hns_verify/`(README 참고). 이제 검증 명령은 저장소 도구로: 한글 `ALLOW_REPO=1 dev_scripts/hns_verify/kortests/run.sh <트리> <라벨>`(기대 494/584 = `kortests/expected/summary.txt`), 세이브 정적 비교 `save/save_compat.py collect … && run --pre …`, 세이브 왕복 `save/savetest/run_all.sh`, 경고 `warncheck.sh`, 테스트 목록 `testlist.sh`. 노트북 실측은 아직(정적 비교가 ARM 13.2.Rel1 objdump에서 같은 커밋끼리 WARN 0인지, 한글 기대 요약이 노트북에서도 맞는지). 스크래치 원본(`chunk-1385/verify`, `hnsfix-1007b/kortests-final`)은 남아 있다.
+  2. **친구 문자(아직 안 보냄):** 초안 `/home/hjm0725/hns-sync-work/chunk-181/discord-2026-10-07-result.md`(3개, = HANDBACK 9절: 결과 + 새 질문 1개(막힌 위협 + 주눅구슬, 재확인 28) + mGBA 목록 + 도구 이전).
   3. **full-sync 다음 seq 182 #9865**(Mega Sol test adjustments). 순서표상 이미 적용: 183·193·194·195·201·203·210·211·212·213·234·247·252·258·314·324·326·344·347·395·472(#9730 단위 선반영), 198·199(선반영), 266은 부분(끈적끈적네트 config — 기본 Gen9면 동작 변화, 결정 필요), 433 #10282는 `toxic_thread.c` hunk만. 167 #9819 보류 그대로.
 - **이번에 한 것:** 결과 [`full-sync-seq-181-181.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-181-181.md), [`full-sync-hnsfix-2026-10-07b.md`](../friend-handoff/results/1.17.0-port/full-sync-hnsfix-2026-10-07b.md), 친구 답 [`FRIEND_REPLY_2026-10-07.md`](../friend-handoff/FRIEND_REPLY_2026-10-07.md), 회신 `HANDBACK_2026-10-07.md` 9절
   - `f9fe99ab1f` CREDITS(금선 앞모습 예외), `24ff546631` 친구 답 기록

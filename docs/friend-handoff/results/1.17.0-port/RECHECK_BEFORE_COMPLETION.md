@@ -70,7 +70,7 @@
 | 14 | 기본 `make`(Emerald)·FRLG 빌드가 HnS 전용 `FLAG_DEFEATED_RED`(`src/pokemon.c`, `src/party_menu.c`) 때문에 실패(이식 전부터, `full-sync-seq-128-128.md`) | |
 | 15 | `make hns`는 RELEASE=0이라 그림 없는 트레이너 ID, 비어 있는 저장 스택 등에서 assertf 화면이 뜬다. 새 파트너·트레이너 추가 때 그림 존재 확인(`full-sync-seq-128-128.md`) | |
 | 16 | 프런티어 AI 파트너 멀티의 트레이너 슬라이드가 `gBattlePartners`를 표 밖에서 읽을 수 있음(지금은 슬라이드 대사가 없어 도달 안 함, `full-sync-seq-128-128.md`) | |
-| 17 | 한글 출력 회귀 테스트(턴 종료 70개 등)가 저장소 밖에만 있다. 저장소에 둘지 친구와 정한다. 2026-10-07 이전 검토: `dev_scripts/hns_verify/`에 두고 한글 테스트 `.c`는 `test/` 밖(실행 때 복사), 절대 경로를 환경 변수로, 세이브 비교 이식 전 기준은 같은 기계에서 매번 생성(노트북·데스크탑 툴체인 차이) — 1단계 약 47파일(`/home/hjm0725/hns-sync-work/hnsfix-1007/tools-migration.md`). 고칠 점: 세이브 왕복 도구가 이미지를 바꾼 뒤 테스트를 다시 빌드하지 않아 다른 이미지를 읽은 적이 있다(seq 179 검증, 재실행으로 PASS) | |
+| 17 | 한글 출력 회귀 테스트(턴 종료 70개 등)가 저장소 밖에만 있다. 저장소에 둘지 친구와 정한다. 2026-10-07 이전 검토: `dev_scripts/hns_verify/`에 두고 한글 테스트 `.c`는 `test/` 밖(실행 때 복사), 절대 경로를 환경 변수로, 세이브 비교 이식 전 기준은 같은 기계에서 매번 생성(노트북·데스크탑 툴체인 차이) — 1단계 약 47파일(`/home/hjm0725/hns-sync-work/hnsfix-1007/tools-migration.md`). 고칠 점: 세이브 왕복 도구가 이미지를 바꾼 뒤 테스트를 다시 빌드하지 않아 다른 이미지를 읽은 적이 있다(seq 179 검증, 재실행으로 PASS) |  **해결** 2026-10-07 `2e60559d0b`·`a368916c5c`(친구 승인): `dev_scripts/hns_verify/`(한글 회귀 584개·세이브 정적 비교·세이브 왕복·경고·테스트 목록, 빌드·테스트·ROM 영향 0 실측). 세이브 왕복은 실행마다 테스트를 다시 빌드하고 `LOAD image=` 해시가 다르면 FAIL |
 | 25 | `TinTower_RoofDay_hns`가 `WhirlIslands_LugiaChamber_hns`의 `LOCALID_KIMONO_1`(3)·`LOCALID_KIMONO_4`(5)·`LOCALID_KIMONO_MID`(4)를 빌려 쓴다. 두 맵의 3번·5번 기모노 소녀 스크립트가 서로 반대(TinTower 3번 미키·5번 나오코, Lugia 3번 나오코·5번 미키)라 의도한 소녀가 움직이는지 미확인(2026-10-06 프런티어 로비 번호 조사 중 발견, `full-sync-hnsfix-2026-10-06.md`). 실기에서 어긋나면 HnS 번호 이름을 붙인다 | |
 
 ## 5. HnS가 upstream과 다르게 둔 곳 (뒤 PR을 이식할 때 다시 맞출 것)

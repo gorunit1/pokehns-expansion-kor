@@ -2,6 +2,15 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-07 밤 — 검증 도구 저장소 이전 (데스크탑, 랩탑에서 Remote Control)
+
+- 요청: 친구 질문 5 승인(재확인 17). 설계 `/home/hjm0725/hns-sync-work/hnsfix-1007/tools-migration.md`, 에이전트 1개.
+- 커밋: `2e60559d0b`(스크래치 원본 바이트 그대로 → 다음 커밋 diff로 경로 수정이 보이게), `a368916c5c`(환경 변수 경로·`.git` 판정·정리·README). `dev_scripts/hns_verify/` 56파일 1.05 MB(한글 세트 28파일 584개, 세이브 이미지 2개는 `.gitignore` `*.sa*`를 피해 `*-flash.bin`). trace·로그·`verify/pre`·selftest는 넣지 않음.
+- 검증: 폴더 추가 뒤 `make hns` SHA1 `eab66f3f…` 그대로, `make check` 테스트 소스 958개(이 폴더 0개). 새 위치 실행: 한글 494/584(`finalx5`와 바이트 같음), 세이브 왕복 PASS(사본·저장소), 정적 비교 같은 ELF끼리 FAIL 0·WARN 0, `pre181` 기준이면 옛 도구와 판정 줄 같음, 경고·테스트 목록 도구 확인. 실행 뒤 저장소 `git status` 깨끗.
+- 고친 것: 세이브 왕복이 이미지를 바꾼 뒤 테스트를 다시 빌드하지 않던 문제(실행마다 오브젝트 삭제, `LOAD image=` 해시 검사), 같은 사본을 두 도구에 쓰면 테스트가 섞이던 문제.
+- 문서: 재확인 17 해결, `PORT_INSTRUCTIONS.md` 테스트 절에 도구 안내, HANDBACK 9절, STATUS.
+- 남은 일: 노트북 실측, 2단계(selftest, 테스트 머리 주석 정리).
+
 ### 2026-10-07 저녁 — 친구 답 반영: #9730 단위 + HnS 수정 10개 (데스크탑, 랩탑에서 Remote Control)
 
 - 요청: 사용자가 친구 답(회신 4/6 질문 5개, 6/6 #9730 결정 9개)을 붙여 넣었다 → `FRIEND_REPLY_2026-10-07.md`.
