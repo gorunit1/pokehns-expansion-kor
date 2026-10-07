@@ -1437,7 +1437,7 @@ static u32 UpdateEffectivenessResultFlagsForDoubleSpreadMoves(void)
 
 static inline bool32 TryStrongWindsWeakenAttack(enum BattlerId battlerDef, enum Type moveType)
 {
-    if (gBattleWeather & B_WEATHER_STRONG_WINDS && HasWeatherEffect())
+    if (GetWeather() & B_WEATHER_STRONG_WINDS)
     {
         if (GetMoveCategory(gCurrentMove) != DAMAGE_CATEGORY_STATUS
          && IS_BATTLER_OF_TYPE(battlerDef, TYPE_FLYING)

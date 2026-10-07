@@ -279,7 +279,7 @@ bool32 IsSwitchinTSpikesAffected(enum BattlerId battler)
         return FALSE;
     if (IS_BATTLER_ANY_TYPE(battler, TYPE_POISON, TYPE_STEEL))
         return FALSE;
-    if (ability == ABILITY_IMMUNITY || IsAbilityOnSide(battler, ABILITY_PASTEL_VEIL))
+    if (ability == ABILITY_IMMUNITY || AI_IsAbilityOnSide(battler, ABILITY_PASTEL_VEIL))
         return FALSE;
     if ((heldItemEffect == HOLD_EFFECT_HEAVY_DUTY_BOOTS || heldItemEffect == HOLD_EFFECT_CURE_PSN || heldItemEffect == HOLD_EFFECT_CURE_STATUS) && !ignoreItem)
         return FALSE;
@@ -1754,60 +1754,59 @@ static s32 GetSwitchinWeatherImpact(enum BattlerId battler)
     s32 weatherImpact = 0, maxHP = gBattleMons[battler].maxHP;
     enum Ability ability = gAiLogicData->abilities[battler];
     enum HoldEffect holdEffect = gAiLogicData->holdEffects[battler];
+    u32 weather = AI_GetSwitchinWeather(battler);
 
-    if (HasWeatherEffect())
+    // Damage
+    if (holdEffect != HOLD_EFFECT_SAFETY_GOGGLES && ability != ABILITY_MAGIC_GUARD && ability != ABILITY_OVERCOAT)
     {
-        // Damage
-        if (holdEffect != HOLD_EFFECT_SAFETY_GOGGLES && ability != ABILITY_MAGIC_GUARD && ability != ABILITY_OVERCOAT)
+        if ((weather  & B_WEATHER_HAIL)
+         && !IS_BATTLER_OF_TYPE(battler, TYPE_ICE)
+         && ability != ABILITY_SNOW_CLOAK && ability != ABILITY_ICE_BODY)
         {
-            if ((gBattleWeather & B_WEATHER_HAIL)
-             && !IS_BATTLER_OF_TYPE(battler, TYPE_ICE)
-             && ability != ABILITY_SNOW_CLOAK && ability != ABILITY_ICE_BODY)
-            {
-                weatherImpact = maxHP / 16;
-                if (weatherImpact == 0)
-                    weatherImpact = 1;
-            }
-            else if ((gBattleWeather & B_WEATHER_SANDSTORM)
-                && !IS_BATTLER_ANY_TYPE(battler, TYPE_ROCK, TYPE_GROUND, TYPE_STEEL)
-                && ability != ABILITY_SAND_VEIL && ability != ABILITY_SAND_RUSH && ability != ABILITY_SAND_FORCE)
-            {
-                weatherImpact = maxHP / 16;
-                if (weatherImpact == 0)
-                    weatherImpact = 1;
-            }
-        }
-        if ((gBattleWeather & B_WEATHER_SUN) && holdEffect != HOLD_EFFECT_UTILITY_UMBRELLA
-         && (ability == ABILITY_SOLAR_POWER || ability == ABILITY_DRY_SKIN))
-        {
-            weatherImpact = maxHP / 8;
+            weatherImpact = maxHP / 16;
             if (weatherImpact == 0)
                 weatherImpact = 1;
         }
-
-        // Healing
-        if (gBattleWeather & B_WEATHER_RAIN && holdEffect != HOLD_EFFECT_UTILITY_UMBRELLA)
+        else if ((weather  & B_WEATHER_SANDSTORM)
+            && !IS_BATTLER_ANY_TYPE(battler, TYPE_ROCK, TYPE_GROUND, TYPE_STEEL)
+            && ability != ABILITY_SAND_VEIL && ability != ABILITY_SAND_RUSH && ability != ABILITY_SAND_FORCE)
         {
-            if (ability == ABILITY_DRY_SKIN)
-            {
-                weatherImpact = -(maxHP / 8);
-                if (weatherImpact == 0)
-                    weatherImpact = -1;
-            }
-            else if (ability == ABILITY_RAIN_DISH)
-            {
-                weatherImpact = -(maxHP / 16);
-                if (weatherImpact == 0)
-                    weatherImpact = -1;
-            }
+            weatherImpact = maxHP / 16;
+            if (weatherImpact == 0)
+                weatherImpact = 1;
         }
-        if (((gBattleWeather & B_WEATHER_HAIL) || (gBattleWeather & B_WEATHER_SNOW)) && ability == ABILITY_ICE_BODY)
+    }
+    if ((weather  & B_WEATHER_SUN) && holdEffect != HOLD_EFFECT_UTILITY_UMBRELLA
+     && (ability == ABILITY_SOLAR_POWER || ability == ABILITY_DRY_SKIN))
+    {
+        weatherImpact = maxHP / 8;
+        if (weatherImpact == 0)
+            weatherImpact = 1;
+    }
+
+    // Healing
+    if (weather  & B_WEATHER_RAIN && holdEffect != HOLD_EFFECT_UTILITY_UMBRELLA)
+    {
+        if (ability == ABILITY_DRY_SKIN)
+        {
+            weatherImpact = -(maxHP / 8);
+            if (weatherImpact == 0)
+                weatherImpact = -1;
+        }
+        else if (ability == ABILITY_RAIN_DISH)
         {
             weatherImpact = -(maxHP / 16);
             if (weatherImpact == 0)
                 weatherImpact = -1;
         }
     }
+    if ((weather & (B_WEATHER_HAIL | B_WEATHER_SNOW)) && ability == ABILITY_ICE_BODY)
+    {
+        weatherImpact = -(maxHP / 16);
+        if (weatherImpact == 0)
+            weatherImpact = -1;
+    }
+
     return weatherImpact;
 }
 
@@ -2970,7 +2969,7 @@ static void SetBattlerVolatilesForSwitchin(enum BattlerId battler, u32 weather, 
             gBattleMons[battler].volatiles.boosterEnergyActivated = TRUE;
         break;
     case ABILITY_PROTOSYNTHESIS:
-        if (((weather & B_WEATHER_SUN) && HasWeatherEffect()) || GetItemHoldEffect(aiItem) == HOLD_EFFECT_BOOSTER_ENERGY)
+        if ((weather & B_WEATHER_SUN) || GetItemHoldEffect(aiItem) == HOLD_EFFECT_BOOSTER_ENERGY)
             gBattleMons[battler].volatiles.boosterEnergyActivated = TRUE;
         break;
     case ABILITY_WIND_POWER:

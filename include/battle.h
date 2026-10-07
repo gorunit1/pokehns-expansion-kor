@@ -238,7 +238,6 @@ struct AiLogicData
     u8 resistBerryAffected[MAX_BATTLERS_COUNT][MAX_BATTLERS_COUNT][MAX_MON_MOVES]; // Tracks whether currently calc'd move is affected by a resist berry into given target
 
     // Flags
-    u32 weatherHasEffect:1; // The same as HasWeatherEffect(). Stored here, so it's called only once.
     u32 ejectButtonSwitch:1; // Tracks whether current switch out was from Eject Button
     u32 ejectPackSwitch:1; // Tracks whether current switch out was from Eject Pack
     u32 predictingSwitch:1; // Determines whether AI will use switch predictions this turn or not
@@ -253,7 +252,7 @@ struct AiLogicData
     u32 reverseBattlerLogicOrder:1;
     u32 battlerMovesScored:4;
     u32 dragonDartsHitsBothTarget:4;
-    u32 padding2:8;
+    u32 padding2:9;
 };
 
 struct AiThinkingStruct
