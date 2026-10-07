@@ -481,7 +481,9 @@ static void StatChanged(struct BattleCalcValues *cv, struct StatChange *st, bool
             gBattleMons[cv->battlerDef].statStages[st->stat] = MIN_STAT_STAGE;
     }
 
-    if (cv->moveEffect == EFFECT_STOCKPILE && st->stage > 0)
+    // HnS: count the Def/Sp. Def changes of Stockpile in both directions, as in the main series and HnS before #9730,
+    // so that Spit Up/Swallow give a Contrary user back what it lost (the wear-off is inverted by AdjustStatStage)
+    if (cv->moveEffect == EFFECT_STOCKPILE && st->stage != 0)
     {
         switch (st->stat)
         {
