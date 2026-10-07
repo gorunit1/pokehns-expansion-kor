@@ -657,6 +657,15 @@ static enum CancelerResult CancelerPledgeAttack(struct BattleCalcValues *cv)
     {
         enum Move partnerMove = GetBattlerChosenMove(BATTLE_PARTNER(cv->battlerAtk));
 
+        // HnS: the waiting user's partner is not really using its pledge (Encore, Z-Move, Max Move, disobedience,
+        // replaced mid-turn) or the wait came from a called move (Instruct, Sleep Talk, Metronome, Me First):
+        // no combined move. Upstream would assertf in GetPledgeComboMove/GetPledgeResultMove here.
+        if (GetMoveEffect(cv->move) != EFFECT_PLEDGE || GetMoveEffect(partnerMove) != EFFECT_PLEDGE)
+        {
+            gBattleStruct->pledgeState = PLEDGE_COMBO_NONE;
+            return CANCELER_RESULT_SUCCESS;
+        }
+
         if (GetPledgeComboMove(cv->move) == partnerMove)
             gCurrentMove = GetPledgeResultMove(cv->move);
         else
