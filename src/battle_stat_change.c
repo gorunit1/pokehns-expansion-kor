@@ -689,7 +689,8 @@ static bool32 IsIntimidateBlocked(struct BattleCalcValues *cv, struct StatChange
 
         SetStatChange2(cv->battlerDef, st->stat, -1 * st->stage);
         st->script = BattleScript_DefiantActivates;
-        gEffectBattler = cv->battlerDef;
+        // HnS: gEffectBattler stays on the Intimidate user. trystatchanges BS_EFFECT_BATTLER reads it again for the next
+        //      target, so moving it to the Guard Dog holder (upstream #9730) made Intimidate skip the other foe in doubles
         break;
     }
     default:
