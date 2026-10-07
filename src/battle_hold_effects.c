@@ -270,7 +270,10 @@ static enum ItemEffect TryWeaknessPolicy(enum BattlerId battlerDef)
     enum ItemEffect effect = ITEM_NO_EFFECT;
 
     if (IsBattlerTurnDamaged(battlerDef, EXCLUDING_SUBSTITUTES)
-     && gBattleStruct->moveResultFlags[battlerDef] & MOVE_RESULT_HIGH_EFFECTIVENESS)
+     && gBattleStruct->moveResultFlags[battlerDef] & MOVE_RESULT_HIGH_EFFECTIVENESS
+     // HnS: not used up when neither stat can change (both +6, both -6 with Contrary), as in the main series and HnS before #9730
+     && (CompareStat(battlerDef, STAT_ATK, MAX_STAT_STAGE, CMP_LESS_THAN, GetBattlerAbility(battlerDef))
+      || CompareStat(battlerDef, STAT_SPATK, MAX_STAT_STAGE, CMP_LESS_THAN, GetBattlerAbility(battlerDef))))
     {
         SetStatChange(battlerDef, STAT_ATK, 2);
         SetStatChange(battlerDef, STAT_SPATK, 2);

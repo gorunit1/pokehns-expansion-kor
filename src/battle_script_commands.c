@@ -14531,7 +14531,8 @@ void BS_TryAdrenalineOrb(void)
 
     if (gBattleStruct->intimidateActivated
      && !gBattleStruct->adrenalineOrbActivated // there might be a better way to solve this
-     && holdEffect == HOLD_EFFECT_ADRENALINE_ORB)
+     && holdEffect == HOLD_EFFECT_ADRENALINE_ORB
+     && CompareStat(battler, STAT_SPEED, MAX_STAT_STAGE, CMP_LESS_THAN, GetBattlerAbility(battler))) // HnS: not used up when Speed can't change (+6, -6 with Contrary), as in the main series and HnS before #9730
     {
         gBattleStruct->adrenalineOrbActivated = TRUE;
         SetStatChange2(battler, STAT_SPEED, 1);
