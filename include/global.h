@@ -359,6 +359,7 @@ struct SaveBlock3
 #endif
     struct ChallengeSettings challengeSettings;
     u16 registeredItemHold;
+    u32 dailySeed; // HnS: upstream #9920 uses SaveBlock1 0x9C2, which holds saveVersionMagic here
 }; /* max size 1624 bytes */
 
 extern struct SaveBlock3 *gSaveBlock3Ptr;
