@@ -4365,7 +4365,15 @@ static void TryAcupressureStatChange(struct BattleCalcValues *cv)
             statId = (Random() % (NUM_BATTLE_STATS - 1)) + 1;
         } while (!(bits & (1u << statId)));
 
-        SetStatChange(cv->battlerDef, statId, 2);
+        // HnS: Contrary (-2) and Simple (+4) apply as in the main series and HnS before #9730. The other move stat
+        // changes are adjusted in CanAnyStatChange, which Acupressure skips, and TryStatChange only adjusts MOVE_NONE.
+        s32 stage = 2;
+        if (cv->abilities[cv->battlerDef] == ABILITY_CONTRARY)
+            stage = -2;
+        else if (cv->abilities[cv->battlerDef] == ABILITY_SIMPLE)
+            stage = 4;
+
+        SetStatChange(cv->battlerDef, statId, stage);
         gBattleStruct->moveResultFlags[cv->battlerDef] = MOVE_RESULT_ATTEMPT_STAT_CHANGE;
     }
     else
