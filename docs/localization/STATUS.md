@@ -1,6 +1,21 @@
 # 현재 인수인계 상태
 
-## 2026-10-07 낮 — #9730 사전 분석 완료, 친구 결정 대기 (현재, 데스크탑 — 랩탑에서 Remote Control로 진행)
+## 2026-10-07 저녁 — 친구 답 반영: seq 181 #9730 단위(23커밋) + HnS 수정 10개 완료·push (현재, 데스크탑 — 랩탑에서 Remote Control)
+
+- **다음 할 일(순서)**
+  1. **검증 도구 저장소 이전(친구 질문 5 승인):** `dev_scripts/hns_verify/`에 세이브 정적 비교(`save_compat.py`+`dwarf_layout.py`)·세이브 왕복(`savetest/` + 기준 세이브 2개)·한글 회귀(최신 584개 세트 `/home/hjm0725/hns-sync-work/hnsfix-1007b/kortests-final/` + 기대 요약 `runs/finalx5-summary.txt`)·경고 기준·사본 도구를 넣는다. 설계는 `/home/hjm0725/hns-sync-work/hnsfix-1007/tools-migration.md`(빌드·CI가 보지 않는 폴더, 한글 `.c`는 `test/` 밖에 두고 실행 때 복사, 경로는 환경 변수, 실제 저장소 가드는 `.git` 판정). 리뷰 R3: 한글 세트에 K1-51·K2-16·K3-25·HNSX1을 꼭 포함(주눅구슬·충전 문장은 저장소 테스트가 없음).
+  2. **친구 문자(아직 안 보냄):** `HANDBACK_2026-10-07.md` 9절 = 이번 결과 + 새 질문 1개(막힌 위협 + 주눅구슬, 재확인 28) + mGBA 목록. 디스코드용으로 나눠 사용자에게 준다.
+  3. **full-sync 다음 seq 182 #9865**(Mega Sol test adjustments). 순서표상 이미 적용: 183·193·194·195·201·203·210·211·212·213·234·247·252·258·314·324·326·344·347·395·472(#9730 단위 선반영), 198·199(선반영), 266은 부분(끈적끈적네트 config — 기본 Gen9면 동작 변화, 결정 필요), 433 #10282는 `toxic_thread.c` hunk만. 167 #9819 보류 그대로.
+- **이번에 한 것:** 결과 [`full-sync-seq-181-181.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-181-181.md), [`full-sync-hnsfix-2026-10-07b.md`](../friend-handoff/results/1.17.0-port/full-sync-hnsfix-2026-10-07b.md), 친구 답 [`FRIEND_REPLY_2026-10-07.md`](../friend-handoff/FRIEND_REPLY_2026-10-07.md), 회신 `HANDBACK_2026-10-07.md` 9절
+  - `f9fe99ab1f` CREDITS(금선 앞모습 예외), `24ff546631` 친구 답 기록
+  - #9730 단위 23커밋 `a5eb87ba6b`..`9234efb074`(후속 22개 전부, 독실 Champions −2 + #10282 테스트 hunk, `ignoreDefiant` 손 맞춤)
+  - HnS 10커밋: `7687b9acf4` 주눅구슬·충전 문장, `0a28f4489b` 아드레날린오브·약점보험 한계, `7acf285ccf` 눈덩이·충전지·구근·빛이끼 한계, `453256d19d` 토템 문장, `09f14a68d6` 1단계 공백, `c1e44ade43` 불복종 난수, `1e9f3254f9` 위기회피 춤추기, `feeabe2388` 토템 주석, `33fb8df0fd` 경혈찌르기 심술꾸러기·단순, `820148e779` 비축하기 심술꾸러기
+  - 검증(최종 `820148e779`): ROM 32,752,244 B(seq 181 전 −2,320), EWRAM 250,404 B(+272, `gSpecialStatuses`), IWRAM 25,516 B, SHA1 `eab66f3f…`, 새 경고 0. 전체 테스트 PASS 2,494 / TOTAL 5,400, 사라진 PASS 0(이름 변경 2 제외) → **기준 [`test-baseline-hnsfix1007b.txt`](../friend-handoff/results/1.17.0-port/test-baseline-hnsfix1007b.txt)**. 한글 회귀 584개 = 기대(494 PASS). 세이브 정적 비교 PASS(WARN 3 설명됨)·왕복 PASS. 리뷰 3개 수정 필요 0. AI 실측 `chunk-181/ai-compare/AI_COMPARE.md`.
+  - 메인 검증 스크립트: `/home/hjm0725/hns-sync-work/chunk-181/main/main-verify.sh`, `main-verify2.sh`(세이브 정적 비교 `--pre chunk-181/main/savecompat-pre181`)
+- **친구 답 대기:** 재확인 28(특성·흰안개로 막힌 위협에도 주눅구슬 발동 — 본가대로 맞출지).
+- 실기 미확인(친구 계획: 위협·미러아머·흉내허브·하양허브·승기/오기·토템, 주요 트레이너 AI).
+
+## 2026-10-07 낮 — #9730 사전 분석 완료, 친구 결정 대기 (데스크탑 — 랩탑에서 Remote Control로 진행)
 
 - **멈춘 지점:** seq 181 #9730 사전 분석(영역 A~F)을 끝냈다. 사용자가 결정을 친구에게 넘기기로 해서 **적용은 친구 답을 받은 뒤**에 한다. 결정 요청은 [`HANDBACK_2026-10-07.md`](../friend-handoff/HANDBACK_2026-10-07.md) 8절(1 후속 PR 22개 동반, 2 AI 변화, 3 아드레날린오브·약점보험 +6 발동, 4 독실 −1/−2, 5 토템 능력치 문장, 6 1단계 하락 문장 이중 공백, 7 주눅구슬·충전 문장 유지 제안, 8 기록만 할 변화).
 - **친구 문자: 보냄(2026-10-07 낮, 사용자).** 내용 = `/home/hjm0725/hns-sync-work/frontierpass-1007/discord-2026-10-07.md` 6개(= HANDBACK_2026-10-07 1~8절 요약, 3번에 프런티어패스 비교 그림 2장). **친구 답 대기:** 4번 질문 5개(금선 출처, 직업 이름 깨짐 10g, 불복종 난수 3d, 위기회피 춤추기, 도구 이전 17) + 6번 #9730 결정 8개. AI 비교 결과 보충 메시지 `chunk-181/discord-9730-followup.md`도 보냄(사용자). 친구 답 대기: 4번 질문 5개 + #9730 결정(HANDBACK 8절 1~10번, 9번 용의춤류 감점 포함).

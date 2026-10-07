@@ -2,6 +2,18 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-07 저녁 — 친구 답 반영: #9730 단위 + HnS 수정 10개 (데스크탑, 랩탑에서 Remote Control)
+
+- 요청: 사용자가 친구 답(회신 4/6 질문 5개, 6/6 #9730 결정 9개)을 붙여 넣었다 → `FRIEND_REPLY_2026-10-07.md`.
+- 진행: 친구 답 기록·CREDITS → #9730 적용 1개(`chunk-181/APPLY.md`, 커밋 23개)와 2차 HnS 분석 4개(`hnsfix-1007b/X1~X4`, 공통 사본 = 기준 + #9730 patch) 병렬 → 1차 리뷰 2개(R1 본체, R2 후속 22개) → 2차 적용 1개(`APPLY2.md`, 커밋 7개) → 2차 리뷰 R3 → 리뷰 발견 수정(주석, X5 경혈찌르기·비축하기) → 메인 검증 두 번.
+- 메인 결정(친구 결정 3의 "본가 우선·현재 동작 유지" 원칙, 친구 보고): 눈덩이·충전지·구근·빛이끼 한계(X1 분석 발견), 경혈찌르기 심술꾸러기·단순(R2 발견), 비축하기 심술꾸러기(X5 전수 조사 발견) — 모두 이식 전 HnS = 본가인데 #9730이 바꾼 것. 심술꾸러기 주눅구슬 문장에 도구 이름이 붙는 것(K3-25)은 결정 7 제안 범위로 받아들임. 배북+단순(+6, #9730이 고친 이식 전 버그)·흰안개 아래 심술꾸러기 아군 경혈찌르기(막힘, 본가)는 받아들임. 막힌 위협 + 주눅구슬은 친구 질문(재확인 28).
+- 수정 파일: #9730 단위 177파일(새 `battle_stat_change.[ch]`, `constants/battle_stat_change.h`), HnS: `data/battle_scripts_1.s`, `src/battle_stat_change.c`, `src/battle_hold_effects.c`, `src/battle_main.c`, `src/battle_message.c`, `src/battle_util.c`, `src/battle_move_resolution.c`, `include/battle.h`, `include/random.h`, `CREDITS.md`, 새 테스트 `test/battle/hns_stat_item_max.c`·`hns_totem_boost.c`·`hns_stat_message_space.c`·`hns_dancer.c`·`hns_acupressure.c`·`hns_stockpile_contrary.c`(+`hns_disobedience.c` 확장).
+- 검증: 최종 `820148e779` ROM 32,752,244 B, SHA1 `eab66f3f…`, 새 경고 0, 전체 테스트 PASS 2,494 / 5,400(사라진 PASS 0), 한글 584개 = 기대, 세이브 정적 비교·왕복 PASS. 로그 `build/localization-logs/hns-20261007-183422-seq181-final2.log`, `build/port-check-seq181-final.log`.
+- 리뷰 결과 파일: `chunk-181/review-R1/`, `review-R2/`, `hnsfix-1007b/review-R3/`(모두 REVIEW-RESULT.md).
+- 문서: 결과 2개, 출력 변화 행(#9730 단위 15행 + HnS 9행, seq 129 중간 상태 2행 해소), 재확인(3b·3d·4·5·8f·8j·12 해소, 8o·8t 갱신, 26~30 추가), HANDBACK 9절, README, 테스트 기준 2개.
+- 게임 화면 확인: 하지 않았다.
+- 다음 시작점: STATUS 맨 위 "다음 할 일" 1(검증 도구 이전).
+
 ### 2026-10-07 낮 — #9730 사전 분석, 친구 결정 요청 (데스크탑, 랩탑에서 Remote Control)
 
 - 사용자가 데스크탑 세션을 Remote Control(`/rc`)로 열어 두고 랩탑에서 이어서 진행했다.
