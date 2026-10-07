@@ -125,6 +125,7 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 - Lyra player sprites: RichardPT, robloxmaster376
 - pokeemerald-expansion adaptation / additional sprite work: Rafa Pierangeli
 - Costume asset lineage: Slawter666
+- Exception: the Lyra battle front pic (`graphics/trainers/front_pics/kris_hns.png`) is not from this source; it was redrawn for HnS based on HGSS Lyra.
 
 ### Mega Evolution Overworld Sprite Credits:
 - [princess-phoenix](https://www.deviantart.com/princess-phoenix)
