@@ -1,6 +1,17 @@
 # 현재 인수인계 상태
 
-## 2026-10-07 새벽 — 프런티어패스 2건 완료·push, #9730 사전 분석 준비까지 하고 종료 (현재, 데스크탑)
+## 2026-10-07 낮 — #9730 사전 분석 완료, 친구 결정 대기 (현재, 데스크탑 — 랩탑에서 Remote Control로 진행)
+
+- **멈춘 지점:** seq 181 #9730 사전 분석(영역 A~F)을 끝냈다. 사용자가 결정을 친구에게 넘기기로 해서 **적용은 친구 답을 받은 뒤**에 한다. 결정 요청은 [`HANDBACK_2026-10-07.md`](../friend-handoff/HANDBACK_2026-10-07.md) 8절(1 후속 PR 22개 동반, 2 AI 변화, 3 아드레날린오브·약점보험 +6 발동, 4 독실 −1/−2, 5 토템 능력치 문장, 6 1단계 하락 문장 이중 공백, 7 주눅구슬·충전 문장 유지 제안, 8 기록만 할 변화).
+- **친구 문자(사용자가 아직 안 보냄):** 초안 6개 `/home/hjm0725/hns-sync-work/frontierpass-1007/discord-2026-10-07.md`(각 2,000자 이하, 6번이 #9730 결정 요청). 3번에 `frontierpass-1007/render/png/compare-pass.png`·`compare-map.png` 첨부.
+- **진행 중(스크래치):** AI 변화 실측 — `/home/hjm0725/hns-sync-work/chunk-181/ai-compare/`(`AI_COMPARE.md`). HnS 주요 트레이너로 이식 전 / #9730만 / #9730+F 22개 / AI 묶음 뺀 것의 AI 기술 선택 비교. 끝나면 친구에게 결과를 보낸다(HANDBACK 8절 2번).
+- **사전 분석 산출물(저장소 밖, `/home/hjm0725/hns-sync-work/chunk-181/`):** 지시서 `ANALYZE.md`, `part-A~F.md`·`part-A~F.patch`(기준 사본 `base` = HEAD `364ab51c7f` 코드에 `--check` 통과), 후속 행 `F-<seq>-<PR>.patch` 22개(적용 순서·확인 스크립트 `tmp-F/scripts/check_F.sh`), 한글 회귀 `E-kortests/`(328 세트 + 새 235, 기준 513/563 PASS, 이식 뒤 바뀌는 출력 분류 `expected-changes.tsv`).
+  - 합본 실측: `make hns` 성공, ROM 32,750,900 B(−3,664), EWRAM 250,404 B(+272), 새 경고 0. F 22개를 더하면 ROM +752 B, 사라진 PASS 0(F 판정, `part-F.md` 4.2절).
+  - 적용 때 확인할 것: A의 `ignoreDefiant` 초기화(upstream 병합 `7e0c2d430e` 형태, B·F가 지적 — 빠지면 룸서비스 오기·승기 테스트 2개와 F-266 아군 오기 1개 FAIL), F-183이 B의 HnS `trynonmovestatchange` 2줄을 `trystatchanges`로 바꿈, 한글 회귀 `HNSFIX1 T13` 기대값(중간 상태용) 갱신, 독실 결정에 따라 `part-D.patch` 1줄 또는 `toxic_thread.c` 1.17.0 형식.
+- **친구 답이 오면:** 결정을 `ANALYZE.md` 옆 `APPLY.md`(선례 `chunk-176-179/APPLY.md`, `chunk-1385/APPLY.md`)에 반영해 적용 에이전트 1개 → 리뷰 → 메인 검증(전체 테스트·한글 회귀 563개·세이브 정적 비교/왕복) → 문서 → push.
+- 테스트 기준 `test-baseline-seq179.txt`, 빌드 기준 ROM 32,754,564 B·SHA1 `5876c53d…`(프런티어패스 뒤) 그대로.
+
+## 2026-10-07 새벽 — 프런티어패스 2건 완료·push, #9730 사전 분석 준비까지 하고 종료 (데스크탑)
 
 - **다음 할 일(순서)**
   1. ~~프런티어패스 렌더링~~ 끝(종료 직전 완료, 결과 문서 3절). 수정 전 렌더가 친구 스크린샷과 맞고, 수정 후에는 뱅크 1~7 픽셀과 머리 아이콘만 바뀐다. 그림은 `/home/hjm0725/hns-sync-work/frontierpass-1007/render/png/compare-*.png`.
