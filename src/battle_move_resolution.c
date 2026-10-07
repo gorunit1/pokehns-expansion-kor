@@ -4622,6 +4622,7 @@ static enum MoveResult StatChangeTryChange(struct BattleCalcValues *cv)
 
         if (gBattleStruct->moveResultFlags[cv->battlerDef] & MOVE_RESULT_MISSED)
         {
+            gBattleScripting.battler = cv->battlerDef;
             gBattleStruct->statChangeBattler++;
             gBattleCommunication[MISS_TYPE] = B_MSG_MISSED;
             BattleScriptCall(BattleScript_MissedTarget);

@@ -528,3 +528,18 @@ DOUBLE_BATTLE_TEST("Spread Moves: Earthquake fails in order of ally, left foe, r
         NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_EARTHQUAKE, playerLeft);
     }
 }
+
+DOUBLE_BATTLE_TEST("Spread Moves: A missed multi-target stat move names the missed battler")
+{
+    GIVEN {
+        ASSUME(GetMoveTarget(MOVE_STRING_SHOT) == TARGET_BOTH);
+        PLAYER(SPECIES_CATERPIE);
+        PLAYER(SPECIES_WYNAUT);
+        OPPONENT(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_BELDUM) { Ability(ABILITY_CLEAR_BODY); }
+    } WHEN {
+        TURN { MOVE(playerLeft, MOVE_STRING_SHOT, hit: FALSE); }
+    } SCENE {
+        MESSAGE("The opposing Wobbuffet avoided the attack!");
+    }
+}

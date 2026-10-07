@@ -252,8 +252,11 @@ BattleScript_StatDidntChangeMessagePause::
 
 BattleScript_MissedTarget::
 	pause B_WAIT_TIME_SHORT
+	savetarget
+	copybyte gBattlerTarget, sBATTLER @ HnS: name the battler that avoided the move (upstream #10687; becomes BattleScript_BattlerAvoidedAttack with #9939)
 	printstring STRINGID_PKMNAVOIDEDATTACK
 	waitmessage B_WAIT_TIME_LONG
+	restoretarget
 	return
 
 BattleScript_EffectShedTail::
