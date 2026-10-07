@@ -196,13 +196,16 @@ BattleScript_ItemStatChange::
 
 BattleScript_ConsumableBerryStatRaise::
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_BERRY
-	call BattleScript_ConsumableItemStatRaiseNoPopup @ HnS: no pop-up for stat berries yet (upstream adds it with #9777/#10268)
+	@ HnS: no pop-up for stat berries yet (upstream adds it with #9777/#10268)
+	trybattlerstatchange BS_SCRIPTING, STAT_CHANGE_ITEM | STAT_CHANGE_CERTAIN
+	removeitem BS_SCRIPTING
 	return
 
 BattleScript_ConsumableBerryStatRaiseRipen::
 	call BattleScript_AbilityPopUp
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_BERRY
-	call BattleScript_ConsumableItemStatRaiseNoPopup @ HnS: see above
+	trybattlerstatchange BS_SCRIPTING, STAT_CHANGE_ITEM | STAT_CHANGE_CERTAIN
+	removeitem BS_SCRIPTING
 	return
 
 BattleScript_ConsumableItemStatRaise::
