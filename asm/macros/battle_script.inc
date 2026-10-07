@@ -1564,6 +1564,11 @@
     callnative BS_TryAdrenalineOrb
     .endm
 
+	@ HnS: sBATTLER = the Adrenaline Orb holder whose Intimidate drop was just blocked (see Cmd_trystatchanges)
+	.macro setblockedintimidatebattler
+	callnative BS_SetBlockedIntimidateBattler
+	.endm
+
     .macro raisecritstatchangeanim battler:req
     callnative BS_RaiseCritStatChangeAnim
     .byte \battler

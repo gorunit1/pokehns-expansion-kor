@@ -629,7 +629,7 @@ HNSX1 12 Adrenaline Orb with Contrary at -6 Speed: PASS
 HNSX1 13 probe: totem boost then the player's Mirror Herb: PASS
 HNSX1 14 probe: totem boost then the player's Opportunist: PASS
 HNSX1 15 probe: Snowball at +6 Attack: PASS
-HNSX1 16 probe: Intimidate blocked by Inner Focus vs Adrenaline Orb: PASS
+HNSX1 16 Intimidate blocked by Inner Focus vs Adrenaline Orb: PASS
 HNSX1 17 Cell Battery at +6 Attack: PASS
 HNSX1 18 Absorb Bulb at +6 Sp. Atk: PASS
 HNSX1 19 Luminous Moss at +6 Sp. Def: PASS

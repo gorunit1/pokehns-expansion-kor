@@ -424,6 +424,7 @@ extern const u8 BattleScript_RemoveFireType[];
 extern const u8 BattleScript_AbilityStatChange[];
 extern const u8 BattleScript_DefiantActivates[];
 extern const u8 BattleScript_AdrenalineOrbActivates[];
+extern const u8 BattleScript_AdrenalineOrbAfterBlockedIntimidate[]; // HnS
 extern const u8 BattleScript_MoveEffectStatChange[];
 extern const u8 BattleScript_RemoveElectricType[];
 extern const u8 BattleScript_SeedSowerActivates[];

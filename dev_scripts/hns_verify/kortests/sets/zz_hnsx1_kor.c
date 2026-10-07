@@ -298,9 +298,10 @@ SINGLE_BATTLE_TEST("HNSX1 15 probe: Snowball at +6 Attack")
     }
 }
 
-// Probe (out of scope, report only): Intimidate blocked by Inner Focus (Gen 8+) on an Adrenaline Orb holder.
-// Bulbapedia: the orb still activates when an Ability or Mist blocks Intimidate.
-SINGLE_BATTLE_TEST("HNSX1 16 probe: Intimidate blocked by Inner Focus vs Adrenaline Orb")
+// X6 (friend decision 2026-10-07 evening, main series): Intimidate blocked by Inner Focus (Gen 8+) still uses the
+// Adrenaline Orb right after the block message, as before #9730 (this was a report-only probe of the post-#9730 output,
+// where the orb stayed unused). Bulbapedia: the orb still activates when an Ability or Mist blocks Intimidate.
+SINGLE_BATTLE_TEST("HNSX1 16 Intimidate blocked by Inner Focus vs Adrenaline Orb")
 {
     GIVEN {
         PLAYER(SPECIES_WOBBUFFET) { Ability(ABILITY_INTIMIDATE); }
@@ -309,8 +310,15 @@ SINGLE_BATTLE_TEST("HNSX1 16 probe: Intimidate blocked by Inner Focus vs Adrenal
         TURN {}
     } SCENE {
         ABILITY_POPUP(player, ABILITY_INTIMIDATE);
+        ABILITY_POPUP(opponent, ABILITY_INNER_FOCUS);
+        MESSAGE("상대 마자의 공격은 떨어지지 않는다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, opponent);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
+        MESSAGE("상대 마자는 주눅구슬로 스피드가 올라갔다!");
     } THEN {
-        EXPECT_EQ(opponent->item, ITEM_ADRENALINE_ORB);
+        EXPECT_EQ(opponent->statStages[STAT_ATK], DEFAULT_STAT_STAGE);
+        EXPECT_EQ(opponent->statStages[STAT_SPEED], DEFAULT_STAT_STAGE + 1);
+        EXPECT_EQ(opponent->item, ITEM_NONE);
     }
 }
 

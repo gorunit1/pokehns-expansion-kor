@@ -526,7 +526,8 @@ struct BattlerState
     u16 redCardSwitched:1;
     u16 isFirstTurn:2; // Starts at 2 on switch in and counts down during end turn
     u16 dancerAfterEjectItem:1; // HnS: Eject Button/Pack or Emergency Exit/Wimp Out sent this slot out during a dance move; MOVEEND_DANCER checks its replacement
-    u16 padding:10;
+    u16 blockedIntimidateOrb:1; // HnS: Intimidate on this Adrenaline Orb holder was just blocked; read by BS_SetBlockedIntimidateBattler
+    u16 padding:9;
 };
 
 struct PartyState

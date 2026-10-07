@@ -11126,7 +11126,8 @@ static void Cmd_trystatchanges(void)
         st.statStageQueue = gSpecialStatuses[cv.battlerDef].statStageQueue;
         st.statStageAmount = gSpecialStatuses[cv.battlerDef].statStageAmount;
 
-        if (TryStatChange(&cv, &st) != STAT_CHANGE_DIDNT_WORK)
+        enum StatChangeResult result = TryStatChange(&cv, &st); // HnS: kept for the Adrenaline Orb below
+        if (result != STAT_CHANGE_DIDNT_WORK)
             runScript = TRUE;
 
         if (st.nextBattler)
@@ -11150,6 +11151,19 @@ static void Cmd_trystatchanges(void)
             else
             {
                 BattleScriptCall(st.script);
+            }
+            // HnS: an Ability (Inner Focus, Clear Body, Hyper Cutter, Mirror Armor, Guard Dog...), Mist or Flower Veil that
+            //      stops Intimidate still lets an Adrenaline Orb activate after the block script, as in the main series and
+            //      before #9730 for Inner Focus/Oblivious/Own Tempo/Scrappy. Not behind a Substitute (Intimidate doesn't
+            //      reach it) or at -6 Attack (nothing to lower). tryadrenalineorb checks the rest (+6 Speed, item, once).
+            if (result == STAT_CHANGE_BLOCKED_BY_TARGET
+             && st.intimidate
+             && cv.holdEffects[cv.battlerDef] == HOLD_EFFECT_ADRENALINE_ORB
+             && !gBattleMons[cv.battlerDef].volatiles.substitute
+             && CompareStat(cv.battlerDef, STAT_ATK, MIN_STAT_STAGE, CMP_GREATER_THAN, ABILITY_NONE))
+            {
+                gBattleStruct->battlerState[cv.battlerDef].blockedIntimidateOrb = TRUE;
+                BattleScriptPush(BattleScript_AdrenalineOrbAfterBlockedIntimidate);
             }
             return;
         }
@@ -14543,6 +14557,23 @@ void BS_TryAdrenalineOrb(void)
     {
         gBattlescriptCurrInstr = cmd->nextInstr;
     }
+}
+
+// HnS: BattleScript_AdrenalineOrbAfterBlockedIntimidate runs after the block script, which may leave sBATTLER on another
+//      battler (Mirror Armor: the Intimidate user), so point it back at the holder marked in Cmd_trystatchanges
+void BS_SetBlockedIntimidateBattler(void)
+{
+    NATIVE_ARGS();
+
+    for (enum BattlerId battler = B_BATTLER_0; battler < gBattlersCount; battler++)
+    {
+        if (gBattleStruct->battlerState[battler].blockedIntimidateOrb)
+        {
+            gBattleStruct->battlerState[battler].blockedIntimidateOrb = FALSE;
+            gBattleScripting.battler = battler;
+        }
+    }
+    gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
 void BS_RaiseCritStatChangeAnim(void)

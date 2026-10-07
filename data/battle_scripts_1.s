@@ -193,6 +193,13 @@ BattleScript_AdrenalineOrbActivates::
 	removeitem BS_SCRIPTING
 	return
 
+@ HnS: an Adrenaline Orb still activates when an Ability, Mist or Flower Veil stops Intimidate, as in the main series
+@      (friend decision 2026-10-07). Cmd_trystatchanges returns here after the block message of that holder
+BattleScript_AdrenalineOrbAfterBlockedIntimidate::
+	setblockedintimidatebattler
+	tryadrenalineorb
+	return
+
 BattleScript_MoveEffectStatChange::
 	trystatchanges BS_ATTACKER, STAT_CHANGE_SILENT_FAILURE | STAT_CHANGE_IGNORE_SELF
 	return
