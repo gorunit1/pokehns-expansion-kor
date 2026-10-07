@@ -6599,9 +6599,17 @@ s32 GetSelfStatChangeScore(enum BattlerId battlerAtk, enum BattlerId battlerDef,
          && effect->moveEffect != STAT_CHANGE_EFFECT_MINUS)
             continue;
 
-        for (enum Stat stat = STAT_ATK; stat < NUM_STATS; stat++)
+        for (enum Stat stat = STAT_ATK; stat < NUM_BATTLE_STATS; stat++)
         {
-            s32 stage = AI_GetAdjustedStatStage(battlerAtk, move, GetStatStage(stat, effect));
+            s32 stage = GetStatStage(stat, effect);
+
+            if (stage == 0)
+                continue;
+
+            if (effect->moveEffect == STAT_CHANGE_EFFECT_MINUS)
+                stage = -1 * stage;
+
+            stage = AI_GetAdjustedStatStage(battlerAtk, move, stage);
 
             if (stage > 0)
             {
@@ -6643,9 +6651,17 @@ s32 GetFoeStatChangeScore(enum BattlerId battlerAtk, enum BattlerId battlerDef, 
     {
         const struct AdditionalEffect *effect = GetMoveAdditionalEffectById(move, effectIndex);
 
-        for (enum Stat stat = STAT_ATK; stat < NUM_STATS; stat++)
+        for (enum Stat stat = STAT_ATK; stat < NUM_BATTLE_STATS; stat++)
         {
-            s32 stage = AI_GetAdjustedStatStage(battlerDef, move, GetStatStage(stat, effect));
+            s32 stage = GetStatStage(stat, effect);
+
+            if (stage == 0)
+                continue;
+
+            if (effect->moveEffect == STAT_CHANGE_EFFECT_MINUS)
+                stage = -1 * stage;
+
+            stage = AI_GetAdjustedStatStage(battlerDef, move, stage);
 
             if (stage > 0)
             {
@@ -6693,7 +6709,7 @@ s32 GetAllyStatChangeScore(u32 battlerAtk, u32 partner, u32 move)
     {
         const struct AdditionalEffect *effect = GetMoveAdditionalEffectById(move, effectIndex);
 
-        for (enum Stat stat = STAT_ATK; stat < NUM_STATS; stat++)
+        for (enum Stat stat = STAT_ATK; stat < NUM_BATTLE_STATS; stat++)
         {
             s32 stage = GetStatStage(stat, effect);
 
