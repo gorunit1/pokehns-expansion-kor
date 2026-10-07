@@ -1910,10 +1910,8 @@ static enum CancelerResult CancelerTargetFailure(struct BattleCalcValues *cv)
 
     while (gBattleStruct->eventState.atkCancelerBattler < MAX_BATTLERS_COUNT)
     {
-        if (IsDoubleBattle())
-            cv->battlerDef = GetTargetBySlot(cv->battlerAtk, gBattleStruct->eventState.atkCancelerBattler);
-        else
-            cv->battlerDef = gBattleStruct->eventState.atkCancelerBattler;
+        cv->battlerDef = GetTargetBySlot(cv->battlerAtk, gBattleStruct->eventState.atkCancelerBattler);
+
         gBattleStruct->eventState.atkCancelerBattler++;
 
         if (ShouldSkipFailureCheckOnBattler(cv->battlerAtk, cv->battlerDef, FALSE))
@@ -4351,10 +4349,7 @@ static enum MoveResult StatChangeCanAnyChange(struct BattleCalcValues *cv)
 
     for (enum BattlerId battler = 0; battler < gBattlersCount; battler++)
     {
-        if (IsDoubleBattle())
-            cv->battlerDef = GetTargetBySlot(cv->battlerAtk, battler);
-        else
-            cv->battlerDef = battler;
+        cv->battlerDef = GetTargetBySlot(cv->battlerAtk, battler);
 
         if (ShouldSkipStatChangeOnBattler(cv->battlerAtk, cv->battlerDef))
             continue;
@@ -4607,10 +4602,7 @@ static enum MoveResult StatChangeTryChange(struct BattleCalcValues *cv)
 
     while (gBattleStruct->statChangeBattler < gBattlersCount)
     {
-        if (IsDoubleBattle())
-            cv->battlerDef = GetTargetBySlot(cv->battlerAtk, gBattleStruct->statChangeBattler);
-        else
-            cv->battlerDef = gBattleStruct->statChangeBattler;
+        cv->battlerDef = GetTargetBySlot(cv->battlerAtk, gBattleStruct->statChangeBattler);
 
         if (gBattleStruct->moveResultFlags[cv->battlerDef] & MOVE_RESULT_MISSED)
         {

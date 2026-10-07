@@ -75,12 +75,12 @@ BattleScript_TeraFormChange::
 
 BattleScript_EffectStatChange::
 	attackcanceler
-    tryanystatchange
+	trymovestatchanges
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectStatChangeHalfHp::
 	attackcanceler
-    tryanystatchange
+	trymovestatchanges
 	healthbarupdate BS_ATTACKER, PASSIVE_HP_UPDATE
 	datahpupdate BS_ATTACKER, PASSIVE_HP_UPDATE
 	goto BattleScript_MoveEnd
@@ -111,13 +111,13 @@ BattleScript_PlayTidyUp::
 
 BattleScript_EffectDefog::
 	attackcanceler
-    tryanystatchange
+	trymovestatchanges
 	trydefog TRUE, NULL
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectMemento::
 	attackcanceler
-    tryanystatchange
+	trymovestatchanges
     tryfaintmon BS_ATTACKER
 	goto BattleScript_MoveEnd
 
@@ -137,12 +137,12 @@ BattleScript_TakeHeart::
 
 BattleScript_ToxicThread::
 	seteffectprimary BS_ATTACKER, BS_SCRIPTING, MOVE_EFFECT_POISON
-    tryanystatchange
+	trymovestatchanges
 	goto BattleScript_MoveEnd
 
 BattleScript_SwaggerConfusion::
 	seteffectprimary BS_ATTACKER, BS_TARGET, MOVE_EFFECT_CONFUSION
-    tryanystatchange
+	trymovestatchanges
 	goto BattleScript_MoveEnd
 
 BattleScript_NoRetreatMessage::
@@ -153,18 +153,18 @@ BattleScript_NoRetreatMessage::
 BattleScript_AutotomizeMessage::
 	printstring STRINGID_BECAMENIMBLE
 	waitmessage B_WAIT_TIME_LONG
-    tryanystatchange
+	trymovestatchanges
 	goto BattleScript_MoveEnd
 
 BattleScript_TarShotMessage::
 	printstring STRINGID_PKMNBECAMEWEAKERTOFIRE
 	waitmessage B_WAIT_TIME_LONG
-    tryanystatchange
+	trymovestatchanges
 	goto BattleScript_MoveEnd
 
 BattleScript_AbilityStatChange::
 	call BattleScript_AbilityPopUp
-	trynonmovestatchange BS_EFFECT_BATTLER, STAT_CHANGE_IGNORE_SELF
+	trystatchanges BS_EFFECT_BATTLER, STAT_CHANGE_IGNORE_SELF
 	return
 
 BattleScript_DefiantActivates::
@@ -179,7 +179,7 @@ BattleScript_AdrenalineOrbActivates::
 	return
 
 BattleScript_MoveEffectStatChange::
-	trynonmovestatchange BS_ATTACKER, STAT_CHANGE_SILENT_FAILURE | STAT_CHANGE_IGNORE_SELF
+	trystatchanges BS_ATTACKER, STAT_CHANGE_SILENT_FAILURE | STAT_CHANGE_IGNORE_SELF
 	return
 
 BattleScript_ItemStatChange::
@@ -216,8 +216,8 @@ BattleScript_MirrorArmorReflect::
 	return
 
 BattleScript_EndTurnStatChange::
-	@ HnS: Octolock keeps gBattlerAttacker = Octolock user, gBattlerTarget = victim (#10042 applied early). Same as upstream merge 7e0c2d430e (trystatchanges = trynonmovestatchange before #9928)
-	trynonmovestatchange BS_ATTACKER, STAT_CHANGE_IGNORE_MIRROR_ARMOR
+	@ HnS: Octolock keeps gBattlerAttacker = Octolock user, gBattlerTarget = victim (#10042 applied early). Same as upstream merge 7e0c2d430e
+	trystatchanges BS_ATTACKER, STAT_CHANGE_IGNORE_MIRROR_ARMOR
 	return
 
 BattleScript_IncreaseStatChangeMessage::
@@ -309,8 +309,8 @@ BattleScript_SyrupBombActivates::
 BattleScript_SyrupBombEndTurn::
 	flushtextbox
 	playanimation BS_TARGET, B_ANIM_SYRUP_BOMB_SPEED_DROP
-	@ HnS: #10042 (applied early) sets gBattlerAttacker = Syrup Bomb user, gBattlerTarget = victim. Same as upstream merge 7e0c2d430e (trystatchanges = trynonmovestatchange before #9928)
-	trynonmovestatchange BS_ATTACKER, STAT_CHANGE_IGNORE_MIRROR_ARMOR
+	@ HnS: #10042 (applied early) sets gBattlerAttacker = Syrup Bomb user, gBattlerTarget = victim. Same as upstream merge 7e0c2d430e
+	trystatchanges BS_ATTACKER, STAT_CHANGE_IGNORE_MIRROR_ARMOR
 	return
 
 BattleScript_MoveSwitchPursuitEnd:
@@ -2184,7 +2184,7 @@ BattleScript_EffectCurse::
 	goto BattleScript_MoveEnd
 
 BattleScript_CurseStatChange:
-    tryanystatchange
+	trymovestatchanges
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectProtect::
@@ -3675,7 +3675,7 @@ BattleScript_GulpMissileGulping::
 	tryfaintmon BS_ATTACKER
 	jumpiffainted BS_ATTACKER, TRUE, BattleScript_GulpMissileNoSecondEffectGulping
 BattleScript_GulpMissileNoDmgGulping:
-	trynonmovestatchange  BS_TARGET, STAT_CHANGE_NO_FLAGS
+	trystatchanges BS_TARGET, STAT_CHANGE_NO_FLAGS
 BattleScript_GulpMissileNoSecondEffectGulping:
 	return
 
@@ -4834,7 +4834,7 @@ BattleScript_ActivateWeatherAbilities_Loop:
 
 BattleScript_IntimidateActivates::
 	call BattleScript_AbilityPopUp
-	trynonmovestatchange BS_EFFECT_BATTLER, STAT_CHANGE_INTIMIDATE
+	trystatchanges BS_EFFECT_BATTLER, STAT_CHANGE_INTIMIDATE
 	destroyabilitypopup
 	return
 
@@ -4845,7 +4845,7 @@ BattleScript_IntimidateWontDecrease:
 BattleScript_SupersweetSyrupActivates::
 	call BattleScript_AbilityPopUp
 	printstring STRINGID_SUPERSWEETAROMAWAFTS
-	trynonmovestatchange BS_ATTACKER, STAT_CHANGE_NO_FLAGS
+	trystatchanges BS_ATTACKER, STAT_CHANGE_NO_FLAGS
 	destroyabilitypopup
 	return
 
@@ -5293,7 +5293,7 @@ BattleScript_SpikyShieldRet::
 	return
 
 BattleScript_KingsShieldEffect::
-	trynonmovestatchange BS_TARGET, STAT_CHANGE_NO_FLAGS
+	trystatchanges BS_TARGET, STAT_CHANGE_NO_FLAGS
 	return
 
 BattleScript_BanefulBunkerEffect::
