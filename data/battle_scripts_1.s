@@ -189,7 +189,8 @@ BattleScript_AdrenalineOrbActivates::
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT
 	@ HnS: keep the item name in the stat message (STAT_CHANGE_ITEM) as before #9730 until the item pop-up of #9777 (seq 475) replaces it
 	setlastuseditem BS_SCRIPTING
-	trybattlerstatchange BS_SCRIPTING, STAT_CHANGE_SECOND_QUEUE | STAT_CHANGE_ITEM
+	@ HnS: STAT_CHANGE_CERTAIN as before #9730 (main series too): the holder's own Speed drop with Contrary is not stopped by Mist or Flower Veil
+	trybattlerstatchange BS_SCRIPTING, STAT_CHANGE_SECOND_QUEUE | STAT_CHANGE_ITEM | STAT_CHANGE_CERTAIN
 	removeitem BS_SCRIPTING
 	return
 
