@@ -186,7 +186,7 @@ static const u8 sText_Lanettes[] = _("유미의"); //no decapitalize until it is
 static const u8 sText_Bills[] = _("이수재의");
 static const u8 sText_EnigmaBerry[] = _("의문열매"); //no decapitalize until it is everywhere
 static const u8 sText_BerrySuffix[] = _("열매"); //no decapitalize until it is everywhere
-const u8 gText_EmptyString3[] = _(" ");
+const u8 gText_EmptyString3[] = _(""); // HnS: back to the upstream empty string; a space here doubled the gap of 1-stage stat messages (B_TXT_IGA, space, B_BUFF2)
 
 static const u8 sText_TwoInGameTrainersDefeated[] = _("{B_TRAINER1_CLASS} {B_TRAINER1_NAME}{B_TXT_WAGWA}\n{B_TRAINER2_CLASS} {B_TRAINER2_NAME}{B_TXT_WAGWA}의\l승부에서 이겼다!\p");
 
