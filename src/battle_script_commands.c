@@ -477,7 +477,6 @@ static void Cmd_manipulatedamage(void);
 static void Cmd_trysetrest(void);
 static void Cmd_jumpifuproarwakes(void);
 static void Cmd_stockpiletohpheal(void);
-static void Cmd_statbuffchange(void);
 static void Cmd_normalisebuffs(void);
 static void Cmd_twoturnmoveschargestringandanimation(void);
 static void Cmd_trynonvolatilestatus(void);
@@ -702,7 +701,6 @@ void (*const gBattleScriptingCommandsTable[])(void) =
     [B_SCR_OP_TRYSETREST]                            = Cmd_trysetrest,
     [B_SCR_OP_JUMPIFUPROARWAKES]                     = Cmd_jumpifuproarwakes,
     [B_SCR_OP_STOCKPILETOHPHEAL]                     = Cmd_stockpiletohpheal,
-    [B_SCR_OP_STATBUFFCHANGE]                        = Cmd_statbuffchange,
     [B_SCR_OP_NORMALISEBUFFS]                        = Cmd_normalisebuffs,
     [B_SCR_OP_TWOTURNMOVESCHARGESTRINGANDANIMATION]  = Cmd_twoturnmoveschargestringandanimation,
     [B_SCR_OP_TRYNONVOLATILESTATUS]                  = Cmd_trynonvolatilestatus,
@@ -831,6 +829,7 @@ void (*const gBattleScriptingCommandsTable[])(void) =
     [B_SCR_OP_UNUSED_32]                             = Cmd_dummy,
     [B_SCR_OP_UNUSED_33]                             = Cmd_dummy,
     [B_SCR_OP_UNUSED_34]                             = Cmd_dummy,
+    [B_SCR_OP_UNUSED_36]                             = Cmd_dummy,
     [B_SCR_OP_CALLNATIVE]                            = Cmd_callnative,
 };
 
@@ -7420,12 +7419,6 @@ static void Cmd_stockpiletohpheal(void)
         gBattlescriptCurrInstr = cmd->nextInstr;
         gBattlerTarget = gBattlerAttacker;
     }
-}
-
-static void Cmd_statbuffchange(void)
-{
-    CMD_ARGS(u8 battler, u16 flags, const u8 *failInstr, u8 stats);
-    gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
 bool32 TryResetBattlerStatChanges(enum BattlerId battler)
