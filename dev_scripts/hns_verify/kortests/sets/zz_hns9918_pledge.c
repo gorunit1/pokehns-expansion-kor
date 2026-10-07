@@ -166,7 +166,7 @@ DOUBLE_BATTLE_TEST("HNS9918 K07 Rainbow doubles a 50% secondary effect (Poison F
         OPPONENT(SPECIES_WYNAUT) { Speed(1); }
     } WHEN {
         TURN { MOVE(playerLeft, MOVE_WATER_PLEDGE, target: opponentLeft); MOVE(playerRight, MOVE_FIRE_PLEDGE, target: opponentLeft); }
-        TURN { MOVE(playerLeft, MOVE_POISON_FANG, target: opponentLeft); MOVE(playerRight, MOVE_POISON_FANG, target: opponentRight); }
+        TURN { MOVE(playerLeft, MOVE_POISON_FANG, target: opponentLeft, WITH_RNG(RNG_SECONDARY_EFFECT, FALSE)); MOVE(playerRight, MOVE_POISON_FANG, target: opponentRight, WITH_RNG(RNG_SECONDARY_EFFECT, FALSE)); }
     } SCENE {
         MESSAGE("마자용은 물의맹세를 썼다!");
         MESSAGE("마자용은 마자를 기다리고 있다...{PAUSE 16}");
