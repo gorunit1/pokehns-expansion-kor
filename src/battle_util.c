@@ -5639,20 +5639,27 @@ static inline bool32 IsObedienceTestRun(void)
 #endif
 }
 
-// HnS: Random() cannot be rigged in tests. There the roll defaults to 0xFFFF (both level rolls fail, so the mon
-// disobeys) and MOVE(..., WITH_RNG(RNG_HNS_OBEDIENCE, value)) sets it for that move.
-static inline s32 ObedienceRandom(void)
+// HnS: the obedience rolls are bytes 0, 1 and 2 of this value. Upstream (since #5245) takes it from Random(), which is
+// only 16 bits, so the third roll (nap / hit itself / loaf) was always 0: a mon that could fall asleep always napped,
+// any other always hit itself, and none loafed. Random() is the upper half of Random32(), so swapping the halves of one
+// Random32() keeps the first two rolls and the RNG use as before and gives the third roll its own 0-255 value, as in
+// Emerald (three separate Random() & 255).
+// Random() cannot be rigged in tests. There the first two rolls default to 0xFFFF (both level rolls fail, so the mon
+// disobeys and does not use another move) and MOVE(..., WITH_RNG(RNG_HNS_OBEDIENCE, value)) sets them for that move;
+// the third roll is RNG_HNS_OBEDIENCE_ROLL3 (default 255: the mon loafs).
+static inline u32 ObedienceRandom(void)
 {
 #if TESTING
     if (gTestRunnerEnabled)
-        return RandomUniform(RNG_HNS_OBEDIENCE, 0, 0xFFFF);
+        return RandomUniform(RNG_HNS_OBEDIENCE, 0, 0xFFFF) | (RandomUniform(RNG_HNS_OBEDIENCE_ROLL3, 0, 255) << 16);
 #endif
-    return Random();
+    u32 rnd = Random32();
+    return (rnd >> 16) | (rnd << 16);
 }
 
 enum Obedience GetAttackerObedienceForAction(void)
 {
-    s32 rnd;
+    u32 rnd; // HnS: 32 bits (ObedienceRandom), upstream s32
     s32 calc;
     u8 obedienceLevel = 0;
     u8 levelReferenced;

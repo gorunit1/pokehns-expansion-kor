@@ -269,7 +269,8 @@ enum RandomTag
     RNG_DAYCARE_ABILITY_INHERITANCE,
     RNG_DEXNAV_RANDOM_EGG_MOVE,
     RNG_RANDOM_BALL,
-    RNG_HNS_OBEDIENCE, // HnS: test-only, GetAttackerObedienceForAction (the game itself uses Random())
+    RNG_HNS_OBEDIENCE, // HnS: test-only, GetAttackerObedienceForAction first two rolls (the game itself uses Random32())
+    RNG_HNS_OBEDIENCE_ROLL3, // HnS: test-only, its third roll (nap / hit itself / loaf)
 };
 
 #define RandomWeighted(tag, ...) \
