@@ -1482,18 +1482,12 @@ void DespawnAllOverworldWildEncounters(enum TypeOWE oweType, u32 flags)
     }
 }
 
-bool32 TryAndDespawnOldestGeneratedOWE_ToFreeObject(u8 *objectEventId)
+u32 TryAndDespawnOldestGeneratedOWE_ToFreeObject(void)
 {
-    // HnS: TRUE (no free slot) as before #8434. Upstream returns FALSE here without setting
-    // *objectEventId, so a full object table would use an unset id (fixed upstream by #9910).
     if (!WE_OW_ENCOUNTERS)
-        return TRUE;
+        return OBJECT_EVENTS_COUNT;
 
-    *objectEventId = RemoveOldestGeneratedOWE();
-    if (*objectEventId == OBJECT_EVENTS_COUNT)
-        return TRUE;
-
-    return FALSE;
+    return RemoveOldestGeneratedOWE();
 }
 
 void DespawnOWEOnBattleStart(void)
