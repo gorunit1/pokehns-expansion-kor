@@ -747,6 +747,7 @@ extern const u8 BattleScript_SwaggerConfusion[];
 extern const u8 BattleScript_NoRetreatMessage[];
 extern const u8 BattleScript_AutotomizeMessage[];
 extern const u8 BattleScript_TarShotMessage[];
+extern const u8 BattleScript_ChargeMessage[]; // HnS
 extern const u8 BattleScript_Stockpile[];
 extern const u8 BattleScript_Memento[];
 extern const u8 BattleScript_TakeHeart[];

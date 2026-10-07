@@ -1019,6 +1019,9 @@ static void SetAdditionalEffectsOnStatChange(struct BattleCalcValues *cv, struct
             st->moveScript = BattleScript_AutotomizeMessage;
         }
         break;
+    case EFFECT_CHARGE: // HnS: keep the "began charging power" message after the Sp. Def change, as before #9730
+        st->moveScript = BattleScript_ChargeMessage;
+        break;
     default:
         break;
     }

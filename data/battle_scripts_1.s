@@ -168,6 +168,13 @@ BattleScript_TarShotMessage::
 	trymovestatchanges
 	goto BattleScript_MoveEnd
 
+@ HnS: Charge keeps its "began charging power" message after the Sp. Def change, as before #9730 (upstream prints none)
+BattleScript_ChargeMessage::
+	printstring STRINGID_PKMNCHARGINGPOWER
+	waitmessage B_WAIT_TIME_LONG
+	trymovestatchanges
+	goto BattleScript_MoveEnd
+
 BattleScript_AbilityStatChange::
 	call BattleScript_AbilityPopUp
 	trystatchanges BS_EFFECT_BATTLER, STAT_CHANGE_IGNORE_SELF
@@ -180,7 +187,9 @@ BattleScript_DefiantActivates::
 
 BattleScript_AdrenalineOrbActivates::
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT
-	trybattlerstatchange BS_SCRIPTING, STAT_CHANGE_SECOND_QUEUE
+	@ HnS: keep the item name in the stat message (STAT_CHANGE_ITEM) as before #9730 until the item pop-up of #9777 (seq 475) replaces it
+	setlastuseditem BS_SCRIPTING
+	trybattlerstatchange BS_SCRIPTING, STAT_CHANGE_SECOND_QUEUE | STAT_CHANGE_ITEM
 	removeitem BS_SCRIPTING
 	return
 
