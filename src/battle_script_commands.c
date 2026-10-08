@@ -4449,70 +4449,88 @@ bool32 NoAliveMonsForBattlerSide(enum BattlerId battler)
 
 bool32 NoAliveMonsForPlayer(void)
 {
-    u32 i;
-    u32 maxIneligible = PARTY_SIZE;
+    // Test system does not have saved player party data that can be accessed
+    u32 maxIneligible = TESTING ? gPartiesCount[B_TRAINER_PLAYER] : PARTY_SIZE;
     u32 HP_count = 0;
     u32 ineligibleMonsCount = 0;
 
-    if (B_MULTI_BATTLE_WHITEOUT > GEN_3)
+    if (gBattleTypeFlags & BATTLE_TYPE_MULTI)
     {
-        if (AreMultiPartiesFullTeams() && gBattleTypeFlags & BATTLE_TYPE_MULTI)
-            maxIneligible = 12;
-        else
-            maxIneligible = 6;
-    }
-    else
-    {
-        if (gBattleTypeFlags & BATTLE_TYPE_MULTI && !AreMultiPartiesFullTeams())
+        // HnS: half-team multis keep comparing only the player's own mons with PARTY_SIZE (see the partner loop below)
+        if (GetConfig(B_MULTI_BATTLE_WHITEOUT) > GEN_3)
+        {
+            if (AreMultiPartiesFullTeams())
+                maxIneligible += gPartiesCount[B_TRAINER_PARTNER];
+        }
+        else if (!AreMultiPartiesFullTeams())
             maxIneligible = 3;
-        else
-            maxIneligible = 6;
     }
 
     // Get total HP for the player's party to determine if the player has lost
-    for (i = 0; i < PARTY_SIZE; i++)
+    for (u32 i = 0; i < PARTY_SIZE; i++)
     {
-        if (GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES) && !GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_IS_EGG)
-            && (!(gBattleTypeFlags & BATTLE_TYPE_ARENA) || !(gBattleStruct->arenaLostPlayerMons & (1u << i))))
+        struct Pokemon mon = gParties[B_TRAINER_PLAYER][i];
+
+        if (GetMonData(&mon, MON_DATA_SPECIES) && !GetMonData(&mon, MON_DATA_IS_EGG)
+         && (!(gBattleTypeFlags & BATTLE_TYPE_ARENA) || !(gBattleStruct->arenaLostPlayerMons & (1u << i))))
         {
-            HP_count += GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_HP);
+            HP_count += GetMonData(&mon, MON_DATA_HP);
         }
-        // Get the number of fainted mons or eggs (not empty slots) in the first three party slots.
-        if ((GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES) && !GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_HP))
-         || GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_IS_EGG))
-            ineligibleMonsCount++;
+
+        if (GetConfig(B_MULTI_BATTLE_WHITEOUT) > GEN_3)
+        {
+            // Get the number of fainted mons or eggs (not empty slots) in the party.
+            if ((GetMonData(&mon, MON_DATA_SPECIES) && !GetMonData(&mon, MON_DATA_HP))
+            || GetMonData(&mon, MON_DATA_IS_EGG))
+            {
+                ineligibleMonsCount++;
+            }
+        }
     }
 
-    if (B_MULTI_BATTLE_WHITEOUT > GEN_3 && gBattleTypeFlags & (BATTLE_TYPE_MULTI | BATTLE_TYPE_INGAME_PARTNER))
+    if (GetConfig(B_MULTI_BATTLE_WHITEOUT) > GEN_3 && gBattleTypeFlags & (BATTLE_TYPE_MULTI | BATTLE_TYPE_INGAME_PARTNER))
     {
+        // HnS: not in facility battles (the Battle Tower multi with an NPC partner counts as a full team here),
+        // where the partner keeps fighting alone as before and there is no whiteout after the battle.
+        if (HP_count == 0 && AreMultiPartiesFullTeams() && !(gBattleTypeFlags & BATTLE_TYPE_FRONTIER))
+            return TRUE;
+
         // Get total HP for the partner's party
-        for (i = 0; i < PARTY_SIZE; i++)
+        for (u32 i = 0; i < PARTY_SIZE; i++)
         {
-            if (GetMonData(&gParties[B_TRAINER_PARTNER][i], MON_DATA_SPECIES) && !GetMonData(&gParties[B_TRAINER_PARTNER][i], MON_DATA_IS_EGG)
-                && (!(gBattleTypeFlags & BATTLE_TYPE_ARENA) || !(gBattleStruct->arenaLostPlayerMons & (1u << i))))
+            struct Pokemon mon = gParties[B_TRAINER_PARTNER][i];
+
+            if (GetMonData(&mon, MON_DATA_SPECIES) && !GetMonData(&mon, MON_DATA_IS_EGG)
+             && (!(gBattleTypeFlags & BATTLE_TYPE_ARENA) || !(gBattleStruct->arenaLostPlayerMons & (1u << i))))
             {
-                HP_count += GetMonData(&gParties[B_TRAINER_PARTNER][i], MON_DATA_HP);
+                HP_count += GetMonData(&mon, MON_DATA_HP);
             }
-            // Get the number of fainted mons or eggs (not empty slots) in the first three party slots.
+            // Get the number of fainted mons or eggs (not empty slots) in the party.
             // HnS: in half-team multis only the player's own mons count towards the whiteout check,
-            // as before 12v12 (the partner's fainted mons used to sit in party slots 3-5 and were not counted).
+            // as before 12v12 (the partner's fainted mons used to sit in party slots 3-5 and were not counted),
+            // so a player with no usable mons left outside the battle still whites out while the partner fights on.
             if (AreMultiPartiesFullTeams()
-             && ((GetMonData(&gParties[B_TRAINER_PARTNER][i], MON_DATA_SPECIES) && !GetMonData(&gParties[B_TRAINER_PARTNER][i], MON_DATA_HP))
-              || GetMonData(&gParties[B_TRAINER_PARTNER][i], MON_DATA_IS_EGG)))
+             && ((GetMonData(&mon, MON_DATA_SPECIES) && !GetMonData(&mon, MON_DATA_HP))
+              || GetMonData(&mon, MON_DATA_IS_EGG)))
+            {
                 ineligibleMonsCount++;
+            }
         }
 
-        if(!(gBattleTypeFlags & BATTLE_TYPE_ARENA || (TESTING && gBattleTypeFlags & BATTLE_TYPE_MULTI)))
+        if(!(gBattleTypeFlags & BATTLE_TYPE_ARENA || TESTING
+         || (gBattleTypeFlags & BATTLE_TYPE_MULTI && AreMultiPartiesFullTeams())))
         {
-            for (i = 0; i < PARTY_SIZE; i++)
+            for (u32 i = 0; i < PARTY_SIZE; i++)
             {
                 if (!GetMonData(GetSavedPlayerPartyMon(i), MON_DATA_SPECIES)
-                || !GetMonData(GetSavedPlayerPartyMon(i), MON_DATA_HP)
-                || GetMonData(GetSavedPlayerPartyMon(i), MON_DATA_IS_EGG))
+                 || !GetMonData(GetSavedPlayerPartyMon(i), MON_DATA_HP)
+                 || GetMonData(GetSavedPlayerPartyMon(i), MON_DATA_IS_EGG))
+                {
                     ineligibleMonsCount++;
+                }
             }
 
-            // If the total number of ineligible mons is 6 or more, lose the battle.
+            // If the total number of ineligible mons is more than the maximum, lose the battle.
             if (ineligibleMonsCount >= maxIneligible)
                 return TRUE;
         }
