@@ -2,6 +2,7 @@
 # usage: [ALLOW_REPO=1] save/savetest/run_all.sh <tree> <label> [jobs]
 #   이식 전 ROM이 만든 세이브 2개(baseline/pre-make-flash.bin: 고정 상태, baseline/pre-newgame-flash.bin: NewGameInitData
 #   + 파티·박스)를 <tree> 빌드의 실제 LoadGameSave로 읽고, 이식 전 기준(baseline/pre-load-make/, pre-load-newgame/)과 비교한다.
+#   NEWGAME 출력(newgame.sav)은 baseline/expect-newgame-flash.bin이 있으면 그것과 비교한다(새 게임 값 변화, README 5절).
 #   <tree>: mkcopy.sh 사본(기본 용도) 또는 ALLOW_REPO=1일 때 실제 저장소(테스트 파일을 넣고 실행한 뒤 지운다).
 #   [jobs]: make -j(기본 $HNS_JOBS 또는 nproc).
 #   결과: $HNS_VERIFY_OUT/savetest/<label>-make/, <label>-newgame/ (+ .stdout)
@@ -10,7 +11,7 @@
 set -uo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
 . "$here/../../common.sh"
-[ $# -ge 2 ] || { sed -n '2,9p' "$0"; exit 2; }
+[ $# -ge 2 ] || { sed -n '2,10p' "$0"; exit 2; }
 tree="$1"; label="$2"; jobs="${3:-${HNS_JOBS:-$(nproc)}}"
 rc=0
 runs="$HNS_VERIFY_OUT/savetest"; mkdir -p "$runs"
@@ -22,7 +23,7 @@ for img in make newgame; do
         echo "== $label-$img: run failed before the test ran:"; tail -n 3 "$runs/$label-$img.stdout" | sed 's/^/  /'
         rc=1; continue
     fi
-    echo "== $label-$img vs 이식 전 기준 pre-$img"
+    echo "== $label-$img vs 이식 전 기준 pre-$img$([ "$img" = newgame ] && [ -f "$here/baseline/expect-newgame-flash.bin" ] && echo ' (newgame.sav는 expect-newgame-flash.bin)')"
     python3 -B "$here/savetest.py" compare "$here/baseline/pre-load-$img" "$label-$img" || rc=1
 done
 echo "run_all: $([ $rc = 0 ] && echo PASS || echo FAIL)  (logs: $runs/$label-*.stdout)"

@@ -79,7 +79,7 @@ $V/kortests/tools/showtrace.sh <trace> "K1-03"                                  
 
 ### 3.2 세이브 왕복 (`save/savetest/run_all.sh`)
 
-이식 전(#8943 전) ROM이 만든 세이브 2개를 현재 빌드의 실제 `LoadGameSave`로 읽어 이식 전 결과와 비교한다.
+이식 전(#8943 전) ROM이 만든 세이브 2개를 현재 빌드의 실제 `LoadGameSave`로 읽어 이식 전 결과와 비교한다(NEWGAME 출력 `newgame.sav`의 섹터 비교 기준만 5절 `expect-newgame-flash.bin`).
 
 ```sh
 ALLOW_REPO=1 $V/save/savetest/run_all.sh $R <label> 8      # 저장소에서(test/에 넣고 실행 뒤 지움)

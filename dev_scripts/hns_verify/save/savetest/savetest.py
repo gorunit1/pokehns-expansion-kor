@@ -17,7 +17,8 @@
   compare <labelA|dir> <labelB|dir>
       make.sav: 섹터별 바이트 비교(섹터 31 녹화 기록은 A안이라 따로 표시)
         (기준 폴더 baseline/pre-load-*/에는 .sav가 없고 baseline/pre-make-flash.bin·pre-newgame-flash.bin을 읽는다:
-         .gitignore의 *.sa* 때문에 이름을 바꿨다. 내용은 이식 전 make.sav·newgame.sav와 바이트 같다)
+         .gitignore의 *.sa* 때문에 이름을 바꿨다. 내용은 이식 전 make.sav·newgame.sav와 바이트 같다.
+         newgame은 baseline/expect-newgame-flash.bin이 있으면 그것을 읽는다 — 새 게임 값이 의도해서 바뀐 뒤의 기준, README 5절)
       load.txt: 줄 비교(RECORDED_BATTLE_VALID 줄은 A안 기대값으로 따로 판정)
   reparse <dir>
       <dir>/make.log를 다시 읽어 load.txt 등을 다시 만든다(출력 형식을 고친 뒤 옛 결과에 적용)
@@ -224,6 +225,8 @@ def cmd_compare(a):
         print('[%s] newgame.sav(새 게임 + 파티·박스) 섹터 바이트 %s (기준 %s)' % ('PASS' if not diff else 'FAIL',
               '동일' if not diff else '차이: 섹터 %s' % diff, os.path.basename(pa)))
         bad += bool(diff)
+    else:
+        print('[INFO] newgame.sav 한쪽 없음 — 건너뜀')
     la = open(os.path.join(A, 'load.txt')).read().splitlines() if os.path.exists(os.path.join(A, 'load.txt')) else []
     lb = open(os.path.join(B, 'load.txt')).read().splitlines() if os.path.exists(os.path.join(B, 'load.txt')) else []
     if la and lb:
