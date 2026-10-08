@@ -47,7 +47,7 @@ static enum ItemEffect TryDoublePrize(enum BattlerId battler)
         u32 i;
         for (i = 0; i < PARTY_SIZE; i++)
         {
-            if (GetItemHoldEffect(GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM)) == HOLD_EFFECT_DOUBLE_PRIZE)
+            if (GetItemHoldEffect(GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_HELD_ITEM)) == HOLD_EFFECT_DOUBLE_PRIZE)
             {
                 gBattleStruct->moneyMultiplier *= 2;
                 gBattleStruct->moneyMultiplierItem = TRUE;

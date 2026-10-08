@@ -177,8 +177,8 @@ static void FillGameState(bool32 keepWorld)
 party:
     ZeroPlayerPartyMons();
     for (i = 0; i < PARTY_SIZE; i++)
-        FillMon(&gPlayerParty[i], i, sParty[i]);
-    gPlayerPartyCount = PARTY_SIZE;
+        FillMon(&gParties[B_TRAINER_PLAYER][i], i, sParty[i]);
+    gPartiesCount[B_TRAINER_PLAYER] = PARTY_SIZE;
 
     for (i = 0; i < ARRAY_COUNT(sBoxPos); i++)
     {
@@ -289,8 +289,8 @@ static void DumpLoadedState(void)
 {
     char prefix[24];
     u32 w[8];
-    w[0] = gPlayerPartyCount;
-    w[1] = Fnv(gPlayerParty, sizeof(struct Pokemon) * PARTY_SIZE);
+    w[0] = gPartiesCount[B_TRAINER_PLAYER];
+    w[1] = Fnv(gParties[B_TRAINER_PLAYER], sizeof(struct Pokemon) * PARTY_SIZE);
     w[2] = Fnv(gSaveBlock1Ptr, sizeof(struct SaveBlock1));
     w[3] = Fnv(gSaveBlock2Ptr, sizeof(struct SaveBlock2));
     w[4] = Fnv(gSaveBlock3Ptr, sizeof(struct SaveBlock3));
@@ -304,10 +304,10 @@ static void DumpLoadedState(void)
     {
         memcpy(prefix, "DUMP PRAW x", 12);
         prefix[10] = '0' + i;
-        PrintHexLine(prefix, (const u8 *)&gPlayerParty[i], sizeof(struct Pokemon));
+        PrintHexLine(prefix, (const u8 *)&gParties[B_TRAINER_PLAYER][i], sizeof(struct Pokemon));
         memcpy(prefix, "DUMP PDEC x", 12);
         prefix[10] = '0' + i;
-        DumpDecoded(prefix, &gPlayerParty[i], NULL);
+        DumpDecoded(prefix, &gParties[B_TRAINER_PLAYER][i], NULL);
     }
     for (u32 b = 0; b < TOTAL_BOXES_COUNT; b++)
     {
@@ -348,7 +348,7 @@ static void ProgramImageAndLoad(void)
     }
     Free(buf);
     ZeroPlayerPartyMons();
-    gPlayerPartyCount = 0;
+    gPartiesCount[B_TRAINER_PLAYER] = 0;
     st = LoadGameSave(SAVE_NORMAL);
     Test_MgbaPrintf("DUMP LOADSTATUS %d %d", st, gSaveFileStatus);
 }
