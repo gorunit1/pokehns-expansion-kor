@@ -65,7 +65,7 @@ bool8 BugContestCheckTimeLimit(void)
 bool8 TransferBugContestMon(void)
 {
     u8 monIndex = VarGet(VAR_0x8004);
-    struct Pokemon *mon = &gParties[B_TRAINER_0][monIndex];
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][monIndex];
     struct BoxPokemon *boxMon = &mon->box;
     u8 boxId, boxPos;
 
@@ -86,7 +86,7 @@ bool8 TransferBugContestMon(void)
 bool8 JudgeBugContestMon(void)
 {
     u16 monIndex = VarGet(VAR_0x8004);
-    u8 maxHP = GetMonData(&gParties[B_TRAINER_0][monIndex], MON_DATA_MAX_HP);
+    u8 maxHP = GetMonData(&gParties[B_TRAINER_PLAYER][monIndex], MON_DATA_MAX_HP);
     u16 rand = Random() % 100;
     u16 placement;
 
@@ -162,7 +162,7 @@ void CB2_EndBugContestBattle(void)
     u8 partyCount = 0;
     for (u8 i = 0; i < PARTY_SIZE; i++)
     {
-        if (GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_SPECIES) != SPECIES_NONE)
+        if (GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES) != SPECIES_NONE)
             partyCount++;
     }
 
@@ -197,7 +197,7 @@ bool8 RemoveSportBalls(void)
 bool8 ShowBugContestChosenMon(void)
 {
     u16 monIndex = VarGet(VAR_0x8004);
-    u16 species = GetMonData(&gParties[B_TRAINER_0][monIndex], MON_DATA_SPECIES);
+    u16 species = GetMonData(&gParties[B_TRAINER_PLAYER][monIndex], MON_DATA_SPECIES);
 
     StringCopy(gStringVar1, GetSpeciesName(species));
 

@@ -839,7 +839,7 @@ bool32 CanTriggerSpinEvolution()
     {
         for (u32 i = 0; i < PARTY_SIZE; i++)
         {
-            enum Species species = GetEvolutionTargetSpecies(&gParties[B_TRAINER_0][i], EVO_MODE_OVERWORLD_SPECIAL, 0, NULL, NULL, CHECK_EVO);
+            enum Species species = GetEvolutionTargetSpecies(&gParties[B_TRAINER_PLAYER][i], EVO_MODE_OVERWORLD_SPECIAL, 0, NULL, NULL, CHECK_EVO);
             if (species != SPECIES_NONE)
             {
                 return TRUE;
@@ -1671,19 +1671,19 @@ bool8 PartyHasMonWithSurf(void)
     {
         for (i = 0; i < PARTY_SIZE; i++)
         {
-            if (GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_SPECIES) == SPECIES_NONE)
+            if (GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES) == SPECIES_NONE)
                 break;
-            if (MonKnowsMove(&gParties[B_TRAINER_0][i], MOVE_SURF))
+            if (MonKnowsMove(&gParties[B_TRAINER_PLAYER][i], MOVE_SURF))
                 return TRUE;
         }
         if (CheckBagHasItem(ITEM_HM03, 1))
         {
             for (i = 0; i < PARTY_SIZE; i++)
             {
-                u16 species = GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_SPECIES);
+                u16 species = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES);
                 if (!species)
                     break;
-                if (!GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_IS_EGG) && CanLearnTeachableMove(species, MOVE_SURF))
+                if (!GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_IS_EGG) && CanLearnTeachableMove(species, MOVE_SURF))
                     return TRUE;
             }
             // Challenge runs (mono-type, randomized moves, etc.) can lock the player out of

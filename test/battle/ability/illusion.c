@@ -84,7 +84,7 @@ ONE_VS_TWO_BATTLE_TEST("Illusion works for the second opponent trainer in a batt
         TURN {}
     } THEN {
         EXPECT_EQ(gBattleStruct->illusion[B_POSITION_OPPONENT_RIGHT].state, ILLUSION_ON);
-        EXPECT(&gParties[B_TRAINER_3][1] == gBattleStruct->illusion[B_POSITION_OPPONENT_RIGHT].mon);
+        EXPECT(&gParties[B_TRAINER_OPPONENT_B][1] == gBattleStruct->illusion[B_POSITION_OPPONENT_RIGHT].mon);
     }
 }
 
@@ -104,7 +104,7 @@ MULTI_BATTLE_TEST("Illusion works when the user's partner and disguise are in th
         TURN { SWITCH(playerLeft, 1); }
     } THEN {
         EXPECT_EQ(gBattleStruct->illusion[B_POSITION_PLAYER_LEFT].state, ILLUSION_ON);
-        EXPECT(&gParties[B_TRAINER_0][2] == gBattleStruct->illusion[B_POSITION_PLAYER_LEFT].mon);
+        EXPECT(&gParties[B_TRAINER_PLAYER][2] == gBattleStruct->illusion[B_POSITION_PLAYER_LEFT].mon);
     }
 }
 

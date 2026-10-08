@@ -63,7 +63,7 @@ SINGLE_BATTLE_TEST("Disobedience: a mon that hits itself at low HP faints")
         HP_BAR(player, hp: 0);
         NOT HP_BAR(opponent);
     } THEN {
-        EXPECT_EQ(GetMonData(&gParties[B_TRAINER_0][0], MON_DATA_HP), 0);
+        EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_HP), 0);
     }
 }
 

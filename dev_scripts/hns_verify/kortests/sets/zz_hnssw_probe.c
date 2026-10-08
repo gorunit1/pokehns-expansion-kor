@@ -77,7 +77,7 @@ AI_SINGLE_BATTLE_TEST("HNSSW S2 player EE (poison) then the last foe faints: exp
     } SCENE {
         MESSAGE("갑주무사는 축하를 썼다!");
     } THEN {
-        EXPECT_GT(GetMonData(&gParties[B_TRAINER_0][0], MON_DATA_LEVEL), 5);
+        EXPECT_GT(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_LEVEL), 5);
     }
 }
 

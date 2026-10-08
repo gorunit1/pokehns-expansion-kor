@@ -43,7 +43,7 @@ static void HandleFacilityTrainerBattleEnd(void)
     case FACILITY_BATTLE_FACTORY:
         FlagClear(FLAG_LIMIT_TO_50);
         for (i = 0; i < PARTY_SIZE; i++)
-            CalculateMonStats(&gParties[B_TRAINER_0][i]);
+            CalculateMonStats(&gParties[B_TRAINER_PLAYER][i]);
         if (gSaveBlock2Ptr->frontier.battlesCount < 0xFFFFFF)
         {
             gSaveBlock2Ptr->frontier.battlesCount++;
@@ -95,7 +95,7 @@ static void DoFacilityTrainerBattleInternal(u8 facility)
     {
         FlagSet(FLAG_LIMIT_TO_50);
         for (i = 0; i < PARTY_SIZE; i++)
-            CalculateMonStats(&gParties[B_TRAINER_0][i]);
+            CalculateMonStats(&gParties[B_TRAINER_PLAYER][i]);
     }
 
     gBattleScripting.specialTrainerBattleType = facility;
@@ -214,14 +214,14 @@ void FacilityTrainerBattle(struct ScriptContext *ctx)
 void FillFrontierTrainerParty(u8 monsCount)
 {
     ZeroEnemyPartyMons();
-    FillTrainerParty(TRAINER_BATTLE_PARAM.opponentA, B_TRAINER_1, monsCount);
+    FillTrainerParty(TRAINER_BATTLE_PARAM.opponentA, B_TRAINER_OPPONENT_A, monsCount);
 }
 
 void FillFrontierTrainersParties(u8 monsCount)
 {
     ZeroEnemyPartyMons();
-    FillTrainerParty(TRAINER_BATTLE_PARAM.opponentA, B_TRAINER_1, monsCount);
-    FillTrainerParty(TRAINER_BATTLE_PARAM.opponentB, B_TRAINER_3, monsCount);
+    FillTrainerParty(TRAINER_BATTLE_PARAM.opponentA, B_TRAINER_OPPONENT_A, monsCount);
+    FillTrainerParty(TRAINER_BATTLE_PARAM.opponentB, B_TRAINER_OPPONENT_B, monsCount);
 }
 
 static void FillTrainerParty(u16 trainerId, enum BattleTrainer trainer, u8 monCount)

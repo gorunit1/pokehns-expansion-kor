@@ -1449,9 +1449,9 @@ bool8 ScrCmd_givenamedmon(struct ScriptContext *ctx)
 
     for (u8 i = 0; i < GetMaxPartySize(); i++) // tx_randomizer_and_challenges: party limit
     {
-        if (GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_SPECIES) == SPECIES_NONE)
+        if (GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES) == SPECIES_NONE)
         {
-            mon = &gParties[B_TRAINER_0][i];
+            mon = &gParties[B_TRAINER_PLAYER][i];
             ZeroMonData(mon);
             CreateBoxMon(&mon->box, species, level, personality, OTID_STRUCT_PRESET(otId));
             SetBoxMonIVs(&mon->box, USE_RANDOM_IVS);
@@ -1522,7 +1522,7 @@ bool8 ScrCmd_removenamedmon(struct ScriptContext *ctx)
     u8 partyCount = 0;
     for (u8 i = 0; i < GetMaxPartySize(); i++)
     {
-        if (GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_SPECIES) != SPECIES_NONE)
+        if (GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES) != SPECIES_NONE)
             partyCount++;
     }
 
@@ -1534,14 +1534,14 @@ bool8 ScrCmd_removenamedmon(struct ScriptContext *ctx)
 
     for (u8 i = 0; i < GetMaxPartySize(); i++)
     {
-        if (GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_SPECIES) != SPECIES_NONE)
+        if (GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES) != SPECIES_NONE)
         {
             u8 nickname[POKEMON_NAME_LENGTH + 1];
-            GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_NICKNAME, nickname);
+            GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_NICKNAME, nickname);
 
             if (StringCompare(nickname, targetNickname) == 0)
             {
-                u16 heldItem = GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_HELD_ITEM);
+                u16 heldItem = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_HELD_ITEM);
 
                 if (giftId == 1 && !ItemIsMail(heldItem))
                 {
@@ -1551,7 +1551,7 @@ bool8 ScrCmd_removenamedmon(struct ScriptContext *ctx)
 
                 if (giftId == 2)
                 {
-                    u8 friendship = GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_FRIENDSHIP);
+                    u8 friendship = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_FRIENDSHIP);
                     if (friendship > 200)
                     {
                         gSpecialVar_Result = 3;
@@ -1559,7 +1559,7 @@ bool8 ScrCmd_removenamedmon(struct ScriptContext *ctx)
                     }
                 }
 
-                ZeroMonData(&gParties[B_TRAINER_0][i]);
+                ZeroMonData(&gParties[B_TRAINER_PLAYER][i]);
                 CompactPartySlots();
                 gSpecialVar_Result = MON_GIVEN_TO_PARTY;
                 return FALSE;
@@ -1575,13 +1575,13 @@ bool8 ScrCmd_remove5mons(struct ScriptContext *ctx)
 {
     u8 removedCount = 0;
 
-    if (GetMonData(&gParties[B_TRAINER_0][0], MON_DATA_HP) == 0)
+    if (GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_HP) == 0)
     {
         gSpecialVar_Result = MON_CANT_GIVE;
         return FALSE;
     }
 
-    if (GetMonData(&gParties[B_TRAINER_0][0], MON_DATA_SPECIES_OR_EGG) == SPECIES_EGG)
+    if (GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_SPECIES_OR_EGG) == SPECIES_EGG)
     {
         gSpecialVar_Result = MON_CANT_GIVE;
         return FALSE;
@@ -1589,9 +1589,9 @@ bool8 ScrCmd_remove5mons(struct ScriptContext *ctx)
 
     for (u8 i = 1; i < PARTY_SIZE; i++)
     {
-        if (GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_SPECIES) != SPECIES_NONE)
+        if (GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES) != SPECIES_NONE)
         {
-            ZeroMonData(&gParties[B_TRAINER_0][i]);
+            ZeroMonData(&gParties[B_TRAINER_PLAYER][i]);
             removedCount++;
         }
     }
@@ -1614,12 +1614,12 @@ bool8 ScrCmd_baobacheckmon(struct ScriptContext *ctx)
     if (partyIndex >= GetMaxPartySize())
         return FALSE;
 
-    if (GetMonData(&gParties[B_TRAINER_0][partyIndex], MON_DATA_SPECIES, NULL) == SPECIES_NONE)
+    if (GetMonData(&gParties[B_TRAINER_PLAYER][partyIndex], MON_DATA_SPECIES, NULL) == SPECIES_NONE)
         return FALSE;
-    if (GetMonData(&gParties[B_TRAINER_0][partyIndex], MON_DATA_IS_EGG, NULL))
+    if (GetMonData(&gParties[B_TRAINER_PLAYER][partyIndex], MON_DATA_IS_EGG, NULL))
         return FALSE;
 
-    species = GetMonData(&gParties[B_TRAINER_0][partyIndex], MON_DATA_SPECIES, NULL);
+    species = GetMonData(&gParties[B_TRAINER_PLAYER][partyIndex], MON_DATA_SPECIES, NULL);
 
     switch (checkId)
     {
@@ -1713,7 +1713,7 @@ bool8 ScrCmd_removegenericmon(struct ScriptContext *ctx)
         return FALSE;
     }
 
-    struct Pokemon *mon = &gParties[B_TRAINER_0][monIndex];
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][monIndex];
     u16 species = GetMonData(mon, MON_DATA_SPECIES);
 
     if (species == SPECIES_NONE || species != targetSpecies)
@@ -1838,9 +1838,9 @@ static bool8 GiveOddEgg_Internal(u16 species, bool8 forceShiny, bool8 allow14Per
 {
     for (u8 i = 0; i < GetMaxPartySize(); i++)
     {
-        if (GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_SPECIES) == SPECIES_NONE)
+        if (GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES) == SPECIES_NONE)
         {
-            struct Pokemon *mon = &gParties[B_TRAINER_0][i];
+            struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][i];
             ZeroMonData(mon);
 
             u32 otId = GetPlayerOtId32();
@@ -1934,7 +1934,7 @@ bool8 ScrCmd_checkpartymonlevel(struct ScriptContext *ctx)
 {
     u16 level = ScriptReadHalfword(ctx);
     (void)level;
-    struct Pokemon *pokemon = &gParties[B_TRAINER_0][gSpecialVar_0x8004];
+    struct Pokemon *pokemon = &gParties[B_TRAINER_PLAYER][gSpecialVar_0x8004];
     if (GetMonData(pokemon, MON_DATA_LEVEL) == 100)
         gSpecialVar_Result = TRUE;
     else
@@ -1946,7 +1946,7 @@ bool8 ScrCmd_calculatemonstats(struct ScriptContext *ctx)
 {
     s32 i;
     for (i = 0; i < PARTY_SIZE; i++)
-        CalculateMonStats(&gParties[B_TRAINER_0][i]);
+        CalculateMonStats(&gParties[B_TRAINER_PLAYER][i]);
     return FALSE;
 }
 
@@ -1954,7 +1954,7 @@ bool8 ScrCmd_deleteparty(struct ScriptContext *ctx)
 {
     s32 i;
     for (i = 0; i < PARTY_SIZE; i++)
-        ZeroMonData(&gParties[B_TRAINER_0][i]);
+        ZeroMonData(&gParties[B_TRAINER_PLAYER][i]);
     return FALSE;
 }
 
@@ -2862,7 +2862,7 @@ bool8 ScrCmd_bufferleadmonspeciesname(struct ScriptContext *ctx)
 
     u8 *dest = sScriptStringVars[stringVarIndex];
     u8 partyIndex = GetLeadMonIndex();
-    enum Species species = GetMonData(&gParties[B_TRAINER_0][partyIndex], MON_DATA_SPECIES);
+    enum Species species = GetMonData(&gParties[B_TRAINER_PLAYER][partyIndex], MON_DATA_SPECIES);
     StringCopy(dest, GetSpeciesName(species));
     return FALSE;
 }
@@ -2884,7 +2884,7 @@ bool8 ScrCmd_bufferpartymonnick(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1);
 
-    GetMonData(&gParties[B_TRAINER_0][partyIndex], MON_DATA_NICKNAME, sScriptStringVars[stringVarIndex]);
+    GetMonData(&gParties[B_TRAINER_PLAYER][partyIndex], MON_DATA_NICKNAME, sScriptStringVars[stringVarIndex]);
     StringGet_Nickname(sScriptStringVars[stringVarIndex]);
     return FALSE;
 }
@@ -3050,10 +3050,10 @@ bool8 ScrCmd_checkfieldmove(struct ScriptContext *ctx)
     move = FieldMove_GetMoveId(fieldMove);
     for (u32 i = 0; i < GetMaxPartySize(); i++)
     {
-        enum Species species = GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_SPECIES);
+        enum Species species = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES);
         if (!species)
             break;
-        if (!GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_IS_EGG) && MonKnowsMove(&gParties[B_TRAINER_0][i], move) == TRUE)
+        if (!GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_IS_EGG) && MonKnowsMove(&gParties[B_TRAINER_PLAYER][i], move) == TRUE)
         {
             gSpecialVar_Result = i;
             gSpecialVar_0x8004 = species;
@@ -3067,10 +3067,10 @@ bool8 ScrCmd_checkfieldmove(struct ScriptContext *ctx)
         {
             for (u32 i = 0; i < GetMaxPartySize(); i++)
             {
-                u16 species = GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_SPECIES);
+                u16 species = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES);
                 if (!species)
                     break;
-                if (!GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_IS_EGG) && CanLearnTeachableMove(species, move))
+                if (!GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_IS_EGG) && CanLearnTeachableMove(species, move))
                 {
                     gSpecialVar_Result = i;
                     gSpecialVar_0x8004 = species;
@@ -3089,10 +3089,10 @@ bool8 ScrCmd_checkfieldmove(struct ScriptContext *ctx)
         {
             for (u32 i = 0; i < GetMaxPartySize(); i++)
             {
-                u16 species = GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_SPECIES);
+                u16 species = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES);
                 if (!species)
                     break;
-                if (!GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_IS_EGG))
+                if (!GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_IS_EGG))
                 {
                     gSpecialVar_Result = i;
                     gSpecialVar_0x8004 = species;
@@ -3112,10 +3112,10 @@ bool8 ScrCmd_checkpartymove(struct ScriptContext *ctx)
     gSpecialVar_Result = PARTY_SIZE;
     for (u32 i = 0; i < GetMaxPartySize(); i++)
     {
-        u16 species = GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_SPECIES);
+        u16 species = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES);
         if (!species)
             break;
-        if (!GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_IS_EGG) && MonKnowsMove(&gParties[B_TRAINER_0][i], moveId) == TRUE)
+        if (!GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_IS_EGG) && MonKnowsMove(&gParties[B_TRAINER_PLAYER][i], moveId) == TRUE)
         {
             gSpecialVar_Result = i;
             gSpecialVar_0x8004 = species;
@@ -3132,10 +3132,10 @@ bool8 ScrCmd_checkpartymove(struct ScriptContext *ctx)
         {
             for (u32 i = 0; i < GetMaxPartySize(); i++)
             {
-                u16 species = GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_SPECIES);
+                u16 species = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES);
                 if (!species)
                     break;
-                if (!GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_IS_EGG) && CanLearnTeachableMove(species, moveId))
+                if (!GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_IS_EGG) && CanLearnTeachableMove(species, moveId))
                 {
                     gSpecialVar_Result = i;
                     gSpecialVar_0x8004 = species;
@@ -3154,10 +3154,10 @@ bool8 ScrCmd_checkpartymove(struct ScriptContext *ctx)
         {
             for (u32 i = 0; i < GetMaxPartySize(); i++)
             {
-                u16 species = GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_SPECIES);
+                u16 species = GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES);
                 if (!species)
                     break;
-                if (!GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_IS_EGG))
+                if (!GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_IS_EGG))
                 {
                     gSpecialVar_Result = i;
                     gSpecialVar_0x8004 = species;
@@ -3860,7 +3860,7 @@ bool8 ScrCmd_setmodernfatefulencounter(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
 
-    SetMonData(&gParties[B_TRAINER_0][partyIndex], MON_DATA_MODERN_FATEFUL_ENCOUNTER, &isModernFatefulEncounter);
+    SetMonData(&gParties[B_TRAINER_PLAYER][partyIndex], MON_DATA_MODERN_FATEFUL_ENCOUNTER, &isModernFatefulEncounter);
     return FALSE;
 }
 
@@ -3870,7 +3870,7 @@ bool8 ScrCmd_checkmodernfatefulencounter(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1);
 
-    gSpecialVar_Result = GetMonData(&gParties[B_TRAINER_0][partyIndex], MON_DATA_MODERN_FATEFUL_ENCOUNTER);
+    gSpecialVar_Result = GetMonData(&gParties[B_TRAINER_PLAYER][partyIndex], MON_DATA_MODERN_FATEFUL_ENCOUNTER);
     return FALSE;
 }
 
@@ -3915,7 +3915,7 @@ bool8 ScrCmd_setmonmetlocation(struct ScriptContext *ctx)
     Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
 
     if (partyIndex < PARTY_SIZE)
-        SetMonData(&gParties[B_TRAINER_0][partyIndex], MON_DATA_MET_LOCATION, &location);
+        SetMonData(&gParties[B_TRAINER_PLAYER][partyIndex], MON_DATA_MET_LOCATION, &location);
     return FALSE;
 }
 
@@ -4057,7 +4057,7 @@ bool8 Scrcmd_checkspecies_choose(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1);
 
-    gSpecialVar_Result = (GetMonData(&gParties[B_TRAINER_0][gSpecialVar_0x8004], MON_DATA_SPECIES_OR_EGG) == givenSpecies);
+    gSpecialVar_Result = (GetMonData(&gParties[B_TRAINER_PLAYER][gSpecialVar_0x8004], MON_DATA_SPECIES_OR_EGG) == givenSpecies);
 
     return FALSE;
 }

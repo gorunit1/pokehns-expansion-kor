@@ -718,7 +718,7 @@ void HandleAction_WatchesCarefully(void)
             gBattleStruct->safariRockThrowCounter--;
             if (gBattleStruct->safariRockThrowCounter == 0)
             {
-                gBattleStruct->safariCatchFactor = gSpeciesInfo[GetMonData(gParties[B_TRAINER_1], MON_DATA_SPECIES)].catchRate * 100 / 1275;
+                gBattleStruct->safariCatchFactor = gSpeciesInfo[GetMonData(gParties[B_TRAINER_OPPONENT_A], MON_DATA_SPECIES)].catchRate * 100 / 1275;
                 if (gBattleStruct->safariCatchFactor == 0)
                     gBattleStruct->safariCatchFactor = 1;
                 gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_MON_WATCHING;
@@ -1226,7 +1226,7 @@ void ResetSentPokesToOpponentValue(void)
     // indexes 0-2 of their own party, so they must not mark the player's mons as sent in.
     for (i = 0; i < gBattlersCount; i += 2)
     {
-        if (GetBattlerTrainer(i) == B_TRAINER_0)
+        if (GetBattlerTrainer(i) == B_TRAINER_PLAYER)
             bits |= 1u << gBattlerPartyIndexes[i];
     }
 
@@ -1246,7 +1246,7 @@ void OpponentSwitchInResetSentPokesToOpponentValue(enum BattlerId battler)
 
         for (i = 0; i < gBattlersCount; i += 2)
         {
-            if (!(gAbsentBattlerFlags & (1u << i)) && GetBattlerTrainer(i) == B_TRAINER_0) // HnS: see ResetSentPokesToOpponentValue
+            if (!(gAbsentBattlerFlags & (1u << i)) && GetBattlerTrainer(i) == B_TRAINER_PLAYER) // HnS: see ResetSentPokesToOpponentValue
                 bits |= 1u << gBattlerPartyIndexes[i];
         }
         gSentPokesToOpponent[flank] = bits;
@@ -1259,7 +1259,7 @@ void UpdateSentPokesToOpponentValue(enum BattlerId battler)
     {
         OpponentSwitchInResetSentPokesToOpponentValue(battler);
     }
-    else if (GetBattlerTrainer(battler) == B_TRAINER_0) // HnS: see ResetSentPokesToOpponentValue
+    else if (GetBattlerTrainer(battler) == B_TRAINER_PLAYER) // HnS: see ResetSentPokesToOpponentValue
     {
         s32 i;
         for (i = 1; i < gBattlersCount; i++)
@@ -1795,7 +1795,7 @@ bool32 HandleFaintedMonActions(void)
             do
             {
                 gBattlerFainted = gBattlerTarget = gBattleStruct->eventState.faintedActionBattler;
-                // HnS: same >> 1 as Cmd_getexp; upstream (GetBattlerTrainer() & BIT_FLANK) is 2 for B_TRAINER_3 and overruns givenExpMons[2].
+                // HnS: same >> 1 as Cmd_getexp; upstream (GetBattlerTrainer() & BIT_FLANK) is 2 for B_TRAINER_OPPONENT_B and overruns givenExpMons[2].
                 if (gBattleMons[gBattlerFainted].hp == 0
                  && !(gBattleStruct->givenExpMons[(GetBattlerTrainer(gBattlerFainted) & BIT_FLANK) >> 1] & (1u << gBattlerPartyIndexes[gBattlerFainted]))
                  && !(gAbsentBattlerFlags & (1u << gBattlerFainted)))
@@ -8110,10 +8110,10 @@ static bool32 IsCriticalHit(struct DamageContext *ctx)
 
     // Counter for IF_CRITICAL_HITS_GE evolution condition.
     // HnS: gPartyCriticalHits is indexed by player party slot; since #8943 an in-game partner's mons use indexes 0-2
-    // of their own party, so only count battlers owned by B_TRAINER_0 (upstream 1.17.0 lets the partner's crits land on the player's mons).
+    // of their own party, so only count battlers owned by B_TRAINER_PLAYER (upstream 1.17.0 lets the partner's crits land on the player's mons).
     if (isCrit && IsOnPlayerSide(ctx->battlerAtk)
      && !(gBattleTypeFlags & BATTLE_TYPE_MULTI && GetBattlerPosition(ctx->battlerAtk) == B_POSITION_PLAYER_LEFT)
-     && GetBattlerTrainer(ctx->battlerAtk) == B_TRAINER_0)
+     && GetBattlerTrainer(ctx->battlerAtk) == B_TRAINER_PLAYER)
         gPartyCriticalHits[gBattlerPartyIndexes[ctx->battlerAtk]]++;
 
     gSpecialStatuses[ctx->battlerDef].criticalHit = isCrit;
@@ -8807,11 +8807,11 @@ bool32 TryRevertPartyMonFormChange(u32 partyIndex)
      bool32 changedForm = FALSE;
 
     // Appeared in battle and didn't faint
-    if (gBattleStruct->partyState[B_SIDE_PLAYER][partyIndex].sentOut && GetMonData(&gParties[B_TRAINER_0][partyIndex], MON_DATA_HP) != 0)
-        changedForm = TryFormChange(&gParties[B_TRAINER_0][partyIndex], FORM_CHANGE_END_BATTLE_ENVIRONMENT, B_TRAINER_0);
+    if (gBattleStruct->partyState[B_SIDE_PLAYER][partyIndex].sentOut && GetMonData(&gParties[B_TRAINER_PLAYER][partyIndex], MON_DATA_HP) != 0)
+        changedForm = TryFormChange(&gParties[B_TRAINER_PLAYER][partyIndex], FORM_CHANGE_END_BATTLE_ENVIRONMENT, B_TRAINER_PLAYER);
 
     if (!changedForm)
-        changedForm = TryFormChange(&gParties[B_TRAINER_0][partyIndex], FORM_CHANGE_END_BATTLE, B_TRAINER_0);
+        changedForm = TryFormChange(&gParties[B_TRAINER_PLAYER][partyIndex], FORM_CHANGE_END_BATTLE, B_TRAINER_PLAYER);
 
     // Clear original species field
     gBattleStruct->partyState[B_SIDE_PLAYER][partyIndex].changedSpecies = SPECIES_NONE;
@@ -9340,12 +9340,12 @@ void TryRestoreHeldItems(void)
             u16 lostItem = gBattleStruct->itemLost[B_SIDE_PLAYER][i].originalItem;
 
             // Check if the lost item is a berry and the mon is not holding it
-            if (GetItemPocket(lostItem) == POCKET_BERRIES && GetMonData(&gParties[B_TRAINER_0][i], MON_DATA_HELD_ITEM) != lostItem)
+            if (GetItemPocket(lostItem) == POCKET_BERRIES && GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_HELD_ITEM) != lostItem)
                 lostItem = ITEM_NONE;
 
             // Check if the lost item should be restored
             if ((lostItem != ITEM_NONE || returnNPCItems) && GetItemPocket(lostItem) != POCKET_BERRIES)
-                SetMonData(&gParties[B_TRAINER_0][i], MON_DATA_HELD_ITEM, &lostItem);
+                SetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_HELD_ITEM, &lostItem);
         }
     }
 }
@@ -9968,13 +9968,13 @@ bool32 AreMultiPartiesFullTeams(void)
         u8 *partySizes = gBattleTestRunnerState->data.partySizes;
         bool32 fullTeam = FALSE;
 
-        if (partySizes[B_TRAINER_0] && partySizes[B_TRAINER_2]
-         && (partySizes[B_TRAINER_0] > MULTI_PARTY_SIZE || partySizes[B_TRAINER_2] > MULTI_PARTY_SIZE))
+        if (partySizes[B_TRAINER_PLAYER] && partySizes[B_TRAINER_PARTNER]
+         && (partySizes[B_TRAINER_PLAYER] > MULTI_PARTY_SIZE || partySizes[B_TRAINER_PARTNER] > MULTI_PARTY_SIZE))
         {
             fullTeam = TRUE;
         }
-        if (partySizes[B_TRAINER_1] && partySizes[B_TRAINER_3]
-         && (partySizes[B_TRAINER_1] > MULTI_PARTY_SIZE || partySizes[B_TRAINER_3] > MULTI_PARTY_SIZE))
+        if (partySizes[B_TRAINER_OPPONENT_A] && partySizes[B_TRAINER_OPPONENT_B]
+         && (partySizes[B_TRAINER_OPPONENT_A] > MULTI_PARTY_SIZE || partySizes[B_TRAINER_OPPONENT_B] > MULTI_PARTY_SIZE))
         {
             fullTeam = TRUE;
         }
