@@ -2902,19 +2902,33 @@ static bool32 TryDancer(void)
     if (!IsDanceMove(gCurrentMove))
         return FALSE;
 
-    for (order = 0; order < gBattlersCount; order++)
+    if (GetConfig(B_DANCER_ORDER) < GEN_8)
     {
-        if (GetConfig(B_DANCER_ORDER) < GEN_8)
-            dancerBattler = gBattlersByRawSpeed[gBattlersCount - order - 1]; // pick from slowest to fastest Raw Speed
-        else
+        // HnS: pick from slowest to fastest current Raw Speed, lower battler first on ties (the HnS order before #9988).
+        // gBattlersByRawSpeed is only sorted on switch-ins, so it misses Speed Swap, Ally Switch, level ups and form changes.
+        for (enum BattlerId battler = 0; battler < gBattlersCount; battler++)
+        {
+            if (gBattleMons[battler].volatiles.activateDancer && !gSpecialStatuses[battler].dancerUsedMove
+             && (dancerBattler == MAX_BATTLERS_COUNT || gBattleMons[battler].speed < gBattleMons[dancerBattler].speed))
+                dancerBattler = battler;
+        }
+
+        if (dancerBattler == MAX_BATTLERS_COUNT) // no battler activates Dancer
+            return FALSE;
+    }
+    else
+    {
+        for (order = 0; order < gBattlersCount; order++)
+        {
             dancerBattler = gBattlersBySpeed[order]; // pick from fastest to slowest Speed including modifiers
 
-        if (gBattleMons[dancerBattler].volatiles.activateDancer && !gSpecialStatuses[dancerBattler].dancerUsedMove)
-            break;
-    }
+            if (gBattleMons[dancerBattler].volatiles.activateDancer && !gSpecialStatuses[dancerBattler].dancerUsedMove)
+                break;
+        }
 
-    if (order >= gBattlersCount) // no battler activates Dancer
-        return FALSE;
+        if (order >= gBattlersCount) // no battler activates Dancer
+            return FALSE;
+    }
 
     // Dance move succeeds
     // Set target for other Dancer mons; set bit so that mon cannot activate Dancer off of its own move

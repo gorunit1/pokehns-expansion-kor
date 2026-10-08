@@ -178,3 +178,81 @@ DOUBLE_BATTLE_TEST("Emergency Exit or Wimp Out user's replacement dances once on
         EXPECT_EQ(playerLeft->statStages[STAT_SPEED], DEFAULT_STAT_STAGE + (replacement == SPECIES_ORICORIO));
     }
 }
+
+// HnS: B_DANCER_ORDER GEN_7 keeps the HnS order from before #9988: slowest current unmodified Speed first, lower battler
+// first on ties. Upstream's GEN_7 branch reads gBattlersByRawSpeed, which is only sorted on switch-ins.
+
+DOUBLE_BATTLE_TEST("Dancer (Gen 7, HnS) uses the current unmodified Speed after Speed Swap")
+{
+    GIVEN {
+        WITH_CONFIG(B_DANCER_ORDER, GEN_7);
+        ASSUME(GetMoveEffect(MOVE_SPEED_SWAP) == EFFECT_SPEED_SWAP);
+        ASSUME(IsDanceMove(MOVE_DRAGON_DANCE));
+        PLAYER(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); Speed(5); }
+        PLAYER(SPECIES_WOBBUFFET) { Speed(100); }
+        OPPONENT(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); Speed(20); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(30); }
+    } WHEN {
+        TURN { MOVE(playerLeft, MOVE_SPEED_SWAP, target: opponentRight); }
+        TURN { MOVE(playerRight, MOVE_DRAGON_DANCE); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SPEED_SWAP, playerLeft);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_DRAGON_DANCE, playerRight);
+        ABILITY_POPUP(opponentLeft, ABILITY_DANCER);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_DRAGON_DANCE, opponentLeft);
+        ABILITY_POPUP(playerLeft, ABILITY_DANCER);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_DRAGON_DANCE, playerLeft);
+    } THEN {
+        EXPECT_EQ(playerLeft->speed, 30);
+        EXPECT_EQ(opponentRight->speed, 5);
+    }
+}
+
+DOUBLE_BATTLE_TEST("Dancer (Gen 7, HnS) uses the current unmodified Speed after Ally Switch")
+{
+    GIVEN {
+        WITH_CONFIG(B_DANCER_ORDER, GEN_7);
+        ASSUME(GetMoveEffect(MOVE_ALLY_SWITCH) == EFFECT_ALLY_SWITCH);
+        ASSUME(IsDanceMove(MOVE_DRAGON_DANCE));
+        PLAYER(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); Speed(5); }
+        PLAYER(SPECIES_ORICORIO_POM_POM) { Ability(ABILITY_DANCER); Speed(30); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(50); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(20); }
+    } WHEN {
+        TURN { MOVE(playerRight, MOVE_ALLY_SWITCH); }
+        TURN { MOVE(opponentLeft, MOVE_DRAGON_DANCE); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_ALLY_SWITCH, playerRight);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_DRAGON_DANCE, opponentLeft);
+        ABILITY_POPUP(playerRight, ABILITY_DANCER);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_DRAGON_DANCE, playerRight);
+        ABILITY_POPUP(playerLeft, ABILITY_DANCER);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_DRAGON_DANCE, playerLeft);
+    } THEN {
+        EXPECT_EQ(playerLeft->speed, 30);
+        EXPECT_EQ(playerRight->speed, 5);
+    }
+}
+
+DOUBLE_BATTLE_TEST("Dancer (Gen 7, HnS) on a Speed tie: the lower battler dances first, also when sent in by Emergency Exit")
+{
+    GIVEN {
+        WITH_CONFIG(B_DANCER_ORDER, GEN_7);
+        ASSUME(IsDanceMove(MOVE_AQUA_STEP));
+        PLAYER(SPECIES_GOLISOPOD) { Ability(ABILITY_EMERGENCY_EXIT); MaxHP(263); HP(132); Speed(1); Moves(MOVE_CELEBRATE); }
+        PLAYER(SPECIES_WOBBUFFET) { Speed(20); Moves(MOVE_CELEBRATE); }
+        PLAYER(SPECIES_ORICORIO) { Speed(10); Ability(ABILITY_DANCER); Moves(MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(50); }
+        OPPONENT(SPECIES_ORICORIO) { Speed(10); Ability(ABILITY_DANCER); }
+    } WHEN {
+        TURN { MOVE(opponentLeft, MOVE_AQUA_STEP, target: playerLeft); SEND_OUT(playerLeft, 2); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, opponentLeft);
+        ABILITY_POPUP(playerLeft, ABILITY_DANCER);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, playerLeft);
+        ABILITY_POPUP(opponentRight, ABILITY_DANCER);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, opponentRight);
+    } THEN {
+        EXPECT_EQ(gBattlerPartyIndexes[B_POSITION_PLAYER_LEFT], 2);
+    }
+}
