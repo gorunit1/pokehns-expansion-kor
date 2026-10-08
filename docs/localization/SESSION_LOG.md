@@ -2,6 +2,18 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-08 — full-sync 묶음 9(seq 196·197·200·202) + 친구 요청 4건 (데스크탑, 랩탑에서 Remote Control)
+
+- 요청/범위: STATUS 다음 할 일 순서대로. 친구 문자 3개(주눅구슬·묶음 7·8)는 사용자가 이미 보냄. 묶음 9 = 196 #9988 + 200 #10024(춤추기 unit, 친구 결정 3b·X4 보존 확인) + 197 #9861 + 202 #10050(`gSaveBlock3Ptr`). 진행 중 친구 메시지 2번(AI 날씨부정 추측 확인, UI 그래픽 ZIP / 목호·실버 파트너 슬라이드, 포켓기어 헤더).
+- 진행: 사전 분석 2개(A 춤추기 unit, B #9861·#10050) → 사용자 결정 6개 "ㄱㄱ" → 적용 1개(4커밋, 손 맞춤 0) → 리뷰 2개(R1 GEN_7 순서 예외 경미, R2 도구 주석 경미) → HnS 수정 6커밋 → 메인 검증(`chunk-196-202/main/main-verify.sh`).
+- 결정 이유: `B_DANCER_ORDER` upstream `GEN_LATEST`는 HnS에서 교체 때 정렬한 값이라 본가 8세대 순서도 못 맞춤 → `GEN_7` + 이식 전 선택(사용자 혼자 결정 — 이식 전 동작 유지). UI는 친구 지정 5곳만 바꾸면 같은 테두리를 쓰는 다른 HnS 창 10개의 오른쪽 테두리가 30열(화면 밖)로 나가 사용자 결정 B로 같이 폭 26. AI 날씨는 친구 요청 형태(좁은 수정), 넓은 안은 다른 판단 138판이 바뀌어 비추천.
+- 수정 파일(코드): `src/battle_util.c`, `src/battle_move_resolution.c`, `src/battle_script_commands.c`, `src/battle_main.c`, `include/config/battle.h` 등 #9988 18파일, `src/pokemon_summary_screen.c`, `src/clock.c`·`src/new_game.c`·`include/clock.h`, `src/battle_ai_util.c`, `src/menu.c` 외 창 템플릿 10파일, `src/battle_controller_player_partner.c`, 그래픽 PNG 8개·`textbox_map.bin`, 테스트 `test/battle/hns_dancer.c`·`test/battle/ai/hns_weather_negation.c`, 도구 `dev_scripts/hns_verify/save/savetest/`(기준 `expect-newgame-flash.bin`, 주석).
+- 검증: 최종 `f9df186f69` `make hns -j8` 종료 0, 새 경고 0, ROM 32,753,828 B, SHA1 `1d961bba…`. `make check BUILD=hns -j8` PASS 2,561 / TOTAL 5,475, 사라진 PASS = 이름 변경 2 → 기준 `test-baseline-seq202.txt`. 한글 517/607 = 기대. 세이브 정적 PASS(WARN 0)·왕복 PASS. 대사 폭 측정(저장소 밖 `hgss-ui-1008/textwidth/`): 필드 208px 초과 새로 12줄(영어), 추가 창 0줄.
+- 문서: 결과 `full-sync-seq-196-202.md`, 출력 변화 5행, 재확인 8g 해결·8t·31 갱신·33·34 추가, HANDBACK 13절, 도구 README 5절, STATUS.
+- 게임 화면 확인: 하지 않았다(UI 그래픽은 PNG·빌드 산출물로 조립한 정적 미리보기만).
+- 남은 문제: 실기 확인 항목(결과 문서), 재확인 34(노가드 × 프리폴), 영어 필드 대사 12줄 208px 초과(한글화 때 다시 잼).
+- 다음 시작점: 친구 문자(HANDBACK 13절) 전송 여부 확인 → seq 204 #10051(12v12 unit, XL).
+
 ### 2026-10-08 새벽 — full-sync 묶음 8(seq 188~192) (데스크탑, 랩탑에서 Remote Control)
 
 - 사전 분석 3개(A #9918 + 한글 세트 HNS9918, B #9805·#9968·#9965, C #9896) → 사용자 결정 4개 "ㄱㄱ"(사용자가 "혼자 정해도 되나" 물어 규칙상 혼자 정해도 된다고 답함) → 적용 1개(6커밋, 손 맞춤 0) → 리뷰 2개 → 메인 검증 → 리뷰 R1 발견 맹세 assert 9종 가드(`b857f809e0`)·K07 보강(`a1f5e58f85`) → 최종 검증(`chunk-188-192/main-verify2.sh`).
