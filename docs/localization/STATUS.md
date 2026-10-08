@@ -3,7 +3,7 @@
 ## 2026-10-08 — full-sync 묶음 9(seq 196·197·200·202) + 친구 요청 4건 완료·push (현재, 데스크탑 — 랩탑에서 Remote Control)
 
 - **다음 할 일**
-  1. **친구 문자(사용자가 보낼 차례):** HANDBACK 13절(묶음 9 + 네 요청 4건). 디스코드 문안 = `/home/hjm0725/hns-sync-work/chunk-196-202/discord-pending.md`(사용자에게 줌). 보냈는지 먼저 물어본다. 묶음 7·8·주눅구슬 문자 3개(`chunk-188-192/discord-pending.md`)는 2026-10-08 아침 **보냄**(사용자 확인).
+  1. ~~친구 문자~~ **보냄**(2026-10-08 사용자 확인): HANDBACK 13절(묶음 9 + 네 요청 4건), 문안 `/home/hjm0725/hns-sync-work/chunk-196-202/discord-pending.md`. 친구 답(특히 UI 다른 창 폭 26·오른쪽 회색 띠·영어 대사 12줄 잘림)을 기다린다. 답이 오면 반영부터. 묶음 7·8·주눅구슬 문자 3개(`chunk-188-192/discord-pending.md`)는 2026-10-08 아침 **보냄**(사용자 확인).
   2. **full-sync 다음 seq 204 #10051**(Give enum BattleTrainer more user friendly entry names, XL, unit `U-12v12-8943`). 같은 unit 205 #9885(M), 207 #10059(M), 209 #10039(M), 215 #10102(S); 사이 206 #10064(S, 한글 Y, `U-battlemsg-9655`), 208 #10066(S, OWE), 214 #10100(S), 216 #10104(S). 이미 적용: 210~213(#9730 단위 선반영) 등 — 아래 묶음 7 절 목록 + 193~195·198·199·201·203. #9896 후속: #10051의 `test/random_mon_generation.c` hunk 같이(재확인 32). 방식은 묶음 7~9와 같다(지시서 틀: `chunk-196-202/ANALYZE.md`·`APPLY.md`·`REVIEW.md`, `main/main-verify.sh`).
 - **이번 묶음:** 결과 [`full-sync-seq-196-202.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-196-202.md), 회신 `HANDBACK_2026-10-07.md` 13절
   - 커밋: `11988b1d6a` #9988(`B_DANCER_ORDER GEN_7`, 재확인 8g 해결), `19b2a21b38` #9861, `1e1ed852f4` #10024, `7e8d48f64f` #10050(`gSaveBlock3Ptr`, 세이브 왕복 NEWGAME 기준 `expect-newgame-flash.bin`), `3bc975f558` 친구 UI 그래픽(대화창·창틀 1/2/4/6/8·배틀 메시지창, HnS 창 11개 폭 26), `4eda6b4197` 도구 주석(리뷰 R2), `04f558cf9f` AI 날씨부정·에어록 추측(친구 보고, #9865 회귀), `f695e1b637` 춤추기 Gen7 순서 HnS 선택(리뷰 R1), `437e1bd9d6` 목호·실버 파트너 슬라이드 x2 −112(친구), `f9df186f69` 포켓기어 헤더(친구)
