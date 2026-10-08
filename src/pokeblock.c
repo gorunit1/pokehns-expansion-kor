@@ -404,7 +404,11 @@ static const struct WindowTemplate sWindowTemplates[] =
         .bg = 1,
         .tilemapLeft = 2,
         .tilemapTop = 15,
+#if IS_HNS
+        .width = 26,
+#else
         .width = 27,
+#endif
         .height = 4,
         .paletteNum = 15,
         .baseBlock = 0x19E

@@ -83,7 +83,11 @@ static const struct WindowTemplate sStandardTextBox_WindowTemplates[] =
         .bg = 0,
         .tilemapLeft = 2,
         .tilemapTop = 15,
+#if IS_HNS
+        .width = 26,
+#else
         .width = 27,
+#endif
         .height = 4,
         .paletteNum = 15,
         .baseBlock = 0x194
@@ -256,11 +260,19 @@ void DrawDialogueFrame(u8 windowId, bool8 copyToVram)
 
 static void WindowFunc_RedrawDialogueFrame(u8 bg, u8 left, u8 top, u8 width, u8 height, u8 paletteNum)
 {
+#if IS_HNS
+    FillMenuTilemapBufferRect(bg, 0, left - 2,         top - 1,     1, 1);
+    FillMenuTilemapBufferRect(bg, 1, left - 1,         top - 1,     1, 1);
+    FillMenuTilemapBufferRect(bg, 2, left,             top - 1, width, 1);
+    FillMenuTilemapBufferRect(bg, 3, left + width,     top - 1,     1, 1);
+    FillMenuTilemapBufferRect(bg, 4, left + width + 1, top - 1,     1, 1);
+#else
     FillMenuTilemapBufferRect(bg,  1, left - 2,         top - 1,         1, 1);
     FillMenuTilemapBufferRect(bg,  3, left - 1,         top - 1,         1, 1);
     FillMenuTilemapBufferRect(bg,  4, left,             top - 1, width - 1, 1);
     FillMenuTilemapBufferRect(bg,  5, left + width - 1, top - 1,         1, 1);
     FillMenuTilemapBufferRect(bg,  6, left + width,     top - 1,         1, 1);
+#endif
 }
 
 void RedrawDialogueFrame(void)
@@ -315,6 +327,40 @@ static void WindowFunc_DrawStandardFrame(u8 bg, u8 left, u8 top, u8 width, u8 he
 
 static void WindowFunc_DrawDialogueFrame(u8 bg, u8 left, u8 top, u8 width, u8 height, u8 paletteNum)
 {
+#if IS_HNS
+    // HnS message box: 14 tiles (top 0-4, sides 5-6 and 8-9, middle sides 10-13), lower half is the upper half V-flipped
+    FillMenuTilemapBufferRect(bg, 0, left - 2,         top - 1,     1, 1);
+    FillMenuTilemapBufferRect(bg, 1, left - 1,         top - 1,     1, 1);
+    FillMenuTilemapBufferRect(bg, 2, left,             top - 1, width, 1);
+    FillMenuTilemapBufferRect(bg, 3, left + width,     top - 1,     1, 1);
+    FillMenuTilemapBufferRect(bg, 4, left + width + 1, top - 1,     1, 1);
+
+    FillMenuTilemapBufferRect(bg, 5, left - 2,         top,         1, 1);
+    FillMenuTilemapBufferRect(bg, 6, left - 1,         top,         1, 1);
+    FillMenuTilemapBufferRect(bg, 8, left + width,     top,         1, 1);
+    FillMenuTilemapBufferRect(bg, 9, left + width + 1, top,         1, 1);
+
+    FillMenuTilemapBufferRect(bg, 10, left - 2,         top + 1,    1, 1);
+    FillMenuTilemapBufferRect(bg, 11, left - 1,         top + 1,    1, 1);
+    FillMenuTilemapBufferRect(bg, 12, left + width,     top + 1,    1, 1);
+    FillMenuTilemapBufferRect(bg, 13, left + width + 1, top + 1,    1, 1);
+
+    FillMenuTilemapBufferRect(bg, BG_TILE_V_FLIP(10), left - 2,         top + 2, 1, 1);
+    FillMenuTilemapBufferRect(bg, BG_TILE_V_FLIP(11), left - 1,         top + 2, 1, 1);
+    FillMenuTilemapBufferRect(bg, BG_TILE_V_FLIP(12), left + width,     top + 2, 1, 1);
+    FillMenuTilemapBufferRect(bg, BG_TILE_V_FLIP(13), left + width + 1, top + 2, 1, 1);
+
+    FillMenuTilemapBufferRect(bg, BG_TILE_V_FLIP(5), left - 2,         top + 3, 1, 1);
+    FillMenuTilemapBufferRect(bg, BG_TILE_V_FLIP(6), left - 1,         top + 3, 1, 1);
+    FillMenuTilemapBufferRect(bg, BG_TILE_V_FLIP(8), left + width,     top + 3, 1, 1);
+    FillMenuTilemapBufferRect(bg, BG_TILE_V_FLIP(9), left + width + 1, top + 3, 1, 1);
+
+    FillMenuTilemapBufferRect(bg, BG_TILE_V_FLIP(0), left - 2,         top + height,     1, 1);
+    FillMenuTilemapBufferRect(bg, BG_TILE_V_FLIP(1), left - 1,         top + height,     1, 1);
+    FillMenuTilemapBufferRect(bg, BG_TILE_V_FLIP(2), left,             top + height, width, 1);
+    FillMenuTilemapBufferRect(bg, BG_TILE_V_FLIP(3), left + width,     top + height,     1, 1);
+    FillMenuTilemapBufferRect(bg, BG_TILE_V_FLIP(4), left + width + 1, top + height,     1, 1);
+#else
     FillMenuTilemapBufferRect(bg,  1, left - 2,         top - 1,         1, 1);
     FillMenuTilemapBufferRect(bg,  3, left - 1,         top - 1,         1, 1);
     FillMenuTilemapBufferRect(bg,  4, left,             top - 1, width - 1, 1);
@@ -328,6 +374,7 @@ static void WindowFunc_DrawDialogueFrame(u8 bg, u8 left, u8 top, u8 width, u8 he
     FillMenuTilemapBufferRect(bg, BG_TILE_V_FLIP(4), left,             top + height, width - 1, 1);
     FillMenuTilemapBufferRect(bg, BG_TILE_V_FLIP(5), left + width - 1, top + height,         1, 1);
     FillMenuTilemapBufferRect(bg, BG_TILE_V_FLIP(6), left + width,     top + height,         1, 1);
+#endif
 }
 
 static void WindowFunc_ClearStdWindowAndFrame(u8 bg, u8 tilemapLeft, u8 tilemapTop, u8 width, u8 height, u8 paletteNum)
@@ -337,7 +384,11 @@ static void WindowFunc_ClearStdWindowAndFrame(u8 bg, u8 tilemapLeft, u8 tilemapT
 
 static void WindowFunc_ClearDialogWindowAndFrame(u8 bg, u8 tilemapLeft, u8 tilemapTop, u8 width, u8 height, u8 paletteNum)
 {
+#if IS_HNS
+    FillBgTilemapBufferRect(bg, 0, tilemapLeft - 2, tilemapTop - 1, width + 4, height + 2, STD_WINDOW_PALETTE_NUM);
+#else
     FillBgTilemapBufferRect(bg, 0, tilemapLeft - 3, tilemapTop - 1, width + 6, height + 2, STD_WINDOW_PALETTE_NUM);
+#endif
 }
 
 void SetStandardWindowBorderStyle(u8 windowId, bool8 copyToVram)
@@ -494,7 +545,11 @@ void ClearDialogWindowAndFrameToTransparent(u8 windowId, bool8 copyToVram)
 
 static void WindowFunc_ClearDialogWindowAndFrameNullPalette(u8 bg, u8 tilemapLeft, u8 tilemapTop, u8 width, u8 height, u8 paletteNum)
 {
+#if IS_HNS
+    FillBgTilemapBufferRect(bg, 0, tilemapLeft - 2, tilemapTop - 1, width + 4, height + 2, 0);
+#else
     FillBgTilemapBufferRect(bg, 0, tilemapLeft - 3, tilemapTop - 1, width + 6, height + 2, 0);
+#endif
 }
 
 void DrawStdFrameWithCustomTileAndPalette(u8 windowId, bool8 copyToVram, u16 baseTileNum, u8 paletteNum)
