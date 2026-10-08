@@ -2836,18 +2836,7 @@ static enum MoveEndResult MoveEndFaintBlock(void)
             }
             gBattleStruct->eventState.moveEndBlock++;
             break;
-        case FAINT_BLOCK_TRY_DESTINY_BOND: // Checked before FAINT_BLOCK_FAINT_TARGET but occurs after since volatiles are cleared on faint
-            if (gBattleMons[gBattlerTarget].volatiles.destinyBond
-             && IsBattlerTurnDamaged(gBattlerTarget, EXCLUDING_SUBSTITUTES)
-             && IsBattlerAlive(gBattlerAttacker)
-             && GetActiveGimmick(gBattlerAttacker) != GIMMICK_DYNAMAX
-             && !IsBattlerAlly(gBattlerAttacker, gBattlerTarget))
-            {
-                gBattleStruct->tryDestinyBond = TRUE;
-            }
-            gBattleStruct->eventState.moveEndBlock++;
-            break;
-        case FAINT_BLOCK_TRY_GRUDGE: // Checked before FAINT_BLOCK_FAINT_TARGET but occurs after since volatiles are cleared on faint
+        case FAINT_BLOCK_DO_GRUDGE:
             if (gBattleMons[gBattlerTarget].volatiles.grudge
              && IsBattlerTurnDamaged(gBattlerTarget, EXCLUDING_SUBSTITUTES)
              && IsBattlerAlive(gBattlerAttacker)
@@ -2856,7 +2845,27 @@ static enum MoveEndResult MoveEndFaintBlock(void)
              && gCurrentMove != MOVE_STRUGGLE
              && GetMoveEffect(gCurrentMove) != EFFECT_FUTURE_SIGHT)
             {
-                gBattleStruct->tryGrudge = TRUE;
+                u32 moveIndex = gBattleStruct->chosenMovePositions[gBattlerAttacker];
+
+                gBattleMons[gBattlerAttacker].pp[moveIndex] = 0;
+                BtlController_EmitSetMonData(gBattlerAttacker, B_COMM_TO_CONTROLLER, moveIndex + REQUEST_PPMOVE1_BATTLE, 0, sizeof(gBattleMons[gBattlerAttacker].pp[moveIndex]), &gBattleMons[gBattlerAttacker].pp[moveIndex]);
+                MarkBattlerForControllerExec(gBattlerAttacker);
+                PREPARE_MOVE_BUFFER(gBattleTextBuff1, gBattleMons[gBattlerAttacker].moves[moveIndex])
+                BattleScriptCall(BattleScript_GrudgeTakesPp);
+                result = MOVEEND_RESULT_RUN_SCRIPT;
+            }
+            gBattleStruct->eventState.moveEndBlock++;
+            break;
+        case FAINT_BLOCK_TRY_DESTINY_BOND: // Checked before FAINT_BLOCK_FAINT_TARGET but occurs after since volatiles are cleared on faint
+            if (gBattleMons[gBattlerTarget].volatiles.destinyBond
+             && IsBattlerTurnDamaged(gBattlerTarget, EXCLUDING_SUBSTITUTES)
+             && IsBattlerAlive(gBattlerAttacker)
+             && GetActiveGimmick(gBattlerAttacker) != GIMMICK_DYNAMAX
+             && !IsBattlerAlly(gBattlerAttacker, gBattlerTarget))
+            {
+                gBattleStruct->passiveHpUpdate[gBattlerAttacker] = gBattleMons[gBattlerAttacker].hp;
+                BattleScriptCall(BattleScript_DestinyBondTakesLife);
+                // Hack: don't change result here so that Faint Target's script plays first
             }
             gBattleStruct->eventState.moveEndBlock++;
             break;
@@ -2885,40 +2894,14 @@ static enum MoveEndResult MoveEndFaintBlock(void)
             result = MOVEEND_RESULT_RUN_SCRIPT;
             gBattleStruct->eventState.moveEndBlock++;
             break;
-        case FAINT_BLOCK_DO_DESTINY_BOND:
-            if (gBattleStruct->tryDestinyBond)
-            {
-                gBattleStruct->passiveHpUpdate[gBattlerAttacker] = gBattleMons[gBattlerAttacker].hp;
-                BattleScriptCall(BattleScript_DestinyBondTakesLife);
-                result = MOVEEND_RESULT_RUN_SCRIPT;
-            }
-            gBattleStruct->eventState.moveEndBlock++;
-            break;
-        case FAINT_BLOCK_DO_GRUDGE:
-            if (gBattleStruct->tryGrudge)
-            {
-                u32 moveIndex = gBattleStruct->chosenMovePositions[gBattlerAttacker];
-
-                gBattleMons[gBattlerAttacker].pp[moveIndex] = 0;
-                BtlController_EmitSetMonData(gBattlerAttacker, B_COMM_TO_CONTROLLER, moveIndex + REQUEST_PPMOVE1_BATTLE, 0, sizeof(gBattleMons[gBattlerAttacker].pp[moveIndex]), &gBattleMons[gBattlerAttacker].pp[moveIndex]);
-                MarkBattlerForControllerExec(gBattlerAttacker);
-                PREPARE_MOVE_BUFFER(gBattleTextBuff1, gBattleMons[gBattlerAttacker].moves[moveIndex])
-                BattleScriptCall(BattleScript_GrudgeTakesPp);
-                result = MOVEEND_RESULT_RUN_SCRIPT;
-            }
-            gBattleStruct->eventState.moveEndBlock++;
-            break;
-        case FAINT_BLOCK_COUNT: // Clear bits for other potential fainting targets
-            gBattleStruct->tryDestinyBond = FALSE;
-            gBattleStruct->tryGrudge = FALSE;
-            gBattleStruct->eventState.moveEndBlock = 0;
+        case FAINT_BLOCK_COUNT:
             break;
         }
 
         if (result == MOVEEND_RESULT_RUN_SCRIPT)
             break;
 
-    } while (gBattleStruct->eventState.moveEndBlock != 0);
+    } while (gBattleStruct->eventState.moveEndBlock < FAINT_BLOCK_COUNT);
 
     if (result == MOVEEND_RESULT_CONTINUE)
     {
@@ -3669,7 +3652,7 @@ static bool32 HasAnyBattlerQueuedSwitch(void)
     return FALSE;
 }
 
-static bool32 TryRedCard(enum BattlerId battlerAtk, enum BattlerId redCardBattler, enum Move move)
+static bool32 TryRedCard(enum BattlerId battlerAtk, enum BattlerId redCardBattler)
 {
     if (!IsBattlerAlive(redCardBattler)
      || !IsBattlerAlive(battlerAtk)
@@ -3698,7 +3681,7 @@ static bool32 TryEjectButton(enum BattlerId battlerAtk, u32 ejectButtonBattler)
 {
     if (!IsBattlerTurnDamaged(ejectButtonBattler, EXCLUDING_SUBSTITUTES)
      || HasAnyBattlerQueuedSwitch()
-     || !IsBattlerAlive(ejectButtonBattler)
+     || IsBattlerInvolvedInSkyDrop(ejectButtonBattler)
      || !CanBattlerSwitch(ejectButtonBattler))
         return FALSE;
 
@@ -3729,7 +3712,7 @@ static enum MoveEndResult MoveEndCardButton(void)
                 return MOVEEND_RESULT_RUN_SCRIPT;
             break;
         case HOLD_EFFECT_RED_CARD:
-            if (TryRedCard(gBattlerAttacker, battler, gCurrentMove))
+            if (TryRedCard(gBattlerAttacker, battler))
                 return MOVEEND_RESULT_RUN_SCRIPT;
             break;
         default:
@@ -4012,7 +3995,7 @@ static inline bool32 TryEjectPack(enum BattlerId battlerAtk, enum BattlerId ejec
 {
     if (!gBattleMons[ejectPackBattler].volatiles.tryEjectPack
      || HasAnyBattlerQueuedSwitch()
-     || !IsBattlerAlive(ejectPackBattler)
+     || IsBattlerInvolvedInSkyDrop(ejectPackBattler)
      || !CanBattlerSwitch(ejectPackBattler)
      || (GetMoveEffect(gCurrentMove) == EFFECT_PARTING_SHOT && CanBattlerSwitch(battlerAtk)))
         return FALSE;
