@@ -689,6 +689,8 @@ static void CB2_InitBattleInternal(void)
                 }
             }
         }
+        if (gBattleTypeFlags & BATTLE_TYPE_MULTI)
+            CalculatePartnerPartyCount();
     }
 
     gMain.inBattle = TRUE;
