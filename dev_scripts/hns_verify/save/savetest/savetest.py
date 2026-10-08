@@ -188,8 +188,15 @@ def cmd_run(a):
 
 
 def flash_file(d, kind):
-    """<d>/<kind>.sav, 없으면 기준 폴더(baseline/pre-load-*)용 <d>/../pre-<kind>-flash.bin."""
-    for p in (os.path.join(d, kind + '.sav'), os.path.join(os.path.dirname(os.path.abspath(d)), 'pre-%s-flash.bin' % kind)):
+    """<d>/<kind>.sav, 없으면 기준 폴더(baseline/pre-load-*)용 파일: newgame은 <d>/../expect-newgame-flash.bin
+    (새 게임 초기화 값이 의도해서 바뀐 뒤의 NEWGAME 출력, README 5절)이 있으면 그것, 그 밖은 <d>/../pre-<kind>-flash.bin.
+    pre-<kind>-flash.bin은 LOAD 테스트 입력(이식 전 ROM이 만든 이미지)이라 바꾸지 않는다."""
+    base = os.path.dirname(os.path.abspath(d))
+    cands = [os.path.join(d, kind + '.sav')]
+    if kind == 'newgame':
+        cands.append(os.path.join(base, 'expect-newgame-flash.bin'))
+    cands.append(os.path.join(base, 'pre-%s-flash.bin' % kind))
+    for p in cands:
         if os.path.exists(p):
             return p
     return os.path.join(d, kind + '.sav')
@@ -214,8 +221,8 @@ def cmd_compare(a):
     if os.path.exists(pa) and os.path.exists(pb):
         da, db = open(pa, 'rb').read(), open(pb, 'rb').read()
         diff = [s for s in range(NSEC) if da[s * SECTOR:(s + 1) * SECTOR] != db[s * SECTOR:(s + 1) * SECTOR]]
-        print('[%s] newgame.sav(새 게임 + 파티·박스) 섹터 바이트 %s' % ('PASS' if not diff else 'FAIL',
-              '동일' if not diff else '차이: 섹터 %s' % diff))
+        print('[%s] newgame.sav(새 게임 + 파티·박스) 섹터 바이트 %s (기준 %s)' % ('PASS' if not diff else 'FAIL',
+              '동일' if not diff else '차이: 섹터 %s' % diff, os.path.basename(pa)))
         bad += bool(diff)
     la = open(os.path.join(A, 'load.txt')).read().splitlines() if os.path.exists(os.path.join(A, 'load.txt')) else []
     lb = open(os.path.join(B, 'load.txt')).read().splitlines() if os.path.exists(os.path.join(B, 'load.txt')) else []

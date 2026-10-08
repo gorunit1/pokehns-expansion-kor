@@ -86,7 +86,7 @@ ALLOW_REPO=1 $V/save/savetest/run_all.sh $R <label> 8      # 저장소에서(tes
 $V/mkcopy.sh $O/copy && $V/save/savetest/run_all.sh $O/copy <label> 8   # 사본에서(커밋 전 변경이면 --allow-dirty)
 ```
 
-- 기대(두 이미지 각각): `HNS8943 SAVE LOAD/MAKE/NEWGAME/RESAVE: PASS`, `[PASS] LOAD 테스트가 읽은 이미지 = pre-make.sav@2cde99625f97`(newgame은 `pre-newgame.sav@d0ddbf3dd753`), `[PASS] make.sav 일반 세이브 섹터(0~30) 바이트 동일`, `[PASS] newgame.sav … 동일`, `[PASS] load.txt 불러오기 결과 95줄 동일`, `[INFO] 녹화 기록 유효: 1 → 0`(make; newgame은 `0 → 0`), `판정: PASS`, 마지막 `run_all: PASS`. 종료 코드 0.
+- 기대(두 이미지 각각): `HNS8943 SAVE LOAD/MAKE/NEWGAME/RESAVE: PASS`, `[PASS] LOAD 테스트가 읽은 이미지 = pre-make.sav@2cde99625f97`(newgame은 `pre-newgame.sav@d0ddbf3dd753`), `[PASS] make.sav 일반 세이브 섹터(0~30) 바이트 동일`, `[PASS] newgame.sav … 동일 (기준 expect-newgame-flash.bin)`, `[PASS] load.txt 불러오기 결과 95줄 동일`, `[INFO] 녹화 기록 유효: 1 → 0`(make; newgame은 `0 → 0`), `판정: PASS`, 마지막 `run_all: PASS`. 종료 코드 0.
 - 매 실행마다 테스트 오브젝트를 지워 다시 컴파일하고, LOAD 테스트가 출력한 이미지 이름@SHA1이 이번 이미지와 다르면 FAIL로 처리한다(옛 도구에서 이미지를 바꾼 뒤 다시 빌드되지 않아 앞 이미지를 읽은 적이 있다, 재확인 17).
 - 출력: `$HNS_VERIFY_OUT/savetest/<label>-{make,newgame}/`(`make.sav`, `newgame.sav`, `load.txt`, `summary.txt`, `make.log`).
 - 개별 명령: `python3 $V/save/savetest/savetest.py run|compare|reparse|image …`(머리 주석).
@@ -151,6 +151,7 @@ $V/testlist.sh build/port-check.log docs/friend-handoff/results/1.17.0-port/test
 | `kortests/expected/summary.txt` | 묶음·HnS 수정이 한글 출력을 **의도해서** 바꿨을 때, 또는 `sets/`의 테스트를 고치거나 더했을 때(줄 번호가 요약에 들어감) | 바뀐 테스트마다 DIFF 이유를 결과 문서에 적은 뒤, 그 커밋에서 `ALLOW_REPO=1 kortests/run.sh $R new 8`을 돌려 `$O/kortests/new-summary.txt`를 `expected/summary.txt`로 복사하고 `summary.meta`(커밋·날짜·세트별 수)를 고친다. 코드·세트·기대 요약을 **같은 커밋**에 넣는다. `-j8`로 만든다 |
 | `kortests/sets/*.c` 새 세트 | 새 묶음용 한글 테스트를 계속 둘 때 | 이름을 `HNS<번호>`로 시작(저장소 테스트와 겹치지 않음)하고 `sets/`에 `zz_hns<번호>_*.c`로 둔다. 위처럼 기대 요약 갱신 |
 | `save/savetest/baseline/` | 세이브 형식을 일부러 바꾸는 확정 결정이 들어갈 때만 | 입력 세이브 이미지(`pre-*-flash.bin`)는 이식 전(#8943 전) ROM이 만든 것이라 다시 만들 수 없으니 바꾸지 않는다. 불러오기 결과 `pre-load-*/load.txt`는 확정된 형식 변화가 생기면 그 줄만 고치고 여기에 적는다. **2026-10-07 seq 186.5 #9920(확정 결정 A, SaveBlock3 끝 `u32 dailySeed`, 52 → 56 B):** 두 `load.txt`의 `DUMP STATE` sb3 해시 `3b703d18` → `919cf698`(이식 전 세이브의 앞 52 B는 같고 새 4 B는 0 — 이미지에서 직접 계산해 확인). 다른 값은 그대로 |
+| `save/savetest/baseline/expect-newgame-flash.bin` | 새 게임 초기화(`NewGameInitData`)가 만드는 **값**을 일부러 바꾸는 이식이 들어갈 때(형식 변화가 아님) | NEWGAME 출력(`newgame.sav`) 비교 기준. 없으면 옛 방식대로 `pre-newgame-flash.bin`과 비교한다. 그 커밋에서 `run_all.sh`를 돌려 `$O/savetest/<label>-newgame/newgame.sav`를 이 이름으로 복사하고(두 이미지 실행의 `newgame.sav`는 같다), 바뀐 섹터·필드를 여기에 적는다. `pre-newgame-flash.bin`(LOAD 입력)은 바꾸지 않는다. **seq 202 #10050(새 게임에서 `UpdateDailySeed()`):** 섹터 15(ID 0) `SaveBlock3.dailySeed` 0 → `0x45b982b2`, `SaveBlock2.playerApprentice.id` 2 → 1, 섹터 19(ID 4) `SaveBlock1.lilycoveLady`(퀴즈 문제·정답·상품) — 새 게임 난수열이 한 칸 밀린 값 변화. 트레이너 ID·복권 번호·`load.txt`는 그대로. SHA1 `8d5a0726fe409905f9b7cc08b2cb8b1c47454993` |
 | `expected/warn-base.txt` | 의도한 경고 변화(새 경고를 받아들이거나 없어짐)가 있을 때 | 전체 빌드 로그에서 `LC_ALL=C grep -a 'warning:' log \| LC_ALL=C sed -E 's/:[0-9]+:[0-9]+: /: /' \| LC_ALL=C sort -u`로 다시 만들어 같은 커밋에 |
 | 세이브 정적 비교 이식 전 사실 | 묶음마다 | `collect`로 새로 만든다. 커밋하지 않는다 |
 | 전체 테스트 기준 목록 | 묶음마다 | 지금처럼 `docs/friend-handoff/results/1.17.0-port/test-baseline-<seq>.txt`(도구 폴더가 아님) |
