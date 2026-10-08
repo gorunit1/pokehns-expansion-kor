@@ -1869,6 +1869,17 @@ bool32 DoesBattlerIgnoreAbilityChecks(enum BattlerId battlerAtk, enum Ability at
     return FALSE;
 }
 
+// HnS: Cloud Nine and Air Lock always show their pop-up (and get recorded) when they start working, so a foe that showed
+// none does not have them. Count them only when the AI knows the ability, not from AI_DecideKnownAbilityForTurn's guess.
+static NOINLINE bool32 AI_KnowsWeatherNegatingAbility(enum BattlerId battler, enum Ability ability)
+{
+    if (IsAiBattlerAware(battler) || (IsAiBattlerAssumingStab(battler) && ASSUME_STAB_SEES_ABILITY) || IsAiFlagPresent(AI_FLAG_ABILITY_OMNISCIENCE))
+        return TRUE;
+    if (gBattleMons[battler].volatiles.overwrittenAbility == ability)
+        return TRUE;
+    return gAiPartyData->mons[GetBattlerSide(battler)][gBattlerPartyIndexes[battler]].ability == ability;
+}
+
 static inline bool32 AI_WeatherHasEffect(void)
 {
     if (gAiThinkingStruct->aiFlags[B_POSITION_OPPONENT_LEFT] & AI_FLAG_NEGATE_UNAWARE
@@ -1881,7 +1892,9 @@ static inline bool32 AI_WeatherHasEffect(void)
         {
         case ABILITY_CLOUD_NINE:
         case ABILITY_AIR_LOCK:
-            return FALSE;
+            if (AI_KnowsWeatherNegatingAbility(battler, gAiLogicData->abilities[battler]))
+                return FALSE;
+            break;
         default:
             break;
         }
