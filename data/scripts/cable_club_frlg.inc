@@ -299,7 +299,7 @@ CableClub_EventScript_EnterColosseum_Frlg::
 	release
 	goto_if_eq VAR_0x8004, USING_MULTI_BATTLE, CableClub_EventScript_WarpTo4PColosseum_Frlg
 	special SetCableClubWarp
-	warp MAP_BATTLE_COLOSSEUM_2P, 6, 8
+	warp MAP_BATTLE_COLOSSEUM_2P_FRLG, 6, 8
 	special DoCableClubWarp
 	waitstate
 	end
@@ -312,7 +312,7 @@ CableClub_EventScript_PlayerApproachLinkRoomRight_Frlg::
 
 CableClub_EventScript_WarpTo4PColosseum_Frlg::
 	special SetCableClubWarp
-	warp MAP_BATTLE_COLOSSEUM_4P, 5, 8
+	warp MAP_BATTLE_COLOSSEUM_4P_FRLG, 5, 8
 	special DoCableClubWarp
 	waitstate
 	end
