@@ -2688,9 +2688,24 @@ static enum MoveEndResult MoveEndAttackerInvisible(void)
     return result;
 }
 
+// HnS: since #10161 a Future Sight / Doom Desire hit at end of turn runs moveendall with the slot of the original user as
+// the attacker. It is not a move of the battler now in that slot, so keep that battler's own move bookkeeping
+// (rampage, Destiny Bond, consecutive-use counters, Stomping Tantrum, evolution tracker) and leave it underground / in the
+// air (Dig, Fly, ... charging turn). upstream 1.17.0 does not skip them.
+static inline bool32 IsEndTurnFutureSightHit(void)
+{
+    return gBattleStruct->eventState.endTurn == ENDTURN_FUTURE_SIGHT && GetMoveEffect(gCurrentMove) == EFFECT_FUTURE_SIGHT;
+}
+
 static enum MoveEndResult MoveEndAttackerVisible(void)
 {
     enum MoveEndResult result = MOVEEND_RESULT_CONTINUE;
+
+    if (IsEndTurnFutureSightHit() && IsSemiInvulnerable(gBattlerAttacker, CHECK_ALL)) // HnS
+    {
+        gBattleScripting.moveendState++;
+        return result;
+    }
 
     if (IsBattlerUnaffectedByMove(gBattlerTarget)
         || !IsSemiInvulnerable(gBattlerAttacker, CHECK_ALL)
@@ -4056,14 +4071,6 @@ static enum MoveEndResult MoveEndSendOutReplacements(void)
     gBattleStruct->eventState.moveEndBattler = 0;
     gBattleScripting.moveendState++;
     return MOVEEND_RESULT_CONTINUE;
-}
-
-// HnS: since #10161 a Future Sight / Doom Desire hit at end of turn runs moveendall with the slot of the original user as
-// the attacker. It is not a move of the battler now in that slot, so keep that battler's own move bookkeeping
-// (rampage, Destiny Bond, consecutive-use counters, Stomping Tantrum, evolution tracker). upstream 1.17.0 does not skip it.
-static inline bool32 IsEndTurnFutureSightHit(void)
-{
-    return gBattleStruct->eventState.endTurn == ENDTURN_FUTURE_SIGHT && GetMoveEffect(gCurrentMove) == EFFECT_FUTURE_SIGHT;
 }
 
 static enum MoveEndResult MoveEndRampage(void)
