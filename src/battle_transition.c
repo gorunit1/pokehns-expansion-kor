@@ -2635,6 +2635,12 @@ static void Mugshots_CreateTrainerPics(struct Task *task)
         partnerSprite->oam.size = SPRITE_SIZE(64x32);
         CalcCenterToCornerVec(partnerSprite, SPRITE_SHAPE(64x32), SPRITE_SIZE(64x32), ST_OAM_AFFINE_DOUBLE);
         SetOamMatrixRotationScaling(partnerSprite->oam.matrixNum, -512, 512, 0);
+        // HnS: at x = DISPLAY_WIDTH + 240 the partner's 128 px wide box starts at OAM x 416, which the 9-bit OAM x
+        // reads as -96, so its right quarter shows at the left edge of the screen: the left 16 columns of the pic,
+        // mirrored and doubled. That is Lance's and Silver's hand (the other partner pics are blank there).
+        // Hide those two until the slide brings the box past the wrap (SpriteCB_MugshotTrainerPicPartner).
+        if (partnerPicId == TRAINER_PIC_CHAMPION_LANCE_HNS || partnerPicId == TRAINER_PIC_SILVER_HNS)
+            partnerSprite->invisible = TRUE;
     }
 
     task->tPlayerSpriteId = CreateTrainerSprite(PlayerGenderToFrontTrainerPicId(gSaveBlock2Ptr->playerGender),
@@ -2677,6 +2683,11 @@ static void SpriteCB_MugshotTrainerPic(struct Sprite *sprite)
 static void SpriteCB_MugshotTrainerPicPartner(struct Sprite *sprite)
 {
     while (sMugshotTrainerPicFuncsPartner[sprite->sState](sprite));
+
+    // HnS: Lance's and Silver's partner pic (Mugshots_CreateTrainerPics) shows again once its box no longer wraps
+    // to the left edge (OAM x <= 512 - 128, still off screen to the right).
+    if (sprite->invisible && sprite->x + sprite->centerToCornerVecX <= 512 - 128)
+        sprite->invisible = FALSE;
 }
 
 
