@@ -117,28 +117,84 @@ SINGLE_BATTLE_TEST("Dancer sent in by Emergency Exit or Wimp Out copies the danc
 {
     u32 species;
     enum Ability ability;
+    enum Move move;
 
-    PARAMETRIZE { species = SPECIES_GOLISOPOD; ability = ABILITY_EMERGENCY_EXIT; }
-    PARAMETRIZE { species = SPECIES_WIMPOD;    ability = ABILITY_WIMP_OUT; }
+    PARAMETRIZE { species = SPECIES_GOLISOPOD; ability = ABILITY_EMERGENCY_EXIT; move = MOVE_AQUA_STEP; }
+    PARAMETRIZE { species = SPECIES_WIMPOD;    ability = ABILITY_WIMP_OUT;       move = MOVE_AQUA_STEP; }
+    PARAMETRIZE { species = SPECIES_GOLISOPOD; ability = ABILITY_EMERGENCY_EXIT; move = MOVE_REVELATION_DANCE; } // friend's mGBA case
     GIVEN {
         ASSUME(IsDanceMove(MOVE_AQUA_STEP));
-        PLAYER(species) { Ability(ability); MaxHP(263); HP(132); Speed(1); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
+        ASSUME(IsDanceMove(MOVE_REVELATION_DANCE));
+        PLAYER(species) { Ability(ability); MaxHP(263); HP(132); SpDefense(400); Speed(1); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
         PLAYER(SPECIES_ORICORIO) { Speed(1); Ability(ABILITY_DANCER); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
-        OPPONENT(SPECIES_WOBBUFFET) { Speed(50); }
+        OPPONENT(SPECIES_ORICORIO) { Speed(50); Ability(ABILITY_DANCER); Moves(MOVE_AQUA_STEP, MOVE_REVELATION_DANCE); }
     } WHEN {
-        TURN { MOVE(player, MOVE_SWORDS_DANCE); MOVE(opponent, MOVE_AQUA_STEP); SEND_OUT(player, 1); }
+        TURN { MOVE(player, MOVE_SWORDS_DANCE); MOVE(opponent, move); SEND_OUT(player, 1); }
     } SCENE {
-        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, opponent);
+        ANIMATION(ANIM_TYPE_MOVE, move, opponent);
         HP_BAR(player);
         ABILITY_POPUP(player, ability);
         ABILITY_POPUP(player, ABILITY_DANCER);
-        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, player);
+        ANIMATION(ANIM_TYPE_MOVE, move, player);
         HP_BAR(opponent);
         NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_SWORDS_DANCE, player);
     } THEN {
         EXPECT_EQ(player->species, SPECIES_ORICORIO);
-        EXPECT_EQ(player->statStages[STAT_SPEED], DEFAULT_STAT_STAGE + 1);
+        EXPECT_EQ(player->statStages[STAT_SPEED], DEFAULT_STAT_STAGE + (move == MOVE_AQUA_STEP));
         EXPECT_EQ(player->statStages[STAT_ATK], DEFAULT_STAT_STAGE);
+    }
+}
+
+// HnS: the friend's mGBA case (2026-10-09) with a trainer AI choosing the foe's moves, singles and doubles.
+AI_SINGLE_BATTLE_TEST("Dancer sent in by Emergency Exit copies the trainer AI's Revelation Dance that made the user switch out")
+{
+    GIVEN {
+        ASSUME(IsDanceMove(MOVE_REVELATION_DANCE));
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
+        PLAYER(SPECIES_GOLISOPOD) { Ability(ABILITY_EMERGENCY_EXIT); MaxHP(263); HP(132); SpDefense(400); Speed(1); Moves(MOVE_CELEBRATE); }
+        PLAYER(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); Speed(10); Moves(MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); Speed(50); Moves(MOVE_REVELATION_DANCE); }
+    } WHEN {
+        TURN { MOVE(player, MOVE_CELEBRATE); EXPECT_MOVE(opponent, MOVE_REVELATION_DANCE); SEND_OUT(player, 1); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_REVELATION_DANCE, opponent);
+        ABILITY_POPUP(player, ABILITY_EMERGENCY_EXIT);
+        ABILITY_POPUP(player, ABILITY_DANCER);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_REVELATION_DANCE, player);
+        HP_BAR(opponent);
+        NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
+    } THEN {
+        EXPECT_EQ(player->species, SPECIES_ORICORIO);
+    }
+}
+
+AI_DOUBLE_BATTLE_TEST("Dancer sent in by Emergency Exit copies the trainer AI's Revelation Dance that made the user switch out (doubles)")
+{
+    GIVEN {
+        ASSUME(IsDanceMove(MOVE_REVELATION_DANCE));
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
+        PLAYER(SPECIES_GOLISOPOD) { Ability(ABILITY_EMERGENCY_EXIT); MaxHP(263); HP(132); SpDefense(400); Speed(1); Moves(MOVE_CELEBRATE); }
+        PLAYER(SPECIES_HEATRAN) { Ability(ABILITY_FLASH_FIRE); Speed(20); Moves(MOVE_CELEBRATE); } // immune: the AI targets Golisopod
+        PLAYER(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); Speed(10); Moves(MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); Speed(50); Moves(MOVE_REVELATION_DANCE); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(30); Moves(MOVE_CELEBRATE); }
+    } WHEN {
+        TURN {
+            MOVE(playerLeft, MOVE_CELEBRATE);
+            MOVE(playerRight, MOVE_CELEBRATE);
+            EXPECT_MOVE(opponentLeft, MOVE_REVELATION_DANCE, target: playerLeft);
+            EXPECT_MOVE(opponentRight, MOVE_CELEBRATE);
+            SEND_OUT(playerLeft, 2);
+        }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_REVELATION_DANCE, opponentLeft);
+        ABILITY_POPUP(playerLeft, ABILITY_EMERGENCY_EXIT);
+        ABILITY_POPUP(playerLeft, ABILITY_DANCER);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_REVELATION_DANCE, playerLeft);
+        HP_BAR(opponentLeft);
+        NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, playerLeft);
+    } THEN {
+        EXPECT_EQ(playerLeft->species, SPECIES_ORICORIO);
     }
 }
 
@@ -254,5 +310,425 @@ DOUBLE_BATTLE_TEST("Dancer (Gen 7, HnS) on a Speed tie: the lower battler dances
         ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, opponentRight);
     } THEN {
         EXPECT_EQ(gBattlerPartyIndexes[B_POSITION_PLAYER_LEFT], 2);
+    }
+}
+
+// HnS: chains and edge cases for the rule above (friend request 2026-10-09). Emergency Exit/Wimp Out mark the slot like
+// Eject Button/Pack (dancerAfterEjectItem, read by MoveEndDancer). A slot dances at most once per action (TryDancer checks
+// dancerUsedMove, which stays on the slot until the action ends) and the dance move user's slot never dances, so a chain
+// of switches always ends.
+
+DOUBLE_BATTLE_TEST("Dancer sent in by Eject Button, Emergency Exit or Wimp Out dances the same way, slowest first with the Dancers already there (Gen 7, HnS)")
+{
+    u32 species, speed;
+    enum Ability ability;
+    enum Item item;
+
+    PARAMETRIZE { species = SPECIES_WOBBUFFET; ability = ABILITY_TELEPATHY;      item = ITEM_EJECT_BUTTON; speed = 1; }
+    PARAMETRIZE { species = SPECIES_GOLISOPOD; ability = ABILITY_EMERGENCY_EXIT; item = ITEM_NONE;         speed = 1; }
+    PARAMETRIZE { species = SPECIES_WIMPOD;    ability = ABILITY_WIMP_OUT;       item = ITEM_NONE;         speed = 1; }
+    PARAMETRIZE { species = SPECIES_WOBBUFFET; ability = ABILITY_TELEPATHY;      item = ITEM_EJECT_BUTTON; speed = 30; }
+    PARAMETRIZE { species = SPECIES_GOLISOPOD; ability = ABILITY_EMERGENCY_EXIT; item = ITEM_NONE;         speed = 30; }
+    PARAMETRIZE { species = SPECIES_WIMPOD;    ability = ABILITY_WIMP_OUT;       item = ITEM_NONE;         speed = 30; }
+    GIVEN {
+        WITH_CONFIG(B_DANCER_ORDER, GEN_7);
+        ASSUME(IsDanceMove(MOVE_AQUA_STEP));
+        ASSUME(GetItemHoldEffect(ITEM_EJECT_BUTTON) == HOLD_EFFECT_EJECT_BUTTON);
+        PLAYER(species) { Ability(ability); Item(item); MaxHP(263); HP(132); Speed(1); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
+        PLAYER(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); Speed(20); Moves(MOVE_CELEBRATE); }
+        PLAYER(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); Speed(speed); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(50); Moves(MOVE_AQUA_STEP, MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); Speed(10); Moves(MOVE_CELEBRATE); }
+    } WHEN {
+        TURN {
+            MOVE(playerLeft, MOVE_SWORDS_DANCE);
+            MOVE(playerRight, MOVE_CELEBRATE);
+            MOVE(opponentLeft, MOVE_AQUA_STEP, target: playerLeft);
+            MOVE(opponentRight, MOVE_CELEBRATE);
+            SEND_OUT(playerLeft, 2);
+        }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, opponentLeft);
+        HP_BAR(playerLeft);
+        if (item == ITEM_EJECT_BUTTON)
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, playerLeft);
+        else
+            ABILITY_POPUP(playerLeft, ability);
+        if (speed == 1) {
+            ABILITY_POPUP(playerLeft, ABILITY_DANCER);
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, playerLeft);
+            HP_BAR(opponentLeft);
+        }
+        ABILITY_POPUP(opponentRight, ABILITY_DANCER);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, opponentRight);
+        HP_BAR(playerLeft);
+        ABILITY_POPUP(playerRight, ABILITY_DANCER);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, playerRight);
+        HP_BAR(opponentLeft);
+        if (speed == 30) {
+            ABILITY_POPUP(playerLeft, ABILITY_DANCER);
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, playerLeft);
+            HP_BAR(opponentLeft);
+        }
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, playerRight);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponentRight);
+        NONE_OF {
+            ABILITY_POPUP(playerLeft, ABILITY_DANCER);
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_SWORDS_DANCE, playerLeft);
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, playerLeft);
+        }
+    } THEN {
+        EXPECT_EQ(playerLeft->species, SPECIES_ORICORIO);
+        // Every battler moved or danced once: one Aqua Step each
+        EXPECT_EQ(playerLeft->statStages[STAT_SPEED], DEFAULT_STAT_STAGE + 1);
+        EXPECT_EQ(playerLeft->statStages[STAT_ATK], DEFAULT_STAT_STAGE);
+        EXPECT_EQ(playerRight->statStages[STAT_SPEED], DEFAULT_STAT_STAGE + 1);
+        EXPECT_EQ(opponentLeft->statStages[STAT_SPEED], DEFAULT_STAT_STAGE + 1);
+        EXPECT_EQ(opponentRight->statStages[STAT_SPEED], DEFAULT_STAT_STAGE + 1);
+    }
+}
+
+DOUBLE_BATTLE_TEST("Dancer sent in by Emergency Exit or Wimp Out after an ally's dance move copies it on that ally, the original user")
+{
+    u32 species;
+    enum Ability ability;
+
+    PARAMETRIZE { species = SPECIES_GOLISOPOD; ability = ABILITY_EMERGENCY_EXIT; }
+    PARAMETRIZE { species = SPECIES_WIMPOD;    ability = ABILITY_WIMP_OUT; }
+    GIVEN {
+        ASSUME(IsDanceMove(MOVE_AQUA_STEP));
+        PLAYER(species) { Ability(ability); MaxHP(263); HP(132); Speed(1); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
+        PLAYER(SPECIES_WOBBUFFET) { Speed(50); Moves(MOVE_AQUA_STEP, MOVE_CELEBRATE); }
+        PLAYER(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); Speed(1); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(40); Moves(MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(30); Moves(MOVE_CELEBRATE); }
+    } WHEN {
+        TURN {
+            MOVE(playerRight, MOVE_AQUA_STEP, target: playerLeft);
+            MOVE(playerLeft, MOVE_SWORDS_DANCE);
+            SEND_OUT(playerLeft, 2);
+        }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, playerRight);
+        HP_BAR(playerLeft);
+        ABILITY_POPUP(playerLeft, ability);
+        ABILITY_POPUP(playerLeft, ABILITY_DANCER);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, playerLeft);
+        HP_BAR(playerRight);
+        NONE_OF {
+            HP_BAR(opponentLeft);
+            HP_BAR(opponentRight);
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_SWORDS_DANCE, playerLeft);
+            ABILITY_POPUP(playerLeft, ABILITY_DANCER);
+        }
+    } THEN {
+        EXPECT_EQ(playerLeft->species, SPECIES_ORICORIO);
+        EXPECT_EQ(playerLeft->statStages[STAT_SPEED], DEFAULT_STAT_STAGE + 1);
+        EXPECT_EQ(playerRight->statStages[STAT_SPEED], DEFAULT_STAT_STAGE + 1);
+    }
+}
+
+SINGLE_BATTLE_TEST("Emergency Exit on both sides: the Dancer sent in for the dance move's user doesn't copy the foe Dancer's copy (no loop)")
+{
+    GIVEN {
+        ASSUME(IsDanceMove(MOVE_AQUA_STEP));
+        PLAYER(SPECIES_GOLISOPOD) { Ability(ABILITY_EMERGENCY_EXIT); MaxHP(263); HP(133); Speed(50); Moves(MOVE_AQUA_STEP, MOVE_CELEBRATE); }
+        PLAYER(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); Speed(1); Moves(MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_GOLISOPOD) { Ability(ABILITY_EMERGENCY_EXIT); MaxHP(263); HP(132); Speed(1); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); Speed(1); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
+    } WHEN {
+        TURN { MOVE(player, MOVE_AQUA_STEP); MOVE(opponent, MOVE_SWORDS_DANCE); SEND_OUT(opponent, 1); SEND_OUT(player, 1); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, player);
+        HP_BAR(opponent);
+        ABILITY_POPUP(opponent, ABILITY_EMERGENCY_EXIT);
+        ABILITY_POPUP(opponent, ABILITY_DANCER);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, opponent);
+        HP_BAR(player);
+        ABILITY_POPUP(player, ABILITY_EMERGENCY_EXIT);
+        NONE_OF {
+            ABILITY_POPUP(player, ABILITY_DANCER);
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, player);
+            ABILITY_POPUP(opponent, ABILITY_DANCER);
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, opponent);
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_SWORDS_DANCE, opponent);
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
+        }
+    } THEN {
+        EXPECT_EQ(player->species, SPECIES_ORICORIO);
+        EXPECT_EQ(opponent->species, SPECIES_ORICORIO);
+        EXPECT_EQ(player->statStages[STAT_SPEED], DEFAULT_STAT_STAGE);
+        EXPECT_EQ(opponent->statStages[STAT_SPEED], DEFAULT_STAT_STAGE + 1);
+        EXPECT_EQ(opponent->statStages[STAT_ATK], DEFAULT_STAT_STAGE);
+    }
+}
+
+DOUBLE_BATTLE_TEST("Dancer sent in by Emergency Exit after a Dancer's copy made the replacement switch out too dances once (chain ends)")
+{
+    GIVEN {
+        WITH_CONFIG(B_DANCER_ORDER, GEN_7);
+        ASSUME(IsDanceMove(MOVE_AQUA_STEP));
+        PLAYER(SPECIES_GOLISOPOD) { Ability(ABILITY_EMERGENCY_EXIT); MaxHP(263); HP(132); Speed(1); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
+        PLAYER(SPECIES_WOBBUFFET) { Speed(20); Moves(MOVE_CELEBRATE); }
+        PLAYER(SPECIES_GOLISOPOD) { Ability(ABILITY_EMERGENCY_EXIT); MaxHP(263); HP(132); Speed(1); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
+        PLAYER(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); Speed(1); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(50); Moves(MOVE_AQUA_STEP, MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); Speed(10); Moves(MOVE_CELEBRATE); }
+    } WHEN {
+        TURN {
+            MOVE(playerLeft, MOVE_SWORDS_DANCE);
+            MOVE(playerRight, MOVE_CELEBRATE);
+            MOVE(opponentLeft, MOVE_AQUA_STEP, target: playerLeft);
+            MOVE(opponentRight, MOVE_CELEBRATE);
+            SEND_OUT(playerLeft, 2);
+            SEND_OUT(playerLeft, 3);
+        }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, opponentLeft);
+        HP_BAR(playerLeft);
+        ABILITY_POPUP(playerLeft, ABILITY_EMERGENCY_EXIT);
+        ABILITY_POPUP(opponentRight, ABILITY_DANCER);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, opponentRight);
+        HP_BAR(playerLeft);
+        ABILITY_POPUP(playerLeft, ABILITY_EMERGENCY_EXIT);
+        ABILITY_POPUP(playerLeft, ABILITY_DANCER);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, playerLeft);
+        HP_BAR(opponentLeft);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, playerRight);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponentRight);
+        NONE_OF {
+            ABILITY_POPUP(playerLeft, ABILITY_DANCER);
+            ABILITY_POPUP(opponentRight, ABILITY_DANCER);
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_SWORDS_DANCE, playerLeft);
+        }
+    } THEN {
+        EXPECT_EQ(gBattlerPartyIndexes[B_POSITION_PLAYER_LEFT], 3);
+        EXPECT_EQ(playerLeft->statStages[STAT_SPEED], DEFAULT_STAT_STAGE + 1);
+        EXPECT_EQ(opponentRight->statStages[STAT_SPEED], DEFAULT_STAT_STAGE + 1);
+    }
+}
+
+SINGLE_BATTLE_TEST("Emergency Exit or Wimp Out user holding an Eject Button: Eject Button goes first and the Dancer sent in dances once")
+{
+    u32 species;
+    enum Ability ability;
+
+    PARAMETRIZE { species = SPECIES_GOLISOPOD; ability = ABILITY_EMERGENCY_EXIT; }
+    PARAMETRIZE { species = SPECIES_WIMPOD;    ability = ABILITY_WIMP_OUT; }
+    GIVEN {
+        ASSUME(IsDanceMove(MOVE_AQUA_STEP));
+        ASSUME(GetItemHoldEffect(ITEM_EJECT_BUTTON) == HOLD_EFFECT_EJECT_BUTTON);
+        PLAYER(species) { Ability(ability); Item(ITEM_EJECT_BUTTON); MaxHP(263); HP(132); Speed(1); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
+        PLAYER(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); Speed(1); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(50); Moves(MOVE_AQUA_STEP, MOVE_CELEBRATE); }
+    } WHEN {
+        TURN { MOVE(player, MOVE_SWORDS_DANCE); MOVE(opponent, MOVE_AQUA_STEP); SEND_OUT(player, 1); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, opponent);
+        HP_BAR(player);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
+        ABILITY_POPUP(player, ABILITY_DANCER);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, player);
+        HP_BAR(opponent);
+        NONE_OF {
+            ABILITY_POPUP(player, ability);
+            ABILITY_POPUP(player, ABILITY_DANCER);
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, player);
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_SWORDS_DANCE, player);
+        }
+    } THEN {
+        EXPECT_EQ(player->species, SPECIES_ORICORIO);
+        EXPECT_EQ(player->statStages[STAT_SPEED], DEFAULT_STAT_STAGE + 1);
+        EXPECT_EQ(player->statStages[STAT_ATK], DEFAULT_STAT_STAGE);
+    }
+}
+
+SINGLE_BATTLE_TEST("Dancer sent in by Emergency Exit or Wimp Out that faints on entry doesn't dance, nor does the Pokemon sent in for it")
+{
+    u32 species;
+    enum Ability ability;
+
+    PARAMETRIZE { species = SPECIES_GOLISOPOD; ability = ABILITY_EMERGENCY_EXIT; }
+    PARAMETRIZE { species = SPECIES_WIMPOD;    ability = ABILITY_WIMP_OUT; }
+    GIVEN {
+        ASSUME(IsDanceMove(MOVE_AQUA_STEP));
+        ASSUME(GetMoveEffect(MOVE_STEALTH_ROCK) == EFFECT_STEALTH_ROCK);
+        PLAYER(species) { Ability(ability); MaxHP(263); HP(132); Speed(1); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
+        PLAYER(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); HP(1); Speed(1); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
+        PLAYER(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); Speed(1); Moves(MOVE_SWORDS_DANCE, MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(50); Moves(MOVE_STEALTH_ROCK, MOVE_AQUA_STEP); }
+    } WHEN {
+        TURN { MOVE(player, MOVE_CELEBRATE); MOVE(opponent, MOVE_STEALTH_ROCK); }
+        TURN { MOVE(player, MOVE_SWORDS_DANCE); MOVE(opponent, MOVE_AQUA_STEP); SEND_OUT(player, 1); SEND_OUT(player, 2); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_STEALTH_ROCK, opponent);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, opponent);
+        HP_BAR(player);
+        ABILITY_POPUP(player, ability);
+        HP_BAR(player, hp: 0);
+        NONE_OF {
+            ABILITY_POPUP(player, ABILITY_DANCER);
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, player);
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_SWORDS_DANCE, player);
+        }
+    } THEN {
+        EXPECT_EQ(gBattlerPartyIndexes[B_POSITION_PLAYER_LEFT], 2);
+        EXPECT_EQ(player->statStages[STAT_SPEED], DEFAULT_STAT_STAGE);
+        EXPECT_EQ(opponent->hp, opponent->maxHP);
+    }
+}
+
+SINGLE_BATTLE_TEST("Emergency Exit or Wimp Out with no Pokemon left to switch in: no Dancer, and the user still takes its action")
+{
+    u32 species;
+    enum Ability ability;
+
+    PARAMETRIZE { species = SPECIES_GOLISOPOD; ability = ABILITY_EMERGENCY_EXIT; }
+    PARAMETRIZE { species = SPECIES_WIMPOD;    ability = ABILITY_WIMP_OUT; }
+    GIVEN {
+        ASSUME(IsDanceMove(MOVE_AQUA_STEP));
+        PLAYER(species) { Ability(ability); MaxHP(263); HP(132); Speed(1); Moves(MOVE_CELEBRATE); }
+        PLAYER(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); HP(0); Speed(1); }
+        OPPONENT(SPECIES_WOBBUFFET) { Speed(50); Moves(MOVE_AQUA_STEP); }
+    } WHEN {
+        TURN { MOVE(player, MOVE_CELEBRATE); MOVE(opponent, MOVE_AQUA_STEP); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, opponent);
+        HP_BAR(player);
+        NONE_OF {
+            ABILITY_POPUP(player, ability);
+            ABILITY_POPUP(player, ABILITY_DANCER);
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, player);
+        }
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
+    } THEN {
+        EXPECT_EQ(player->species, species);
+        EXPECT_EQ(gBattlerPartyIndexes[B_POSITION_PLAYER_LEFT], 0);
+    }
+}
+
+AI_SINGLE_BATTLE_TEST("Dancer sent in by the foe trainer AI's Emergency Exit copies the player's Revelation Dance on the player")
+{
+    GIVEN {
+        ASSUME(IsDanceMove(MOVE_REVELATION_DANCE));
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT);
+        PLAYER(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); Speed(50); Moves(MOVE_REVELATION_DANCE); }
+        OPPONENT(SPECIES_GOLISOPOD) { Ability(ABILITY_EMERGENCY_EXIT); MaxHP(263); HP(132); SpDefense(400); Speed(1); Moves(MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); Speed(10); Moves(MOVE_CELEBRATE); }
+    } WHEN {
+        TURN { MOVE(player, MOVE_REVELATION_DANCE); EXPECT_MOVE(opponent, MOVE_CELEBRATE); EXPECT_SEND_OUT(opponent, 1); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_REVELATION_DANCE, player);
+        HP_BAR(opponent);
+        ABILITY_POPUP(opponent, ABILITY_EMERGENCY_EXIT);
+        ABILITY_POPUP(opponent, ABILITY_DANCER);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_REVELATION_DANCE, opponent);
+        HP_BAR(player);
+        NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
+    } THEN {
+        EXPECT_EQ(opponent->species, SPECIES_ORICORIO);
+    }
+}
+
+SINGLE_BATTLE_TEST("Dancer sent in for the dance move's user by its own Emergency Exit (Life Orb) doesn't copy that dance")
+{
+    GIVEN {
+        ASSUME(IsDanceMove(MOVE_AQUA_STEP));
+        ASSUME(GetItemHoldEffect(ITEM_LIFE_ORB) == HOLD_EFFECT_LIFE_ORB);
+        PLAYER(SPECIES_WOBBUFFET) { Speed(1); Moves(MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_GOLISOPOD) { Ability(ABILITY_EMERGENCY_EXIT); Item(ITEM_LIFE_ORB); MaxHP(263); HP(140); Speed(50); Moves(MOVE_AQUA_STEP, MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); Speed(1); Moves(MOVE_CELEBRATE); }
+    } WHEN {
+        TURN { MOVE(player, MOVE_CELEBRATE); MOVE(opponent, MOVE_AQUA_STEP); SEND_OUT(opponent, 1); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, opponent);
+        HP_BAR(player);
+        HP_BAR(opponent); // Life Orb
+        ABILITY_POPUP(opponent, ABILITY_EMERGENCY_EXIT);
+        NONE_OF {
+            ABILITY_POPUP(opponent, ABILITY_DANCER);
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, opponent);
+        }
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
+    } THEN {
+        EXPECT_EQ(opponent->species, SPECIES_ORICORIO);
+        EXPECT_EQ(opponent->statStages[STAT_SPEED], DEFAULT_STAT_STAGE);
+    }
+}
+
+SINGLE_BATTLE_TEST("Dance move triggering the target's Eject Button and its user's Emergency Exit (Life Orb): one switch at a time, the chain ends")
+{
+    u32 species;
+
+    PARAMETRIZE { species = SPECIES_ORICORIO; }
+    PARAMETRIZE { species = SPECIES_WYNAUT; }
+    GIVEN {
+        ASSUME(IsDanceMove(MOVE_AQUA_STEP));
+        ASSUME(GetItemHoldEffect(ITEM_EJECT_BUTTON) == HOLD_EFFECT_EJECT_BUTTON);
+        ASSUME(GetItemHoldEffect(ITEM_LIFE_ORB) == HOLD_EFFECT_LIFE_ORB);
+        ASSUME(GetSpeciesAbility(SPECIES_ORICORIO, 0) == ABILITY_DANCER);
+        ASSUME(GetSpeciesAbility(SPECIES_WYNAUT, 0) != ABILITY_DANCER);
+        PLAYER(SPECIES_WOBBUFFET) { Ability(ABILITY_TELEPATHY); Item(ITEM_EJECT_BUTTON); Speed(1); Moves(MOVE_CELEBRATE); }
+        PLAYER(species) { Speed(1); Moves(MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_GOLISOPOD) { Ability(ABILITY_EMERGENCY_EXIT); Item(ITEM_LIFE_ORB); MaxHP(263); HP(140); Speed(50); Moves(MOVE_AQUA_STEP, MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); Speed(1); Moves(MOVE_CELEBRATE); }
+    } WHEN {
+        TURN {
+            MOVE(player, MOVE_CELEBRATE);
+            MOVE(opponent, MOVE_AQUA_STEP);
+            SEND_OUT(player, 1);
+            if (species == SPECIES_ORICORIO)
+                SEND_OUT(opponent, 1);
+        }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, opponent);
+        HP_BAR(player);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
+        HP_BAR(opponent); // Life Orb; the queued Eject Button switch holds Emergency Exit back
+        if (species == SPECIES_ORICORIO) {
+            // The Dancer sent in by Eject Button copies the dance on the user; Emergency Exit then activates
+            ABILITY_POPUP(player, ABILITY_DANCER);
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, player);
+            HP_BAR(opponent);
+            ABILITY_POPUP(opponent, ABILITY_EMERGENCY_EXIT);
+        }
+        NONE_OF { // the Dancer sent in for the dance move's user doesn't dance; nothing activates twice
+            ABILITY_POPUP(opponent, ABILITY_DANCER);
+            ABILITY_POPUP(player, ABILITY_DANCER);
+            ABILITY_POPUP(opponent, ABILITY_EMERGENCY_EXIT);
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, opponent);
+        }
+    } THEN {
+        EXPECT_EQ(player->species, species);
+        EXPECT_EQ(opponent->species, species == SPECIES_ORICORIO ? SPECIES_ORICORIO : SPECIES_GOLISOPOD);
+        EXPECT_EQ(opponent->statStages[STAT_SPEED], DEFAULT_STAT_STAGE + (species != SPECIES_ORICORIO));
+    }
+}
+
+DOUBLE_BATTLE_TEST("Dancer sent in by Emergency Exit copies an attacking dance on the other foe if the dance move's user fainted")
+{
+    GIVEN {
+        ASSUME(IsDanceMove(MOVE_AQUA_STEP));
+        ASSUME(GetItemHoldEffect(ITEM_ROCKY_HELMET) == HOLD_EFFECT_ROCKY_HELMET);
+        PLAYER(SPECIES_GOLISOPOD) { Ability(ABILITY_EMERGENCY_EXIT); Item(ITEM_ROCKY_HELMET); MaxHP(263); HP(132); Speed(1); Moves(MOVE_CELEBRATE); }
+        PLAYER(SPECIES_WYNAUT) { Speed(5); Moves(MOVE_CELEBRATE); }
+        PLAYER(SPECIES_ORICORIO) { Ability(ABILITY_DANCER); Speed(1); Moves(MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_WOBBUFFET) { HP(1); Speed(50); Moves(MOVE_AQUA_STEP, MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_WYNAUT) { Speed(40); Moves(MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_WYNAUT) { Speed(40); Moves(MOVE_CELEBRATE); }
+    } WHEN {
+        TURN { MOVE(opponentLeft, MOVE_AQUA_STEP, target: playerLeft); SEND_OUT(playerLeft, 2); SEND_OUT(opponentLeft, 2); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, opponentLeft);
+        HP_BAR(playerLeft);
+        HP_BAR(opponentLeft, hp: 0); // Rocky Helmet
+        ABILITY_POPUP(playerLeft, ABILITY_EMERGENCY_EXIT);
+        ABILITY_POPUP(playerLeft, ABILITY_DANCER);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_AQUA_STEP, playerLeft);
+        HP_BAR(opponentRight);
+        NOT HP_BAR(playerRight);
+    } THEN {
+        EXPECT_EQ(playerLeft->species, SPECIES_ORICORIO);
+        EXPECT_EQ(playerLeft->statStages[STAT_SPEED], DEFAULT_STAT_STAGE + 1);
     }
 }
