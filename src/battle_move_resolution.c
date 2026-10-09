@@ -3770,7 +3770,7 @@ static enum MoveEndResult MoveEndEmergencyExit(void)
     {
         if (!IsBattleMoveStatus(gCurrentMove)
          && !gBattleStruct->unableToUseMove
-         && EmergencyExitCanBeTriggered(i))
+         && EmergencyExitCanBeTriggered(i, GetBattlerAbility(i)))
         {
             emergencyExitBattlers |= 1u << i;
             numEmergencyExitBattlers++;
