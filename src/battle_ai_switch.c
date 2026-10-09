@@ -2983,7 +2983,7 @@ static void SetBattlerVolatilesForSwitchin(enum BattlerId battler, u32 weather, 
         // so InitializeSwitchinCandidate saves and restores it around the switch-in calcs.
         if (B_UPDATED_ABILITY_DATA >= GEN_CHAMPIONS)
         {
-            u8 faintCounter = IsOnPlayerSide(battler) ? gBattleResults.playerFaintCounter : gBattleResults.opponentFaintCounter;
+            u8 faintCounter = gBattleStruct->faintCounter[GetBattlerTrainer(battler)];
             gBattleStruct->supremeOverlordCounter[battler] = min(5, faintCounter);
         }
         break;

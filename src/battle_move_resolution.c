@@ -2868,26 +2868,8 @@ static enum MoveEndResult MoveEndFaintBlock(void)
             gBattleStruct->eventState.moveEndBlock++;
             break;
         case FAINT_BLOCK_FAINT_TARGET:
-            gBattlerFainted = gBattlerTarget;
             TryUpdateEvolutionTracker(IF_DEFEAT_X_WITH_ITEMS, 1, MOVE_NONE);
-            TryDeactivateSleepClause(GetBattlerSide(gBattlerTarget), gBattlerPartyIndexes[gBattlerTarget]);
-            gHitMarker |= HITMARKER_FAINTED(gBattlerTarget);
-            gBattleStruct->eventState.faintedAction = 0;
-            if (IsOnPlayerSide(gBattlerTarget))
-            {
-                gHitMarker |= HITMARKER_PLAYER_FAINTED;
-                if (gBattleResults.playerFaintCounter < 255)
-                    gBattleResults.playerFaintCounter++;
-                AdjustFriendshipOnBattleFaint(gBattlerTarget);
-                gSideTimers[B_SIDE_PLAYER].retaliateTimer = 2;
-            }
-            else
-            {
-                if (gBattleResults.opponentFaintCounter < 255)
-                    gBattleResults.opponentFaintCounter++;
-                gBattleResults.lastOpponentSpecies = GetMonData(GetBattlerMon(gBattlerTarget), MON_DATA_SPECIES);
-                gSideTimers[B_SIDE_OPPONENT].retaliateTimer = 2;
-            }
+            SetValuesOnFaint(gBattlerTarget);
             BattleScriptCall(BattleScript_FaintBattler);
             result = MOVEEND_RESULT_RUN_SCRIPT;
             gBattleStruct->eventState.moveEndBlock++;
