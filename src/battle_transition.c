@@ -2675,6 +2675,15 @@ static void Mugshots_CreateTrainerPics(struct Task *task)
         opponentSpriteB->invisible = TRUE;
     if (partnerSprite != NULL)
         partnerSprite->invisible = TRUE;
+
+    // HnS: the Silver multi's opponents, Lance (A) and Clair (B), stood too close together: draw Lance 4 px and Clair
+    // 12 px further left. Only x2 changes, so the slides (they test x) and their timing stay the same.
+    if (opponentSpriteB != NULL && trainerAPicId == TRAINER_PIC_CHAMPION_LANCE_HNS
+     && trainerBPicId == TRAINER_PIC_LEADER_CLAIR_HNS)
+    {
+        opponentSpriteA->x2 -= 4;
+        opponentSpriteB->x2 -= 12;
+    }
 }
 
 // HnS: a mugshot trainer pic is drawn only once its slide has started and only while its 128 px wide affine box
