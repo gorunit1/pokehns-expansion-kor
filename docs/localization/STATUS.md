@@ -1,11 +1,16 @@
 # 현재 인수인계 상태
 
-## 2026-10-09 밤 — full-sync 묶음 11(seq 217~226) + upstream #10837 완료·push (현재, 데스크탑 — 랩탑에서 Remote Control)
+## 2026-10-10 — full-sync 묶음 12(seq 227~239) 사전 분석 중 (현재, 데스크탑 — 랩탑에서 Remote Control)
+
+- **친구 문자:** 목호·실버 1차 + GS볼(`hnsfix-1009c/discord-pending.md`), 머그샷 상대 그림(`hnsfix-1009c/round2/discord-pending.md`) 둘 다 **보냄**(2026-10-10 사용자 확인). 친구 답 대기: 재확인 35·37·42(+40 실기). 답이 오면 반영부터.
+- **진행 중: 묶음 12 사전 분석** — 227 #10141·235 #10208·237 #10225(영역 A, 그림·OW), 228 #10161·229 #10169·233 #10210(영역 B), 231 #10186·238 #10227·239 #10229·234 #10216 확인(영역 C), 230 #9642·232 #10194·236 #10198(영역 D). 234 #10216은 이미 적용(확인 중). 지시 `/home/hjm0725/hns-sync-work/chunk-227-239/ANALYZE.md`, 기준 사본 `chunk-227-239/base`(HEAD `e76b4165ff`, 코드 = `7ceb3d5a53`, ROM 32,754,852 B, SHA1 `c1b6a0fe…`), 세이브 이식 전 사실 `chunk-227-239/main/save/pre-227`. 산출물 `chunk-227-239/seq<SEQ>-<PR>.{md,patch}`. 다음: 결정 사항을 사용자에게(혼자 정함/친구 질문 구분) → APPLY.md·적용 1개 → 리뷰 2개 → 메인 검증(테스트 기준 `test-baseline-seq226.txt`) → 문서 → push. 끊기면 영역별 산출물이 있는지 보고 없는 영역만 다시 띄운다.
+
+## 2026-10-09 밤 — full-sync 묶음 11(seq 217~226) + upstream #10837 완료·push (데스크탑 — 랩탑에서 Remote Control)
 
 - **다음 할 일**
-  1. **친구 문자(사용자가 보낼 차례):** (a) 목호·실버 1차 + GS볼 결과 `/home/hjm0725/hns-sync-work/hnsfix-1009c/discord-pending.md` — 친구 다음 메시지가 `41543493a2`를 언급해 보냈을 가능성이 크지만 확인할 것, (b) 머그샷 상대 그림 결과 `/home/hjm0725/hns-sync-work/hnsfix-1009c/round2/discord-pending.md`. 보냈는지 먼저 물어본다. 그 전 문자(묶음 10·요청 2건·실기 5건·묶음 11)는 모두 보냄.
+  1. ~~친구 문자~~ **보냄**(2026-10-10 사용자 확인): (a) 목호·실버 1차 + GS볼 결과 `/home/hjm0725/hns-sync-work/hnsfix-1009c/discord-pending.md`, (b) 머그샷 상대 그림 결과 `/home/hjm0725/hns-sync-work/hnsfix-1009c/round2/discord-pending.md`. 그 전 문자(묶음 10·요청 2건·실기 5건·묶음 11)는 모두 보냄.
   2. **친구 답 대기:** 재확인 35(미러 챌린지 패배 뒤 스크립트 계속), 37(선파워 등 팝업 도착 대기 patch — 저장소 밖 `hnsfix-1009b/f3-popup/fix-f3-2-slidein.patch`), 42(볼 바꾸기 성공 문장 영문). 답이 오면 반영부터. 2026-10-09 밤 친구 요청은 모두 끝·push: GS볼 `1fa8438034`(재확인 38), 머그샷 그림 `7ceb3d5a53`(재확인 40, `41543493a2` 대체), −112 원복 `133d8569db` — 결과 [`hnsfix-2026-10-09c.md`](../friend-handoff/results/1.17.0-port/hnsfix-2026-10-09c.md), HANDBACK 18절. 최종 SHA1 `c1b6a0fe…`, 테스트 목록 = `test-baseline-seq226.txt`.
-  3. **full-sync 다음 seq 227 #10141**(More Gen VII animation data, M, unit `U-gen7anim-sprites`), 228 #10161(L, Future Sight attacker in party — HnS `8552b5e9a8`과 겹침), 229 #10169(M, 맹독 카운터 포이즌힐), 230 #9642(M, 테스트 인벤토리), 231 #10186(M, 총대장·성묘 기절 수 — `MoveEndFaintBlock` 문맥, 재확인 메모), 232 #10194(S, 디버그) … 방식은 묶음 7~11과 같다(지시서 틀: `chunk-217-226/ANALYZE.md`·`APPLY.md`·`REVIEW.md`, `main/main-verify.sh`). 테스트 기준 `test-baseline-seq226.txt`.
+  3. ~~full-sync 다음~~ **묶음 12 진행 중**(위 절). 당시 메모: seq 227 #10141(More Gen VII animation data, M, unit `U-gen7anim-sprites`), 228 #10161(L, Future Sight attacker in party — HnS `8552b5e9a8`과 겹침), 229 #10169(M, 맹독 카운터 포이즌힐), 230 #9642(M, 테스트 인벤토리), 231 #10186(M, 총대장·성묘 기절 수 — `MoveEndFaintBlock` 문맥, 재확인 메모), 232 #10194(S, 디버그) … 방식은 묶음 7~11과 같다(지시서 틀: `chunk-217-226/ANALYZE.md`·`APPLY.md`·`REVIEW.md`, `main/main-verify.sh`). 테스트 기준 `test-baseline-seq226.txt`.
 - **이번 묶음:** 결과 [`full-sync-seq-217-226.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-217-226.md), 회신 `HANDBACK_2026-10-07.md` 17절
   - 커밋: `9c44166fff` #10106, `4732661ec2` #10110, `a649700e5f` #10109(+HnS 열매 이벤트 3줄), `b1c1400c5c` #10129, `e21a665639` #10111, `39bee1c3e0` #10131(+`randomizer.c` 고정), `0a027c6246` #10103, `0551be0975` #10130, `ade2ec20fc` #10139(테스트만), `65ba1c6e4d` #10147, `e804379040` upstream #10837 앞당김(리뷰 R1 — 편지 취소 assert)
   - 사용자 결정(2026-10-09 밤, 혼자 정함): 219 열매 이벤트 적응 3줄, 220 트리거 그림 그대로. #10837은 이식 전 동작 복원 원칙(메인)
