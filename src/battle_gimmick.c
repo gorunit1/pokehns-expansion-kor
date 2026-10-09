@@ -118,8 +118,8 @@ struct GimmickTriggerPosition
     s8 yDiff;
 };
 
-static const struct GimmickTriggerPosition sSinglesGimmickTriggerPosition = {15, 31, 30, -11};
-static const struct GimmickTriggerPosition sDoublesGimmickTriggerPosition = {15, 31, 30, -4};
+static const struct GimmickTriggerPosition sSinglesGimmickTriggerPosition = {15, 31, 30, -5};
+static const struct GimmickTriggerPosition sDoublesGimmickTriggerPosition = {15, 31, 30, -2};
 static const struct GimmickTriggerPosition sSinglesMegaTriggerPositionGen4 = {16, 36, 34, -7};
 static const struct GimmickTriggerPosition sDoublesMegaTriggerPositionGen4 = {16, 36, 34, -3};
 
