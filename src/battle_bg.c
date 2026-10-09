@@ -1362,8 +1362,18 @@ void DrawBattleEntryBackground(void)
             // Note Steven's multi battle (which has a dedicated back pic) is excluded above.
             SetBgAttribute(1, BG_ATTR_CHARBASEINDEX, 2);
             SetBgAttribute(2, BG_ATTR_CHARBASEINDEX, 2);
-            CopyToBgTilemapBuffer(1, gMultiBattleIntroBg_Opponent_Tilemap, 0, 0);
-            CopyToBgTilemapBuffer(2, gMultiBattleIntroBg_Player_Tilemap, 0, 0);
+            if (UseModernBattleEnvironment())
+            {
+                // Charbase 2 holds the modern Building tiles (LoadBattleEnvironmentGfx), which the vanilla
+                // maps below do not index, so use the same maps cut from the modern background map.
+                CopyToBgTilemapBuffer(1, gMultiBattleIntroBg_OpponentModern_Tilemap, 0, 0);
+                CopyToBgTilemapBuffer(2, gMultiBattleIntroBg_PlayerModern_Tilemap, 0, 0);
+            }
+            else
+            {
+                CopyToBgTilemapBuffer(1, gMultiBattleIntroBg_Opponent_Tilemap, 0, 0);
+                CopyToBgTilemapBuffer(2, gMultiBattleIntroBg_Player_Tilemap, 0, 0);
+            }
             CopyBgTilemapBufferToVram(1);
             CopyBgTilemapBufferToVram(2);
         }

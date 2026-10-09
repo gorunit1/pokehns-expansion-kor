@@ -215,6 +215,8 @@ extern const u16 gBattleVSFrame_Pal[];
 extern const u32 gBattleVSFrame_Tilemap[];
 extern const u32 gMultiBattleIntroBg_Opponent_Tilemap[];
 extern const u32 gMultiBattleIntroBg_Player_Tilemap[];
+extern const u32 gMultiBattleIntroBg_OpponentModern_Tilemap[];
+extern const u32 gMultiBattleIntroBg_PlayerModern_Tilemap[];
 
 // battle environments
 extern const u32 gBattleEnvironmentTiles_TallGrass[];

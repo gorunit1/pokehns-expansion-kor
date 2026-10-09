@@ -636,7 +636,11 @@ static void CB2_InitBattleInternal(void)
     LoadBattleTextboxAndBackground();
     ResetSpriteData();
     ResetTasks();
-    if (B_FAST_INTRO_NO_SLIDE == FALSE && !gTestRunnerHeadless && gSaveBlock3Ptr->challengeSettings.fastIntro)
+    // BattleIntroSlidePartner slides even when the intro is skipped, so it always needs its bg (with the new
+    // backgrounds, empty BG1/BG2 maps would show the opaque modern tile 0 over the whole screen).
+    if (B_FAST_INTRO_NO_SLIDE == FALSE && !gTestRunnerHeadless
+     && (gSaveBlock3Ptr->challengeSettings.fastIntro
+      || (gBattleTypeFlags & BATTLE_TYPE_INGAME_PARTNER && gPartnerTrainerId < TRAINER_PARTNER(PARTNER_NONE))))
         DrawBattleEntryBackground();
     FreeAllSpritePalettes();
     gReservedSpritePaletteCount = MAX_BATTLERS_COUNT;

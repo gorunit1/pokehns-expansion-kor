@@ -1429,6 +1429,9 @@ const u16 gBattlePyramidFloor_Pal[][16] = INCBIN_U16("graphics/battle_frontier/p
 
 const u32 gMultiBattleIntroBg_Opponent_Tilemap[] = INCBIN_U32("graphics/battle_frontier/multi_battle_intro_bg_opponent.bin.smolTM");
 const u32 gMultiBattleIntroBg_Player_Tilemap[] = INCBIN_U32("graphics/battle_frontier/multi_battle_intro_bg_player.bin.smolTM");
+// The same two maps cut from graphics/battle_environment/building_modern/map.bin (for the new backgrounds option).
+const u32 gMultiBattleIntroBg_OpponentModern_Tilemap[] = INCBIN_U32("graphics/battle_frontier/multi_battle_intro_bg_opponent_modern.bin.smolTM");
+const u32 gMultiBattleIntroBg_PlayerModern_Tilemap[] = INCBIN_U32("graphics/battle_frontier/multi_battle_intro_bg_player_modern.bin.smolTM");
 
 #include "data/graphics/intro_scene.h"
 
