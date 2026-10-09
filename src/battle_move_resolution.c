@@ -4074,11 +4074,20 @@ static enum MoveEndResult MoveEndSendOutReplacements(void)
     return MOVEEND_RESULT_CONTINUE;
 }
 
+// HnS: since #10161 a Future Sight / Doom Desire hit at end of turn runs moveendall with the slot of the original user as
+// the attacker. It is not a move of the battler now in that slot, so keep that battler's own move bookkeeping
+// (rampage, Destiny Bond, consecutive-use counters, Stomping Tantrum, evolution tracker). upstream 1.17.0 does not skip it.
+static inline bool32 IsEndTurnFutureSightHit(void)
+{
+    return gBattleStruct->eventState.endTurn == ENDTURN_FUTURE_SIGHT && GetMoveEffect(gCurrentMove) == EFFECT_FUTURE_SIGHT;
+}
+
 static enum MoveEndResult MoveEndRampage(void)
 {
     enum MoveEndResult result = MOVEEND_RESULT_CONTINUE;
 
-    if (gBattleMons[gBattlerAttacker].volatiles.rampageTurns == 0
+    if (IsEndTurnFutureSightHit() // HnS
+     || gBattleMons[gBattlerAttacker].volatiles.rampageTurns == 0
      || gSpecialStatuses[gBattlerAttacker].dancerUsedMove
      || B_RAMPAGE_CONFUSION < GEN_5)
     {
@@ -4187,17 +4196,22 @@ static enum MoveEndResult MoveEndClearBits(void)
     enum Type moveType = GetBattleMoveType(gCurrentMove);
     enum BattleMoveEffects moveEffect = GetMoveEffect(gCurrentMove);
 
-    if (ShouldSetStompingTantrumTimer())
+    bool32 futureSightHit = IsEndTurnFutureSightHit(); // HnS
+
+    if (!futureSightHit && ShouldSetStompingTantrumTimer())
         gBattleStruct->battlerState[gBattlerAttacker].stompingTantrumTimer = 2;
 
     if (gSpecialStatuses[gBattlerAttacker].backUpTarget)
         gBattleStruct->moveTarget[gBattlerAttacker] = gSpecialStatuses[gBattlerAttacker].backUpTarget - 1;
 
     // If the Pokémon needs to keep track of move usage for its evolutions, do it
-    if (originallyUsedMove != MOVE_NONE)
-        TryUpdateEvolutionTracker(IF_USED_MOVE_X_TIMES, 1, originallyUsedMove);
+    if (!futureSightHit)
+    {
+        if (originallyUsedMove != MOVE_NONE)
+            TryUpdateEvolutionTracker(IF_USED_MOVE_X_TIMES, 1, originallyUsedMove);
 
-    SetSameMoveTurnValues(moveEffect);
+        SetSameMoveTurnValues(moveEffect);
+    }
     TryClearChargeVolatile(moveType);
     gProtectStructs[gBattlerAttacker].shellTrap = FALSE;
     gBattleStruct->battlerState[gBattlerAttacker].ateBoost = FALSE;
@@ -4217,7 +4231,7 @@ static enum MoveEndResult MoveEndClearBits(void)
 
     if (GetActiveGimmick(gBattlerAttacker) == GIMMICK_Z_MOVE)
         SetActiveGimmick(gBattlerAttacker, GIMMICK_NONE);
-    if (gBattleMons[gBattlerAttacker].volatiles.destinyBond > 0)
+    if (!futureSightHit && gBattleMons[gBattlerAttacker].volatiles.destinyBond > 0)
         gBattleMons[gBattlerAttacker].volatiles.destinyBond--;
 
     // check if Stellar type boost should be used up
@@ -4244,7 +4258,8 @@ static enum MoveEndResult MoveEndClearBits(void)
     }
 
     // Need to check a specific battler during the end turn
-    gBattleMons[gBattlerAttacker].volatiles.unableToUseMove = gBattleStruct->unableToUseMove;
+    if (!futureSightHit)
+        gBattleMons[gBattlerAttacker].volatiles.unableToUseMove = gBattleStruct->unableToUseMove;
     ClearDamageCalcResults();
 
     gBattleScripting.moveendState++;
