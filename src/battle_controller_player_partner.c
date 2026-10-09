@@ -259,14 +259,6 @@ static void PlayerPartnerHandleTrainerSlide(enum BattlerId battler)
     enum DifficultyLevel difficulty = GetBattlePartnerDifficultyLevel(gPartnerTrainerId);
     enum TrainerPicID trainerPicId = PlayerPartnerGetTrainerBackPicId(difficulty);
     BtlController_HandleTrainerSlide(battler, trainerPicId);
-
-    // HnS: at the usual start (x2 = -96) a hand of Lance's and Silver's back pics already shows at the left edge of the
-    // screen before they slide in. Start them fully off screen.
-    if (gPartnerTrainerId == TRAINER_PARTNER(PARTNER_LANCE_HNS)
-     || gPartnerTrainerId == TRAINER_PARTNER(PARTNER_SILVER_MEGANIUM_HNS)
-     || gPartnerTrainerId == TRAINER_PARTNER(PARTNER_SILVER_TYPHLOSION_HNS)
-     || gPartnerTrainerId == TRAINER_PARTNER(PARTNER_SILVER_FERALIGATR_HNS))
-        gSprites[gBattleStruct->trainerSlideSpriteIds[battler]].x2 = -112;
 }
 
 static void PlayerPartnerHandleTrainerSlideBack(enum BattlerId battler)
