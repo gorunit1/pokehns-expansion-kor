@@ -41,6 +41,7 @@ IcePath_B3F_EventScript_Swinub::
 	fadescreen FADE_TO_BLACK
 	special Bag_ChooseBerry
 	waitstate
+	goto_if_eq VAR_ITEM_ID, ITEM_NONE, IcePath_B3F_EventScript_SwinubDislikedBerry
 	removeitem VAR_ITEM_ID, 1
 	goto_if_ne VAR_ITEM_ID, ITEM_ASPEAR_BERRY, IcePath_B3F_EventScript_SwinubDislikedBerry
 	msgbox IcePath_B3F_Text_SwinubAteBerry, MSGBOX_DEFAULT
@@ -83,6 +84,7 @@ IcePath_B3F_EventScript_Delibird::
 	fadescreen FADE_TO_BLACK
 	special Bag_ChooseBerry
 	waitstate
+	goto_if_eq VAR_ITEM_ID, ITEM_NONE, IcePath_B3F_EventScript_DelibirdDislikedBerry
 	removeitem VAR_ITEM_ID, 1
 	goto_if_ne VAR_ITEM_ID, ITEM_ASPEAR_BERRY, IcePath_B3F_EventScript_DelibirdDislikedBerry
 	msgbox IcePath_B3F_Text_DelibirdAteBerry, MSGBOX_DEFAULT
