@@ -2635,12 +2635,6 @@ static void Mugshots_CreateTrainerPics(struct Task *task)
         partnerSprite->oam.size = SPRITE_SIZE(64x32);
         CalcCenterToCornerVec(partnerSprite, SPRITE_SHAPE(64x32), SPRITE_SIZE(64x32), ST_OAM_AFFINE_DOUBLE);
         SetOamMatrixRotationScaling(partnerSprite->oam.matrixNum, -512, 512, 0);
-        // HnS: at x = DISPLAY_WIDTH + 240 the partner's 128 px wide box starts at OAM x 416, which the 9-bit OAM x
-        // reads as -96, so its right quarter shows at the left edge of the screen: the left 16 columns of the pic,
-        // mirrored and doubled. That is Lance's and Silver's hand (the other partner pics are blank there).
-        // Hide those two until the slide brings the box past the wrap (SpriteCB_MugshotTrainerPicPartner).
-        if (partnerPicId == TRAINER_PIC_CHAMPION_LANCE_HNS || partnerPicId == TRAINER_PIC_SILVER_HNS)
-            partnerSprite->invisible = TRUE;
     }
 
     task->tPlayerSpriteId = CreateTrainerSprite(PlayerGenderToFrontTrainerPicId(gSaveBlock2Ptr->playerGender),
@@ -2673,21 +2667,39 @@ static void Mugshots_CreateTrainerPics(struct Task *task)
 
     SetOamMatrixRotationScaling(opponentSpriteA->oam.matrixNum, opponentARotationScales, opponentARotationScales, 0);
     SetOamMatrixRotationScaling(playerSprite->oam.matrixNum, -512, 512, 0);
+
+    // HnS: all trainer pics start hidden, see UpdateMugshotTrainerPicVisibility.
+    opponentSpriteA->invisible = TRUE;
+    playerSprite->invisible = TRUE;
+    if (opponentSpriteB != NULL)
+        opponentSpriteB->invisible = TRUE;
+    if (partnerSprite != NULL)
+        partnerSprite->invisible = TRUE;
+}
+
+// HnS: a mugshot trainer pic is drawn only once its slide has started and only while its 128 px wide affine box
+// really overlaps the screen. Before the slides, opponent A (x = mugshot x - 32) and the player (x = DISPLAY_WIDTH + 32)
+// already reach into the screen, and opponent B (x = mugshot x - 240, OAM x 208) and the in-game partner
+// (x = DISPLAY_WIDTH + 240, OAM x 416) wrap around the 9-bit OAM x to the opposite edge. The HnS pics are wider than
+// the vanilla ones, so their edges (Lance's, Silver's and Bugsy's hands, Clair's hair, ...) showed at the screen edges
+// before the trainers slid in. A box that is really off screen draws nothing anyway, so the slides are unchanged.
+static void UpdateMugshotTrainerPicVisibility(struct Sprite *sprite)
+{
+    s32 left = sprite->x + sprite->x2 + sprite->centerToCornerVecX;
+
+    sprite->invisible = (sprite->sState == 0 || left >= DISPLAY_WIDTH || left <= 2 * sprite->centerToCornerVecX);
 }
 
 static void SpriteCB_MugshotTrainerPic(struct Sprite *sprite)
 {
     while (sMugshotTrainerPicFuncs[sprite->sState](sprite));
+    UpdateMugshotTrainerPicVisibility(sprite);
 }
 
 static void SpriteCB_MugshotTrainerPicPartner(struct Sprite *sprite)
 {
     while (sMugshotTrainerPicFuncsPartner[sprite->sState](sprite));
-
-    // HnS: Lance's and Silver's partner pic (Mugshots_CreateTrainerPics) shows again once its box no longer wraps
-    // to the left edge (OAM x <= 512 - 128, still off screen to the right).
-    if (sprite->invisible && sprite->x + sprite->centerToCornerVecX <= 512 - 128)
-        sprite->invisible = FALSE;
+    UpdateMugshotTrainerPicVisibility(sprite);
 }
 
 
