@@ -1,15 +1,18 @@
 # 현재 인수인계 상태
 
-## 2026-10-10 — 친구 요청(실버 멀티 머그샷) 완료, full-sync 묶음 12(seq 227~239) 적용 시작 (현재, 데스크탑 — 랩탑에서 Remote Control)
+## 2026-10-10 — 친구 요청(실버 멀티 머그샷) + full-sync 묶음 12(seq 227~239) 완료·push (현재, 데스크탑 — 랩탑에서 Remote Control)
 
 - **다음 할 일**
-  1. **묶음 12 적용 → 리뷰 2개 → 메인 검증 → 문서 → push.** 지시 `/home/hjm0725/hns-sync-work/chunk-227-239/APPLY.md`(커밋 13개 — 227·228·**228 가드(HnS)**·229·**229 AI 가드(HnS)**·230·231·232·233·235·237·238·239, 234·236은 커밋 없음), 적용 기록 `chunk-227-239/apply/PROGRESS.md`. 끊기면 PROGRESS와 `git log`를 보고 남은 patch부터. 리뷰·메인 검증 틀은 `chunk-217-226/REVIEW.md`·`main/main-verify.sh`(테스트 기준 `test-baseline-seq226.txt`, 세이브 `--pre chunk-227-239/main/save/pre-227`).
-  2. **친구 문자(사용자가 보낼 차례):** 실버 멀티 결과 `/home/hjm0725/hns-sync-work/hnsfix-1010/discord-pending.md`(+ 전후 그림 `hnsfix-1010/img/silver-multi-before-after.png`). 묶음 12 결과 문자는 push 뒤에 따로.
-  3. **친구 답 대기:** 재확인 35(미러 챌린지 패배), 37(선파워 팝업 도착 대기 patch), 42(볼 바꾸기 성공 문장 영문). 답이 오면 반영부터.
-- **친구 답(2026-10-10):** `7ceb3d5a53` 머그샷 조기 노출 mGBA PASS(테스트 ROM `e76b4165ff`) → 재확인 40 실기 끝. 추가 요청 실버 멀티 상대 목호 ←4·이향 ←12 px → **`738d089968`**(결과 [`hnsfix-2026-10-10.md`](../friend-handoff/results/1.17.0-port/hnsfix-2026-10-10.md), HANDBACK 19절). 빌드 종료 0, 새 경고 0, ROM 32,754,900 B(+48), SHA1 `8d642d35…`, 전체 테스트 목록 = `test-baseline-seq226.txt`, 덤프 재구성으로 다른 머그샷 장면 바이트 같음. 이전 친구 문자 2개(목호·실버 1차 + GS볼, 머그샷 상대 그림)는 보냄(2026-10-10 사용자 확인).
-- **묶음 12 사전 분석 끝:** 산출물 `chunk-227-239/seq<SEQ>-<PR>.{md,patch}`(영역 A 227·235·237, B 228·229·233, C 231·238·239·234, D 230·232·236). 기준 사본 `chunk-227-239/base`(HEAD `e76b4165ff`, 코드 = `7ceb3d5a53`, ROM 32,754,852 B, SHA1 `c1b6a0fe…`, 테스트 목록 = `test-baseline-seq226.txt`), 세이브 이식 전 사실 `chunk-227-239/main/save/pre-227`. 227~239 patch를 seq 순으로 쌓아 충돌 없음.
-  - 사용자 결정(2026-10-10 "ㄱㄱ", 사용자 혼자 정함 — 이식 전 동작 유지·upstream 수정 수용·문서): (1) 228 #10161 뒤 미래예지 착탄이 그 자리 포켓몬의 난동·길동무·연속 카운터·분함의발구르기·진화 카운터를 건드리는 1.17.0 동작을 **HnS 가드로 막음**(이식 전 = 본가), `8552b5e9a8` 되돌림(실측 동작 같음), #10344 남은 2줄 포함. (2) 229 #10169 뒤 AI가 포이즌힐 포켓몬을 맹독 카운터로 교체하지 않게 **AI 1줄 가드**. (3) 231 #10186 멀티 기절 수 트레이너별 + HnS AI 예측 1줄 수용. (4) 236 #10198 문서 hunk 제외(코드는 이미 같음). 가드 두 개는 별도 커밋(친구가 1.17.0 동작을 원하면 revert).
-  - 기록할 출력 변화: 228 미래예지 착탄 때 생명의구슬 반동·자기과신·독사슬 발동, 위기회피 교체가 그 자리에서. 238 불꽃 타입·매직가드는 불바다 피해·문장 없음. 239 돌진 상대에게 일격기 필중. 227·235 Gen 7 14종 앞모습 2프레임. 237 동행 포켓몬 이상한볼 그림.
+  1. **친구 문자(사용자가 보낼 차례):** (a) 실버 멀티 결과 `/home/hjm0725/hns-sync-work/hnsfix-1010/discord-pending.md`(+ 그림 `hnsfix-1010/img/silver-multi-before-after.png`, 사용자에게 줌), (b) 묶음 12 결과 `/home/hjm0725/hns-sync-work/chunk-227-239/main/discord-pending.md`. 보냈는지 먼저 물어본다. 이전 문자는 모두 보냄.
+  2. **친구 답 대기:** 실버 멀티 최종 배치 실기(`738d089968`), 재확인 35(미러 챌린지 패배), 37(선파워 팝업 도착 대기 patch — 저장소 밖 `hnsfix-1009b/f3-popup/fix-f3-2-slidein.patch`), 42(볼 바꾸기 성공 문장 영문). 묶음 12 가드(재확인 43·44)를 1.17.0 동작으로 바꾸길 원하면 해당 커밋 revert. 답이 오면 반영부터.
+  3. **full-sync 다음 seq 240 #10226**(Fix Psycho Shift status transfer interactions, M, **한글 Y**), 241 #10231(M, 조개껍질방울 회복 뒤 위기회피 — 의존 #10169는 들어감), 242 #10219(S), 243 #10185(M, 흉내허브 `U-statchange-9730`), 244 #10263(M), 245 #10272(S) … 방식은 묶음 7~12와 같다(지시서 틀: `chunk-227-239/ANALYZE.md`·`APPLY.md`·`REVIEW.md`, `main/main-verify.sh` — 저장소 문서를 고친 채 돌리면 세이브 왕복의 `mkcopy.sh`가 거부하므로 문서는 검증 뒤에 고치거나 `--allow-dirty`). 테스트 기준 **`test-baseline-seq239.txt`**.
+- **친구 요청(2026-10-10):** `7ceb3d5a53` mGBA PASS(재확인 40 끝) → 실버 멀티 상대 목호 ←4·이향 ←12 px **`738d089968`**(결과 [`hnsfix-2026-10-10.md`](../friend-handoff/results/1.17.0-port/hnsfix-2026-10-10.md), HANDBACK 19절). SHA1 `8d642d35…`, 전체 테스트 목록 = `test-baseline-seq226.txt`, 덤프 재구성으로 다른 머그샷 장면 바이트 같음.
+- **묶음 12:** 결과 [`full-sync-seq-227-239.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-227-239.md), 회신 HANDBACK 20절
+  - 커밋: `41e4f16717` #10141, `18a69b4d96` #10161(`8552b5e9a8` 되돌림 + #10344 2줄), `2c3c403c66` HnS 미래예지 그 자리 포켓몬 기록 가드, `a8dd91c1a0` #10169, `d87055c301` HnS 포이즌힐 AI 가드, `89537a1ec3` #9642, `eb23e9a308` #10186(+AI 1줄), `d6b593497f` #10194, `ea28f61165` #10210, `daa23a4a75` #10208, `5127f5c148` #10225, `02b87b322c` #10227, `563dd7af11` #10229, `e25578410d` HnS 빗나간 미래예지 끝 스크립트(리뷰 R1, 재확인 2 해결), `6155f43690` HnS 숨은 상태 유지(리뷰 R1 경미). 234 #10216·236 #10198은 이미 같음
+  - 사용자 결정(2026-10-10, 혼자 정함): 228 가드·229 AI 가드 넣기, 231 수용, 236 문서 제외, fixB(숨은 상태 유지) 넣기. fixA(`e25578410d`)는 이식 전 동작 복원 원칙(메인)
+  - 검증(최종 `6155f43690`): ROM 32,761,764 B(+6,864), EWRAM 250,408 B, IWRAM 25,516 B, SHA1 `b45491da…`, 새 경고 0. 전체 테스트 PASS 2,598 / TOTAL 5,515(사라진 PASS 0, 새 줄 13 = 예측, FAIL 3은 영문 MESSAGE) → **기준 [`test-baseline-seq239.txt`](../friend-handoff/results/1.17.0-port/test-baseline-seq239.txt)**. 한글 607개 기대와 같음(517/607). 세이브 정적 PASS(WARN 0)·왕복 PASS. 리뷰 2개
+  - 재확인: 2·8e·8h 해결, 새 8u·43·44·45·46
+  - 스크래치: `/home/hjm0725/hns-sync-work/chunk-227-239/`(분석·APPLY·REVIEW·apply·main·review-R1/R2), `hnsfix-1010/`(실버 멀티 덤프·그림)
 
 ## 2026-10-09 밤 — full-sync 묶음 11(seq 217~226) + upstream #10837 완료·push (데스크탑 — 랩탑에서 Remote Control)
 
