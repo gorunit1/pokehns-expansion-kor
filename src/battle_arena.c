@@ -12,6 +12,8 @@
 #include "gpu_regs.h"
 #include "item.h"
 #include "m4a.h"
+#include "malloc.h"
+#include "menu.h"
 #include "overworld.h"
 #include "palette.h"
 #include "random.h"
@@ -564,6 +566,13 @@ void DrawArenaRefereeTextBox(void)
 
     FillBgTilemapBufferRect(0, 0,    254, 14, 1,  6, palNum);
     FillBgTilemapBufferRect(0, 0,    32,  14, 1,  6, palNum);
+    if (IS_HNS)
+    {
+        // The tile offsets below are Emerald's message box layout. HnS has its own message box
+        // (LoadBattleMenuWindowGfx loads it at tile 0x30), so draw it the way the field message box is drawn.
+        DrawDialogFrameWithCustomTileAndPalette(ARENA_WIN_JUDGMENT_TEXT, FALSE, 0x30, palNum);
+        return;
+    }
     FillBgTilemapBufferRect(0, 0x31, 0,   14, 1,  1, palNum);
     FillBgTilemapBufferRect(0, 0x33, 1,   14, 1,  1, palNum);
     FillBgTilemapBufferRect(0, 0x34, 2,   14, width, 1, palNum);
@@ -586,6 +595,18 @@ void EraseArenaRefereeTextBox(void)
     u8 height;
     u8 palNum = 0;
 
+    if (IS_HNS)
+    {
+        // The tiles below are Emerald's battle message box. Put back rows 14-19 of the HnS battle textbox tilemap.
+        u16 *textboxTilemap = Alloc(GetDecompressedDataSize(gBattleTextboxTilemap));
+        if (textboxTilemap != NULL)
+        {
+            DecompressDataWithHeaderWram(gBattleTextboxTilemap, textboxTilemap);
+            CopyToBgTilemapBufferRect(0, &textboxTilemap[14 * 32], 0, 14, 32, 6);
+            Free(textboxTilemap);
+            return;
+        }
+    }
     FillBgTilemapBufferRect(0, 3, 0, 14, 1, 1, palNum);
     height = 4;
     FillBgTilemapBufferRect(0, 4, 1, 14, 1, 1, palNum);
