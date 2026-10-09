@@ -3782,7 +3782,7 @@ BattleScript_MonTookFutureAttack::
 	waitmessage B_WAIT_TIME_LONG
 	futuresighttargetfailure BattleScript_DoFutureAttackResult
 	jumpifmovehadnoeffect BattleScript_FutureAttackEnd
-	accuracycheck BattleScript_MoveMissedPause
+	accuracycheck BattleScript_FutureAttackMissed
 	damagecalc
 	jumpifmovehadnoeffect BattleScript_DoFutureAttackResult
 	jumpifbyte CMP_NOT_EQUAL, cMULTISTRING_CHOOSER, B_MSG_FUTURE_SIGHT, BattleScript_FutureHitAnimDoomDesire
@@ -3798,6 +3798,11 @@ BattleScript_DoFutureAttackHit::
 	datahpupdate BS_TARGET, MOVE_DAMAGE_HP_UPDATE
 	critmessage
 	waitmessage B_WAIT_TIME_LONG
+	goto BattleScript_DoFutureAttackResult
+@ HnS: hit-time accuracy check (dropped upstream by #9939, seq 470); a miss still has to reach clearspecialstatuses
+BattleScript_FutureAttackMissed:
+	pause B_WAIT_TIME_SHORT
+	effectivenesssound
 BattleScript_DoFutureAttackResult:
 	resultmessage
 	waitmessage B_WAIT_TIME_LONG
