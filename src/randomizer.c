@@ -351,11 +351,7 @@ u32 GenerateSeedForRandomizer(void)
 {
     u32 data;
     const u32 vblankCounter = gMain.vblankCounter1;
-    #if HQ_RANDOM == TRUE
-        data = Random32();
-    #else
-        data = _SFC32_Next(&gRngValue);
-    #endif
+    data = Random32();
     return data ^ vblankCounter;
 }
 
