@@ -13702,6 +13702,9 @@ void BS_TryInstruct(void)
 void BS_ShowAbilityPopup(void)
 {
     NATIVE_ARGS();
+    // HnS: wait for the same battler's item pop-up to leave instead of drawing over it (they share the battler's tiles)
+    if (IsBattlerItemPopUpShown(gBattlerAbility) && !gBattleScripting.fixedPopup)
+        return;
     CreateAbilityPopUp(gBattlerAbility, gBattleMons[gBattlerAbility].ability, (IsDoubleBattle()) != 0);
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
@@ -14358,15 +14361,22 @@ void BS_TryGiveDroppedItems(void)
 void BS_ShowItemPopup(void)
 {
     NATIVE_ARGS(u8 battler);
-    CreateItemPopUp(GetBattlerForBattleScript(cmd->battler));
+    enum BattlerId battler = GetBattlerForBattleScript(cmd->battler);
+
+    // HnS: wait for the same battler's previous pop-up (ability or item) to leave instead of drawing over it
+    if (IsBattlerPopUpShown(battler) && !gBattleScripting.fixedPopup)
+        return;
+    CreateItemPopUp(battler);
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
 void BS_DestroyItemPopup(void)
 {
     NATIVE_ARGS();
-    for (enum BattlerId battler = 0; battler < gBattlersCount; battler++)
-        DestroyAbilityPopUp(battler);
+    // HnS: item pop-ups leave on the same timer as ability pop-ups (SpriteCb_AbilityPopUp: slide in, 48 frames, slide
+    // out). Closing every pop-up here, right after the helper's `pause`, left the item name readable for 1 frame with
+    // "skip battle delays" (33 without) and also cut off other battlers' pop-ups. Upstream #10268 (seq 394) instead
+    // makes this command wait until no pop-up is left.
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 

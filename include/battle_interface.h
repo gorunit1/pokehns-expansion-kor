@@ -135,6 +135,8 @@ void SwapBallToDisplay(bool32 sameBall);
 void ArrowsChangeColorLastBallCycle(bool32 showArrows);
 void UpdateAbilityPopup(enum BattlerId battlerId);
 void CreateItemPopUp(enum BattlerId battlerId);
+bool32 IsBattlerPopUpShown(enum BattlerId battlerId);
+bool32 IsBattlerItemPopUpShown(enum BattlerId battlerId);
 void CategoryIcons_LoadSpritesGfx(void);
 u16 GetBattleMoveDescriptionButton(void);
 void TryToAddMoveInfoWindow(void);

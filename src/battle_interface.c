@@ -2692,6 +2692,7 @@ static void SafariTextIntoHealthboxObject(void *dest, u8 *windowTileData, u32 wi
 #define sIsPlayerSide   data[3]
 #define sBattlerId      data[4]
 #define sIsMain         data[5]
+#define sIsItemPopUp    data[6]
 
 enum
 {
@@ -2900,6 +2901,39 @@ static inline bool32 IsAnyAbilityPopUpActive(void)
     return activeAbilityPopUps;
 }
 
+// HnS: the battler's newest pop-up is really on screen. Checked on the sprite because a party or bag screen
+// resets the sprites without clearing activeAbilityPopUps.
+static bool32 IsBattlerPopUpSpriteLive(enum BattlerId battler)
+{
+    struct Sprite *sprite = &gSprites[gBattleStruct->abilityPopUpSpriteIds[battler][0]];
+
+    return gBattleStruct->battlerState[battler].activeAbilityPopUps
+        && sprite->inUse
+        && sprite->callback == SpriteCb_AbilityPopUp
+        && sprite->sIsMain
+        && sprite->sBattlerId == battler;
+}
+
+// HnS: drop marks left by such a reset so that the next pop-up loads its palette and gfx-free task again.
+static void ClearStaleAbilityPopUpMarks(void)
+{
+    for (enum BattlerId battler = 0; battler < gBattlersCount; battler++)
+    {
+        if (!IsBattlerPopUpSpriteLive(battler))
+            gBattleStruct->battlerState[battler].activeAbilityPopUps = FALSE;
+    }
+}
+
+bool32 IsBattlerPopUpShown(enum BattlerId battler)
+{
+    return IsBattlerPopUpSpriteLive(battler);
+}
+
+bool32 IsBattlerItemPopUpShown(enum BattlerId battler)
+{
+    return IsBattlerPopUpSpriteLive(battler) && gSprites[gBattleStruct->abilityPopUpSpriteIds[battler][0]].sIsItemPopUp;
+}
+
 void CreateAbilityPopUp(enum BattlerId battler, enum Ability ability, bool32 isDoubleBattle)
 {
     u8 *spriteIds;
@@ -2918,6 +2952,7 @@ void CreateAbilityPopUp(enum BattlerId battler, enum Ability ability, bool32 isD
             return;
     }
 
+    ClearStaleAbilityPopUpMarks();
     if (!IsAnyAbilityPopUpActive())
         { struct SpritePalette pal = GetAbilityPopUpSpritePal(); LoadSpritePalette(&pal); }
 
@@ -2983,6 +3018,7 @@ void CreateItemPopUp(enum BattlerId battler)
     if (gTestRunnerHeadless)
         return;
 
+    ClearStaleAbilityPopUpMarks();
     if (!IsAnyAbilityPopUpActive())
     {
         struct SpritePalette pal = GetAbilityPopUpSpritePal();
@@ -3023,6 +3059,8 @@ void CreateItemPopUp(enum BattlerId battler)
     gSprites[spriteIds[0]].sIsMain = TRUE;
     gSprites[spriteIds[0]].sBattlerId = battler;
     gSprites[spriteIds[1]].sBattlerId = battler;
+    gSprites[spriteIds[0]].sIsItemPopUp = TRUE;
+    gSprites[spriteIds[1]].sIsItemPopUp = TRUE;
 
     PrintBattlerOnAbilityPopUp(battler, spriteIds[0], spriteIds[1]);
     PrintItemOnItemPopUp(gLastUsedItem, spriteIds[0], spriteIds[1]);
@@ -3086,7 +3124,9 @@ static void SpriteCb_AbilityPopUp(struct Sprite *sprite)
     }
     case APU_STATE_END:
     {
-        if (sIsMain)
+        // HnS: only the battler's newest pop-up clears the mark. An older one of the same battler (two ability
+        // pop-ups can still overlap) must not let Task_FreeAbilityPopUpGfx free the tiles under the newer one.
+        if (sIsMain && gBattleStruct->abilityPopUpSpriteIds[sBattlerId][0] == sprite - gSprites)
             gBattleStruct->battlerState[sBattlerId].activeAbilityPopUps = FALSE;
 
         DestroySprite(sprite);
@@ -3097,7 +3137,9 @@ static void SpriteCb_AbilityPopUp(struct Sprite *sprite)
 
 void DestroyAbilityPopUp(enum BattlerId battler)
 {
-    if (gBattleStruct->battlerState[battler].activeAbilityPopUps)
+    // HnS: an item pop-up is not closed early. Like an ability pop-up it leaves on its own timer (SpriteCb_AbilityPopUp),
+    // so destroyabilitypopup for another battler's ability does not cut it off.
+    if (IsBattlerPopUpSpriteLive(battler) && !gSprites[gBattleStruct->abilityPopUpSpriteIds[battler][0]].sIsItemPopUp)
     {
         gSprites[gBattleStruct->abilityPopUpSpriteIds[battler][0]].sAutoDestroy = TRUE;
         gSprites[gBattleStruct->abilityPopUpSpriteIds[battler][1]].sAutoDestroy = TRUE;
@@ -3124,6 +3166,7 @@ static void Task_FreeAbilityPopUpGfx(u8 taskId)
 #undef sIsPlayerSide
 #undef sBattlerId
 #undef sIsMain
+#undef sIsItemPopUp
 
 // last used ball
 
