@@ -2935,7 +2935,7 @@ void CreateBoxMon(struct BoxPokemon *boxMon, enum Species species, u8 level, u32
     SetBoxMonData(boxMon, MON_DATA_MET_LOCATION, &value);
     SetBoxMonData(boxMon, MON_DATA_MET_LEVEL, &level);
     SetBoxMonData(boxMon, MON_DATA_MET_GAME, &gGameVersion);
-    value = ITEM_POKE_BALL;
+    value = BALL_POKE;
     SetBoxMonData(boxMon, MON_DATA_POKEBALL, &value);
     SetBoxMonData(boxMon, MON_DATA_OT_GENDER, &gSaveBlock2Ptr->playerGender);
 
@@ -7262,7 +7262,7 @@ s32 CalculateFriendshipBonuses(struct Pokemon *mon, s32 modifier, enum HoldEffec
     if (modifier == 0)
         return bonus;
 
-    if (GetMonData(mon, MON_DATA_POKEBALL) == ITEM_LUXURY_BALL)
+    if (GetMonData(mon, MON_DATA_POKEBALL) == BALL_LUXURY)
         bonus += ITEM_FRIENDSHIP_LUXURY_BONUS;
 
     if (GetMonData(mon, MON_DATA_MET_LOCATION) == GetCurrentRegionMapSectionId())
