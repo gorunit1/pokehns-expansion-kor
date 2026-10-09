@@ -788,6 +788,7 @@ static bool32 ShouldSwitchIfBadlyStatused(struct SwitchAiContext *switchContext)
         {
             //Toxic
             if (((gBattleMons[switchContext->battler].status1 & STATUS1_TOXIC_COUNTER) >= STATUS1_TOXIC_TURN(2))
+                && monAbility != ABILITY_POISON_HEAL // HnS: since #10169 the counter also rises under Poison Heal, which takes no poison damage (upstream 1.17.0 switches it out)
                 && gBattleMons[switchContext->battler].hp >= (gBattleMons[switchContext->battler].maxHP / 3)
                 && gAiLogicData->mostSuitableMonId[switchContext->battler] != PARTY_SIZE
                 && (switchContext->hasStatRaised ? RandomPercentage(RNG_AI_SWITCH_BADLY_POISONED, GetSwitchChance(SHOULD_SWITCH_BADLY_POISONED_STATS_RAISED)) : RandomPercentage(RNG_AI_SWITCH_BADLY_POISONED, GetSwitchChance(SHOULD_SWITCH_BADLY_POISONED))))
