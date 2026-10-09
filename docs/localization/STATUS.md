@@ -3,7 +3,7 @@
 ## 2026-10-09 밤 — full-sync 묶음 11(seq 217~226) + upstream #10837 완료·push (현재, 데스크탑 — 랩탑에서 Remote Control)
 
 - **다음 할 일**
-  1. **친구 문자(사용자가 보낼 차례):** 아래 세 묶음 문안 — (a) 묶음 10 + 요청 2건 결과 `/home/hjm0725/hns-sync-work/chunk-204-216/discord-pending.md`, (b) 실기 검사 5건 결과 `/home/hjm0725/hns-sync-work/hnsfix-1009b/main/discord-pending.md`, (c) 묶음 11 `/home/hjm0725/hns-sync-work/chunk-217-226/main/discord-pending.md`. 보냈는지 먼저 물어본다.
+  1. **친구 문자(사용자가 보낼 차례):** 아래 세 묶음 문안 — (a) 묶음 10 + 요청 2건 결과 `/home/hjm0725/hns-sync-work/chunk-204-216/discord-pending.md`, (b) 실기 검사 5건 결과 `/home/hjm0725/hns-sync-work/hnsfix-1009b/main/discord-pending.md`. (c) 묶음 11(`chunk-217-226/main/discord-pending.md`)은 **보냄**(2026-10-09 밤). (a)·(b)는 보냈는지 먼저 물어본다. **진행 중:** 친구 새 요청 — 목호·실버 멀티 시작 연출에서 손이 먼저 보임(`437e1bd9d6`은 다른 경로를 고침), 조사 `/home/hjm0725/hns-sync-work/hnsfix-1009c/TASK.md`.
   2. **친구 답 대기:** 재확인 35(미러 챌린지 패배), 37(선파워 팝업 도착 대기 patch), 38(GS볼 볼 바꾸기). 답이 오면 반영부터.
   3. **full-sync 다음 seq 227 #10141**(More Gen VII animation data, M, unit `U-gen7anim-sprites`), 228 #10161(L, Future Sight attacker in party — HnS `8552b5e9a8`과 겹침), 229 #10169(M, 맹독 카운터 포이즌힐), 230 #9642(M, 테스트 인벤토리), 231 #10186(M, 총대장·성묘 기절 수 — `MoveEndFaintBlock` 문맥, 재확인 메모), 232 #10194(S, 디버그) … 방식은 묶음 7~11과 같다(지시서 틀: `chunk-217-226/ANALYZE.md`·`APPLY.md`·`REVIEW.md`, `main/main-verify.sh`). 테스트 기준 `test-baseline-seq226.txt`.
 - **이번 묶음:** 결과 [`full-sync-seq-217-226.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-217-226.md), 회신 `HANDBACK_2026-10-07.md` 17절
