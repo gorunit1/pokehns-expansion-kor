@@ -7116,7 +7116,8 @@ void ItemUseCB_PokeBall(u8 taskId, TaskFunc task)
     else
     {
         GetMonNickname(mon, gStringVar1);
-        CopyItemName(newBall, gStringVar2);
+        // HnS: newBall is a ball id (BALL_GS = 28 = ITEM_POTION); name and bag use the item actually used
+        CopyItemName(gSpecialVar_ItemId, gStringVar2);
         PlaySE(SE_SELECT);
         gPartyMenuUseExitCallback = TRUE;
         SetMonData(mon, MON_DATA_POKEBALL, &newBall);
@@ -7124,7 +7125,7 @@ void ItemUseCB_PokeBall(u8 taskId, TaskFunc task)
         DisplayPartyMenuMessage(gStringVar4, TRUE);
         ScheduleBgCopyTilemapToVram(2);
         gTasks[taskId].func = task;
-        RemoveBagItem(newBall, 1);
+        RemoveBagItem(gSpecialVar_ItemId, 1);
     }
 }
 
