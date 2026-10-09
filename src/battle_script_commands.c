@@ -12540,15 +12540,7 @@ void BS_ClearMoveResultFlags(void)
 void BS_ClearSpecialStatuses(void)
 {
     NATIVE_ARGS();
-    // HnS: only Future Sight/Doom Desire use this, at end of turn. Since #9717 an end-of-turn Emergency Exit/Wimp Out
-    // mon waits in its ball with a queued switch until ENDTURN_SEND_OUT_REPLACEMENTS_N; keep it so a second Future Sight
-    // of the same end turn does not leave that mon in its ball for good (upstream 1.17.0/master clear it).
-    enum QueuedSwitch queuedSwitch[MAX_BATTLERS_COUNT];
-    for (enum BattlerId battler = 0; battler < MAX_BATTLERS_COUNT; battler++)
-        queuedSwitch[battler] = gSpecialStatuses[battler].queuedSwitch;
     memset(&gSpecialStatuses, 0, sizeof(gSpecialStatuses));
-    for (enum BattlerId battler = 0; battler < MAX_BATTLERS_COUNT; battler++)
-        gSpecialStatuses[battler].queuedSwitch = queuedSwitch[battler];
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
