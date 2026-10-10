@@ -132,6 +132,12 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 - [larryturbo](https://www.deviantart.com/larryturbo)
 - [kidkatt](https://www.deviantart.com/kidkatt)
 
+### HnS Trainer Front Sprite Credits (64x64 HGSS/DS-style):
+- "The DS-Style 64x64 Trainer Sprite Resource" ([PokéCommunity 308798](https://www.pokecommunity.com/threads/the-ds-style-64x64-trainer-sprite-resource.308798/)): MrDollSteak, Rizon/Falsever, Sky High, *Luxio//Hacks*, tdit and contributors (HGSS Ace Trainer pics: MrDollSteak, Rizon/Falsever)
+- Trainer front sprites ported via [Pokémon SoulGold](https://github.com/Eemeliri/soulgold) (Eemeliri)
+- [Team Aqua's Asset Repo](https://github.com/TeamAquasHideout/Team-Aquas-Asset-Repo): Pawkkie (HGSS resizes: Picnicker, Twins), spilledpizza, TheWiggliestJiggliest, RichardPT, robloxmaster376 (Young Couple), Rubire4 (Psychic)
+- Teacher and Medium (`graphics/trainers/front_pics/teacher_hns.png`, `medium_hns.png`): drawn for HnS based on HGSS
+
 ## Resources
 - [Sugimori Palettes and Sprites](https://www.pokecommunity.com/showthread.php?t=336945)
 - [DS Style Gen VI Sprites](https://www.pokecommunity.com/showthread.php?t=314422)
