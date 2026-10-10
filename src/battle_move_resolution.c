@@ -3169,10 +3169,13 @@ static enum MoveEndResult MoveEndMultihitMove(void)
                 SetStatChange(gBattlerAttacker, STAT_DEF, -1);
                 SetStatChange(gBattlerAttacker, STAT_SPEED, 1);
                 BattleScriptCall(BattleScript_ScaleShot);
+                result = MOVEEND_RESULT_RUN_SCRIPT;
             }
-            else
+            else if (target != TARGET_SMART) // Dragon Darts doesn't print hit x times message
+            {
                 BattleScriptCall(BattleScript_MultiHitPrintStrings);
-            result = MOVEEND_RESULT_RUN_SCRIPT;
+                result = MOVEEND_RESULT_RUN_SCRIPT;
+            }
         }
         else
         {
@@ -3200,7 +3203,7 @@ static enum MoveEndResult MoveEndMultihitMove(void)
                 gBattlescriptCurrInstr = BattleScript_FlushMessageBox;
                 return MOVEEND_RESULT_BREAK;
             }
-            else
+            else if (target != TARGET_SMART) // Dragon Darts doesn't print hit x times message
             {
                 BattleScriptCall(BattleScript_MultiHitPrintStrings);
                 result = MOVEEND_RESULT_RUN_SCRIPT;

@@ -2000,6 +2000,7 @@ static void Cmd_resultmessage(void)
 
     enum StringID stringId = 0;
     u32 *moveResultFlags = &gBattleStruct->moveResultFlags[gBattlerTarget];
+    enum MoveTarget target = GetBattlerMoveTargetType(gBattlerAttacker, gCurrentMove);
 
     if (gBattleControllerExecFlags)
         return;
@@ -2036,7 +2037,7 @@ static void Cmd_resultmessage(void)
                 else
                     stringId = STRINGID_EXTREMELYEFFECTIVEONDEF;
             }
-            else if (!gMultiHitCounter)
+            else if (!gMultiHitCounter || target == TARGET_SMART) // HnS: Champions 4x branch, same Dragon Darts rule as upstream #10315
             {
                 stringId = STRINGID_EXTREMELYEFFECTIVE;
             }
@@ -2057,7 +2058,7 @@ static void Cmd_resultmessage(void)
                 else
                     stringId = STRINGID_SUPEREFFECTIVEONDEF;
             }
-            else if (!gMultiHitCounter)  // Don't print effectiveness on each hit in a multi hit attack
+            else if (!gMultiHitCounter || target == TARGET_SMART)  // Don't print effectiveness on each hit in a multi hit attack
             {
                 stringId = STRINGID_SUPEREFFECTIVE;
             }
@@ -2076,7 +2077,7 @@ static void Cmd_resultmessage(void)
                 else
                     stringId = STRINGID_MOSTLYINEFFECTIVEONDEF;
             }
-            else if (!gMultiHitCounter)
+            else if (!gMultiHitCounter || target == TARGET_SMART) // HnS: Champions 1/4x branch, same Dragon Darts rule as upstream #10315
             {
                 stringId = STRINGID_MOSTLYINEFFECTIVE;
             }
@@ -2091,7 +2092,7 @@ static void Cmd_resultmessage(void)
                 else
                     stringId = STRINGID_NOTVERYEFFECTIVEONDEF;
             }
-            else if (!gMultiHitCounter)
+            else if (!gMultiHitCounter || target == TARGET_SMART)
             {
                 stringId = STRINGID_NOTVERYEFFECTIVE;
             }
