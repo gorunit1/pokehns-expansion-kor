@@ -637,7 +637,7 @@ DOUBLE_BATTLE_TEST("Commander will not activate if Dondozo fainted right before 
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, opponentRight);
         HP_BAR(playerRight);
-        MESSAGE("Dondozo fainted!");
+        MESSAGE("어써러셔는 쓰러졌다!"); // HnS: Korean STRINGID_BATTLERFAINTED (upstream "Dondozo fainted!")
         ANIMATION(ANIM_TYPE_MOVE, MOVE_SHED_TAIL, playerLeft);
         NOT ABILITY_POPUP(playerLeft, ABILITY_COMMANDER);
     }
