@@ -37,6 +37,9 @@
 | 8g | 탈출버튼·탈출팩의 프리폴 조건 | seq 196 #9988 | `TryEjectButton`·`TryEjectPack`·`TrySwitchInEjectPack`에 `IsBattlerInvolvedInSkyDrop()`(#10180 제외 hunk 포함). `full-sync-seq-063-082.md`의 "#9784 이식 때" 메모는 #9988 때로 정정 | → seq 196 `11988b1d6a`(2026-10-08): 세 곳 모두 1.17.0 형태 `IsBattlerInvolvedInSkyDrop()`. #10180의 `CanMoveSkipAccuracyCalc`(노가드 × 프리폴) hunk는 동작이 반대로 바뀌는 별도 변화라 계속 제외 → 재확인 34 |
 | 8h | 미래예지 피격과 레드카드·탈출버튼: HnS 미래예지 스크립트는 `MOVEEND_CARD_BUTTON`에 닿지 않아 #10344의 `EFFECT_FUTURE_SIGHT` 조건을 뺐다(seq 166 뒤에도 같음, 한글 K9-01·02) | seq 228 #10161(미래예지 `moveendall`) | 그 조건을 `TryRedCard`·`TryEjectButton`에 넣는다(1.17.0 형태). 8e와 같은 때 || **해결** 2026-10-10 seq 228 #10161 `18a69b4d96`에 #10344 남은 2줄 포함(한글 K9-01·02 PASS) |
 | 8u | **테스트 가방 초기화(#9642, `89537a1ec3`)**: `ResetTestInventory`가 trial 사이에서만 불려 PARAMETRIZE 다음 파라미터에 앞 파라미터의 쓰지 않은 `USE_ITEM` 도구가 남는다(upstream 1.17.0과 같음, 지금 결과 영향 0 — 묶음 12 리뷰 R2) | seq 513 #10537 | 그때 해소 확인 | |
+| 8v | **240 #10226 `jumpifsubstituteblocks`**: 1.17.0 최종형에는 없다(seq 488 #10595가 대타 판정을 move resolution으로 옮기며 지움, 묶음 13 리뷰 R1) | seq 488 #10595 | 그때 이 줄이 정리되는지 확인 | |
+| 8w | **244 #10263 뒤 AI 파트너 경혈찌르기**가 플레이어 포켓몬을 고를 수 있고 그 포켓몬이 같은 턴 먼저 쓰러지면 실패(upstream 중간 상태, HnS 파트너 데이터에 경혈찌르기 없음, 리뷰 R2) | seq 332 #10645 | 그때 해소 확인 | |
+| 8x | **250 #10281 FRLG 마니아 OW 규칙**: HnS는 #9537 이식(`70eb6a4271`)으로 같은 규칙이 있다 | seq 500 #9881 INCGFX | 그때 이 규칙을 1.17.0 형태(인자 포함)로 | |
 | 8i | **seq 170 #9751 뒤 테스트 빌드:** `AreMultiPartiesFullTeams`가 AI 테스트 말고는 항상 `TRUE`라 반 팀 판정에 기대는 HnS 수정 둘 — 배틀타워 상대 141 분리(`b43032bf03`, 스크래치 `zz_f141.c` 18/18 → 9/18)와 목호 포켓몬 도구 사용(`624ef7d4bd`, 스크래치 `zz_fix_r2.c` 14/14 → 7/14) — 을 테스트 러너로 잴 수 없다(게임 코드는 같음). 반환값이 바뀐 저장소 두 트레이너 테스트 64개(17파일)는 결과가 같았다 | seq 209 #10039(`IsAITest` 조건 제거, `multi_battle_whiteout.c`) | 64개 결과 다시 비교(`chunk-166-170/tmp-170/probe/zzmdiff-files.txt`). 두 HnS 수정은 사본에서 `#if TESTING` → `#if 0`, `#if !TESTING` → `#if 1`로 바꿔 `chunk-1385/f141/zz_f141.c`·`chunk-1385/fix/zz_fix_r2.c`(seq 348 #10711 손 병합 때도) | seq 209 뒤(2026-10-09 리뷰 R2): 테스트 빌드로는 여전히 `zz_f141` 9/18·`zz_fix_r2` 7/14(측정 불가), 사본에서 게임 분기로 바꾸면 18/18·14/14(두 HnS 수정 동작). 64개 결과 같음. seq 348 때 다시 |
 | 8j | 편승 문장 주체: 사용자 자신을 대상으로 하는 기술(껍질깨기·칼춤)을 편승이 따라 하면 편승 팝업 뒤 문장이 원래 사용자 이름으로 나온다(`BattleScript_OpportunistCopyStatChange`가 `B_DEF` 사용, 이식 전부터) | seq 181 #9730(`trybattlerstatchange`) | 그 뒤에도 남으면 HnS 수정 여부 결정(12번과 같은 때) |  **해결** seq 181 #9730: 실제로 바뀌는 배틀러 이름(한글 K2-56, 번견 +6 K2-65도) |
 | 8k | **친구 답 Q3~Q5(2026-10-05): 먹다남은음식·조개껍질방울·자뭉열매·오랭열매는 팝업만, 별도 HP 회복 문장 없음.** 지금은 팝업 + 회복 문장(`STRINGID_PKMNSITEMRESTOREDHPALITTLE`·`STRINGID_PKMNSITEMRESTOREDHEALTH`) | seq 475 #9777(아이템 회복 문장 삭제·회복 연출) | #9777의 회복 문장 삭제 hunk를 upstream대로 받는다(HnS가 2026-09-20 별도 이식 때 남긴 회복 문장도 이때 정리). HnS 팝업 줄(`e5a5630635` 등)과 3-way 병합 | |
@@ -67,6 +70,7 @@
 | 13 | D6a 방벽 해제 진영 이름(실기 확인 뒤 결정), D6c 사령탑 두 번째 이름(별도 과제) | `HANDBACK_2026-09-30.md` 9절, `FRIEND_REPLY_2026-10-01.md` | |
 
 9·10은 친구 로컬 번역 커밋과 겹칠 수 있어 이식 중에는 고치지 않았다. 통합 때 친구 쪽과 맞춰 처리한다.
+| 47 | **불사르기 문장 조사**: `STRINGID_INCINERATEBURN` 출력이 `상대 마자용의\n고스트주얼은 녹여 버렸다!` — 타동사 앞 조사가 `은/는`(이식 전부터, 묶음 13 리뷰 R2). 251 #10278 뒤에는 효과가 막힌 쥬얼에도 나온다 | `src/battle_message.c` `STRINGID_INCINERATEBURN` | |
 
 ## 4. 빌드·기타
 
@@ -105,3 +109,4 @@
 | 44 | **포이즌힐 AI 맹독 교체 가드**(사용자 결정 2026-10-10, `d87055c301`): #10169 뒤 포이즌힐 포켓몬도 맹독 카운터가 올라 AI `ShouldSwitchIfBadlyStatused`가 교체 후보로 봄(1.17.0) → `monAbility != ABILITY_POISON_HEAL`(이식 전 AI) | `src/battle_ai_switch.c` | 같은 함수를 고치는 upstream PR이 오면 정리 | |
 | 45 | **미래예지 착탄 명중 판정 HnS 분기**(`e25578410d`, 묶음 12 리뷰 R1): HnS에만 남은 `accuracycheck`의 빗나감 목적지를 `BattleScript_FutureAttackMissed`(끝 스크립트로 합류)로 | `data/battle_scripts_1.s` `BattleScript_MonTookFutureAttack` | seq 470 #9939가 `accuracycheck`를 없앨 때 이 분기째 정리(재확인 2 해결분) | |
 | 46 | **#10186 HnS AI 예측 1줄**(`eb23e9a308`): `battle_ai_switch.c` 총대장 가상 등장 계산을 트레이너별 기절 수(`GetBattlerPartyState`/`faintCounter`)로 | `src/battle_ai_switch.c` | seq 383 #10145 이식 때 같은 줄 손 병합 | |
+| 48 | **upstream #10424(seq 286) 앞당김**(`d8f5827101`, 묶음 13): AI `GetTrapDamage` 조임밴드 판정을 `wrappedBindingBand`로(#10289와 같은 unit) | `src/battle_ai_util.c` | seq 286에서 "이미 적용"으로 건너뜀 | |

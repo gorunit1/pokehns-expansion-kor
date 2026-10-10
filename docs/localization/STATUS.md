@@ -1,13 +1,20 @@
 # 현재 인수인계 상태
 
-## 2026-10-10 — full-sync 묶음 13(seq 240~251) 사전 분석 중 (현재, 데스크탑 — 랩탑에서 Remote Control)
+## 2026-10-10 밤 — 친구 요청 2건(그림 25종·기술 설명 창 팔레트) + full-sync 묶음 13(seq 240~251) 완료·push, 이름 번역 조사 끝 (현재, 데스크탑 — 랩탑에서 Remote Control)
 
-- **진행 중: 묶음 13 사전 분석**(사용자 "ㄱㄱ", 친구 답 대기 중 혼자 진행) — 240 #10226·243 #10185(영역 A, 240은 한글 Y), 241 #10231·248 #10289·249 #10288(영역 B, #10424 앞당김 판단), 244 #10263·246 #10262·251 #10278(영역 C), 242 #10219·245 #10272·250 #10281·247 #10287 확인(영역 D). 247 #10287·252 #10175는 이미 적용. 지시 `/home/hjm0725/hns-sync-work/chunk-240-251/ANALYZE.md`, 기준 사본 `chunk-240-251/base`(HEAD `042d81c802`, 코드 = `6155f43690`, ROM 32,761,764 B, SHA1 `b45491da…`), 세이브 이식 전 사실 `chunk-240-251/main/save/pre-240`. 산출물 `chunk-240-251/seq<SEQ>-<PR>.{md,patch}`. 다음: 결정 사항을 사용자에게(혼자 정함/친구 질문 구분 — 새 한글 문장이 필요하면 친구 질문) → APPLY.md·적용 1개 → 리뷰 2개 → 메인 검증(테스트 기준 `test-baseline-seq239.txt`, 문서는 검증 뒤에 고친다) → 문서 → push. 끊기면 영역별 산출물이 있는지 보고 없는 영역만 다시 띄운다.
-- **친구 요청 3건(2026-10-10 사용자 전달):**
-  1. ~~SoulGold 트레이너 앞모습 25종~~ **끝·push `8048e62e51`**, 2. ~~기술 설명 창 팔레트~~ **끝·push `7fff683741`** — 결과 [`hnsfix-2026-10-10b.md`](../friend-handoff/results/1.17.0-port/hnsfix-2026-10-10b.md), HANDBACK 21절. 최종 SHA1 `360b50ad…`, ROM 32,762,820 B, 새 경고 0, 전체 테스트 목록 = `test-baseline-seq239.txt`(사본). **친구 문자(사용자가 보낼 차례):** `/home/hjm0725/hns-sync-work/hnsfix-1010b/discord-pending.md`(+ 그림 2장).
-  3. 트레이너 클래스명·트레이너·NPC 이름 HGSS 공식 명칭 — 1단계 조사 중(`/home/hjm0725/hns-sync-work/names-1010/TASK.md`, 산출물 `NAMES-PLAN.md`) → 계획을 사용자에게. 현재 클래스명(`gTrainerClasses`)·HnS 트레이너 이름 651개(`trainers_hns.party`) 모두 영문.
-- **묶음 13 적용은 위 1·2 뒤(지금 가능).** 영역 A·C·D 분석 끝, B 진행 중(2026-10-10 API 한도로 한 번 끊겼다가 이어서).
-- 친구 답 대기는 아래 절 그대로(실버 멀티 실기, 재확인 35·37·42, 가드 43·44).
+- **다음 할 일**
+  1. **친구 문자(사용자가 보낼 차례, 3개):** (a) 그림 25종 + 팔레트 `/home/hjm0725/hns-sync-work/hnsfix-1010b/discord-pending.md`(+ 그림 `hnsfix-1010c/img/trainer-pics-before-after.png`, `hnsfix-1010b/img/moveinfo-pal-before-after.png`), (b) 이름 번역 조사·질문 10개 `/home/hjm0725/hns-sync-work/names-1010/discord-pending.md`, (c) 묶음 13 결과 `/home/hjm0725/hns-sync-work/chunk-240-251/main/discord-pending.md`. 보냈는지 먼저 물어본다.
+  2. **친구 답 대기:** 이름 번역 질문 10개(띄어쓰기·관장 표기·로켓단·라이벌·클래스가 다른 트레이너·새 인물 98명·프런티어 팬번역·수호·NPC 시점), 프런티어용 `youngster.png` 교체 여부, 불사르기 문장 조사(재확인 47), 실버 멀티 실기, 재확인 35·37·42, 가드 43·44. 답이 오면 반영부터.
+  3. **이름 번역 2단계(친구 답 뒤):** 계획 `/home/hjm0725/hns-sync-work/names-1010/NAMES-PLAN.md` 7절 — ① 클래스명 버퍼 `u8 name[13]` → 최소 18 + HnS 56·에메랄드 39 클래스, ② 출처 있는 491명(`.party` Name 줄만, 표 `trainers_hns.tsv`), ③ 결정분 41명·클래스가 다른 곳, ④ 프런티어·텐트·견습생·브레인(pokeemerald-kr, 7바이트 제한), ⑤ NPC 이름은 맵 대사 번역과 함께(맵 대사 약 2만 줄이 영문). 단계마다 별도 커밋.
+  4. **full-sync 다음 seq 253 #10306**(Eerie Spell PP reduction for Max Moves, M, **한글 Y**), 254 #10307(M, 멘탈허브), 255 #10295(M, 사령탑 — #10231·#10288 의존, 들어감), 256 #10309(S), 257 #10315(M, 한글 Y, 드래펄트), 259 #10322(S), 260 #10332(S), 261 #10325(M, 한글 Y), 262 #10354(L, 한글 Y) … 252 #10175·258 #10285는 이미 적용, 286 #10424 앞당겨 적용. 방식은 묶음 7~13과 같다(지시서 틀 `chunk-240-251/ANALYZE.md`·`APPLY.md`·`REVIEW.md`, `main/main-verify.sh` — 문서는 메인 검증 뒤에 고친다). 테스트 기준 **`test-baseline-seq251.txt`**.
+- **친구 요청 2건:** 결과 [`hnsfix-2026-10-10b.md`](../friend-handoff/results/1.17.0-port/hnsfix-2026-10-10b.md), HANDBACK 21절 — `8048e62e51` SoulGold 트레이너 앞모습 25종(PNG 25 + `.pal` 5), `7fff683741` 볼 창 전용 팔레트 태그(기술 설명 창이 볼 창 화살표 색에 물들던 HnS 고유 결함, `2f50444528`에서 생김). SHA1 `360b50ad…`.
+- **묶음 13:** 결과 [`full-sync-seq-240-251.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-240-251.md), 회신 HANDBACK 22절
+  - 커밋: `1e17ecd60e` #10226, `ec35733cc2` #10231, `69daed80cc` #10219, `5e66c100f4` #10185, `dbfb910aa0` #10263, `fad5a4cc52` #10272, `4aed6b8978` #10262, `66b3d97df9` #10289, `d8f5827101` #10424(seq 286 앞당김), `56bed89ebc` #10288, `51f6f5f85d` #10278. 247 #10287·250 #10281은 이미 같음
+  - 결정(2026-10-10, 사용자 "혼자 가능하면 ㄱㄱ" — 모두 혼자 정할 수 있는 범위): upstream 버그 수정 수용(240 AI, 244 경혈찌르기, 249 따라가때리기 쪽 위기회피), #10424 앞당김
+  - 검증(최종 `51f6f5f85d`): ROM 32,763,268 B(+448), EWRAM 250,408 B, IWRAM 25,516 B, SHA1 `e90a4680…`, 새 경고 0. 전체 테스트 PASS 2,621 / TOTAL 5,536(사라진 PASS 0, 새 줄 23 = 예측, 249 영문 FAIL 옛 테스트 1줄 삭제) → **기준 [`test-baseline-seq251.txt`](../friend-handoff/results/1.17.0-port/test-baseline-seq251.txt)**. 한글 607개 기대와 같음(517/607). 세이브 정적 PASS(WARN 0, INFO 1 휘발 비트 위치)·왕복 PASS. 리뷰 2개 수정 필요 0
+  - 재확인: 새 8v·8w·8x·47·48
+  - 2026-10-10 API 주간 한도로 분석 A·B·C·팔레트·이름 조사 에이전트가 한 번 끊겼다가 리셋 뒤 이어서 — 끊긴 동안 끝난 결과는 완료 표시 확인 뒤 사용, 저장소 적용·검증은 모두 다시 실행해 영향 없음
+  - 스크래치: `/home/hjm0725/hns-sync-work/chunk-240-251/`(분석·APPLY·REVIEW·apply·main·review-R1/R2), `hnsfix-1010b/`(팔레트), `hnsfix-1010c/`(그림, 원본 `src-soulgold/`), `names-1010/`(이름 조사)
 
 ## 2026-10-10 — 친구 요청(실버 멀티 머그샷) + full-sync 묶음 12(seq 227~239) 완료·push (현재, 데스크탑 — 랩탑에서 Remote Control)
 
