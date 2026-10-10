@@ -3681,6 +3681,7 @@ static bool32 TryEjectButton(enum BattlerId battlerAtk, u32 ejectButtonBattler)
      || GetMoveEffect(gCurrentMove) == EFFECT_FUTURE_SIGHT
      || HasAnyBattlerQueuedSwitch()
      || IsBattlerInvolvedInSkyDrop(ejectButtonBattler)
+     || IsPursuitTargetSet()
      || !CanBattlerSwitch(ejectButtonBattler))
         return FALSE;
 
@@ -3995,6 +3996,7 @@ static inline bool32 TryEjectPack(enum BattlerId battlerAtk, enum BattlerId ejec
 {
     if (!gBattleMons[ejectPackBattler].volatiles.tryEjectPack
      || HasAnyBattlerQueuedSwitch()
+     || IsPursuitTargetSet()
      || IsBattlerInvolvedInSkyDrop(ejectPackBattler)
      || !CanBattlerSwitch(ejectPackBattler)
      || (GetMoveEffect(gCurrentMove) == EFFECT_PARTING_SHOT && CanBattlerSwitch(battlerAtk)))
