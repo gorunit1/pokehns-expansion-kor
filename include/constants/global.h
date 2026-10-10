@@ -190,6 +190,7 @@ enum ContestCategories
 #define TYPE_NAME_LENGTH 8
 #define ABILITY_NAME_LENGTH 16
 #define TRAINER_NAME_LENGTH 10
+#define TRAINER_CLASS_NAME_LENGTH 18 // HnS: Korean trainer class names (longest 17 bytes, 불난집 전문털이범)
 #define CODE_NAME_LENGTH 11
 
 #define MAX_STAMP_CARD_STAMPS 7
