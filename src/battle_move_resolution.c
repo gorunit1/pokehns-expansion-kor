@@ -3984,7 +3984,7 @@ static enum MoveEndResult MoveEndThirdMoveBlock(void)
             MarkBattlerForControllerExec(gBattlerAttacker);
             ClearBattlerItemEffectHistory(gBattlerAttacker);
 
-            if (!TrySymbiosis(gBattlerAttacker, item, TRUE))
+            if (!TrySymbiosis(gBattlerAttacker, item, NULL))
                 result = MOVEEND_RESULT_RUN_SCRIPT;
         }
         break;
