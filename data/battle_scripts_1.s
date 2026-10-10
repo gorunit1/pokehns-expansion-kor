@@ -976,8 +976,11 @@ BattleScript_ButItFailedRet::
     return
 
 BattleScript_MoveEffectSmackDown::
+	savetarget
+	copybyte gBattlerTarget, gEffectBattler
 	printstring STRINGID_FELLSTRAIGHTDOWN
 	waitmessage B_WAIT_TIME_LONG
+	restoretarget
 	return
 
 BattleScript_EffectHitEnemyHealAlly::
