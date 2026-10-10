@@ -144,6 +144,8 @@ struct Trainer
     u8 poolPickIndex;
     u8 poolPruneIndex;
     u16 overrideTrainer;
+    u8 behaviorClass; // HnS: class for money, ball, randomizer seed, music and other behavior (0 = trainerClass).
+                      //      Set when trainerClass is restored to the HGSS class, so the old HnS behavior stays.
 };
 
 struct TrainerClass
@@ -297,6 +299,18 @@ static inline const enum TrainerClassID GetTrainerClassFromId(u16 trainerId)
     const struct Trainer *trainer = GetTrainerStructFromId(trainerId);
 
     return trainer->trainerClass;
+}
+
+// HnS: trainerClass is the displayed (HGSS) class. Anything that changes how the battle plays or sounds
+//      (money, ball, randomizer seed, music, transition, background, ...) reads the behavior class instead.
+static inline enum TrainerClassID GetTrainerBehaviorClass(const struct Trainer *trainer)
+{
+    return trainer->behaviorClass ? trainer->behaviorClass : trainer->trainerClass;
+}
+
+static inline enum TrainerClassID GetTrainerBehaviorClassFromId(u16 trainerId)
+{
+    return GetTrainerBehaviorClass(GetTrainerStructFromId(trainerId));
 }
 
 static inline const u8 *GetTrainerClassNameFromId(u16 trainerId)

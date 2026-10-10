@@ -118,6 +118,10 @@ struct Trainer
     struct String class;
     int class_line;
 
+    // HnS: class used for behavior (money, ball, ...) when Class is the restored HGSS class.
+    struct String behavior_class;
+    int behavior_class_line;
+
     struct String encounter_music;
     int encounter_music_line;
 
@@ -1218,6 +1222,13 @@ static bool parse_trainer(struct Parser *p, const struct Parsed *parsed, struct 
             trainer->class_line = value.location.line;
             trainer->class = token_string(&value);
         }
+        else if (is_literal_token(&key, "Behavior Class"))
+        {
+            if (trainer->behavior_class_line)
+                any_error = !set_show_parse_error(p, key.location, "duplicate 'Behavior Class'");
+            trainer->behavior_class_line = value.location.line;
+            trainer->behavior_class = token_string(&value);
+        }
         else if (is_literal_token(&key, "Music"))
         {
             if (trainer->encounter_music_line)
@@ -1838,6 +1849,14 @@ static void fprint_trainers(const char *output_path, FILE *f, struct Parsed *par
             fprintf(f, "#line %d\n", trainer->class_line);
             fprintf(f, "        .trainerClass = ");
             fprint_constant(f, "TRAINER_CLASS", trainer->class);
+            fprintf(f, ",\n");
+        }
+
+        if (!is_empty_string(trainer->behavior_class))
+        {
+            fprintf(f, "#line %d\n", trainer->behavior_class_line);
+            fprintf(f, "        .behaviorClass = ");
+            fprint_constant(f, "TRAINER_CLASS", trainer->behavior_class);
             fprintf(f, ",\n");
         }
 

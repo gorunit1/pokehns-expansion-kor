@@ -836,7 +836,7 @@ static void GenerateStationContent(struct Pokenav_Radio *radio, u8 station)
                 bool8 excluded;
                 do {
                     trainerId = (Random() % (TRAINERS_COUNT - 1)) + 1;
-                    trainerClass = GetTrainerClassFromId(trainerId);
+                    trainerClass = GetTrainerBehaviorClassFromId(trainerId);
                     excluded = (trainerClass == TRAINER_CLASS_CHAMPION_HNS
                              || trainerClass == TRAINER_CLASS_ELITE_FOUR_HNS
                              || trainerClass == TRAINER_CLASS_LEADER_HNS

@@ -981,7 +981,7 @@ static u8 GetBattleEnvironmentOverride(void)
     }
     else if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
     {
-        u32 trainerClass = GetTrainerClassFromId(TRAINER_BATTLE_PARAM.opponentA);
+        u32 trainerClass = GetTrainerBehaviorClassFromId(TRAINER_BATTLE_PARAM.opponentA);
     #if IS_HNS
         // Clair's first battle and Blaine use the volcano cave background instead of the usual stadium.
         if (TRAINER_BATTLE_PARAM.opponentA == TRAINER_CLAIR_1_HNS
@@ -1386,7 +1386,7 @@ void DrawBattleEntryBackground(void)
     {
         if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
         {
-            enum TrainerClassID trainerClass = GetTrainerClassFromId(TRAINER_BATTLE_PARAM.opponentA);
+            enum TrainerClassID trainerClass = GetTrainerBehaviorClassFromId(TRAINER_BATTLE_PARAM.opponentA);
             if (trainerClass == TRAINER_CLASS_LEADER || trainerClass == TRAINER_CLASS_CHAMPION)
             {
                 LoadBattleEnvironmentEntryGfx(GetBattleEnvironmentOverride());

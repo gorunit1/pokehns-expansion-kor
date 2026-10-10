@@ -7231,7 +7231,7 @@ void AdjustFriendship(struct Pokemon *mon, u8 event)
             if (IsSpecialTrainer(TRAINER_BATTLE_PARAM.opponentA))
                 return;
 
-            enum TrainerClassID opponentTrainerClass = GetTrainerClassFromId(TRAINER_BATTLE_PARAM.opponentA);
+            enum TrainerClassID opponentTrainerClass = GetTrainerBehaviorClassFromId(TRAINER_BATTLE_PARAM.opponentA);
             if (!(opponentTrainerClass == TRAINER_CLASS_LEADER
                 || opponentTrainerClass == TRAINER_CLASS_ELITE_FOUR
                 || opponentTrainerClass == TRAINER_CLASS_CHAMPION))
@@ -7494,7 +7494,7 @@ u16 GetBattleBGM(void)
         else if (gBattleTypeFlags & BATTLE_TYPE_TRAINER_HILL)
             trainerClass = TRAINER_CLASS_EXPERT;
         else
-            trainerClass = GetTrainerClassFromId(TRAINER_BATTLE_PARAM.opponentA);
+            trainerClass = GetTrainerBehaviorClassFromId(TRAINER_BATTLE_PARAM.opponentA);
 
         switch (trainerClass)
         {

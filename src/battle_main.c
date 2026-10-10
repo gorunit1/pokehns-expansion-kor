@@ -2016,7 +2016,7 @@ u8 CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Trainer 
             {
                 u16 species = partyData[monIndex].species;
                 #if RANDOMIZER_AVAILABLE == TRUE
-                species = RandomizeTrainerMon(trainer->trainerClass, i, monsCount, species);
+                species = RandomizeTrainerMon(GetTrainerBehaviorClass(trainer), i, monsCount, species);
                 #endif
                 CreateMon(&party[i], species, partyData[monIndex].lvl, personalityValue, otId);
             }
@@ -2091,7 +2091,7 @@ u8 CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Trainer 
 
             if (B_TRAINER_CLASS_POKE_BALLS >= GEN_7 && ball == -1)
             {
-                ball = gTrainerClasses[trainer->trainerClass].ball ?: BALL_POKE;
+                ball = gTrainerClasses[GetTrainerBehaviorClass(trainer)].ball ?: BALL_POKE;
                 SetMonData(&party[i], MON_DATA_POKEBALL, &ball);
             }
         }
@@ -5592,7 +5592,7 @@ static void HandleEndTurn_BattleWon(void)
         BattleStopLowHpSound();
         gBattlescriptCurrInstr = BattleScript_LocalTrainerBattleWon;
 
-        switch (GetTrainerClassFromId(TRAINER_BATTLE_PARAM.opponentA))
+        switch (GetTrainerBehaviorClassFromId(TRAINER_BATTLE_PARAM.opponentA))
         {
         case TRAINER_CLASS_ELITE_FOUR:
         case TRAINER_CLASS_CHAMPION:
