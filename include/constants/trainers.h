@@ -659,6 +659,15 @@ enum TrainerClassID
     TRAINER_CLASS_PROFESSOR_HNS,
     TRAINER_CLASS_DEVELOPER_HNS,
     TRAINER_CLASS_PYRAMID_KING_HNS,
+    // HnS: HGSS classes restored for story trainers (added at the end so no existing class number moves).
+    //      Their trainers keep the old HnS class as Behavior Class; money/ball here copy that class.
+    TRAINER_CLASS_SCIENTIST_HNS,
+    TRAINER_CLASS_TEACHER_HNS,
+    TRAINER_CLASS_MEDIUM_HNS,
+    TRAINER_CLASS_BOARDER_HNS,
+    TRAINER_CLASS_ELDER_HNS,
+    TRAINER_CLASS_ROCKET_BOSS_HNS,
+    TRAINER_CLASS_DOUBLE_TEAM_HNS,
 
     TRAINER_CLASS_COUNT,
 };

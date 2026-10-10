@@ -15,8 +15,9 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_ROSS_HNS ===
 Name: ROSS
-Class: Collector Hns
-Pic: Collector
+Class: Scientist Hns
+Behavior Class: Collector Hns
+Pic: Scientist Hns
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -32,8 +33,9 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_MITCH_HNS ===
 Name: MITCH
-Class: Collector Hns
-Pic: Collector
+Class: Scientist Hns
+Behavior Class: Collector Hns
+Pic: Scientist Hns
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -45,8 +47,9 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_JED_HNS ===
 Name: JED
-Class: Collector Hns
-Pic: Collector
+Class: Scientist Hns
+Behavior Class: Collector Hns
+Pic: Scientist Hns
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -62,8 +65,9 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_MARC_HNS ===
 Name: MARC
-Class: Collector Hns
-Pic: Collector
+Class: Scientist Hns
+Behavior Class: Collector Hns
+Pic: Scientist Hns
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -75,8 +79,9 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_RICH_HNS ===
 Name: RICH
-Class: Collector Hns
-Pic: Collector
+Class: Scientist Hns
+Behavior Class: Collector Hns
+Pic: Scientist Hns
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -594,7 +599,8 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_ROY_HNS ===
 Name: ROY
-Class: Biker Hns
+Class: Bird Keeper Hns
+Behavior Class: Biker Hns
 Pic: Biker Hns
 Gender: Male
 Music: Hg Suspicious 2
@@ -700,7 +706,8 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_BRET_HNS ===
 Name: BRET
-Class: Juggler Hns
+Class: Bird Keeper Hns
+Behavior Class: Juggler Hns
 Pic: Juggler Hns
 Gender: Male
 Music: Hg Suspicious 1
@@ -962,7 +969,8 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_PAUL_HNS ===
 Name: PAUL
-Class: Dragon Tamer Hns
+Class: Cooltrainer Hns
+Behavior Class: Dragon Tamer Hns
 Pic: Dragon Tamer
 Gender: Male
 Music: Hg Suspicious 2
@@ -987,7 +995,8 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_CODY_HNS ===
 Name: CODY
-Class: Dragon Tamer Hns
+Class: Cooltrainer Hns
+Behavior Class: Dragon Tamer Hns
 Pic: Dragon Tamer
 Gender: Male
 Music: Hg Suspicious 2
@@ -1012,7 +1021,8 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_MIKE_HNS ===
 Name: MIKE
-Class: Dragon Tamer Hns
+Class: Cooltrainer Hns
+Behavior Class: Dragon Tamer Hns
 Pic: Dragon Tamer
 Gender: Male
 Music: Hg Suspicious 2
@@ -1309,7 +1319,8 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_DARIN_HNS ===
 Name: DARIN
-Class: Dragon Tamer Hns
+Class: Cooltrainer Hns
+Behavior Class: Dragon Tamer Hns
 Pic: Dragon Tamer
 Gender: Male
 Music: Hg Suspicious 2
@@ -2920,8 +2931,9 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_COLETTE_HNS ===
 Name: COLETTE
-Class: Expert Hns
-Pic: Expert F
+Class: Teacher Hns
+Behavior Class: Expert Hns
+Pic: Teacher Hns
 Gender: Female
 Music: Hg Sage
 Double Battle: No
@@ -2933,8 +2945,9 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_HILLARY_HNS ===
 Name: HILLARY
-Class: Lass Hns
-Pic: Lass
+Class: Teacher Hns
+Behavior Class: Lass Hns
+Pic: Teacher Hns
 Gender: Female
 Music: Hg Girl 2
 Double Battle: No
@@ -2950,8 +2963,9 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_SHIRLEY_HNS ===
 Name: SHIRLEY
-Class: Expert Hns
-Pic: Expert F
+Class: Teacher Hns
+Behavior Class: Expert Hns
+Pic: Teacher Hns
 Gender: Male
 Music: Hg Sage
 Double Battle: No
@@ -3814,8 +3828,9 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_PARKER_HNS ===
 Name: PARKER
-Class: Swimmer M Hns
-Pic: Swimmer M
+Class: Sailor Hns
+Behavior Class: Swimmer M Hns
+Pic: Sailor
 Gender: Male
 Music: Hg Boy 2
 Double Battle: No
@@ -5133,8 +5148,9 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_COREY_HNS ===
 Name: COREY
-Class: Firebreather Hns
-Pic: Firebreather Hns
+Class: Burglar Hns
+Behavior Class: Firebreather Hns
+Pic: Burglar Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -6408,7 +6424,8 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_LI_HNS ===
 Name: LI
-Class: Sage Hns
+Class: Elder Hns
+Behavior Class: Sage Hns
 Pic: Sage Leader Hns
 Gender: Male
 Music: Hg Sage
@@ -6492,8 +6509,9 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_MARTHA_HNS ===
 Name: MARTHA
-Class: Hex Maniac Hns
-Pic: Hex Maniac
+Class: Medium Hns
+Behavior Class: Hex Maniac Hns
+Pic: Medium Hns
 Gender: Male
 Music: Hg Sage
 Double Battle: No
@@ -6509,8 +6527,9 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_GRACE_HNS ===
 Name: GRACE
-Class: Hex Maniac Hns
-Pic: Hex Maniac
+Class: Medium Hns
+Behavior Class: Hex Maniac Hns
+Pic: Medium Hns
 Gender: Male
 Music: Hg Sage
 Double Battle: No
@@ -6565,8 +6584,9 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_REBECCA_HNS ===
 Name: REBECCA
-Class: Hex Maniac Hns
-Pic: Hex Maniac
+Class: Medium Hns
+Behavior Class: Hex Maniac Hns
+Pic: Medium Hns
 Gender: Male
 Music: Hg Sage
 Double Battle: No
@@ -6586,8 +6606,9 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_DORIS_HNS ===
 Name: DORIS
-Class: Psychic Hns
-Pic: Psychic F
+Class: Medium Hns
+Behavior Class: Psychic Hns
+Pic: Medium Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -6607,7 +6628,8 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_RONALD_HNS ===
 Name: RONALD
-Class: Skier Hns
+Class: Boarder Hns
+Behavior Class: Skier Hns
 Pic: Skier M Hns
 Gender: Male
 Music: Hg Boy 2
@@ -6624,7 +6646,8 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_BRAD_HNS ===
 Name: BRAD
-Class: Skier Hns
+Class: Boarder Hns
+Behavior Class: Skier Hns
 Pic: Skier M Hns
 Gender: Male
 Music: Hg Boy 2
@@ -6641,7 +6664,8 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_DOUGLAS_HNS ===
 Name: DOUGLAS
-Class: Skier Hns
+Class: Boarder Hns
+Behavior Class: Skier Hns
 Pic: Skier M Hns
 Gender: Male
 Music: Hg Boy 2
@@ -6747,8 +6771,9 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_TREVOR_HNS ===
 Name: TREVOR
-Class: Juggler Hns
-Pic: Juggler Hns
+Class: Pokefan Hns
+Behavior Class: Juggler Hns
+Pic: Pokefan M
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -6807,8 +6832,9 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_ALEX_HNS ===
 Name: ALEX
-Class: Battle Girl Hns
-Pic: Battle Girl
+Class: Pokefan Hns
+Behavior Class: Battle Girl Hns
+Pic: Pokefan M
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -6841,8 +6867,9 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_ALLAN_HNS ===
 Name: ALLAN
-Class: Camper HnS
-Pic: Camper
+Class: Pokefan Hns
+Behavior Class: Camper HnS
+Pic: Pokefan M
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -7037,8 +7064,9 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_BEVERLY_HNS ===
 Name: BEVERLY
-Class: Parasol Lady Hns
-Pic: Parasol Lady
+Class: Pokefan Hns
+Behavior Class: Parasol Lady Hns
+Pic: Pokefan F
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -7050,8 +7078,9 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_RUTH_HNS ===
 Name: RUTH
-Class: Parasol Lady Hns
-Pic: Parasol Lady
+Class: Pokefan Hns
+Behavior Class: Parasol Lady Hns
+Pic: Pokefan F
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -7092,8 +7121,9 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_JAMIE_HNS ===
 Name: JAIME
-Class: Parasol Lady Hns
-Pic: Parasol Lady
+Class: Pokefan Hns
+Behavior Class: Parasol Lady Hns
+Pic: Pokefan F
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -7135,7 +7165,8 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_THOM_AND_KAE_HNS ===
 Name: THOM & KAE
-Class: Young Couple Hns
+Class: Double Team Hns
+Behavior Class: Young Couple Hns
 Pic: Young Couple
 Gender: Male
 Music: Hg Girl 1
@@ -10484,7 +10515,8 @@ IVs: 2 HP / 2 Atk / 2 Def / 2 SpA / 2 SpD / 2 Spe
 
 === TRAINER_GIOVANNI_HNS ===
 Name: GIOVANNI
-Class: Rocket Admin Hns
+Class: Rocket Boss Hns
+Behavior Class: Rocket Admin Hns
 Pic: Giovanni Hns
 Gender: Male
 Music: Hg Boy 1
@@ -12548,8 +12580,9 @@ Level: 37
 
 === TRAINER_BEVERLY_2_HNS ===
 Name: BEVERLY
-Class: Parasol Lady Hns
-Pic: Parasol Lady
+Class: Pokefan Hns
+Behavior Class: Parasol Lady Hns
+Pic: Pokefan F
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -12561,8 +12594,9 @@ Level: 27
 
 === TRAINER_BEVERLY_3_HNS ===
 Name: BEVERLY
-Class: Parasol Lady Hns
-Pic: Parasol Lady
+Class: Pokefan Hns
+Behavior Class: Parasol Lady Hns
+Pic: Pokefan F
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -12574,8 +12608,9 @@ Level: 36
 
 === TRAINER_BEVERLY_4_HNS ===
 Name: BEVERLY
-Class: Parasol Lady Hns
-Pic: Parasol Lady
+Class: Pokefan Hns
+Behavior Class: Parasol Lady Hns
+Pic: Pokefan F
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -12587,8 +12622,9 @@ Level: 46
 
 === TRAINER_BEVERLY_5_HNS ===
 Name: BEVERLY
-Class: Parasol Lady Hns
-Pic: Parasol Lady
+Class: Pokefan Hns
+Behavior Class: Parasol Lady Hns
+Pic: Pokefan F
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -12924,8 +12960,9 @@ Level: 57
 
 === TRAINER_ALEX_2_HNS ===
 Name: ALEX
-Class: Battle Girl Hns
-Pic: Battle Girl
+Class: Pokefan Hns
+Behavior Class: Battle Girl Hns
+Pic: Pokefan M
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -12945,8 +12982,9 @@ Level: 53
 
 === TRAINER_ALEX_3_HNS ===
 Name: ALEX
-Class: Battle Girl Hns
-Pic: Battle Girl
+Class: Pokefan Hns
+Behavior Class: Battle Girl Hns
+Pic: Pokefan M
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -13020,8 +13058,9 @@ Level: 65
 
 === TRAINER_TREVOR_2_HNS ===
 Name: TREVOR
-Class: Juggler Hns
-Pic: Juggler Hns
+Class: Pokefan Hns
+Behavior Class: Juggler Hns
+Pic: Pokefan M
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -13035,8 +13074,9 @@ Level: 40
 
 === TRAINER_TREVOR_3_HNS ===
 Name: TREVOR
-Class: Juggler Hns
-Pic: Juggler Hns
+Class: Pokefan Hns
+Behavior Class: Juggler Hns
+Pic: Pokefan M
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -13128,8 +13168,9 @@ Level: 65
 
 === TRAINER_HILLARY_2_HNS ===
 Name: HILLARY
-Class: Lass Hns
-Pic: Lass
+Class: Teacher Hns
+Behavior Class: Lass Hns
+Pic: Teacher Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -13146,8 +13187,9 @@ Level: 62
 
 === TRAINER_HILLARY_3_HNS ===
 Name: HILLARY
-Class: Lass Hns
-Pic: Lass
+Class: Teacher Hns
+Behavior Class: Lass Hns
+Pic: Teacher Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No

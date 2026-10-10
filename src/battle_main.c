@@ -479,6 +479,14 @@ const struct TrainerClass gTrainerClasses[TRAINER_CLASS_COUNT] =
     [TRAINER_CLASS_PROFESSOR_HNS] =        { _("포켓몬 박사"), 25, BALL_FRIEND},
     [TRAINER_CLASS_DEVELOPER_HNS] =        { _("DEVELOPER"), 50, BALL_MASTER},
     [TRAINER_CLASS_PYRAMID_KING_HNS] =     { _("피라미드킹") },
+    // HnS: HGSS classes restored for story trainers (money/ball copied from the class kept as Behavior Class)
+    [TRAINER_CLASS_SCIENTIST_HNS] =        { _("괴짜 연구원"), 15, BALL_PREMIER },
+    [TRAINER_CLASS_TEACHER_HNS] =          { _("선생님"), 10 },
+    [TRAINER_CLASS_MEDIUM_HNS] =           { _("무당"), 6 },
+    [TRAINER_CLASS_BOARDER_HNS] =          { _("보더"), 10 },
+    [TRAINER_CLASS_ELDER_HNS] =            { _("장로") },
+    [TRAINER_CLASS_ROCKET_BOSS_HNS] =      { _("로켓단보스") },
+    [TRAINER_CLASS_DOUBLE_TEAM_HNS] =      { _("더블팀"), 8 },
 };
 
 static void (*const sTurnActionsFuncsTable[])(void) =
