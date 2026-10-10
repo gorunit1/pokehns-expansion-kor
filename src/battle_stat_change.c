@@ -763,8 +763,10 @@ static bool32 IsMirrorArmorReflected(struct BattleCalcValues *cv, struct StatCha
         {
             // HnS: with Gen8 behavior, a Sticky Web whose user has left the field still only shows the pop-up, as before #10350.
             //      Upstream falls through there and lowers the Speed of a stale gBattleScripting.battler (e.g. the holder's ally).
+            // HnS: Court Change turns a cleared id (0xFF) into 0xFE, so any id that is not a battler also means no user
+            //      (it is used as a battler index below).
             if (GetConfig(B_MIRROR_ARMOR_STICKY_WEB) >= GEN_9
-             || gSideTimers[GetBattlerSide(cv->battlerDef)].stickyWebBattlerId == 0xFF)
+             || gSideTimers[GetBattlerSide(cv->battlerDef)].stickyWebBattlerId >= gBattlersCount)
             {
                 st->script = BattleScript_AbilityPopUp;
                 return TRUE;
