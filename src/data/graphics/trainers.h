@@ -644,6 +644,24 @@ const u16 gTrainerPalette_TeacherHns[] = INCBIN_U16("graphics/trainers/palettes/
 const u32 gTrainerFrontPic_MediumHns[] = INCBIN_U32("graphics/trainers/front_pics/medium_hns.4bpp.smol");
 const u16 gTrainerPalette_MediumHns[] = INCBIN_U16("graphics/trainers/palettes/medium_hns.gbapal");
 
+const u32 gTrainerFrontPic_PicnickerHgssHns[] = INCBIN_U32("graphics/trainers/front_pics/picnicker_hgss_hns.4bpp.smol");
+const u16 gTrainerPalette_PicnickerHgssHns[] = INCBIN_U16("graphics/trainers/front_pics/picnicker_hgss_hns.gbapal");
+
+const u32 gTrainerFrontPic_TwinsHgssHns[] = INCBIN_U32("graphics/trainers/front_pics/twins_hgss_hns.4bpp.smol");
+const u16 gTrainerPalette_TwinsHgssHns[] = INCBIN_U16("graphics/trainers/front_pics/twins_hgss_hns.gbapal");
+
+const u32 gTrainerFrontPic_CooltrainerFHgssHns[] = INCBIN_U32("graphics/trainers/front_pics/cooltrainer_f_hgss_hns.4bpp.smol");
+const u16 gTrainerPalette_CooltrainerFHgssHns[] = INCBIN_U16("graphics/trainers/front_pics/cooltrainer_f_hgss_hns.gbapal");
+
+const u32 gTrainerFrontPic_CooltrainerMHgssHns[] = INCBIN_U32("graphics/trainers/front_pics/cooltrainer_m_hgss_hns.4bpp.smol");
+const u16 gTrainerPalette_CooltrainerMHgssHns[] = INCBIN_U16("graphics/trainers/front_pics/cooltrainer_m_hgss_hns.gbapal");
+
+const u32 gTrainerFrontPic_YoungCoupleHgssHns[] = INCBIN_U32("graphics/trainers/front_pics/young_couple_hgss_hns.4bpp.smol");
+const u16 gTrainerPalette_YoungCoupleHgssHns[] = INCBIN_U16("graphics/trainers/front_pics/young_couple_hgss_hns.gbapal");
+
+const u32 gTrainerFrontPic_PsychicMHgssHns[] = INCBIN_U32("graphics/trainers/front_pics/psychic_m_hgss_hns.4bpp.smol");
+const u16 gTrainerPalette_PsychicMHgssHns[] = INCBIN_U16("graphics/trainers/front_pics/psychic_m_hgss_hns.gbapal");
+
 static const u8 gTrainerBackPic_None[] = INCBIN_U8("graphics/trainers/back_pics/none.4bpp");
 const u8 gTrainerBackPic_Brendan[] = INCBIN_U8("graphics/trainers/back_pics/brendan.4bpp");
 const u8 gTrainerBackPic_May[] = INCBIN_U8("graphics/trainers/back_pics/may.4bpp");
@@ -1649,5 +1667,29 @@ const struct TrainerPicInfo gTrainerPicInfo[TRAINER_PIC_COUNT] =
     [TRAINER_PIC_MEDIUM_HNS] =
     {
         .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_MediumHns, gTrainerPalette_MediumHns),
+    },
+    [TRAINER_PIC_PICNICKER_HGSS_HNS] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_PicnickerHgssHns, gTrainerPalette_PicnickerHgssHns),
+    },
+    [TRAINER_PIC_TWINS_HGSS_HNS] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_TwinsHgssHns, gTrainerPalette_TwinsHgssHns),
+    },
+    [TRAINER_PIC_COOLTRAINER_F_HGSS_HNS] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_CooltrainerFHgssHns, gTrainerPalette_CooltrainerFHgssHns),
+    },
+    [TRAINER_PIC_COOLTRAINER_M_HGSS_HNS] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_CooltrainerMHgssHns, gTrainerPalette_CooltrainerMHgssHns),
+    },
+    [TRAINER_PIC_YOUNG_COUPLE_HGSS_HNS] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_YoungCoupleHgssHns, gTrainerPalette_YoungCoupleHgssHns),
+    },
+    [TRAINER_PIC_PSYCHIC_M_HGSS_HNS] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_PsychicMHgssHns, gTrainerPalette_PsychicMHgssHns),
     },
 };

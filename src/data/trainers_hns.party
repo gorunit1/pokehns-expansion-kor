@@ -928,7 +928,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_NICK_HNS ===
 Name: NICK
 Class: Cooltrainer Hns
-Pic: Cooltrainer M
+Pic: Cooltrainer M Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -949,7 +949,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_AARON_HNS ===
 Name: AARON
 Class: Cooltrainer Hns
-Pic: Cooltrainer M
+Pic: Cooltrainer M Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -971,7 +971,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: PAUL
 Class: Cooltrainer Hns
 Behavior Class: Dragon Tamer Hns
-Pic: Dragon Tamer
+Pic: Cooltrainer M Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -997,7 +997,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: CODY
 Class: Cooltrainer Hns
 Behavior Class: Dragon Tamer Hns
-Pic: Dragon Tamer
+Pic: Cooltrainer M Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -1023,7 +1023,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: MIKE
 Class: Cooltrainer Hns
 Behavior Class: Dragon Tamer Hns
-Pic: Dragon Tamer
+Pic: Cooltrainer M Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -1044,7 +1044,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_GAVEN_HNS ===
 Name: GAVEN
 Class: Cooltrainer Hns
-Pic: Cooltrainer M
+Pic: Cooltrainer M Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -1073,7 +1073,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_RYAN_HNS ===
 Name: RYAN
 Class: Cooltrainer Hns
-Pic: Cooltrainer M
+Pic: Cooltrainer M Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -1094,7 +1094,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_JAKE_HNS ===
 Name: JAKE
 Class: Cooltrainer Hns
-Pic: Cooltrainer M
+Pic: Cooltrainer M Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -1123,7 +1123,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_BLAKE_HNS ===
 Name: BLAKE
 Class: Cooltrainer Hns
-Pic: Cooltrainer M
+Pic: Cooltrainer M Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -1148,7 +1148,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_BRIAN_HNS ===
 Name: BRIAN
 Class: Cooltrainer Hns
-Pic: Cooltrainer M
+Pic: Cooltrainer M Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -1236,7 +1236,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_SEAN_HNS ===
 Name: SEAN
 Class: Cooltrainer Hns
-Pic: Cooltrainer M
+Pic: Cooltrainer M Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -1257,7 +1257,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_KEVIN_HNS ===
 Name: KEVIN
 Class: Cooltrainer Hns
-Pic: Cooltrainer M
+Pic: Cooltrainer M Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -1303,7 +1303,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_ALLEN_HNS ===
 Name: ALLEN
 Class: Cooltrainer Hns
-Pic: Cooltrainer M
+Pic: Cooltrainer M Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -1321,7 +1321,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: DARIN
 Class: Cooltrainer Hns
 Behavior Class: Dragon Tamer Hns
-Pic: Dragon Tamer
+Pic: Cooltrainer M Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -1346,7 +1346,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_GWEN_HNS ===
 Name: GWEN
 Class: Cooltrainer Hns
-Pic: Cooltrainer F
+Pic: Cooltrainer F Hgss Hns
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -1371,7 +1371,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_LOIS_HNS ===
 Name: LOIS
 Class: Cooltrainer Hns
-Pic: Cooltrainer F
+Pic: Cooltrainer F Hgss Hns
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -1388,7 +1388,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_FRAN_HNS ===
 Name: FRAN
 Class: Cooltrainer Hns
-Pic: Cooltrainer F
+Pic: Cooltrainer F Hgss Hns
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -1409,7 +1409,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_LOLA_HNS ===
 Name: LOLA
 Class: Cooltrainer Hns
-Pic: Cooltrainer F
+Pic: Cooltrainer F Hgss Hns
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -1434,7 +1434,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_KATE_HNS ===
 Name: KATE
 Class: Cooltrainer Hns
-Pic: Cooltrainer F
+Pic: Cooltrainer F Hgss Hns
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -1451,7 +1451,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_IRENE_HNS ===
 Name: IRENE
 Class: Cooltrainer Hns
-Pic: Cooltrainer F
+Pic: Cooltrainer F Hgss Hns
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -1468,7 +1468,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_KELLY_HNS ===
 Name: KELLY
 Class: Cooltrainer Hns
-Pic: Cooltrainer F
+Pic: Cooltrainer F Hgss Hns
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -1493,7 +1493,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_JOYCE_HNS ===
 Name: JOYCE
 Class: Cooltrainer Hns
-Pic: Cooltrainer F
+Pic: Cooltrainer F Hgss Hns
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -1522,7 +1522,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_BETH_HNS ===
 Name: BETH
 Class: Cooltrainer Hns
-Pic: Cooltrainer F
+Pic: Cooltrainer F Hgss Hns
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -1551,7 +1551,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_REENA_HNS ===
 Name: REENA
 Class: Cooltrainer Hns
-Pic: Cooltrainer F
+Pic: Cooltrainer F Hgss Hns
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -1580,7 +1580,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_MEGAN_HNS ===
 Name: MEGAN
 Class: Cooltrainer Hns
-Pic: Cooltrainer F
+Pic: Cooltrainer F Hgss Hns
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -1605,7 +1605,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_CAROL_HNS ===
 Name: CAROL
 Class: Cooltrainer Hns
-Pic: Cooltrainer F
+Pic: Cooltrainer F Hgss Hns
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -1626,7 +1626,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_QUINN_HNS ===
 Name: QUINN
 Class: Cooltrainer Hns
-Pic: Cooltrainer F
+Pic: Cooltrainer F Hgss Hns
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -1643,7 +1643,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_EMMA_HNS ===
 Name: EMMA
 Class: Cooltrainer Hns
-Pic: Cooltrainer F
+Pic: Cooltrainer F Hgss Hns
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -1656,7 +1656,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_CYBIL_HNS ===
 Name: CYBIL
 Class: Cooltrainer Hns
-Pic: Cooltrainer F
+Pic: Cooltrainer F Hgss Hns
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -1677,7 +1677,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_JENN_HNS ===
 Name: JENN
 Class: Cooltrainer Hns
-Pic: Cooltrainer F
+Pic: Cooltrainer F Hgss Hns
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -1694,7 +1694,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_CARA_HNS ===
 Name: CARA
 Class: Cooltrainer Hns
-Pic: Cooltrainer F
+Pic: Cooltrainer F Hgss Hns
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -5505,7 +5505,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_NATHAN_HNS ===
 Name: NATHAN
 Class: Psychic M Hns
-Pic: Psychic M Hns
+Pic: Psychic M Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -5518,7 +5518,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_FRANKLIN_HNS ===
 Name: FRANKLIN
 Class: Psychic M Hns
-Pic: Psychic M Hns
+Pic: Psychic M Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -5531,7 +5531,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_HERMAN_HNS ===
 Name: HERMAN
 Class: Psychic M Hns
-Pic: Psychic M Hns
+Pic: Psychic M Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -5552,7 +5552,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_FIDEL_HNS ===
 Name: FIDEL
 Class: Psychic M Hns
-Pic: Psychic M Hns
+Pic: Psychic M Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -5565,7 +5565,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_GREG_HNS ===
 Name: GREG
 Class: Psychic M Hns
-Pic: Psychic M Hns
+Pic: Psychic M Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -5578,7 +5578,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_NORMAN_HNS ===
 Name: NORMAN
 Class: Psychic M Hns
-Pic: Psychic M Hns
+Pic: Psychic M Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -5595,7 +5595,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_MARK_HNS ===
 Name: MARK
 Class: Psychic M Hns
-Pic: Psychic M Hns
+Pic: Psychic M Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -5616,7 +5616,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_PHIL_HNS ===
 Name: PHIL
 Class: Psychic M Hns
-Pic: Psychic M Hns
+Pic: Psychic M Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -5637,7 +5637,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_RICHARD_HNS ===
 Name: RICHARD
 Class: Psychic M Hns
-Pic: Psychic M Hns
+Pic: Psychic M Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -5658,7 +5658,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_GILBERT_HNS ===
 Name: GILBERT
 Class: Psychic M Hns
-Pic: Psychic M Hns
+Pic: Psychic M Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -5679,7 +5679,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_JARED_HNS ===
 Name: JARED
 Class: Psychic M Hns
-Pic: Psychic M Hns
+Pic: Psychic M Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -5717,7 +5717,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_LIZ_HNS ===
 Name: LIZ
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -5730,7 +5730,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_GINA_HNS ===
 Name: GINA
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -5747,7 +5747,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_BROOKE_HNS ===
 Name: BROOKE
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -5760,7 +5760,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_KIM_HNS ===
 Name: KIM
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -5773,7 +5773,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_CINDY_HNS ===
 Name: CINDY
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -5790,7 +5790,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_HOPE_HNS ===
 Name: HOPE
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -5803,7 +5803,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_SHARON_HNS ===
 Name: SHARON
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -5820,7 +5820,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_DEBRA_HNS ===
 Name: DEBRA
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -5833,7 +5833,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_ERIN_HNS ===
 Name: ERIN
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -5858,7 +5858,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_HEIDI_HNS ===
 Name: HEIDI
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -5875,7 +5875,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_EDNA_HNS ===
 Name: EDNA
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -5892,7 +5892,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_TIFFANY_HNS ===
 Name: TIFFANY
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -5909,7 +5909,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_TANYA_HNS ===
 Name: TANYA
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -6972,7 +6972,7 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 === TRAINER_AMY_AND_MAY_HNS ===
 Name: AMY&MAY
 Class: Twins Hns
-Pic: Twins Hns
+Pic: Twins Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: Yes
@@ -6989,7 +6989,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_ANN_AND_ANNE_HNS ===
 Name: ANN&ANNE
 Class: Twins Hns
-Pic: Twins Hns
+Pic: Twins Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: Yes
@@ -7006,7 +7006,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_JO_AND_ZOE_HNS ===
 Name: JO&ZOE
 Class: Twins Hns
-Pic: Twins Hns
+Pic: Twins Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: Yes
@@ -7023,7 +7023,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_MEG_AND_PEG_HNS ===
 Name: MEG&PEG
 Class: Twins Hns
-Pic: Twins Hns
+Pic: Twins Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: Yes
@@ -7040,7 +7040,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_LEA_AND_PIA_HNS ===
 Name: LEA&PIA
 Class: Twins Hns
-Pic: Twins Hns
+Pic: Twins Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: Yes
@@ -7184,7 +7184,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_DUFF_AND_EDA_HNS ===
 Name: DUFF & EDA
 Class: Young Couple Hns
-Pic: Young Couple
+Pic: Young Couple Hgss Hns
 Gender: Male
 Music: Hg Girl 1
 Double Battle: Yes
@@ -11338,7 +11338,7 @@ Level: 55
 === TRAINER_LIZ_2_HNS ===
 Name: LIZ
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -11353,7 +11353,7 @@ Level: 25
 === TRAINER_LIZ_3_HNS ===
 Name: LIZ
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -11371,7 +11371,7 @@ Level: 30
 === TRAINER_LIZ_4_HNS ===
 Name: LIZ
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -11389,7 +11389,7 @@ Level: 36
 === TRAINER_LIZ_5_HNS ===
 Name: LIZ
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -11578,7 +11578,7 @@ Level: 55
 === TRAINER_GINA_2_HNS ===
 Name: GINA
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -11596,7 +11596,7 @@ Level: 27
 === TRAINER_GINA_3_HNS ===
 Name: GINA
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -11614,7 +11614,7 @@ Level: 35
 === TRAINER_GINA_4_HNS ===
 Name: GINA
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -11632,7 +11632,7 @@ Level: 48
 === TRAINER_GINA_5_HNS ===
 Name: GINA
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -12227,7 +12227,7 @@ Level: 53
 === TRAINER_TIFFANY_2_HNS ===
 Name: TIFFANY
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -12243,7 +12243,7 @@ Level: 37
 === TRAINER_TIFFANY_3_HNS ===
 Name: TIFFANY
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -12259,7 +12259,7 @@ Level: 29
 === TRAINER_TIFFANY_4_HNS ===
 Name: TIFFANY
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -12445,7 +12445,7 @@ Level: 38
 === TRAINER_ERIN_2_HNS ===
 Name: ERIN
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -12466,7 +12466,7 @@ Level: 44
 === TRAINER_ERIN_3_HNS ===
 Name: ERIN
 Class: Picnicker Hns
-Pic: Picnicker
+Pic: Picnicker Hgss Hns
 Gender: Male
 Music: Hg Girl 2
 Double Battle: No
@@ -12694,7 +12694,7 @@ Level: 38
 === TRAINER_GAVEN_2_HNS ===
 Name: GAVEN
 Class: Cooltrainer Hns
-Pic: Cooltrainer M
+Pic: Cooltrainer M Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -12738,7 +12738,7 @@ Level: 55
 === TRAINER_GAVEN_3_HNS ===
 Name: GAVEN
 Class: Cooltrainer Hns
-Pic: Cooltrainer M
+Pic: Cooltrainer M Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -12782,7 +12782,7 @@ Level: 44
 === TRAINER_BETH_2_HNS ===
 Name: BETH
 Class: Cooltrainer Hns
-Pic: Cooltrainer F
+Pic: Cooltrainer F Hgss Hns
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -12825,7 +12825,7 @@ Level: 50
 === TRAINER_BETH_3_HNS ===
 Name: BETH
 Class: Cooltrainer Hns
-Pic: Cooltrainer F
+Pic: Cooltrainer F Hgss Hns
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -12913,7 +12913,7 @@ Level: 48
 === TRAINER_REENA_2_HNS ===
 Name: REENA
 Class: Cooltrainer Hns
-Pic: Cooltrainer F
+Pic: Cooltrainer F Hgss Hns
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
@@ -12937,7 +12937,7 @@ Level: 49
 === TRAINER_REENA_3_HNS ===
 Name: REENA
 Class: Cooltrainer Hns
-Pic: Cooltrainer F
+Pic: Cooltrainer F Hgss Hns
 Gender: Male
 Music: Hg Girl 1
 Double Battle: No
