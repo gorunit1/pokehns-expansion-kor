@@ -761,15 +761,15 @@ static bool32 IsMirrorArmorReflected(struct BattleCalcValues *cv, struct StatCha
 
         if (st->stickyWeb)
         {
-            if (gSideTimers[GetBattlerSide(cv->battlerDef)].stickyWebBattlerId != 0xFF)
-            {
-                gBattleScripting.battler = gSideTimers[GetBattlerSide(cv->battlerDef)].stickyWebBattlerId;
-            }
-            else
+            // HnS: with Gen8 behavior, a Sticky Web whose user has left the field still only shows the pop-up, as before #10350.
+            //      Upstream falls through there and lowers the Speed of a stale gBattleScripting.battler (e.g. the holder's ally).
+            if (GetConfig(B_MIRROR_ARMOR_STICKY_WEB) >= GEN_9
+             || gSideTimers[GetBattlerSide(cv->battlerDef)].stickyWebBattlerId == 0xFF)
             {
                 st->script = BattleScript_AbilityPopUp;
                 return TRUE;
             }
+            gBattleScripting.battler = gSideTimers[GetBattlerSide(cv->battlerDef)].stickyWebBattlerId;
         }
         else
         {
@@ -854,6 +854,34 @@ static bool32 AbilityPreventsSpecificStatDrop(u32 ability, u32 stat)
     default:
         return FALSE;
     }
+}
+
+bool32 ShouldDefiantCompetitiveActivate(enum BattlerId battler, enum Ability ability)
+{
+    enum BattleSide side = GetBattlerSide(battler);
+
+    if (gBattleStruct->ignoreDefiant)
+        return FALSE;
+
+    switch (ability)
+    {
+    case ABILITY_DEFIANT:
+        if (CompareStat(battler, STAT_ATK, MAX_STAT_STAGE, CMP_EQUAL, ability))
+            return FALSE;
+        break;
+    case ABILITY_COMPETITIVE:
+        if (CompareStat(battler, STAT_SPATK, MAX_STAT_STAGE, CMP_EQUAL, ability))
+            return FALSE;
+        break;
+    default:
+        return FALSE;
+    }
+
+    if (GetConfig(B_DEFIANT_STICKY_WEB) >= GEN_9 || !gBattleScripting.stickyWebStatDrop)
+        return TRUE;
+
+    // only activate Defiant/Competitive if Web was setup by foe
+    return gSideTimers[side].stickyWebBattlerSide != side;
 }
 
 u32 GetStatStage(u32 stat, const struct AdditionalEffect *additionalEffect)
