@@ -3190,7 +3190,9 @@ static const struct OamData sOamData_LastUsedBall =
 static const struct SpriteTemplate sSpriteTemplate_LastUsedBallWindow =
 {
     .tileTag = TAG_LAST_BALL_WINDOW,
-    .paletteTag = TAG_ABILITY_POP_UP,
+    // HnS: own copy of the pop-up palette. ArrowsChangeColorLastBallCycle recolors idx 10/11 in place, which the
+    // move info window uses for its text and border, so the ball window must not share TAG_ABILITY_POP_UP.
+    .paletteTag = TAG_LAST_BALL_WINDOW,
     .oam = &sOamData_LastUsedBall,
     .callback = SpriteCB_LastUsedBallWin
 };
@@ -3357,7 +3359,7 @@ void TryAddLastUsedBallItemSprites(void)
     }
 
     // window
-    { struct SpritePalette pal = GetAbilityPopUpSpritePal(); LoadSpritePalette(&pal); }
+    { struct SpritePalette pal = { GetAbilityPopUpPal(), TAG_LAST_BALL_WINDOW }; LoadSpritePalette(&pal); }
     if (GetSpriteTileStartByTag(TAG_LAST_BALL_WINDOW) == 0xFFFF)
     {
         struct SpriteSheet ballSheet = GetLastUsedBallWindowSpriteSheet();
@@ -3380,7 +3382,7 @@ void TryAddLastUsedBallItemSprites(void)
 static void DestroyLastUsedBallWinGfx(struct Sprite *sprite)
 {
     FreeSpriteTilesByTag(TAG_LAST_BALL_WINDOW);
-    FreeAbilityPopUpPal();
+    FreeSpritePaletteByTag(TAG_LAST_BALL_WINDOW);
     DestroySprite(sprite);
     gBattleStruct->ballSpriteIds[1] = MAX_SPRITES;
 }
@@ -3658,6 +3660,6 @@ void CategoryIcons_LoadSpritesGfx(void)
 
 static void FreeAbilityPopUpPal()
 {
-    if (GetSpriteTileStartByTag(TAG_LAST_BALL_WINDOW) == 0xFFFF && GetSpriteTileStartByTag(MOVE_INFO_WINDOW_TAG) == 0xFFFF && !IsAnyAbilityPopUpActive())
+    if (GetSpriteTileStartByTag(MOVE_INFO_WINDOW_TAG) == 0xFFFF && !IsAnyAbilityPopUpActive())
         FreeSpritePaletteByTag(TAG_ABILITY_POP_UP);
 }
