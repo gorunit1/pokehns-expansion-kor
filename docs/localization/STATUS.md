@@ -1,9 +1,15 @@
 # 현재 인수인계 상태
 
+## 2026-10-10 밤 — 친구 답(트레이너 질문 13개) 반영: 2단계 조사 중 (현재, 데스크탑 — 랩탑에서 Remote Control)
+
+- **친구 답:** [`FRIEND_REPLY_2026-10-10b.md`](../friend-handoff/FRIEND_REPLY_2026-10-10b.md) — 목표는 **메인 스토리에 실제 등장하는 트레이너**를 HGSS 동일 인물(위치·NPC 배치·파티·재전으로 판정)의 클래스명·이름·배틀 그림으로 복원, `Behavior Class` 설계 동의(상금·볼·BGM·랜더마이저·트레이너 ID·프런티어 보존). Q1 `로켓단간부`·`로켓단보스`(더 높은 우선순위 작품 표기 먼저 대조), Q2 `괴짜 연구원`, Q3 마스터즈 EX·금은 2002 공식 인정(보조) + 《포켓몬스터 스페셜》 한국어 정식판 참고(출처 구분), Q4 프런티어는 공식 없으면 pokeemerald-kr·스페셜 비교, Q5 NARD·RICHARDO 보류·추가 대조, Q6 JAIME·ALLAN 크리스탈 클래스(HGSS 같은 인물이 있으면 HGSS), Q7 ALEX 남성 애호가클럽(오버월드는 조사 뒤), Q8 미배치 61 제외(실제 참조 확인, 데이터 유지), Q9 확정 인물 `Gender:` HGSS로(seq 400 시드 호환 처리), Q10 SoulGold는 `scientist`·`rocket_grunt_m/f`만, 나머지는 공개 개조롬 에셋 조사(허가·크레딧), Q11 프런티어 Collector는 SoulGold 이식 전 `collector.png`로 복원, Q12 통화 대사는 번역하지 않음, Q13 근거 부족 고유 이름 보류·조무래기는 공식 호칭. 3절 이과계의 남자 재분류(SoulGold `collector.png` ↔ `super_nerd_hns.png` 비교, 교체 전 파일 보존), 4절 Parasol Lady 재조사, 6절 오버월드는 조사만, 8절 보고 목록. 확정된 부분은 단계별 반영 가능. NPC 이름·대사·미배치 변경 보류. 친구의 새 웅 그림(`leader_brock_hns.png`)은 아직 받지 않음(저장소 것은 2026-04-30 원작자 `107989c5c6`).
+- **진행 중: 2단계 조사**(저장소 밖 `/home/hjm0725/hns-sync-work/trainer-class-1010/TASK-PHASE2.md`). 다음: 친구 8절 보고 → 확정된 부분 단계별 적용(클래스명·칸 → Behavior Class → 새 그림 → 클래스·그림 복원 → 이름 → 프런티어 이름 → 성별) → 검증 → push.
+- 친구 문자(묶음 14 답 반영 결과 `hnsfix-1010e/discord-pending.md`)는 보냄(2026-10-10 사용자 확인).
+
 ## 2026-10-10 밤 — 친구 답(묶음 14) 반영 완료·push: 미러아머 9세대, 사령탑 문장 이름 (현재, 데스크탑 — 랩탑에서 Remote Control)
 
 - **다음 할 일**
-  1. **친구 문자(사용자가 보낼 차례):** `/home/hjm0725/hns-sync-work/hnsfix-1010e/discord-pending.md`. 보냈는지 먼저 물어본다.
+  1. ~~친구 문자~~ **보냄**(2026-10-10): `hnsfix-1010e/discord-pending.md`.
   2. **친구 답 대기:** 트레이너 클래스·이름 질문 13개(아래 절 — 답이 오면 `trainer-class-1010/p3/DESIGN.md` 추천안으로 단계별 적용), 프런티어용 `youngster.png`, 불사르기 조사(47), 실버 멀티 실기, 재확인 35·37·42, 가드 43·44.
   3. **full-sync 다음 seq 268 #10368**(아래 묶음 14 절 3번). 테스트 기준 **`test-baseline-hnsfix1010e.txt`**.
 - **친구 답:** [`FRIEND_REPLY_2026-10-10.md`](../friend-handoff/FRIEND_REPLY_2026-10-10.md) → 결과 [`hnsfix-2026-10-10c.md`](../friend-handoff/results/1.17.0-port/hnsfix-2026-10-10c.md), HANDBACK 24절. 커밋 `e1efb8e08b` 미러아머 `GEN_9`(한글 K4-12 9세대 기대, 요약 그대로), `d60b33a2c4` 사령탑 두 번째 이름 `{B_EFF_NAME_WITH_PREFIX2}`(43장면·문장 48개 실측), `8bc73a727c` 사령탑 테스트 한글 MESSAGE(PASS 복구). 재확인 49·50·13 D6c 해결. 8세대 경로 방어 코드는 넣지 않음.
