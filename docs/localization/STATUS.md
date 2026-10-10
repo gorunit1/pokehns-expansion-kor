@@ -3,10 +3,10 @@
 ## 2026-10-10 — full-sync 묶음 13(seq 240~251) 사전 분석 중 (현재, 데스크탑 — 랩탑에서 Remote Control)
 
 - **진행 중: 묶음 13 사전 분석**(사용자 "ㄱㄱ", 친구 답 대기 중 혼자 진행) — 240 #10226·243 #10185(영역 A, 240은 한글 Y), 241 #10231·248 #10289·249 #10288(영역 B, #10424 앞당김 판단), 244 #10263·246 #10262·251 #10278(영역 C), 242 #10219·245 #10272·250 #10281·247 #10287 확인(영역 D). 247 #10287·252 #10175는 이미 적용. 지시 `/home/hjm0725/hns-sync-work/chunk-240-251/ANALYZE.md`, 기준 사본 `chunk-240-251/base`(HEAD `042d81c802`, 코드 = `6155f43690`, ROM 32,761,764 B, SHA1 `b45491da…`), 세이브 이식 전 사실 `chunk-240-251/main/save/pre-240`. 산출물 `chunk-240-251/seq<SEQ>-<PR>.{md,patch}`. 다음: 결정 사항을 사용자에게(혼자 정함/친구 질문 구분 — 새 한글 문장이 필요하면 친구 질문) → APPLY.md·적용 1개 → 리뷰 2개 → 메인 검증(테스트 기준 `test-baseline-seq239.txt`, 문서는 검증 뒤에 고친다) → 문서 → push. 끊기면 영역별 산출물이 있는지 보고 없는 영역만 다시 띄운다.
-- **친구 요청 3건(2026-10-10 사용자 전달) — 묶음 13 적용보다 먼저:**
-  1. SoulGold 트레이너 전투 앞모습 25종(같은 이름 13 + `burglar/firebreather/youngster` → `*_hns` 3 + 추가 7 + `steven`·`sage` → `sage_hns`, 목호 제외, `.pal` 5종 확인, 별도 커밋). 조사·patch `/home/hjm0725/hns-sync-work/hnsfix-1010c/TASK.md`(원본 sparse clone `hnsfix-1010c/src-soulgold/`).
-  2. 몬스터볼 단축 팝업 뒤 `L 기술 설명` 창 팔레트 깨짐(볼 창·기술 설명 창이 `TAG_ABILITY_POP_UP` 공유, `ArrowsChangeColorLastBallCycle`가 10·11번 색 직접 변경). 조사·patch `/home/hjm0725/hns-sync-work/hnsfix-1010b/TASK.md`.
-  3. ("여유가 된다면") 트레이너 클래스명·트레이너·NPC 이름을 HGSS 공식 한글 명칭으로(새로 추가된 트레이너 제외, 프런티어는 ORAS·pokeemerald-kr 참고, 새로 추가된 트레이너/NPC는 누구·어디인지 분류). 현재 클래스명(`gTrainerClasses`)·HnS 트레이너 이름 651개(`trainers_hns.party`) 모두 영문. 1단계 조사 `/home/hjm0725/hns-sync-work/names-1010/TASK.md` → 계획을 사용자에게.
+- **친구 요청 3건(2026-10-10 사용자 전달):**
+  1. ~~SoulGold 트레이너 앞모습 25종~~ **끝·push `8048e62e51`**, 2. ~~기술 설명 창 팔레트~~ **끝·push `7fff683741`** — 결과 [`hnsfix-2026-10-10b.md`](../friend-handoff/results/1.17.0-port/hnsfix-2026-10-10b.md), HANDBACK 21절. 최종 SHA1 `360b50ad…`, ROM 32,762,820 B, 새 경고 0, 전체 테스트 목록 = `test-baseline-seq239.txt`(사본). **친구 문자(사용자가 보낼 차례):** `/home/hjm0725/hns-sync-work/hnsfix-1010b/discord-pending.md`(+ 그림 2장).
+  3. 트레이너 클래스명·트레이너·NPC 이름 HGSS 공식 명칭 — 1단계 조사 중(`/home/hjm0725/hns-sync-work/names-1010/TASK.md`, 산출물 `NAMES-PLAN.md`) → 계획을 사용자에게. 현재 클래스명(`gTrainerClasses`)·HnS 트레이너 이름 651개(`trainers_hns.party`) 모두 영문.
+- **묶음 13 적용은 위 1·2 뒤(지금 가능).** 영역 A·C·D 분석 끝, B 진행 중(2026-10-10 API 한도로 한 번 끊겼다가 이어서).
 - 친구 답 대기는 아래 절 그대로(실버 멀티 실기, 재확인 35·37·42, 가드 43·44).
 
 ## 2026-10-10 — 친구 요청(실버 멀티 머그샷) + full-sync 묶음 12(seq 227~239) 완료·push (현재, 데스크탑 — 랩탑에서 Remote Control)
