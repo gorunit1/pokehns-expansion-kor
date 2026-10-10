@@ -3,7 +3,7 @@
 ## 2026-10-11 — 트레이너 클래스명·이름·배틀 그림 HGSS 복원 완료·push (현재, 데스크탑 — 랩탑에서 Remote Control)
 
 - **다음 할 일**
-  1. **친구 문자(사용자가 보낼 차례 — 사용자 요청: 끝난 뒤 복사용으로 한 번에):** `/home/hjm0725/hns-sync-work/trainer-class-1010/discord-final.md`(메시지 3개, 보고 + 질문 12개). 이전 초안 `discord-pending-2.md`는 이 파일로 대체(보내지 않음). 보냈는지 먼저 물어본다.
+  1. ~~친구 문자~~ **보냄**(2026-10-11 사용자 확인): `trainer-class-1010/discord-final.md`(메시지 3개). 보낼 문자 없음.
   2. **친구 답 대기:** 트레이너 질문 12개(`discord-final.md` 메시지 3 — 재확인 53), 새 웅 그림 파일, 프런티어용 `youngster.png`, 불사르기 조사(47), 실버 멀티 실기, 재확인 35·37·42, 가드 43·44. 답이 오면 반영부터.
   3. **full-sync 다음 seq 268 #10368**(아래 묶음 14 절 3번). 테스트 기준 **`test-baseline-hnsfix1010e.txt`**(이번 작업 뒤에도 바이트 같음). seq 400 #9440 이식 때 재확인 51 규칙 필수.
 - **결과:** [`results/trainer-class-2026-10-11/README.md`](../friend-handoff/results/trainer-class-2026-10-11/README.md)(전후 비교표 TSV 8개), HANDBACK 25절, 재확인 51~54. 친구 답 원문 [`FRIEND_REPLY_2026-10-10b.md`](../friend-handoff/FRIEND_REPLY_2026-10-10b.md).

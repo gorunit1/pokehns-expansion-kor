@@ -8,7 +8,7 @@
 - 검증: 최종 `3b356beb2e` 종료 0, 새 경고 0, SHA1 `e3ccf1fe…`. 전체 테스트 목록 = `test-baseline-hnsfix1010e.txt`, 한글 517/607 = 기대, 세이브 정적 PASS(WARN 0)·왕복 PASS.
 - 문서: 결과 `results/trainer-class-2026-10-11/`(README + TSV 8개), HANDBACK 25절, 재확인 51~54, STATUS.
 - 게임 화면 확인: 하지 않았다(헤드리스 mGBA 함수 실측만).
-- 다음 시작점: 친구 문자 `trainer-class-1010/discord-final.md` 전송 확인 → 친구 답 → seq 268 #10368.
+- 다음 시작점: 친구 문자 `trainer-class-1010/discord-final.md`는 보냄(2026-10-11 사용자 확인) → 친구 답 → seq 268 #10368.
 
 ### 2026-10-10 밤 ~ 10-11 — 트레이너 클래스·이름·그림 HGSS 복원 2단계 조사·적용(리뷰 중 중단)
 
