@@ -1,10 +1,14 @@
 # 현재 인수인계 상태
 
-## 2026-10-10 밤 — 친구 답(묶음 14) 반영 중: 미러아머 9세대, 사령탑 문장 이름 (현재, 데스크탑 — 랩탑에서 Remote Control)
+## 2026-10-10 밤 — 친구 답(묶음 14) 반영 완료·push: 미러아머 9세대, 사령탑 문장 이름 (현재, 데스크탑 — 랩탑에서 Remote Control)
 
-- **친구 답:** [`FRIEND_REPLY_2026-10-10.md`](../friend-handoff/FRIEND_REPLY_2026-10-10.md) — 묶음 14 나머지 수용. Q1 `B_MIRROR_ARMOR_STICKY_WEB` → `GEN_9`(코트체인지 가드 `68035b152d` 유지), Q2 사령탑 문장 두 번째 이름을 어써러셔로(`{B_EFF_NAME_WITH_PREFIX2}` 가능, 교체 순서·자리별 검증), 사라진 사령탑 테스트 PASS를 한글 기대 문장으로 복구, 코트체인지 뒤 기절 포켓몬 스피드 하락(재확인 50) 해결 방법 검토.
-- **진행 중:** 조사·patch 에이전트 1개(저장소 밖 `/home/hjm0725/hns-sync-work/hnsfix-1010e/TASK.md`, 산출물 `RESULT.md`·`fix1-mirror-gen9.patch`(한글 회귀 `HNS9730 K4-12` 세트·기대 요약 같은 커밋)·`fix2-commander-name.patch`·`fix3-commander-test.patch`·(선택) `fix4-mirror-alive-optional.patch`). 다음: 결과 확인 → 별도 커밋으로 적용 → 저장소 검증(빌드·전체 테스트·한글 회귀) → 문서(결과·출력 변화·재확인 49·50·13 D6c) → push → 친구 문안.
-- 트레이너 클래스·이름 질문 13개는 친구 답 대기(아래 절).
+- **다음 할 일**
+  1. **친구 문자(사용자가 보낼 차례):** `/home/hjm0725/hns-sync-work/hnsfix-1010e/discord-pending.md`. 보냈는지 먼저 물어본다.
+  2. **친구 답 대기:** 트레이너 클래스·이름 질문 13개(아래 절 — 답이 오면 `trainer-class-1010/p3/DESIGN.md` 추천안으로 단계별 적용), 프런티어용 `youngster.png`, 불사르기 조사(47), 실버 멀티 실기, 재확인 35·37·42, 가드 43·44.
+  3. **full-sync 다음 seq 268 #10368**(아래 묶음 14 절 3번). 테스트 기준 **`test-baseline-hnsfix1010e.txt`**.
+- **친구 답:** [`FRIEND_REPLY_2026-10-10.md`](../friend-handoff/FRIEND_REPLY_2026-10-10.md) → 결과 [`hnsfix-2026-10-10c.md`](../friend-handoff/results/1.17.0-port/hnsfix-2026-10-10c.md), HANDBACK 24절. 커밋 `e1efb8e08b` 미러아머 `GEN_9`(한글 K4-12 9세대 기대, 요약 그대로), `d60b33a2c4` 사령탑 두 번째 이름 `{B_EFF_NAME_WITH_PREFIX2}`(43장면·문장 48개 실측), `8bc73a727c` 사령탑 테스트 한글 MESSAGE(PASS 복구). 재확인 49·50·13 D6c 해결. 8세대 경로 방어 코드는 넣지 않음.
+- **검증(최종 `8bc73a727c`):** 종료 0, 새 경고 0, ROM 32,764,116 B, SHA1 `662ba2c3…`. 전체 테스트 PASS 2,649 / 5,566(seq267 대비 사령탑 FAIL → PASS 1줄, 사라진 PASS 0) → **기준 [`test-baseline-hnsfix1010e.txt`](../friend-handoff/results/1.17.0-port/test-baseline-hnsfix1010e.txt)**. 한글 517/607 기대 요약과 바이트 같음. 세이브 정적 비교 생략(설정 상수·문자열 1바이트·테스트만).
+- 스크래치: `/home/hjm0725/hns-sync-work/hnsfix-1010e/`(RESULT·patch·probe·trace·`main/`)
 
 ## 2026-10-10 밤 — 친구 최종 방침: 트레이너 클래스명·이름·스프라이트 HGSS 복원 (현재, 데스크탑 — 랩탑에서 Remote Control)
 
@@ -18,7 +22,7 @@
 - **다음 할 일**
   1. ~~친구 문자~~ **보냄**(2026-10-10 사용자 확인): 묶음 14 결과 `/home/hjm0725/hns-sync-work/chunk-253-267/main/discord-pending.md`.
   2. **친구 답 대기:** 이름 번역 질문 10개, 프런티어용 `youngster.png`, 불사르기 조사(재확인 47), 미러아머 9세대(49), 사령탑 이름(13 D6c), 실버 멀티 실기, 재확인 35·37·42, 가드 43·44. 답이 오면 반영부터. 이름 번역 2단계 계획은 아래 묶음 13 절 3번.
-  3. **full-sync 다음 seq 268 #10368**(Move relearner CANCEL 중복, S, unit `U-relearner-9006`), 269 #10369(S, 그림자 애니메이션), 270 #10366(S, 데이터), 271 #10323(M, 트레이너 슬라이드·스크립트 비교 연산자 리팩터 — HnS 스크립트 영향 확인), 272 #10199(S, Dynamic Multichoice 튜토리얼) … 방식은 묶음 7~14와 같다(지시서 틀 `chunk-253-267/ANALYZE.md`·`APPLY.md`·`REVIEW.md`, `main/main-verify.sh` — 문서는 메인 검증 뒤에). 테스트 기준 **`test-baseline-seq267.txt`**.
+  3. **full-sync 다음 seq 268 #10368**(테스트 기준은 위 절의 `test-baseline-hnsfix1010e.txt`)(Move relearner CANCEL 중복, S, unit `U-relearner-9006`), 269 #10369(S, 그림자 애니메이션), 270 #10366(S, 데이터), 271 #10323(M, 트레이너 슬라이드·스크립트 비교 연산자 리팩터 — HnS 스크립트 영향 확인), 272 #10199(S, Dynamic Multichoice 튜토리얼) … 방식은 묶음 7~14와 같다(지시서 틀 `chunk-253-267/ANALYZE.md`·`APPLY.md`·`REVIEW.md`, `main/main-verify.sh` — 문서는 메인 검증 뒤에). 테스트 기준 **`test-baseline-seq267.txt`**.
 - **묶음 14:** 결과 [`full-sync-seq-253-267.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-253-267.md), 회신 HANDBACK 23절
   - 커밋: `30ebf75ff9` #10306, `f162b0f3c7` #10307, `bad0bc21e1` #10295, `34c741f969` #10309, `4ef95ae3b2` #10315, `5dea0f72a6` #10322, `409d59498b` #10332, `4c623aea8f` #10325, `badf2b354d` #10354, `15545d918d` #10357, `a00f55ce28` #10358, `598b9db0c3` #10350 남은 부분, `568a20f8f0` #10317, `68035b152d` HnS 코트체인지 뒤 미러아머 범위 밖 쓰기 가드(리뷰 R1). 258 #10285·265 #10345는 이미 같음
   - 결정(2026-10-10, 사용자 "혼자 가능하면 ㄱㄱ"): 266 `GEN_8` + HnS 적응, 257 Champions 분기 조건, 262 토큰 교체 제외, 267 영문 MESSAGE 테스트 수용, 나머지 upstream 수용. 코트체인지 가드는 메모리 오염 방지(메인)

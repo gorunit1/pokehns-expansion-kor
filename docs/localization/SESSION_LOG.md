@@ -2,6 +2,14 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-10 밤 — 친구 답(묶음 14): 미러아머 9세대, 사령탑 문장 이름, 사령탑 테스트 복구
+
+- 요청: 친구 답(`FRIEND_REPLY_2026-10-10.md`) — 묶음 14 수용, Q1 `GEN_9`, Q2 사령탑 이름, 사라진 PASS 복구, 재확인 50 검토.
+- 조사·patch 1개(저장소 밖 `hnsfix-1010e/RESULT.md`) → 커밋 `e1efb8e08b`·`d60b33a2c4`·`8bc73a727c`(fix4 방어 코드는 넣지 않음). 결과 `hnsfix-2026-10-10c.md`, `test-baseline-hnsfix1010e.txt`, 출력 변화 2행, 재확인 49·50·13 D6c 해결, HANDBACK 24절.
+- 검증: 최종 `8bc73a727c` 종료 0, 새 경고 0, SHA1 `662ba2c3…`. PASS 2,649 / 5,566(사령탑 1줄 복구) → 기준 `test-baseline-hnsfix1010e.txt`. 한글 517/607 = 기대.
+- 게임 화면 확인: 하지 않았다.
+- 다음 시작점: 친구 문자(`hnsfix-1010e/discord-pending.md`) 전송 확인 → 트레이너 질문 답 → seq 268 #10368.
+
 ### 2026-10-10 밤 — 친구 최종 방침: 트레이너 클래스·이름·그림 HGSS 복원 1단계 조사
 
 - 요청: 친구 디스코드(원문 `docs/friend-handoff/FRIEND_REQUEST_2026-10-10.md`, 첨부 4개는 디스코드 zip을 원본 그대로 받아 저장소 밖 `trainer-class-1010/friend-files/`).
