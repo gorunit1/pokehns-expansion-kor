@@ -1,17 +1,16 @@
 # 현재 인수인계 상태
 
-## 2026-10-11 — 트레이너 클래스·이름·그림 HGSS 복원: 적용 12커밋(로컬, push 전) — 리뷰 중 중단 (현재, 데스크탑 — 랩탑에서 Remote Control)
+## 2026-10-11 — 트레이너 클래스명·이름·배틀 그림 HGSS 복원 완료·push (현재, 데스크탑 — 랩탑에서 Remote Control)
 
-- **중단 지점(2026-10-11, 사용자 요청 — 세션 한도 리셋 뒤 이어서):** 적용 커밋 12개가 **로컬에만** 있다(origin보다 앞섬, push 안 함 — 리뷰·메인 검증 전). 리뷰 2개(R1·R2)는 시작했다가 멈춤(결과 없음, `review-R2/w` 부분 사본은 지움). 친구 문자는 **아직 안 보냄** — 사용자 요청: 하던 작업을 다 끝낸 뒤 복사하기 쉽게 한 번에 줄 것.
-- **이어서 할 일(순서)**
-  1. 리뷰 2개 다시 띄우기: 지시 `/home/hjm0725/hns-sync-work/trainer-class-1010/REVIEW.md`(R1 구조·클래스·동작 보존, R2 그림·이름·성별·크레딧), 리뷰 기준 사본은 `review-base/w`(HEAD `3b356beb2e`)를 쓰거나 `dev_scripts/hns_verify/mkcopy.sh`로 새로. 결과 `review-R1|R2/REVIEW-RESULT.md`.
-  2. 메인 검증(저장소, 작업 트리 깨끗한 상태): `make hns -j8` → `warncheck.sh` → 전체 `make check BUILD=hns -j8` → `testlist.sh … test-baseline-hnsfix1010e.txt`(사라진 PASS 0 기대) → 한글 회귀 `ALLOW_REPO=1 dev_scripts/hns_verify/kortests/run.sh … 8`(517/607 기대) → 세이브 정적 비교(이식 전 사실은 `trainer-class-1010/apply/PROGRESS.md`에 적힌 위치) → 세이브 왕복(`mkcopy.sh` 사본). 틀은 `chunk-253-267/main/main-verify.sh`.
-  3. 문서: 결과 문서(트레이너별 전후 비교 = `apply/trainers_before_after.tsv`·`apply2/trainers_before_after_total_b13db282f8.tsv`·`class_names_all_before_after_total_b13db282f8.tsv`·`frontier_names_before_after.tsv`, 새 그림 ID 표 `apply2/c6_new_pics.tsv`, 보류 목록 `q2/hold_list_final.tsv`, 추가로 필요한 그림 `p1/sprites_needed.tsv`·`q3/public_assets.tsv`), HANDBACK 25절, 재확인 목록(seq 400 #9440 이식 때 트레이너 개인값 시드 호환 — `apply2/PROGRESS.md` 메모 7, ANN&ANNE 그림만 교체, `CREDITS.md` 친구 이름 칸), STATUS·SESSION_LOG → push.
-  4. 친구 메시지: `trainer-class-1010/discord-pending-2.md`(메시지 3개, 아직 안 보냄)를 최종 결과(커밋 SHA·검증·보류 목록·필요 그림)로 고쳐서 복사용으로 한 번에 사용자에게.
-- **적용 커밋(시작 HEAD `b13db282f8`, 근거 `trainer-class-1010/APPLY-PHASE3.md`·`APPLY-PHASE3B.md`, 기록 `apply/PROGRESS.md`·`apply2/PROGRESS.md`):** `b4aa082379` 클래스명 한글화(HnS 56·에메랄드 39, DEVELOPER 영문)·클래스명 칸 18·유니언룸 카드·배틀 메시지 버퍼 / `a0a08bdf0f` 동작 클래스(`struct Trainer.behaviorClass`, trainerproc `Behavior Class:`, 동작 지점 10곳) / `29bb228de6` 새 그림 ID 213 SCIENTIST_HNS(SoulGold)·214 TEACHER_HNS·215 MEDIUM_HNS(친구) / `26af9245f8` 로켓단 조무래기 ♂♀ 그림 SoulGold로 / `d618e65415` 새 클래스 7개 + 확정 42항목 Class·Behavior Class·Pic / `890dfce9ab` 프런티어 컬렉터 그림을 이식 전 에메랄드 그림으로 / `887bf5b81f` 테스트 이름 상수(`AI_TRAINER_NAME` 등 = `포켓몬 트레이너 …`, 한글 회귀 512 → 517 복구) / `8b367c121d` 공개 그림 6클래스(새 ID 216~221, 배치 80항목) / `0f980605f7` `CREDITS.md`(PokéCommunity 308798·SoulGold·Team Aqua's Asset Repo) / `fb776b2466` 트레이너 이름 505 / `b039cae14b` 프런티어 300·텐트 90·견습생 16·브레인 7 이름 / `3b356beb2e` 성별 127(GRUNT_27 제외).
-- **적용 담당 검증(커밋마다):** 새 경고 0, 동작 불변 위반 0(상금·볼·AI·파티·BGM·랜더마이저), 기존 클래스·그림 번호 이동 0, 시설 그림 변경은 컬렉터 1건(의도). 최종(`3b356beb2e`) 전체 테스트 목록 = `test-baseline-hnsfix1010e.txt`(PASS 2,649 / 5,566), 한글 517/607 = 기대, 세이브 정적 PASS(WARN 0)·왕복 PASS. ROM 사용 32,772,452 B. 트레이너 포켓몬 58마리의 개인값 해시 입력이 바뀜(데이터 배치 이동 — 성격·특성 고정이라 겉모습 값만, 원래 있던 성질). 실기 미확인.
-- **이번에 바꾸지 않은 것(친구 질문 대기 — `discord-pending-2.md` 메시지 3):** 이과계의 남자 7명 그림, GRUNT_27(대사 ♀·그림 ♂), NARD·RICHARDO, 추정 이름 11개, Bugsy·Will·추정 6항목 성별, DEVELOPER·ETO, 연구원 그림 출처(MrDollSteak 판 여부), 엘리트 콤비·보더 그림, 공개 그림 없는 6클래스, 오버월드 전부, 새 웅 그림(친구에게 받아야 함). ANN&ANNE은 이름·성별 그대로 두고 그림만 쌍둥이 그림으로(적용 담당 판단 — 리뷰 R2에서 확인).
-- **조사 산출물(저장소 밖 `/home/hjm0725/hns-sync-work/trainer-class-1010/`):** 1단계 `p1/`·`p2/`·`p3/`, 2단계 `q1/`(배치 확정 577·수정 목록)·`q2/`(클래스명·이름·프런티어 최종 표)·`q3/`(공개 그림 허가·오버월드), 친구 그림 `friend-files/`. 친구 답 원문 [`FRIEND_REPLY_2026-10-10b.md`](../friend-handoff/FRIEND_REPLY_2026-10-10b.md).
+- **다음 할 일**
+  1. **친구 문자(사용자가 보낼 차례 — 사용자 요청: 끝난 뒤 복사용으로 한 번에):** `/home/hjm0725/hns-sync-work/trainer-class-1010/discord-final.md`(메시지 3개, 보고 + 질문 12개). 이전 초안 `discord-pending-2.md`는 이 파일로 대체(보내지 않음). 보냈는지 먼저 물어본다.
+  2. **친구 답 대기:** 트레이너 질문 12개(`discord-final.md` 메시지 3 — 재확인 53), 새 웅 그림 파일, 프런티어용 `youngster.png`, 불사르기 조사(47), 실버 멀티 실기, 재확인 35·37·42, 가드 43·44. 답이 오면 반영부터.
+  3. **full-sync 다음 seq 268 #10368**(아래 묶음 14 절 3번). 테스트 기준 **`test-baseline-hnsfix1010e.txt`**(이번 작업 뒤에도 바이트 같음). seq 400 #9440 이식 때 재확인 51 규칙 필수.
+- **결과:** [`results/trainer-class-2026-10-11/README.md`](../friend-handoff/results/trainer-class-2026-10-11/README.md)(전후 비교표 TSV 8개), HANDBACK 25절, 재확인 51~54. 친구 답 원문 [`FRIEND_REPLY_2026-10-10b.md`](../friend-handoff/FRIEND_REPLY_2026-10-10b.md).
+  - 커밋 12개: `b4aa082379` 클래스명·칸 18, `a0a08bdf0f` 동작 클래스, `29bb228de6` 새 그림 213~215, `26af9245f8` 로켓 조무래기 그림, `d618e65415` 확정 42항목 클래스·그림(새 클래스 7), `890dfce9ab` 프런티어 Collector 에메랄드 그림, `887bf5b81f` 테스트 이름 상수, `8b367c121d` 공개 그림 6클래스(216~221, 80항목), `0f980605f7` `CREDITS.md`, `fb776b2466` 트레이너 이름 505, `b039cae14b` 프런티어계 이름 413, `3b356beb2e` 성별 127.
+  - 검증(최종 `3b356beb2e`): 종료 0, 새 경고 0, ROM 사용 32,772,452 B(+8,336), EWRAM·IWRAM 같음, SHA1 `e3ccf1fe…`. 전체 테스트 목록 = `test-baseline-hnsfix1010e.txt`(PASS 2,649 / 5,566), 한글 517/607 = 기대, 세이브 정적 PASS(WARN 0)·왕복 PASS. 리뷰 2개 수정 필요 0(R1 헤드리스 mGBA로 651명 동작 전후 같음, R2 그림 픽셀·이름 조사 918개 확인). 실기 미확인.
+  - 2026-10-11 세션 한도로 한 번 멈췄다가(리뷰 중) 리셋 뒤 리뷰를 처음부터 다시 실행.
+- 스크래치: `/home/hjm0725/hns-sync-work/trainer-class-1010/`(p1~p3·q1~q3 조사, `apply/`·`apply2/` 적용 기록, `review-R1|R2/`, `main/`, `friend-files/`)
 
 ## 2026-10-10 밤 — 친구 답(묶음 14) 반영 완료·push: 미러아머 9세대, 사령탑 문장 이름 (현재, 데스크탑 — 랩탑에서 Remote Control)
 
