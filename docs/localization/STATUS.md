@@ -3,7 +3,7 @@
 ## 2026-10-10 — 친구 요청(실버 멀티 머그샷) + full-sync 묶음 12(seq 227~239) 완료·push (현재, 데스크탑 — 랩탑에서 Remote Control)
 
 - **다음 할 일**
-  1. **친구 문자(사용자가 보낼 차례):** (a) 실버 멀티 결과 `/home/hjm0725/hns-sync-work/hnsfix-1010/discord-pending.md`(+ 그림 `hnsfix-1010/img/silver-multi-before-after.png`, 사용자에게 줌), (b) 묶음 12 결과 `/home/hjm0725/hns-sync-work/chunk-227-239/main/discord-pending.md`. 보냈는지 먼저 물어본다. 이전 문자는 모두 보냄.
+  1. ~~친구 문자~~ **보냄**(2026-10-10 사용자 확인): (a) 실버 멀티 결과 `/home/hjm0725/hns-sync-work/hnsfix-1010/discord-pending.md`(+ 그림), (b) 묶음 12 결과 `/home/hjm0725/hns-sync-work/chunk-227-239/main/discord-pending.md`. 보낼 문자 없음.
   2. **친구 답 대기:** 실버 멀티 최종 배치 실기(`738d089968`), 재확인 35(미러 챌린지 패배), 37(선파워 팝업 도착 대기 patch — 저장소 밖 `hnsfix-1009b/f3-popup/fix-f3-2-slidein.patch`), 42(볼 바꾸기 성공 문장 영문). 묶음 12 가드(재확인 43·44)를 1.17.0 동작으로 바꾸길 원하면 해당 커밋 revert. 답이 오면 반영부터.
   3. **full-sync 다음 seq 240 #10226**(Fix Psycho Shift status transfer interactions, M, **한글 Y**), 241 #10231(M, 조개껍질방울 회복 뒤 위기회피 — 의존 #10169는 들어감), 242 #10219(S), 243 #10185(M, 흉내허브 `U-statchange-9730`), 244 #10263(M), 245 #10272(S) … 방식은 묶음 7~12와 같다(지시서 틀: `chunk-227-239/ANALYZE.md`·`APPLY.md`·`REVIEW.md`, `main/main-verify.sh` — 저장소 문서를 고친 채 돌리면 세이브 왕복의 `mkcopy.sh`가 거부하므로 문서는 검증 뒤에 고치거나 `--allow-dirty`). 테스트 기준 **`test-baseline-seq239.txt`**.
 - **친구 요청(2026-10-10):** `7ceb3d5a53` mGBA PASS(재확인 40 끝) → 실버 멀티 상대 목호 ←4·이향 ←12 px **`738d089968`**(결과 [`hnsfix-2026-10-10.md`](../friend-handoff/results/1.17.0-port/hnsfix-2026-10-10.md), HANDBACK 19절). SHA1 `8d642d35…`, 전체 테스트 목록 = `test-baseline-seq226.txt`, 덤프 재구성으로 다른 머그샷 장면 바이트 같음.

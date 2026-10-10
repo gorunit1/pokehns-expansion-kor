@@ -8,7 +8,7 @@
 - 수정 경로: 커밋 `41e4f16717`..`6155f43690`(upstream 11 + HnS 4), 문서 결과 `full-sync-seq-227-239.md`, `test-baseline-seq239.txt`, 재확인 목록(2·8e·8h 해결, 8u·43~46), `BATTLE_MESSAGE_OUTPUT_CHANGES.md`(미래예지 착탄·불바다·일격기·총대장 4행), HANDBACK 20절.
 - 검증: 최종 `6155f43690` 종료 0, 새 경고 0, ROM 32,761,764 B, SHA1 `b45491da…`. PASS 2,598 / 5,515(사라진 PASS 0) → 기준 `test-baseline-seq239.txt`. 한글 517/607 = 기대. 세이브 정적 PASS(WARN 0)·왕복 PASS(문서 수정 중이라 `mkcopy.sh --allow-dirty`로 다시 실행 — 바뀐 것은 문서뿐).
 - 게임 화면 확인: 하지 않았다.
-- 다음 시작점: 친구 문자 2개(`hnsfix-1010/discord-pending.md`, `chunk-227-239/main/discord-pending.md`) 전송 확인 → 친구 답 → seq 240 #10226.
+- 다음 시작점: 친구 문자 2개(`hnsfix-1010/discord-pending.md`, `chunk-227-239/main/discord-pending.md`)는 보냄(2026-10-10 사용자 확인) → 친구 답 → seq 240 #10226.
 
 ### 2026-10-10 — 친구 요청: 실버 멀티 머그샷 목호·이향 간격, 묶음 12 사전 분석
 
