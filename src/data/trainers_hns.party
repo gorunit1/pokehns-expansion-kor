@@ -726,7 +726,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 미카
 Class: Lass Hns
 Pic: Lass
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -739,7 +739,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 아스카
 Class: Lass Hns
 Pic: Lass
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -756,7 +756,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 지혜
 Class: Lass Hns
 Pic: Lass
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -777,7 +777,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 희아
 Class: Lass Hns
 Pic: Lass
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -794,7 +794,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 레미
 Class: Lass Hns
 Pic: Lass
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -811,7 +811,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 추희
 Class: Lass Hns
 Pic: Lass
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -832,7 +832,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 미나
 Class: Lass Hns
 Pic: Lass
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -853,7 +853,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 혜지
 Class: Lass Hns
 Pic: Lass
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -874,7 +874,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 유미
 Class: Lass Hns
 Pic: Lass
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -895,7 +895,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 이화
 Class: Lass Hns
 Pic: Lass
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -912,7 +912,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 유나
 Class: Lass Hns
 Pic: Lass
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -1347,7 +1347,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 태양
 Class: Cooltrainer Hns
 Pic: Cooltrainer F Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -1372,7 +1372,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 천심
 Class: Cooltrainer Hns
 Pic: Cooltrainer F Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -1389,7 +1389,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 지예
 Class: Cooltrainer Hns
 Pic: Cooltrainer F Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -1410,7 +1410,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 마리
 Class: Cooltrainer Hns
 Pic: Cooltrainer F Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -1435,7 +1435,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 마리아
 Class: Cooltrainer Hns
 Pic: Cooltrainer F Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -1452,7 +1452,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 마리사
 Class: Cooltrainer Hns
 Pic: Cooltrainer F Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -1469,7 +1469,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 카렌
 Class: Cooltrainer Hns
 Pic: Cooltrainer F Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -1494,7 +1494,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 레이카
 Class: Cooltrainer Hns
 Pic: Cooltrainer F Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -1523,7 +1523,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 동숙
 Class: Cooltrainer Hns
 Pic: Cooltrainer F Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -1552,7 +1552,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 하현
 Class: Cooltrainer Hns
 Pic: Cooltrainer F Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -1581,7 +1581,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 능금
 Class: Cooltrainer Hns
 Pic: Cooltrainer F Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -1606,7 +1606,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 나진
 Class: Cooltrainer Hns
 Pic: Cooltrainer F Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -1627,7 +1627,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 애자
 Class: Cooltrainer Hns
 Pic: Cooltrainer F Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -1644,7 +1644,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 사리나
 Class: Cooltrainer Hns
 Pic: Cooltrainer F Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -1657,7 +1657,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 희망
 Class: Cooltrainer Hns
 Pic: Cooltrainer F Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -1678,7 +1678,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 마리카
 Class: Cooltrainer Hns
 Pic: Cooltrainer F Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -1695,7 +1695,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 유민
 Class: Cooltrainer Hns
 Pic: Cooltrainer F Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -1716,7 +1716,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 진주
 Class: Beauty Hns
 Pic: Beauty
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -1733,7 +1733,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 채린
 Class: Beauty Hns
 Pic: Beauty
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -1785,7 +1785,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 문옥
 Class: Beauty Hns
 Pic: Beauty
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -1901,7 +1901,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 수하
 Class: Beauty Hns
 Pic: Beauty
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -1935,7 +1935,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 백합
 Class: Beauty Hns
 Pic: Beauty
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -2966,7 +2966,7 @@ Name: 홍선
 Class: Teacher Hns
 Behavior Class: Expert Hns
 Pic: Teacher Hns
-Gender: Male
+Gender: Female
 Music: Hg Sage
 Double Battle: No
 AI: Check Bad Move
@@ -3852,7 +3852,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 리사
 Class: Swimmer F Hns
 Pic: Swimmer F
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -3865,7 +3865,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 미지
 Class: Swimmer F Hns
 Pic: Swimmer F
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -3882,7 +3882,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 수현
 Class: Swimmer F Hns
 Pic: Swimmer F
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -3903,7 +3903,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 하미
 Class: Swimmer F Hns
 Pic: Swimmer F
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -3920,7 +3920,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 현지
 Class: Swimmer F Hns
 Pic: Swimmer F
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -3933,7 +3933,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 연아
 Class: Swimmer F Hns
 Pic: Swimmer F
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -3950,7 +3950,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 진화
 Class: Swimmer F Hns
 Pic: Swimmer F
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -4045,7 +4045,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 보미
 Class: Swimmer F Hns
 Pic: Swimmer F
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -4062,7 +4062,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 미향
 Class: Swimmer F Hns
 Pic: Swimmer F
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -4092,7 +4092,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 신희
 Class: Swimmer F Hns
 Pic: Swimmer F
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -4113,7 +4113,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 나미
 Class: Swimmer F Hns
 Pic: Swimmer F
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -4134,7 +4134,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 보라
 Class: Swimmer F Hns
 Pic: Swimmer F
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -5718,7 +5718,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 은향
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -5731,7 +5731,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 수수
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -5748,7 +5748,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 도혜
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -5761,7 +5761,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 연화
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -5774,7 +5774,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 미지
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -5791,7 +5791,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 민지
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -5804,7 +5804,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 미정
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -5821,7 +5821,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 진미
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -5834,7 +5834,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 혜미
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -5859,7 +5859,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 민주
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -5876,7 +5876,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 귀진
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -5893,7 +5893,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 소천
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -5910,7 +5910,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 설지
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -6512,7 +6512,7 @@ Name: 미연
 Class: Medium Hns
 Behavior Class: Hex Maniac Hns
 Pic: Medium Hns
-Gender: Male
+Gender: Female
 Music: Hg Sage
 Double Battle: No
 AI: Check Bad Move
@@ -6530,7 +6530,7 @@ Name: 나영
 Class: Medium Hns
 Behavior Class: Hex Maniac Hns
 Pic: Medium Hns
-Gender: Male
+Gender: Female
 Music: Hg Sage
 Double Battle: No
 AI: Check Bad Move
@@ -6587,7 +6587,7 @@ Name: 정옥
 Class: Medium Hns
 Behavior Class: Hex Maniac Hns
 Pic: Medium Hns
-Gender: Male
+Gender: Female
 Music: Hg Sage
 Double Battle: No
 AI: Check Bad Move
@@ -6609,7 +6609,7 @@ Name: 자양
 Class: Medium Hns
 Behavior Class: Psychic Hns
 Pic: Medium Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -6883,7 +6883,7 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Name: 수정
 Class: Kimono Girl Hns
 Pic: Kimono Girl Hns
-Gender: Male
+Gender: Female
 Music: Hg Kimono Girl
 Double Battle: No
 AI: Basic Trainer
@@ -6901,7 +6901,7 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Name: 예솔
 Class: Kimono Girl Hns
 Pic: Kimono Girl Hns
-Gender: Male
+Gender: Female
 Music: Hg Kimono Girl
 Double Battle: No
 AI: Basic Trainer
@@ -6919,7 +6919,7 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Name: 옥희
 Class: Kimono Girl Hns
 Pic: Kimono Girl Hns
-Gender: Male
+Gender: Female
 Music: Hg Kimono Girl
 Double Battle: No
 AI: Basic Trainer
@@ -6937,7 +6937,7 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Name: 태희
 Class: Kimono Girl Hns
 Pic: Kimono Girl Hns
-Gender: Male
+Gender: Female
 Music: Hg Kimono Girl
 Double Battle: No
 AI: Basic Trainer
@@ -6955,7 +6955,7 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Name: 난주
 Class: Kimono Girl Hns
 Pic: Kimono Girl Hns
-Gender: Male
+Gender: Female
 Music: Hg Kimono Girl
 Double Battle: No
 AI: Basic Trainer
@@ -6973,7 +6973,7 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Name: 루비&루미
 Class: Twins Hns
 Pic: Twins Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: Yes
 AI: Check Bad Move
@@ -7007,7 +7007,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 미키&마미
 Class: Twins Hns
 Pic: Twins Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: Yes
 AI: Check Bad Move
@@ -7024,7 +7024,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 아롱&다롱
 Class: Twins Hns
 Pic: Twins Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: Yes
 AI: Check Bad Move
@@ -7041,7 +7041,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 하란&희은
 Class: Twins Hns
 Pic: Twins Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: Yes
 AI: Check Bad Move
@@ -7067,7 +7067,7 @@ Name: 희영
 Class: Pokefan Hns
 Behavior Class: Parasol Lady Hns
 Pic: Pokefan F
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -7081,7 +7081,7 @@ Name: 한샘
 Class: Pokefan Hns
 Behavior Class: Parasol Lady Hns
 Pic: Pokefan F
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -7124,7 +7124,7 @@ Name: JAIME
 Class: Pokefan Hns
 Behavior Class: Parasol Lady Hns
 Pic: Pokefan F
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -7379,7 +7379,7 @@ IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 Name: 꼭두
 Class: Leader Hns
 Pic: Leader Whitney Hns
-Gender: Male
+Gender: Female
 Music: Hg Boy 1
 Double Battle: No
 AI: Basic Trainer
@@ -7414,7 +7414,7 @@ IVs: 2 HP / 2 Atk / 2 Def / 2 SpA / 2 SpD / 2 Spe
 Name: 꼭두
 Class: Leader Hns
 Pic: Leader Whitney Hns
-Gender: Male
+Gender: Female
 Music: Hg Boy 1
 Double Battle: No
 AI: Basic Trainer
@@ -7783,7 +7783,7 @@ IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
 Name: 규리
 Class: Leader Hns
 Pic: Leader Jasmine Hns
-Gender: Male
+Gender: Female
 Music: Hg Boy 1
 Double Battle: No
 AI: Basic Trainer
@@ -7834,7 +7834,7 @@ IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 Name: 규리
 Class: Leader Hns
 Pic: Leader Jasmine Hns
-Gender: Male
+Gender: Female
 Music: Hg Boy 1
 Double Battle: No
 AI: Basic Trainer
@@ -7893,7 +7893,7 @@ IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
 Name: 규리
 Class: Leader Hns
 Pic: Leader Jasmine Hns
-Gender: Male
+Gender: Female
 Music: Hg Boy 1
 Double Battle: No
 AI: Basic Trainer
@@ -7944,7 +7944,7 @@ IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 Name: 규리
 Class: Leader Hns
 Pic: Leader Jasmine Hns
-Gender: Male
+Gender: Female
 Music: Hg Boy 1
 Double Battle: No
 AI: Basic Trainer
@@ -8199,7 +8199,7 @@ IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
 Name: 이향
 Class: Leader Hns
 Pic: Leader Clair Hns
-Gender: Male
+Gender: Female
 Music: Hg Boy 1
 Double Battle: No
 AI: Basic Trainer
@@ -8250,7 +8250,7 @@ IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
 Name: 이향
 Class: Leader Hns
 Pic: Leader Clair Hns
-Gender: Male
+Gender: Female
 Music: Hg Boy 1
 Double Battle: No
 AI: Basic Trainer
@@ -8368,7 +8368,7 @@ IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
 Name: 이슬
 Class: Leader Kanto Hns
 Pic: Leader Misty Hns
-Gender: Male
+Gender: Female
 Music: Hg Boy 1
 Double Battle: No
 AI: Basic Trainer
@@ -8486,7 +8486,7 @@ IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
 Name: 민화
 Class: Leader Kanto Hns
 Pic: Leader Erika Hns
-Gender: Male
+Gender: Female
 Music: Hg Boy 1
 Double Battle: No
 AI: Basic Trainer
@@ -8545,7 +8545,7 @@ IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
 Name: 초련
 Class: Leader Kanto Hns
 Pic: Leader Sabrina Hns
-Gender: Male
+Gender: Female
 Music: Hg Boy 1
 Double Battle: No
 AI: Basic Trainer
@@ -8604,7 +8604,7 @@ IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
 Name: 도희
 Class: Leader Kanto Hns
 Pic: Leader Janine Hns
-Gender: Male
+Gender: Female
 Music: Hg Boy 1
 Double Battle: No
 AI: Basic Trainer
@@ -9060,7 +9060,7 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Name: 카렌
 Class: Elite Four Hns
 Pic: Elite Four Karen Hns
-Gender: Male
+Gender: Female
 Music: Hg Elite Four
 Double Battle: No
 AI: Basic Trainer
@@ -9111,7 +9111,7 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Name: 카렌
 Class: Elite Four Hns
 Pic: Elite Four Karen Hns
-Gender: Male
+Gender: Female
 Music: Hg Elite Four
 Double Battle: No
 AI: Basic Trainer
@@ -10924,7 +10924,7 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Name: 아테나
 Class: Rocket Admin Hns
 Pic: Ariana Hns
-Gender: Male
+Gender: Female
 Music: Rocket
 Double Battle: No
 AI: Basic Trainer
@@ -10960,7 +10960,7 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Name: 아테나
 Class: Rocket Admin Hns
 Pic: Ariana Hns
-Gender: Male
+Gender: Female
 Music: Rocket
 Double Battle: No
 AI: Basic Trainer
@@ -11339,7 +11339,7 @@ Level: 55
 Name: 은향
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -11354,7 +11354,7 @@ Level: 25
 Name: 은향
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -11372,7 +11372,7 @@ Level: 30
 Name: 은향
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -11390,7 +11390,7 @@ Level: 36
 Name: 은향
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -11579,7 +11579,7 @@ Level: 55
 Name: 수수
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -11597,7 +11597,7 @@ Level: 27
 Name: 수수
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -11615,7 +11615,7 @@ Level: 35
 Name: 수수
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -11633,7 +11633,7 @@ Level: 48
 Name: 수수
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -11927,7 +11927,7 @@ Level: 25
 Name: 이화
 Class: Lass Hns
 Pic: Lass
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -11950,7 +11950,7 @@ Level: 37
 Name: 이화
 Class: Lass Hns
 Pic: Lass
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -11973,7 +11973,7 @@ Level: 45
 Name: 이화
 Class: Lass Hns
 Pic: Lass
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -12228,7 +12228,7 @@ Level: 53
 Name: 소천
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -12244,7 +12244,7 @@ Level: 37
 Name: 소천
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -12260,7 +12260,7 @@ Level: 29
 Name: 소천
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -12446,7 +12446,7 @@ Level: 38
 Name: 혜미
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -12467,7 +12467,7 @@ Level: 44
 Name: 혜미
 Class: Picnicker Hns
 Pic: Picnicker Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -12583,7 +12583,7 @@ Name: 희영
 Class: Pokefan Hns
 Behavior Class: Parasol Lady Hns
 Pic: Pokefan F
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -12597,7 +12597,7 @@ Name: 희영
 Class: Pokefan Hns
 Behavior Class: Parasol Lady Hns
 Pic: Pokefan F
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -12611,7 +12611,7 @@ Name: 희영
 Class: Pokefan Hns
 Behavior Class: Parasol Lady Hns
 Pic: Pokefan F
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -12625,7 +12625,7 @@ Name: 희영
 Class: Pokefan Hns
 Behavior Class: Parasol Lady Hns
 Pic: Pokefan F
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -12783,7 +12783,7 @@ Level: 44
 Name: 동숙
 Class: Cooltrainer Hns
 Pic: Cooltrainer F Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -12826,7 +12826,7 @@ Level: 50
 Name: 동숙
 Class: Cooltrainer Hns
 Pic: Cooltrainer F Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -12914,7 +12914,7 @@ Level: 48
 Name: 하현
 Class: Cooltrainer Hns
 Pic: Cooltrainer F Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -12938,7 +12938,7 @@ Level: 49
 Name: 하현
 Class: Cooltrainer Hns
 Pic: Cooltrainer F Hgss Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move / Try To Faint / Check Viability
@@ -13171,7 +13171,7 @@ Name: 은영
 Class: Teacher Hns
 Behavior Class: Lass Hns
 Pic: Teacher Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -13190,7 +13190,7 @@ Name: 은영
 Class: Teacher Hns
 Behavior Class: Lass Hns
 Pic: Teacher Hns
-Gender: Male
+Gender: Female
 Music: Hg Girl 2
 Double Battle: No
 AI: Check Bad Move
@@ -13247,7 +13247,7 @@ Level: 64
 Name: 보미
 Class: Swimmer F Hns
 Pic: Swimmer F
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -13265,7 +13265,7 @@ Level: 66
 Name: 보미
 Class: Swimmer F Hns
 Pic: Swimmer F
-Gender: Male
+Gender: Female
 Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
@@ -14815,7 +14815,7 @@ Level: 69
 Name: 꼭두
 Class: Leader Hns
 Pic: Leader Whitney Hns
-Gender: Male
+Gender: Female
 Music: Hg Boy 1
 Double Battle: No
 AI: Smart Trainer / Prediction
@@ -14999,7 +14999,7 @@ Level: 71
 Name: 규리
 Class: Leader Hns
 Pic: Leader Jasmine Hns
-Gender: Male
+Gender: Female
 Music: Hg Boy 1
 Double Battle: No
 AI: Smart Trainer / Prediction
@@ -15125,7 +15125,7 @@ IVs: 0 Atk
 Name: 이향
 Class: Leader Hns
 Pic: Leader Clair Hns
-Gender: Male
+Gender: Female
 Music: Hg Boy 1
 Double Battle: No
 AI: Smart Trainer / Prediction
@@ -15245,7 +15245,7 @@ Level: 72
 Name: 이슬
 Class: Leader Kanto Hns
 Pic: Leader Misty Hns
-Gender: Male
+Gender: Female
 Music: Hg Boy 1
 Double Battle: No
 AI: Smart Trainer / Prediction
@@ -15370,7 +15370,7 @@ IVs: 0 Atk
 Name: 민화
 Class: Leader Kanto Hns
 Pic: Leader Erika Hns
-Gender: Male
+Gender: Female
 Music: Hg Boy 1
 Double Battle: No
 AI: Smart Trainer / Prediction
@@ -15434,7 +15434,7 @@ IVs: 0 Atk
 Name: 도희
 Class: Leader Kanto Hns
 Pic: Leader Janine Hns
-Gender: Male
+Gender: Female
 Music: Hg Boy 1
 Double Battle: No
 AI: Smart Trainer / Prediction
@@ -15496,7 +15496,7 @@ IVs: 0 Atk
 Name: 초련
 Class: Leader Kanto Hns
 Pic: Leader Sabrina Hns
-Gender: Male
+Gender: Female
 Music: Hg Boy 1
 Double Battle: No
 AI: Smart Trainer / Prediction
@@ -15870,7 +15870,7 @@ Level: 79
 Name: 카렌
 Class: Elite Four Hns
 Pic: Elite Four Karen Hns
-Gender: Male
+Gender: Female
 Music: Hg Elite Four
 Double Battle: No
 AI: Smart Trainer / Prediction
