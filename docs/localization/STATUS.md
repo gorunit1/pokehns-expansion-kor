@@ -1,9 +1,16 @@
 # 현재 인수인계 상태
 
+## 2026-10-10 밤 — 친구 최종 방침: 트레이너 클래스명·이름·스프라이트 HGSS 복원 (현재, 데스크탑 — 랩탑에서 Remote Control)
+
+- **요청 원문:** [`FRIEND_REQUEST_2026-10-10.md`](../friend-handoff/FRIEND_REQUEST_2026-10-10.md) — 이름 질문 10개 답 + HGSS 원작 클래스·배틀 스프라이트 복원(상금·몬스터볼·파티·AI 등 게임 동작은 보존), Poké Corpus로 공식 한국어 대조(우선순위 Champions > PLZA > SV > … > HGSS > Pt > DP > pokeemerald-kr), 신규 그림 `teacher_hns`·`medium_hns`, NPC 이름·대사는 이번에 제외. 단계별 별도 커밋(6절 순서 1~8).
+- **친구 첨부 4개:** 저장소 밖 `/home/hjm0725/hns-sync-work/trainer-class-1010/friend-files/`(디스코드 zip SHA1 `bd2205ed1f0465871c4b146b4133a0fea7d2f4f3`, 원본 `friend-zip/`). 둘 다 64×64·16색 인덱스·0번 투명·PNG 팔레트 = `.pal`. `teacher_hns.png`는 8비트 + `bKGD` 등 청크 → 등록 때 4비트·청크 정리(픽셀 그대로).
+- **진행 중: 1단계 조사**(6절 1~3: 전체 651명 원작 비교·스프라이트·오버월드·성별, 클래스 복원 영향·기술 설계, Poké Corpus 검증). 저장소 밖 `/home/hjm0725/hns-sync-work/trainer-class-1010/`. 이전 조사 `names-1010/`(HGSS 디컴파일 `raw/phg_repo`, 위키 자료) 재사용. 다음: 조사 결과·설계를 사용자에게 → 단계별 적용(4 클래스명·버퍼 → 5 클래스·스프라이트 복원 → 6 신규 그림 → 7 프런티어 이름) → 검증 → 문서 → push.
+- 묶음 14 결과 문자는 보냄(2026-10-10 사용자 확인). 친구 답 대기: 미러아머 9세대(49), 사령탑 이름(13 D6c), 프런티어용 `youngster.png`, 불사르기 조사(47), 실버 멀티 실기, 재확인 35·37·42, 가드 43·44.
+
 ## 2026-10-10 밤 — full-sync 묶음 14(seq 253~267) 완료·push (현재, 데스크탑 — 랩탑에서 Remote Control)
 
 - **다음 할 일**
-  1. **친구 문자(사용자가 보낼 차례):** 묶음 14 결과 `/home/hjm0725/hns-sync-work/chunk-253-267/main/discord-pending.md`(질문 2개: 미러아머 9세대, 사령탑 두 번째 이름). 보냈는지 먼저 물어본다. 2026-10-10 밤 문자 3개는 보냄.
+  1. ~~친구 문자~~ **보냄**(2026-10-10 사용자 확인): 묶음 14 결과 `/home/hjm0725/hns-sync-work/chunk-253-267/main/discord-pending.md`.
   2. **친구 답 대기:** 이름 번역 질문 10개, 프런티어용 `youngster.png`, 불사르기 조사(재확인 47), 미러아머 9세대(49), 사령탑 이름(13 D6c), 실버 멀티 실기, 재확인 35·37·42, 가드 43·44. 답이 오면 반영부터. 이름 번역 2단계 계획은 아래 묶음 13 절 3번.
   3. **full-sync 다음 seq 268 #10368**(Move relearner CANCEL 중복, S, unit `U-relearner-9006`), 269 #10369(S, 그림자 애니메이션), 270 #10366(S, 데이터), 271 #10323(M, 트레이너 슬라이드·스크립트 비교 연산자 리팩터 — HnS 스크립트 영향 확인), 272 #10199(S, Dynamic Multichoice 튜토리얼) … 방식은 묶음 7~14와 같다(지시서 틀 `chunk-253-267/ANALYZE.md`·`APPLY.md`·`REVIEW.md`, `main/main-verify.sh` — 문서는 메인 검증 뒤에). 테스트 기준 **`test-baseline-seq267.txt`**.
 - **묶음 14:** 결과 [`full-sync-seq-253-267.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-253-267.md), 회신 HANDBACK 23절
