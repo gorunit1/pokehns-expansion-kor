@@ -6,6 +6,11 @@ summary.txt = 한글 회귀 기대 요약(kortests/run.sh 출력 그대로: 정�
   테스트 결과는 툴체인·trace와 무관). 그 전 기준(584개)은 HnS 820148e779 + X6 묶음 + HNSX1 16 고침
   (hnsfix-1007b/tmp-X6/verify-out/kortests/x6kset-summary.txt). HNS9918 파일이 늘어 hydra 실패 목록(앞 50줄)의
   선택만 바뀌었고 그 전 584개의 상태 줄은 그대로다.
+2026-10-10 B_MIRROR_ARMOR_STICKY_WEB GEN_9(친구 결정): HNS9730 K4-12 기대를 9세대로 고침(미러아머 팝업만, 깐 포켓몬의
+  능력치 애니·`마자용의 스피드가 떨어졌다!` 없음, THEN 양쪽 스피드 랭크 0). 5줄 → 5줄이라 다른 테스트 줄 번호가 그대로이고
+  K4-12도 PASS 그대로여서 summary.txt는 바이트 그대로다(hnsfix-1010e mkcopy 사본 + trace.patch, kortests/run.sh <사본> post 8:
+  517/607, 기대와 바이트 동일, trace는 K4-12 2줄만 다름). 고친 K4-12를 8세대 코드에서 돌리면 `Matched ANIMATION`
+  (zz_hns9730_k4_interact.c:290)으로 FAIL한다.
 합계: 607개, PASS 517 / FAIL 84 / INVALID 6
 세트          PASS / 전체   파일(kortests/sets/)
   HNS9680      66 /  70    zz_hns9680_endturn1~4.c

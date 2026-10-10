@@ -286,9 +286,9 @@ SINGLE_BATTLE_TEST("HNS9730 K4-12 Sticky Web vs Mirror Armor on switch-in")
         MESSAGE("2는 마자용을 내보냈다!");
         MESSAGE("상대 마자용은 끈적끈적네트에 걸렸다!");
         ABILITY_POPUP(opponent, ABILITY_MIRROR_ARMOR);
-        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
-        MESSAGE("마자용의 스피드가 떨어졌다!");
-    }
+        // B_MIRROR_ARMOR_STICKY_WEB GEN_9 (2026-10-10): pop-up only, the web user keeps its Speed (GEN_8: "마자용의 스피드가 떨어졌다!")
+        NONE_OF { ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player); MESSAGE("마자용의 스피드가 떨어졌다!"); }
+    } THEN { EXPECT_EQ(player->statStages[STAT_SPEED], DEFAULT_STAT_STAGE); EXPECT_EQ(opponent->statStages[STAT_SPEED], DEFAULT_STAT_STAGE); }
 }
 
 SINGLE_BATTLE_TEST("HNS9730 K4-13 Sticky Web vs Contrary and Defiant")
