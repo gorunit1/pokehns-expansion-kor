@@ -231,6 +231,10 @@ enum __attribute__((packed)) TrainerPicID
     TRAINER_PIC_TWINS_HNS,
     TRAINER_PIC_YOUNGSTER_HNS,
     TRAINER_PIC_SAMSON_OAK_HNS,
+    // HnS: HGSS pics for restored story trainer classes (added at the end so no existing ID moves)
+    TRAINER_PIC_SCIENTIST_HNS,
+    TRAINER_PIC_TEACHER_HNS,
+    TRAINER_PIC_MEDIUM_HNS,
     TRAINER_PIC_COUNT,
 };
 
