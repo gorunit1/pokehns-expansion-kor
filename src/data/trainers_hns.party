@@ -11008,7 +11008,7 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Air Slash
 
 === TRAINER_ANABEL_BF_BRAIN_HNS ===
-Name: ANABEL
+Name: 리라
 Class: Salon Maiden Hns
 Pic: Salon Maiden Anabel
 Gender: Female
@@ -11021,7 +11021,7 @@ Level: 5
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_TUCKER_BF_BRAIN_HNS ===
-Name: TUCKER
+Name: 하인즈
 Class: Dome Ace Hns
 Pic: Dome Ace Tucker
 Gender: Male
@@ -11038,7 +11038,7 @@ Level: 60
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_SPENSER_BF_BRAIN_HNS ===
-Name: SPENSER
+Name: 우근
 Class: Palace Maven Hns
 Pic: Palace Maven Spenser
 Gender: Male
@@ -11051,7 +11051,7 @@ Level: 5
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_GRETA_BF_BRAIN_HNS ===
-Name: GRETA
+Name: 나리
 Class: Arena Tycoon Hns
 Pic: Arena Tycoon Greta
 Gender: Female
@@ -11064,7 +11064,7 @@ Level: 5
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_NOLAND_BF_BRAIN_HNS ===
-Name: NOLAND
+Name: 다투라
 Class: Factory Head Hns
 Pic: Factory Head Noland
 Gender: Male
@@ -11081,7 +11081,7 @@ Level: 55
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_LUCY_BF_BRAIN_HNS ===
-Name: LUCY
+Name: 다슬
 Class: Pike Queen Hns
 Pic: Pike Queen Lucy
 Gender: Female
@@ -11094,7 +11094,7 @@ Level: 5
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_BRANDON_BF_BRAIN_HNS ===
-Name: BRANDON
+Name: 기선
 Class: Pyramid King Hns
 Pic: Pyramid King Brandon
 Gender: Male
