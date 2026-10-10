@@ -1,5 +1,11 @@
 # 현재 인수인계 상태
 
+## 2026-10-10 밤 — 친구 답(묶음 14) 반영 중: 미러아머 9세대, 사령탑 문장 이름 (현재, 데스크탑 — 랩탑에서 Remote Control)
+
+- **친구 답:** [`FRIEND_REPLY_2026-10-10.md`](../friend-handoff/FRIEND_REPLY_2026-10-10.md) — 묶음 14 나머지 수용. Q1 `B_MIRROR_ARMOR_STICKY_WEB` → `GEN_9`(코트체인지 가드 `68035b152d` 유지), Q2 사령탑 문장 두 번째 이름을 어써러셔로(`{B_EFF_NAME_WITH_PREFIX2}` 가능, 교체 순서·자리별 검증), 사라진 사령탑 테스트 PASS를 한글 기대 문장으로 복구, 코트체인지 뒤 기절 포켓몬 스피드 하락(재확인 50) 해결 방법 검토.
+- **진행 중:** 조사·patch 에이전트 1개(저장소 밖 `/home/hjm0725/hns-sync-work/hnsfix-1010e/TASK.md`, 산출물 `RESULT.md`·`fix1-mirror-gen9.patch`(한글 회귀 `HNS9730 K4-12` 세트·기대 요약 같은 커밋)·`fix2-commander-name.patch`·`fix3-commander-test.patch`·(선택) `fix4-mirror-alive-optional.patch`). 다음: 결과 확인 → 별도 커밋으로 적용 → 저장소 검증(빌드·전체 테스트·한글 회귀) → 문서(결과·출력 변화·재확인 49·50·13 D6c) → push → 친구 문안.
+- 트레이너 클래스·이름 질문 13개는 친구 답 대기(아래 절).
+
 ## 2026-10-10 밤 — 친구 최종 방침: 트레이너 클래스명·이름·스프라이트 HGSS 복원 (현재, 데스크탑 — 랩탑에서 Remote Control)
 
 - **요청 원문:** [`FRIEND_REQUEST_2026-10-10.md`](../friend-handoff/FRIEND_REQUEST_2026-10-10.md) — 이름 질문 10개 답 + HGSS 원작 클래스·배틀 스프라이트 복원(상금·몬스터볼·파티·AI 등 게임 동작은 보존), Poké Corpus로 공식 한국어 대조(우선순위 Champions > PLZA > SV > … > HGSS > Pt > DP > pokeemerald-kr), 신규 그림 `teacher_hns`·`medium_hns`, NPC 이름·대사는 이번에 제외. 단계별 별도 커밋(6절 순서 1~8).
