@@ -133,10 +133,16 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 - [kidkatt](https://www.deviantart.com/kidkatt)
 
 ### HnS Trainer Front Sprite Credits (64x64 HGSS/DS-style):
-- "The DS-Style 64x64 Trainer Sprite Resource" ([PokéCommunity 308798](https://www.pokecommunity.com/threads/the-ds-style-64x64-trainer-sprite-resource.308798/)): MrDollSteak, Rizon/Falsever, Sky High, *Luxio//Hacks*, tdit and contributors (HGSS Ace Trainer pics: MrDollSteak, Rizon/Falsever)
-- Trainer front sprites ported via [Pokémon SoulGold](https://github.com/Eemeliri/soulgold) (Eemeliri)
+- "The DS-Style 64x64 Trainer Sprite Resource" ([PokéCommunity 308798](https://www.pokecommunity.com/threads/the-ds-style-64x64-trainer-sprite-resource.308798/)): MrDollSteak, Rizon/Falsever, Sky High, *Luxio//Hacks*, tdit, Battle Trainer 1823, 玉虫エリカ and contributors (HGSS Ace Trainer pics: MrDollSteak, Rizon/Falsever; HGSS Double Team: MrDollSteak; HGSS Boarder: 玉虫エリカ, [page 3](https://www.pokecommunity.com/threads/the-ds-style-64x64-trainer-sprite-resource.308798/page-3), https://i.imgur.com/7fpQBkd.png)
+- Trainer front sprites ported via [Pokémon SoulGold](https://github.com/Eemeliri/soulgold) (Eemeliri), used with the SoulGold developer's permission
+  - HGSS Super Nerd (`super_nerd_hgss_hns.png`, SoulGold `collector.png`): resize by Battle Trainer 1823 (PokéCommunity 308798, page 3, 2023-03-30), robot removed in SoulGold
+  - HGSS Scientist (`scientist_hns.png`, SoulGold `scientist.png` as of 2026-07-24): resizer not identified (an earlier SoulGold revision used MrDollSteak's "HGSS Scientist" from PokéCommunity 308798)
 - [Team Aqua's Asset Repo](https://github.com/TeamAquasHideout/Team-Aquas-Asset-Repo): Pawkkie (HGSS resizes: Picnicker, Twins), spilledpizza, TheWiggliestJiggliest, RichardPT, robloxmaster376 (Young Couple), Rubire4 (Psychic)
-- Teacher and Medium (`graphics/trainers/front_pics/teacher_hns.png`, `medium_hns.png`): drawn for HnS based on HGSS
+- Teacher, Medium and Brock (`graphics/trainers/front_pics/teacher_hns.png`, `medium_hns.png`, `leader_brock_hns.png`): original drawings made for HnS based on HGSS (artist name to be added)
+
+### HnS Overworld Sprite Credits:
+- Poké Maniac overworld: Delta231, "HGSS Overworld Sprite in FR Style" ([PokéCommunity 408123](https://www.pokecommunity.com/showthread.php?t=408123)), via [Team Aqua's Asset Repo](https://github.com/TeamAquasHideout/Team-Aquas-Asset-Repo) (Delta231s Collaborative HGSS Resource)
+- Middle-aged woman overworld (DP Pokéfan F): spilledpizza, TheWiggliestJiggliest, RichardPT, robloxmaster376, via [Team Aqua's Asset Repo](https://github.com/TeamAquasHideout/Team-Aquas-Asset-Repo)
 
 ## Resources
 - [Sugimori Palettes and Sprites](https://www.pokecommunity.com/showthread.php?t=336945)
