@@ -142,7 +142,7 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 
 ### HnS Overworld Sprite Credits:
 - Poké Maniac overworld: Delta231, "HGSS Overworld Sprite in FR Style" ([PokéCommunity 408123](https://www.pokecommunity.com/showthread.php?t=408123)), via [Team Aqua's Asset Repo](https://github.com/TeamAquasHideout/Team-Aquas-Asset-Repo) (Delta231s Collaborative HGSS Resource)
-- Middle-aged woman overworld (DP Pokéfan F): spilledpizza, TheWiggliestJiggliest, RichardPT, robloxmaster376, via [Team Aqua's Asset Repo](https://github.com/TeamAquasHideout/Team-Aquas-Asset-Repo)
+- Middle-aged woman overworld (DP Pokéfan F): spilledpizza, TheWiggliestJiggliest, RichardPT, robloxmaster376 (credited in spilledpizza's README together with The Spriters Resource and the Radiant Quartz/Prismatic Platinum team), via [Team Aqua's Asset Repo](https://github.com/TeamAquasHideout/Team-Aquas-Asset-Repo)
 
 ## Resources
 - [Sugimori Palettes and Sprites](https://www.pokecommunity.com/showthread.php?t=336945)
