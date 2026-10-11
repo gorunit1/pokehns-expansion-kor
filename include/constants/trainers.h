@@ -245,6 +245,7 @@ enum __attribute__((packed)) TrainerPicID
     // HnS: more HGSS pics for restored story trainers (credits in CREDITS.md), added at the end so no existing ID moves
     TRAINER_PIC_SUPER_NERD_HGSS_HNS,
     TRAINER_PIC_BOARDER_HGSS_HNS,
+    TRAINER_PIC_DOUBLE_TEAM_HGSS_HNS,
     TRAINER_PIC_COUNT,
 };
 
