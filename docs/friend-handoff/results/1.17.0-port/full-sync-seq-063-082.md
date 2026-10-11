@@ -38,7 +38,7 @@
   - `make hns -j8`: 종료 코드 0, ROM 32,739,220 B / EWRAM 248,892 B / IWRAM 25,516 B, 새 경고 없음. **`pokehns.gba`가 기준 ROM과 `cmp` 바이트 동일.**
   - 자동 테스트: 해당 테스트 없음(ROM 동일). 전체 테스트는 구간 끝에서 확인.
   - 실기 확인: 불필요(ROM 동일)
-- 남은 위험: 게임 쪽 없음. 이후 upstream PR이 이 enum에 새 멤버를 값 없이 추가하면 HnS에서는 반드시 명시 값을 붙여야 한다(틈 250·388~397에는 넣지 않는다). 맵 에디터 porymap은 이 상수들을 `#define`이 아니라 enum에서 읽게 되므로 enum을 파싱하는 버전이 필요하다(upstream과 같은 조건, 저장소 `porymap.project.json`에 별도 설정 없음).
+- 남은 위험: 게임 쪽 없음. 이후 upstream PR이 이 enum에 새 멤버를 값 없이 추가하면 HnS에서는 반드시 명시 값을 붙여야 한다(틈 250·388~397에는 넣지 않는다 — upstream 새 멤버는 끝에. **예외(2026-10-11):** HnS 전용 오버월드는 `NUM_OBJ_EVENT_GFX`·VAR 번호를 그대로 두려고 빈 번호를 쓴다 — 388 `POKE_MANIAC_HNS`·389 `POKEFAN_F_HNS`(`4e07eabe99`), 남은 빈 번호 250·390~397, 재확인 58). 맵 에디터 porymap은 이 상수들을 `#define`이 아니라 enum에서 읽게 되므로 enum을 파싱하는 버전이 필요하다(upstream과 같은 조건, 저장소 `porymap.project.json`에 별도 설정 없음).
 
 ## 동기화 단위: seq 64 #9121 `U-heap-9121` Reduce heap usage in battle (+ seq 76 #9474)
 

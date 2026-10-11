@@ -2,6 +2,16 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-11 저녁 — 친구 답(트레이너 질문 12개·추가 지시) 반영
+
+- 요청: 사용자가 친구 답(`FRIEND_REPLY_2026-10-11.md`)과 웅 그림 zip을 전달(묶음 15 친구 문자는 보냄). zip은 새 폴더에 원본 그대로(`trainer-class-1011/friend-zip/`, SHA1 `90e74e8d…`), 파이썬 `zipfile`로 이름 검사 뒤 풀기.
+- 준비 조사 2개(`trainer-class-1011/TASK-PREP.md` — G 그림·크레딧, O 오버월드·GRUNT_27·이름) → 메인 결정(오버월드 빈 번호 388·389, PARKER 보류, 웅 크레딧) → 적용 1개(`APPLY-PHASE4.md`, 커밋 11개, 손 맞춤 0) → 리뷰 2개(수정 필요 0, R2 크레딧 보완 제안 → `6a09e9b94d`) → 메인 검증(`trainer-class-1011/main/main-verify.sh`).
+- 문서: 결과 README 6절·`phase4_*.tsv` 3개·`hold_list.tsv` 20행 상태, 재확인 53·58·59, `full-sync-seq-063-082.md` 빈 번호 예외, HANDBACK 27절.
+- 출처(새로 받은 파일, 2026-10-11): imgur `fmJk0yH`·`7fpQBkd`(이전 사본과 바이트 같음), Wayback imgur `Zw7AHbY`(Battle Trainer 1823 "HGSS Super Nerd"), SoulGold GitHub 커밋 기록 — URL·SHA1은 `prep-G/RESULT.md` 11절·`prep-O/dl/MANIFEST.tsv`.
+- 검증: 최종 `6a09e9b94d` 종료 0, 새 경고 0, ROM 32,781,524 B, SHA1 `496faa3f…`. 전체 테스트 목록 = `test-baseline-seq285.txt`, 한글 517/607 = 기대, 세이브 정적 PASS(WARN 0)·왕복 PASS.
+- 게임 화면 확인: 하지 않았다(ROM 그림·맵 데이터 해독과 실행 테스트만).
+- 다음 시작점: 친구 문자(`trainer-class-1011/main/discord-pending.md`) 전송 → 친구 답(PARKER 등) → seq 287 #10415.
+
 ### 2026-10-11 — full-sync 묶음 15(seq 268~285) 적용·리뷰·검증
 
 - 요청: 사용자 "친구 답 아직 안 왔는데, 나 혼자 할 수 있는게 있으면 진행". 묶음 15 결정은 앞서 받음(추천대로).

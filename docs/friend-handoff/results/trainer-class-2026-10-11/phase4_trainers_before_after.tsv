@@ -1,0 +1,53 @@
+# 6aec22ffbd → eb932ad2cc
+트레이너	이름 전	이름 후	Class	Behavior Class	그림 전	그림 후	그림 내용 변경(같은 ID, git blob)	성별 전	성별 후	맵 오브젝트	오버월드 전	오버월드 후	비고(재전 등)	바뀐 것
+TRAINER_ROY_HNS	웅진	웅진	Bird Keeper Hns	Biker Hns	Biker Hns	Biker Hns		Male	Male	Route14_hns #4 (18,19)	BIKER_HNS	ROCKER_HNS	ROY	오버월드
+TRAINER_BRET_HNS	철산	철산	Bird Keeper Hns	Juggler Hns	Juggler Hns	Juggler Hns		Male	Male	Route13_hns #2 (23,22)	JUGGLER_HNS	ROCKER_HNS	BRET	오버월드
+TRAINER_LARRY_HNS	충한	충한	Pokemaniac Hns	-	Pokemaniac	Pokemaniac		Male	Male	UnionCave_1F_hns #7 (7,31)	SUPER_NERD_HNS	POKE_MANIAC_HNS	LARRY	오버월드
+TRAINER_ANDREW_HNS	정명	정명	Pokemaniac Hns	-	Pokemaniac	Pokemaniac		Male	Male	UnionCave_B1F_hns #7 (3,44)	SUPER_NERD_HNS	POKE_MANIAC_HNS	ANDREW	오버월드
+TRAINER_CALVIN_HNS	나대장	나대장	Pokemaniac Hns	-	Pokemaniac	Pokemaniac		Male	Male	UnionCave_B1F_hns #6 (20,39)	SUPER_NERD_HNS	POKE_MANIAC_HNS	CALVIN	오버월드
+TRAINER_SHANE_HNS	준재	준재	Pokemaniac Hns	-	Pokemaniac	Pokemaniac		Male	Male	Route42_hns #5 (77,11)	SUPER_NERD_HNS	POKE_MANIAC_HNS	SHANE	오버월드
+TRAINER_BEN_HNS	우수	우수	Pokemaniac Hns	-	Pokemaniac	Pokemaniac		Male	Male	Route43_hns #3 (16,16)	FAT_MAN_HNS	POKE_MANIAC_HNS	BEN	오버월드
+TRAINER_BRENT_HNS	진진	진진	Pokemaniac Hns	-	Pokemaniac	Pokemaniac		Male	Male	Route43_hns #18 (23,20)	SUPER_NERD_HNS	POKE_MANIAC_HNS	BRENT(+_2~4 재전)	오버월드
+TRAINER_RON_HNS	일지	일지	Pokemaniac Hns	-	Pokemaniac	Pokemaniac		Male	Male	Route43_hns #17 (25,24)	SUPER_NERD_HNS	POKE_MANIAC_HNS	RON	오버월드
+TRAINER_ETHAN_HNS	신아	신아	Pokemaniac Hns	-	Pokemaniac	Pokemaniac		Male	Male	SSAqua_RoomNE_hns #2 (4,2)	SUPER_NERD_HNS	POKE_MANIAC_HNS	ETHAN	오버월드
+TRAINER_ISSAC_HNS	정웅	정웅	Pokemaniac Hns	-	Pokemaniac	Pokemaniac		Male	Male	GoldenrodCity_UndergroundTunnel_hns #1 (4,30)	SUPER_NERD_HNS	POKE_MANIAC_HNS	ISSAC	오버월드
+TRAINER_DONALD_HNS	홍명	홍명	Pokemaniac Hns	-	Pokemaniac	Pokemaniac		Male	Male	GoldenrodCity_UndergroundTunnel_hns #7 (1,27)	SUPER_NERD_HNS	POKE_MANIAC_HNS	DONALD	오버월드
+TRAINER_ZACH_HNS	지현	지현	Pokemaniac Hns	-	Pokemaniac	Pokemaniac		Male	Male	Route44_hns #4 (49,3)	SUPER_NERD_HNS	POKE_MANIAC_HNS	ZACH	오버월드
+TRAINER_MILLER_HNS	용이	용이	Pokemaniac Hns	-	Pokemaniac	Pokemaniac		Male	Male	MtMortar_1F_North_hns #9 (51,63)	FAT_MAN_HNS	POKE_MANIAC_HNS	MILLER	오버월드
+TRAINER_GRUNT_27_HNS	조무래기	조무래기	Team Rocket Hns	-	Rocket Grunt M Hns	Rocket Grunt F Hns		Male	Female	GoldenrodCity_UndergroundSwitches_hns #6 (28,13)	ROCKET_M_HNS	ROCKET_F_HNS	GRUNT_27	그림·성별·오버월드
+TRAINER_COLETTE_HNS	희선	희선	Teacher Hns	Expert Hns	Teacher Hns	Teacher Hns		Female	Female	Route15_hns #6 (36,6)	WOMAN_2_HNS	POKEFAN_F_HNS	COLETTE(선생님)	오버월드
+TRAINER_HILLARY_HNS	은영	은영	Teacher Hns	Lass Hns	Teacher Hns	Teacher Hns		Female	Female	Route15_hns #4 (52,13)	WOMAN_1_HNS	POKEFAN_F_HNS	HILLARY(+_2·3 재전, 선생님)	오버월드
+TRAINER_SHIRLEY_HNS	홍선	홍선	Teacher Hns	Expert Hns	Teacher Hns	Teacher Hns		Female	Female	SSAqua_B1F_hns #3 (7,11)	WOMAN_3_HNS	POKEFAN_F_HNS	SHIRLEY(선생님)	오버월드
+TRAINER_PARKER_HNS	지광	지광	Sailor Hns	Swimmer M Hns	Sailor	Sailor		Male	Male	CeruleanCity_Gym_hns #2 (9,13)	SWIMMER_M_HNS	SWIMMER_M_HNS	PARKER	- (보류(PARKER — 친구 질문))
+TRAINER_ERIC_HNS	무영	무영	Super Nerd Hns	-	Super Nerd Hns	Super Nerd Hgss Hns		Male	Male	-	-	-		그림
+TRAINER_SAM_HNS	중철	중철	Super Nerd Hns	-	Super Nerd Hns	Super Nerd Hgss Hns		Male	Male	-	-	-		그림
+TRAINER_TOM_HNS	단	단	Super Nerd Hns	-	Super Nerd Hns	Super Nerd Hgss Hns		Male	Male	-	-	-		그림
+TRAINER_PAT_HNS	명준	명준	Super Nerd Hns	-	Super Nerd Hns	Super Nerd Hgss Hns		Male	Male	-	-	-		그림
+TRAINER_TERU_HNS	철우	철우	Super Nerd Hns	-	Super Nerd Hns	Super Nerd Hgss Hns		Male	Male	-	-	-		그림
+TRAINER_HUGH_HNS	효문	효문	Super Nerd Hns	-	Super Nerd Hns	Super Nerd Hgss Hns		Male	Male	-	-	-		그림
+TRAINER_MARKUS_HNS	학사	학사	Super Nerd Hns	-	Super Nerd Hns	Super Nerd Hgss Hns		Male	Male	-	-	-		그림
+TRAINER_RICHARDO_HNS	RICHARDO	정덕	Burglar Hns	-	Burglar Hns	Burglar Hns		Male	Male	-	-	-		이름
+TRAINER_NARD_HNS	NARD	청명	Firebreather Hns	-	Firebreather Hns	Firebreather Hns		Male	Male	-	-	-		이름
+TRAINER_NATHAN_HNS	상아	상아	Psychic M Hns	-	Psychic M Hgss Hns	Psychic M Hgss Hns	psychic_m_hgss_hns.png ab1cc3729d→f5ec894f30	Male	Male	-	-	-		그림 내용(같은 ID)
+TRAINER_FRANKLIN_HNS	능산	능산	Psychic M Hns	-	Psychic M Hgss Hns	Psychic M Hgss Hns	psychic_m_hgss_hns.png ab1cc3729d→f5ec894f30	Male	Male	-	-	-		그림 내용(같은 ID)
+TRAINER_HERMAN_HNS	데이빗	데이빗	Psychic M Hns	-	Psychic M Hgss Hns	Psychic M Hgss Hns	psychic_m_hgss_hns.png ab1cc3729d→f5ec894f30	Male	Male	-	-	-		그림 내용(같은 ID)
+TRAINER_FIDEL_HNS	강정	강정	Psychic M Hns	-	Psychic M Hgss Hns	Psychic M Hgss Hns	psychic_m_hgss_hns.png ab1cc3729d→f5ec894f30	Male	Male	-	-	-		그림 내용(같은 ID)
+TRAINER_GREG_HNS	도제	도제	Psychic M Hns	-	Psychic M Hgss Hns	Psychic M Hgss Hns	psychic_m_hgss_hns.png ab1cc3729d→f5ec894f30	Male	Male	-	-	-		그림 내용(같은 ID)
+TRAINER_NORMAN_HNS	가인	가인	Psychic M Hns	-	Psychic M Hgss Hns	Psychic M Hgss Hns	psychic_m_hgss_hns.png ab1cc3729d→f5ec894f30	Male	Male	-	-	-		그림 내용(같은 ID)
+TRAINER_MARK_HNS	빈	빈	Psychic M Hns	-	Psychic M Hgss Hns	Psychic M Hgss Hns	psychic_m_hgss_hns.png ab1cc3729d→f5ec894f30	Male	Male	-	-	-		그림 내용(같은 ID)
+TRAINER_PHIL_HNS	준	준	Psychic M Hns	-	Psychic M Hgss Hns	Psychic M Hgss Hns	psychic_m_hgss_hns.png ab1cc3729d→f5ec894f30	Male	Male	-	-	-		그림 내용(같은 ID)
+TRAINER_RICHARD_HNS	연광	연광	Psychic M Hns	-	Psychic M Hgss Hns	Psychic M Hgss Hns	psychic_m_hgss_hns.png ab1cc3729d→f5ec894f30	Male	Male	-	-	-		그림 내용(같은 ID)
+TRAINER_GILBERT_HNS	박제	박제	Psychic M Hns	-	Psychic M Hgss Hns	Psychic M Hgss Hns	psychic_m_hgss_hns.png ab1cc3729d→f5ec894f30	Male	Male	-	-	-		그림 내용(같은 ID)
+TRAINER_JARED_HNS	민철	민철	Psychic M Hns	-	Psychic M Hgss Hns	Psychic M Hgss Hns	psychic_m_hgss_hns.png ab1cc3729d→f5ec894f30	Male	Male	-	-	-		그림 내용(같은 ID)
+TRAINER_RONALD_HNS	태후	태후	Boarder Hns	Skier Hns	Skier M Hns	Boarder Hgss Hns		Male	Male	-	-	-		그림
+TRAINER_BRAD_HNS	승준	승준	Boarder Hns	Skier Hns	Skier M Hns	Boarder Hgss Hns		Male	Male	-	-	-		그림
+TRAINER_DOUGLAS_HNS	금동	금동	Boarder Hns	Skier Hns	Skier M Hns	Boarder Hgss Hns		Male	Male	-	-	-		그림
+TRAINER_TREVOR_HNS	기영	기영	Pokefan Hns	Juggler Hns	Pokefan M	Pokefan M		Male	Male	Route14_hns #8 (11,21)	JUGGLER_HNS	BALDING_MAN_HNS	TREVOR(+_2·3 재전)	오버월드
+TRAINER_ALEX_HNS	상학	상학	Pokefan Hns	Battle Girl Hns	Pokefan M	Pokefan M		Male	Male	Route13_hns #5 (62,22)	BATTLE_GIRL_HNS	BALDING_MAN_HNS	ALEX(+_2·3 재전)	오버월드
+TRAINER_ALLAN_HNS	ALLAN	ALLAN	Pokefan Hns	Camper HnS	Pokefan M	Pokefan M		Male	Male	Route6_hns #1 (41,25)	CAMPER_HNS	BALDING_MAN_HNS	ALLAN	오버월드
+TRAINER_BEVERLY_HNS	희영	희영	Pokefan Hns	Parasol Lady Hns	Pokefan F	Pokefan F		Female	Female	NationalPark_Normal_hns #6 (11,27)	BEAUTY_HNS	POKEFAN_F_HNS	BEVERLY(+_2~5 재전, 애호가클럽♀)	오버월드
+TRAINER_RUTH_HNS	한샘	한샘	Pokefan Hns	Parasol Lady Hns	Pokefan F	Pokefan F		Female	Female	Route39_hns #3 (22,38)	WOMAN_1_HNS	POKEFAN_F_HNS	RUTH(애호가클럽♀)	오버월드
+TRAINER_JAMIE_HNS	JAIME	JAIME	Pokefan Hns	Parasol Lady Hns	Pokefan F	Pokefan F		Female	Female	Route39_hns #18 (16,45)	WOMAN_2_HNS	POKEFAN_F_HNS	JAIME(TRAINER_JAMIE_HNS, 크리스탈 애호가클럽♀)	오버월드
+TRAINER_THOM_AND_KAE_HNS	톰&앤	톰&앤	Double Team Hns	Young Couple Hns	Young Couple	Double Team Hgss Hns		Male	Male	-	-	-		그림
+TRAINER_BROCK_HNS	웅	웅	Leader Kanto Hns	-	Leader Brock Hns	Leader Brock Hns	leader_brock_hns.png 5a155a87cb→57d85d8dd7	Male	Male	-	-	-		그림 내용(같은 ID)
+TRAINER_BROCK_POSTOBC_HNS	웅	웅	Leader Kanto Hns	-	Leader Brock Hns	Leader Brock Hns	leader_brock_hns.png 5a155a87cb→57d85d8dd7	Male	Male	-	-	-		그림 내용(같은 ID)

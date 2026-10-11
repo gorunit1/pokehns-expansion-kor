@@ -39,6 +39,8 @@
 
 ## 4. 보류(친구 질문 대기)와 추가로 필요한 그림
 
+> 2026-10-11 친구 답으로 대부분 정리됨 — 6절. 남은 것: PARKER 오버월드(친구 질문), 공개 그림 없는 6클래스·보더 오버월드(친구 제작 대기), 선생님·무당·웅 제작자 이름(친구가 알려 줄 때).
+
 - 보류: 이과계의 남자 7명 그림(`super_nerd_hns` 교체 또는 새 ID), GRUNT_27(대사 ♀·그림 ♂), NARD·RICHARDO, 추정 이름 11개(ROB·ED·DOUG·SCOTT·CHARLES·CAMERON·DAWN·WAYNE·REX)·ANN&ANNE 이름, Bugsy·Will·추정 6항목 성별, DEVELOPER 클래스·ETO×3 이름(영문), 신규 인물 30·크리스탈 전용 5 이름(공식 없음 — 영문), 연구원 그림 출처(SoulGold 판 원 제작자 미확인 — MrDollSteak 판 여부), 새 웅 그림(받아야 함). 전체 `hold_list.tsv`.
 - ANN&ANNE은 동일 인물이 "추정"이라 이름·성별은 그대로 두고 그림만 HGSS 쌍둥이 공통 그림으로 바꿨다(어느 쪽 인물이든 쌍둥이 클래스 그림은 하나 — 리뷰 R2도 친구 원칙에 맞다고 봄). 되돌릴 때는 `.party`의 `Pic: Twins Hgss Hns` 한 줄.
 - 원작 그림이 없는 클래스: 학원 끝난 아이 26·새 조련사 19·포켓몬 매니아 15·폭주족 14·수영팬티소년 12·태권왕 8(공개 그림 없음), 엘리트 콤비(허가 필요 — 30색이라 감색 필요)·보더(허가 문구 없음). `sprites_needed.tsv`, `public_assets.tsv`.
@@ -49,3 +51,31 @@
 - seq 400 #9440: 볼 코드가 `trainer_util.c`로 옮겨지고 개인값 시드가 `struct Trainer` 전체 CRC가 된다 → 이식 때 `MakeTrainerGenerator`·랜더마이저가 `GetTrainerBehaviorClass`를 쓰게 하고, 새로 들어오는 `trainerClass`·`gTrainerClasses[` 사용은 표시용/동작용을 판정, 시드는 안정 값(트레이너 ID·behaviorClass·파티 내용)만 쓰게(재확인 51).
 - seq 500 #9881: 새 그림 INCBIN 줄을 INCGFX 형식으로.
 - 프런티어 브레인·파트너는 표시용 클래스를 읽는다(`frontier_util.c:2618`·`:3150`) — 나중에 복원하면 동작 클래스로.
+
+## 6. 친구 답 반영 (2026-10-11, 4단계)
+
+- 친구 답 [`FRIEND_REPLY_2026-10-11.md`](../../FRIEND_REPLY_2026-10-11.md)(질문 12개 답 + 추가 지시), 웅 그림은 디스코드 첨부 zip(SHA1 `90e74e8d…`, 저장소 밖 `/home/hjm0725/hns-sync-work/trainer-class-1011/friend-zip/`). 방식: 준비 조사 2개(그림·크레딧 `prep-G/`, 오버월드·GRUNT_27·이름 `prep-O/`) → 적용 1개(커밋 11개, 손 맞춤 0) → 리뷰 2개(수정 필요 0) → 크레딧 보완 1커밋 → 메인 검증. 자료는 저장소 밖 `trainer-class-1011/`.
+- 전후 비교표(이 폴더): `phase4_trainers_before_after.tsv`(51항목 — 이름·그림·성별·오버월드), `phase4_map_objects.tsv`(맵 오브젝트 24개 + PARKER 보류), `phase4_new_ids.tsv`(새 그림 ID 222~224, 새 오버월드 ID 388·389, 출처).
+
+| 커밋 | 내용(친구 답 절) |
+|---|---|
+| `d1fd6b3c0d` | NARD → `청명`, RICHARDO → `정덕`(1절, 이름만 — 클래스·그림·파티·대사 그대로). HGSS 공식: Ned = 청명, Richard = 정덕. NARD 대사 = HGSS Ned, RICHARDO 대사 = Richard 대사 고친 것이라 친구 지정과 맞다(보류 목록 후보 열은 파티 기준이라 반대였음). 조사 `청명은/이/을/과/으로`·`정덕은/…` 실행 확인 |
+| `c2cc45b32e` | 웅 = 친구 최종 그림·팔레트(12절, 픽셀·색 그대로, 4비트 형식만). 세로 위치 보정은 그림 안(발끝 y60 같음, 좌표 표 변경 없음). 디버그 전용 프런티어 웅도 같은 그림 |
+| `776fd00e5f` | 초능력자♂ 입 (32,20) 1픽셀을 기존 흰색(7번)으로(13절). 바깥과 이어지지 않은 투명 4곳 중 얼굴 안은 이것뿐(DP 원작 같은 자리 흰색). 턱–어깨 2·소매–허리 1은 원작도 투명이라 그대로 |
+| `6d79843ce3` | 새 그림 222 `SUPER_NERD_HGSS_HNS`(SoulGold `collector.png`) → HGSS 이과계의 남자 확정 7명(ERIC·SAM·TOM·PAT·TERU·HUGH·MARKUS)(2절). `super_nerd_hns.png`(STAN·WESSEL 등)·프런티어 Collector(에메랄드 그림) 그대로 |
+| `bd11e5363c` | 새 그림 223 `BOARDER_HGSS_HNS`(玉虫エリカ, 308798 3쪽, imgur `7fpQBkd` 원본과 바이트 같음) → 황토마을 체육관 보더 3명(3절). 사용 금지 문구 없음(본인 허가 문구도 없음 — 스레드 첫 글 "use these for your hack … credit this thread"가 근거) |
+| `33323bae31` | 새 그림 224 `DOUBLE_TEAM_HGSS_HNS`(MrDollSteak, imgur `fmJk0yH`) → THOM & KAE(3절). 31색이 GBA 5비트 통합만으로 투명 포함 정확히 16색 — 추가 감색 0, 게임 안 색 4,096픽셀 모두 원본과 같음 |
+| `37eb087f13` | GRUNT_27 = 여자 조무래기(5절): 금은·HGSS와 같은 방(금빛시티 지하 스위치 방)·같은 자리(조무래기 4명 중 오른쪽 아래), 대사 3줄 = GS `TrainerGruntF3`·HGSS `TEAM_ROCKET_F_GRUNT_3`, HGSS 같은 방 4번째 오브젝트 `rocketw`. 성별·배틀 그림(`rocket_grunt_f_hns`)·오버월드(`ROCKET_F_HNS`) — 상금·BGM·동작 클래스·파티 그대로 |
+| `4e07eabe99` | 새 오버월드 388 `POKE_MANIAC_HNS`(Delta231, 그림 수정 없음 — 형식만)·389 `POKEFAN_F_HNS`(spilledpizza DP_pokefan_f), 새 팔레트 태그 `0x119D`·`0x119E`(9절). **비어 있던 388·389 사용** → `NUM_OBJ_EVENT_GFX` 548·`OBJ_EVENT_GFX_VAR_*` 549~564 등 기존 상수 1,004개 그대로(끝에 붙이면 VAR 18개가 +2 밀려 주인공 방 등 VAR 맵의 세이브가 어긋남). 남은 빈 번호 390~397 |
+| `de7cbcaf0a` | 포켓몬 매니아 12개·중년 여성(선생님·애호가클럽♀·JAIME) 6개 맵 오브젝트 그래픽(9-1·9-2) |
+| `bc2946c213` | ALEX·TREVOR·ALLAN → `BALDING_MAN_HNS`, ROY·BRET → `ROCKER_HNS`(9-4). **PARKER는 보류**(블루 체육관 수영장 물 칸에 서 있어 선원 그림이면 물 위의 선원 — 친구 질문) |
+| `eb932ad2cc`, `6a09e9b94d` | `CREDITS.md`: 308798(Battle Trainer 1823·玉虫エリカ 추가, 더블팀·보더), SoulGold(개발자 허락, 이과계 = Battle Trainer 1823 축소 + SoulGold가 로봇 제거 — Wayback 원본과 사람 픽셀 1,085개 일치, 연구원 = 원 축소자 미확인), 오버월드 Delta231(408123 "credit this resource")·spilledpizza 외(README의 The Spriters Resource·Radiant Quartz/Prismatic Platinum team 포함), 선생님·무당·웅 = 친구 제작(이름 칸 비움, 10절) |
+
+- 하지 않은 것(친구 답대로): 공개 그림 없는 6클래스(학원 끝난 아이·새 조련사·포켓몬 매니아·폭주족·수영팬티소년·태권왕 — 친구 제작 대기, 지금 그림 유지), 보더 오버월드(친구 제작 검토), 추정 이름 11·ANN&ANNE 이름·성별, Bugsy·Will·추정 6 성별(Male·현행 유지), DEVELOPER·ETO×3(영문 유지), 연구원 그림 교체(SoulGold 판 유지). 하인즈·우근 확정(11절 — 보류에서 제외).
+- 검증
+  - 적용 담당: 커밋마다 새 경고 0, `trainer_behavior_verify2.py` 동작 불변 위반 0, 기존 그림·오버월드 번호 이동 0, ROM 그림 = PNG, 오버월드 상수 717 같음·추가 4, ROM 그래픽 표 546 같음, 맵 오브젝트 24개만.
+  - 리뷰 R1(오버월드·세이브·맵·GRUNT_27·이름): 정수 1,004개 독립 덤프 같음, 팔레트 태그 충돌 0, 대상 화면 오브젝트 팔레트 최대 8(기존 HnS 최대 13 안), 바뀐 맵 필드는 그래픽 번호뿐, GRUNT_27 남·여 파티 생성 시드 8개 같음, 이름 조사·폭(67·102 px). 수정 필요 0(문서 1: 이식 규칙의 빈 번호 예외).
+  - 리뷰 R2(배틀 그림·크레딧): 웅 인덱스 4,096·팔레트 = 친구 파일, 222~224 원본과 픽셀·색 같음, 시설 표 3종 ROM 바이트 같음, 동작 검사 의도 변경 27(그림 24·이름 2·GRUNT_27 1), 크레딧 조건 충족. 수정 필요 0(크레딧 보완 1 → `6a09e9b94d`).
+  - 메인 검증(최종 HEAD `6a09e9b94d`): `make hns -j8` 종료 0, 새 경고 0, ROM 사용 32,781,524 B(시작 대비 +7,792 — 배틀 그림 +2,640·오버월드 +5,152), EWRAM 250,408 B·IWRAM 25,516 B 같음, SHA1 `496faa3f94f1c194f8d1d3e168f4e59468a5f704`(리뷰 재현값과 같음). 전체 `make check` 목록이 `test-baseline-seq285.txt`와 바이트 같음(새 기준 목록 불필요). 한글 회귀 517/607 기대와 바이트 같음. 세이브 정적 비교(적용 전 빌드 사실) PASS(FAIL 0, WARN 0), 세이브 왕복 PASS.
+- 세이브 성질: 대상 맵 안에서 저장한 세이브를 이어하면 그 맵을 다시 들어가기 전까지 그 오브젝트가 옛 그림(옛 번호도 유효)으로 보인다. 새 ROM에서 대상 맵 안에 저장한 세이브를 **이번 커밋 이전 ROM**으로 열면 388·389가 비어 있어 그 맵에서 그림이 깨질 수 있다(반대 방향은 안전) — 친구 버그 보고 때 ROM 커밋 확인.
+- 실기(mGBA) 확인 항목: 웅 관장전 머그샷(새 그림은 머리가 y10부터라 머그샷 띠에서 머리가 이전보다 16px 낮게 보임 — 좌표로는 못 고침, 어색하면 친구에게)·배틀 그림·팔레트, 초능력자♂ 입(36번도로 MARK 등), 이과계(8번도로 SAM·TOM, 지하통로 ERIC·TERU), 보더(황토마을 체육관), 더블팀(47번도로), GRUNT_27(금빛시티 지하), 포켓몬 매니아(연결동굴 등)·중년 여성(15번도로 등) 오버월드 걷기, ALEX·TREVOR·ALLAN·ROY·BRET.

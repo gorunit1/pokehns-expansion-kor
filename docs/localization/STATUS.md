@@ -1,11 +1,16 @@
 # 현재 인수인계 상태
 
-## 2026-10-11 저녁 — 친구 답(트레이너 질문 12개) 반영 진행 중 (현재, 데스크탑 — 랩탑에서 Remote Control)
+## 2026-10-11 저녁 — 친구 답(트레이너 질문 12개) 반영 완료·push (현재, 데스크탑 — 랩탑에서 Remote Control)
 
-- **요청:** 친구 답 [`FRIEND_REPLY_2026-10-11.md`](../friend-handoff/FRIEND_REPLY_2026-10-11.md)(`245c63609e`) + 웅 그림 zip(저장소 밖 `/home/hjm0725/hns-sync-work/trainer-class-1011/friend-zip/`, SHA1 `90e74e8d…`, 풀어 둔 것 `friend-files/`). 묶음 15 친구 문자 2개는 보냄(사용자 확인).
-- **지금:** 적용 전 준비 조사 2개(지시 `trainer-class-1011/TASK-PREP.md` — 영역 G 배틀 그림·크레딧 `prep-G/`, 영역 O 오버월드·GRUNT_27·이름 `prep-O/`). 다음: 결과 확인 → (더블팀 감색·GRUNT_27 판정 등 메인 결정) → 적용 1개(별도 커밋, 지시서 틀 `trainer-class-1010/APPLY-PHASE3B.md`) → 리뷰 2개 → 메인 검증 → 문서(결과 `results/trainer-class-2026-10-11/` 갱신 또는 새 폴더, HANDBACK, 재확인 53) → push → 친구 문자.
-- 메모: 1절 NARD → 청명·RICHARDO → 정덕은 보류 목록 후보(파티 기준)와 반대지만 대사·영문 이름 기준으로 맞다(NARD 대사 = HGSS Ned 청명, RICHARDO 대사 = Richard 정덕 수정판) — 친구 답대로.
-- 그다음: full-sync seq 287 #10415(아래 절 3번).
+- **다음 할 일**
+  1. **친구 문자 보내기(사용자):** `/home/hjm0725/hns-sync-work/trainer-class-1011/main/discord-pending.md`(메시지 2개 — 반영 결과 + PARKER 질문·참고). 첨부 그림 2장(`prep-O/img/o2_new_ow_frames.png`, `prep-G/img/g34_double_team_boarder.png`).
+  2. **친구 답 대기:** PARKER 오버월드(재확인 59), 6클래스 그림·보더 오버월드(친구 제작), 선생님·무당·웅 제작자 이름, 묶음 15의 281 문장(55), 새 웅 머그샷 실기, 프런티어용 `youngster.png`, 불사르기 47, 실버 멀티 실기, 재확인 35·37·42, 가드 43·44. 답이 오면 반영부터.
+  3. **full-sync 다음 seq 287 #10415**(아래 묶음 15 절 3번). 테스트 기준 **`test-baseline-seq285.txt`**(이번 작업 뒤에도 바이트 같음).
+- **결과:** [`results/trainer-class-2026-10-11/README.md`](../friend-handoff/results/trainer-class-2026-10-11/README.md) 6절(비교표 `phase4_trainers_before_after.tsv`·`phase4_map_objects.tsv`·`phase4_new_ids.tsv`), HANDBACK 27절, 재확인 53(대부분 해결)·58·59, 친구 답 원문 [`FRIEND_REPLY_2026-10-11.md`](../friend-handoff/FRIEND_REPLY_2026-10-11.md).
+  - 커밋 12개: `d1fd6b3c0d` NARD 청명·RICHARDO 정덕, `c2cc45b32e` 웅 친구 최종 그림, `776fd00e5f` 초능력자♂ 입 1픽셀, `6d79843ce3` 그림 222 이과계(7명), `bd11e5363c` 223 보더(3명), `33323bae31` 224 더블팀(THOM & KAE), `37eb087f13` GRUNT_27 여성, `4e07eabe99` 오버월드 388·389(빈 번호 — 기존 번호·VAR 그대로), `de7cbcaf0a` 매니아 12·중년 여성 6, `bc2946c213` ALEX·TREVOR·ALLAN·ROY·BRET, `eb932ad2cc`·`6a09e9b94d` 크레딧.
+  - 결정(메인, 혼자 정할 수 있는 범위): 오버월드 빈 번호 388·389(친구 "번호·세이브 불변"을 더 엄격히), PARKER 보류(물 칸 → 친구 질문), 웅을 친구 제작 크레딧 줄에. NARD·RICHARDO는 보류 목록 후보와 반대지만 대사 기준으로 친구 답이 맞음.
+  - 검증(최종 `6a09e9b94d`): 종료 0, 새 경고 0, ROM 32,781,524 B(+7,792), EWRAM·IWRAM 같음, SHA1 `496faa3f…`. 전체 테스트 목록 = `test-baseline-seq285.txt`, 한글 517/607 = 기대, 세이브 정적 PASS(WARN 0)·왕복 PASS. 리뷰 2개 수정 필요 0(R1 정수 1,004개 독립 덤프·맵 오브젝트 24개·GRUNT_27 시드 실행, R2 그림 픽셀·시설 표·동작 검사). 실기 미확인.
+- 스크래치: `/home/hjm0725/hns-sync-work/trainer-class-1011/`(`friend-zip/`·`friend-files/`, `TASK-PREP.md`, `prep-G/`·`prep-O/`, `APPLY-PHASE4.md`, `apply/`, `REVIEW.md`, `review-R1|R2/`, `main/`)
 
 ## 2026-10-11 — full-sync 묶음 15(seq 268~285) 완료·push (데스크탑 — 랩탑에서 Remote Control)
 
