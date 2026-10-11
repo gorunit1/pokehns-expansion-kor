@@ -6630,7 +6630,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 태후
 Class: Boarder Hns
 Behavior Class: Skier Hns
-Pic: Skier M Hns
+Pic: Boarder Hgss Hns
 Gender: Male
 Music: Hg Boy 2
 Double Battle: No
@@ -6648,7 +6648,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 승준
 Class: Boarder Hns
 Behavior Class: Skier Hns
-Pic: Skier M Hns
+Pic: Boarder Hgss Hns
 Gender: Male
 Music: Hg Boy 2
 Double Battle: No
@@ -6666,7 +6666,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 금동
 Class: Boarder Hns
 Behavior Class: Skier Hns
-Pic: Skier M Hns
+Pic: Boarder Hgss Hns
 Gender: Male
 Music: Hg Boy 2
 Double Battle: No
