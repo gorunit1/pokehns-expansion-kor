@@ -231,8 +231,8 @@ const struct FieldEffectInfoOWE gOverworldWildEncounterFieldEffectInfo[] =
 void UpdateOverworldWildEncounter(void)
 {
     // HnS: with WE_OW_ENCOUNTERS FALSE no generated OWE can exist, so return before the per-frame
-    // wild header check below. That check calls GetTimeOfDay() -> UpdateTimeOfDay() every frame, which
-    // refreshes gTimeBlend early and stops the once-a-minute time-of-day palette update (upstream #10343).
+    // wild header check below. That check calls GetTimeOfDay() -> UpdateTimeOfDay(FALSE) every frame
+    // (RTC read and the HnS day/night flag writes); since upstream #10343 it no longer touches gTimeBlend.
     if (!WE_OW_ENCOUNTERS)
         return;
 
