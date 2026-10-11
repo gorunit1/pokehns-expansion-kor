@@ -2,6 +2,19 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-12 — 친구 답(묶음 15): 281 공식 줄바꿈, 번역 정책, 메가 특성 대조, 1.17.1 확장 계획 (클라우드 세션)
+
+- 요청: 사용자가 친구 메시지(2026-10-12)를 전달 — 원문 저장, 281 문장 4개 공식 줄바꿈, 번역 정책 문서, 메가 특성 문서·코드 대조(고치지 않고 보고), 1.17.1 PR 38개 계획(이식하지 않음), 문서·push·디스코드 답장. 실기는 친구가 한다.
+- 시작: 클라우드 clone이 origin보다 34커밋 뒤라 `git merge --ff-only origin/pokehns-expansion-kor`로 맞춤(HEAD `1c1e8033`, 작업 트리 깨끗).
+- 수정 파일: `src/battle_message.c`(4줄), `docs/friend-handoff/FRIEND_REPLY_2026-10-12.md`(새), `docs/localization/TRANSLATION_POLICY.md`(새), `AGENTS.md`(1줄, 사용자 승인), `docs/friend-handoff/results/1.17.0-port/{PORT_INSTRUCTIONS,RECHECK_BEFORE_COMPLETION,full-sync-seq-268-285}.md`, `docs/localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md`, `results/1.17.0-port/mega-abilities-check-2026-10-12.md`(새), `results/1.17.0-port/1.17.1-extension-plan.md`(새), STATUS·SESSION_LOG.
+- 결정: 281은 친구 지시 그대로(폭 안 넘음 — 다시 줄바꿈하지 않음). 정책 문서의 "포트로 새로 들어오는 배틀 외 텍스트" 처리는 원문에 없어 "영문 그대로·목록 보고"로 적고 친구 확인 후보로 표시. 메가 특성·대여르는 코드 변경 없음.
+- 출처(2026-10-12 확인): Poké Corpus `https://raw.githubusercontent.com/abcboy101/poke-corpus/5d1da078d70dea5c9feaaba7575626eab4f10a08/corpus/ScarletViolet/ko_common.txt` 8441·8445·8449·8453행, `…/LegendsZA/ko_common.txt` 6379·6383·6387·6391행(8줄 모두 친구 문안과 같음, SV = Z-A). upstream `expansion/1.17.0` = `e8bd1cd7b0`, `expansion/1.17.1` = `bb1093a7c7`(2026-09-29).
+- 조사 방법: 메가 특성 — `d7d3194f`·`1821fd6749`·HEAD·upstream 1.17.0·1.17.1의 `gen_1~9_families.h` `[SPECIES_*MEGA*]` `.abilities` 비교 + #9678(`8e02c319e6`)·#10250(`3e1dbace90`) PR 값. 1.17.1 — `git log --no-merges expansion/1.17.0..expansion/1.17.1`, PR마다 `git apply --check` 정·역방향, 바뀐 줄 `git blame`(부모 커밋)으로 1.17.0 순서표 의존. 둘 다 저장소 밖 임시 스크립트.
+- 검증: `make hns -j8` 종료 0, 새 컴파일 경고 0(libpng `iCCP` 15줄은 클라우드 도구 경고), ROM 32,781,524 B, SHA1 `16ea4db5…`. 한글 회귀 `ALLOW_REPO=1 dev_scripts/hns_verify/kortests/run.sh <저장소> kor-281-official 8` → 517/607, 기대 요약과 바이트 같음, 종료 0. 281 upstream 테스트 2파일 11줄 = 기준. 전체 테스트는 실행 중(다음 기록에 결과).
+- 게임 화면 확인: 하지 않았다(친구가 새 테스트 ROM에서 함).
+- 남은 문제: 친구 Q1(#10777 기술 수치)·Q2(#10660 녹화 배틀)·정책 해석 확인. U1 #10829 방벽 타이머 중복 문장은 코드 해석뿐 — 재현 필요. 마기아나 원래색 메가 `소울하트/없음/없음` 표기 차이(동작 같음)는 보고만.
+- 다음 시작점: 친구 답 → 반영. 아니면 seq 287 #10415(묶음 15 지시서 틀, 테스트 기준 `test-baseline-seq285.txt`).
+
 ### 2026-10-11 저녁 — 친구 답(트레이너 질문 12개·추가 지시) 반영
 
 - 요청: 사용자가 친구 답(`FRIEND_REPLY_2026-10-11.md`)과 웅 그림 zip을 전달(묶음 15 친구 문자는 보냄). zip은 새 폴더에 원본 그대로(`trainer-class-1011/friend-zip/`, SHA1 `90e74e8d…`), 파이썬 `zipfile`로 이름 검사 뒤 풀기.

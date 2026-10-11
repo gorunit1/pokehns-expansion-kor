@@ -1,6 +1,21 @@
 # 현재 인수인계 상태
 
-## 2026-10-11 저녁 — 친구 답(트레이너 질문 12개) 반영 완료·push (현재, 데스크탑 — 랩탑에서 Remote Control)
+## 2026-10-12 — 친구 답(묶음 15) 반영: 281 공식 줄바꿈, 번역 정책, 메가 특성 대조, 1.17.1 확장 계획 (현재, 클라우드 세션)
+
+- **다음 할 일**
+  1. **친구 문자 보내기(사용자):** 디스코드 메시지 3개(① 281 문장·번역 기준, ② 메가 특성 대조·대여르 정정, ③ 1.17.1 범위·질문 Q1·Q2·알림 N1). 문안은 2026-10-12 클라우드 세션 답변에 있다(저장소 밖). 내용은 아래 결과 요약과 같다. 이번 묶음 실기는 친구가 새 테스트 ROM에서 직접 한다.
+  2. **친구 답 대기:** 새로 [`1.17.1-extension-plan.md`](../friend-handoff/results/1.17.0-port/1.17.1-extension-plan.md) 4절 **Q1**(#10777 기술 수치 5개 수용 여부), **Q2**(#10660 녹화 배틀 재생 호환), 번역 정책 5절 5번 해석(포트로 새로 들어오는 배틀 외 텍스트는 영문 그대로·목록 보고). 이전부터 대기: PARKER 오버월드(59), 6클래스 그림·보더 오버월드(친구 제작), 선생님·무당·웅 제작자 이름, 새 웅 머그샷 실기, 프런티어용 `youngster.png`, 불사르기 47, 실버 멀티 실기, 재확인 35·37·42, 가드 43·44. 트레이너 후속 문자(`trainer-class-1011/main/discord-pending.md`)를 보냈는지 사용자에게 확인. 답이 오면 반영부터.
+  3. **full-sync 다음 seq 287 #10415**(아래 묶음 15 절 3번, 테스트 기준 **`test-baseline-seq285.txt`**). 새 배틀 문장은 [`TRANSLATION_POLICY.md`](TRANSLATION_POLICY.md) 3.1절 절차(공식 원문·줄바꿈 그대로, 폭 초과는 먼저 보고). 메가 특성은 [`mega-abilities-check-2026-10-12.md`](../friend-handoff/results/1.17.0-port/mega-abilities-check-2026-10-12.md) 3절 값 보존. 1.17.0 순서(seq 518)가 끝나면 1.17.1 seq 519~556(계획 문서 3절, 묶음 1.17.1-A~C). U1 #10829 방벽 타이머는 다음 묶음 사전 분석 때 한글 테스트로 재현해 본다.
+- **친구 답 원문:** [`FRIEND_REPLY_2026-10-12.md`](../friend-handoff/FRIEND_REPLY_2026-10-12.md). 묶음 15 결과·AI 교체 가드(재확인 56) 유지, 281 문장 줄바꿈 수정, 번역 기준·작업 범위, 메가 특성 보존, 최종 목표 1.17.1.
+- **결과(커밋 6개):**
+  - `600646ca43` HnS: 281 문장 4개 공식 줄바꿈(SV `ko_common.txt` 8441·8445·8449·8453행 = Z-A 6379·6383·6387·6391행, Poké Corpus `5d1da078`). `git diff -U0` 4줄. 폭(글리프 표 계산, 창 208 px): 1줄째 172/145/193/185 px(라틴 12바이트 이름), 2줄째 102/102/86/86 px. 재확인 55 해결, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 4행·`full-sync-seq-268-285.md` 281 행 수정(`f2b476a0bd`).
+  - `944a304a42` [`TRANSLATION_POLICY.md`](TRANSLATION_POLICY.md) 새로(+ `PORT_INSTRUCTIONS.md` 한 줄), `ffd9464a86` `AGENTS.md` 한 줄(사용자가 diff 확인 뒤 승인).
+  - `9aed68cbd2` 메가 특성 대조(코드 변경 없음): 메가 99개 모두 HEAD = 친구 작업이 처음 들어간 `1821fd6749`, 종별 기록(09-15·09-19·#9678·#10250 인벤토리·재확인 57) 모두 같음 → **어긋남 0**. 1.17.1과 다른 HnS 고유 9개(동작이 다른 것은 히드런 숨김 칸·대여르), 1.17.1 #10777이 HnS 값과 같게 바꾸는 5개. 대여르 = 오기×3(묶음 15 디스코드 요약 "불굴의마음×3"은 오기재) → 재확인 57 정정.
+  - `9150721607` [`1.17.1-extension-plan.md`](../friend-handoff/results/1.17.0-port/1.17.1-extension-plan.md)(계획만): 지금 목표는 1.17.0이었음(#10837만 앞당김) → 1.17.1까지 확장. PR 38개(새 STRINGID·문자열 파일·세이브 구조 변경 0, #10837 이미 적용, #10816 HnS 동등 `65388d7a`, #10777 파동의방호 상수 319·메가 5개 HnS와 같음), seq 519~556 제안, 친구 질문 Q1·Q2, 알림 N1~N3, 앞당김 후보 U1 #10829(지금 HnS 방벽 타이머 남음 — 코드 해석, 미실측).
+- **검증(코드 `600646ca43`, 클라우드):** `make hns -j8` 종료 0, ROM 32,781,524 B(`6a09e9b94d`과 같음 — 공백·줄바꿈 맞바꿈이라 바이트 수 같음), EWRAM 250,408 B, IWRAM 25,516 B, SHA1 `16ea4db5…`. 새 컴파일 경고 0(`warncheck.sh` — 이 클라우드의 libpng가 기존 PNG 15개에 `iCCP: known incorrect sRGB profile`을 내서 그 줄만 빼고 확인, 컴파일 경고 163줄은 모두 기준 안). 한글 회귀 517/607, 기대 요약과 바이트 같음. `orichalcum_pulse.c`·`hadron_engine.c` 11줄 = `test-baseline-seq285.txt`. 전체 테스트(`make check BUILD=hns`)는 이 기록 시점에 실행 중 — 결과는 다음 기록에서 `test-baseline-seq285.txt`와 비교. 세이브 정적 비교는 생략(문자열 4줄, 바이트 수 같음). **실기: 하지 않음(친구가 함).**
+- **환경 메모(클라우드):** 툴체인 apt `gcc-arm-none-eabi` 13.2.1, 4코어. 저장소는 얕은 clone이라 `git fetch --shallow-since=2026-09-01`로 9월 기록을 받았다(`e804379040` 등 그 전 커밋은 없음). upstream은 `../pokeemerald-expansion-upstream`(`git fetch --tags`). 임시 파일·스크립트·Poké Corpus 사본은 세션 임시 폴더에만 있어 남지 않는다(다시 만드는 방법은 각 문서 2절·4절).
+
+## 2026-10-11 저녁 — 친구 답(트레이너 질문 12개) 반영 완료·push (데스크탑 — 랩탑에서 Remote Control)
 
 - **다음 할 일**
   1. **친구 문자 보내기(사용자):** `/home/hjm0725/hns-sync-work/trainer-class-1011/main/discord-pending.md`(메시지 2개 — 반영 결과 + PARKER 질문·참고). 첨부 그림 2장(`prep-O/img/o2_new_ow_frames.png`, `prep-G/img/g34_double_team_boarder.png`).
