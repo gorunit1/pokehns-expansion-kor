@@ -1,6 +1,19 @@
 # 현재 인수인계 상태
 
-## 2026-10-11 — full-sync 묶음 15(seq 268~285) 사전 분석 끝, 결정 받음, 적용은 사용자 지시 대기 (현재, 데스크탑 — 랩탑에서 Remote Control)
+## 2026-10-11 — full-sync 묶음 15(seq 268~285) 완료·push (현재, 데스크탑 — 랩탑에서 Remote Control)
+
+- **다음 할 일**
+  1. **친구 문자 보내기(사용자):** `/home/hjm0725/hns-sync-work/chunk-268-285/main/discord-pending.md`(메시지 2개 — 묶음 15 결과 + 281 문장 확인, 첨부 `chunk-268-285/review-R2/render-283.png` 실버디·타입:널 전후).
+  2. **친구 답 대기(최우선):** 트레이너 질문 12개(재확인 53), 새 웅 그림, 프런티어용 `youngster.png`, 불사르기 47, 실버 멀티 실기, 재확인 35·37·42, 가드 43·44, **새로 281 문장(재확인 55)**. 답이 오면 반영부터.
+  3. **full-sync 다음 seq 287 #10415**(Illusion 파티 검색 범위, unit `U-12v12-8943`), 288 #10410(S, trainer script assert), **289 #10301(아이템 설명 `ReformatItemDescription` 버퍼 — 한글 Y, HnS 한글 도구 설명 줄바꿈 확인)**, 290 #10432(FRLG 노인 문장, 한글 Y), 291 #10429(Zero-Width-Space·줄바꿈, 한글 Y — `charmap.txt`·`text.c`·`line_break.c`), 292 #10298(변신 config), … 286 #10424는 이미 적용. 방식은 묶음 7~15와 같다(지시서 틀 `chunk-268-285/ANALYZE.md`·`APPLY.md`·`REVIEW.md`, `main/main-verify.sh` — 문서는 메인 검증 뒤에). 테스트 기준 **`test-baseline-seq285.txt`**. 새 STRINGID가 나오면 Poké Corpus(`trainer-class-1010/p2/corpus/`)에서 공식 문장부터 찾는다. seq 400 #9440은 재확인 51 규칙 필수.
+- **묶음 15:** 결과 [`full-sync-seq-268-285.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-268-285.md), 회신 HANDBACK 26절
+  - 커밋: `0c6480fb33` #10368, `9018d735ba` #10369, `e32b02a351` #10366, `949787aa77` #10323, `10d2270093` #10199(코드), `69cf21d87e` #10349, `aed1e5bfbc` #10392, `9cf3691ff4` #10389, `8aa37f0632` #10387, `9122381832` #10385, `44960af08b` #10382, `8a5b4aae64` #10381, `68384e2780` #10395(+ SV 공식 한글 4줄), `b6245648d0` #10379, `b52bbcc557` #10270, `94a944bce6` #10399, `3acad18968` #10343, `c8e7bcc866` HnS AI 교체 가드(리뷰 R1). 274 #10386은 이미 적용
+  - 결정(2026-10-11, 사용자 "추천대로", 적용은 "혼자 할 수 있는 거 진행" 지시 뒤): 아래 절 그대로. 284 리뷰 결과 가드는 회귀 가드라 혼자 정할 수 있는 범위로 넣고 보고
+  - 검증(최종 `c8e7bcc866`): ROM 32,773,732 B(+1,280), EWRAM 250,408 B, IWRAM 25,516 B, SHA1 `e7377c2c…`, 새 경고 0. 전체 테스트 PASS 2,650 / TOTAL 5,572(사라진 PASS 8 = 280 삭제 3·이름 변경 5) → **기준 [`test-baseline-seq285.txt`](../friend-handoff/results/1.17.0-port/test-baseline-seq285.txt)**. 한글 607개 기대와 같음(517/607). 세이브 정적 PASS(WARN 0)·왕복 PASS. 리뷰 2개(R1 수정 필요 1 → 가드, R2 문제 없음). 실기 미확인
+  - 재확인: 새 55(281 문장 친구 확인)·56(AI 교체 가드)·57(대여르 메가 특성)
+  - 스크래치: `/home/hjm0725/hns-sync-work/chunk-268-285/`(분석·APPLY·REVIEW·apply·main·review-R1/R2)
+
+## 2026-10-11 — full-sync 묶음 15(seq 268~285) 사전 분석 끝, 결정 받음 (데스크탑 — 랩탑에서 Remote Control)
 
 - **다음 할 일**
   1. **친구 답 대기(최우선):** 아래 절 "다음 할 일" 2번 목록 그대로(트레이너 질문 12개 = 재확인 53, 새 웅 그림, 프런티어용 `youngster.png`, 불사르기 47, 실버 멀티 실기, 재확인 35·37·42, 가드 43·44). 답이 오면 묶음 15보다 먼저.
