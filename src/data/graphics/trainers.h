@@ -662,6 +662,9 @@ const u16 gTrainerPalette_YoungCoupleHgssHns[] = INCBIN_U16("graphics/trainers/f
 const u32 gTrainerFrontPic_PsychicMHgssHns[] = INCBIN_U32("graphics/trainers/front_pics/psychic_m_hgss_hns.4bpp.smol");
 const u16 gTrainerPalette_PsychicMHgssHns[] = INCBIN_U16("graphics/trainers/front_pics/psychic_m_hgss_hns.gbapal");
 
+const u32 gTrainerFrontPic_SuperNerdHgssHns[] = INCBIN_U32("graphics/trainers/front_pics/super_nerd_hgss_hns.4bpp.smol");
+const u16 gTrainerPalette_SuperNerdHgssHns[] = INCBIN_U16("graphics/trainers/front_pics/super_nerd_hgss_hns.gbapal");
+
 static const u8 gTrainerBackPic_None[] = INCBIN_U8("graphics/trainers/back_pics/none.4bpp");
 const u8 gTrainerBackPic_Brendan[] = INCBIN_U8("graphics/trainers/back_pics/brendan.4bpp");
 const u8 gTrainerBackPic_May[] = INCBIN_U8("graphics/trainers/back_pics/may.4bpp");
@@ -1691,5 +1694,9 @@ const struct TrainerPicInfo gTrainerPicInfo[TRAINER_PIC_COUNT] =
     [TRAINER_PIC_PSYCHIC_M_HGSS_HNS] =
     {
         .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_PsychicMHgssHns, gTrainerPalette_PsychicMHgssHns),
+    },
+    [TRAINER_PIC_SUPER_NERD_HGSS_HNS] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_SuperNerdHgssHns, gTrainerPalette_SuperNerdHgssHns),
     },
 };
