@@ -21,7 +21,7 @@
 | 278 | #10385 Fix FRLG Magikarp and Heracross size units | `9122381832` | 그대로(`.if IS_FRLG` 안 — HnS ROM SHA1 같음) | 32,772,596 |
 | 279 | #10382 Fix debug time scripts leaving followers frozen | `44960af08b` | 시간 스크립트 3개만(272에서 뺀 예제 hunk 제외). HnS 디버그 메뉴(R+START)에서 적용됨 | 32,772,596 |
 | 280 | #10381 Rename and rework Can Use All Moves to Values Moves Over Splash | `8a5b4aae64` | 테스트만(파일 이름 변경). 단독 테스트 3개 삭제·이름 변경 9줄 | 32,772,596 |
-| 281 | #10395 Fix Orichalcum Pulse and Hadron Engine Activation Messages | `68384e2780` | 코드 그대로(HnS에 `GetWeather()` 있음, #10170 선행 불필요), `battle_message.c` 문맥만 한글. **새 문장 4개 = SV 공식 한국어**(Poké Corpus `abcboy101/poke-corpus` `5d1da078` `ScarletViolet/ko_common.txt` 8441·8445·8449·8453행, 진홍빛고동 2개는 `LegendsZA/ko_common.txt` 6379·6383행도 같음), HnS 줄바꿈 관례(주어 줄 + 한 줄, 2줄째 175/148/180/172 px, 창 208) — **친구 확인 대기**(재확인 55) | 32,773,124 |
+| 281 | #10395 Fix Orichalcum Pulse and Hadron Engine Activation Messages | `68384e2780` | 코드 그대로(HnS에 `GetWeather()` 있음, #10170 선행 불필요), `battle_message.c` 문맥만 한글. **새 문장 4개 = SV 공식 한국어**(Poké Corpus `abcboy101/poke-corpus` `5d1da078` `ScarletViolet/ko_common.txt` 8441·8445·8449·8453행, 진홍빛고동 2개는 `LegendsZA/ko_common.txt` 6379·6383행도 같음). 처음에는 이름 뒤 줄바꿈("HnS 관례")으로 넣었으나 공식 줄바꿈과 달라 **2026-10-12 친구 답으로 `600646ca43`에서 공식 줄바꿈으로 고침**(이름 + 앞 구절 / 뒤 구절, Z-A 6387·6391행도 같음, 1줄째 최악 193 px·2줄째 최대 102 px, 창 208 — 재확인 55 해결) | 32,773,124 |
 | 282 | #10379 Fix inverse battle matchup parametrization | `b6245648d0` | 테스트만. HnS 테스트는 페어리 모드가 꺼져 이식 전후 모두 ASSUMPTION_FAIL(줄 번호만) | 32,773,124 |
 | 283 | #10270 Even More Gen VII Animation Data + Gen VIII Clean Up | `b52bbcc557` | 대부분 친구 업로드 `1821fd6749`로 이미 있음. 남은 것: 마기아나 2폼 애니메이션, **실버디·타입:널 팔레트·뒷모습**(지금 앞모습 다리 색이 틀린 버그 수정 — 렌더 비교 저장소 밖 `chunk-268-285/review-R2/render-283.png`), 단지래플 그림, 8세대 12종 애니메이션, 안 쓰는 옛 `front.png` 19개 삭제. **대여르 메가 특성 hunk 제외**(사용자 결정 — Defiant×3 유지, 애니메이션 PR에 섞인 병합 실수로 추정). 바뀐·지운 그래픽 60개는 HnS가 고친 적 없는 파일(바뀐 41개 = 1.17.0 blob), `.pal`은 CRLF | 32,773,364 |
 | 284 | #10399 Fix invalid switch in if ace flag is present | `94a944bce6` | 그대로(#8943·#9575 이미 있음). HnS 에이스 트레이너는 0명이지만 같은 파티 더블(쌍둥이 등)에서 짝이 마지막 벤치 몬을 계획한 턴의 파티 번호 255 교체(오류 화면 뒤 임의 교체)가 막힘. 재확인 51 해당 없음(클래스 읽지 않음) | 32,773,572 |
@@ -50,7 +50,7 @@
 
 ## 재확인·뒤 PR 메모
 
-- 55(새): 281 새 문장 4개 SV 공식 문장 — 친구 확인. 이의가 있으면 `battle_message.c` 4줄만.
+- 55(새): 281 새 문장 4개 SV 공식 문장 — 친구 확인. 이의가 있으면 `battle_message.c` 4줄만. → **해결 2026-10-12 `600646ca43`**: 친구가 줄바꿈 위치가 공식과 다르다고 답함([`FRIEND_REPLY_2026-10-12.md`](../../FRIEND_REPLY_2026-10-12.md) 1절). 공식 줄바꿈(`…은(는) 햇살을 강하게 하여⏎고대의 고동을 폭발시켰다!!` 등)으로 4줄만 고침. 위 R1의 폭 수치(1줄째 99 px·2줄째 175/148/180/172 px)는 고치기 전 배치 값이고, 지금 배치는 1줄째 172/145/193/185 px(라틴 12바이트 이름 기준)·2줄째 102/102/86/86 px.
 - 56(새): `c8e7bcc866` HnS AI 교체 가드 — upstream이 이 경계(짝이 마지막 벤치 몬을 고른 턴의 일반 교체)를 고치면 정리. upstream 보고 후보.
 - 57(새): 대여르 메가 특성 Defiant×3 유지(#10270 hunk 제외) — 1.17.0 최종은 `{ BATTLE_ARMOR, NONE, DEFIANT }`. 뒤 PR이 이 줄을 문맥으로 쓰면 HnS 값으로 맞춘다. 1.17.0 값으로 바꿀지는 게임 수치라 친구 질문(HnS 일반 진행에 대여르 없음).
 - 268: seq 390 #10223 때 `UIEndTask`를 1.17.0 `RedrawMoveList()` 형태로 맞추고, #9006 이식이 앞당긴 `VAR_RESULT` 초기화 줄은 다시 넣지 않는다.
