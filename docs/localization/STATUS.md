@@ -1,6 +1,13 @@
 # 현재 인수인계 상태
 
-## 2026-10-11 — full-sync 묶음 15(seq 268~285) 완료·push (현재, 데스크탑 — 랩탑에서 Remote Control)
+## 2026-10-11 저녁 — 친구 답(트레이너 질문 12개) 반영 진행 중 (현재, 데스크탑 — 랩탑에서 Remote Control)
+
+- **요청:** 친구 답 [`FRIEND_REPLY_2026-10-11.md`](../friend-handoff/FRIEND_REPLY_2026-10-11.md)(`245c63609e`) + 웅 그림 zip(저장소 밖 `/home/hjm0725/hns-sync-work/trainer-class-1011/friend-zip/`, SHA1 `90e74e8d…`, 풀어 둔 것 `friend-files/`). 묶음 15 친구 문자 2개는 보냄(사용자 확인).
+- **지금:** 적용 전 준비 조사 2개(지시 `trainer-class-1011/TASK-PREP.md` — 영역 G 배틀 그림·크레딧 `prep-G/`, 영역 O 오버월드·GRUNT_27·이름 `prep-O/`). 다음: 결과 확인 → (더블팀 감색·GRUNT_27 판정 등 메인 결정) → 적용 1개(별도 커밋, 지시서 틀 `trainer-class-1010/APPLY-PHASE3B.md`) → 리뷰 2개 → 메인 검증 → 문서(결과 `results/trainer-class-2026-10-11/` 갱신 또는 새 폴더, HANDBACK, 재확인 53) → push → 친구 문자.
+- 메모: 1절 NARD → 청명·RICHARDO → 정덕은 보류 목록 후보(파티 기준)와 반대지만 대사·영문 이름 기준으로 맞다(NARD 대사 = HGSS Ned 청명, RICHARDO 대사 = Richard 정덕 수정판) — 친구 답대로.
+- 그다음: full-sync seq 287 #10415(아래 절 3번).
+
+## 2026-10-11 — full-sync 묶음 15(seq 268~285) 완료·push (데스크탑 — 랩탑에서 Remote Control)
 
 - **다음 할 일**
   1. **친구 문자 보내기(사용자):** `/home/hjm0725/hns-sync-work/chunk-268-285/main/discord-pending.md`(메시지 2개 — 묶음 15 결과 + 281 문장 확인, 첨부 `chunk-268-285/review-R2/render-283.png` 실버디·타입:널 전후).
