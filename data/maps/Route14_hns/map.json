@@ -65,7 +65,7 @@
       "flag": "FLAG_TEMP_2"
     },
     {
-      "graphics_id": "OBJ_EVENT_GFX_BIKER_HNS",
+      "graphics_id": "OBJ_EVENT_GFX_ROCKER_HNS",
       "x": 18,
       "y": 19,
       "elevation": 0,
@@ -119,7 +119,7 @@
       "flag": "0"
     },
     {
-      "graphics_id": "OBJ_EVENT_GFX_JUGGLER_HNS",
+      "graphics_id": "OBJ_EVENT_GFX_BALDING_MAN_HNS",
       "x": 11,
       "y": 21,
       "elevation": 0,

@@ -39,7 +39,7 @@
       "flag": "0"
     },
     {
-      "graphics_id": "OBJ_EVENT_GFX_JUGGLER_HNS",
+      "graphics_id": "OBJ_EVENT_GFX_ROCKER_HNS",
       "x": 23,
       "y": 22,
       "elevation": 0,
@@ -78,7 +78,7 @@
       "flag": "0"
     },
     {
-      "graphics_id": "OBJ_EVENT_GFX_BATTLE_GIRL_HNS",
+      "graphics_id": "OBJ_EVENT_GFX_BALDING_MAN_HNS",
       "x": 62,
       "y": 22,
       "elevation": 0,
