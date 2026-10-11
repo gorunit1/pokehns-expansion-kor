@@ -9,6 +9,7 @@
 3. `docs/friend-handoff/results/pokeemerald-expansion-1.17.0-full-sync-plan.md`(특히 5·6절 확정 결정)
 4. `docs/friend-handoff/results/1.17.0-sync-plan/port_sequence.tsv`와, 담당 PR이 속한 그룹의 `*_plan.tsv`/`*_plan.md`(approach·evidence·notes)
 5. `docs/localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md`, `AGENTS.md`
+6. `docs/localization/TRANSLATION_POLICY.md` — 새 배틀 메시지 번역(Poké Corpus 공식 원문·줄바꿈 그대로, "HnS 관례" 금지, 폭 초과는 먼저 보고)과 번역 작업 범위(기존 텍스트 수정 금지, 친구 로컬 작업과 충돌 주의)
 
 upstream은 저장소 옆 폴더 `../pokeemerald-expansion-upstream` (없으면 `git clone https://github.com/rh-hideout/pokeemerald-expansion.git ../pokeemerald-expansion-upstream`)에서 읽기만 한다. `git log --all --grep='(#NNNN)'`로 커밋을 찾고 `git show`로 diff를 본다.
 
