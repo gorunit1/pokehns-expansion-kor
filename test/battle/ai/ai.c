@@ -1471,3 +1471,53 @@ AI_DOUBLE_BATTLE_TEST("AI does not switch in into invalid Pokemon")
         TURN { }
     }
 }
+
+// HnS: shared-party doubles where the partner has already chosen the last bench Pokemon.
+// Before the IsSwitchinValid guard, the right-foe case looped forever when the AI decided right before left.
+AI_DOUBLE_BATTLE_TEST("AI does not keep choosing a switch when the partner already chose the last bench Pokemon")
+{
+    u32 reverse = 0;
+    PARAMETRIZE { reverse = 0; }
+    PARAMETRIZE { reverse = 100; }
+    GIVEN {
+        WITH_CONFIG(AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE, reverse);
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE);
+        PLAYER(SPECIES_LAPRAS) { Moves(MOVE_PERISH_SONG, MOVE_CELEBRATE); }
+        PLAYER(SPECIES_SANDSLASH) { Moves(MOVE_CELEBRATE); }
+        PLAYER(SPECIES_WOBBUFFET);
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_RATTATA) { Moves(MOVE_SCRATCH); }
+        OPPONENT(SPECIES_RATTATA) { Moves(MOVE_SCRATCH); }
+        OPPONENT(SPECIES_PIKACHU) { Moves(MOVE_THUNDER_SHOCK); }
+    } WHEN {
+        TURN { MOVE(playerLeft, MOVE_PERISH_SONG); MOVE(playerRight, MOVE_CELEBRATE); }
+        TURN { MOVE(playerLeft, MOVE_CELEBRATE); MOVE(playerRight, MOVE_CELEBRATE); }
+        TURN { MOVE(playerLeft, MOVE_CELEBRATE); MOVE(playerRight, MOVE_CELEBRATE); }
+        TURN { MOVE(playerLeft, MOVE_CELEBRATE); MOVE(playerRight, MOVE_CELEBRATE);
+               SEND_OUT(playerLeft, 2); SEND_OUT(playerRight, 3); }
+    }
+}
+
+AI_DOUBLE_BATTLE_TEST("AI does not switch into the bench Pokemon its partner already chose")
+{
+    u32 reverse = 0;
+    PARAMETRIZE { reverse = 0; }
+    PARAMETRIZE { reverse = 100; }
+    GIVEN {
+        WITH_CONFIG(AI_REVERSE_BATTLER_LOGIC_ORDER_CHANCE, reverse);
+        AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE);
+        PLAYER(SPECIES_SANDSLASH) { Moves(MOVE_CELEBRATE); }
+        PLAYER(SPECIES_LAPRAS) { Moves(MOVE_PERISH_SONG, MOVE_CELEBRATE); }
+        PLAYER(SPECIES_WOBBUFFET);
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_RATTATA) { Moves(MOVE_SCRATCH); }
+        OPPONENT(SPECIES_RATTATA) { Moves(MOVE_SCRATCH); }
+        OPPONENT(SPECIES_PIKACHU) { Moves(MOVE_THUNDER_SHOCK); }
+    } WHEN {
+        TURN { MOVE(playerRight, MOVE_PERISH_SONG); MOVE(playerLeft, MOVE_CELEBRATE); }
+        TURN { MOVE(playerRight, MOVE_CELEBRATE); MOVE(playerLeft, MOVE_CELEBRATE); }
+        TURN { MOVE(playerRight, MOVE_CELEBRATE); MOVE(playerLeft, MOVE_CELEBRATE); }
+        TURN { MOVE(playerRight, MOVE_CELEBRATE); MOVE(playerLeft, MOVE_CELEBRATE);
+               SEND_OUT(playerLeft, 2); SEND_OUT(playerRight, 3); }
+    }
+}

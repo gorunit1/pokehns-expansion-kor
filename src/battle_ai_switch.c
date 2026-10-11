@@ -1627,6 +1627,24 @@ bool32 IsSwitchinValid(enum BattlerId battler)
             {
                 return FALSE;
             }
+            // HnS: with no suitable mon, AI_TrySwitchOrUseItem falls back to any bench mon that is not on the field or
+            // chosen by the partner (upstream #10399). If the partner already took the last one, that fallback stores
+            // PARTY_SIZE, which the engine reads as a cancelled action, and the same choice repeats forever.
+            if (gAiLogicData->mostSuitableMonId[battler] == PARTY_SIZE)
+            {
+                enum BattlerId battlerIn1, battlerIn2;
+                struct Pokemon *party = GetBattlerParty(battler);
+                s32 i, lastId = GetAILastPartyIndex(battler);
+
+                GetActiveBattlerIds(battler, &battlerIn1, &battlerIn2);
+                for (i = 0; i < lastId; i++)
+                {
+                    if (IsValidForBattle(&party[i]) && !IsPartyMonOnFieldOrChosenToSwitch(battler, i, battlerIn1, battlerIn2))
+                        break;
+                }
+                if (i == lastId)
+                    return FALSE;
+            }
         }
         else // Override switch
         {
