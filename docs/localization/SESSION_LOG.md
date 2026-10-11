@@ -10,7 +10,7 @@
 - 결정: 281은 친구 지시 그대로(폭 안 넘음 — 다시 줄바꿈하지 않음). 정책 문서의 "포트로 새로 들어오는 배틀 외 텍스트" 처리는 원문에 없어 "영문 그대로·목록 보고"로 적고 친구 확인 후보로 표시. 메가 특성·대여르는 코드 변경 없음.
 - 출처(2026-10-12 확인): Poké Corpus `https://raw.githubusercontent.com/abcboy101/poke-corpus/5d1da078d70dea5c9feaaba7575626eab4f10a08/corpus/ScarletViolet/ko_common.txt` 8441·8445·8449·8453행, `…/LegendsZA/ko_common.txt` 6379·6383·6387·6391행(8줄 모두 친구 문안과 같음, SV = Z-A). upstream `expansion/1.17.0` = `e8bd1cd7b0`, `expansion/1.17.1` = `bb1093a7c7`(2026-09-29).
 - 조사 방법: 메가 특성 — `d7d3194f`·`1821fd6749`·HEAD·upstream 1.17.0·1.17.1의 `gen_1~9_families.h` `[SPECIES_*MEGA*]` `.abilities` 비교 + #9678(`8e02c319e6`)·#10250(`3e1dbace90`) PR 값. 1.17.1 — `git log --no-merges expansion/1.17.0..expansion/1.17.1`, PR마다 `git apply --check` 정·역방향, 바뀐 줄 `git blame`(부모 커밋)으로 1.17.0 순서표 의존. 둘 다 저장소 밖 임시 스크립트.
-- 검증: `make hns -j8` 종료 0, 새 컴파일 경고 0(libpng `iCCP` 15줄은 클라우드 도구 경고), ROM 32,781,524 B, SHA1 `16ea4db5…`. 한글 회귀 `ALLOW_REPO=1 dev_scripts/hns_verify/kortests/run.sh <저장소> kor-281-official 8` → 517/607, 기대 요약과 바이트 같음, 종료 0. 281 upstream 테스트 2파일 11줄 = 기준. 전체 테스트는 실행 중(다음 기록에 결과).
+- 검증: `make hns -j8` 종료 0, 새 컴파일 경고 0(libpng `iCCP` 15줄은 클라우드 도구 경고), ROM 32,781,524 B, SHA1 `16ea4db5…`. 한글 회귀 `ALLOW_REPO=1 dev_scripts/hns_verify/kortests/run.sh <저장소> kor-281-official 8` → 517/607, 기대 요약과 바이트 같음, 종료 0. 281 upstream 테스트 2파일 11줄 = 기준. 전체 테스트 `GITHUB_ACTION=1 make check BUILD=hns -j4` PASS 2,650 / 5,572, 목록 = `test-baseline-seq285.txt`(바이트 같음, 사라진 PASS 0).
 - 게임 화면 확인: 하지 않았다(친구가 새 테스트 ROM에서 함).
 - 남은 문제: 친구 Q1(#10777 기술 수치)·Q2(#10660 녹화 배틀)·정책 해석 확인. U1 #10829 방벽 타이머 중복 문장은 코드 해석뿐 — 재현 필요. 마기아나 원래색 메가 `소울하트/없음/없음` 표기 차이(동작 같음)는 보고만.
 - 다음 시작점: 친구 답 → 반영. 아니면 seq 287 #10415(묶음 15 지시서 틀, 테스트 기준 `test-baseline-seq285.txt`).
