@@ -4350,6 +4350,30 @@ static const struct SpriteFrameImage sPicTable_AlolaOak_hns[] = {
     overworld_frame(gObjectEventPic_AlolaOak_hns, 2, 4, 8),
 };
 
+static const struct SpriteFrameImage sPicTable_PokeManiac_hns[] = {
+    overworld_frame(gObjectEventPic_PokeManiac_hns, 2, 4, 0),
+    overworld_frame(gObjectEventPic_PokeManiac_hns, 2, 4, 1),
+    overworld_frame(gObjectEventPic_PokeManiac_hns, 2, 4, 2),
+    overworld_frame(gObjectEventPic_PokeManiac_hns, 2, 4, 3),
+    overworld_frame(gObjectEventPic_PokeManiac_hns, 2, 4, 4),
+    overworld_frame(gObjectEventPic_PokeManiac_hns, 2, 4, 5),
+    overworld_frame(gObjectEventPic_PokeManiac_hns, 2, 4, 6),
+    overworld_frame(gObjectEventPic_PokeManiac_hns, 2, 4, 7),
+    overworld_frame(gObjectEventPic_PokeManiac_hns, 2, 4, 8),
+};
+
+static const struct SpriteFrameImage sPicTable_PokefanF_hns[] = {
+    overworld_frame(gObjectEventPic_PokefanF_hns, 2, 4, 0),
+    overworld_frame(gObjectEventPic_PokefanF_hns, 2, 4, 1),
+    overworld_frame(gObjectEventPic_PokefanF_hns, 2, 4, 2),
+    overworld_frame(gObjectEventPic_PokefanF_hns, 2, 4, 3),
+    overworld_frame(gObjectEventPic_PokefanF_hns, 2, 4, 4),
+    overworld_frame(gObjectEventPic_PokefanF_hns, 2, 4, 5),
+    overworld_frame(gObjectEventPic_PokefanF_hns, 2, 4, 6),
+    overworld_frame(gObjectEventPic_PokefanF_hns, 2, 4, 7),
+    overworld_frame(gObjectEventPic_PokefanF_hns, 2, 4, 8),
+};
+
 static const struct SpriteFrameImage sPicTable_BirthIslandStone_hns[] = {
     obj_frame_tiles(gObjectEventPic_BirthIslandStone_hns),
 };

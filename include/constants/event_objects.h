@@ -416,7 +416,11 @@ enum
     OBJ_EVENT_GFX_PUSHABLE_BOULDER_FRLG         = 385,
     OBJ_EVENT_GFX_CUTTABLE_TREE_FRLG            = 386,
     OBJ_EVENT_GFX_BREAKABLE_ROCK_FRLG           = 387,
-    // 388-397 are unused
+    // HnS trainer overworlds added after release. They use the unused values 388-389 so that
+    // NUM_OBJ_EVENT_GFX and OBJ_EVENT_GFX_VAR_* (stored in save files) keep their values.
+    OBJ_EVENT_GFX_POKE_MANIAC_HNS               = 388,
+    OBJ_EVENT_GFX_POKEFAN_F_HNS                 = 389,
+    // 390-397 are unused
 
     // HnS objects
     OBJ_EVENT_GFX_ATTENDANT_F_HNS               = 398,
@@ -786,6 +790,8 @@ enum
 #define OBJ_EVENT_PAL_TAG_KRIS_HNS                0x119A
 #define OBJ_EVENT_PAL_TAG_KRIS_REFLECTION_HNS     0x119B
 #define OBJ_EVENT_PAL_TAG_ALOLA_OAK_HNS           0x119C
+#define OBJ_EVENT_PAL_TAG_POKE_MANIAC_HNS         0x119D
+#define OBJ_EVENT_PAL_TAG_POKEFAN_F_HNS           0x119E
 
 #if OW_FOLLOWERS_POKEBALLS
 // Vanilla
