@@ -252,7 +252,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_JACK_HNS ===
 Name: 일수
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -269,7 +269,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_KIPP_HNS ===
 Name: 지선
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -286,7 +286,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_ALAN_HNS ===
 Name: 다움
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -303,7 +303,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_JOHNNY_HNS ===
 Name: 너우리
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -320,7 +320,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_DANNY_HNS ===
 Name: 만수
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -341,7 +341,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_TOMMY_HNS ===
 Name: 영일
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -358,7 +358,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_DUDLEY_HNS ===
 Name: 검웅
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -371,7 +371,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_JOE_HNS ===
 Name: 진한
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -388,7 +388,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_BILLY_HNS ===
 Name: 찬희
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -409,7 +409,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_CHAD_HNS ===
 Name: 규호
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -426,7 +426,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_NATE_HNS ===
 Name: 주홍
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -443,7 +443,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_RICKY_HNS ===
 Name: 가람
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -460,7 +460,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_ROD_HNS ===
 Name: 날개
 Class: Bird Keeper Hns
-Pic: Bird Keeper
+Pic: Bird Keeper Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -477,7 +477,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_ABE_HNS ===
 Name: 소룡
 Class: Bird Keeper Hns
-Pic: Bird Keeper
+Pic: Bird Keeper Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -490,7 +490,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_BRYAN_HNS ===
 Name: 량희
 Class: Bird Keeper Hns
-Pic: Bird Keeper
+Pic: Bird Keeper Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -511,7 +511,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_THEO_HNS ===
 Name: 국환
 Class: Bird Keeper Hns
-Pic: Bird Keeper
+Pic: Bird Keeper Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -524,7 +524,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_TOBY_HNS ===
 Name: 춘수
 Class: Bird Keeper Hns
-Pic: Bird Keeper
+Pic: Bird Keeper Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -541,7 +541,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_DENIS_HNS ===
 Name: 명기
 Class: Bird Keeper Hns
-Pic: Bird Keeper
+Pic: Bird Keeper Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -558,7 +558,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_VANCE_HNS ===
 Name: 소홍
 Class: Bird Keeper Hns
-Pic: Bird Keeper
+Pic: Bird Keeper Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -583,7 +583,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_HANK_HNS ===
 Name: 하늘
 Class: Bird Keeper Hns
-Pic: Bird Keeper
+Pic: Bird Keeper Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -601,7 +601,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 웅진
 Class: Bird Keeper Hns
 Behavior Class: Biker Hns
-Pic: Biker Hns
+Pic: Bird Keeper Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -618,7 +618,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_BORIS_HNS ===
 Name: 정일
 Class: Bird Keeper Hns
-Pic: Bird Keeper
+Pic: Bird Keeper Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -639,7 +639,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_BOB_HNS ===
 Name: 영호
 Class: Bird Keeper Hns
-Pic: Bird Keeper
+Pic: Bird Keeper Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -652,7 +652,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_JOSE_HNS ===
 Name: 영진
 Class: Bird Keeper Hns
-Pic: Bird Keeper
+Pic: Bird Keeper Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -677,7 +677,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_PETER_HNS ===
 Name: 선정
 Class: Bird Keeper Hns
-Pic: Bird Keeper
+Pic: Bird Keeper Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -694,7 +694,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_PERRY_HNS ===
 Name: 기선
 Class: Bird Keeper Hns
-Pic: Bird Keeper
+Pic: Bird Keeper Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -708,7 +708,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Name: 철산
 Class: Bird Keeper Hns
 Behavior Class: Juggler Hns
-Pic: Juggler Hns
+Pic: Bird Keeper Hgss Hns
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -1964,7 +1964,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_LARRY_HNS ===
 Name: 충한
 Class: Pokemaniac Hns
-Pic: Pokemaniac
+Pic: Pokemaniac Hgss Hns
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -1977,7 +1977,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_ANDREW_HNS ===
 Name: 정명
 Class: Pokemaniac Hns
-Pic: Pokemaniac
+Pic: Pokemaniac Hgss Hns
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -1994,7 +1994,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_CALVIN_HNS ===
 Name: 나대장
 Class: Pokemaniac Hns
-Pic: Pokemaniac
+Pic: Pokemaniac Hgss Hns
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -2007,7 +2007,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_SHANE_HNS ===
 Name: 준재
 Class: Pokemaniac Hns
-Pic: Pokemaniac
+Pic: Pokemaniac Hgss Hns
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -2024,7 +2024,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_BEN_HNS ===
 Name: 우수
 Class: Pokemaniac Hns
-Pic: Pokemaniac
+Pic: Pokemaniac Hgss Hns
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -2041,7 +2041,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_BRENT_HNS ===
 Name: 진진
 Class: Pokemaniac Hns
-Pic: Pokemaniac
+Pic: Pokemaniac Hgss Hns
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -2058,7 +2058,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_RON_HNS ===
 Name: 일지
 Class: Pokemaniac Hns
-Pic: Pokemaniac
+Pic: Pokemaniac Hgss Hns
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -2075,7 +2075,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_ETHAN_HNS ===
 Name: 신아
 Class: Pokemaniac Hns
-Pic: Pokemaniac
+Pic: Pokemaniac Hgss Hns
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -2092,7 +2092,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_ISSAC_HNS ===
 Name: 정웅
 Class: Pokemaniac Hns
-Pic: Pokemaniac
+Pic: Pokemaniac Hgss Hns
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -2105,7 +2105,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_DONALD_HNS ===
 Name: 홍명
 Class: Pokemaniac Hns
-Pic: Pokemaniac
+Pic: Pokemaniac Hgss Hns
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -2122,7 +2122,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_ZACH_HNS ===
 Name: 지현
 Class: Pokemaniac Hns
-Pic: Pokemaniac
+Pic: Pokemaniac Hgss Hns
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -2143,7 +2143,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_MILLER_HNS ===
 Name: 용이
 Class: Pokemaniac Hns
-Pic: Pokemaniac
+Pic: Pokemaniac Hgss Hns
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -3457,7 +3457,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_HAROLD_HNS ===
 Name: 주영
 Class: Swimmer M Hns
-Pic: Swimmer M
+Pic: Swimmer M Hgss Hns
 Gender: Male
 Music: Hg Boy 2
 Double Battle: No
@@ -3474,7 +3474,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_SIMON_HNS ===
 Name: 신남
 Class: Swimmer M Hns
-Pic: Swimmer M
+Pic: Swimmer M Hgss Hns
 Gender: Male
 Music: Hg Boy 2
 Double Battle: No
@@ -3491,7 +3491,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_RANDALL_HNS ===
 Name: 철진
 Class: Swimmer M Hns
-Pic: Swimmer M
+Pic: Swimmer M Hgss Hns
 Gender: Male
 Music: Hg Boy 2
 Double Battle: No
@@ -3508,7 +3508,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_CHARLIE_HNS ===
 Name: 영토
 Class: Swimmer M Hns
-Pic: Swimmer M
+Pic: Swimmer M Hgss Hns
 Gender: Male
 Music: Hg Boy 2
 Double Battle: No
@@ -3525,7 +3525,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_GEORGE_HNS ===
 Name: 종남
 Class: Swimmer M Hns
-Pic: Swimmer M
+Pic: Swimmer M Hgss Hns
 Gender: Male
 Music: Hg Boy 2
 Double Battle: No
@@ -3546,7 +3546,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_BERKE_HNS ===
 Name: 정규
 Class: Swimmer M Hns
-Pic: Swimmer M
+Pic: Swimmer M Hgss Hns
 Gender: Male
 Music: Hg Boy 2
 Double Battle: No
@@ -3559,7 +3559,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_KIRK_HNS ===
 Name: 영하
 Class: Swimmer M Hns
-Pic: Swimmer M
+Pic: Swimmer M Hgss Hns
 Gender: Male
 Music: Hg Boy 2
 Double Battle: No
@@ -3576,7 +3576,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_MATHEW_HNS ===
 Name: 길수
 Class: Swimmer M Hns
-Pic: Swimmer M
+Pic: Swimmer M Hgss Hns
 Gender: Male
 Music: Hg Boy 2
 Double Battle: No
@@ -3694,7 +3694,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_JEROME_HNS ===
 Name: 진표
 Class: Swimmer M Hns
-Pic: Swimmer M
+Pic: Swimmer M Hgss Hns
 Gender: Male
 Music: Hg Boy 2
 Double Battle: No
@@ -3715,7 +3715,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_TUCKER_HNS ===
 Name: 유식
 Class: Swimmer M Hns
-Pic: Swimmer M
+Pic: Swimmer M Hgss Hns
 Gender: Male
 Music: Hg Boy 2
 Double Battle: No
@@ -3753,7 +3753,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_CAMERON_HNS ===
 Name: CAMERON
 Class: Swimmer M Hns
-Pic: Swimmer M
+Pic: Swimmer M Hgss Hns
 Gender: Male
 Music: Hg Boy 2
 Double Battle: No
@@ -3766,7 +3766,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_SETH_HNS ===
 Name: 연남
 Class: Swimmer M Hns
-Pic: Swimmer M
+Pic: Swimmer M Hgss Hns
 Gender: Male
 Music: Hg Boy 2
 Double Battle: No
@@ -3829,7 +3829,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_PARKER_HNS ===
 Name: 지광
 Class: Swimmer M Hns
-Pic: Swimmer M
+Pic: Swimmer M Hgss Hns
 Gender: Male
 Music: Hg Boy 2
 Double Battle: No
@@ -4957,7 +4957,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_DWAYNE_HNS ===
 Name: 성무
 Class: Biker Hns
-Pic: Biker Hns
+Pic: Biker Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -4982,7 +4982,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_HARRIS_HNS ===
 Name: 한수
 Class: Biker Hns
-Pic: Biker Hns
+Pic: Biker Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -4995,7 +4995,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_ZEKE_HNS ===
 Name: 금현
 Class: Biker Hns
-Pic: Biker Hns
+Pic: Biker Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -5012,7 +5012,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_CHARLES_HNS ===
 Name: CHARLES
 Class: Biker Hns
-Pic: Biker Hns
+Pic: Biker Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -5033,7 +5033,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_RILEY_HNS ===
 Name: 용아
 Class: Biker Hns
-Pic: Biker Hns
+Pic: Biker Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -5046,7 +5046,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_JOEL_HNS ===
 Name: 주성
 Class: Biker Hns
-Pic: Biker Hns
+Pic: Biker Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -5063,7 +5063,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_GLENN_HNS ===
 Name: 수인
 Class: Biker Hns
-Pic: Biker Hns
+Pic: Biker Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -11824,7 +11824,7 @@ Level: 56
 === TRAINER_ALAN_2_HNS ===
 Name: 다움
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -11839,7 +11839,7 @@ Level: 25
 === TRAINER_ALAN_3_HNS ===
 Name: 다움
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -11860,7 +11860,7 @@ Level: 32
 === TRAINER_ALAN_4_HNS ===
 Name: 다움
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -11881,7 +11881,7 @@ Level: 30
 === TRAINER_ALAN_5_HNS ===
 Name: 다움
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -11994,7 +11994,7 @@ Level: 55
 === TRAINER_CHAD_2_HNS ===
 Name: 규호
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -12009,7 +12009,7 @@ Level: 26
 === TRAINER_CHAD_3_HNS ===
 Name: 규호
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -12024,7 +12024,7 @@ Level: 35
 === TRAINER_CHAD_4_HNS ===
 Name: 규호
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -12039,7 +12039,7 @@ Level: 44
 === TRAINER_CHAD_5_HNS ===
 Name: 규호
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -12182,7 +12182,7 @@ Level: 52
 === TRAINER_BRENT_2_HNS ===
 Name: 진진
 Class: Pokemaniac Hns
-Pic: Pokemaniac
+Pic: Pokemaniac Hgss Hns
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -12194,7 +12194,7 @@ Level: 33
 === TRAINER_BRENT_3_HNS ===
 Name: 진진
 Class: Pokemaniac Hns
-Pic: Pokemaniac
+Pic: Pokemaniac Hgss Hns
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -12210,7 +12210,7 @@ Level: 46
 === TRAINER_BRENT_4_HNS ===
 Name: 진진
 Class: Pokemaniac Hns
-Pic: Pokemaniac
+Pic: Pokemaniac Hgss Hns
 Gender: Male
 Music: Hg Suspicious 1
 Double Battle: No
@@ -12281,7 +12281,7 @@ Level: 54
 === TRAINER_VANCE_2_HNS ===
 Name: 소홍
 Class: Bird Keeper Hns
-Pic: Bird Keeper
+Pic: Bird Keeper Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -12302,7 +12302,7 @@ Level: 49
 === TRAINER_VANCE_3_HNS ===
 Name: 소홍
 Class: Bird Keeper Hns
-Pic: Bird Keeper
+Pic: Bird Keeper Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -12502,7 +12502,7 @@ Level: 44
 === TRAINER_JACK_2_HNS ===
 Name: 일수
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -12517,7 +12517,7 @@ Level: 23
 === TRAINER_JACK_3_HNS ===
 Name: 일수
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -12532,7 +12532,7 @@ Level: 31
 === TRAINER_JACK_4_HNS ===
 Name: 일수
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -12550,7 +12550,7 @@ Level: 43
 === TRAINER_JACK_5_HNS ===
 Name: 일수
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -12867,7 +12867,7 @@ Level: 55
 === TRAINER_JOSE_2_HNS ===
 Name: 영진
 Class: Bird Keeper Hns
-Pic: Bird Keeper
+Pic: Bird Keeper Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -12888,7 +12888,7 @@ Level: 44
 === TRAINER_JOSE_3_HNS ===
 Name: 영진
 Class: Bird Keeper Hns
-Pic: Bird Keeper
+Pic: Bird Keeper Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -13007,7 +13007,7 @@ Level: 57
 === TRAINER_RILEY_2_HNS ===
 Name: 용아
 Class: Biker Hns
-Pic: Biker Hns
+Pic: Biker Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -13022,7 +13022,7 @@ Level: 60
 === TRAINER_RILEY_3_HNS ===
 Name: 용아
 Class: Biker Hns
-Pic: Biker Hns
+Pic: Biker Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -13040,7 +13040,7 @@ Level: 60
 === TRAINER_RILEY_4_HNS ===
 Name: 용아
 Class: Biker Hns
-Pic: Biker Hns
+Pic: Biker Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -13281,7 +13281,7 @@ Level: 69
 === TRAINER_BILLY_2_HNS ===
 Name: 찬희
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -13302,7 +13302,7 @@ Level: 62
 === TRAINER_BILLY_3_HNS ===
 Name: 찬희
 Class: School Kid Hns
-Pic: School Kid M
+Pic: School Kid Hgss Hns
 Gender: Male
 Music: Hg Boy 1
 Double Battle: No
@@ -13368,7 +13368,7 @@ Level: 63
 === TRAINER_JOEL_2_HNS ===
 Name: 주성
 Class: Biker Hns
-Pic: Biker Hns
+Pic: Biker Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -13392,7 +13392,7 @@ Level: 60
 === TRAINER_JOEL_3_HNS ===
 Name: 주성
 Class: Biker Hns
-Pic: Biker Hns
+Pic: Biker Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -13416,7 +13416,7 @@ Level: 62
 === TRAINER_CHARLES_2_HNS ===
 Name: CHARLES
 Class: Biker Hns
-Pic: Biker Hns
+Pic: Biker Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -13437,7 +13437,7 @@ Level: 58
 === TRAINER_CHARLES_3_HNS ===
 Name: CHARLES
 Class: Biker Hns
-Pic: Biker Hns
+Pic: Biker Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No

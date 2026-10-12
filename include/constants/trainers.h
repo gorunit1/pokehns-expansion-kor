@@ -246,6 +246,12 @@ enum __attribute__((packed)) TrainerPicID
     TRAINER_PIC_SUPER_NERD_HGSS_HNS,
     TRAINER_PIC_BOARDER_HGSS_HNS,
     TRAINER_PIC_DOUBLE_TEAM_HGSS_HNS,
+    // HnS: HGSS class pics drawn by the friend, added at the end so no existing ID moves
+    TRAINER_PIC_SCHOOL_KID_HGSS_HNS,
+    TRAINER_PIC_BIRD_KEEPER_HGSS_HNS,
+    TRAINER_PIC_POKEMANIAC_HGSS_HNS,
+    TRAINER_PIC_BIKER_HGSS_HNS,
+    TRAINER_PIC_SWIMMER_M_HGSS_HNS,
     TRAINER_PIC_COUNT,
 };
 

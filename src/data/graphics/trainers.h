@@ -671,6 +671,21 @@ const u16 gTrainerPalette_BoarderHgssHns[] = INCBIN_U16("graphics/trainers/front
 const u32 gTrainerFrontPic_DoubleTeamHgssHns[] = INCBIN_U32("graphics/trainers/front_pics/double_team_hgss_hns.4bpp.smol");
 const u16 gTrainerPalette_DoubleTeamHgssHns[] = INCBIN_U16("graphics/trainers/front_pics/double_team_hgss_hns.gbapal");
 
+const u32 gTrainerFrontPic_SchoolKidHgssHns[] = INCBIN_U32("graphics/trainers/front_pics/school_kid_hgss_hns.4bpp.smol");
+const u16 gTrainerPalette_SchoolKidHgssHns[] = INCBIN_U16("graphics/trainers/front_pics/school_kid_hgss_hns.gbapal");
+
+const u32 gTrainerFrontPic_BirdKeeperHgssHns[] = INCBIN_U32("graphics/trainers/front_pics/bird_keeper_hgss_hns.4bpp.smol");
+const u16 gTrainerPalette_BirdKeeperHgssHns[] = INCBIN_U16("graphics/trainers/front_pics/bird_keeper_hgss_hns.gbapal");
+
+const u32 gTrainerFrontPic_PokemaniacHgssHns[] = INCBIN_U32("graphics/trainers/front_pics/pokemaniac_hgss_hns.4bpp.smol");
+const u16 gTrainerPalette_PokemaniacHgssHns[] = INCBIN_U16("graphics/trainers/front_pics/pokemaniac_hgss_hns.gbapal");
+
+const u32 gTrainerFrontPic_BikerHgssHns[] = INCBIN_U32("graphics/trainers/front_pics/biker_hgss_hns.4bpp.smol");
+const u16 gTrainerPalette_BikerHgssHns[] = INCBIN_U16("graphics/trainers/front_pics/biker_hgss_hns.gbapal");
+
+const u32 gTrainerFrontPic_SwimmerMHgssHns[] = INCBIN_U32("graphics/trainers/front_pics/swimmer_m_hgss_hns.4bpp.smol");
+const u16 gTrainerPalette_SwimmerMHgssHns[] = INCBIN_U16("graphics/trainers/front_pics/swimmer_m_hgss_hns.gbapal");
+
 static const u8 gTrainerBackPic_None[] = INCBIN_U8("graphics/trainers/back_pics/none.4bpp");
 const u8 gTrainerBackPic_Brendan[] = INCBIN_U8("graphics/trainers/back_pics/brendan.4bpp");
 const u8 gTrainerBackPic_May[] = INCBIN_U8("graphics/trainers/back_pics/may.4bpp");
@@ -1712,5 +1727,25 @@ const struct TrainerPicInfo gTrainerPicInfo[TRAINER_PIC_COUNT] =
     [TRAINER_PIC_DOUBLE_TEAM_HGSS_HNS] =
     {
         .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_DoubleTeamHgssHns, gTrainerPalette_DoubleTeamHgssHns),
+    },
+    [TRAINER_PIC_SCHOOL_KID_HGSS_HNS] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_SchoolKidHgssHns, gTrainerPalette_SchoolKidHgssHns),
+    },
+    [TRAINER_PIC_BIRD_KEEPER_HGSS_HNS] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_BirdKeeperHgssHns, gTrainerPalette_BirdKeeperHgssHns),
+    },
+    [TRAINER_PIC_POKEMANIAC_HGSS_HNS] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_PokemaniacHgssHns, gTrainerPalette_PokemaniacHgssHns),
+    },
+    [TRAINER_PIC_BIKER_HGSS_HNS] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_BikerHgssHns, gTrainerPalette_BikerHgssHns),
+    },
+    [TRAINER_PIC_SWIMMER_M_HGSS_HNS] =
+    {
+        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_SwimmerMHgssHns, gTrainerPalette_SwimmerMHgssHns),
     },
 };
