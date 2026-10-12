@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-12 — 친구 답(트레이너 그림): 웅 머그샷, PARKER, 새 그림 6종 (클라우드 세션)
+
+- 요청: 사용자가 친구 메시지와 zip(`hns_trainer_sprites_16c.zip`, SHA1 `e419182b…`)을 전달 — 웅 머그샷 Y −8, PARKER HnS 수영팬티소년 복원, 친구 그림 5종 적용, SoulGold 태권왕 적용·크레딧, 검증. 원문 `FRIEND_REPLY_2026-10-12b.md`.
+- 수정 파일: `src/battle_transition.c`, `src/data/trainers_hns.party`, `include/constants/trainers.h`, `src/data/graphics/trainers.h`, `graphics/trainers/front_pics/{school_kid,bird_keeper,pokemaniac,biker,swimmer_m,black_belt}_hgss_hns.png`(새), `CREDITS.md`, 결과 README 7절·`phase5_*.tsv`, 재확인 59, STATUS·SESSION_LOG.
+- 결정 이유: 파일 이름은 기존 `biker_hns.png`와 겹쳐 `*_hgss_hns`(216~224 규칙). 대상은 `sprites_needed.tsv`(HGSS 스토리 목록) + PARKER(친구 3절). 알로라 수영팬티소년 2명(HGSS 원작 없음)·미배치는 그대로 두고 질문.
+- 출처(2026-10-12 확인): SoulGold `https://github.com/Eemeliri/soulgold` `acfbed1dfd28bd5eb061f444890a62d758c9c71c`, `graphics/trainers/front_pics/black_belt.png`(`git log`: `77dece957` 2026-06-26 Eemeliri, `c8afeea18` 2022-09-05 GriffinR), SoulGold `README.md` 크레딧 줄(MrDollStreak·Young-Dante). 원 축소자는 찾지 못함.
+- 검증: 단계마다 `make hns -j8` 종료 0·새 경고 0. 그림·시설 표·트레이너 데이터·파티 해시·세이브 정적 비교는 README 7절. 한글 회귀·전체 테스트는 실행 중(다음 기록).
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 남은 문제: 알로라 수영팬티소년 2명 그림(친구), PARKER 그림 해석 확인, 제작자 이름.
+- 다음 시작점: 친구 답 → 반영. 아니면 seq 287 #10415.
+
 ### 2026-10-12 — 친구 답(묶음 15): 281 공식 줄바꿈, 번역 정책, 메가 특성 대조, 1.17.1 확장 계획 (클라우드 세션)
 
 - 요청: 사용자가 친구 메시지(2026-10-12)를 전달 — 원문 저장, 281 문장 4개 공식 줄바꿈, 번역 정책 문서, 메가 특성 문서·코드 대조(고치지 않고 보고), 1.17.1 PR 38개 계획(이식하지 않음), 문서·push·디스코드 답장. 실기는 친구가 한다.
