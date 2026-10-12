@@ -523,3 +523,41 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 516	9986	1000000	1.15.3	g5_general_cleanup_docs	U-waitstate-9986	9881	XL	build	N	N	~0	15th of May, 2026 in [#9986](https://github.com/rh-hideout/pokeemerald-expansion/pull/9986)
 517	10061	1000000	1.15.3	g5_general_cleanup_docs	U-waitstate-9986	9986	M	build	N	N	~0	📜 Migration script for pret#2200
 518	10555	1000000	1.16.4	g5_general_cleanup_docs	U-pret-10555	10323,9986,9881	XL	refactor	Y	N	~0	Pret merge (30th of July 2026)
+519	10718	2000001	1.17.1	g7_1.17.1	U-10718	-	S	data	N	N	미측정	Ban Pidgey from strict-eligibility sky battles
+520	10731	2000002	1.17.1	g7_1.17.1	U-10731	10326	S	build	N	N	미측정	Fix build error on master
+521	10732	2000003	1.17.1	g7_1.17.1	U-10732	-	S	data	N	N	미측정	Move type changes should use `B_UPDATED_MOVE_TYPES`
+522	10698	2000004	1.17.1	g7_1.17.1	U-10698	9532,9494,9657,9674,9730,10091,10354,8893,10384,10151,10488,10600,10593,10630	XL	fix	Y	N	미측정	Coding TODOs and currently KNOWN_FAILING regression tests 1/3
+523	10747	2000005	1.17.1	g7_1.17.1	U-10747	10117	S	fix	N	N	미측정	Fix contest move page in summary screen
+524	10753	2000006	1.17.1	g7_1.17.1	U-10753	8434	S	fix	N	N	미측정	Fix overworld encounter flee sound playing every step in towns
+525	10741	2000007	1.17.1	g7_1.17.1	U-10741	10028,10426,10593	S	fix	N	N	미측정	Fix Sheer Force suppressing King's Rock and Razor Fang flinches
+526	10773	2000008	1.17.1	g7_1.17.1	U-multi-10773	10711,9440	S	fix	N	N	미측정	Fix custom multi-battle return and party detection
+527	10776	2000009	1.17.1	g7_1.17.1	U-10776	-	S	test	N	N	~0(테스트만)	Fix heap corruption in shiny wild battle tests
+528	10777	2000010	1.17.1	g7_1.17.1	U-10777	-	M	data	Y	N	미측정	Add Regulation M-C (v1.2.0) data changes from Pokémon Champions
+529	10772	2000011	1.17.1	g7_1.17.1	U-10772	8943,9211	M	fix	N	N	미측정	Prevent out-of-bounds battler accesses
+530	10781	2000012	1.17.1	g7_1.17.1	U-10781	-	S	data	N	N	미측정	Adds HM users to cheat start
+531	10782	2000013	1.17.1	g7_1.17.1	U-10782	-	S	fix	N	N	미측정	Update Terastallization boost check to consider negative priority moves with less than 60 BP
+532	10627	2000014	1.17.1	g7_1.17.1	U-stairs-10627	-	S	fix	N	N	미측정	Add bounds check to IsMetatileDirectionallyImpassable
+533	10779	2000015	1.17.1	g7_1.17.1	U-10779	9466,9710,9865,10300,10326	M	fix	N	N	미측정	Fixes terrain access during ai calcs and paradox ability modifier
+534	10788	2000016	1.17.1	g7_1.17.1	U-10788	9657,9730,10640	M	fix	Y	N	미측정	Fix two turn attack message wait and remove visual config
+535	10792	2000017	1.17.1	g7_1.17.1	U-10792	-	S	tool	N	N	~0(도구)	Fix some move tutor scripts not beign parsed
+536	10812	2000018	1.17.1	g7_1.17.1	U-10812	9730	S	fix	N	N	미측정	Fix not all abilities/ hold effects being read for Gooey/Tangling Hair
+537	10791	2000019	1.17.1	g7_1.17.1	U-10791	-	M	gfx	N	N	미측정	Small Batch of Gen VIII Animation Frames
+538	10817	2000020	1.17.1	g7_1.17.1	U-10817	9211,9807	S	fix	N	N	미측정	String test fixes
+539	10821	2000021	1.17.1	g7_1.17.1	U-10821	9440	M	refactor	N	N	미측정	ModifyPersonalityForNature cleanup duplicate
+540	10819	2000022	1.17.1	g7_1.17.1	U-10819	-	S	fix	N	N	미측정	do not use gStraingVar in ScriptShowItemDescription
+541	10822	2000023	1.17.1	g7_1.17.1	U-10822	8893	S	build	Y	N	미측정	Fix compilation with certain generational move data
+542	10814	2000024	1.17.1	g7_1.17.1	U-multi-10773	-	S	fix	N	N	미측정	Fix multi-battle outcome handling
+543	10807	2000025	1.17.1	g7_1.17.1	U-10807	10374	S	fix	N	N	미측정	End instead of fallthrough for gBattleAnimMove_None and Mirror Move
+544	10818	2000026	1.17.1	g7_1.17.1	U-10818	-	S	fix	N	N	미측정	Fix fanfare task interrupted in move relearner
+545	10816	2000027	1.17.1	g7_1.17.1	U-10816	-	S	fix	N	N	0(HnS 동등 65388d7a)	Fix multi level move learning
+546	10830	2000028	1.17.1	g7_1.17.1	U-stairs-10627	10627	S	fix	N	N	미측정	Fix player facing direction on sideways stairs
+547	10660	2000029	1.17.1	g7_1.17.1	U-10660	9462,8647	S	fix	N	N	미측정	Fix recorded battle RNG desyncs
+548	10837	2000030	1.17.1	g7_1.17.1	U-10837	-	S	fix	N	N	0(이미 적용 e804379040)	Fix ITEM_NONE assertion when canceling mail
+549	10828	2000031	1.17.1	g7_1.17.1	U-10828	-	S	test	N	N	~0(테스트만)	Fix negative berry animation assertions
+550	10839	2000032	1.17.1	g7_1.17.1	U-10839	-	L	fix	Y	N	미측정	Fix Ability replacement cleanup and Neutralizing Gas spread-move ordering
+551	10829	2000033	1.17.1	g7_1.17.1	U-10829	9655,10593	M	fix	Y	N	미측정	Fix incorrect messages after breaking screens
+552	10836	2000034	1.17.1	g7_1.17.1	U-10836	-	S	data	N	N	미측정	Adjust default debug trainers
+553	10843	2000035	1.17.1	g7_1.17.1	U-10843	9730	M	fix	Y	N	미측정	Fix Starting Status Tailwind interactions with Wind Rider and Wind Power
+554	10752	2000036	1.17.1	g7_1.17.1	U-10752	10155	S	tool	N	N	~0(도구)	Fix Hydra output buffering and summary memory safety
+555	10398	2000037	1.17.1	g7_1.17.1	U-10398	-	S	build	N	N	~0(문서)	Changes to the styleguide regarding statements
+556	10826	2000038	1.17.1	g7_1.17.1	U-10826	-	S	fix	N	N	미측정	Fix buffernumberstring formatting zero

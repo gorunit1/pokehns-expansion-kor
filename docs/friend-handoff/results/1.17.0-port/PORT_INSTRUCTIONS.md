@@ -7,7 +7,7 @@
 1. `docs/friend-handoff/CLAUDE_FULL_SYNC_PORT_PROMPT.md` — **실행 지시문. 여기 규칙을 전부 따른다.**
 2. `docs/friend-handoff/HANDBACK_2026-09-29_FULL_SYNC_PORT_START.md`
 3. `docs/friend-handoff/results/pokeemerald-expansion-1.17.0-full-sync-plan.md`(특히 5·6절 확정 결정)
-4. `docs/friend-handoff/results/1.17.0-sync-plan/port_sequence.tsv`와, 담당 PR이 속한 그룹의 `*_plan.tsv`/`*_plan.md`(approach·evidence·notes)
+4. `docs/friend-handoff/results/1.17.0-sync-plan/port_sequence.tsv`(2026-10-12부터 seq 519~556 = 1.17.1 PR 38개, 계획 [`1.17.1-extension-plan.md`](1.17.1-extension-plan.md))와, 담당 PR이 속한 그룹의 `*_plan.tsv`/`*_plan.md`(approach·evidence·notes)
 5. `docs/localization/BATTLE_MESSAGE_OUTPUT_CHANGES.md`, `AGENTS.md`
 6. `docs/localization/TRANSLATION_POLICY.md` — 새 배틀 메시지 번역(Poké Corpus 공식 원문·줄바꿈 그대로, "HnS 관례" 금지, 폭 초과는 먼저 보고)과 번역 작업 범위(기존 텍스트 수정 금지, 친구 로컬 작업과 충돌 주의)
 

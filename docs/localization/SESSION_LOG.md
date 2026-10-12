@@ -2,6 +2,15 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-12 — 친구 답(묶음 15 후속): 1.17.1 계획 확정 기록 (클라우드 세션)
+
+- 요청: 사용자가 트레이너 그림 답장 2개를 보냈다고 알리고, 앞서 와 있던 친구 답(묶음 15 후속 3개에 대한 답)을 전달. 원문 `FRIEND_REPLY_2026-10-12c.md`.
+- 수정 파일: `docs/friend-handoff/FRIEND_REPLY_2026-10-12c.md`(새), `docs/friend-handoff/results/1.17.0-sync-plan/port_sequence.tsv`(seq 519~556), `docs/friend-handoff/results/1.17.0-port/{1.17.1-extension-plan,RECHECK_BEFORE_COMPLETION,PORT_INSTRUCTIONS}.md`, `docs/localization/TRANSLATION_POLICY.md`, STATUS·SESSION_LOG.
+- 결정(친구): 1.17.1 확장 계획 그대로, Q1 기술 5개 수용(upstream이 이미 `GEN_CHAMPIONS` 조건 형태라 그대로), Q2 #10660 수용(녹화 재생 비교·가드 테스트 재확인·호환 한계 기록), #10822는 배치만 최소, #10829는 재현 먼저(순서 불변), 배틀 외 새 텍스트는 영문·목록 보고.
+- 검증: 문서만(`git diff --check`, 순서표 563행·13열 확인). 빌드 불필요.
+- 게임 화면 확인: 해당 없음.
+- 다음 시작점: seq 287 #10415 사전 분석(재확인 62 재현 포함).
+
 ### 2026-10-12 — 친구 답(트레이너 그림): 웅 머그샷, PARKER, 새 그림 6종 (클라우드 세션)
 
 - 요청: 사용자가 친구 메시지와 zip(`hns_trainer_sprites_16c.zip`, SHA1 `e419182b…`)을 전달 — 웅 머그샷 Y −8, PARKER HnS 수영팬티소년 복원, 친구 그림 5종 적용, SoulGold 태권왕 적용·크레딧, 검증. 원문 `FRIEND_REPLY_2026-10-12b.md`.
@@ -12,6 +21,7 @@
 - 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
 - 남은 문제: 알로라 수영팬티소년 2명 그림(친구), PARKER 그림 해석 확인, 제작자 이름.
 - 다음 시작점: 친구 답 → 반영. 아니면 seq 287 #10415.
+- 친구 문자 2개는 보냄(2026-10-12 사용자 확인).
 
 ### 2026-10-12 — 친구 답(묶음 15): 281 공식 줄바꿈, 번역 정책, 메가 특성 대조, 1.17.1 확장 계획 (클라우드 세션)
 
