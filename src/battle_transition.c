@@ -2684,6 +2684,13 @@ static void Mugshots_CreateTrainerPics(struct Task *task)
         opponentSpriteA->x2 -= 4;
         opponentSpriteB->x2 -= 12;
     }
+
+    // HnS: Brock's head sits lower in his pic than the other trainers' heads, so draw him 8 px higher in the mugshot
+    // only. The PNG and his battle position stay the same. The slides only move x.
+    if (trainerAPicId == TRAINER_PIC_LEADER_BROCK_HNS)
+        opponentSpriteA->y2 -= 8;
+    if (opponentSpriteB != NULL && trainerBPicId == TRAINER_PIC_LEADER_BROCK_HNS)
+        opponentSpriteB->y2 -= 8;
 }
 
 // HnS: a mugshot trainer pic is drawn only once its slide has started and only while its 128 px wide affine box
