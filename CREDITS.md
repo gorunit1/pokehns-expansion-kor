@@ -126,6 +126,7 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 - pokeemerald-expansion adaptation / additional sprite work: Rafa Pierangeli
 - Costume asset lineage: Slawter666
 - Exception: the Lyra battle front pic (`graphics/trainers/front_pics/kris_hns.png`) is not from this source; it was redrawn for HnS based on HGSS Lyra.
+- Exception: the Ethan battle front pic (`graphics/trainers/front_pics/gold_hns.png`) is not from this source; it comes from Pokémon SoulGold (see the trainer front sprite credits below).
 
 ### Mega Evolution Overworld Sprite Credits:
 - [princess-phoenix](https://www.deviantart.com/princess-phoenix)
@@ -138,6 +139,8 @@ This project follows the [all-contributors](https://github.com/all-contributors/
   - HGSS Super Nerd (`super_nerd_hgss_hns.png`, SoulGold `collector.png`): resize by Battle Trainer 1823 (PokéCommunity 308798, page 3, 2023-03-30), robot removed in SoulGold
   - HGSS Scientist (`scientist_hns.png`, SoulGold `scientist.png` as of 2026-07-24): resizer not identified (an earlier SoulGold revision used MrDollSteak's "HGSS Scientist" from PokéCommunity 308798)
   - HGSS Black Belt (`black_belt_hgss_hns.png`, SoulGold `black_belt.png` as of 2026-10-11, last changed in SoulGold on 2026-06-26): resizer not identified (SoulGold's README credits MrDollSteak for 64x64 trainer sprites and Young-Dante for some trainer sprites)
+  - HGSS Ethan (`gold_hns.png`, SoulGold `brendan.png` as of 2026-07-22, same pixels and colors): original artist not identified
+  - HGSS Lance (`champion_lance_hns.png`, SoulGold `champion_lance.png` as of 2026-07-03, same pixels and colors): original artist not identified
 - [Team Aqua's Asset Repo](https://github.com/TeamAquasHideout/Team-Aquas-Asset-Repo): Pawkkie (HGSS resizes: Picnicker, Twins), spilledpizza, TheWiggliestJiggliest, RichardPT, robloxmaster376 (Young Couple), Rubire4 (Psychic)
 - Teacher, Medium, Brock, School Kid, Bird Keeper, Poké Maniac, Biker and Swimmer♂ (`graphics/trainers/front_pics/teacher_hns.png`, `medium_hns.png`, `leader_brock_hns.png`, `school_kid_hgss_hns.png`, `bird_keeper_hgss_hns.png`, `pokemaniac_hgss_hns.png`, `biker_hgss_hns.png`, `swimmer_m_hgss_hns.png`): original drawings made for HnS based on HGSS (artist name to be added)
 
