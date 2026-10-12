@@ -5377,7 +5377,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_KENJI_HNS ===
 Name: 무덕
 Class: Black Belt Hns
-Pic: Black Belt
+Pic: Black Belt Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -5402,7 +5402,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_YOSHI_HNS ===
 Name: 경중
 Class: Black Belt Hns
-Pic: Black Belt
+Pic: Black Belt Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -5415,7 +5415,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_LAO_HNS ===
 Name: 주원
 Class: Black Belt Hns
-Pic: Black Belt
+Pic: Black Belt Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -5428,7 +5428,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_NOB_HNS ===
 Name: 봉주
 Class: Black Belt Hns
-Pic: Black Belt
+Pic: Black Belt Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -5445,7 +5445,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_KIYO_HNS ===
 Name: 노현
 Class: Black Belt Hns
-Pic: Black Belt
+Pic: Black Belt Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -5462,7 +5462,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_LUNG_HNS ===
 Name: 삼화
 Class: Black Belt Hns
-Pic: Black Belt
+Pic: Black Belt Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -5483,7 +5483,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 === TRAINER_WAI_HNS ===
 Name: 웅대
 Class: Black Belt Hns
-Pic: Black Belt
+Pic: Black Belt Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No
@@ -12359,7 +12359,7 @@ Level: 56
 === TRAINER_KENJI_2_HNS ===
 Name: 무덕
 Class: Black Belt Hns
-Pic: Black Belt
+Pic: Black Belt Hgss Hns
 Gender: Male
 Music: Hg Suspicious 2
 Double Battle: No

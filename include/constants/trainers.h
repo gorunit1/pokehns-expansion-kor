@@ -252,6 +252,8 @@ enum __attribute__((packed)) TrainerPicID
     TRAINER_PIC_POKEMANIAC_HGSS_HNS,
     TRAINER_PIC_BIKER_HGSS_HNS,
     TRAINER_PIC_SWIMMER_M_HGSS_HNS,
+    // HnS: HGSS Black Belt from SoulGold (used with the SoulGold developer's permission), added at the end
+    TRAINER_PIC_BLACK_BELT_HGSS_HNS,
     TRAINER_PIC_COUNT,
 };
 
