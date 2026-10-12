@@ -3463,8 +3463,10 @@ void FaintClearSetData(enum BattlerId battler)
         GetBattlerPartyState(battler)->timesGotHit = 0;
 
     bool32 keepTransformed = gBattleMons[battler].volatiles.transformed;
+    enum Species originalSpecies = gBattleMons[battler].volatiles.transformedMonSpecies;
     memset(&gBattleMons[battler].volatiles, 0, sizeof(struct Volatiles));
     gBattleMons[battler].volatiles.transformed = keepTransformed; // Edge case: Keep Transformed status to prevent triggering FORM_CHANGE_FAINT on transformed mons.
+    gBattleMons[battler].volatiles.transformedMonSpecies = originalSpecies; // Also keep transformed species for ev and exp calculation
 
     for (enum BattlerId i = 0; i < gBattlersCount; i++)
     {
