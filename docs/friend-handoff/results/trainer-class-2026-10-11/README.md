@@ -101,5 +101,5 @@
   - 트레이너 데이터(생성된 `src/data/trainers_hns.h`, `#line` 제외): `trainerPic` 95개 + PARKER `trainerClass`(선원 → 수영팬티소년)·`behaviorClass`(삭제)만 다름. 옛 그림 번호를 특별 취급하는 코드 없음.
   - 파티 생성: 1,832마리의 `CreateNPCTrainerParty` 개인값을 두 ROM에서 다시 계산 — 52마리(EV 배열이 있는 트레이너 19명: `SAMSON_OAK`·`PHANTONOMY_UNUSED`·`MELEMELE_SWIMMER_1`·`AKALA_SWIMMER_1`·`PONI_SWIMMER_1`·`PONI_SWIMMER_2`·`MILKMAN`·`MIHARU`·`YOUKO`·`SHIZUKO`·`STEVEN`·`FINLEY`·`MUALANI`·`WESSEL`·`SKYLAR`·`KOGA_POSTOBC`·`BRUNO_POSTOBC`·`RED_POSTOBC`·`MISTY_POSTOBC`, 모두 `_HNS`)의 `TrainerMon` 해시 입력이 EV 포인터 이동으로 바뀌어 개인값 위쪽 비트가 달라짐. 성격(파티 값 고정)·특성(`B_TRAINER_MON_RANDOM_ABILITY` FALSE)·IV·EV·기술·도구·성별(고정 성별 0건 변화, 10마리는 원래 `Random()` 성별)은 같음 — 3절 "알려진 성질"(데이터 배치가 밀릴 때마다 생기는 같은 현상).
   - 세이브 정적 비교(적용 전 사실 = `2b26ef58` 헤더 + `600646ca43` 빌드 ELF): PASS(FAIL 0, WARN 0) — 세이브 블록·RAM 변수 크기·위치 변화 없음. 그림 번호는 세이브에 저장되지 않음(시설 클래스만 저장).
-  - 한글 회귀·전체 테스트: 이 기록 시점에 실행 중 — 결과는 다음 기록.
+  - 한글 회귀 517/607(기대 요약과 바이트 같음), 전체 `make check BUILD=hns -j4` 목록이 `test-baseline-seq285.txt`와 바이트 같음(새 PASS 0·사라진 PASS 0, PASS 2,650 / 5,572).
 - 실기(mGBA, 친구) 확인 항목: 웅 관장전 머그샷(8 px 위 — 상대 그림은 위 32줄만 2배로 보이는 구조라 그림 아래 경계도 8 px 올라감, 화면 y 10~74 → 2~66: 띠 아래쪽에 빈 줄이 보이는지), 새 그림 6종 배틀 화면·팔레트(대상 트레이너는 `phase5_trainers_before_after.tsv`), 블루 체육관 PARKER의 클래스명 `수영팬티소년`·새 수영팬티소년 그림.
