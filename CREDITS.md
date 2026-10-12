@@ -137,8 +137,9 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 - Trainer front sprites ported via [Pokémon SoulGold](https://github.com/Eemeliri/soulgold) (Eemeliri), used with the SoulGold developer's permission
   - HGSS Super Nerd (`super_nerd_hgss_hns.png`, SoulGold `collector.png`): resize by Battle Trainer 1823 (PokéCommunity 308798, page 3, 2023-03-30), robot removed in SoulGold
   - HGSS Scientist (`scientist_hns.png`, SoulGold `scientist.png` as of 2026-07-24): resizer not identified (an earlier SoulGold revision used MrDollSteak's "HGSS Scientist" from PokéCommunity 308798)
+  - HGSS Black Belt (`black_belt_hgss_hns.png`, SoulGold `black_belt.png` as of 2026-10-11, last changed in SoulGold on 2026-06-26): resizer not identified (SoulGold's README credits MrDollSteak for 64x64 trainer sprites and Young-Dante for some trainer sprites)
 - [Team Aqua's Asset Repo](https://github.com/TeamAquasHideout/Team-Aquas-Asset-Repo): Pawkkie (HGSS resizes: Picnicker, Twins), spilledpizza, TheWiggliestJiggliest, RichardPT, robloxmaster376 (Young Couple), Rubire4 (Psychic)
-- Teacher, Medium and Brock (`graphics/trainers/front_pics/teacher_hns.png`, `medium_hns.png`, `leader_brock_hns.png`): original drawings made for HnS based on HGSS (artist name to be added)
+- Teacher, Medium, Brock, School Kid, Bird Keeper, Poké Maniac, Biker and Swimmer♂ (`graphics/trainers/front_pics/teacher_hns.png`, `medium_hns.png`, `leader_brock_hns.png`, `school_kid_hgss_hns.png`, `bird_keeper_hgss_hns.png`, `pokemaniac_hgss_hns.png`, `biker_hgss_hns.png`, `swimmer_m_hgss_hns.png`): original drawings made for HnS based on HGSS (artist name to be added)
 
 ### HnS Overworld Sprite Credits:
 - Poké Maniac overworld: Delta231, "HGSS Overworld Sprite in FR Style" ([PokéCommunity 408123](https://www.pokecommunity.com/showthread.php?t=408123)), via [Team Aqua's Asset Repo](https://github.com/TeamAquasHideout/Team-Aquas-Asset-Repo) (Delta231s Collaborative HGSS Resource)
