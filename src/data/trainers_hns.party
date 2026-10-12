@@ -13607,7 +13607,7 @@ IVs: 0 Atk
 === TRAINER_MELEMELE_SWIMMER_2_HNS ===
 Name: JIMMY
 Class: Swimmer M Hns
-Pic: Swimmer M
+Pic: Swimmer M Hgss Hns
 Gender: Male
 Music: Hg Boy 2
 Double Battle: No
@@ -13716,7 +13716,7 @@ Careful Nature
 === TRAINER_AKALA_SWIMMER_3_HNS ===
 Name: GEOFF
 Class: Swimmer M Hns
-Pic: Swimmer M
+Pic: Swimmer M Hgss Hns
 Gender: Male
 Music: Hg Boy 2
 Double Battle: No
