@@ -39,7 +39,7 @@
 
 ## 4. 보류(친구 질문 대기)와 추가로 필요한 그림
 
-> 2026-10-11 친구 답으로 대부분 정리됨 — 6절. 남은 것: PARKER 오버월드(친구 질문), 공개 그림 없는 6클래스·보더 오버월드(친구 제작 대기), 선생님·무당·웅 제작자 이름(친구가 알려 줄 때).
+> 2026-10-11 친구 답으로 대부분 정리됨 — 6절. 2026-10-12 친구 답으로 PARKER(HnS 수영팬티소년)·6클래스 그림(친구 제작 5 + SoulGold 태권왕) 해결 — 7절. 남은 것: 보더 오버월드(친구 제작 검토), 선생님·무당·웅·새 그림 5종 제작자 이름(친구가 알려 줄 때), 알로라 수영팬티소년 2명 그림(친구 질문).
 
 - 보류: 이과계의 남자 7명 그림(`super_nerd_hns` 교체 또는 새 ID), GRUNT_27(대사 ♀·그림 ♂), NARD·RICHARDO, 추정 이름 11개(ROB·ED·DOUG·SCOTT·CHARLES·CAMERON·DAWN·WAYNE·REX)·ANN&ANNE 이름, Bugsy·Will·추정 6항목 성별, DEVELOPER 클래스·ETO×3 이름(영문), 신규 인물 30·크리스탈 전용 5 이름(공식 없음 — 영문), 연구원 그림 출처(SoulGold 판 원 제작자 미확인 — MrDollSteak 판 여부), 새 웅 그림(받아야 함). 전체 `hold_list.tsv`.
 - ANN&ANNE은 동일 인물이 "추정"이라 이름·성별은 그대로 두고 그림만 HGSS 쌍둥이 공통 그림으로 바꿨다(어느 쪽 인물이든 쌍둥이 클래스 그림은 하나 — 리뷰 R2도 친구 원칙에 맞다고 봄). 되돌릴 때는 `.party`의 `Pic: Twins Hgss Hns` 한 줄.
@@ -79,3 +79,27 @@
   - 메인 검증(최종 HEAD `6a09e9b94d`): `make hns -j8` 종료 0, 새 경고 0, ROM 사용 32,781,524 B(시작 대비 +7,792 — 배틀 그림 +2,640·오버월드 +5,152), EWRAM 250,408 B·IWRAM 25,516 B 같음, SHA1 `496faa3f94f1c194f8d1d3e168f4e59468a5f704`(리뷰 재현값과 같음). 전체 `make check` 목록이 `test-baseline-seq285.txt`와 바이트 같음(새 기준 목록 불필요). 한글 회귀 517/607 기대와 바이트 같음. 세이브 정적 비교(적용 전 빌드 사실) PASS(FAIL 0, WARN 0), 세이브 왕복 PASS.
 - 세이브 성질: 대상 맵 안에서 저장한 세이브를 이어하면 그 맵을 다시 들어가기 전까지 그 오브젝트가 옛 그림(옛 번호도 유효)으로 보인다. 새 ROM에서 대상 맵 안에 저장한 세이브를 **이번 커밋 이전 ROM**으로 열면 388·389가 비어 있어 그 맵에서 그림이 깨질 수 있다(반대 방향은 안전) — 친구 버그 보고 때 ROM 커밋 확인.
 - 실기(mGBA) 확인 항목: 웅 관장전 머그샷(새 그림은 머리가 y10부터라 머그샷 띠에서 머리가 이전보다 16px 낮게 보임 — 좌표로는 못 고침, 어색하면 친구에게)·배틀 그림·팔레트, 초능력자♂ 입(36번도로 MARK 등), 이과계(8번도로 SAM·TOM, 지하통로 ERIC·TERU), 보더(황토마을 체육관), 더블팀(47번도로), GRUNT_27(금빛시티 지하), 포켓몬 매니아(연결동굴 등)·중년 여성(15번도로 등) 오버월드 걷기, ALEX·TREVOR·ALLAN·ROY·BRET.
+
+## 7. 친구 답 반영 (2026-10-12, 5단계 — 남은 그림 6종·웅 머그샷·PARKER)
+
+- 친구 답 [`FRIEND_REPLY_2026-10-12b.md`](../../FRIEND_REPLY_2026-10-12b.md), 그림은 디스코드 첨부 `hns_trainer_sprites_16c.zip`(SHA1 `e419182b11ad550d286c8e062996e8012042d6b1`, PNG 5·PAL 5·README). zip은 클라우드 세션 임시 폴더에 원본 그대로 두고 파이썬 `zipfile`로 이름·속성을 확인한 뒤 풀었다(저장소에는 PNG만, 바이트 그대로). PNG 5개 모두 64×64·4비트 인덱스·PLTE 16·0번 투명, PLTE = 같은 이름 `.pal`(CRLF) → 팔레트는 PNG에서(216~224와 같은 방식).
+- 전후 비교표(이 폴더): `phase5_trainers_before_after.tsv`(95항목 — 그림 전후, PARKER 클래스), `phase5_new_ids.tsv`(새 그림 ID 225~230, 파일 SHA1·git blob·출처·배정 수).
+
+| 커밋 | 내용(친구 답 절) |
+|---|---|
+| `4b885582` | 웅 머그샷만 8 px 위로(1절): `Mugshots_CreateTrainerPics()`에서 상대 A(또는 B)의 그림이 `TRAINER_PIC_LEADER_BROCK_HNS`이면 `y2 -= 8`. 슬라이드는 x만 움직여 시점 그대로. `leader_brock_hns.png`·팔레트·일반 배틀 위치(트레이너 앞모습은 그림별 좌표 없이 고정 위치, 웅의 `gTrainerPicInfo` 항목 그대로)·다른 트레이너 머그샷 그대로. ELF에서 크기가 바뀐 심볼은 `Mugshot_Init` 하나(+72 B). 웅 2명(`TRAINER_BROCK_HNS`·`TRAINER_BROCK_POSTOBC_HNS`) 모두 `Mugshot: Orange` |
+| `6d7ae678` | PARKER = HnS 수영팬티소년(2절, 재확인 59 해결): `d618e65415`가 바꾼 줄만 되돌림 — `Class: Swimmer M Hns`, `Pic: Swimmer M`, `Behavior Class` 줄 없음. 이름 `지광`·오버월드(물속 수영 NPC)·(9,13)·파티 그대로. 동작 클래스는 원래도 Swimmer M Hns(명시 → `behaviorClass ?: trainerClass`)라 상금·볼·BGM·AI 같음 |
+| `5cc5ed84` | 친구 그림 5종(3절) — 새 ID 225 `SCHOOL_KID_HGSS_HNS`·226 `BIRD_KEEPER_HGSS_HNS`·227 `POKEMANIAC_HGSS_HNS`·228 `BIKER_HGSS_HNS`·229 `SWIMMER_M_HGSS_HNS`(기존 끝 뒤). 파일 이름만 `*_hgss_hns.png`(저장소에 이미 `biker_hns.png` = 기존 HnS 폭주족 그림이 있어 덮어쓰지 않으려고). 배정 87항목: 학원 끝난 아이 26·새 조련사 19(ROY·BRET 포함 — 폭주족·저글러 그림이던 2명)·포켓몬 매니아 15·폭주족 14·수영팬티소년 12 + PARKER(3절 "PARKER를 포함해 … 새 그림") — 대상은 `sprites_needed.tsv`의 HGSS 스토리 트레이너 목록 |
+| `7e59e720` | SoulGold 태권왕(4절) — 새 ID 230 `BLACK_BELT_HGSS_HNS`. 원본 `Eemeliri/soulgold` `acfbed1dfd`(2026-10-11) `graphics/trainers/front_pics/black_belt.png`(SoulGold 마지막 변경 `77dece957` 2026-06-26 "lots of sprite updates"). 이미 64×64·팔레트 16칸(0번 투명, 사용 14)이라 형식만 8비트 → 4비트(sRGB 청크 제거) — 픽셀·PLTE·tRNS 그대로. 배정 8항목(KENJI·YOSHI·LAO·NOB·KIYO·LUNG·WAI·KENJI_2) |
+| `a9f64486` | `CREDITS.md`: SoulGold 태권왕(원 축소자 미확인 — SoulGold README의 64×64 트레이너 그림 크레딧 MrDollSteak·Young-Dante를 함께 적음, 연구원 줄과 같은 방식), 친구 그림 5종을 HnS 제작 그림 줄에(이름 칸은 계속 비움) |
+
+- 바꾸지 않은 것(보고): 목록 밖 같은 클래스 — 미배치 KAZU(폭주족)·수영팬티소년 8명(HAL·PATON·DARYL·WALTER·TONY·RICK·JAMES·LEWIS), **배치된 HnS 고유 수영팬티소년 `MELEMELE_SWIMMER_2`(JIMMY)·`AKALA_SWIMMER_3`(GEOFF)** — HGSS 원작이 없는 알로라 콘텐츠라 지금 그림(`Swimmer M`) 유지, 새 그림을 쓸지는 친구 질문. 시설(프런티어·텐트·트레이너힐) 클래스 그림은 에메랄드 그림 그대로.
+- 검증(코드/데이터 — 실기는 친구)
+  - 단계마다 `make hns -j8` 종료 0, 새 경고 0, 새 PNG의 libpng 경고 0. 최종 ROM 사용 32,786,900 B(시작 32,781,524 B 대비 +5,376 — 머그샷 +80·그림 6장 +5,296), EWRAM 250,408 B·IWRAM 25,516 B 같음, SHA1 `675c8d80e317292496e154e6acd27b0cc91fcbf6`.
+  - 새 그림 6장: PNG 픽셀·PLTE = 원본(친구 PNG, SoulGold PNG), 빌드 `.4bpp` = PNG 인덱스, `.gbapal` = PLTE, ROM의 `gTrainerFrontPic_*HgssHns` = `.4bpp.smol`, ROM 팔레트 = `.gbapal` — 6장 모두 같음.
+  - 기존 그림·시설 표: 적용 전 ROM(`600646ca43` 빌드, SHA1 `16ea4db5…`)과 이름 있는 그림·팔레트·시설 표 심볼 507개 비교 — 504개 바이트 같음, 다른 3개(`gBattleFrontierTrainers`·`gSlateportBattleTentMons`·`gSlateportBattleTentTrainers`)는 데이터 위치가 밀린 포인터 419개뿐이고 가리키는 내용은 모두 같음.
+  - 트레이너 데이터(생성된 `src/data/trainers_hns.h`, `#line` 제외): `trainerPic` 95개 + PARKER `trainerClass`(선원 → 수영팬티소년)·`behaviorClass`(삭제)만 다름. 옛 그림 번호를 특별 취급하는 코드 없음.
+  - 파티 생성: 1,832마리의 `CreateNPCTrainerParty` 개인값을 두 ROM에서 다시 계산 — 52마리(EV 배열이 있는 트레이너 19명: `SAMSON_OAK`·`PHANTONOMY_UNUSED`·`MELEMELE_SWIMMER_1`·`AKALA_SWIMMER_1`·`PONI_SWIMMER_1`·`PONI_SWIMMER_2`·`MILKMAN`·`MIHARU`·`YOUKO`·`SHIZUKO`·`STEVEN`·`FINLEY`·`MUALANI`·`WESSEL`·`SKYLAR`·`KOGA_POSTOBC`·`BRUNO_POSTOBC`·`RED_POSTOBC`·`MISTY_POSTOBC`, 모두 `_HNS`)의 `TrainerMon` 해시 입력이 EV 포인터 이동으로 바뀌어 개인값 위쪽 비트가 달라짐. 성격(파티 값 고정)·특성(`B_TRAINER_MON_RANDOM_ABILITY` FALSE)·IV·EV·기술·도구·성별(고정 성별 0건 변화, 10마리는 원래 `Random()` 성별)은 같음 — 3절 "알려진 성질"(데이터 배치가 밀릴 때마다 생기는 같은 현상).
+  - 세이브 정적 비교(적용 전 사실 = `2b26ef58` 헤더 + `600646ca43` 빌드 ELF): PASS(FAIL 0, WARN 0) — 세이브 블록·RAM 변수 크기·위치 변화 없음. 그림 번호는 세이브에 저장되지 않음(시설 클래스만 저장).
+  - 한글 회귀·전체 테스트: 이 기록 시점에 실행 중 — 결과는 다음 기록.
+- 실기(mGBA, 친구) 확인 항목: 웅 관장전 머그샷(8 px 위 — 상대 그림은 위 32줄만 2배로 보이는 구조라 그림 아래 경계도 8 px 올라감, 화면 y 10~74 → 2~66: 띠 아래쪽에 빈 줄이 보이는지), 새 그림 6종 배틀 화면·팔레트(대상 트레이너는 `phase5_trainers_before_after.tsv`), 블루 체육관 PARKER의 클래스명 `수영팬티소년`·새 수영팬티소년 그림.

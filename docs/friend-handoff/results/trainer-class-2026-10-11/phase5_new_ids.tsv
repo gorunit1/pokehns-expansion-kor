@@ -1,0 +1,7 @@
+상수	번호	파일	클래스	git blob	SHA1	형식	출처	배정 수
+TRAINER_PIC_SCHOOL_KID_HGSS_HNS	225	graphics/trainers/front_pics/school_kid_hgss_hns.png	학원 끝난 아이	7878ed2121	35bad49143fdbb30507f49de37fff0a9fbf48c44	64x64 4비트 인덱스, PLTE 16, 0번 투명	친구 제작 school_kid_hns.png (hns_trainer_sprites_16c.zip)	26
+TRAINER_PIC_BIRD_KEEPER_HGSS_HNS	226	graphics/trainers/front_pics/bird_keeper_hgss_hns.png	새 조련사	2cabf3cb05	7e97da1907ff25eed3cf87394650dfcf49b2221f	64x64 4비트 인덱스, PLTE 16, 0번 투명	친구 제작 bird_keeper_hns.png (zip)	19
+TRAINER_PIC_POKEMANIAC_HGSS_HNS	227	graphics/trainers/front_pics/pokemaniac_hgss_hns.png	포켓몬 매니아	a4c07e6085	3e0d20a5393b8404ecbb7e7d74bfc6a37f60cc6a	64x64 4비트 인덱스, PLTE 16, 0번 투명	친구 제작 pokemaniac_hns.png (zip)	15
+TRAINER_PIC_BIKER_HGSS_HNS	228	graphics/trainers/front_pics/biker_hgss_hns.png	폭주족	a0b65d2a11	0dc880394acda950b4f0daf3845968e74c9d3d29	64x64 4비트 인덱스, PLTE 16, 0번 투명	친구 제작 biker_hns.png (zip) — 저장소의 기존 biker_hns.png와 이름이 같아 새 이름	14
+TRAINER_PIC_SWIMMER_M_HGSS_HNS	229	graphics/trainers/front_pics/swimmer_m_hgss_hns.png	수영팬티소년	e0c8380ee4	0d0ad8f59cc8e57d515e177d5dc8e14caf59cb3e	64x64 4비트 인덱스, PLTE 16, 0번 투명	친구 제작 swimmer_m_hns.png (zip)	13
+TRAINER_PIC_BLACK_BELT_HGSS_HNS	230	graphics/trainers/front_pics/black_belt_hgss_hns.png	태권왕	98f2e08caf	81f2572d3ece9d6ab1789d9d3e3e8ff0ff8c37d3	64x64 4비트 인덱스, PLTE 16, 0번 투명	SoulGold black_belt.png (Eemeliri/soulgold acfbed1dfd, 마지막 변경 77dece957 2026-06-26, 개발자 허락) — 8비트→4비트 형식만, 원 축소자 미확인	8
