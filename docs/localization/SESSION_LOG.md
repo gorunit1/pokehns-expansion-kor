@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-12 — full-sync 묶음 16(seq 287~300), 친구 답(트레이너 그림 마무리) (클라우드 세션)
+
+- 요청: 사용자 "응 시작해" → 사전 분석 보고 → "응 추천대로 적용해"(묶음 16). 도중에 친구 답(트레이너 그림 마무리 — 원문 `FRIEND_REPLY_2026-10-12d.md`)을 전달하며 "이거까지 끝내면 친구한테 보낼 메시지 한 번에 줘".
+- 수정 파일: 묶음 16 — `src/battle_setup.c`, `src/overworld.c`, `include/config/battle.h`, `include/constants/config_changes.h`, `src/battle_main.c`, `src/battle_script_commands.c`, `src/data/moves_info.h`(데이터 4줄), `src/battle_message.c`(조건 1줄), `asm/macros/event.inc`, `src/battle_ai_items.c`, `src/battle_anim_water.c`, `src/string_util.c`, `src/pokemon_summary_screen.c`, `src/battle_anim_throw.c`, `src/pokemon_animation.c`, `test/battle/{capture,exp,front_anim}.c`, `test/battle/move_effect/struggle.c`. 트레이너 — `src/data/trainers_hns.party`(2줄), `CREDITS.md`. 문서 — `full-sync-seq-287-300.md`(새), `test-baseline-seq300.txt`(새), `RECHECK_BEFORE_COMPLETION.md`(62), `FRIEND_REPLY_2026-10-12d.md`(새), 트레이너 README 8절, STATUS·SESSION_LOG.
+- 결정: 묶음 16은 사용자(upstream 버그 수정 수용, #10432 skip, #10428 설명 `#if` 제외). 폭주족 그림은 친구 조건(배정 대상 밖 트레이너 그림 불변)에 따라 구조 유지 — KAZU가 유일한 사용자라 덮으면 KAZU가 바뀜.
+- 조사 방법: 그림 출처는 SoulGold sparse clone(`Eemeliri/soulgold` `acfbed1dfd`, 세션 임시)의 파일 이력 판마다 PNG 인덱스·보이는 색을 HnS 파일과 비교(PIL, 임시 스크립트). 재확인 62는 임시 테스트 `test/battle/zz_tmp_recheck62.c`(실행 뒤 지움).
+- 검증: STATUS 현재 절. 커밋 제목 2개(298 끝 "Screen" 빠짐, 299 줄임)는 다음 커밋을 쌓은 뒤라 고치지 않음 — 결과 문서 표에 upstream 제목.
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 남은 문제: 재확인 62 앞당김 답, 폭주족 정리 답, 실기.
+- 다음 시작점: 친구 답 → 반영. 아니면 seq 301(기준 `test-baseline-seq300.txt`).
+
 ### 2026-10-12 — 친구 답(묶음 15 후속): 1.17.1 계획 확정 기록 (클라우드 세션)
 
 - 요청: 사용자가 트레이너 그림 답장 2개를 보냈다고 알리고, 앞서 와 있던 친구 답(묶음 15 후속 3개에 대한 답)을 전달. 원문 `FRIEND_REPLY_2026-10-12c.md`.
