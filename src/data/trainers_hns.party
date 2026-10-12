@@ -3828,9 +3828,8 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_PARKER_HNS ===
 Name: 지광
-Class: Sailor Hns
-Behavior Class: Swimmer M Hns
-Pic: Sailor
+Class: Swimmer M Hns
+Pic: Swimmer M
 Gender: Male
 Music: Hg Boy 2
 Double Battle: No
