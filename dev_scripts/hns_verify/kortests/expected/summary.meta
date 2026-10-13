@@ -11,7 +11,10 @@ summary.txt = 한글 회귀 기대 요약(kortests/run.sh 출력 그대로: 정�
   K4-12도 PASS 그대로여서 summary.txt는 바이트 그대로다(hnsfix-1010e mkcopy 사본 + trace.patch, kortests/run.sh <사본> post 8:
   517/607, 기대와 바이트 동일, trace는 K4-12 2줄만 다름). 고친 K4-12를 8세대 코드에서 돌리면 `Matched ANIMATION`
   (zz_hns9730_k4_interact.c:290)으로 FAIL한다.
-합계: 607개, PASS 517 / FAIL 84 / INVALID 6
+합계: 622개, PASS 532 / FAIL 84 / INVALID 6
+2026-10-13 HNSSCREEN 15개 추가(방벽 해제 — #10829 앞당김 6d08adc6, 진영 문구 db62d527, 배리어프리 타이머 d4e3b8b6): 클라우드
+  저장소 코드 d4e3b8b6에서 kortests/run.sh <저장소> kor-screen 8 → 532/622. 그 전 607개의 상태 줄은 그대로(정렬 비교 차이 0),
+  새 15개 모두 PASS. summary.txt는 이 실행 요약 그대로(테스트가 늘어 hydra 실패 목록 앞 50줄의 선택만 2줄 바뀜 — 상태 줄은 그대로).
 세트          PASS / 전체   파일(kortests/sets/)
   HNS9680      66 /  70    zz_hns9680_endturn1~4.c
   HNS9714      29 /  34    zz_hns9714_b1_defog.c, b2_tidyup_sub.c, b3_endturn.c, b4_doubles_gmax.c
@@ -27,6 +30,7 @@ summary.txt = 한글 회귀 기대 요약(kortests/run.sh 출력 그대로: 정�
   HNS9799      12 /  12    zz_hns9799_k1_switchmsg.c, k2_aiswitch.c
   HNS9730     199 / 235    zz_hns9730_k1_moves.c(80) k2_abilities.c(69) k3_items.c(25) k4_interact.c(57) k5_totem.c(4)
   HNSX1        21 /  21    zz_hnsx1_kor.c (충전·주눅구슬·토템·한계 문장, 2026-10-07 X1; 16번은 X6 막힌 위협 + 주눅구슬)
+  HNSSCREEN    15 /  15    zz_hnsscreen_kor.c (방벽 해제: T 깨뜨리다류 타이머·이름·만료·피해, P 진영 접두어·공격자 복구·안개제거, C 배리어프리 4경우·없음·뒤 방벽·상대 사용)
   HNS9918      23 /  23    zz_hns9918_pledge.c (맹세 콤보·무지개·불바다·습지 시작/턴 끝/종료 문장과 진영 이름, 시작 상태 경로,
                            무지개 2배·습지 1/4·불바다 1/8, 미래예지·파멸의소원; seq 188 이식 전 출력 고정)
 저장소 테스트가 없는 문장을 지키는 것(리뷰 R3): HNS9730 K1-51 충전 PASS, K2-16 위협 vs 주눅구슬 PASS,

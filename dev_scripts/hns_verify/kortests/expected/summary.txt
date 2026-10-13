@@ -32,7 +32,6 @@
   - test/battle/zz_hns9730_k4_interact.c:950: Unmatched ANIMATION - HNS9730 K4-44 Growl into a Mirror Armor foe and a plain foe.
   - test/battle/zz_hns9784_k1_items.c:213: TURN 1 incomplete - HNS9784 K2-02 CHANGE EXPECTED: Eject Button: raw-faster holder under Slow Start should activate (pre: effective-Speed holder).
   - test/battle/zz_hns9784_k1_items.c:233: TURN 1 incomplete - HNS9784 K2-03 CHANGE EXPECTED: Eject Button: all four Speed tied, raw sort should pick the right foe (pre: left foe).
-  - test/battle/zz_hns9784_k1_items.c:316: TURN 1 incomplete - HNS9784 K3-02 CHANGE EXPECTED: Eject Pack: raw-faster holder under Slow Start should activate (pre: effective-Speed holder).
   - test/battle/zz_hns9784_k1_items.c:352: Unmatched ANIMATION - HNS9784 K3-03 CHANGE EXPECTED: faster Eject Pack should come before slower White Herb (pre: White Herb first).
   - test/battle/zz_hns9784_k1_items.c:396: Unmatched MESSAGE - HNS9784 K3-05 CHANGE EXPECTED: user Throat Spray, then foes Eject Pack and White Herb by raw Speed (pre: White Herb, Throat Spray, Eject Pack).
   - test/battle/zz_hns9784_k1_items.c:410: SEND_OUT not required (is the send out random?) - HNS9784 K3-06 CHANGE EXPECTED: Weak Armor on U-turn: Eject Pack should not activate (pre: it fires at the U-turn replacement switch-in).
@@ -47,10 +46,11 @@
   - test/battle/zz_hns9784_k1_items.c:87: Matched MESSAGE - HNS9784 K1-04 CHANGE EXPECTED: faster Eject Button, then slower Red Card should also activate (pre: only Eject Button).
   - test/battle/zz_hnsfix1_tmp.c:610: MOVE not required - HNSFIX1 T13 Parting Shot bounced by an Eject Button replacement 1/2.
   - test/battle/zz_hnspopup_p3.c:256: Unmatched ANIMATION - HNSPOPUP S05 side effect: Salac Berry (R35).
-  - test/battle/zz_hnssw_probe.c:317: MOVE not required - HNSSW S1pk player EE wiped by the second Future Sight: the mon in its ball is knocked out next turn.
+  - test/battle/zz_hnssw_probe.c:242: MOVE not required - HNSSW S1t foe EE wiped by the second Future Sight: next turn both use Tackle.
+  - test/battle/zz_hnssw_probe.c:298: MOVE not required - HNSSW S1k foe EE wiped by the second Future Sight: the mon in its ball is knocked out next turn.
 - Tests FAILED :         90    Add TESTS='X' to run tests with the defined prefix.
-- Tests PASSED:          517
-- Tests TOTAL:           607
+- Tests PASSED:          532
+- Tests TOTAL:           622
 HNS9168 K01 status cure berries (Cheri, Rawst, Pecha, Chesto) after the status move: PASS
 HNS9168 K02 Aspear Berry thaws the holder on switch-in (opponent side): PASS
 HNS9168 K03 Lum Berry cures paralysis: PASS
@@ -616,6 +616,21 @@ HNSREV X3 Replacement bounces after its slot acted and acts normally next turn: 
 HNSREV X4 Bounced Scary Face ejects the attacker by Eject Pack (bouncer came by Eject Button): PASS
 HNSREV X5 Snatch survives an ally's Eject Button switch in the same turn: PASS
 HNSREV X6 Baton Pass still passes stat stages and Magnet Rise: PASS
+HNSSCREEN C01 Screen Cleaner: only the user's side: PASS
+HNSSCREEN C02 Screen Cleaner: only the foe's side: PASS
+HNSSCREEN C03 Screen Cleaner: different screens on both sides: PASS
+HNSSCREEN C04 Screen Cleaner: the same screen on both sides: PASS
+HNSSCREEN C05 Screen Cleaner: all three screens on the foe's side: PASS
+HNSSCREEN C06 Screen Cleaner with no screens: no popup, no message: PASS
+HNSSCREEN C07 a screen set after Screen Cleaner still runs out normally: PASS
+HNSSCREEN C08 Screen Cleaner used by the foe: the foe's side first, then the player's side: PASS
+HNSSCREEN P01 a foe breaking the player's screen uses the ally prefix: PASS
+HNSSCREEN P02 the attacker is restored after the screen message (Life Orb recoil hits the user): PASS
+HNSSCREEN P03 Defog still announces the foe's screen with the foe prefix: PASS
+HNSSCREEN T01 broken foe screen is announced once with the foe prefix and not again later: PASS
+HNSSCREEN T02 breaking Light Screen after a broken Reflect names only Light Screen: PASS
+HNSSCREEN T03 screens that run out are still announced with the right prefix: PASS
+HNSSCREEN T04 screen-breaking moves deal the same damage with and without a screen: PASS
 HNSSW S1 foe EE from Future Sight, then the second Future Sight of the same end turn: PASS
 HNSSW S10 wild: faster player EE (poison) and the wild mon would faint from poison: PASS
 HNSSW S11 Liquid Ooze drain: seeded last foe faints, EE receiver drops below half: PASS
