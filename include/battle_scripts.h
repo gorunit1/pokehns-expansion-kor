@@ -304,6 +304,7 @@ extern const u8 BattleScript_TrainerBSlideMsgRet[];
 extern const u8 BattleScript_TrainerBSlideMsgEnd2[];
 extern const u8 BattleScript_TrainerPartnerSlideMsgRet[];
 extern const u8 BattleScript_TrainerPartnerSlideMsgEnd2[];
+extern const u8 BattleScript_TrainerSlideMsg[];
 extern const u8 BattleScript_MoveEffectFeint[];
 extern const u8 BattleScript_ProteanActivates[];
 extern const u8 BattleScript_PokemonCannotUseMove[];
