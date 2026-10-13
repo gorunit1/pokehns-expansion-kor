@@ -224,7 +224,7 @@ SINGLE_BATTLE_TEST("HNSSCREEN C01 Screen Cleaner: only the user's side")
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
         TURN { MOVE(player, MOVE_REFLECT); }
-        TURN { SWITCH(player, 1); MOVE(opponent, MOVE_CELEBRATE); }
+        TURN { SWITCH(player, 1); MOVE(opponent, MOVE_HARDEN); }
         TURN {}
         TURN {}
         TURN {}
@@ -233,7 +233,7 @@ SINGLE_BATTLE_TEST("HNSSCREEN C01 Screen Cleaner: only the user's side")
         ANIMATION(ANIM_TYPE_MOVE, MOVE_REFLECT, player);
         ABILITY_POPUP(player, ABILITY_SCREEN_CLEANER);
         MESSAGE("우리 편의 리플렉터가 없어졌다!");
-        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_HARDEN, opponent);
         NONE_OF {
             MESSAGE("우리 편의 리플렉터가 없어졌다!");
             MESSAGE("상대의 리플렉터가 없어졌다!");
@@ -249,7 +249,7 @@ SINGLE_BATTLE_TEST("HNSSCREEN C02 Screen Cleaner: only the foe's side")
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
         TURN { MOVE(opponent, MOVE_REFLECT); }
-        TURN { SWITCH(player, 1); MOVE(opponent, MOVE_CELEBRATE); }
+        TURN { SWITCH(player, 1); MOVE(opponent, MOVE_HARDEN); }
         TURN {}
         TURN {}
         TURN {}
@@ -258,7 +258,7 @@ SINGLE_BATTLE_TEST("HNSSCREEN C02 Screen Cleaner: only the foe's side")
         ANIMATION(ANIM_TYPE_MOVE, MOVE_REFLECT, opponent);
         ABILITY_POPUP(player, ABILITY_SCREEN_CLEANER);
         MESSAGE("상대의 리플렉터가 없어졌다!");
-        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_HARDEN, opponent);
         NONE_OF {
             MESSAGE("상대의 리플렉터가 없어졌다!");
             MESSAGE("우리 편의 리플렉터가 없어졌다!");
@@ -274,7 +274,7 @@ SINGLE_BATTLE_TEST("HNSSCREEN C03 Screen Cleaner: different screens on both side
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
         TURN { MOVE(player, MOVE_REFLECT); MOVE(opponent, MOVE_LIGHT_SCREEN); }
-        TURN { SWITCH(player, 1); MOVE(opponent, MOVE_CELEBRATE); }
+        TURN { SWITCH(player, 1); MOVE(opponent, MOVE_HARDEN); }
         TURN {}
         TURN {}
         TURN {}
@@ -285,7 +285,7 @@ SINGLE_BATTLE_TEST("HNSSCREEN C03 Screen Cleaner: different screens on both side
         ABILITY_POPUP(player, ABILITY_SCREEN_CLEANER);
         MESSAGE("우리 편의 리플렉터가 없어졌다!");
         MESSAGE("상대의 빛의장막이 없어졌다!");
-        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_HARDEN, opponent);
         NONE_OF {
             MESSAGE("우리 편의 리플렉터가 없어졌다!");
             MESSAGE("상대의 빛의장막이 없어졌다!");
@@ -303,7 +303,7 @@ SINGLE_BATTLE_TEST("HNSSCREEN C04 Screen Cleaner: the same screen on both sides"
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
         TURN { MOVE(player, MOVE_REFLECT); MOVE(opponent, MOVE_REFLECT); }
-        TURN { SWITCH(player, 1); MOVE(opponent, MOVE_CELEBRATE); }
+        TURN { SWITCH(player, 1); MOVE(opponent, MOVE_HARDEN); }
         TURN {}
         TURN {}
         TURN {}
@@ -312,7 +312,7 @@ SINGLE_BATTLE_TEST("HNSSCREEN C04 Screen Cleaner: the same screen on both sides"
         ABILITY_POPUP(player, ABILITY_SCREEN_CLEANER);
         MESSAGE("우리 편의 리플렉터가 없어졌다!");
         MESSAGE("상대의 리플렉터가 없어졌다!");
-        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_HARDEN, opponent);
         NONE_OF {
             MESSAGE("우리 편의 리플렉터가 없어졌다!");
             MESSAGE("상대의 리플렉터가 없어졌다!");
@@ -330,8 +330,8 @@ SINGLE_BATTLE_TEST("HNSSCREEN C05 Screen Cleaner: all three screens on the foe's
         TURN { MOVE(player, MOVE_SNOWSCAPE); MOVE(opponent, MOVE_REFLECT); }
         TURN { MOVE(opponent, MOVE_LIGHT_SCREEN); }
         TURN { MOVE(opponent, MOVE_AURORA_VEIL); }
-        TURN { SWITCH(player, 1); MOVE(opponent, MOVE_CELEBRATE); }
-        TURN {}
+        TURN { SWITCH(player, 1); }
+        TURN { MOVE(player, MOVE_SCREECH); }
         TURN {}
         TURN {}
         TURN {}
@@ -341,7 +341,7 @@ SINGLE_BATTLE_TEST("HNSSCREEN C05 Screen Cleaner: all three screens on the foe's
         MESSAGE("상대의 리플렉터가 없어졌다!");
         MESSAGE("상대의 빛의장막이 없어졌다!");
         MESSAGE("상대의 오로라베일이 없어졌다!");
-        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_SCREECH, player);
         NONE_OF {
             MESSAGE("상대의 리플렉터가 없어졌다!");
             MESSAGE("상대의 빛의장막이 없어졌다!");
