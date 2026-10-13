@@ -14,6 +14,7 @@
 | 오로라베일 성공 | 신비의부적과 같은 `STRINGID_PKMNCOVEREDBYVEIL` | `STRINGID_PKMNRAISEDDEFSPDEF` | `gReflectLightScreenSafeguardStringIds`의 오로라베일 선택값 변경 |
 | 리플렉터·빛의장막·오로라베일 하나가 만료 또는 안개제거로 해제됨 | 범용 `STRINGID_THEWALLSHATTERED` | 각각 `STRINGID_REFLECTWOREOFF`, `STRINGID_LIGHTSCREENWOREOFF`, `STRINGID_AURORAVEILWOREOFF` | 턴 종료·안개제거에 전용 스크립트와 선택 테이블 추가 |
 | `깨뜨리다`·`사이코팽`·`레이징불`로 복수 방벽 제거 | 복수 방벽 제거 시 `STRINGID_THEWALLSHATTERED` 하나만 출력 | 존재하는 방벽만 리플렉터 → 빛의장막 → 오로라베일 순서로 각각 출력 | 제거된 방벽 마스크를 저장하고 `BattleScript_BreakScreens`에서 종류별 문구를 순차 출력 |
+| `깨뜨리다`·`사이코팽`·`레이징불`로 방벽을 깬 뒤 남은 턴이 지남 (upstream #10829를 seq 551에서 앞당겨 이식, 친구 2026-10-13 결정, 재확인 62) | 깬 방벽의 원래 지속 턴이 끝나는 턴 끝에 `STRINGID_REFLECTWOREOFF`·`STRINGID_LIGHTSCREENWOREOFF`·`STRINGID_AURORAVEILWOREOFF`(`상대의 리플렉터가⏎없어졌다!` 등)가 한 번 더 나옴 | 깬 때의 문장만 나오고 뒤 턴에는 나오지 않음. 깨지 않고 지속 턴이 끝난 방벽의 문장은 그대로 | `MOVE_EFFECT_BREAK_SCREEN`이 상태 비트와 함께 `reflectTimer`·`lightscreenTimer`·`auroraVeilTimer`를 0으로 (`MULTISTRING_CHOOSER` 0 초기화는 HnS에 원래 있음) |
 | `배리어프리` 발동으로 방벽 제거 | 특성 팝업 뒤 `STRINGID_SCREENCLEANERENTERS`의 범용 문구 하나 | 특성 팝업 뒤 존재하는 방벽만 `STRINGID_REFLECTWOREOFF` → `STRINGID_LIGHTSCREENWOREOFF` → `STRINGID_AURORAVEILWOREOFF` 순서로 출력 | `TryRemoveScreens()`가 방벽 종류 비트마스크를 반환하고 `BattleScript_ScreenCleanerActivates`가 기존 순차 출력 스크립트를 호출. 메시지 주체는 특성 보유자로 임시 설정 후 복원 |
 | 흰안개 만료·안개제거 해제 | 범용 `STRINGID_PKMNSXWOREOFF` | `STRINGID_NOLONGERMIST` | 흰안개 전용 만료/반환 스크립트 추가 |
 | 신비의부적을 안개제거로 해제 | 범용 측면 상태 해제 문구 | `STRINGID_PKMNSAFEGUARDEXPIRED` | 안개제거 반환 스크립트 변경 |

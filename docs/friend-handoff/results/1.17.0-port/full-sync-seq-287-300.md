@@ -55,5 +55,5 @@
 
 - 62: 재현됨(위 1번, 3경우). 친구 답 뒤 앞당기거나 seq 551에서. 앞당기면 HnS `MOVE_EFFECT_BREAK_SCREEN`에 타이머 3줄 + upstream `test/battle/move_effect_secondary/break_screens.c`(영문 `MESSAGE` — HnS에서는 FAIL 예상, 한글 확인은 임시 테스트로).
 - 292: HnS `UseClassicExpSplit()` 유지 — 뒤 PR이 `Cmd_getexp`의 `B_SPLIT_EXP` 줄을 문맥으로 쓰면 HnS 줄로 맞춘다.
-- 293: 파찌파찌액셀 설명 `#if`는 넣지 않았다 — 뒤 PR(#10822 seq 541 등)이 이 설명 줄을 문맥으로 쓰면 HnS 설명 그대로 두고 구조만 맞춘다(재확인 61과 같은 방식).
+- 293: (2026-10-13 친구 결정으로 설명 `#if`도 넣음 — `02ca8cfe`, `TRANSLATION_POLICY.md` 5절 6번. 아래는 당시 기록) 파찌파찌액셀 설명 `#if`는 넣지 않았다 — 뒤 PR(#10822 seq 541 등)이 이 설명 줄을 문맥으로 쓰면 HnS 설명 그대로 두고 구조만 맞춘다(재확인 61과 같은 방식).
 - 300: `pokemon_animation.c`의 `x2`·`y2` 순서는 HnS(`callback` 뒤)대로.
