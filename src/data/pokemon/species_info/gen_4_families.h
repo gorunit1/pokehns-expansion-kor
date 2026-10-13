@@ -4647,9 +4647,10 @@ const struct SpeciesInfo gSpeciesInfoGen4[] =
         .backPicSize = MON_COORDS_SIZE(64, 64),
         .frontAnimFrames = sAnims_SingleFramePlaceHolder,
         .frontPicYOffset = 0,
+        .enemyMonElevation = 8,
         .shinyPalette = gMonShinyPalette_GarchompMegaZ,
         .frontPicSize = MON_COORDS_SIZE(64, 64),
-        SHADOW(4, 11, SHADOW_SIZE_XL_BATTLE_ONLY)
+        SHADOW(0, 18, SHADOW_SIZE_L)
         .iconSprite = gMonIcon_GarchompMegaZ,
         .iconPalIndex = 0,
         .pokemonJumpType = PKMN_JUMP_TYPE_NONE,
