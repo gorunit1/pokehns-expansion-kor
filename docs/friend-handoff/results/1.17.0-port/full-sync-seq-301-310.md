@@ -38,7 +38,7 @@
 ## 친구에게 알릴 것
 
 1. **305 #10535 skip** — 메가마기아나 도감 설명(`gen_7_families.h`)은 기존 영문 그대로 두었다. 번역할 때 참고: PLZA 공식 한국어(위 표).
-2. **302 텅구리 알로라** — HnS 커스텀 `normal.pal`·`front.png`·`back.png`는 그대로 두었고 `shiny.pal`만 upstream 새 값이다. 이미 들어 있던 upstream `anim_front.png`와 HnS 커스텀 일반 팔레트가 의도대로 보이는지 화면으로 확인해 달라.
+2. **302 텅구리 알로라** — HnS 커스텀 `normal.pal`·`back.png`는 그대로 두었고 `shiny.pal`만 upstream 새 값이다(이로치 앞모습 일부가 회색으로 보이던 버그 수정). 앞모습은 원래부터 upstream `anim_front.png` + HnS 커스텀 `normal.pal`로 그려지고 있었다 — 의도대로 보이는지 화면으로 확인해 달라. HnS `front.png`는 참조 없는 옛 파일(지울지 친구 결정).
 3. 303 출력 변화 기록.
 
 ## 검증
@@ -48,11 +48,13 @@
 - **전체 테스트:** (아래 채움)
 - **한글 회귀 607개:** (아래 채움)
 - **세이브 정적 비교**(`save_compat.py run --pre pre-301`, 이식 전 사실은 같은 세션에서 `de50ef32` 빌드로 만듦): **PASS(FAIL 0, WARN 0)**. 세이브 경로 코드·섹터 배치·SaveBlock 크기·EWRAM/IWRAM 변수 변화 없음. 세이브 왕복은 돌리지 않음(세이브 코드·구조 변화 없음).
-- **리뷰 R1:** (아래 채움)
+- **리뷰 R1**(읽기 전용, 커밋 8개 대 upstream): 수정 필요 0. 301·302 바뀐 그림 모두 PR 뒤 blob이고 바뀌기 전 모두 PR 부모 blob(HnS 커스텀 덮음 0), 지운 31개 참조 0(`pokemon.h`는 모두 `anim_front.4bpp.smol`), upstream이 바꾼 종 40개의 애니·Y 오프셋·그림자·아이콘 필드가 PR 뒤와 같음(필드 순서만 다름), `shared_front_pic_anims.h`가 upstream과 바이트 같음. 303 흐름이 upstream 최종과 같음(차이는 HnS 기존 방음 줄·`pledgeState` 줄), `HoldEffectInfo` 17비트 + padding 15 = 32. 306 플레이어 카드 별 경로 전후 같음. 309 무한 루프 위험 없음(2대1 상대 빈자리·파트너 배틀·다이맥스·회복봉인 포함). 308·310 upstream과 같음.
+  - **정정(302 텅구리 알로라):** 커밋 메시지는 HnS `front.png`를 "커스텀이라 유지"로 적었지만, 실제 화면은 `pokemon.h`가 가리키는 `anim_front.png`(이미 upstream PR 뒤 blob)와 HnS `normal.pal`로 그려진다. 남긴 `front.png`는 참조 없는 옛 파일(픽셀은 PR 부모와 같고 PNG 안 팔레트만 다름) — 지운 31개와 같은 처지인 32번째 파일이다. 해롭지 않아 그대로 두었다(지울지는 친구가 정함). HnS 커스텀으로 실제 쓰이는 것은 `normal.pal`뿐.
+  - 텅구리 알로라 이로치(R1 픽셀 분석): PR 부모 → 뒤 `shiny.pal`은 10·11·12번만 바뀜. 앞모습(`anim_front`)의 11번 175 px가 이전 이로치에서 회색 (88,80,80)으로 보이던 것이 바로 upstream이 고친 버그 — 이제 고쳐짐. 뒷모습(유지한 PR 부모 `back.png`)은 10·12·14번만 쓰고 11번을 쓰지 않음 → 새 이로치에서 10번은 거의 검정(HnS 일반과 같은 명암 순서), 12번 하이라이트 45 px는 upstream 새 back(11번으로 옮김)보다 한 단계 밝음. upstream back을 받았다면 HnS 일반 팔레트에서 11 = 14라 45 px가 14번 색과 합쳐졌을 것 → 유지가 맞음.
 
 ## 재확인·뒤 PR 메모
 
-- 302: `shared_front_pic_anims.h`는 이제 1.17.0판과 같아짐(R1 확인 예정). 텅구리 알로라 그림 3개는 HnS 커스텀 — 뒤 PR이 바꾸면 같은 방식(덮지 않고 보고).
+- 302: `shared_front_pic_anims.h`는 upstream PR 뒤와 바이트 같음(R1). 텅구리 알로라 `normal.pal`(커스텀)·`back.png`(유지)·`front.png`(참조 없음) — 뒤 PR이 바꾸면 같은 방식(덮지 않고 보고).
 - 305: 뒤 PR이 `[SPECIES_MAGEARNA_MEGA]` 설명을 문맥으로 쓰면 HnS 설명 그대로.
 - 306: `trainer_card.c` HnS 분기(`GetHnSTrainerStars`, `CARD_TYPE_HNS`) — 뒤 트레이너 카드 PR에서 같은 방식으로 보존.
 - 307: upstream이 `givenExpMons` 인덱스를 고치면 HnS `>> 1` 줄 정리(재확인 21).
