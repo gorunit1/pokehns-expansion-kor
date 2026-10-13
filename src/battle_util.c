@@ -9242,12 +9242,23 @@ static u32 TryRemoveScreens(enum BattlerId battler)
 
         if (!(gSideStatuses[side] & SIDE_STATUS_SCREEN_ANY))
             continue;
+        // HnS: also clear the timers of the removed screens, or their expiry message would still be printed later
+        // (same bug as #10829 for Brick Break; upstream 1.17.1 and master do not clear them here).
         if (gSideStatuses[side] & SIDE_STATUS_REFLECT)
+        {
             screens |= B_MSG_BREAK_REFLECT;
+            gSideTimers[side].reflectTimer = 0;
+        }
         if (gSideStatuses[side] & SIDE_STATUS_LIGHTSCREEN)
+        {
             screens |= B_MSG_BREAK_LIGHT_SCREEN;
+            gSideTimers[side].lightscreenTimer = 0;
+        }
         if (gSideStatuses[side] & SIDE_STATUS_AURORA_VEIL)
+        {
             screens |= B_MSG_BREAK_AURORA_VEIL;
+            gSideTimers[side].auroraVeilTimer = 0;
+        }
         gSideStatuses[side] &= ~SIDE_STATUS_SCREEN_ANY;
         gBattleStruct->removedScreens[side] = screens;
         removed = TRUE;
