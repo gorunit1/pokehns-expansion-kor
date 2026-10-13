@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-13 — 친구 답(묶음 16 확인) 반영: 폭주족 그림 ID 정리, #10428 설명, #10829 앞당김 (클라우드 세션)
+
+- 요청: 사용자가 묶음 17 문자를 보냈다고 알리고, 앞서 와 있던 친구 답(묶음 16·트레이너 마무리에 대한 답)을 전달("너한테 줬었나?" — 처음 받음). 원문 `FRIEND_REPLY_2026-10-13.md`.
+- 수정 파일: `graphics/trainers/front_pics/biker_hns.png`, `graphics/trainers/palettes/biker_hns.pal`, `graphics/trainers/front_pics/biker_hgss_hns.png`(삭제), `include/constants/trainers.h`, `src/data/graphics/trainers.h`, `src/data/trainers_hns.party`(15줄), `CREDITS.md`(파일 이름), `src/data/moves_info.h`(파찌파찌액셀 설명 `#if`), `src/battle_script_commands.c`(타이머 3줄), `test/battle/move_effect_secondary/break_screens.c`. 문서 — `FRIEND_REPLY_2026-10-13.md`·`results/1.17.0-port/friend-reply-2026-10-13.md`·`test-baseline-hnsfix1013.txt`(새), `TRANSLATION_POLICY.md`(5절 6번), `BATTLE_MESSAGE_OUTPUT_CHANGES.md`, `port_sequence.tsv`(seq 551), `1.17.1-extension-plan.md`, `RECHECK_BEFORE_COMPLETION.md`(61·62·63), `full-sync-seq-287-300.md`(293 메모), STATUS·SESSION_LOG.
+- 결정: 모두 친구 지시 그대로. 친구가 말한 #10829의 `MULTISTRING_CHOOSER` 초기화는 HnS에 원래 있어 타이머 3줄만 더함. 배리어프리·진영 표시는 범위 밖이라 보고만.
+- 조사 방법: 그림 — 정리 전 빌드를 세션 임시 폴더에 복사해 ELF 심볼 바이트 비교(`cmp_syms.py`)·파티 개인값 재계산(`party_hash.py`) — 트레이너 그림 후속 때 만든 임시 스크립트. #10829 — 임시 테스트 `test/battle/zz_tmp_10829.c`를 수정 전(타이머 줄을 잠시 뺀 사본 상태, 다시 넣고 확인)·후에 실행, 실행 뒤 지움.
+- 검증: STATUS 현재 절.
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 남은 문제: 재확인 63, 도감 설명 규칙.
+- 다음 시작점: 친구 답 → 반영. 아니면 seq 311 #10542(기준 `test-baseline-hnsfix1013.txt`).
+
 ### 2026-10-13 — full-sync 묶음 17(seq 301~310) (클라우드 세션)
 
 - 요청: 사용자가 친구 문자 2개(묶음 16·트레이너 마무리)를 보냈다고 알리고 "이제 seq 301부터 시작해" → 사전 분석 보고 → "추천대로 적용"(AskUserQuestion).

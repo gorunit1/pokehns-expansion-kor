@@ -42,9 +42,10 @@
 
 ### 전체
 
-- **전체 테스트:** (아래 채움)
-- **한글 회귀 607개:** (아래 채움)
-- **최종 ROM:** (아래 채움)
+- **전체 테스트**(`GITHUB_ACTION=1 make check BUILD=hns -j4`, 코드 `6d08adc6`): PASS 2,658 → **2,659** / TOTAL 5,580 → 5,582. `test-baseline-seq310.txt` 대비 **사라진 PASS 0**, 목록 차이는 #10829 upstream 테스트 2줄뿐(`do not announce expiration again on later turns: PASS`, `do not announce Reflect when breaking a subsequent Light Screen 1/3: FAIL` — 영문 `MESSAGE`). 목록 [`test-baseline-hnsfix1013.txt`](test-baseline-hnsfix1013.txt)(**다음 비교 기준**).
+- **한글 회귀 607개:** 517/607, 기대 요약과 바이트 같음.
+- **세이브 정적 비교:** 폭주족 정리 뒤 PASS(FAIL 0, WARN 0). #10428 설명·#10829는 세이브와 무관(문자열·배틀 변수).
+- **최종 ROM(실기용):** 코드 `6d08adc6`, 클라우드 `make hns -j8`(`arm-none-eabi-gcc 13.2.1`) → 사용 32,786,196 B, SHA1 `fb6658eb0279882b8705cf2069d7ccdd36841b33`. 묶음 17(seq 301~310)도 들어 있다.
 
 ## 친구에게 알릴 것(새로 찾은 것 — 고치지 않음, 재확인 63)
 
