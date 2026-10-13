@@ -569,6 +569,8 @@ void RunTextPrinters(void)
                         case SPRITE_TEXT_PRINTER:
                             break;
                         }
+                        if (currentPrinter->callback != NULL)
+                            currentPrinter->callback(&currentPrinter->printerTemplate, renderState);
                         break;
                     case RENDER_UPDATE:
                         if (currentPrinter->callback != NULL)
