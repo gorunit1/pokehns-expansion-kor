@@ -234,10 +234,10 @@ static bool32 IsFutureSightAttackerInParty(enum BattlerId battlerAtk, enum Battl
     struct Pokemon *party = GetBattlerParty(battlerAtk);
     // HnS: the ally can only hold the attacker's mon when both battlers share a party; since #8943 an in-game partner's
     // (or second opponent's) mons use indexes 0-2 of their own party (upstream 1.17.0 compares the index alone).
-    if (IsDoubleBattle() && BattlersShareParty(battlerAtk, BATTLE_PARTNER(battlerAtk)))
+    if (IsDoubleBattle() && BattlersShareParty(battlerAtk, GetPartnerBattler(battlerAtk)))
     {
         return &party[gBattleStruct->futureSight[battlerDef].partyIndex] != &party[gBattlerPartyIndexes[battlerAtk]]
-            && &party[gBattleStruct->futureSight[battlerDef].partyIndex] != &party[gBattlerPartyIndexes[BATTLE_PARTNER(battlerAtk)]];
+            && &party[gBattleStruct->futureSight[battlerDef].partyIndex] != &party[gBattlerPartyIndexes[GetPartnerBattler(battlerAtk)]];
     }
 
     return &party[gBattleStruct->futureSight[battlerDef].partyIndex] != &party[gBattlerPartyIndexes[battlerAtk]];
