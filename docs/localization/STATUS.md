@@ -4,6 +4,7 @@
 
 - **다음 할 일**
   1. **친구 답 대기**(아래 절 2번 그대로): 재확인 63, 도감 설명 규칙(#10535), 묶음 17 텅구리 알로라, 실기 결과. 묶음 18은 결정 필요 없음 — 다음 친구 문자에 결과만 같이 보고(문안은 2026-10-13 세션 답변).
+  2-1. **진행 중: 묶음 19 = seq 312~322**(사용자 "ㄱㄱ" 2026-10-13). 이미 적용 3개: 314 #10569(`cffd2344`), 319 #10573(`f76c7bf7`, seq 70 단위), 321 #10589(`715c1b91`) — 역적용 깨끗. 남은 8개 사전 분석 3갈래(AI·기타 312·320·322 / 도구 313·318 / 패배 판정·트레이너 슬라이드 315·316·317) — 세션 임시 `b19/`.
   2. **full-sync 다음 seq 312 #9448**(`port_sequence.tsv`). 테스트 기준 **`test-baseline-hnsfix1013.txt`**(묶음 18에서 목록 변화 없음). 이제 `BATTLE_PARTNER`·`BATTLE_OPPOSITE`·`LEFT_FOE`·`RIGHT_FOE`·`GetOpposingSideBattler`는 없다 — HnS 새 코드도 `GetPartnerBattler`·`GetOppositeBattler`·`GetBattlerLeftFoe`·`GetBattlerRightFoe`·`GetPartnerPosition`·`GetOppositePosition`을 쓴다.
 - **결과** [`full-sync-seq-311.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-311.md): `1b1fa5fe` 적용(53파일 = upstream 목록, 거부 hunk 42개 손 맞춤, HnS 전용 사용처 38줄 치환 — 표·TSV). HnS 가드(#8943 `BattlersShareParty`, 맹세 가드, KO 가드, 기본 교체 블록) 유지.
 - **검증(코드 `1b1fa5fe`):** `make hns -j8` 종료 0, 새 경고 0, ROM 32,783,684 B(−2,512), EWRAM·IWRAM 같음, SHA1 `7897b54b…`(사본 빌드와 같음 — 소스 차이 0). 전체 `make check`(사본) PASS 2,659 / 5,582, 목록이 기준과 바이트 같음. 한글 회귀(실제 저장소) 517/607 기대와 바이트 같음. 세이브 정적 PASS(FAIL 0, WARN 0). **실기: 하지 않음(친구).** 링크 배틀은 확인 못 함(HnS 일반 진행 밖).
