@@ -2,6 +2,16 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-13 — full-sync 묶음 19(seq 312~322) + #10814 앞당김 (클라우드 세션)
+
+- 요청: 사용자 "나 혼자 할 수 있는거야? 그렇다면 ㄱㄱ" → 사전 분석 3갈래 → 보고(아테나 멀티 회귀 포함) → "나 혼자 정할 수 있는거야?"에 "315 `battle_setup.c` hunk만 친구, 나머지는 사용자" 답 → "ㄱㄱ".
+- 수정 파일: `src/battle_special.c`(#10814), `test/battle/ai/ai_doubles.c`, `src/battle_main.c`, `src/battle_move_resolution.c`, `src/battle_script_commands.c`, `src/battle_util.c`, `test/battle/ability/symbiosis.c`, `src/trainer_slide.c`, `data/battle_scripts_1.s`, `data/battle_scripts_2.s`, `include/battle_scripts.h`, `src/battle_dynamax.c`, `test/battle/move_effect/attack_up_user_ally.c`, `src/mauville_old_man.c`, `src/text.c`. 문서 — `full-sync-seq-312-322.md`·`test-baseline-seq322.txt`(새), `BATTLE_MESSAGE_OUTPUT_CHANGES.md`(공생), `port_sequence.tsv`(542), `1.17.1-extension-plan.md`, `RECHECK_BEFORE_COMPLETION.md`(22·35·64·65), STATUS·SESSION_LOG.
+- 결정: 사용자 — #10814 한 줄 앞당김(10-04 이식 회귀 되돌림, upstream 수정 그대로), 313+318 한 커밋·`GEN_9` 유지, 312 `KNOWN_FAILING`, 나머지 그대로. 친구 — 315 `battle_setup.c` hunk(재확인 35)는 제외하고 질문.
+- 조사: 아테나 회귀는 사전 분석이 찾았고 메인이 `multi_2_vs_2` → `multi_do` → `DoSpecialTrainerBattle(SPECIAL_BATTLE_MULTI)` → `HandleSpecialTrainerBattleEnd` → `AreMultiPartiesFullTeams()`(`gSpecialVar_Result = FALSE`) 경로와 `TRAINER_ARIANA_1_HNS`의 `Multi Party: Half`, upstream 1.17.1·master의 같은 수정(#10814 `c93efe865f`)을 확인. 스크립트 흐름은 테스트 러너로 못 돌려 실기 확인 필요.
+- 검증: STATUS 현재 절.
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 다음 시작점: 친구 답 → 반영. 아니면 seq 323 #10608(기준 `test-baseline-seq322.txt`).
+
 ### 2026-10-13 — full-sync 묶음 18(seq 311 #10542 단독) (클라우드 세션)
 
 - 요청: 사용자가 2026-10-13 결과 문자를 보냈다고 알림 → seq 311 시작 제안에 "응 시작해".

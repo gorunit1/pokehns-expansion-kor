@@ -42,9 +42,10 @@
 
 - **빌드:** 위 표.
 - **관련 테스트(파일 단위, 기준 `test-baseline-hnsfix1013.txt`):** `ai_doubles.c` 새 3줄(PASS 2·KNOWN_FAILING 1), `symbiosis.c` PASS 2/10 → 3/11(새 테스트 PASS — 이식 전 코드에 이 테스트만 넣으면 `Unmatched ABILITY_POPUP`으로 실패, 사전 분석), `knock_off.c`·`steal_item.c`·`trick.c`·`bestow.c` 기준과 같음, `multi_battle_whiteout.c` 7/7 PASS(기준과 같음).
-- **전체 테스트:** (아래 채움)
-- **한글 회귀 607개:** (아래 채움)
-- **세이브 정적 비교:** (아래 채움)
+- **전체 테스트**(`GITHUB_ACTION=1 make check BUILD=hns -j4`, 코드 `2bd4cdaf`): PASS 2,659 → **2,662** / TOTAL 5,582 → 5,586. `test-baseline-hnsfix1013.txt` 대비 **사라진 PASS 0**, 차이는 새 테스트 4줄(312 3줄 — PASS 2·KNOWN_FAILING 1, 313 `Opposing Symbiosis ignores the player's stolen-item record: PASS`)과 320 이름 변경 1줄(`Howl does not work on partner if it has Soundproof: FAIL` → `… but doesn't fail on user with Soundproof: FAIL`)뿐. 목록 [`test-baseline-seq322.txt`](test-baseline-seq322.txt)(**다음 비교 기준**).
+- **한글 회귀 607개:** 517/607, 기대 요약과 바이트 같음.
+- **세이브 정적 비교**(`pre-312` = `648ac622` 빌드): **PASS(FAIL 0, WARN 2)**. WARN 2개는 같은 것 — 검토 대상 `HandleSpecialTrainerBattleEnd`(배틀 뒤 파티를 세이브 블록 `playerParty`에 복사)의 기계어 차이 13줄 = #10814의 `gSpecialVar_Result = gBattleOutcome` 저장 4명령·리터럴 1개와 그로 밀린 분기 주소뿐. 세이브 바이트 해석·복사 내용 변화 없음. EWRAM·IWRAM 변수 변화 0.
+- **최종 ROM(실기용):** 코드 `2bd4cdaf`, 클라우드 `make hns -j8`(`arm-none-eabi-gcc 13.2.1`) → 사용 32,783,348 B, SHA1 `241dedd3920f7ad87283b876fb82e269a9de2017`.
 
 ## 재확인·뒤 PR 메모
 
