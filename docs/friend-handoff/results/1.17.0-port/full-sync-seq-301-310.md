@@ -1,7 +1,5 @@
 # full-sync 묶음 17 — seq 301~310
 
-> 진행 중: 커밋 끝(마지막 seq 310), 다음 = 전체 테스트·한글 회귀·리뷰 결과 기록.
-
 - 시작 HEAD `de50ef32`(코드 = `3fd38faf`, ROM SHA1 `0913b751…`). 작업: 클라우드 세션, 2026-10-12~13(도중에 컨테이너 재시작 1번 — 저장소·세션 임시 폴더는 그대로였다).
 - 방식: 사전 분석 3갈래(그림 301·302·305, 배틀 303·304·307·309, 기타 306·308·310 — 저장소 사본에서 빌드·테스트, 산출물은 세션 임시 폴더 `b17/`) → 결정(모두 사용자 혼자 정할 수 있는 범위, 사용자 "추천대로") → PR별 적용·빌드·관련 테스트 → 리뷰 1개(R1, 읽기 전용) → 메인 검증.
 - 311 #10542(XL 리팩터)는 다음 묶음.
@@ -45,8 +43,9 @@
 
 - **빌드:** 위 표. 최종(`a51d28d2`) ROM 32,787,364 B.
 - **관련 테스트(파일 단위, 기준 `test-baseline-seq300.txt`):** `opportunist.c` 16줄 중 PASS 13(새 PASS), `mirror_herb.c` 8줄 중 PASS 7(새 `copies the stats boosted by Speed Boost` PASS, 나머지 같음), `white_herb.c`·`flame_orb.c` 같음, `hns_totem_boost.c` 5/5, `misty_terrain.c` 새 PASS 2(`decreases power of Dragon-type moves`·`uses the defender's ability…`), Fairy 테스트 ASSUMPTION_FAIL(위). 사라진 PASS 0. 사전 분석 사본에서 `form_change/end_battle.c`·`mega_evolution.c`(308) 결과 같음.
-- **전체 테스트:** (아래 채움)
-- **한글 회귀 607개:** (아래 채움)
+- **전체 테스트**(`GITHUB_ACTION=1 make check BUILD=hns -j4`, 코드 `a51d28d2`): PASS 2,653 → **2,658** / TOTAL 5,576 → 5,580. `testlist.sh` 기준 `test-baseline-seq300.txt` 대비 **사라진 PASS 0**, 새 PASS 5 — `Mirror Herb copies the stats boosted by Speed Boost`, `Opportunist activates before Mirror Herb during the end turn`, `Opportunist copies the stats boosted by Speed Boost`(303), `Misty Terrain uses the defender's ability when checking if it is grounded`, `Misty Terrain decreases power of Dragon-type moves by 50 percent`(304 — 이전 `1/2: FAIL`, 테스트가 영문 `MESSAGE` 대신 애니메이션을 보게 바뀜). `Misty Terrain does not increase the power of Fairy-type moves`는 `1/2: FAIL` → ASSUMPTION_FAIL(목록 밖, 위). 목록 [`test-baseline-seq310.txt`](test-baseline-seq310.txt)(**다음 비교 기준**).
+- **한글 회귀 607개**(`ALLOW_REPO=1 dev_scripts/hns_verify/kortests/run.sh <저장소> kor-seq310 8`): 517/607, 기대 요약과 바이트 같음.
+- **최종 ROM:** 코드 `a51d28d2`, 클라우드 `make hns -j8`(`arm-none-eabi-gcc 13.2.1`) → 사용 32,787,364 B, SHA1 `9bed33b5a097524c3f591c5f6617267ade2420ef`.
 - **세이브 정적 비교**(`save_compat.py run --pre pre-301`, 이식 전 사실은 같은 세션에서 `de50ef32` 빌드로 만듦): **PASS(FAIL 0, WARN 0)**. 세이브 경로 코드·섹터 배치·SaveBlock 크기·EWRAM/IWRAM 변수 변화 없음. 세이브 왕복은 돌리지 않음(세이브 코드·구조 변화 없음).
 - **리뷰 R1**(읽기 전용, 커밋 8개 대 upstream): 수정 필요 0. 301·302 바뀐 그림 모두 PR 뒤 blob이고 바뀌기 전 모두 PR 부모 blob(HnS 커스텀 덮음 0), 지운 31개 참조 0(`pokemon.h`는 모두 `anim_front.4bpp.smol`), upstream이 바꾼 종 40개의 애니·Y 오프셋·그림자·아이콘 필드가 PR 뒤와 같음(필드 순서만 다름), `shared_front_pic_anims.h`가 upstream과 바이트 같음. 303 흐름이 upstream 최종과 같음(차이는 HnS 기존 방음 줄·`pledgeState` 줄), `HoldEffectInfo` 17비트 + padding 15 = 32. 306 플레이어 카드 별 경로 전후 같음. 309 무한 루프 위험 없음(2대1 상대 빈자리·파트너 배틀·다이맥스·회복봉인 포함). 308·310 upstream과 같음.
   - **정정(302 텅구리 알로라):** 커밋 메시지는 HnS `front.png`를 "커스텀이라 유지"로 적었지만, 실제 화면은 `pokemon.h`가 가리키는 `anim_front.png`(이미 upstream PR 뒤 blob)와 HnS `normal.pal`로 그려진다. 남긴 `front.png`는 참조 없는 옛 파일(픽셀은 PR 부모와 같고 PNG 안 팔레트만 다름) — 지운 31개와 같은 처지인 32번째 파일이다. 해롭지 않아 그대로 두었다(지울지는 친구가 정함). HnS 커스텀으로 실제 쓰이는 것은 `normal.pal`뿐.

@@ -2,6 +2,18 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-13 — full-sync 묶음 17(seq 301~310) (클라우드 세션)
+
+- 요청: 사용자가 친구 문자 2개(묶음 16·트레이너 마무리)를 보냈다고 알리고 "이제 seq 301부터 시작해" → 사전 분석 보고 → "추천대로 적용"(AskUserQuestion).
+- 범위: 301~310(311 #10542 XL은 다음 묶음). 사전 분석 에이전트 3개(그림·배틀·기타), 적용은 메인, 리뷰 1개(읽기 전용).
+- 수정 파일: `graphics/pokemon/**`(301 그림 11, 302 그림 10 수정·31 삭제), `src/data/pokemon/species_info/gen_{1,4,7,8}_families.h`, `src/data/pokemon/species_info/shared_front_pic_anims.h`, `include/battle_hold_effects.h`, `include/constants/battle_end_turn.h`, `src/battle_end_turn.c`, `src/battle_hold_effects.c`, `src/battle_main.c`, `src/battle_switch_in.c`, `src/data/hold_effects.h`, `data/scripts/pkmn_center_nurse.inc`, `src/trainer_card.c`, `src/battle_gfx_sfx_util.c`, `src/battle_controller_player.c`, `src/battle_util.c`, `asm/macros/event.inc`, `data/script_cmd_table.inc`, `src/scrcmd.c`, `test/battle/{ability/opportunist,hold_effect/mirror_herb,move_effect/misty_terrain}.c`. 문서 — `full-sync-seq-301-310.md`(새), `test-baseline-seq310.txt`(새), `BATTLE_MESSAGE_OUTPUT_CHANGES.md`(303 행), STATUS·SESSION_LOG.
+- 결정(사용자): 302 텅구리 알로라 옛 뒷모습 유지, 305 skip, 나머지 upstream대로.
+- 도중에 컨테이너가 재시작됐다(저장소·세션 임시 폴더 유지, 배틀 사전 분석 결과는 재시작 전에 받음). 재시작 뒤 이식 전 빌드·세이브 사실(`pre-301`)부터 다시 만들었다.
+- 검증: STATUS 현재 절. 처음 문서 초안에 종명 2개(투구뿌논·모단단게)를 틀리게 적었다가 HnS `speciesName`으로 확인해 고침.
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 남은 문제: 재확인 62 앞당김 답, 텅구리 알로라 화면 확인.
+- 다음 시작점: 친구 답 → 반영. 아니면 seq 311 #10542(기준 `test-baseline-seq310.txt`).
+
 ### 2026-10-12 — full-sync 묶음 16(seq 287~300), 친구 답(트레이너 그림 마무리) (클라우드 세션)
 
 - 요청: 사용자 "응 시작해" → 사전 분석 보고 → "응 추천대로 적용해"(묶음 16). 도중에 친구 답(트레이너 그림 마무리 — 원문 `FRIEND_REPLY_2026-10-12d.md`)을 전달하며 "이거까지 끝내면 친구한테 보낼 메시지 한 번에 줘".
