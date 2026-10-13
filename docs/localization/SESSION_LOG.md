@@ -2,6 +2,16 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-13 — full-sync 묶음 18(seq 311 #10542 단독) (클라우드 세션)
+
+- 요청: 사용자가 2026-10-13 결과 문자를 보냈다고 알림 → seq 311 시작 제안에 "응 시작해".
+- 방식: 세션 임시 `b18/w`(tar 사본 — 이 클라우드엔 `rsync`가 없어 `mkcopy.sh` 대신 같은 제외 규칙의 `mkcopy_tar.sh`)에 upstream 패치를 `git apply --reject`로 넣고, 에이전트 1개가 거부 hunk 42개·HnS 전용 사용처를 손으로 맞춰 빌드·전체 테스트·한글 회귀까지 사본에서 돌림 → 메인이 HnS 전용 치환 검토 → 실제 저장소 적용.
+- 수정 파일: upstream과 같은 53개(`include/battle.h`, `include/battle_util.h`, `include/constants/battle.h`, `src/battle_*.c` 다수, `src/pokemon.c`, `src/party_menu.c`, `src/trainer_slide.c`, `test/test_runner_battle.c` 등 — 커밋 `1b1fa5fe`). 문서 — `full-sync-seq-311.md`·`full-sync-seq-311-sites.tsv`(새), `RECHECK_BEFORE_COMPLETION.md`(8q·32), STATUS·SESSION_LOG.
+- 결정: 필요 없음(모두 upstream 규칙, HnS 보정 유지).
+- 검증: STATUS 현재 절. 사본 한글 회귀 요약은 `-j3`이라 줄 순서가 달라 바이트 비교만 "no"였고, 실제 저장소에서 `-j8`로 다시 돌려 바이트 같음 확인.
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 다음 시작점: 친구 답 → 반영. 아니면 seq 312 #9448(기준 `test-baseline-hnsfix1013.txt`).
+
 ### 2026-10-13 — 친구 답(묶음 16 확인) 반영: 폭주족 그림 ID 정리, #10428 설명, #10829 앞당김 (클라우드 세션)
 
 - 요청: 사용자가 묶음 17 문자를 보냈다고 알리고, 앞서 와 있던 친구 답(묶음 16·트레이너 마무리에 대한 답)을 전달("너한테 줬었나?" — 처음 받음). 원문 `FRIEND_REPLY_2026-10-13.md`.

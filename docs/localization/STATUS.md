@@ -1,12 +1,20 @@
 # 현재 인수인계 상태
 
-## 2026-10-13 — 친구 답(묶음 16 확인): 폭주족 그림 ID 정리, #10428 설명, #10829 앞당김 (현재, 클라우드 세션)
+## 2026-10-13 — full-sync 묶음 18(seq 311 #10542 단독) (현재, 클라우드 세션)
+
+- **다음 할 일**
+  1. **친구 답 대기**(아래 절 2번 그대로): 재확인 63, 도감 설명 규칙(#10535), 묶음 17 텅구리 알로라, 실기 결과. 묶음 18은 결정 필요 없음 — 다음 친구 문자에 결과만 같이 보고(문안은 2026-10-13 세션 답변).
+  2. **full-sync 다음 seq 312 #9448**(`port_sequence.tsv`). 테스트 기준 **`test-baseline-hnsfix1013.txt`**(묶음 18에서 목록 변화 없음). 이제 `BATTLE_PARTNER`·`BATTLE_OPPOSITE`·`LEFT_FOE`·`RIGHT_FOE`·`GetOpposingSideBattler`는 없다 — HnS 새 코드도 `GetPartnerBattler`·`GetOppositeBattler`·`GetBattlerLeftFoe`·`GetBattlerRightFoe`·`GetPartnerPosition`·`GetOppositePosition`을 쓴다.
+- **결과** [`full-sync-seq-311.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-311.md): `1b1fa5fe` 적용(53파일 = upstream 목록, 거부 hunk 42개 손 맞춤, HnS 전용 사용처 38줄 치환 — 표·TSV). HnS 가드(#8943 `BattlersShareParty`, 맹세 가드, KO 가드, 기본 교체 블록) 유지.
+- **검증(코드 `1b1fa5fe`):** `make hns -j8` 종료 0, 새 경고 0, ROM 32,783,684 B(−2,512), EWRAM·IWRAM 같음, SHA1 `7897b54b…`(사본 빌드와 같음 — 소스 차이 0). 전체 `make check`(사본) PASS 2,659 / 5,582, 목록이 기준과 바이트 같음. 한글 회귀(실제 저장소) 517/607 기대와 바이트 같음. 세이브 정적 PASS(FAIL 0, WARN 0). **실기: 하지 않음(친구).** 링크 배틀은 확인 못 함(HnS 일반 진행 밖).
+
+## 2026-10-13 — 친구 답(묶음 16 확인): 폭주족 그림 ID 정리, #10428 설명, #10829 앞당김 (클라우드 세션)
 
 - **다음 할 일**
   1. ~~친구 문자~~ **보냄**(2026-10-13 사용자 확인): 반영 결과 + 재확인 63 질문 + 도감 설명 질문 + 실기용 ROM(`6d08adc6`, SHA1 `fb6658eb…`) 문자 1개. 문안은 클라우드 세션 답변(저장소 밖), 내용은 `friend-reply-2026-10-13.md`와 같다.
   2. **친구 답 대기:** 재확인 63(방벽 해제 문장 진영 표시·배리어프리 타이머), 도감 설명(#10535)도 미번역 규칙으로 넣을지, 묶음 17 알림(텅구리 알로라 화면·옛 `front.png`), 실기 결과. 이전부터: 제작자 이름, 보더 오버월드, 프런티어용 `youngster.png`, 불사르기 47, 실버 멀티 실기, 재확인 35·37·42, 가드 43·44.
   3. **full-sync 다음 seq 311 #10542**(XL 리팩터, 단독 묶음 권장). 테스트 기준 **`test-baseline-hnsfix1013.txt`**. seq 551 #10829는 앞당김 적용 — 다시 넣지 않는다(#10593 뒤 위치만 확인).
-  3-1. **진행 중: 묶음 18 = seq 311 #10542 단독**(사용자 "응 시작해" 2026-10-13). upstream 패치(53파일)를 사본에 넣으면 거부 hunk 약 40개(12파일), 그 뒤 HnS 전용 매크로 사용처 121곳 — 사본(세션 임시 `b18/w`)에서 이식안을 만드는 중. 실제 저장소는 아직 바뀌지 않음.
+  3-1. → 묶음 18(seq 311 #10542) 끝 — 위 절.
 - **친구 답 원문:** [`FRIEND_REPLY_2026-10-13.md`](../friend-handoff/FRIEND_REPLY_2026-10-13.md). 반영 [`friend-reply-2026-10-13.md`](../friend-handoff/results/1.17.0-port/friend-reply-2026-10-13.md).
 - **커밋:** `ca819f90` 폭주족 그림 ID 정리(`biker_hns.png`·`.pal` = 친구 HGSS 그림, 스토리 14명 `BIKER_HNS`, KAZU `BIKER_FRLG`, `BIKER_HGSS_HNS` 삭제 — 그림 번호는 세이브·녹화 배틀에 저장되지 않음), `02ca8cfe` #10428 파찌파찌액셀 설명 `#if`, `6d08adc6` #10829 앞당김(타이머 3줄 + upstream 테스트 2개 — 재확인 62 해결, seq 551 표시). 정책: `TRANSLATION_POLICY.md` 5절 6번(기술 설명은 미번역 — upstream 설명 변경을 넣음).
 - **검증(코드 `6d08adc6`):** 빌드 종료 0·새 경고 0, ROM 32,786,196 B(−1,168), EWRAM·IWRAM 같음, SHA1 `fb6658eb…`. 폭주족: 생성 데이터 15줄만, 그림 심볼 515개 같음, 1,832마리 개인값 같음, 세이브 정적 PASS. #10829: 임시 한글 테스트 A(깬 뒤 재출력) 수정 전 FAIL → 후 PASS, B(연속 깨기 이름)·C(자연 만료)·D(피해 불변) 전후 PASS. 전체 `make check` PASS 2,659 / 5,582, 사라진 PASS 0 → 기준 [`test-baseline-hnsfix1013.txt`](../friend-handoff/results/1.17.0-port/test-baseline-hnsfix1013.txt). 한글 회귀 517/607 기대와 같음. **실기: 하지 않음(친구).**
