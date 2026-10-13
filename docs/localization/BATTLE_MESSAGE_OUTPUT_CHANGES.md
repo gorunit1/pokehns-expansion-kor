@@ -190,6 +190,7 @@
 | 하드론엔진 등장으로 일렉트릭필드가 깔림 (seq 281) | 특성 팝업 / `발밑에 전기가 흐르기 시작했다!` | 특성 팝업 / `…은(는) 일렉트릭필드를 전개하여⏎미래 기관을 가동했다!!`(새 `STRINGID_HADRONENGINEACTIVATES`, 필드 시작 문장 대신) / (쿼크차지 등) | 하드론엔진 case 분리, `BattleScript_HadronEngineActivates` |
 | 이미 일렉트릭필드일 때 하드론엔진이 등장 (seq 281) | 출력 없음 | 특성 팝업 / `…은(는) 일렉트릭필드의 힘으로⏎미래 기관을 가동했다!!`(새 `STRINGID_HADRONENGINEACTIVATESINTERRAIN`) | `BattleScript_HadronEngineActivatesInTerrain` |
 | 턴 종료에 상대 능력치가 오름(가속·변덕쟁이 등 턴 종료 세 번째 블록의 상승) — 편승 특성 또는 흉내허브를 가진 포켓몬이 있음 (upstream #10433 이식, seq 303. 새 문장 0, HnS 트레이너 데이터에 편승·흉내허브 보유자 없음 — 플레이어가 쓸 때만) | 출력 없음(턴 종료에는 따라 하지 않고, 쌓인 상승 기록이 지워짐) | 세 번째 블록(가속·구슬류·하양허브 등) 뒤에 편승 보유자 전부(빠른 순): 특성 팝업 → 기존 능력치 상승 문장, 그다음 흉내허브 보유자 전부(빠른 순): 도구 애니메이션 → `STRINGID_MIRRORHERBCOPIED`(`…은(는) 흉내허브를 써서⏎상대의 능력 변화를 흉내 냈다!`) → 기존 도구 능력치 상승 문장(`STRINGID_USINGITEMSTATOFPKMNROSE` 등). 턴 종료 교체(비상탈출 등)·폼체인지·탈출팩보다 앞 | `ENDTURN_OPPORTUNIST`·`ENDTURN_MIRROR_HERB` 단계 추가(`BattleScript_OpportunistCopyStatChange`·`BattleScript_MirrorHerbCopyStatChange` 재사용), `gQueuedStatBoosts` 초기화를 `TurnValuesCleanUp(TRUE)`에서 `EndTurnEvents`·첫 턴 전으로 옮김 |
+| 더블에서 플레이어 쪽 파티 번호 k의 포켓몬이 탁쳐서떨구기로 도구를 잃었거나 트레이너전에서 원래 도구를 빼앗긴 뒤, 같은 배틀에서 파티 번호가 k인 다른 배틀러(상대·목호 파트너 포함)가 도구를 써 옆 포켓몬의 공생이 발동할 상황 (upstream #10483 + #10577 이식, seq 313·318. 새 문장 0) | 공생이 발동하지 않음(도구 이전·팝업·문장 없음) | 공생 팝업 → `STRINGID_SYMBIOSISITEMPASS`(`…은(는) …(으)로부터⏎…을(를) 받았다!`, 기존 문장) | `TrySymbiosis()`의 `itemLost[B_SIDE_PLAYER][…].stolen` 조건 삭제 |
 
 ## 제외한 변경
 

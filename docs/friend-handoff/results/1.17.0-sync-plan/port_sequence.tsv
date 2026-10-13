@@ -546,7 +546,7 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 539	10821	2000021	1.17.1	g7_1.17.1	U-10821	9440	M	refactor	N	N	미측정	ModifyPersonalityForNature cleanup duplicate
 540	10819	2000022	1.17.1	g7_1.17.1	U-10819	-	S	fix	N	N	미측정	do not use gStraingVar in ScriptShowItemDescription
 541	10822	2000023	1.17.1	g7_1.17.1	U-10822	8893	S	build	Y	N	미측정	Fix compilation with certain generational move data
-542	10814	2000024	1.17.1	g7_1.17.1	U-multi-10773	-	S	fix	N	N	미측정	Fix multi-battle outcome handling
+542	10814	2000024	1.17.1	g7_1.17.1	U-multi-10773	-	S	fix	N	N	0(앞당김 적용 32a5fd5a, 2026-10-13)	Fix multi-battle outcome handling
 543	10807	2000025	1.17.1	g7_1.17.1	U-10807	10374	S	fix	N	N	미측정	End instead of fallthrough for gBattleAnimMove_None and Mirror Move
 544	10818	2000026	1.17.1	g7_1.17.1	U-10818	-	S	fix	N	N	미측정	Fix fanfare task interrupted in move relearner
 545	10816	2000027	1.17.1	g7_1.17.1	U-10816	-	S	fix	N	N	0(HnS 동등 65388d7a)	Fix multi level move learning
