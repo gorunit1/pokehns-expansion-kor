@@ -3572,6 +3572,9 @@ void SetMoveEffect(enum BattlerId battlerAtk, enum BattlerId effectBattler, enum
                     gBattleCommunication[MULTISTRING_CHOOSER] |= B_MSG_BREAK_LIGHT_SCREEN;
                 if (brokenScreens & SIDE_STATUS_AURORA_VEIL)
                     gBattleCommunication[MULTISTRING_CHOOSER] |= B_MSG_BREAK_AURORA_VEIL;
+                gSideTimers[i].reflectTimer = 0;
+                gSideTimers[i].lightscreenTimer = 0;
+                gSideTimers[i].auroraVeilTimer = 0;
                 gSideStatuses[i] &= ~SIDE_STATUS_SCREEN_ANY;
                 gBattleScripting.animTurn = 1;
                 gBattleScripting.animTargetsHit = 1;
