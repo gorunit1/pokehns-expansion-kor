@@ -680,9 +680,6 @@ const u16 gTrainerPalette_BirdKeeperHgssHns[] = INCBIN_U16("graphics/trainers/fr
 const u32 gTrainerFrontPic_PokemaniacHgssHns[] = INCBIN_U32("graphics/trainers/front_pics/pokemaniac_hgss_hns.4bpp.smol");
 const u16 gTrainerPalette_PokemaniacHgssHns[] = INCBIN_U16("graphics/trainers/front_pics/pokemaniac_hgss_hns.gbapal");
 
-const u32 gTrainerFrontPic_BikerHgssHns[] = INCBIN_U32("graphics/trainers/front_pics/biker_hgss_hns.4bpp.smol");
-const u16 gTrainerPalette_BikerHgssHns[] = INCBIN_U16("graphics/trainers/front_pics/biker_hgss_hns.gbapal");
-
 const u32 gTrainerFrontPic_SwimmerMHgssHns[] = INCBIN_U32("graphics/trainers/front_pics/swimmer_m_hgss_hns.4bpp.smol");
 const u16 gTrainerPalette_SwimmerMHgssHns[] = INCBIN_U16("graphics/trainers/front_pics/swimmer_m_hgss_hns.gbapal");
 
@@ -1742,10 +1739,6 @@ const struct TrainerPicInfo gTrainerPicInfo[TRAINER_PIC_COUNT] =
     [TRAINER_PIC_POKEMANIAC_HGSS_HNS] =
     {
         .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_PokemaniacHgssHns, gTrainerPalette_PokemaniacHgssHns),
-    },
-    [TRAINER_PIC_BIKER_HGSS_HNS] =
-    {
-        .frontPic = TRAINER_FRONT_PIC(gTrainerFrontPic_BikerHgssHns, gTrainerPalette_BikerHgssHns),
     },
     [TRAINER_PIC_SWIMMER_M_HGSS_HNS] =
     {

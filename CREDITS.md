@@ -142,7 +142,7 @@ This project follows the [all-contributors](https://github.com/all-contributors/
   - HGSS Ethan (`gold_hns.png`, SoulGold `brendan.png` as of 2026-07-22, same pixels and colors): original artist not identified
   - HGSS Lance (`champion_lance_hns.png`, SoulGold `champion_lance.png` as of 2026-07-03, same pixels and colors): original artist not identified
 - [Team Aqua's Asset Repo](https://github.com/TeamAquasHideout/Team-Aquas-Asset-Repo): Pawkkie (HGSS resizes: Picnicker, Twins), spilledpizza, TheWiggliestJiggliest, RichardPT, robloxmaster376 (Young Couple), Rubire4 (Psychic)
-- Teacher, Medium, Brock, School Kid, Bird Keeper, Poké Maniac, Biker and Swimmer♂ (`graphics/trainers/front_pics/teacher_hns.png`, `medium_hns.png`, `leader_brock_hns.png`, `school_kid_hgss_hns.png`, `bird_keeper_hgss_hns.png`, `pokemaniac_hgss_hns.png`, `biker_hgss_hns.png`, `swimmer_m_hgss_hns.png`): original drawings made for HnS based on HGSS (artist name to be added)
+- Teacher, Medium, Brock, School Kid, Bird Keeper, Poké Maniac, Biker and Swimmer♂ (`graphics/trainers/front_pics/teacher_hns.png`, `medium_hns.png`, `leader_brock_hns.png`, `school_kid_hgss_hns.png`, `bird_keeper_hgss_hns.png`, `pokemaniac_hgss_hns.png`, `biker_hns.png`, `swimmer_m_hgss_hns.png`): original drawings made for HnS based on HGSS (artist name to be added)
 
 ### HnS Overworld Sprite Credits:
 - Poké Maniac overworld: Delta231, "HGSS Overworld Sprite in FR Style" ([PokéCommunity 408123](https://www.pokecommunity.com/showthread.php?t=408123)), via [Team Aqua's Asset Repo](https://github.com/TeamAquasHideout/Team-Aquas-Asset-Repo) (Delta231s Collaborative HGSS Resource)
