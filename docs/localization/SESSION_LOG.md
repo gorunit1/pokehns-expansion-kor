@@ -2,6 +2,16 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-13 — 친구 답(2): #10535, 방벽 진영 문구 (가), 배리어프리 타이머, 한글 회귀 `HNSSCREEN` (클라우드 세션)
+
+- 요청: 사용자가 묶음 18·19 문자를 보냈다고 알리고 와 있던 친구 답(2026-10-13 결과 문자에 대한 답)을 전달. 원문 `FRIEND_REPLY_2026-10-13b.md`.
+- 수정 파일: `src/data/pokemon/species_info/gen_7_families.h`(#10535), `include/battle.h`(`removedScreens`), `src/battle_script_commands.c`(`BS_SetUpRemovedScreensMessages`, 깨기 진영 기록), `src/battle_util.c`(`TryRemoveScreens` 진영별·타이머), `asm/macros/battle_script.inc`(`setupremovedscreensmessages`), `data/battle_scripts_1.s`(`BattleScript_BreakScreensMessages` 진영 반복), `dev_scripts/hns_verify/kortests/sets/zz_hnsscreen_kor.c`(새), `kortests/expected/summary.txt`·`summary.meta`, `dev_scripts/hns_verify/README.md`. 문서 — `FRIEND_REPLY_2026-10-13b.md`·`results/1.17.0-port/friend-reply-2026-10-13b.md`(새), `friend-reply-2026-10-13.md`(보강), `TRANSLATION_POLICY.md`, `full-sync-seq-301-310.md`(305), `RECHECK_BEFORE_COMPLETION.md`(63), STATUS·SESSION_LOG.
+- 결정: 모두 친구 지시. 진영 (가)는 문장·토큰을 바꾸지 않고 만료 스크립트와 같은 "그 진영 포켓몬을 공격자로" 방식. 배리어프리 순서는 이전 `TryRemoveScreens`와 같이 사용자 진영 먼저.
+- 조사·검증 방법: 테스트를 먼저 쓰고(진영만 고친 뒤 8/15 → 타이머 뒤 15/15), 고치기 전 트리는 `git archive 306b0cc0` 사본에서 같은 세트를 돌림(4/15). 처음 세트의 C02~C05가 고치기 전에도 통과해 기준점을 넣었고, 축하하기가 테스트 러너의 기본 기술이라 다시 걸려 단단해지기·싫은소리로 바꿈.
+- 검증: STATUS 현재 절.
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 다음 시작점: 친구 답 → 반영. 아니면 seq 323 #10608.
+
 ### 2026-10-13 — full-sync 묶음 19(seq 312~322) + #10814 앞당김 (클라우드 세션)
 
 - 요청: 사용자 "나 혼자 할 수 있는거야? 그렇다면 ㄱㄱ" → 사전 분석 3갈래 → 보고(아테나 멀티 회귀 포함) → "나 혼자 정할 수 있는거야?"에 "315 `battle_setup.c` hunk만 친구, 나머지는 사용자" 답 → "ㄱㄱ".

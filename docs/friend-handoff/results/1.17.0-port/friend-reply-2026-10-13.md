@@ -52,3 +52,21 @@
 1. **방벽 해제 문장의 진영이 반대로 나오는 경우(기존 HnS 텍스트).** `STRINGID_REFLECTWOREOFF`·`STRINGID_LIGHTSCREENWOREOFF`·`STRINGID_AURORAVEILWOREOFF`는 `{B_ATK_PREFIX1}의 리플렉터가⏎없어졌다!`처럼 **공격자 쪽** 접두어를 쓴다(upstream은 `{B_DEF_TEAM1}` — 방벽 쪽). 턴 끝 만료·안개제거는 스크립트가 방벽 쪽 포켓몬을 공격자로 옮겨 맞게 나오지만, 깨뜨리다·사이코팽·레이징불과 배리어프리는 **깨는 쪽이 공격자**라서 플레이어가 상대 방벽을 깨면 `우리 편의 리플렉터가⏎없어졌다!`, 상대가 플레이어 방벽을 깨면 `상대의 …`로 나온다(앞의 경우는 임시 테스트로 확인 — 위 A·B는 이 문장으로 맞춰 잼, 뒤의 경우는 코드 해석). 수정안: (가) `BattleScript_BreakScreens`·`BattleScript_ScreenCleanerActivates`에서 출력 전에 방벽 쪽 포켓몬을 공격자로 옮김(문장 그대로, 만료 스크립트와 같은 방식), (나) 세 문장의 토큰을 방어 쪽으로 바꾸고 만료 스크립트도 맞춤. 친구 결정 대기.
 2. **배리어프리도 #10829와 같은 타이머 결함.** 특성 배리어프리(`TryRemoveScreens`)가 상태 비트만 지워, 지운 방벽의 끝 문장이 뒤 턴에 다시 나온다(임시 테스트 재현). upstream 1.17.1·master도 고치지 않았다. 수정안: 양쪽 진영에 타이머 3줄씩. 친구 결정 대기.
 3. 도감 설명(`species_info` `.description`)도 기술 설명처럼 "아직 미번역 → upstream 변경을 넣어도 됨"으로 볼지(#10535 메가마기아나, seq 305 — 묶음 17에서 skip).
+
+## 보강(2026-10-13, 친구 답 [`FRIEND_REPLY_2026-10-13b.md`](../../FRIEND_REPLY_2026-10-13b.md) 1·3절)
+
+### 폭주족 정리 — 그림 번호와 트레이너 ID의 구분
+
+- **바뀐 것(그림 번호, `enum TrainerPicID`):** `TRAINER_PIC_BIKER_HGSS_HNS`(228)를 지워 그 뒤 HnS 그림 2개가 하나씩 당겨졌다 — `TRAINER_PIC_SWIMMER_M_HGSS_HNS` 229 → 228, `TRAINER_PIC_BLACK_BELT_HGSS_HNS` 230 → 229. 코드·트레이너 데이터·시설 표는 모두 이름으로 가리키므로 같은 빌드 안에서 같이 바뀐다(ROM 그림·팔레트·시설 표 심볼 515개 바이트 같음).
+- **바뀌지 않은 것(트레이너 ID, `TRAINER_*` 상수·`gTrainers` 표 순서):** 트레이너 항목은 하나도 추가·삭제·이동하지 않았다. 생성된 `src/data/trainers_hns.h`(`#line` 제외) 차이는 15명의 `.trainerPic` 줄뿐이고, 1,832마리의 파티 바이트·개인값이 같다.
+- **세이브·녹화 배틀에 그림 번호가 없다는 근거(코드 감사):**
+  - 세이브 블록 구조체(`include/global.h`의 `SaveBlock1`·`SaveBlock2`와 그 안의 프런티어·유니온룸·기록 혼합 구조체)에 `trainerPic`/`TrainerPicID` 필드가 없다(`grep -i trainerpic include/global*.h include/save.h include/recorded_battle.h` 0건). 프런티어 기록은 `facilityClass`(예: `global.h` 478·503행)만 저장하고, 그림은 실행 중 `gFacilityClassToPicIndex` 등으로 찾는다.
+  - 녹화 배틀 `struct RecordedBattleSave`(`src/recorded_battle.c`)는 파티·플레이어 이름/ID·난수 시드·배틀 플래그·`opponentA`/`opponentB`/`partnerId`(트레이너 ID)·시설 번호·AI 스크립트·기록 친구 클래스 등만 저장한다 — 그림 번호 없음. 녹화 재생은 저장된 트레이너 ID로 지금 ROM의 `gTrainers`를 읽으므로, 그림은 지금 ROM 기준으로 나온다(트레이너 ID가 같으므로 같은 트레이너).
+  - 세이브 정적 비교 PASS(FAIL 0, WARN 0), `recorded_battle.o` 37개 함수 같음, `RecordedBattleSave` 4,092 B 같음.
+  - 실제 저장·불러오기·기존 녹화 재생은 하지 않았다(친구 실기에서 따로 기록).
+
+### #10829 — 가져온 테스트와 임시 한글 테스트의 구분
+
+- **가져온 upstream 테스트(저장소, `make check`):** `test/battle/move_effect_secondary/break_screens.c`에 #10829의 2개. 영문 `MESSAGE` 기대라 HnS에서는 판정이 안 됨(`do not announce expiration again…: PASS`, `do not announce Reflect…: FAIL`).
+- **임시 한글 테스트(위 표 A~D):** `test/battle/zz_tmp_10829.c`(커밋하지 않고 실행 뒤 지움). 실행 명령 `make check BUILD=hns -j4 TESTS="test/battle/zz_tmp_10829.c"`, 수정 전은 타이머 3줄을 잠시 뺀 상태(실행 뒤 다시 넣고 diff 0 확인), 수정 후는 `6d08adc6` 상태. 결과는 위 표.
+- **계속 돌릴 수 있는 회귀로 정리:** 이 A~D는 `HNSSCREEN` T01~T04(한글 회귀 세트, `dev_scripts/hns_verify/kortests/sets/zz_hnsscreen_kor.c`)로 옮겼다. 진영 문구 수정 뒤의 문장(`상대의 …`)으로 기대를 맞췄고, 진영 문구·배리어프리 테스트(P·C)와 함께 [`friend-reply-2026-10-13b.md`](friend-reply-2026-10-13b.md)에 정리했다. **이 표의 "B PASS"는 방벽 이름 선택에 관한 결과**이고, 진영 접두어의 정확성은 그 뒤 별도 수정(`db62d527`)과 P·C 테스트로 확인했다.
