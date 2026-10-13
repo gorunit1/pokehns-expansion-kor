@@ -3246,12 +3246,10 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
         case ABILITY_SCREEN_CLEANER:
             if (shouldAbilityTrigger)
             {
-                u32 removedScreens = TryRemoveScreens(battler);
-                if (removedScreens != 0)
+                if (TryRemoveScreens(battler))
                 {
                     SaveBattlerAttacker(gBattlerAttacker);
                     gBattlerAttacker = battler;
-                    gBattleCommunication[MULTISTRING_CHOOSER] = removedScreens;
                     BattleScriptCall(BattleScript_ScreenCleanerActivates);
                     effect++;
                 }
@@ -9230,34 +9228,29 @@ void SetDynamicMoveCategory(enum BattlerId battlerAtk, enum BattlerId battlerDef
     }
 }
 
+// HnS: records the removed screens of each side in gBattleStruct->removedScreens (B_MSG_BREAK_* bits) so that
+// BattleScript_ScreenCleanerActivates prints them with the right side's prefix. Returns TRUE if anything was removed.
 static u32 TryRemoveScreens(enum BattlerId battler)
 {
-    u32 removed = 0;
-    u32 battlerSide = GetBattlerSide(battler);
-    u8 enemySide = GetBattlerSide(GetOppositeBattler(battler));
+    bool32 removed = FALSE;
+    enum BattleSide sides[NUM_BATTLE_SIDES] = {GetBattlerSide(battler), GetBattlerSide(GetOppositeBattler(battler))};
 
-    // try to remove from battler's side
-    if (gSideStatuses[battlerSide] & SIDE_STATUS_SCREEN_ANY)
+    for (u32 i = 0; i < NUM_BATTLE_SIDES; i++)
     {
-        if (gSideStatuses[battlerSide] & SIDE_STATUS_REFLECT)
-            removed |= B_MSG_BREAK_REFLECT;
-        if (gSideStatuses[battlerSide] & SIDE_STATUS_LIGHTSCREEN)
-            removed |= B_MSG_BREAK_LIGHT_SCREEN;
-        if (gSideStatuses[battlerSide] & SIDE_STATUS_AURORA_VEIL)
-            removed |= B_MSG_BREAK_AURORA_VEIL;
-        gSideStatuses[battlerSide] &= ~SIDE_STATUS_SCREEN_ANY;
-    }
+        enum BattleSide side = sides[i];
+        u32 screens = 0;
 
-    // try to remove from battler opponent's side
-    if (gSideStatuses[enemySide] & SIDE_STATUS_SCREEN_ANY)
-    {
-        if (gSideStatuses[enemySide] & SIDE_STATUS_REFLECT)
-            removed |= B_MSG_BREAK_REFLECT;
-        if (gSideStatuses[enemySide] & SIDE_STATUS_LIGHTSCREEN)
-            removed |= B_MSG_BREAK_LIGHT_SCREEN;
-        if (gSideStatuses[enemySide] & SIDE_STATUS_AURORA_VEIL)
-            removed |= B_MSG_BREAK_AURORA_VEIL;
-        gSideStatuses[enemySide] &= ~SIDE_STATUS_SCREEN_ANY;
+        if (!(gSideStatuses[side] & SIDE_STATUS_SCREEN_ANY))
+            continue;
+        if (gSideStatuses[side] & SIDE_STATUS_REFLECT)
+            screens |= B_MSG_BREAK_REFLECT;
+        if (gSideStatuses[side] & SIDE_STATUS_LIGHTSCREEN)
+            screens |= B_MSG_BREAK_LIGHT_SCREEN;
+        if (gSideStatuses[side] & SIDE_STATUS_AURORA_VEIL)
+            screens |= B_MSG_BREAK_AURORA_VEIL;
+        gSideStatuses[side] &= ~SIDE_STATUS_SCREEN_ANY;
+        gBattleStruct->removedScreens[side] = screens;
+        removed = TRUE;
     }
 
     return removed;

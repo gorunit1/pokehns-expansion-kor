@@ -1197,6 +1197,12 @@
 	callnative BS_RestoreAttacker
 	.endm
 
+	@ HnS: see BS_SetUpRemovedScreensMessages
+	.macro setupremovedscreensmessages doneInstr:req
+	callnative BS_SetUpRemovedScreensMessages
+	.4byte \doneInstr
+	.endm
+
 	.macro allyswitchswapbattlers
 	callnative BS_AllySwitchSwapBattler
 	.endm

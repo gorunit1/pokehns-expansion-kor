@@ -2674,7 +2674,9 @@ BattleScript_BreakScreens::
 	call BattleScript_BreakScreensMessages
 	return
 
+@ HnS: one pass per side with removed screens, a battler of that side as the attacker (the messages use {B_ATK_PREFIX1})
 BattleScript_BreakScreensMessages:
+	setupremovedscreensmessages BattleScript_BreakScreensRetFinish
 BattleScript_BreakScreensRetReflect:
 	jumpifbyte CMP_COMMON_BITS, cMULTISTRING_CHOOSER, B_MSG_BREAK_REFLECT, BattleScript_BreakReflect
 
@@ -2683,6 +2685,10 @@ BattleScript_BreakScreensRetLightScreen:
 
 BattleScript_BreakScreensRetAuroraVeil:
 	jumpifbyte CMP_COMMON_BITS, cMULTISTRING_CHOOSER, B_MSG_BREAK_AURORA_VEIL, BattleScript_BreakAuroraVeil
+
+BattleScript_BreakScreensSideDone:
+	restoreattacker
+	goto BattleScript_BreakScreensMessages
 
 BattleScript_BreakScreensRetFinish:
 	return
@@ -2700,7 +2706,7 @@ BattleScript_BreakLightScreen:
 BattleScript_BreakAuroraVeil:
 	printstring STRINGID_AURORAVEILWOREOFF
 	waitmessage B_WAIT_TIME_LONG
-	goto BattleScript_BreakScreensRetFinish
+	goto BattleScript_BreakScreensSideDone
 
 BattleScript_StealStats::
 	playmoveanimation MOVE_SPECTRAL_THIEF

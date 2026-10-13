@@ -3572,6 +3572,7 @@ void SetMoveEffect(enum BattlerId battlerAtk, enum BattlerId effectBattler, enum
                     gBattleCommunication[MULTISTRING_CHOOSER] |= B_MSG_BREAK_LIGHT_SCREEN;
                 if (brokenScreens & SIDE_STATUS_AURORA_VEIL)
                     gBattleCommunication[MULTISTRING_CHOOSER] |= B_MSG_BREAK_AURORA_VEIL;
+                gBattleStruct->removedScreens[i] = gBattleCommunication[MULTISTRING_CHOOSER];
                 gSideTimers[i].reflectTimer = 0;
                 gSideTimers[i].lightscreenTimer = 0;
                 gSideTimers[i].auroraVeilTimer = 0;
@@ -11332,6 +11333,31 @@ void BS_RestoreAttacker(void)
     NATIVE_ARGS();
     RestoreAttacker();
     gBattlescriptCurrInstr = cmd->nextInstr;
+}
+
+// HnS: the screen messages use {B_ATK_PREFIX1}, so the screens removed on each side are printed with a battler of that
+// side as the attacker, as the end-turn expiry scripts do. Brick Break and the like remove one side, Screen Cleaner can
+// remove both (the user's side first). The script restores the attacker after each side.
+void BS_SetUpRemovedScreensMessages(void)
+{
+    NATIVE_ARGS(const u8 *doneInstr);
+    enum BattleSide firstSide = GetBattlerSide(gBattlerAttacker);
+
+    for (u32 i = 0; i < NUM_BATTLE_SIDES; i++)
+    {
+        enum BattleSide side = (i == 0) ? firstSide : (firstSide ^ BIT_SIDE);
+
+        if (gBattleStruct->removedScreens[side] != 0)
+        {
+            gBattleCommunication[MULTISTRING_CHOOSER] = gBattleStruct->removedScreens[side];
+            gBattleStruct->removedScreens[side] = 0;
+            SaveBattlerAttacker(gBattlerAttacker);
+            gBattlerAttacker = GetBattlerAtPosition(side == B_SIDE_PLAYER ? B_POSITION_PLAYER_LEFT : B_POSITION_OPPONENT_LEFT);
+            gBattlescriptCurrInstr = cmd->nextInstr;
+            return;
+        }
+    }
+    gBattlescriptCurrInstr = cmd->doneInstr;
 }
 
 void BS_JumpIfMoreThanHalfHP(void)
