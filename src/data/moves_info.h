@@ -17895,8 +17895,13 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
     {
         .name = COMPOUND_STRING("파찌파찌액셀"),
         .description = COMPOUND_STRING(
+        #if B_UPDATED_MOVE_DATA >= GEN_8
+            "Electric bursts always go\n"
+            "first and raise evasion."),
+        #else
             "Electric bursts always go\n"
             "first and land a critical hit."),
+        #endif
         .effect = EFFECT_HIT,
         .power = B_UPDATED_MOVE_DATA >= GEN_8 ? 80 : 50,
         .type = TYPE_ELECTRIC,
