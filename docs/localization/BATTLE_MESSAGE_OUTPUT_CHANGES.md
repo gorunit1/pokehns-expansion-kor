@@ -188,6 +188,7 @@
 | 이미 (보통) 쾌청일 때 진홍빛고동이 등장 (seq 281) | 출력 없음(팝업도 없음) | 특성 팝업 / `…은(는) 햇살을 받아⏎고대의 고동을 폭발시켰다!!`(새 `STRINGID_ORICHALCUMPULSEACTIVATESINSUN`) | `BattleScript_OrichalcumPulseActivatesInSun` |
 | 하드론엔진 등장으로 일렉트릭필드가 깔림 (seq 281) | 특성 팝업 / `발밑에 전기가 흐르기 시작했다!` | 특성 팝업 / `…은(는) 일렉트릭필드를 전개하여⏎미래 기관을 가동했다!!`(새 `STRINGID_HADRONENGINEACTIVATES`, 필드 시작 문장 대신) / (쿼크차지 등) | 하드론엔진 case 분리, `BattleScript_HadronEngineActivates` |
 | 이미 일렉트릭필드일 때 하드론엔진이 등장 (seq 281) | 출력 없음 | 특성 팝업 / `…은(는) 일렉트릭필드의 힘으로⏎미래 기관을 가동했다!!`(새 `STRINGID_HADRONENGINEACTIVATESINTERRAIN`) | `BattleScript_HadronEngineActivatesInTerrain` |
+| 턴 종료에 상대 능력치가 오름(가속·변덕쟁이 등 턴 종료 세 번째 블록의 상승) — 편승 특성 또는 흉내허브를 가진 포켓몬이 있음 (upstream #10433 이식, seq 303. 새 문장 0, HnS 트레이너 데이터에 편승·흉내허브 보유자 없음 — 플레이어가 쓸 때만) | 출력 없음(턴 종료에는 따라 하지 않고, 쌓인 상승 기록이 지워짐) | 세 번째 블록(가속·구슬류·하양허브 등) 뒤에 편승 보유자 전부(빠른 순): 특성 팝업 → 기존 능력치 상승 문장, 그다음 흉내허브 보유자 전부(빠른 순): 도구 애니메이션 → `STRINGID_MIRRORHERBCOPIED`(`…은(는) 흉내허브를 써서⏎상대의 능력 변화를 흉내 냈다!`) → 기존 도구 능력치 상승 문장(`STRINGID_USINGITEMSTATOFPKMNROSE` 등). 턴 종료 교체(비상탈출 등)·폼체인지·탈출팩보다 앞 | `ENDTURN_OPPORTUNIST`·`ENDTURN_MIRROR_HERB` 단계 추가(`BattleScript_OpportunistCopyStatChange`·`BattleScript_MirrorHerbCopyStatChange` 재사용), `gQueuedStatBoosts` 초기화를 `TurnValuesCleanUp(TRUE)`에서 `EndTurnEvents`·첫 턴 전으로 옮김 |
 
 ## 제외한 변경
 
