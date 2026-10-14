@@ -353,7 +353,7 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 350	10652	601	1.16.4	g6_overworld_refactors	U-10652	-	S	fix	N	N	~0	Fix talking to buried movement npc
 351	9927	610	1.17.0	g6_overworld_refactors	U-outbreak-9927	9713,8943,8434,9920,9890,10051	XL	feature	N	Y	+6KB(추정)	Mass outbreak
 352	9688	611	1.17.0	g3_battle_changes_moves_abilities_items	U-9688	-	S	feature	N	N	~0	Add B_TERA_ORB_ALWAYS_CHARGED
-353	10089	612	1.17.0	g6_overworld_refactors	U-outbreak-9927	9927	S	fix	N	N	~0	Fix debug trainer and flags vars submenu
+353	10089	612	1.17.0	g6_overworld_refactors	U-outbreak-9927	9927	S	fix	N	N	0(앞당김 적용 443a264d, 2026-10-14 — seq 351 바로 뒤)	Fix debug trainer and flags vars submenu
 354	10046	613	1.17.0	g4_ai_tests_pokemon_sprites	U-aiselftarget-10046	9779	S	test	N	N	~0	Make doubles AI skip scoring on itself
 355	9008	614	1.17.0	g3_battle_changes_moves_abilities_items	U-9008	-	L	feature	Y	N	+2.5KB	Adds Victory Catch
 356	10027	615	1.17.0	g3_battle_changes_moves_abilities_items	U-10027	8497	M	gfx	N	N	+0.4KB	Add Item Icon to Knock Off, Covet, and Thief animations
@@ -364,7 +364,7 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 361	9211	620	1.17.0	g6_overworld_refactors	U-trainerslide-9211	9680,8943,9717	L	feature	N	N	+170KB	Additional trainer slides
 362	10133	622	1.17.0	g4_ai_tests_pokemon_sprites	U-10133	-	S	test	N	N	~0	Remove explicit targets from opponent in Trainer Slide tests
 363	10096	623	1.17.0	g6_overworld_refactors	U-owe-8434	9537,8434	M	refactor	N	N	-3KB(추정)	Use `overworld_ascending_frames` in picture tables
-364	10142	626	1.17.0	g5_general_cleanup_docs	U-outbreak-9927	9927	S	fix	N	N	~0	Fix Debug Menu's `Fly to map` not working immediately
+364	10142	626	1.17.0	g5_general_cleanup_docs	U-outbreak-9927	9927	S	fix	N	N	0(앞당김 적용 4ae4d7e1, 2026-10-14 — seq 351 바로 뒤)	Fix Debug Menu's `Fly to map` not working immediately
 365	8678	627	1.17.0	g5_general_cleanup_docs	U-8678	-	XL	feature	N	N	+2~4KB	Dynamic trainerbattle Scripts
 366	10080	628	1.17.0	g6_overworld_refactors	U-9557	9557	S	feature	N	N	~0	Add the Ability to Disable Map Name in Map Preview Screen
 367	9878	629	1.17.0	g6_overworld_refactors	U-egg-9878	8943,10051	M	refactor	N	N	~0	Rework egg creation and hatching mechanisms

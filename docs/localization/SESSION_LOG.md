@@ -2,6 +2,16 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-14 — full-sync 묶음 22(seq 351 #9927 + #10089·#10142 앞당김) (클라우드 세션)
+
+- 요청: 사용자 "보냈어"(친구 문자) → seq 351 단독 묶음 제안 → "혼자 할 수 있는 것이라면 ㄱㄱ". 사전 분석 1갈래(사본 `b23/w`, 보고서 `b23/seq351-9927.md`).
+- 수정 파일: `asm/macros/event.inc`, `data/event_scripts.s`, `data/scripts/tv.inc`, `data/specials.inc`, `docs/SUMMARY.md`, `docs/tutorials/how_to_mass_outbreak.md`(새), `include/constants/mass_outbreak.h`(새), `include/global.h`, `include/global.tv.h`, `include/mass_outbreak.h`(새), `include/wild_encounter.h`, `src/clock.c`, `src/debug.c`, `src/mass_outbreak.c`(새), `src/tv.c`, `src/wild_encounter.c`, `src/wild_encounter_ow.c`, `test/mass_outbreak.c`(새). 문서 — `full-sync-seq-351.md`(새), `RECHECK_BEFORE_COMPLETION.md` 68, `port_sequence.tsv` 353·364 앞당김 표시, STATUS·SESSION_LOG.
+- 결정(메인, 사용자 위임 범위): `outbreakIndex` `u8` — 친구의 세이브 호환 원칙과 upstream 주석 의도에 맞춰 사용자 결정 없이 진행, 친구에게 알림(재확인 68). #10089·#10142는 사전 분석의 "351에 합치기" 대신 PR별 커밋으로 351 바로 뒤에 앞당김(결과 코드 같음). 새 파일 끝 빈 줄 제거.
+- 조사: 메인이 `flags_hns.h`의 TV 플래그 `0`을 확인(처음엔 `flags.h`만 보고 커밋 메시지를 잘못 고침 — 정정 기록). 세이브 정적 비교 diff 5줄 직접 확인. 최종 ROM SHA1이 사전 분석 사본과 같음.
+- 검증: STATUS 현재 절.
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 다음 시작점: 검증 마무리 → seq 352 #9688.
+
 ### 2026-10-14 — full-sync 묶음 21(seq 337~350) (클라우드 세션)
 
 - 요청: 사용자 "보냈음 이제 seq 337부터 시작해" → 사전 분석 3갈래(a 337·338·339·341·343·345·346, b 340·342·347·348, c 344·349·350 — tar 사본, 세션 임시 `b22/`; upstream 패치는 `/home/user/pokeemerald-expansion-upstream` `git show`) → 중간에 친구 답 2026-10-14 반영(앞 기록) → 보고 → "나 혼자 정할 수 있는거야?"에 "모두 사용자 — 348은 8d에서 이미 HnS 보정이 필요하다고 정한 것이고 HnS 동작 변화 0, 친구에게는 알림만" 답 → "추천대로 적용". 사용자가 "앞으로 친구 메시지는 대화 맥락 끝에 한 번에"라고 정함(앞서 준 2026-10-14 반영 문자는 아직 안 보냄 — 합침).
