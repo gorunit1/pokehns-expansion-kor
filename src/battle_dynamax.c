@@ -187,7 +187,7 @@ static void ActivateDynamax_ContinueAfterSlide(void)
 // Sets flags used for Dynamaxing and checks Gigantamax forms.
 void ActivateDynamax(enum BattlerId battler)
 {
-    if (ShouldDoTrainerSlide(battler, TRAINER_SLIDE_DYNAMAX))
+    if (ShouldDoTrainerSlide(battler, TRAINER_SLIDE_ATTACKER_DYNAMAX))
     {
         gBattleScripting.battler = battler;
         gBattleResources->battleCallbackStack->function[gBattleResources->battleCallbackStack->size++] = gBattleMainFunc;

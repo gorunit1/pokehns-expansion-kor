@@ -1221,7 +1221,7 @@ void PrepareStringBattle(enum StringID stringId, enum BattlerId battler)
     {
     case STRINGID_ITDOESNTAFFECT:
     case STRINGID_PKMNUNAFFECTED:
-        TryInitializeTrainerSlideEnemyMonUnaffected(gBattlerTarget); // Depending on the future changes that might lead to bugs
+        TryInitializeTrainerSlideMonUnaffected(gBattlerTarget, gBattlerAttacker);
         break;
     default:
         break;
@@ -8719,7 +8719,7 @@ static void ActivateMegaEvolution_ContinueAfterSlide(void)
 
 void ActivateMegaEvolution(enum BattlerId battler)
 {
-    if (ShouldDoTrainerSlide(battler, TRAINER_SLIDE_MEGA_EVOLUTION))
+    if (ShouldDoTrainerSlide(battler, TRAINER_SLIDE_ATTACKER_MEGA_EVOLUTION))
     {
         gBattleScripting.battler = battler;
         gBattleResources->battleCallbackStack->function[gBattleResources->battleCallbackStack->size++] = gBattleMainFunc;

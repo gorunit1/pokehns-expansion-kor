@@ -306,7 +306,7 @@ AI_SINGLE_BATTLE_TEST("HNS9680 4-15 Trainer slide at end of turn comes after Spe
 {
     GIVEN {
         FLAG_SET(TESTING_FLAG_TRAINER_SLIDES);
-        VAR_SET(TESTING_VAR_TRAINER_SLIDES, TRAINER_SLIDE_LAST_HALF_HP);
+        VAR_SET(TESTING_VAR_TRAINER_SLIDES, TRAINER_SLIDE_SELF_LAST_HALF_HP);
         PLAYER(SPECIES_WOBBUFFET) { Ability(ABILITY_SPEED_BOOST); }
         OPPONENT(SPECIES_WOBBUFFET) { Moves(MOVE_CELEBRATE); MaxHP(160); HP(81); Status1(STATUS1_POISON); }
     } WHEN {
@@ -317,9 +317,9 @@ AI_SINGLE_BATTLE_TEST("HNS9680 4-15 Trainer slide at end of turn comes after Spe
         HP_BAR(opponent, damage: 20);
         ABILITY_POPUP(player, ABILITY_SPEED_BOOST);
         MESSAGE("마자용의 스피드가 올라갔다!");
-        MESSAGE("Trainer A: Enemy last Mon has < 51% HP.{PAUSE_UNTIL_PRESS}");
+        MESSAGE("Trainer A: Self last Mon has < 51% HP.{PAUSE_UNTIL_PRESS}");
         MESSAGE("상대 마자용은 독에 의한 데미지를 입고 있다!");
-        NONE_OF { MESSAGE("Trainer A: Enemy last Mon has < 51% HP.{PAUSE_UNTIL_PRESS}"); }
+        NONE_OF { MESSAGE("Trainer A: Self last Mon has < 51% HP.{PAUSE_UNTIL_PRESS}"); }
     }
 }
 
@@ -327,7 +327,7 @@ AI_SINGLE_BATTLE_TEST("HNS9680 4-16 UPSTREAM ORDER CHANGE EXPECTED: Dynamax end 
 {
     GIVEN {
         FLAG_SET(TESTING_FLAG_TRAINER_SLIDES);
-        VAR_SET(TESTING_VAR_TRAINER_SLIDES, TRAINER_SLIDE_LAST_HALF_HP);
+        VAR_SET(TESTING_VAR_TRAINER_SLIDES, TRAINER_SLIDE_SELF_LAST_HALF_HP);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET) { Moves(MOVE_CELEBRATE); MaxHP(160); HP(121); Status1(STATUS1_POISON); }
     } WHEN {
@@ -341,7 +341,7 @@ AI_SINGLE_BATTLE_TEST("HNS9680 4-16 UPSTREAM ORDER CHANGE EXPECTED: Dynamax end 
         MESSAGE("상대 마자용은 독에 의한 데미지를 입고 있다!");
         HP_BAR(opponent, hp: 61);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_FORM_CHANGE, player);
-        MESSAGE("Trainer A: Enemy last Mon has < 51% HP.{PAUSE_UNTIL_PRESS}");
+        MESSAGE("Trainer A: Self last Mon has < 51% HP.{PAUSE_UNTIL_PRESS}");
         MESSAGE("상대 마자용은 독에 의한 데미지를 입고 있다!");
     }
 }
