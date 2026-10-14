@@ -2950,6 +2950,16 @@ static enum MoveEndResult MoveEndUpdateLastMoves(void)
 
         if (!gBattleStruct->unableToUseMove
          && !IsBattlerUnaffectedByMove(gBattlerTarget)
+         && gChosenMove != MOVE_UNAVAILABLE
+         && !gSpecialStatuses[gBattlerAttacker].dancerUsedMove)
+        {
+            gLastUsedMove = gCurrentMove;
+            if (IsMaxMove(gCurrentMove))
+                gBattleStruct->dynamax.lastUsedBaseMove = gBattleStruct->dynamax.baseMoves[gBattlerAttacker];
+        }
+
+        if (!gBattleStruct->unableToUseMove
+         && !IsBattlerUnaffectedByMove(gBattlerTarget)
          && IsBattlerAlive(gBattlerTarget))
         {
             if (gChosenMove == MOVE_UNAVAILABLE)
@@ -2960,12 +2970,6 @@ static enum MoveEndResult MoveEndUpdateLastMoves(void)
             {
                 gLastLandedMoves[gBattlerTarget] = gCurrentMove;
                 gLastHitByType[gBattlerTarget] = GetBattleMoveType(gCurrentMove);
-                if (!gSpecialStatuses[gBattlerAttacker].dancerUsedMove)
-                {
-                    gLastUsedMove = gCurrentMove;
-                    if (IsMaxMove(gCurrentMove))
-                        gBattleStruct->dynamax.lastUsedBaseMove = gBattleStruct->dynamax.baseMoves[gBattlerAttacker];
-                }
             }
         }
         else
