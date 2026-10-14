@@ -131,8 +131,8 @@
 ## 검증
 
 - **빌드:** 커밋마다 `make hns -j8` 종료 0, 새 경고 0, EWRAM 250,408 B·IWRAM 25,516 B 그대로. ROM 32,782,500(묶음 20 끝) → 32,782,532(+32) → 32,782,468(−64) → **32,782,484 B(+16)**.
-- **전체 테스트**(`GITHUB_ACTION=1 make check BUILD=hns -j4`, 코드 `4de35b2b`): 진행 중
-- **한글 회귀**(`kortests/run.sh <저장소> kor-f14 8`): 진행 중
+- **전체 테스트**(`GITHUB_ACTION=1 make check BUILD=hns -j4`, 코드 `da0adeaa`): PASS 2,683 / TOTAL 5,608, 목록이 `test-baseline-seq336.txt`와 **바이트 같음**(사라진 PASS 0, 새 PASS 0 — 바뀐 세 곳 모두 테스트 러너가 타지 않는 필드·전환 화면 코드)
+- **한글 회귀**(`ALLOW_REPO=1 kortests/run.sh <저장소> kor-f14 8`, 코드 `da0adeaa`): **532/622**, 기대 요약과 바이트 같음
 - **세이브 정적 비교**(이식 전 사실 = 묶음 20 끝 `b89fb8e9` 빌드 — `post-336`): `4de35b2b`·`da0adeaa` 빌드 모두 **PASS(FAIL 0, WARN 0)**. `CB2_EndTrainerBattle`·`Mugshots_CreateTrainerPics`·`DoWhiteOut`은 세이브 경로 코드가 아니다. 세이브 블록·RAM 변수는 그대로다.
 - **배틀 테스트로 잴 수 없는 것:** 세 변경 모두 필드 콜백·배틀 전환 화면이라 테스트 러너가 타지 않는다. 그래서 위 코드 감사와 친구 실기로 확인한다.
 - **실기용 ROM:** 코드 `da0adeaa`, 클라우드 `make hns -j8`(`arm-none-eabi-gcc 13.2.1`) → 사용 32,782,484 B, SHA1 `c95e0c815ebc4f1138a78fe14bafff6198eab2d9`.
