@@ -1,6 +1,16 @@
 # 현재 인수인계 상태
 
-## 2026-10-14 — full-sync 묶음 20(seq 323~336) (현재, 클라우드 세션)
+## 2026-10-14 — 친구 답 2026-10-14: 미러 챌린지 패배(재확인 35)·너즐록 보호(67), 웅 머그샷 (현재, 클라우드 세션)
+
+- **다음 할 일**
+  1. **검증 마무리:** 전체 `make check`(기준 `test-baseline-seq336.txt` — 바뀐 코드가 필드·전환 화면이라 목록 같을 것으로 예상)·한글 회귀(532/622) 결과를 `friend-reply-2026-10-14.md` 검증 절에 채우기. 진행 중 로그는 세션 임시 `logs/f14-check.log`·`logs/f14-kor.log`.
+  2. **친구 문자**(사용자): 반영 결과 + 재확인 67(너즐록 보호) 확인 요청 + 실기용 ROM(`da0adeaa`, SHA1 `c95e0c81…`).
+  3. **묶음 21(seq 337~350) 사전 분석 진행 중**(아래 절 3-1) — 이 작업 뒤 HEAD에서 제안 패치를 다시 `git apply --check`(특히 348 #10711이 `battle_setup.c`를 건드리면).
+- **친구 답 원문:** [`FRIEND_REPLY_2026-10-14.md`](../friend-handoff/FRIEND_REPLY_2026-10-14.md)(미러 결정), [`FRIEND_REPLY_2026-10-14b.md`](../friend-handoff/FRIEND_REPLY_2026-10-14b.md)(웅 머그샷). 반영 [`friend-reply-2026-10-14.md`](../friend-handoff/results/1.17.0-port/friend-reply-2026-10-14.md).
+- **커밋:** `5e7e97c2` 웅 머그샷(`y2 -= 8` → `sheetTileStart += 8` + `SetSpriteSheetFrameTileNum`, 친구 코드 그대로), `4de35b2b` #10568 `battle_setup.c` hunk(미러 패배 → 화이트아웃 — 이식 전부터 있던 HnS 동작을 프로젝트가 바꾼 것), `da0adeaa` 너즐록 화이트아웃 보충을 산 포켓몬이 없을 때만(사용자 결정 — 친구 확인 요청, 재확인 67).
+- **검증(코드 `da0adeaa`):** 커밋마다 `make hns -j8` 종료 0·새 경고 0, ROM 32,782,500 → 32,782,484 B, EWRAM·IWRAM 같음, SHA1 `c95e0c81…`. 세이브 정적 PASS(FAIL 0, WARN 0). 전체 테스트·한글 회귀 진행 중. **실기: 하지 않음(친구).** 친구 로컬 실기 PASS(웅 머그샷 한 장면, 친구 ROM `6bb6acc0…`)는 친구 결과로 따로.
+
+## 2026-10-14 — full-sync 묶음 20(seq 323~336) (클라우드 세션)
 
 - **다음 할 일**
   1. ~~친구 문자~~ **보냄**(2026-10-14 사용자 확인): 묶음 20 결과 + 재확인 66 질문 + 실기용 ROM(`b89fb8e9`, SHA1 `bdc39338…`).

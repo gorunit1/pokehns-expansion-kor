@@ -114,3 +114,7 @@
 - **실기용 ROM:** 코드 기준 커밋 `3fd38faf`(뒤 문서 커밋은 ROM 무관), `make hns -j8`(클라우드 `arm-none-eabi-gcc 13.2.1 20231009`) → `pokehns.gba` 33,554,432 B, 사용 32,787,220 B, **SHA1 `0913b75119b0d800947261dd344589fa4ae4e076`**. full-sync seq 287~300(`full-sync-seq-287-300.md`)도 들어 있다. 다른 컴퓨터·툴체인으로 빌드하면 해시가 다를 수 있다.
 - 검증(코드/데이터 — 실기는 친구): `make hns -j8` 종료 0, 새 경고 0, EWRAM·IWRAM 같음. 위 생성 데이터·ROM 바이트 비교. 그림 번호는 세이브에 저장되지 않음(세이브 비교 생략 — ROM 차이가 트레이너 표 2바이트뿐).
 - 실기(mGBA, 친구) 확인 항목 추가: 멜레멜레 JIMMY·아칼라 GEOFF 배틀 앞모습 = 새 수영팬티소년 그림.
+
+## 9. 웅 머그샷 표시 범위 교체 (2026-10-14)
+
+- 친구 요청 [`FRIEND_REPLY_2026-10-14b.md`](../../FRIEND_REPLY_2026-10-14b.md) — 7절 `4b885582`의 `y2 -= 8`(그림 아래 경계도 함께 올라가 몸이 띠 아래보다 먼저 끝남)을 `5e7e97c2`로 교체: 상대 A/B가 `TRAINER_PIC_LEADER_BROCK_HNS`이면 `sheetTileStart += 8` + `SetSpriteSheetFrameTileNum()` — 그림 원본 8~39행을 읽고 표시 영역은 그대로. 결과·검증은 [`../1.17.0-port/friend-reply-2026-10-14.md`](../1.17.0-port/friend-reply-2026-10-14.md) 2절. 친구 로컬 실기 PASS(한 장면, 친구 로컬 ROM SHA1 `6bb6acc0…`)와 이 저장소의 빌드·자동 검증은 따로 기록.
