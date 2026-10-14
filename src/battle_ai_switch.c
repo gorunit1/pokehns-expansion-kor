@@ -1040,14 +1040,17 @@ static bool32 ShouldSwitchIfAbilityBenefit(struct SwitchAiContext *switchContext
     {
         u32 moveIndex;
 
+        // Hero Form has already activated Zero to Hero.
         if (gBattleMons[switchContext->battler].species != SPECIES_PALAFIN_ZERO)
             return FALSE;
 
         moveIndex = GetBattlerMoveIndexWithEffect(switchContext->battler, EFFECT_HIT_ESCAPE);
 
-        // Prefer to use a hit escape move if Palafin will move first and can hit
+        // Prefer a safe hit escape move over switching directly.
         if (moveIndex < MAX_MON_MOVES && CanPalafinZeroSafelyUseHitEscape(switchContext->battler, gBattleMons[switchContext->battler].moves[moveIndex]))
             return FALSE;
+
+        // No safe pivot is available, so switch directly to transform.
         break;
     }
 
