@@ -4,11 +4,11 @@
 
 - **친구 문자 규칙(사용자 2026-10-14):** 친구 디스코드 메시지는 대화 맥락 하나가 끝날 때 한 번에 만든다. 이번 맥락(묶음 22~) 문자는 아직 안 만듦.
 - **다음 할 일**
-  1. **검증 마무리:** 전체 `make check`(기준 `test-baseline-seq350.txt`)·한글 회귀(532/622) 결과를 `full-sync-seq-351.md`에 채우고 새 기준 `test-baseline-seq351.txt` 저장. 로그는 세션 임시 `logs/b23-check.log`·`logs/b23-kor.log`.
-  2. **full-sync 다음 seq 352 #9688**(Add B_TERA_ORB_ALWAYS_CHARGED). 353·364는 앞당김 적용 — 다시 넣지 않음. 세이브 비교 이식 전 사실 = 세션 임시 `hns-sync-work/verify-runs/save/post-351/post-facts`(이름 바뀐 `outbreakIndex`·`daysBeforeOutbreak` 기준 — 다음 비교부터 같은 이름).
+  1. ~~검증 마무리~~ 끝: 전체 `make check` 새 PASS 7(새 테스트)·사라진 PASS 0 → 새 기준 **`test-baseline-seq351.txt`**, 한글 회귀 532/622 기대와 바이트 같음.
+  2. **full-sync 다음 seq 352 #9688**(Add B_TERA_ORB_ALWAYS_CHARGED, 테스트 기준 `test-baseline-seq351.txt`, 한글 회귀 532/622). 353·364는 앞당김 적용 — 다시 넣지 않음. 세이브 비교 이식 전 사실 = 세션 임시 `hns-sync-work/verify-runs/save/post-351/post-facts`(이름 바뀐 `outbreakIndex`·`daysBeforeOutbreak` 기준 — 다음 비교부터 같은 이름).
   3. **친구 답 대기**(이전 절 그대로): 재확인 67(너즐록 보호), 66(332 hunk), 35·64 실기, 텅구리 알로라, 실기 결과들. 묶음 22는 알림만(재확인 68).
 - **결과** [`full-sync-seq-351.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-351.md): `7c17b9f1` #9927(18파일, 거부 hunk 9개 손 맞춤 — HnS 디버그 B 복귀·`GetTVMetatileId`·프런티어 상점 조건·Pokérus 균주·GBS 소리 메뉴 유지), `443a264d` #10089·`4ae4d7e1` #10142 앞당김(디버그 메뉴 회귀 3개). **HnS 적응:** TV 대량발생 쇼 `outbreakIndex`를 `u8`(upstream `enum`은 4바이트라 옛 세이브 쇼 필드가 밀림 — 재확인 68). HnS 일반 진행 동작 변화 0(TV 플래그 `0`, 새 스크립트 미사용, 출현 해시 전후 같음 — 사전 분석 측정), 새로 보이는 것은 디버그 "Encounters…"뿐. `7c17b9f1` 메시지의 `FLAG_SYS_TV_START` 설명은 틀림(결과 문서에 정정).
-- **검증(코드 `4ae4d7e1`):** 커밋마다 `make hns -j8` 종료 0·새 경고 0, ROM 32,782,772 → 32,787,012 B(+4,240), EWRAM·IWRAM 같음, SHA1 `008d5029…`(사전 분석 사본과 같음). 세이브 정적 FAIL 2 = 이름 변화뿐(비트 위치·폭 같음, 그 밖 전부 PASS). 전체 테스트·한글 회귀 진행 중. **실기: 하지 않음(친구).**
+- **검증(코드 `4ae4d7e1`):** 커밋마다 `make hns -j8` 종료 0·새 경고 0, ROM 32,782,772 → 32,787,012 B(+4,240), EWRAM·IWRAM 같음, SHA1 `008d5029…`(사전 분석 사본과 같음). 세이브 정적 FAIL 2 = 이름 변화뿐(비트 위치·폭 같음, 그 밖 전부 PASS). 전체 `make check` PASS 2,691 / 5,621(목록 기준), 사라진 PASS 0 → 기준 [`test-baseline-seq351.txt`](../friend-handoff/results/1.17.0-port/test-baseline-seq351.txt). 한글 회귀 532/622 기대와 바이트 같음. **실기: 하지 않음(친구).**
 
 ## 2026-10-14 — full-sync 묶음 21(seq 337~350) (클라우드 세션)
 
