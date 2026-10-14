@@ -93,9 +93,9 @@ u32 CreateSurfablePokemonSprite(void)
         LoadSurfOverworldPalette(isShiny);
 
         if (isShiny == TRUE)
-            spriteId = CreateSpriteAtEnd(&gSurfablePokemonOverworldShinySprites[sCurrentSurfMon], gFieldEffectArguments[0], gFieldEffectArguments[1], 0x96);
+            spriteId = CreateSpriteAtEndUnchecked(&gSurfablePokemonOverworldShinySprites[sCurrentSurfMon], gFieldEffectArguments[0], gFieldEffectArguments[1], 0x96);
         else
-            spriteId = CreateSpriteAtEnd(&gSurfablePokemonOverworldSprites[sCurrentSurfMon], gFieldEffectArguments[0], gFieldEffectArguments[1], 0x96);
+            spriteId = CreateSpriteAtEndUnchecked(&gSurfablePokemonOverworldSprites[sCurrentSurfMon], gFieldEffectArguments[0], gFieldEffectArguments[1], 0x96);
 
         if (gSurfablePokemonOverlaySprites[sCurrentSurfMon].tileTag == 0xFFFF)
         {
@@ -104,7 +104,7 @@ u32 CreateSurfablePokemonSprite(void)
     }
     else
     { // Create surf blob
-        spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_SURF_BLOB], gFieldEffectArguments[0], gFieldEffectArguments[1], 0x96);
+        spriteId = CreateSpriteAtEndUnchecked(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_SURF_BLOB], gFieldEffectArguments[0], gFieldEffectArguments[1], 0x96);
     }
 
     if (spriteId != MAX_SPRITES)
@@ -130,9 +130,9 @@ static void CreateOverlaySprite(bool8 isShiny)
 
     subpriority = gSprites[gPlayerAvatar.spriteId].subpriority - 1;
     if (isShiny == TRUE)
-        overlaySprite = CreateSpriteAtEnd(&gSurfablePokemonOverlayShinySprites[sCurrentSurfMon], gFieldEffectArguments[0], gFieldEffectArguments[1], subpriority);
+        overlaySprite = CreateSpriteAtEndUnchecked(&gSurfablePokemonOverlayShinySprites[sCurrentSurfMon], gFieldEffectArguments[0], gFieldEffectArguments[1], subpriority);
     else
-        overlaySprite = CreateSpriteAtEnd(&gSurfablePokemonOverlaySprites[sCurrentSurfMon], gFieldEffectArguments[0], gFieldEffectArguments[1], subpriority);
+        overlaySprite = CreateSpriteAtEndUnchecked(&gSurfablePokemonOverlaySprites[sCurrentSurfMon], gFieldEffectArguments[0], gFieldEffectArguments[1], subpriority);
 
     if (overlaySprite != MAX_SPRITES)
     {
