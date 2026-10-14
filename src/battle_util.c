@@ -35,6 +35,7 @@
 #include "battle_ai_record.h"
 #include "battle_ai_util.h"
 #include "event_data.h"
+#include "follower_npc.h"
 #include "link.h"
 #include "malloc.h"
 #include "berry.h"
@@ -10053,8 +10054,25 @@ bool32 AreMultiPartiesFullTeams(void)
 #else
     enum DifficultyLevel difficulty = GetCurrentDifficultyLevel();
 
-    if (B_MULTI_HALF_TEAMS
-     || TRAINER_BATTLE_PARAM.opponentA == TRAINER_LINK_OPPONENT
+    if (B_MULTI_HALF_TEAMS)
+    {
+        gSpecialVar_Result = FALSE;
+        return FALSE;
+    }
+
+    // HnS: a multi against wild mons has full teams (#10711), but multi_do calls this in the field, where gBattleTypeFlags
+    // are still those of the previous battle (none after loading a save): after a wild battle the flags have no
+    // BATTLE_TYPE_TRAINER even for multi_2_vs_2, and the Rocket Hideout B2F multi would skip reducing the party to the
+    // 3 chosen mons. setmultitrainerbattle sets the opponent ids before multi_do; an NPC follower's wild battle keeps
+    // the old ids but sets the new flags first. Unlike #10711, the early returns also set the result (as #10773 does).
+    if (!(gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+     && (TRAINER_BATTLE_PARAM.opponentA == TRAINER_NONE || IsNPCFollowerWildBattle()))
+    {
+        gSpecialVar_Result = TRUE;
+        return TRUE;
+    }
+
+    if (TRAINER_BATTLE_PARAM.opponentA == TRAINER_LINK_OPPONENT
      || gBattleTypeFlags & BATTLE_TYPE_TOWER_LINK_MULTI
      || (!AreOpponentsFacilityTrainers() && gTrainers[difficulty][TRAINER_BATTLE_PARAM.opponentA].multiTeamSize == MULTI_TEAM_SIZE_HALF)
      || (!AreOpponentsFacilityTrainers() && gTrainers[difficulty][TRAINER_BATTLE_PARAM.opponentB].multiTeamSize == MULTI_TEAM_SIZE_HALF))
