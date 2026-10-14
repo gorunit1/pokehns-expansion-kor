@@ -104,8 +104,12 @@ upstream #10711은 `AreMultiPartiesFullTeams`에 `if (!(gBattleTypeFlags & BATTL
 ## 검증
 
 - **빌드:** 위 표.
-- **전체 테스트**(`GITHUB_ACTION=1 make check BUILD=hns -j6`, 코드 `49f2c5e5`): 진행 중.
-- **한글 회귀**(`ALLOW_REPO=1 kortests/run.sh <저장소> kor-b21 8`): 진행 중.
+- **전체 테스트**(`GITHUB_ACTION=1 make check BUILD=hns -j6`, 코드 `49f2c5e5`): PASS 2,683 → **2,684** / TOTAL 5,608 → 5,614. `test-baseline-seq336.txt` 대비 새 PASS 6, 사라진 PASS 1.
+  - 사라진 1은 345가 이름을 바꾼 `Shell Trap activates on both opposing Targets`다. 새 이름 `… for both opposing targets in speed order`가 PASS다.
+  - 새 PASS: 339 2, 346 1, 341 1, 345 2(이름 바뀐 것 포함).
+  - 새 FAIL 1은 337 `Metronome's called spread move does not hit the user's partner`다. 메인이 단독 실행해 보니 `metronome.c:76` `Unmatched MESSAGE`(영문 `Wobbuffet used Metronome!`)뿐이다 — 알려진 한계. 한글 조사 테스트로는 파트너가 맞지 않음을 확인했다(사전 분석 a).
+  - 목록 [`test-baseline-seq350.txt`](test-baseline-seq350.txt)(**다음 비교 기준**).
+- **한글 회귀**(`ALLOW_REPO=1 kortests/run.sh <저장소> kor-b21 8`, 코드 `49f2c5e5`): **532/622**, 기대 요약과 바이트 같음.
 - **세이브 정적 비교**(이식 전 사실 = `da0adeaa` 빌드 `post-f14b`): **PASS(FAIL 0, WARN 0)**, EWRAM·IWRAM 변수 변화 0.
 - **최종 ROM(실기용):** 코드 `49f2c5e5`, 클라우드 `make hns -j8`(`arm-none-eabi-gcc 13.2.1`) → 사용 32,782,772 B, SHA1 `6377af696d8b505f4e9c28683c21c7e5e0c5dd99`.
 
