@@ -52,6 +52,12 @@
 | 드래곤애로 (upstream #10315 이식, seq 257) | 다트 사이 상성 문장 없음, 마지막 다트 뒤 마지막 대상의 상성 문장 + `2번 맞았다!`(첫 다트로 쓰러뜨리면 `쓰러졌다!` 뒤 상성 문장 + `1번 맞았다!`) | 다트마다 그 대상의 상성 문장(2배·1/2배·4배·1/4배 모두), `N번 맞았다!` 없음. 첫 다트로 쓰러뜨리면 상성 문장 → `쓰러졌다!` | `Cmd_resultmessage`의 `TARGET_SMART`, `MoveEndMultihitMove` |
 | 더블배틀에서 사우전드애로가 공중에 뜬(비행 타입·부유·전자부유 등) 상대 둘을 맞힘 (upstream #10354 이식, seq 262) | 마지막으로 처리된 대상(보통 오른쪽 상대) 하나만 `…은(는)⏎떨어뜨리기를 당해서 땅에 떨어졌다!`, 다른 쪽은 계속 공중 | 맞은 공중 대상마다 같은 문장(슬롯 순서: 왼쪽 → 오른쪽)과 접지. 새 문장 없음 | `MoveEndMoveBlock` 대상 루프, `BattleScript_MoveEffectSmackDown`의 `savetarget`/`restoretarget` |
 | 더블배틀에서 킬러스핀의 마지막으로 처리되는 대상(보통 오른쪽 상대)이 방어했거나 독이 통하지 않음(강철 등) (upstream #10354 이식, seq 262 — 리뷰 R2 발견) | 압정 등 사용자 쪽 장판이 제거되지 않음 | `우리 편 발밑의\n압정이 사라졌다!` 등 제거(upstream 1.17.0과 같음) | `MoveEndMoveBlock` 대상 루프 `EFFECT_RAPID_SPIN` |
+| 더블에서 경혈찌르기로 고른 아군이 같은 턴 먼저 쓰러짐 (upstream #10636 이식, seq 327. 새 문장 0) | `그러나 실패하고 말았다!` | 사용자 자신에게 경혈찌르기: 능력치 애니 → `…의⏎{능력치}이(가) 크게 올라갔다!`(기존 문장) | `CancelerSetTargets` TARGET_USER_OR_ALLY 기절 대상 분기 |
+| 더블에서 파트너가 기절하고 상대가 1마리만 남았을 때 플레이어가 경혈찌르기 선택 (upstream #10645 이식, seq 332. 새 문장 0 — 테스트 러너가 타지 않는 플레이어 컨트롤러 경로, 코드 해석) | 대상이 그 상대로 정해져 `상대 …의⏎{능력치}이(가) 크게 올라갔다!` | 사용자 자신이 오름 `…의⏎{능력치}이(가) 크게 올라갔다!` | `HandleInputChooseMove`(`GetDefaultMoveTarget` 삭제) |
+| 더블 트레이너 AI·AI 파트너가 파트너 기절 상태에서 기절한 아군을 대상으로 경혈찌르기 선택 (upstream #10645, seq 332) | (seq 327 전) `그러나 실패하고 말았다!` / (seq 327 뒤) 사용자 자신 | 사용자 자신(선택 단계에서 바로) | `SetFinalChosenTarget` |
+| 앞 포켓몬의 기술이 대상을 쓰러뜨린 뒤 흉내쟁이 (upstream #10654 이식, seq 333. 새 문장 0) | 그 기술이 기록되지 않아 그 전 기술을 쓰거나 `그러나 실패하고 말았다!` | 쓰러뜨린 그 기술을 씀(기존 사용 문장). 같은 이유로 크로스플레임/크로스썬더·윤창이 대상을 쓰러뜨린 뒤 같은 턴의 짝 기술·윤창 위력 2배(문장 변화 없음) | `MoveEndUpdateLastMoves` `gLastUsedMove` 갱신 위치 |
+| 도발·트집·사슬묶기·앵콜·봉인·회복봉인·지옥찌르기·트림(나무열매 안 먹음) 상태에서 Z기술을 고름 (upstream #10657 이식, seq 336 — HnS 본 게임은 Z크리스탈 입수 불가) | 선택 단계에서 각 선택 불가 문장(`STRINGID_PKMNCANTUSEMOVETAUNT`·`STRINGID_PKMNMOVEISDISABLED` 등)이 나오고 다시 고르게 함 | 선택할 수 있고 Z기술이 나감 | `TrySetCantSelectMoveBattleScript` `zMoveBypassCheck`(`IsGimmickChosenForAction`) |
+| 중력 상태에서 중력 금지 기술(공중날기 등)로 Z기술을 고름 (upstream #10657, seq 336) | 선택 단계에서 `STRINGID_GRAVITYPREVENTSUSAGE`(원래 기술 이름)가 나오고 다시 고르게 함 | 선택할 수 있다. 실행 때 `STRINGID_GRAVITYPREVENTSUSAGE`가 Z기술 이름으로 나오고 기술은 실패(`마자용은⏎중력이 강해서⏎파이널다이브클래시를 쓸 수 없다!`, 셋째 줄 약 125 px — 창 208 px 안) | `CancelerVolatileBlocked` 중력 판정이 `gBattleStruct->baseMove` 사용 |
 
 ## 상태이상·회복·잠자기
 
@@ -191,6 +197,8 @@
 | 이미 일렉트릭필드일 때 하드론엔진이 등장 (seq 281) | 출력 없음 | 특성 팝업 / `…은(는) 일렉트릭필드의 힘으로⏎미래 기관을 가동했다!!`(새 `STRINGID_HADRONENGINEACTIVATESINTERRAIN`) | `BattleScript_HadronEngineActivatesInTerrain` |
 | 턴 종료에 상대 능력치가 오름(가속·변덕쟁이 등 턴 종료 세 번째 블록의 상승) — 편승 특성 또는 흉내허브를 가진 포켓몬이 있음 (upstream #10433 이식, seq 303. 새 문장 0, HnS 트레이너 데이터에 편승·흉내허브 보유자 없음 — 플레이어가 쓸 때만) | 출력 없음(턴 종료에는 따라 하지 않고, 쌓인 상승 기록이 지워짐) | 세 번째 블록(가속·구슬류·하양허브 등) 뒤에 편승 보유자 전부(빠른 순): 특성 팝업 → 기존 능력치 상승 문장, 그다음 흉내허브 보유자 전부(빠른 순): 도구 애니메이션 → `STRINGID_MIRRORHERBCOPIED`(`…은(는) 흉내허브를 써서⏎상대의 능력 변화를 흉내 냈다!`) → 기존 도구 능력치 상승 문장(`STRINGID_USINGITEMSTATOFPKMNROSE` 등). 턴 종료 교체(비상탈출 등)·폼체인지·탈출팩보다 앞 | `ENDTURN_OPPORTUNIST`·`ENDTURN_MIRROR_HERB` 단계 추가(`BattleScript_OpportunistCopyStatChange`·`BattleScript_MirrorHerbCopyStatChange` 재사용), `gQueuedStatBoosts` 초기화를 `TurnValuesCleanUp(TRUE)`에서 `EndTurnEvents`·첫 턴 전으로 옮김 |
 | 더블에서 플레이어 쪽 파티 번호 k의 포켓몬이 탁쳐서떨구기로 도구를 잃었거나 트레이너전에서 원래 도구를 빼앗긴 뒤, 같은 배틀에서 파티 번호가 k인 다른 배틀러(상대·목호 파트너 포함)가 도구를 써 옆 포켓몬의 공생이 발동할 상황 (upstream #10483 + #10577 이식, seq 313·318. 새 문장 0) | 공생이 발동하지 않음(도구 이전·팝업·문장 없음) | 공생 팝업 → `STRINGID_SYMBIOSISITEMPASS`(`…은(는) …(으)로부터⏎…을(를) 받았다!`, 기존 문장) | `TrySymbiosis()`의 `itemLost[B_SIDE_PLAYER][…].stolen` 조건 삭제 |
+| 다이맥스한 포켓몬의 맥스기술이 저주받은바디 상대를 맞힘 (upstream #10639 이식, seq 328 — HnS 본 게임은 다이맥스 불가라 테스트·랜더마이저 밖 경로) | 30% 확률로 저주받은바디 팝업 뒤 `STRINGID_CURSEDBODYDISABLED`(`{공격자}의⏎{맥스기술}{을를} 봉인했다!`), 맥스기술이 사슬묶기됨 | 팝업·문장 없음, 사슬묶기 없음 | `AbilityBattleEffects` `ABILITY_CURSED_BODY` 조건에 `GetActiveGimmick(gBattlerAttacker) != GIMMICK_DYNAMAX` |
+| 더블 전체기(지진 등)로 반감열매가 발동하고 공생으로 도구를 받음 (upstream #10653 이식, seq 334. 새 문장 0) | 받은 도구에 다시 도구 팝업·열매 애니 → `상대 피카츄는 입는 데미지를⏎상처약이 약하게 했다!` 후 그 도구 소모 | 나오지 않음, 받은 도구 유지 | `MoveEndSymbiosis` `berryReduced` 초기화 |
 
 ## 제외한 변경
 
