@@ -2783,6 +2783,7 @@ static enum MoveEndResult MoveEndSymbiosis(void)
             && TryTriggerSymbiosis(battler, GetPartnerBattler(battler)))
         {
             BestowItem(GetPartnerBattler(battler), battler);
+            gSpecialStatuses[battler].berryReduced = FALSE;
             gLastUsedAbility = gBattleMons[GetPartnerBattler(battler)].ability;
             gEffectBattler = battler;
             gBattleScripting.battler = gBattlerAbility = GetPartnerBattler(battler);
