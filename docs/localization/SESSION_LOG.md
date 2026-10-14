@@ -2,6 +2,16 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-14 — full-sync 묶음 20(seq 323~336) (클라우드 세션)
+
+- 요청: 사용자 "보냈음 이제 seq 323부터 시작해"(2026-10-13) → 사전 분석 3갈래(a 323·331·335 + 이미 적용 확인, b 325·328·336, c 327·332·333·334 — tar 사본, 세션 임시 `b21/`) → 보고 → 사용자 "나 혼자 정할 수 있나, 아니면 친구한테 물어보는게 좋나?"에 "HP(999)·331 주석·커밋 단위는 사용자, 332 hunk는 친구(제외하고 진행 — 지금 동작 유지)" 답 → "추천대로 진행".
+- 수정 파일: `include/battle.h`, `include/battle_util.h`, `include/battle_dynamax.h`, `include/battle_controllers.h`, `include/pokemon.h`, `src/battle_hold_effects.c`, `src/battle_main.c`, `src/battle_move_resolution.c`, `src/battle_script_commands.c`, `src/battle_util.c`, `src/pokemon.c`, `src/battle_ai_main.c`, `src/battle_ai_switch.c`, `src/battle_ai_util.c`, `src/battle_controller_player.c`, `src/battle_controllers.c`, `src/battle_dynamax.c`, `src/battle_tv.c`, `src/field_name_box.c`, 테스트(`sleep_clause.c`, `ai/gimmick_dynamax.c`, `ai/gimmick_z_move.c`, `gimmick/dynamax.c`, `gimmick/zmove.c`, `court_change.c`, `acupressure.c`, `cursed_body.c`, `ai/ai_switching.c`, `copycat.c`, `symbiosis.c`), 한글 회귀 세트 `zz_hns9680_endturn3.c`. 문서 — `full-sync-seq-323-336.md`·`test-baseline-seq336.txt`(새), `RECHECK_BEFORE_COMPLETION.md`(66·8z·8za 새, 8w 해소), `BATTLE_MESSAGE_OUTPUT_CHANGES.md`(8행), STATUS·SESSION_LOG.
+- 결정: 사용자 — 325에 `HNS9680 3-04` `HP(999)` 같이, 331 주석 넣기, seq마다 커밋. 친구 확인 — 332 `GetBattleMoveTarget` hunk(제외 상태로 질문, 재확인 66).
+- 조사: 332 hunk 결함은 사전 분석 c가 조사용 테스트로 재현하고, 메인이 HnS·upstream 1.17.1·master `GetBattleMoveTarget`의 `targetBattler = 0` 시작과 같은 hunk를 직접 확인. 323 계획표의 "HnS 버그 없음"이 #8943 뒤로는 낡음(새 테스트가 적용 전 FAIL). 334 커밋 메시지는 내용 정정으로 push 전에 amend.
+- 검증: STATUS 현재 절. 새 FAIL 2개는 메인이 단독 실행해 `Unmatched MESSAGE`(영문 기대 줄) 확인.
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 다음 시작점: 친구 답 → 반영. 아니면 seq 337(기준 `test-baseline-seq336.txt`).
+
 ### 2026-10-13 — 친구 답(2): #10535, 방벽 진영 문구 (가), 배리어프리 타이머, 한글 회귀 `HNSSCREEN` (클라우드 세션)
 
 - 요청: 사용자가 묶음 18·19 문자를 보냈다고 알리고 와 있던 친구 답(2026-10-13 결과 문자에 대한 답)을 전달. 원문 `FRIEND_REPLY_2026-10-13b.md`.

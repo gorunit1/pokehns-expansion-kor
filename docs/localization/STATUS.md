@@ -1,11 +1,20 @@
 # 현재 인수인계 상태
 
-## 2026-10-13 — 친구 답(2): #10535, 방벽 진영 문구 (가), 배리어프리 타이머, 한글 회귀 `HNSSCREEN` (현재, 클라우드 세션)
+## 2026-10-14 — full-sync 묶음 20(seq 323~336) (현재, 클라우드 세션)
+
+- **다음 할 일**
+  1. **친구 문자 보내기**(사용자): 묶음 20 결과 + 재확인 66 질문 + 실기용 ROM(`b89fb8e9`, SHA1 `bdc39338…`). 문안은 2026-10-14 세션 답변(저장소 밖), 내용은 결과 문서 "친구에게 알릴 것·물을 것"과 같다.
+  2. **친구 답 대기:** 재확인 66(332 `GetBattleMoveTarget` hunk — 지금 제외), 재확인 35(315 `battle_setup.c` hunk), 묶음 17 텅구리 알로라(화면·옛 `front.png`), 실기 결과(아테나 멀티 64·오프닝 65·방벽 진영·배리어프리 포함).
+  3. **full-sync 다음 seq 337 #10661**(Fix Metronome-called spread moves hitting the user’s partner — 336 뒤 upstream 문맥과 같아져 그대로 들어갈 것으로 보임). 테스트 기준 **`test-baseline-seq336.txt`**, 한글 회귀 기대 **532/622**(그대로). 세이브 비교 이식 전 사실 = 세션 임시 `hns-sync-work/verify-runs/save/post-336/post-facts`(없으면 `make hns -j8` 뒤 `save_compat.py collect`). 앞당김 적용분(542 #10814, 548 #10837, 551 #10829)은 다시 넣지 않음. 뒤 seq 메모: 471.5 #10144 → 재확인 8z(`ctx->baseMove`), 458 #10659 → 8za, 340 #10674 → "HnS 동등" 후보(묶음 19).
+- **결과** [`full-sync-seq-323-336.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-323-336.md): 적용 10 커밋(`465a3897`~`b89fb8e9`, seq마다 하나), 이미 적용 4(324·326·329·330). 손 맞춤: 323(HnS 상태별 회복 문구 줄 유지), 325(HnS 불복종 유지, `SetDamageContextValues` hunk 제외 — 8z, 한글 회귀 `HNS9680 3-04` `HP(999)`), 333(`cv->` → 전역). 331은 테스트 + 주석만. **332 `GetBattleMoveTarget` hunk 제외 — upstream 결함(상대가 손가락흔들기 등으로 부른 경혈찌르기가 플레이어 포켓몬을 올림, 1.17.1·master 미수정), 친구 확인 대기(재확인 66).** 새 배틀 문장 0, 출력 변화 8행(`BATTLE_MESSAGE_OUTPUT_CHANGES.md`). 재확인 8w 해소.
+- **검증(코드 `b89fb8e9`):** 커밋마다 `make hns -j8` 종료 0·새 경고 0, ROM 32,783,748 → 32,782,500 B(−1,248), EWRAM·IWRAM 같음, SHA1 `bdc39338…`. 전체 `make check` PASS 2,662 → 2,683 / 5,586 → 5,608, 사라진 PASS 0(새 FAIL 2는 영문 `MESSAGE`) → 기준 [`test-baseline-seq336.txt`](../friend-handoff/results/1.17.0-port/test-baseline-seq336.txt). 한글 회귀 532/622 기대와 바이트 같음. 세이브 정적 PASS(FAIL 0, WARN 0, 이식 전 사실 `pre-323` = `d4e3b8b6`). **실기: 하지 않음(친구).** 325·328·336은 HnS 본 게임에서 닿지 않음(다이맥스·Z크리스탈 없음), 323은 수면 클로즈가 꺼져 게임 변화 없음.
+
+## 2026-10-13 — 친구 답(2): #10535, 방벽 진영 문구 (가), 배리어프리 타이머, 한글 회귀 `HNSSCREEN` (클라우드 세션)
 
 - **다음 할 일**
   1. ~~친구 문자~~ **보냄**(2026-10-13 사용자 확인): 방벽 후속·도감 설명 결과, 실기용 ROM `d4e3b8b6`/SHA1 `e51b1c5b…`.
   2. **친구 답 대기:** 재확인 35(315 `battle_setup.c` hunk — 미러 챌린지 패배 화이트아웃), 묶음 17 텅구리 알로라(화면·옛 `front.png`), 실기 결과(아테나 멀티 64·오프닝 65·방벽 진영·배리어프리 포함).
-  3-1. **진행 중: 묶음 20 = seq 323~336**(사용자 "seq 323부터 시작해" 2026-10-13). 이미 적용 후보: 324 #10464(`719bea0d`), 326 #10631(`8ec45995`), 329 #10647(`7afa5225`), 330 #10648(seq 80 단위) — 사전 분석에서 확인. 3갈래(323·331·335+적용 확인 / 325·328·336 Z·다이맥스 / 327·332·333·334) — 세션 임시 `b21/`.
+  3-1. → 묶음 20(seq 323~336) 끝 — 위 절.
   3. **full-sync 다음 seq 323 #10608**(Fix sleep clause in Multibattles + test). 테스트 기준 **`test-baseline-seq322.txt`**(이번 작업으로 목록 변화 없음), 한글 회귀 기대 **532/622**(`HNSSCREEN` 15 포함). 앞당김 적용분(542 #10814, 548 #10837, 551 #10829)은 다시 넣지 않음.
 - **친구 답 원문:** [`FRIEND_REPLY_2026-10-13b.md`](../friend-handoff/FRIEND_REPLY_2026-10-13b.md). 반영 [`friend-reply-2026-10-13b.md`](../friend-handoff/results/1.17.0-port/friend-reply-2026-10-13b.md), 폭주족·#10829 기록 보강은 [`friend-reply-2026-10-13.md`](../friend-handoff/results/1.17.0-port/friend-reply-2026-10-13.md) "보강" 절.
 - **커밋:** `306b0cc0` #10535(미번역 영문 도감 설명은 upstream대로 — `TRANSLATION_POLICY.md` 5절 6번), `db62d527` 방벽 해제 문장 진영 (가)(진영별 기록 `gBattleStruct->removedScreens`, 새 명령 `setupremovedscreensmessages`), `d4e3b8b6` 배리어프리 타이머(HnS 후속 — upstream 1.17.1 `bb1093a7c7`·master `7b4344c7ee` 미수정), `ea5f8579`·`26920475`·`1e3b1fad` 한글 회귀 `HNSSCREEN` 15개(경우 35) + 기대 532/622. 재확인 63 해결.

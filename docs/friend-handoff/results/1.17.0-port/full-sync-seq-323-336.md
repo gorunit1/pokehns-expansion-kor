@@ -65,8 +65,12 @@ upstream #10645(`57f11c47ce`)의 `src/battle_util.c` hunk:
 ## 검증
 
 - **빌드:** 위 표.
-- **전체 테스트**(`GITHUB_ACTION=1 make check BUILD=hns -j4`, 코드 `b89fb8e9`): 진행 중(결과 나오면 이 줄 갱신)
-- **한글 회귀**(`kortests/run.sh <저장소> <라벨> 8`): 전체 테스트 뒤 실행 예정(기대 532/622)
+- **전체 테스트**(`GITHUB_ACTION=1 make check BUILD=hns -j4`, 코드 `b89fb8e9`): PASS 2,662 → **2,683** / TOTAL 5,586 → 5,608. `test-baseline-seq322.txt` 대비 **사라진 PASS 0, 새 PASS 21**, 목록 차이는 새 테스트 줄과 TO_DO 1개가 PASS로 바뀐 것(`Cursed Body disables damaging Z-Moves, but not the base move` — 328이 TO_DO를 실제 테스트로)뿐.
+  - 새 PASS: 323 수면 클로즈 1, 325 Z기술·맥스기술 위력 2·AI 최선 Max Move/Z기술 2, 327 경혈찌르기 1, 328 저주받은바디 2, 331 Palafin-Hero 2, 333 흉내쟁이 1, 334 공생 1, 336 Z기술 선택 8·다이맥스 중력 1.
+  - 새 FAIL 2(336 테스트)는 영문 `MESSAGE` 불일치뿐(알려진 한계, 메인이 단독 실행으로 확인): `zmove.c:975` `Wobbuffet can't use Supersonic Skystrike because of gravity!`, `dynamax.c:1848` `Wobbuffet used Max Guard!` 1/3.
+  - HnS 불복종(`hns_disobedience.c`)·환상 테스트 줄은 기준 목록과 같음(차이 목록에 없음 — 재확인 8t).
+  - 목록 [`test-baseline-seq336.txt`](test-baseline-seq336.txt)(**다음 비교 기준**).
+- **한글 회귀**(`ALLOW_REPO=1 kortests/run.sh <저장소> kor-b20 8`, 코드 `b89fb8e9`): **532/622**, 기대 요약과 바이트 같음(상태 줄 차이 0, `HNSSCREEN` 15/15). 325의 `HNS9680 3-04` `HP(999)` 조정이 들어간 세트 — 조정 전 세트였으면 531/622(사전 분석 b, 그 1건만 위력 변화로 1턴 종료).
 - **세이브 정적 비교**(`pre-323` = 코드 `d4e3b8b6` 빌드, ROM SHA1 `e51b1c5b…`에서 모은 사실): **PASS(FAIL 0, WARN 0)**. 엄격 상수 30·섹터 배치 14칸·`sGFRomHeader` 58개 같음, 세이브 경로 코드 엄격 54·검토 18 같음(녹화 배틀 37 같음), EWRAM·IWRAM 변수 변화 0, 세이브 블록 크기 같음. 새 필드(`SleepClause`·`baseMove`)는 배틀 중 힙 구조체(`gBattleStruct`·`DamageContext`)라 세이브되지 않음.
 - **최종 ROM(실기용):** 코드 `b89fb8e9`, 클라우드 `make hns -j8`(`arm-none-eabi-gcc 13.2.1`) → 사용 32,782,500 B, SHA1 `bdc39338ce89f8fbd55c6cab276405ee9ab62e93`.
 
@@ -76,5 +80,5 @@ upstream #10645(`57f11c47ce`)의 `src/battle_util.c` hunk:
 - 8z(새): seq 471.5 #10144가 `SetDamageContextValues`를 들일 때 `ctx->baseMove = gBattleStruct->baseMove;`를 함께 넣는다.
 - 8za(새): seq 458 #10659 — `GetDefaultMoveTarget`은 332에서 없어짐. 재확인 66 결정에 맞춰 `GetBattleMoveTarget` 문맥을 맞춘다.
 - 66(새): 위 "332 제외 hunk".
-- 8t: 325 `CancelerObedience`에 `baseMove` 한 줄만 — HnS 불복종 코드 그대로(`hns_disobedience.c` 상태는 아래 전체 테스트 비교).
+- 8t: 325 `CancelerObedience`에 `baseMove` 한 줄만 — HnS 불복종 코드 그대로(불복종 테스트 상태 기준과 같음).
 - seq 336 뒤 #10661은 upstream 문맥(`gCurrentMove = gBattleStruct->baseMove = gCalledMove;`)과 같아져 그대로 들어갈 것으로 보임(사전 분석 b).
