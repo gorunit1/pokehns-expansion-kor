@@ -530,6 +530,7 @@ extern const u8 BattleScript_IncreaseStatChangeMessage[];
 extern const u8 BattleScript_DecreaseStatChangeMessage[];
 extern const u8 BattleScript_DecreaseStatChangeMessageMinStat[];
 extern const u8 BattleScript_StatDidntChangeMessagePause[];
+extern const u8 BattleScript_WildBattleVictory[];
 extern const u8 BattleScript_MissedTarget[];
 
 // zmoves

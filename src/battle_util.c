@@ -11321,3 +11321,16 @@ bool32 IsBattlerInvolvedInSkyDrop(enum BattlerId battler)
     return gBattleMons[battler].volatiles.semiInvulnerable == STATE_SKY_DROP_ATTACKER
         || gBattleMons[battler].volatiles.semiInvulnerable == STATE_SKY_DROP_TARGET;
 }
+
+bool32 IsVictoryCatch(void)
+{
+    return gBattleTypeFlags & BATTLE_TYPE_RAID
+        || FlagGet(B_FLAG_VICTORY_CATCH_RANDOM)
+        || FlagGet(B_FLAG_VICTORY_CATCH_GUARANTEED);
+}
+
+bool32 IsVictoryCatchGuaranteed(void)
+{
+    return gBattleTypeFlags & BATTLE_TYPE_RAID
+        || FlagGet(B_FLAG_VICTORY_CATCH_GUARANTEED);
+}

@@ -118,6 +118,7 @@ static const u8 sText_GoTwoPkmn[] = _("가랏! {B_PLAYER_MON1_NAME}{B_TXT_WAGWA}
 static const u8 sText_GoPkmn2[] = _("가랏! {B_BUFF1}!");
 static const u8 sText_DoItPkmn[] = _("다녀와! {B_BUFF1}!");
 static const u8 sText_GoForItPkmn[] = _("힘내! {B_BUFF1}!");
+static const u8 sText_BeCarefulPkmn[] = _("Be careful, {B_PLAYER_MON1_NAME}!");
 static const u8 sText_JustALittleMorePkmn[] = _("앞으로 조금이야!\n힘내! {B_BUFF1}!"); //currently unused, will require code changes
 static const u8 sText_YourFoesWeakGetEmPkmn[] = _("상대가 약해져 있어!\n기회다! {B_BUFF1}!");
 static const u8 sText_LinkPartnerSentOutPkmn1GoPkmn[] = _("{B_LINK_PARTNER_NAME}{B_TXT_EUNNEUN}\n{B_LINK_PLAYER_MON1_NAME}{B_TXT_EULREUL} 내보냈다!\l가랏! {B_LINK_PLAYER_MON2_NAME}!");
@@ -917,6 +918,7 @@ const u8 *const gBattleStringsTable[STRINGID_COUNT] =
     [STRINGID_PARTYCUREDFREEZE]                     = COMPOUND_STRING("{B_BUFF1}의\n얼음이 녹았다!"),
     [STRINGID_PARTYCUREDFROSTBITE]                  = COMPOUND_STRING("{B_BUFF1}의\n동상이 나았다!"),
     [STRINGID_PKMNATKNOTLOWERED]                    = COMPOUND_STRING("{B_SCR_NAME_WITH_PREFIX}의\n공격은 떨어지지 않는다!"),
+    [STRINGID_VICTORYCATCH]                         = COMPOUND_STRING("{B_DEF_NAME}{B_TXT_IGA} 약해져 있다!\n지금이 볼을 던질 수 있는 기회다!"),
     [STRINGID_WILDPKMNDROPPEDITEM]                  = COMPOUND_STRING("{B_SCR_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n{B_LAST_ITEM}{B_TXT_EULREUL} 떨어뜨렸다!\p"),
     [STRINGID_DROPPEDITEMBAGFULL]                   = COMPOUND_STRING("가방이 가득 차서\n아이템을 주울 수 없습니다!\p"),
     [STRINGID_MOSTLYINEFFECTIVE]                    = COMPOUND_STRING("효과가 매우 별로인 듯하다."),
@@ -1534,6 +1536,7 @@ const u8 gText_MoveInterfaceType[] = _("타입/");
 const u8 gText_MoveInterfacePpType[] = _("{PALETTE 5}{COLOR_HIGHLIGHT_SHADOW DYNAMIC_COLOR4 DYNAMIC_COLOR5 DYNAMIC_COLOR6}PP\n타입/");
 const u8 gText_MoveInterfaceDynamicColors[] = _("{PALETTE 5}{COLOR_HIGHLIGHT_SHADOW DYNAMIC_COLOR4 DYNAMIC_COLOR5 DYNAMIC_COLOR6}");
 const u8 gText_WhichMoveToForget4[] = _("{PALETTE 5}{COLOR_HIGHLIGHT_SHADOW DYNAMIC_COLOR4 DYNAMIC_COLOR5 DYNAMIC_COLOR6}어느 기술을\n잊게 하겠습니까?");
+const u8 gText_BattleCatchOrNot[] = _("{PALETTE 5}{COLOR_HIGHLIGHT_SHADOW DYNAMIC_COLOR4 DYNAMIC_COLOR5 DYNAMIC_COLOR6}Catch\nDon't catch");
 const u8 gText_BattleYesNoChoice[] = _("{PALETTE 5}{COLOR_HIGHLIGHT_SHADOW DYNAMIC_COLOR4 DYNAMIC_COLOR5 DYNAMIC_COLOR6}예\n아니오");
 const u8 gText_BattleSwitchWhich[] = _("{PALETTE 5}{COLOR_HIGHLIGHT_SHADOW DYNAMIC_COLOR4 DYNAMIC_COLOR5 DYNAMIC_COLOR6}바꿀 기술을\n선택해 주세요");
 const u8 gText_BattleSwitchWhich2[] = _("{PALETTE 5}{COLOR_HIGHLIGHT_SHADOW DYNAMIC_COLOR4 DYNAMIC_COLOR5 DYNAMIC_COLOR6}");
@@ -1899,6 +1902,17 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
         .color.background = TEXT_DYNAMIC_COLOR_5,
         .color.accent = TEXT_DYNAMIC_COLOR_5,
         .color.shadow = TEXT_DYNAMIC_COLOR_6,
+    },
+    [B_CATCH_OR_NOT] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = 0,
+        .y = 1,
+        .speed = 0,
+        .color.foreground = 13,
+        .color.background = 14,
+        .color.accent = 14,
+        .color.shadow = 15,
     },
 };
 
@@ -2582,6 +2596,10 @@ void BufferStringBattle(enum StringID stringID, enum BattlerId battler)
                         stringPtr = sText_InGamePartnerSentOutZGoN; // Player is on left
                     else
                         stringPtr = sText_InGamePartnerSentOutNGoZ; // Partner on left
+                }
+                else if (gBattleTypeFlags & BATTLE_TYPE_RAID)
+                {
+                    stringPtr = sText_BeCarefulPkmn;
                 }
                 else
                 {
