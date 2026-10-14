@@ -8116,6 +8116,7 @@ static void Cmd_setcalledmove(void)
 {
     CMD_ARGS();
     gCurrentMove = gBattleStruct->baseMove = gCalledMove;
+    ClearDamageCalcResults();
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
