@@ -397,7 +397,11 @@ static void (*const sMovementStatusHandler[])(struct LinkPlayerObjectEvent *, st
 // code
 void DoWhiteOut(void)
 {
-    if (IsNuzlockeActive() || IsNuzlockeEasyActive())
+    // HnS: the Nuzlocke refill below puts a box mon into slot 0 (or replaces the party with a Rattata), which is meant
+    // for a party whose fainted mons were deleted or boxed after the battle. A whiteout can also come with a living
+    // party: a lost Mirror Challenge trainer battle (the original party is restored), a lost Mirror rematch, a forfeit.
+    // Only refill when no living non-egg mon is left, so those mons are not overwritten.
+    if ((IsNuzlockeActive() || IsNuzlockeEasyActive()) && CountPartyAliveNonEggMonsExcept(PARTY_SIZE) == 0)
     {
         if (GetFirstAliveBoxPokemon() == IN_BOX_COUNT * TOTAL_BOXES_COUNT)
         {
