@@ -61,6 +61,7 @@
 | 더블에서 손가락흔들기·잠꼬대·조수·흉내쟁이·자연의힘·선취로 부른 "상대 둘" 전체기(스피드스타 등) (upstream #10661 이식, seq 337. 새 문장 0 — 한글 회귀 `HNSB2021` B1~B6: 네 위치·잠꼬대 모두 이식 전 FAIL → 이식 뒤 PASS. 2026-10-14 정정: 처음 "상대 왼쪽은 전후 같음"은 조사 테스트의 검사 위치 때문에 틀린 기록) | 어느 위치에서 불러도 사용자 파트너 HP 바가 깎이는 연출(그 파트너에 대한 기존 문장 포함 가능). 테스트에서 배틀 끝 실제 HP는 그대로였음 | 상대 둘만 맞음. 지진·파도타기처럼 원래 아군도 맞는 전체기(TARGET_FOES_AND_ALLY)는 호출돼도 아군을 맞힘(B7~B10, 전후 같음) | `Cmd_setcalledmove` `ClearDamageCalcResults` 위치(`CancelerPPDeduction`에서 옮김) |
 | Z기술을 쓴 포켓몬이 레드카드로 교체됐다가 다시 나옴 (upstream #10671 이식, seq 341. 새 문장 0 — HnS 본 게임은 Z크리스탈 없음) | Z기술을 다시 쓸 수 있음(Z파워 연출·Z기술 사용 문장) | 다시 쓸 수 없음(일반 기술) | `Cmd_switchoutabilities` Z기믹 해제 |
 | 더블에서 트랩셸을 준비한 포켓몬이 물리 전체기(지진 등)를 맞음 (upstream #10682 이식, seq 345. 새 문장 0) | 전체기의 대상 순서에 따라 트랩셸이 다른 포켓몬의 행동 뒤로 늦어짐 | 맞은 바로 다음에 트랩셸(기존 문장), 둘이면 빠른 쪽부터 | `MoveEndShellTrap`, `ChangeOrderTargetAfterAttacker(battlerDef)` |
+| 상대가 테라스탈함 (upstream #9211 이식, seq 361. 새 문장 0 — HnS 본 게임은 전당 뒤 레드만) | 바로 `STRINGID_PKMNSTORINGENERGY`(`{B_ATK_NAME_WITH_PREFIX}{B_TXT_EUNNEUN} 참고 있다` — 기존 ID 공유, `TRANSLATION_PENDING.md`) | 빈 문자열로 창을 한 번 비운 뒤 같은 문장 | `BattleScript_Terastallization`·`BattleScript_TeraFormChange` `flushtextbox` |
 
 ## 상태이상·회복·잠자기
 

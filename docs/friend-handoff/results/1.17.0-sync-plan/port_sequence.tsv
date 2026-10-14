@@ -352,18 +352,18 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 349	10656	600	1.16.4	g5_general_cleanup_docs	U-10656	-	L	fix	N	N	~+0.3KB	(Joint with Syreldar) Fix Underutilisation of CreateSpriteUnchecked meaning a fatal assertf triggers needlessly	적용(+HnS 전용 14곳) 91d4f798
 350	10652	601	1.16.4	g6_overworld_refactors	U-10652	-	S	fix	N	N	~0	Fix talking to buried movement npc	적용 49f2c5e5 — HnS 맵 미도달: 묻힌 NPC는 Emerald 맵에만
 351	9927	610	1.17.0	g6_overworld_refactors	U-outbreak-9927	9713,8943,8434,9920,9890,10051	XL	feature	N	Y	+6KB(추정)	Mass outbreak	부분 적용(HnS 적응 outbreakIndex u8 — 재확인 68) 7c17b9f1 — HnS 진행 미도달: TV 플래그 0
-352	9688	611	1.17.0	g3_battle_changes_moves_abilities_items	U-9688	-	S	feature	N	N	~0	Add B_TERA_ORB_ALWAYS_CHARGED	
+352	9688	611	1.17.0	g3_battle_changes_moves_abilities_items	U-9688	-	S	feature	N	N	~0	Add B_TERA_ORB_ALWAYS_CHARGED	적용 6faeb9f3 — 본 게임 미도달: 테라오브 플래그 0·입수 불가(플레이어 테라스탈 불가)
 353	10089	612	1.17.0	g6_overworld_refactors	U-outbreak-9927	9927	S	fix	N	N	0(앞당김 적용 443a264d, 2026-10-14 — seq 351 바로 뒤)	Fix debug trainer and flags vars submenu	앞당김 적용 443a264d(351 바로 뒤)
-354	10046	613	1.17.0	g4_ai_tests_pokemon_sprites	U-aiselftarget-10046	9779	S	test	N	N	~0	Make doubles AI skip scoring on itself	
-355	9008	614	1.17.0	g3_battle_changes_moves_abilities_items	U-9008	-	L	feature	Y	N	+2.5KB	Adds Victory Catch	
-356	10027	615	1.17.0	g3_battle_changes_moves_abilities_items	U-10027	8497	M	gfx	N	N	+0.4KB	Add Item Icon to Knock Off, Covet, and Thief animations	
-357	10108	616	1.17.0	g5_general_cleanup_docs	U-10108	-	S	refactor	N	N	~0	Cleanup battle factory screen constants	
-358	7975	617	1.17.0	g6_overworld_refactors	U-mapheader-9461	9461	S	feature	N	N	~0	Add map header flag to make writing special var count as a script effect	
-359	10012	618	1.17.0	g6_overworld_refactors	U-dailyseed-9920	9920,10050,9927	S	feature	N	N	~+0.3KB	Adds a new debug menu action "Redo daily Events"	
-360	10119	619	1.17.0	g5_general_cleanup_docs	U-10108	-	S	refactor	N	N	~0	Cleanup hard-coded values from battle room scripts	
-361	9211	620	1.17.0	g6_overworld_refactors	U-trainerslide-9211	9680,8943,9717	L	feature	N	N	+170KB	Additional trainer slides	
-362	10133	622	1.17.0	g4_ai_tests_pokemon_sprites	U-10133	-	S	test	N	N	~0	Remove explicit targets from opponent in Trainer Slide tests	
-363	10096	623	1.17.0	g6_overworld_refactors	U-owe-8434	9537,8434	M	refactor	N	N	-3KB(추정)	Use `overworld_ascending_frames` in picture tables	
+354	10046	613	1.17.0	g4_ai_tests_pokemon_sprites	U-aiselftarget-10046	9779	S	test	N	N	~0	Make doubles AI skip scoring on itself	테스트만 c5847fb4(AI 코드는 1821fd67부터, trainer_slides는 ade2ec20)
+355	9008	614	1.17.0	g3_battle_changes_moves_abilities_items	U-9008	-	L	feature	Y	N	+2.5KB	Adds Victory Catch	부분 적용(HnS 적응 — 가방 이중 호출 제거=454 앞당김, 메뉴 색 코드) 8b39877e — 본 게임 미도달: Victory Catch 플래그 0
+356	10027	615	1.17.0	g3_battle_changes_moves_abilities_items	U-10027	8497	M	gfx	N	N	+0.4KB	Add Item Icon to Knock Off, Covet, and Thief animations	적용 df3d669d
+357	10108	616	1.17.0	g5_general_cleanup_docs	U-10108	-	S	refactor	N	N	~0	Cleanup battle factory screen constants	적용 d1dba2b5
+358	7975	617	1.17.0	g6_overworld_refactors	U-mapheader-9461	9461	S	feature	N	N	~0	Add map header flag to make writing special var count as a script effect	적용(mapjson 손 맞춤) 7599e29a — HnS 미도달: Emerald 돔 맵만
+359	10012	618	1.17.0	g6_overworld_refactors	U-dailyseed-9920	9920,10050,9927	S	feature	N	N	~+0.3KB	Adds a new debug menu action "Redo daily Events"	적용(clock.c dailySeed SaveBlock3 — 재확인 31) 1777d3a6 — 디버그만
+360	10119	619	1.17.0	g5_general_cleanup_docs	U-10108	-	S	refactor	N	N	~0	Cleanup hard-coded values from battle room scripts	적용 93dff7b2(ROM 같음)
+361	9211	620	1.17.0	g6_overworld_refactors	U-trainerslide-9211	9680,8943,9717	L	feature	N	N	+170KB	Additional trainer slides	부분 적용(HnS 수정 — end-turn 건너뛰기 대상, 경험치 회귀) a5351310 — 슬라이드 표 비어 미출력, ROM +172,720(재확인 71)
+362	10133	622	1.17.0	g4_ai_tests_pokemon_sprites	U-10133	-	S	test	N	N	~0	Remove explicit targets from opponent in Trainer Slide tests	테스트만 8ef0b374(361 뒤)
+363	10096	623	1.17.0	g6_overworld_refactors	U-owe-8434	9537,8434	M	refactor	N	N	-3KB(추정)	Use `overworld_ascending_frames` in picture tables	부분 적용(sPicTable_JumpLongGrass HnS 유지) 18dfc352
 364	10142	626	1.17.0	g5_general_cleanup_docs	U-outbreak-9927	9927	S	fix	N	N	0(앞당김 적용 4ae4d7e1, 2026-10-14 — seq 351 바로 뒤)	Fix Debug Menu's `Fly to map` not working immediately	앞당김 적용 4ae4d7e1(351 바로 뒤)
 365	8678	627	1.17.0	g5_general_cleanup_docs	U-8678	-	XL	feature	N	N	+2~4KB	Dynamic trainerbattle Scripts	
 366	10080	628	1.17.0	g6_overworld_refactors	U-9557	9557	S	feature	N	N	~0	Add the Ability to Disable Map Name in Map Preview Screen	
@@ -453,7 +453,7 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 451	10619	764	1.17.0	g5_general_cleanup_docs	U-10619	-	S	test	N	N	~0	Fix test summary alignment for FAILED	
 452	10634	765	1.17.0	g3_battle_changes_moves_abilities_items	U-absent-10459	10542,10459	S	fix	N	N	~0	Partially reversion of gAbsentBattler pr	
 453	10624	766	1.17.0	g2_battle_fixed_b	U-trainerslide-9211	10571,9211	M	fix	Y	N	-1KB	Fix gimmick slides	
-454	10618	767	1.17.0	g2_battle_fixed_b	U-victorycatch-9008	9906,9008	S	fix	N	N	-4B	fix(battle): fix memory leak when opening bag in battle	
+454	10618	767	1.17.0	g2_battle_fixed_b	U-victorycatch-9008	9906,9008	S	fix	N	N	-4B	fix(battle): fix memory leak when opening bag in battle	앞당김 적용 8b39877e(355 HnS 적응 — 가방 이중 호출 제거)
 455	10621	769	1.17.0	g2_battle_fixed_b	U-hpdisplay-10025	10025	M	gfx	N	N	+150B	fix(healthbar): fix hp bar elements being shown when they shouldn't be	
 456	10665	770	1.17.0	g4_ai_tests_pokemon_sprites	U-10665	-	S	test	N	N	~0(테스트 ELF만)	upcoming: Clear callbacks between tests	
 457	10688	771	1.17.0	g4_ai_tests_pokemon_sprites	U-10688	8647	S	test	N	N	0	upcoming: Fix Fusion Move AI turn-order checks	
