@@ -554,7 +554,7 @@ bool32 MovesWithCategoryUnusable(u32 attacker, u32 target, enum DamageCategory c
         if (GetBattleMoveCategory(moves[moveIndex]) == category)
         {
             SetTypeBeforeUsingMove(moves[moveIndex], attacker, gAiLogicData->abilities[attacker], gAiLogicData->holdEffects[attacker]);
-            ctx.move = ctx.chosenMove = moves[moveIndex];
+            ctx.move = ctx.chosenMove = ctx.baseMove = moves[moveIndex];
             ctx.moveType = GetBattleMoveType(moves[moveIndex]);
 
             if (CalcTypeEffectivenessMultiplier(&ctx))
@@ -908,6 +908,7 @@ struct SimulatedDamage AI_CalcDamage(struct AiCalcValues *aiCalc, enum BattlerId
     bool32 toggledGimmickDef = FALSE;
     struct AiLogicData *aiData = gAiLogicData;
     gAiLogicData->aiCalcInProgress = TRUE;
+    enum Move baseMove = move;
 
     if (moveEffect == EFFECT_HIT_ENEMY_HEAL_ALLY
      && battlerDef == GetPartnerBattler(battlerAtk))
@@ -918,7 +919,7 @@ struct SimulatedDamage AI_CalcDamage(struct AiCalcValues *aiCalc, enum BattlerId
 
     if (moveEffect == EFFECT_NATURE_POWER)
     {
-        move = GetNaturePowerMove();
+        move = baseMove = GetNaturePowerMove();
         moveEffect = GetMoveEffect(move);
         aiCalc->move = move;
     }
@@ -953,6 +954,7 @@ struct SimulatedDamage AI_CalcDamage(struct AiCalcValues *aiCalc, enum BattlerId
     ctx.battlerAtk = battlerAtk;
     ctx.battlerDef = battlerDef;
     ctx.move = ctx.chosenMove = move;
+    ctx.baseMove = baseMove;
     ctx.moveType = GetBattleMoveType(move);
     ctx.fieldStatuses = aiCalc->fieldStatuses;
     ctx.randomFactor = FALSE;
@@ -1399,7 +1401,7 @@ uq4_12_t AI_GetMoveEffectiveness(enum Move move, enum BattlerId battlerAtk, enum
     struct DamageContext ctx = {0};
     ctx.battlerAtk = battlerAtk;
     ctx.battlerDef = battlerDef;
-    ctx.move = ctx.chosenMove = move;
+    ctx.move = ctx.chosenMove = ctx.baseMove = move;
     ctx.moveType = GetBattleMoveType(move);
     ctx.updateFlags = FALSE;
     ctx.abilities[ctx.battlerAtk] = gAiLogicData->abilities[battlerAtk];

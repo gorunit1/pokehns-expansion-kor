@@ -81,7 +81,7 @@ SINGLE_BATTLE_TEST("HNS9680 3-04 Torment (G-Max Meltdown) ends, then Dynamax end
 {
     GIVEN {
         PLAYER(SPECIES_MELMETAL) { GigantamaxFactor(TRUE); Speed(2); }
-        OPPONENT(SPECIES_WYNAUT) { Speed(1); Moves(MOVE_SCRATCH, MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_WYNAUT) { HP(999); Speed(1); Moves(MOVE_SCRATCH, MOVE_CELEBRATE); }
     } WHEN {
         TURN { MOVE(player, MOVE_IRON_HEAD, gimmick: GIMMICK_DYNAMAX); MOVE(opponent, MOVE_SCRATCH); }
         TURN { MOVE(player, MOVE_CELEBRATE); MOVE(opponent, MOVE_CELEBRATE); }
