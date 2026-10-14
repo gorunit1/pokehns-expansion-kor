@@ -3,7 +3,8 @@
 ## 2026-10-14 — full-sync 묶음 20(seq 323~336) (현재, 클라우드 세션)
 
 - **다음 할 일**
-  1. **친구 문자 보내기**(사용자): 묶음 20 결과 + 재확인 66 질문 + 실기용 ROM(`b89fb8e9`, SHA1 `bdc39338…`). 문안은 2026-10-14 세션 답변(저장소 밖), 내용은 결과 문서 "친구에게 알릴 것·물을 것"과 같다.
+  1. ~~친구 문자~~ **보냄**(2026-10-14 사용자 확인): 묶음 20 결과 + 재확인 66 질문 + 실기용 ROM(`b89fb8e9`, SHA1 `bdc39338…`).
+  3-1. **진행 중: 묶음 21 = seq 337~350**(사용자 "seq 337부터 시작해" 2026-10-14). 이미 적용 후보: 342 #10662(`b09e11c9`), 344 #10687(`b275b758`), 347 #10707(`7c48ba92`) — 사전 분석에서 확인. 348 #10711은 재확인 8d HnS 적응. 351 #9927(Mass outbreak, XL·세이브 영향)은 단독 묶음으로 남김. 3갈래 사전 분석 — 세션 임시 `b22/`(upstream 패치는 `/home/user/pokeemerald-expansion-upstream`에서 `git show`).
   2. **친구 답 대기:** 재확인 66(332 `GetBattleMoveTarget` hunk — 지금 제외), 재확인 35(315 `battle_setup.c` hunk), 묶음 17 텅구리 알로라(화면·옛 `front.png`), 실기 결과(아테나 멀티 64·오프닝 65·방벽 진영·배리어프리 포함).
   3. **full-sync 다음 seq 337 #10661**(Fix Metronome-called spread moves hitting the user’s partner — 336 뒤 upstream 문맥과 같아져 그대로 들어갈 것으로 보임). 테스트 기준 **`test-baseline-seq336.txt`**, 한글 회귀 기대 **532/622**(그대로). 세이브 비교 이식 전 사실 = 세션 임시 `hns-sync-work/verify-runs/save/post-336/post-facts`(없으면 `make hns -j8` 뒤 `save_compat.py collect`). 앞당김 적용분(542 #10814, 548 #10837, 551 #10829)은 다시 넣지 않음. 뒤 seq 메모: 471.5 #10144 → 재확인 8z(`ctx->baseMove`), 458 #10659 → 8za, 340 #10674 → "HnS 동등" 후보(묶음 19).
 - **결과** [`full-sync-seq-323-336.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-323-336.md): 적용 10 커밋(`465a3897`~`b89fb8e9`, seq마다 하나), 이미 적용 4(324·326·329·330). 손 맞춤: 323(HnS 상태별 회복 문구 줄 유지), 325(HnS 불복종 유지, `SetDamageContextValues` hunk 제외 — 8z, 한글 회귀 `HNS9680 3-04` `HP(999)`), 333(`cv->` → 전역). 331은 테스트 + 주석만. **332 `GetBattleMoveTarget` hunk 제외 — upstream 결함(상대가 손가락흔들기 등으로 부른 경혈찌르기가 플레이어 포켓몬을 올림, 1.17.1·master 미수정), 친구 확인 대기(재확인 66).** 새 배틀 문장 0, 출력 변화 8행(`BATTLE_MESSAGE_OUTPUT_CHANGES.md`). 재확인 8w 해소.
