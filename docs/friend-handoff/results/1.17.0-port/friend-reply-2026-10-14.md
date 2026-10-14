@@ -53,8 +53,8 @@
 | 목호 반쪽 팀 멀티(`multi_2_vs_2` — 아테나 등)·배틀타워 NPC 멀티·시설 | `HandleSpecialTrainerBattleEnd`·시설 콜백 | 같음 | 이 콜백을 타지 않음. 배틀 중 패배 판정(`NoAliveMonsForPlayer` HnS판, 묶음 19)도 안 바뀜 |
 | 팔로워 NPC 파트너 배틀 | (HnS에서 없음) | — | `FNPC_ENABLE_NPC_FOLLOWERS FALSE` |
 | Sky Battle | (HnS에서 없음) | — | `B_FLAG_SKY_BATTLE 0` |
-| 디버그 파트너 배틀 패배 | 원래 파티 복구 뒤 스크립트 계속 | 화이트아웃 | `CB2_EndDebugBattle`(디버그 메뉴 전용) |
 
+- **별도 항목 — 디버그 파트너 배틀(일반 진행 아님, 친구 2026-10-14(3) 2절):** 디버그 메뉴의 파트너 배틀은 `CB2_EndDebugBattle`이 원래 파티를 복구한 뒤 같은 `CB2_EndTrainerBattle`을 부른다. 그래서 이 콜백 변경을 함께 받는다(이전: 패배해도 스크립트 계속 → 지금: 화이트아웃). 일반 진행의 미러 패배와는 다른 범주다. 디버그 전용 경로이고, HnS 맵 스크립트에서는 닿지 않는다.
 - 그대로 둔 것: #8943 파티 가드, 맹세 가드, AI 교체 무한 루프 방지 가드, HnS 반쪽 팀 멀티·배틀타워 NPC 멀티 패배 판정(`battle_script_commands.c`), 미러 파티 복사·복구 코드(`battle_main.c`), 세이브 구조. diff는 `src/battle_setup.c` 한 함수 −9/+2줄.
 - 원래 파티·도구: 일반 미러는 승패와 관계없이 `HandleEndTurn_FinishBattle`에서 원래 파티로 돌아간다(안 바뀜). 복사한 파티가 남지 않는다. 화이트아웃은 원래 파티를 회복시킨다(`DoWhiteOut`의 기존 동작).
 

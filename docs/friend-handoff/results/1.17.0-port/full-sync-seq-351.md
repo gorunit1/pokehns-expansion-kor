@@ -89,7 +89,7 @@
 ## 검증
 
 - **빌드:** 위 표.
-- **전체 테스트**(`GITHUB_ACTION=1 make check BUILD=hns -j8`, 코드 `4ae4d7e1`): PASS 2,684 → **2,691**(목록 기준) / TOTAL 5,614 → 5,621. `test-baseline-seq350.txt` 대비 **새 PASS 7(`test/mass_outbreak.c` 7개), 사라진 PASS 0**, 그 밖 줄 변화 없음. 사전 분석 사본(-j6)에서 보였던 `Battle strings fit…` PASS는 실제 저장소 -j8에서는 기준과 같은 FAIL(샤드 배치 영향). 목록 [`test-baseline-seq351.txt`](test-baseline-seq351.txt)(**다음 비교 기준**).
+- **전체 테스트**(`GITHUB_ACTION=1 make check BUILD=hns -j8`, 코드 `4ae4d7e1`): 러너 합계 PASS 2,688 → **2,695** / TOTAL 5,614 → 5,621(목록 고유 행 PASS 2,684 → 2,691 — 2026-10-14 정정: 처음엔 목록 수와 러너 TOTAL을 섞어 적었음). `test-baseline-seq350.txt` 대비 **새 PASS 7(`test/mass_outbreak.c` 7개), 사라진 PASS 0**, 그 밖 줄 변화 없음. 사전 분석 사본(-j6)에서 보였던 `Battle strings fit…` PASS는 실제 저장소 -j8에서는 기준과 같은 FAIL(샤드 배치 영향). 목록 [`test-baseline-seq351.txt`](test-baseline-seq351.txt)(**다음 비교 기준**).
 - **한글 회귀**(`ALLOW_REPO=1 kortests/run.sh <저장소> kor-b23 8`, 코드 `4ae4d7e1`): **532/622**, 기대 요약과 바이트 같음.
 - **세이브 정적 비교:** 위 "세이브".
 - **최종 ROM(실기용):** 코드 `4ae4d7e1`, 클라우드 `make hns -j8`(`arm-none-eabi-gcc 13.2.1`) → 사용 32,787,012 B, SHA1 `008d5029554bcae3c4f943edf585bbec2a8a9e1a`.

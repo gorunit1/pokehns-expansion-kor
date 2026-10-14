@@ -80,6 +80,7 @@ HnS는 HGSS를 기반으로 하므로 스토리와 등장인물의 대사는 HGS
 
 ## 6. 관련 문서
 
+- [`TRANSLATION_PENDING.md`](TRANSLATION_PENDING.md) — 발견했지만 고치지 않고 남긴 기존 텍스트 번역 문제(번역 대기 목록).
 - [`BATTLE_MESSAGE_OUTPUT_CHANGES.md`](BATTLE_MESSAGE_OUTPUT_CHANGES.md) — 코드 변경으로 달라진 배틀 메시지 출력
 - [`BATTLE_MESSAGE_KR_COMPARE.md`](BATTLE_MESSAGE_KR_COMPARE.md) — 기존 배틀 메시지 대조 기록
 - [`../friend-handoff/results/1.17.0-port/PORT_INSTRUCTIONS.md`](../friend-handoff/results/1.17.0-port/PORT_INSTRUCTIONS.md) — 포트 작업 지시

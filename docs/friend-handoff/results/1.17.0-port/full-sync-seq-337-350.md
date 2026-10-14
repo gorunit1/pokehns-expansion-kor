@@ -82,7 +82,7 @@ upstream #10711은 `AreMultiPartiesFullTeams`에 `if (!(gBattleTypeFlags & BATTL
 
 새 배틀 문장 0, 기존 문장 변경 0, 배틀 외 새 텍스트 0(영문 코드 주석만 upstream 그대로). `BATTLE_MESSAGE_OUTPUT_CHANGES.md`에 3행 추가(337·341·345).
 
-- 337: 더블에서 손가락흔들기 등으로 부른 "상대 둘" 전체기가 사용자 파트너를 맞히지 않는다.
+- 337: 더블에서 손가락흔들기 등으로 부른 **"상대 둘" 전체기(TARGET_BOTH — 스피드스타 등)**가 사용자 파트너를 맞히지 않는다. 지진·파도타기처럼 원래 아군도 맞는 전체기(TARGET_FOES_AND_ALLY)는 호출돼도 그대로 아군을 맞힌다. 이 PR은 대상을 정하는 시점만 바꾸므로 "호출한 전체기는 모두 파트너를 맞히지 않는다"가 아니다(친구 2026-10-14(3) 7절 — 친구에게 보낸 문자의 "부른 전체기가 사용자 파트너를 맞히지 않아"는 이 뜻으로 정정).
   - 사전 분석 사본의 한글 조사 테스트로 플레이어 왼쪽이 부른 경우 FAIL → PASS를 확인했다.
   - 상대 왼쪽이 부른 경우는 전후 같다.
   - HnS 트레이너 데이터에 손가락흔들기 등 하위 기술이 있어 본 게임 더블에서 닿는다.
@@ -104,12 +104,36 @@ upstream #10711은 `AreMultiPartiesFullTeams`에 `if (!(gBattleTypeFlags & BATTL
 ## 검증
 
 - **빌드:** 위 표.
-- **전체 테스트**(`GITHUB_ACTION=1 make check BUILD=hns -j6`, 코드 `49f2c5e5`): PASS 2,683 → **2,684** / TOTAL 5,608 → 5,614. `test-baseline-seq336.txt` 대비 새 PASS 6, 사라진 PASS 1.
+- **전체 테스트**(`GITHUB_ACTION=1 make check BUILD=hns -j6`, 코드 `49f2c5e5`): 러너 합계 PASS 2,683 → **2,688** / TOTAL 5,608 → 5,614(목록 고유 행 PASS 2,679 → 2,684 — 아래 "집계 기준", 2026-10-14 정정: 처음엔 러너 합계와 목록 수를 섞어 "2,683 → 2,684"로 적었음). `test-baseline-seq336.txt` 대비 새 PASS 6, 사라진 PASS 1.
   - 사라진 1은 345가 이름을 바꾼 `Shell Trap activates on both opposing Targets`다. 새 이름 `… for both opposing targets in speed order`가 PASS다.
   - 새 PASS: 339 2, 346 1, 341 1, 345 2(이름 바뀐 것 포함).
   - 새 FAIL 1은 337 `Metronome's called spread move does not hit the user's partner`다. 메인이 단독 실행해 보니 `metronome.c:76` `Unmatched MESSAGE`(영문 `Wobbuffet used Metronome!`)뿐이다 — 알려진 한계. 한글 조사 테스트로는 파트너가 맞지 않음을 확인했다(사전 분석 a).
   - 목록 [`test-baseline-seq350.txt`](test-baseline-seq350.txt)(**다음 비교 기준**).
 - **한글 회귀**(`ALLOW_REPO=1 kortests/run.sh <저장소> kor-b21 8`, 코드 `49f2c5e5`): **532/622**, 기대 요약과 바이트 같음.
+
+### 집계 기준 (친구 2026-10-14(3) 10절 확인 요청)
+
+- **러너 합계**는 `make check` 끝의 `- Tests PASSED:`/`- Tests TOTAL:` 줄이다. 실행된 테스트마다 하나씩 센다.
+- **목록**은 `dev_scripts/hns_verify/testlist.sh`가 만든다. 로그의 `[n] 이름: 상태` 줄에서 색 코드와 `[n]`을 빼고 `sort -u`로 고유 행만 남긴다. 기준 목록 `test-baseline-*.txt`가 이것이다.
+- 둘의 차이는 4다. 이름이 똑같은 테스트 4쌍이 서로 다른 테스트로 두 번 실행되는데, 목록에서는 한 줄로 합쳐지기 때문이다.
+  - `Move scoring comparison properly awards bonus point to best OHKO move` — `test/battle/ai/ai.c` 858·887행
+  - `Player does whiteout in a multibattle if the Partner still has Pokemon (2v1; Full Team; Gen3)` — `test/battle/multi_battle_whiteout.c` 275·368행
+  - `Zacian returns its Hero Form upon battle end` — `test/battle/form_change/end_battle.c` 16·28행
+  - `Zamazenta returns its Hero Form upon battle end` — 같은 파일 43·55행
+  - 네 쌍 모두 두 번 다 PASS다.
+  - PARAMETRIZE 경우는 러너가 테스트 하나로 센다. FAIL일 때만 `1/3` 같은 접미사가 붙은 이름이 목록에 따로 남는다.
+
+| 묶음 | 기준 코드 | 명령 | 러너 PASS / TOTAL | 목록 PASS(고유 행) |
+|---|---|---|---|---|
+| 20 끝 | `b89fb8e9` | `GITHUB_ACTION=1 make check BUILD=hns -j4` | 2,683 / 5,608 | 2,679 (`test-baseline-seq336.txt`) |
+| 21 끝 | `49f2c5e5` | `GITHUB_ACTION=1 make check BUILD=hns -j6` | 2,688 / 5,614 | 2,684 (`test-baseline-seq350.txt`) |
+| 22 끝 | `4ae4d7e1` | `GITHUB_ACTION=1 make check BUILD=hns -j8` | 2,695 / 5,621 | 2,691 (`test-baseline-seq351.txt`) |
+
+- 세 실행 모두 같은 4쌍이 겹친다. 원 로그에서 PASS 줄 수와 고유 수를 직접 셌다: 2,683/2,679, 2,688/2,684, 2,695/2,691.
+- 묶음 21에서 처음 보고한 "2,683 → 2,684"는 러너 합계(묶음 20)와 목록 수(묶음 21)를 섞은 것이다. 같은 기준으로는 러너 2,683 → 2,688, 목록 2,679 → 2,684다(+5).
+  - +5는 새 PASS 6에서 이름이 바뀐 트랩셸 테스트 1(옛 이름 사라짐)을 뺀 값이다.
+  - 기준 목록은 바꾸지 않았다.
+- 원 로그(세션 임시 `logs/b20-check.log`·`b21-check.log`·`b23-check.log`)는 저장소 밖이다. 목록과 위 수치만 남긴다.
 - **세이브 정적 비교**(이식 전 사실 = `da0adeaa` 빌드 `post-f14b`): **PASS(FAIL 0, WARN 0)**, EWRAM·IWRAM 변수 변화 0.
 - **최종 ROM(실기용):** 코드 `49f2c5e5`, 클라우드 `make hns -j8`(`arm-none-eabi-gcc 13.2.1`) → 사용 32,782,772 B, SHA1 `6377af696d8b505f4e9c28683c21c7e5e0c5dd99`.
 

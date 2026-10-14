@@ -1,6 +1,13 @@
 # 현재 인수인계 상태
 
-## 2026-10-14 — full-sync 묶음 22(seq 351 #9927 Mass outbreak + #10089·#10142 앞당김) (현재, 클라우드 세션)
+## 2026-10-14 — 친구 답 2026-10-14(3): 재확인 66·67 확정, 아테나 원인 정정 확인, 집계 확인·회귀 검사 요청 (현재, 클라우드 세션)
+
+- **진행 중.** 친구 답 원문 [`FRIEND_REPLY_2026-10-14c.md`](../friend-handoff/FRIEND_REPLY_2026-10-14c.md). 결정: 66 제외 유지, 67 보호 장치 유지(둘 다 친구 확정), 64 옛 원인 설명 철회 확인.
+- **한 것(문서):** 재확인 35·64·66·67 갱신, 디버그 파트너 배틀을 별도 항목으로(`friend-reply-2026-10-14.md`), 테스트 집계 기준 설명·묶음 21·22 수치 정정(`full-sync-seq-337-350.md` "집계 기준" — 같은 이름 테스트 4쌍 때문에 러너 합계 = 목록 고유 행 + 4), 호출 전체기 표현 정정(TARGET_BOTH만), `port_sequence.tsv`에 `port_status` 열(seq 323~351 + 앞당김 행), 348 측정 재료 `evidence/seq348-10711/`, 번역 대기 목록 `TRANSLATION_PENDING.md`(손가락흔들기 조사), #10656 감사(바꾼 161곳 중 158곳이 바로 `MAX_SPRITES` 검사, 3곳은 upstream대로 값을 호출부에 돌려줌 — 실패 처리 없는 호출을 바꾼 곳 0).
+- **진행 중(사전 분석 2갈래, 세션 임시 `b24/`):** ① 한글 기대값 회귀 세트(경혈찌르기 4경우·호출 전체기 TARGET_BOTH/FOES_AND_ALLY·트랩셸·공생·흉내쟁이, 추격·당신먼저 상태) ② 너즐록 보호 장치 파티·박스 보존 검사(일반·쉬운 너즐록, 보호 장치 없는 트리와 대조). 끝나면 저장소에 넣고 결과 문서 `friend-reply-2026-10-14c.md` 작성.
+- **다음:** 위 두 결과 반영 → 친구 문자(맥락 끝에 한 번에) → seq 352 #9688.
+
+## 2026-10-14 — full-sync 묶음 22(seq 351 #9927 Mass outbreak + #10089·#10142 앞당김) (클라우드 세션)
 
 - **친구 문자 규칙(사용자 2026-10-14):** 친구 디스코드 메시지는 대화 맥락 하나가 끝날 때 한 번에 만든다. 묶음 22 문자는 **보냄**(2026-10-14 사용자 확인 — 알림만, 실기용 ROM `4ae4d7e1`/SHA1 `008d5029…`). 문안은 세션 답변(저장소 밖), 내용은 `full-sync-seq-351.md`와 같다.
 - **다음 할 일**
@@ -8,7 +15,7 @@
   2. **full-sync 다음 seq 352 #9688**(Add B_TERA_ORB_ALWAYS_CHARGED, 테스트 기준 `test-baseline-seq351.txt`, 한글 회귀 532/622). 353·364는 앞당김 적용 — 다시 넣지 않음. 세이브 비교 이식 전 사실 = 세션 임시 `hns-sync-work/verify-runs/save/post-351/post-facts`(이름 바뀐 `outbreakIndex`·`daysBeforeOutbreak` 기준 — 다음 비교부터 같은 이름).
   3. **친구 답 대기**(이전 절 그대로): 재확인 67(너즐록 보호), 66(332 hunk), 35·64 실기, 텅구리 알로라, 실기 결과들. 묶음 22는 알림만(재확인 68).
 - **결과** [`full-sync-seq-351.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-351.md): `7c17b9f1` #9927(18파일, 거부 hunk 9개 손 맞춤 — HnS 디버그 B 복귀·`GetTVMetatileId`·프런티어 상점 조건·Pokérus 균주·GBS 소리 메뉴 유지), `443a264d` #10089·`4ae4d7e1` #10142 앞당김(디버그 메뉴 회귀 3개). **HnS 적응:** TV 대량발생 쇼 `outbreakIndex`를 `u8`(upstream `enum`은 4바이트라 옛 세이브 쇼 필드가 밀림 — 재확인 68). HnS 일반 진행 동작 변화 0(TV 플래그 `0`, 새 스크립트 미사용, 출현 해시 전후 같음 — 사전 분석 측정), 새로 보이는 것은 디버그 "Encounters…"뿐. `7c17b9f1` 메시지의 `FLAG_SYS_TV_START` 설명은 틀림(결과 문서에 정정).
-- **검증(코드 `4ae4d7e1`):** 커밋마다 `make hns -j8` 종료 0·새 경고 0, ROM 32,782,772 → 32,787,012 B(+4,240), EWRAM·IWRAM 같음, SHA1 `008d5029…`(사전 분석 사본과 같음). 세이브 정적 FAIL 2 = 이름 변화뿐(비트 위치·폭 같음, 그 밖 전부 PASS). 전체 `make check` PASS 2,691 / 5,621(목록 기준), 사라진 PASS 0 → 기준 [`test-baseline-seq351.txt`](../friend-handoff/results/1.17.0-port/test-baseline-seq351.txt). 한글 회귀 532/622 기대와 바이트 같음. **실기: 하지 않음(친구).**
+- **검증(코드 `4ae4d7e1`):** 커밋마다 `make hns -j8` 종료 0·새 경고 0, ROM 32,782,772 → 32,787,012 B(+4,240), EWRAM·IWRAM 같음, SHA1 `008d5029…`(사전 분석 사본과 같음). 세이브 정적 FAIL 2 = 이름 변화뿐(비트 위치·폭 같음, 그 밖 전부 PASS). 전체 `make check` 러너 합계 PASS 2,695 / 5,621(목록 고유 행 2,691), 사라진 PASS 0 → 기준 [`test-baseline-seq351.txt`](../friend-handoff/results/1.17.0-port/test-baseline-seq351.txt). 한글 회귀 532/622 기대와 바이트 같음. **실기: 하지 않음(친구).**
 
 ## 2026-10-14 — full-sync 묶음 21(seq 337~350) (클라우드 세션)
 
@@ -20,7 +27,7 @@
   4. **full-sync 다음 seq 351 #9927**(테스트 기준 `test-baseline-seq350.txt`, 한글 회귀 532/622)(Mass outbreak — XL, 세이브 영향 Y, 의존 #9713·#8943·#8434·#9920·#9890·#10051 → 단독 묶음 권장). 세이브 비교 이식 전 사실 = 세션 임시 `hns-sync-work/verify-runs/save/post-350/post-facts`(없으면 `make hns -j8` 뒤 `save_compat.py collect`).
   4-1. → 묶음 22 — 위 절.
 - **결과** [`full-sync-seq-337-350.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-337-350.md): 적용 10 커밋(`9b10cb2a`~`49f2c5e5`, seq마다 하나), 이미 적용 3(342·344·347), HnS 동등 1(340). 339·346 테스트만, 338 주석만. 손 맞춤: 337(HnS 4인자 문맥), 345(`MoveEndShellTrap(void)`), 349(6 hunk + HnS 전용 14곳). **348 #10711은 HnS 판정**(재확인 8d 해결 — upstream 그대로면 야생전·이어하기 직후 아테나 멀티에서 3마리 선택이 무시되고 포켓몬 복제·소실). **재확인 64 원인 해석 정정**(반쪽 팀 멀티는 덮어쓰기 경로를 타지 않음 — #10814는 풀 팀용으로 유지). 새 배틀 문장 0, 출력 변화 3행.
-- **검증(코드 `49f2c5e5`):** 커밋마다 `make hns -j8` 종료 0·새 경고 0, ROM 32,782,484 → 32,782,772 B(+288), EWRAM·IWRAM 같음, SHA1 `6377af69…`. 세이브 정적 PASS(FAIL 0, WARN 0). 전체 `make check` PASS 2,683 → 2,684 / 5,608 → 5,614, 사라진 PASS는 345가 이름 바꾼 1개뿐(새 이름 PASS), 새 FAIL 1은 337 테스트의 영문 `MESSAGE` → 기준 [`test-baseline-seq350.txt`](../friend-handoff/results/1.17.0-port/test-baseline-seq350.txt). 한글 회귀 532/622 기대와 바이트 같음. **실기: 하지 않음(친구).**
+- **검증(코드 `49f2c5e5`):** 커밋마다 `make hns -j8` 종료 0·새 경고 0, ROM 32,782,484 → 32,782,772 B(+288), EWRAM·IWRAM 같음, SHA1 `6377af69…`. 세이브 정적 PASS(FAIL 0, WARN 0). 전체 `make check` 러너 합계 PASS 2,683 → 2,688 / 5,608 → 5,614(목록 고유 행 2,679 → 2,684 — 2026-10-14(3) 정정), 사라진 PASS는 345가 이름 바꾼 1개뿐(새 이름 PASS), 새 FAIL 1은 337 테스트의 영문 `MESSAGE` → 기준 [`test-baseline-seq350.txt`](../friend-handoff/results/1.17.0-port/test-baseline-seq350.txt). 한글 회귀 532/622 기대와 바이트 같음. **실기: 하지 않음(친구).**
 
 ## 2026-10-14 — 친구 답 2026-10-14: 미러 챌린지 패배(재확인 35)·너즐록 보호(67), 웅 머그샷 (클라우드 세션)
 

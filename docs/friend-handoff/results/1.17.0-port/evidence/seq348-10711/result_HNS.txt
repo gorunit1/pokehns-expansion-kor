@@ -1,0 +1,16 @@
+[2] B22 11 tower link multi in battle is half: PASS
+[2] B22 08 multi_wild in the field after a trainer battle is full: PASS
+[2] B22 05 half-team multi in battle is half: PASS
+[2] B22 02 multi_do after a wild double battle keeps a half-team multi: PASS
+[0] B22 13 multi_do after a frontier battle (stale flags, no battle struct) still reads Half: PASS
+[0] B22 10 frontier multi in battle does not read gTrainers (b43032bf03): PASS
+[0] B22 07 multi_wild in the field is full and sets the result: PASS
+[0] B22 04 multi_do after a wild battle with one half trainer (opponentB) keeps half: PASS
+[1] B22 12 link opponent is half: PASS
+[0] B22 01 multi_do after a wild battle keeps a half-team multi (stale VAR_RESULT 1): PASS
+[1] B22 09 multi_wild in battle is full and sets the result: PASS
+[1] B22 06 multi_do with full trainers after a wild battle is full and sets the result: PASS
+[1] B22 03 multi_do after a trainer battle keeps a half-team multi: PASS
+- Tests PASSED:          13
+- Tests TOTAL:           13
+exit 0
