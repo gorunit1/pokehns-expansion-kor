@@ -47,6 +47,7 @@
   - [Struct Pokemon Generation](tutorials/mon_generation.md)
   - [How to use FRLG](tutorials/how_to_frlg.md)
   - [How to delete vanilla maps](tutorials/how_to_delete_vanilla_maps.md)
+  - [How to use Mass Outbreak](tutorials/how_to_mass_outbreak.md)
   - [How to use Overworld Wild Encounters](tutorials/how_to_overworld_wild_encounters.md)
   - [How to use Dynamic Weather](tutorials/how_to_dynamic_weather.md)
   - [How to use Random Mon Generation](tutorials/how_to_random_mon_generator.md)
