@@ -58,6 +58,9 @@
 | 앞 포켓몬의 기술이 대상을 쓰러뜨린 뒤 흉내쟁이 (upstream #10654 이식, seq 333. 새 문장 0) | 그 기술이 기록되지 않아 그 전 기술을 쓰거나 `그러나 실패하고 말았다!` | 쓰러뜨린 그 기술을 씀(기존 사용 문장). 같은 이유로 크로스플레임/크로스썬더·윤창이 대상을 쓰러뜨린 뒤 같은 턴의 짝 기술·윤창 위력 2배(문장 변화 없음) | `MoveEndUpdateLastMoves` `gLastUsedMove` 갱신 위치 |
 | 도발·트집·사슬묶기·앵콜·봉인·회복봉인·지옥찌르기·트림(나무열매 안 먹음) 상태에서 Z기술을 고름 (upstream #10657 이식, seq 336 — HnS 본 게임은 Z크리스탈 입수 불가) | 선택 단계에서 각 선택 불가 문장(`STRINGID_PKMNCANTUSEMOVETAUNT`·`STRINGID_PKMNMOVEISDISABLED` 등)이 나오고 다시 고르게 함 | 선택할 수 있고 Z기술이 나감 | `TrySetCantSelectMoveBattleScript` `zMoveBypassCheck`(`IsGimmickChosenForAction`) |
 | 중력 상태에서 중력 금지 기술(공중날기 등)로 Z기술을 고름 (upstream #10657, seq 336) | 선택 단계에서 `STRINGID_GRAVITYPREVENTSUSAGE`(원래 기술 이름)가 나오고 다시 고르게 함 | 선택할 수 있다. 실행 때 `STRINGID_GRAVITYPREVENTSUSAGE`가 Z기술 이름으로 나오고 기술은 실패(`마자용은⏎중력이 강해서⏎파이널다이브클래시를 쓸 수 없다!`, 셋째 줄 약 125 px — 창 208 px 안) | `CancelerVolatileBlocked` 중력 판정이 `gBattleStruct->baseMove` 사용 |
+| 더블에서 손가락흔들기·잠꼬대·조수·흉내쟁이·자연의힘·선취로 부른 "상대 둘" 전체기(스피드스타 등) (upstream #10661 이식, seq 337. 새 문장 0 — 사전 분석 사본의 한글 조사 테스트로 플레이어 왼쪽이 부른 경우 재현, 상대 왼쪽은 전후 같음) | 플레이어 왼쪽이 부르면 사용자 파트너도 맞음(파트너 HP 바, 그 파트너에 대한 상성·급소·기절 등 기존 문장) | 상대 둘만 맞음 | `Cmd_setcalledmove` `ClearDamageCalcResults` 위치(`CancelerPPDeduction`에서 옮김) |
+| Z기술을 쓴 포켓몬이 레드카드로 교체됐다가 다시 나옴 (upstream #10671 이식, seq 341. 새 문장 0 — HnS 본 게임은 Z크리스탈 없음) | Z기술을 다시 쓸 수 있음(Z파워 연출·Z기술 사용 문장) | 다시 쓸 수 없음(일반 기술) | `Cmd_switchoutabilities` Z기믹 해제 |
+| 더블에서 트랩셸을 준비한 포켓몬이 물리 전체기(지진 등)를 맞음 (upstream #10682 이식, seq 345. 새 문장 0) | 전체기의 대상 순서에 따라 트랩셸이 다른 포켓몬의 행동 뒤로 늦어짐 | 맞은 바로 다음에 트랩셸(기존 문장), 둘이면 빠른 쪽부터 | `MoveEndShellTrap`, `ChangeOrderTargetAfterAttacker(battlerDef)` |
 
 ## 상태이상·회복·잠자기
 

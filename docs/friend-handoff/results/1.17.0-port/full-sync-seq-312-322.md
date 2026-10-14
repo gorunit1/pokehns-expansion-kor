@@ -54,3 +54,7 @@
 - 340 #10674: 315에서 `gSelectedOrderFromParty` 루프를 쓰지 않았으므로 "HnS 동등"으로 기록.
 - 526 #10773: #10814와 같은 단위 — 542는 앞당김 적용(다시 넣지 않음), 526은 순서대로.
 - 64·65: 위.
+
+## 정정 (2026-10-14)
+
+- 위 #10814 행·"동작 변화"·"친구에게 알릴 것" 1번의 원인 해석("반쪽 팀 멀티에서 `VAR_RESULT`를 0으로 덮어써 아테나 승리 뒤 화이트아웃 분기 — 10-04 이후 회귀")은 **잘못**이다. 반쪽 팀 멀티는 `multi_do`가 `MULTI_BATTLE_CHOOSE_MONS`를 붙여 `specialTrainerBattleType = 0xFF`가 되므로 `HandleSpecialTrainerBattleEnd`의 MULTI 경우를 타지 않고, `VAR_RESULT`는 배틀 끝 승패값 그대로다(첫 업로드부터 같은 구조). #10814 한 줄은 풀 팀 `multi_do` 멀티에 맞는 수정이라 그대로 둔다. 자세한 근거는 재확인 64와 [`full-sync-seq-337-350.md`](full-sync-seq-337-350.md).

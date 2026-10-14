@@ -2,6 +2,16 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-14 — full-sync 묶음 21(seq 337~350) (클라우드 세션)
+
+- 요청: 사용자 "보냈음 이제 seq 337부터 시작해" → 사전 분석 3갈래(a 337·338·339·341·343·345·346, b 340·342·347·348, c 344·349·350 — tar 사본, 세션 임시 `b22/`; upstream 패치는 `/home/user/pokeemerald-expansion-upstream` `git show`) → 중간에 친구 답 2026-10-14 반영(앞 기록) → 보고 → "나 혼자 정할 수 있는거야?"에 "모두 사용자 — 348은 8d에서 이미 HnS 보정이 필요하다고 정한 것이고 HnS 동작 변화 0, 친구에게는 알림만" 답 → "추천대로 적용". 사용자가 "앞으로 친구 메시지는 대화 맥락 끝에 한 번에"라고 정함(앞서 준 2026-10-14 반영 문자는 아직 안 보냄 — 합침).
+- 수정 파일: `include/battle_util.h`, `include/constants/form_change_types.h`, `src/data/pokemon/form_change_tables.h`, `src/battle_move_resolution.c`, `src/battle_script_commands.c`, `src/battle_util.c`, `src/follower_npc.c`, `src/party_menu.c`, `src/trainer_see.c`, 349의 스프라이트 호출부(`src/battle_anim_*.c`·`src/field_effect*.c`·`src/pokedex_area_screen.c`·`src/pokemon_storage_system.c`·`src/region_map.c` 등 47파일 — HnS 전용 `src/intro_hns.c`·`src/surfable.c`·`src/field_weather_effect.c` 포함), 테스트(`metronome.c`, `ai/ai.c`, `ai/check_bad_move.c`, `red_card.c`, `battle_bond.c`, `shell_trap.c`). 문서 — `full-sync-seq-337-350.md`(새), `RECHECK_BEFORE_COMPLETION.md`(8d 해결·8i 닫음·64 정정), `full-sync-seq-312-322.md` 끝 정정, `friend-reply-2026-10-14.md` 1절 정정, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 3행, STATUS·SESSION_LOG.
+- 결정: 사용자 — seq마다 커밋, 339·346 테스트만, 346 끝 공백 제거, 349 HnS 전용분 포함 한 커밋, 344 출력 변화 행 없음, 348 HnS판(안 E), 340·342·344·347 기록만, 8d·8i 닫음.
+- 조사: 재확인 64 — 사전 분석 b가 반쪽 팀 멀티의 `specialTrainerBattleType = 0xFF`를 찾았고, 메인이 `multi_do` 매크로(`MULTI_BATTLE_CHOOSE_MONS`)·`HandleSpecialTrainerBattleEnd`·`ReturnFromBattleToOverworld`와 `git log -S`(첫 업로드부터)로 확인 → 묶음 19의 원인 해석이 잘못이었음을 기록. 348 판정은 사본 강제 게임 분기 측정 13개.
+- 검증: STATUS 현재 절.
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 다음 시작점: 검증 마무리 → 친구 문자 한 번에 → seq 351 #9927(단독 묶음).
+
 ### 2026-10-14 — 친구 답 2026-10-14: 미러 챌린지 패배(재확인 35)·너즐록 보호(67), 웅 머그샷 (클라우드 세션)
 
 - 요청: 묶음 21 사전 분석을 띄운 직후 사용자가 친구 메시지 2개 전달("맞다 친구한테 온 메시지가 있었어") — 미러 패배 `battle_setup.c` hunk 적용 결정, 웅 머그샷 `sheetTileStart` 방식(친구 로컬 실기 화면 `pokehns-12.png`). 원문 `FRIEND_REPLY_2026-10-14.md`·`-14b.md`.
