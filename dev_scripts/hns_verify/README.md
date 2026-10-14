@@ -14,10 +14,10 @@ full-sync 묶음과 HnS 수정 때 쓰는 **세이브 호환·한글 배틀 출�
 | 경로 | 내용 |
 |---|---|
 | `common.sh`, `hnsverify_paths.py` | 경로 규칙(환경 변수·기본값), 실제 체크아웃 판정(`.git`), 출력 폴더 검사, `DEVKITARM` → `PATH` |
-| `kortests/run.sh` | 한글 배틀 출력 회귀 607개 실행·요약·기대 비교 |
+| `kortests/run.sh` | 한글 배틀 출력 회귀 652개 실행·요약·기대 비교 |
 | `kortests/compare.py` | 요약 두 개 비교(테스트별 상태 + 합계, `-j`와 무관) |
-| `kortests/sets/*.c` (30) | 테스트(이름이 모두 `HNS`로 시작). 옛 328개 세트 22파일 + `zz_hns9730_k1~k5`(235) + `zz_hnsx1_kor.c`(21) + `zz_hns9918_pledge.c`(23) + `zz_hnsscreen_kor.c`(15, 2026-10-13 방벽 해제) |
-| `kortests/expected/summary.txt`, `summary.meta` | 현재 HEAD 기대 요약(532/622)과 그 설명 |
+| `kortests/sets/*.c` (31) | 테스트(이름이 모두 `HNS`로 시작). 옛 328개 세트 22파일 + `zz_hns9730_k1~k5`(235) + `zz_hnsx1_kor.c`(21) + `zz_hns9918_pledge.c`(23) + `zz_hnsscreen_kor.c`(15, 2026-10-13 방벽 해제) + `zz_hnsb2021_kor.c`(30, 2026-10-14 묶음 20·21 전투 수정) |
+| `kortests/expected/summary.txt`, `summary.meta` | 현재 HEAD 기대 요약(562/652)과 그 설명 |
 | `kortests/tools/` | `trace.patch`(사본 전용 이벤트 출력), `trace_decode.py`, `tracecmp.py`, `tracediff.py`, `showtrace.sh`, `gen_scene.py`(trace로 새 테스트 SCENE 채우기) |
 | `save/save_compat.py`, `save/dwarf_layout.py` | 세이브 정적 비교(구조체 레이아웃·섹터 배치·세이브 경로 기계어·RAM 변수) |
 | `save/savetest/` | 세이브 왕복(`savetest.py`, `run_all.sh`, 테스트 `zz_hns8943_savecompat.c`, 기준 `baseline/`) |
@@ -58,10 +58,18 @@ ALLOW_REPO=1 $V/kortests/run.sh $R <label> 8          # 저장소에서(복사 �
 $V/kortests/run.sh <사본> <label> 8                    # mkcopy.sh 사본에서
 ```
 
-- 기대: `- Tests PASSED: 532`, `- Tests TOTAL: 622`, 세트별 PASS(`HNS9730 199/235`, `HNSX1 21/21`, `HNS9918 23/23`, `HNSSCREEN 15/15` 등, `kortests/expected/summary.meta`), 끝에 `status lines that differ from expected: 0`, `whole summary file byte-identical to expected: yes`, `판정: PASS (기대와 같음)`. 종료 코드 0(다르면 1, 빌드 오류 2). `make check exit 2`는 정상이다(기대 FAIL·INVALID 90개).
+- 기대: `- Tests PASSED: 562`, `- Tests TOTAL: 652`, 세트별 PASS(`HNS9730 199/235`, `HNSX1 21/21`, `HNS9918 23/23`, `HNSSCREEN 15/15`, `HNSB2021 30/30` 등, `kortests/expected/summary.meta`), 끝에 `status lines that differ from expected: 0`, `whole summary file byte-identical to expected: yes`, `판정: PASS (기대와 같음)`. 종료 코드 0(다르면 1, 빌드 오류 2). `make check exit 2`는 정상이다(기대 FAIL·INVALID 90개).
 - 출력: `$HNS_VERIFY_OUT/kortests/<label>.log`, `<label>-summary.txt`.
 - 판정은 테스트별 상태와 합계로 한다. 요약 끝의 `  - test/…` 줄은 hydra가 실패 앞 50개만 runner 순서로 적는 것이라 `-j`가 다르면 달라진다 → 기대 요약과 바이트까지 맞추려면 `-j8`.
 - 저장소 테스트가 없는 문장을 지키는 테스트(리뷰 R3): `HNS9730 K1-51`(충전), `K2-16`(위협 vs 주눅구슬), `K3-25`(심술꾸러기 주눅구슬, 받아들인 FAIL), `HNSX1` 21개.
+- `HNSB2021`(`zz_hnsb2021_kor.c`, 30개, 2026-10-14): 친구 답 2026-10-14c 4·6·7·10절. upstream 테스트는 영문 `MESSAGE`라 HnS에서 FAIL하므로 같은 상황을 한글 기대값으로 고정한다.
+  - A 경혈찌르기(seq 327 #10636 `7f874300`, seq 332 #10645 `aa31b7a4`, 재확인 66 — `GetBattleMoveTarget` hunk 제외): A1a 지난 턴 기절한 파트너를 겨눔 → 사용자 상승(`CancelerSetTargets`), A1b 사용자를 겨눔, A1c AI 더블(`SetFinalChosenTarget`), A2a/A2b 같은 턴 먼저 기절, A3 살아 있는 파트너, A4a~e 손가락흔들기·잠꼬대로 부른 경혈찌르기(`손가락을 흔들었더니 경혈찌르기 나왔다!` 확인) → 부른 포켓몬만 상승.
+  - B 호출 전체기(seq 337 #10661 `9b10cb2a`): B1~B6 스피드스타(TARGET_BOTH) — 네 위치·잠꼬대, 사용자 파트너 HP 바 없음. B7~B10 지진·파도타기(TARGET_FOES_AND_ALLY) — 아군도 맞음.
+  - C 트랩셸·행동 순서(seq 345 #10682 `5ad78ec0`): C1 물리 전체기 직후 발동, C2·C3 두 사용자 스피드 순, C4 단일 기술, C5 당신먼저, C6 따라가때리기 2마리 순서.
+  - D 공생(seq 334 #10653 `d1c3e4e5`): 받은 상처약이 같은 지진에서 반감열매로 다시 쓰이지 않음(두 번째 열매 애니·`…입는 데미지를⏎…이 약하게 했다!` 없음, 도구 유지).
+  - E 흉내쟁이(seq 333 #10654 `d45e2fe2`): 대상을 쓰러뜨린 기술을 복사(아군 쪽·상대 쪽).
+  - 테스트 러너는 플레이어·비AI 상대의 대상을 녹화 데이터(`MOVE(…, target:)`)로 넣는다 — 플레이어 컨트롤러 `HandleInputChooseMove`(#10645의 플레이어 hunk)는 타지 않는다. AI 경로는 A1c만.
+  - 이식 전 트리(세트만): `d4e3b8b6` 15/30, `bce0ad13` 18/30, `da0adeaa` 21/30, `4b5fa7b7` 27/30, HEAD + upstream `GetBattleMoveTarget` hunk 25/30(A4a~e FAIL). 모든 트리 PASS(A1b·A1c·A3·B7~B10·C4~C6)는 유지할 동작의 보호용.
 - 세트 하나만: `… run.sh $R <label> 8 HNS9730`(기대 비교는 하지 않고 PASS 수와 non-PASS 목록만).
 - 실제 저장소에 `trace.patch`(표식 `-TRACE`)가 있으면 거부한다. 같은 이름의 다른 파일이 `test/battle/`에 있거나 추적 파일이면 덮어쓰지 않고 멈춘다.
 

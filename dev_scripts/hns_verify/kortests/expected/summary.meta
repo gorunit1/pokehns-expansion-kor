@@ -11,10 +11,18 @@ summary.txt = 한글 회귀 기대 요약(kortests/run.sh 출력 그대로: 정�
   K4-12도 PASS 그대로여서 summary.txt는 바이트 그대로다(hnsfix-1010e mkcopy 사본 + trace.patch, kortests/run.sh <사본> post 8:
   517/607, 기대와 바이트 동일, trace는 K4-12 2줄만 다름). 고친 K4-12를 8세대 코드에서 돌리면 `Matched ANIMATION`
   (zz_hns9730_k4_interact.c:290)으로 FAIL한다.
-합계: 622개, PASS 532 / FAIL 84 / INVALID 6
+합계: 652개, PASS 562 / FAIL 84 / INVALID 6 (2026-10-14 HNSB2021 30개 추가 전: 622개, PASS 532)
 2026-10-13 HNSSCREEN 15개 추가(방벽 해제 — #10829 앞당김 6d08adc6, 진영 문구 db62d527, 배리어프리 타이머 d4e3b8b6): 클라우드
   저장소 코드 d4e3b8b6에서 kortests/run.sh <저장소> kor-screen 8 → 532/622. 그 전 607개의 상태 줄은 그대로(정렬 비교 차이 0),
   새 15개 모두 PASS. summary.txt는 이 실행 요약 그대로(테스트가 늘어 hydra 실패 목록 앞 50줄의 선택만 2줄 바뀜 — 상태 줄은 그대로).
+2026-10-14 HNSB2021 30개 추가(full-sync 묶음 20·21 전투 수정의 한글 기대값 — 친구 답 2026-10-14c 4·6·7·10절): 코드 = 클라우드
+  저장소 HEAD 9fe069b3(코드 4ae4d7e1)의 mkcopy 사본(trace 없음)에서 kortests/run.sh <사본> b24k-full2 8 → 562/652. 그 전 622개의 상태 줄은
+  그대로(compare.py 차이 = 새 30줄뿐), 새 30개 모두 PASS. summary.txt는 이 실행 요약 그대로(테스트가 늘어 hydra 실패 목록 앞 50줄의
+  선택만 바뀜 — 상태 줄은 그대로; 같은 사본에서 두 번 돌려 상태·hydra 목록 모두 같음, 이 요약을 기대로 넣고 세 번째 실행 b24k-final 8 →
+  `판정: PASS (기대와 같음)`, 바이트 동일).
+  이식 전 트리(세트만, run.sh <트리> <label> 4 HNSB2021): d4e3b8b6(묶음 20 전) 15/30, bce0ad13(#10636만, #10645 전) 18/30,
+  da0adeaa(#10661 전) 21/30, 4b5fa7b7(#10682 전) 27/30, HEAD + upstream #10645 GetBattleMoveTarget hunk(재확인 66에서 뺀 4줄) 25/30
+  (A4a~e FAIL). 모든 트리에서 PASS인 것(A1b·A1c·A3·B7~B10·C4~C6)은 유지해야 할 동작을 지키는 테스트다.
 세트          PASS / 전체   파일(kortests/sets/)
   HNS9680      66 /  70    zz_hns9680_endturn1~4.c
   HNS9714      29 /  34    zz_hns9714_b1_defog.c, b2_tidyup_sub.c, b3_endturn.c, b4_doubles_gmax.c
@@ -31,6 +39,8 @@ summary.txt = 한글 회귀 기대 요약(kortests/run.sh 출력 그대로: 정�
   HNS9730     199 / 235    zz_hns9730_k1_moves.c(80) k2_abilities.c(69) k3_items.c(25) k4_interact.c(57) k5_totem.c(4)
   HNSX1        21 /  21    zz_hnsx1_kor.c (충전·주눅구슬·토템·한계 문장, 2026-10-07 X1; 16번은 X6 막힌 위협 + 주눅구슬)
   HNSSCREEN    15 /  15    zz_hnsscreen_kor.c (방벽 해제: T 깨뜨리다류 타이머·이름·만료·피해, P 진영 접두어·공격자 복구·안개제거, C 배리어프리 4경우·없음·뒤 방벽·상대 사용)
+  HNSB2021     30 /  30    zz_hnsb2021_kor.c (묶음 20·21: A 경혈찌르기 대상 — 파트너 기절·같은 턴 기절·살아 있는 파트너·호출(손가락흔들기/잠꼬대),
+                           B 호출 전체기 스피드스타(파트너 안 맞음)·지진/파도타기(아군도 맞음), C 트랩셸 순서·당신먼저·따라가때리기, D 공생, E 흉내쟁이)
   HNS9918      23 /  23    zz_hns9918_pledge.c (맹세 콤보·무지개·불바다·습지 시작/턴 끝/종료 문장과 진영 이름, 시작 상태 경로,
                            무지개 2배·습지 1/4·불바다 1/8, 미래예지·파멸의소원; seq 188 이식 전 출력 고정)
 저장소 테스트가 없는 문장을 지키는 것(리뷰 R3): HNS9730 K1-51 충전 PASS, K2-16 위협 vs 주눅구슬 PASS,

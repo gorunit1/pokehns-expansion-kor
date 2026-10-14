@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# HnS 한글 배틀 출력 통합 회귀(607개). 테스트 .c는 sets/에 있고 test/ 밖이라 평소 빌드·make check·CI에 들어가지 않는다.
+# HnS 한글 배틀 출력 통합 회귀(652개). 테스트 .c는 sets/에 있고 test/ 밖이라 평소 빌드·make check·CI에 들어가지 않는다.
 # 실행 때만 <tree>/test/battle/에 같은 파일 이름으로 복사해 `make check BUILD=hns TESTS=HNS`를 돌린다.
 #
 # usage: [ALLOW_REPO=1] kortests/run.sh <tree> <label> [jobs] [filter]
