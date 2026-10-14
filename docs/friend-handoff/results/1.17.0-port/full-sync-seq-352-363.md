@@ -95,8 +95,18 @@
 
 - **빌드:** 위 표.
 - **세이브 정적 비교**(이식 전 사실 `post-351` = 코드 `4ae4d7e1`): **PASS(FAIL 0, WARN 0)**, EWRAM·IWRAM 변수 변화 0. 358 맵 헤더 비트필드는 크기·배치가 같다(ROM 데이터). 359 dailySeed는 SaveBlock3 그대로다.
-- **전체 테스트**(`GITHUB_ACTION=1 make check BUILD=hns -j8`, 코드 `18dfc352`): 진행 중.
-- **한글 회귀**(`ALLOW_REPO=1 kortests/run.sh <저장소> kor-b25 8`): 진행 중.
+- **전체 테스트**(`GITHUB_ACTION=1 make check BUILD=hns -j8`, 코드 `18dfc352`, 클라우드 저장소):
+  - 러너: PASSED 2,712 → **2,721**, TOTAL 5,638 → **5,675**, KNOWN_FAILING 25(361의 12개 포함).
+  - 목록(`testlist.sh`, `sort -u`): PASS 2,708 → **2,717**. 새 기준 `test-baseline-seq363.txt`.
+  - `test-baseline-hnsfix1014c.txt` 대비 **새 PASS 19, 사라진 PASS 10 — 10개 모두 이름 바뀜**(새 이름 PASS):
+    - 슬라이드 9개: `Last Half Hp`·`Last Low Hp` → `Opponent …`·`Self …`, `Dynamax` → `Attacker Dynamax`(× 단식·더블·멀티).
+    - 354: `AI can choose a status move that boosts the attack by two` → `(singles)`·`(doubles)`.
+    - 새 PASS 19 = 이름 바뀐 슬라이드 15(Half·Low가 Opponent·Self 둘로 나뉘어 12, Attacker Dynamax 3) + AI 2 + 단식 새 테스트 `Attacker Lands First STAB Hit`·`Opponent Mon Unaffected` 2.
+  - 슬라이드 테스트 39 → 75개: PASS 12 → 20, FAIL 27 → 43, KNOWN_FAILING 0 → 12. FAIL은 이식 전과 같은 원인(영문 `MESSAGE` 줄 ↔ 한글 배틀 문장, `TEST_RUNNER_FIX.md` 표의 `trainer_slides 27`). 영문 `MESSAGE`만 지운 사본에서는 63개 중 60 PASS(위 사전 분석 c).
+  - 슬라이드·354 AI 테스트 밖의 목록 줄 변화 **0**(이름·상태 모두 같음).
+- **한글 회귀**(`ALLOW_REPO=1 kortests/run.sh <저장소> kor-b25 8`, 코드 `18dfc352`): 563/652, 기대(562/652)와 상태 줄 차이 **1 — HNS9680 4-16 FAIL → PASS**. 이름대로 `UPSTREAM ORDER CHANGE EXPECTED: Dynamax end before the trainer slide of the same turn`(361이 슬라이드를 다이맥스 끝 뒤로 옮김)라 기대한 변화다.
+  - 이 실행 요약을 `kortests/expected/summary.txt`로 갱신(`summary.meta`·`dev_scripts/hns_verify/README.md` 기대 563, FAIL·INVALID 89). hydra 실패 목록 앞 50줄에서 4-16이 빠지고 HNS9717 K1-14가 들어온 것 말고 바뀐 줄 없음.
+  - 갱신한 기대로 다시 실행(`kor-b25-final 8`): `status lines that differ from expected: 0`, `whole summary file byte-identical to expected: yes`, **`판정: PASS (기대와 같음)`**.
 - **최종 ROM(실기용):** 코드 `18dfc352`, 클라우드 `make hns -j8`(`arm-none-eabi-gcc 13.2.1`) → 사용 32,960,564 B, SHA1 `c474df46a67c5b9c958d239b44a7787164a9d8ec`.
 
 ## 실기(mGBA) 후보

@@ -11,7 +11,7 @@ summary.txt = 한글 회귀 기대 요약(kortests/run.sh 출력 그대로: 정�
   K4-12도 PASS 그대로여서 summary.txt는 바이트 그대로다(hnsfix-1010e mkcopy 사본 + trace.patch, kortests/run.sh <사본> post 8:
   517/607, 기대와 바이트 동일, trace는 K4-12 2줄만 다름). 고친 K4-12를 8세대 코드에서 돌리면 `Matched ANIMATION`
   (zz_hns9730_k4_interact.c:290)으로 FAIL한다.
-합계: 652개, PASS 562 / FAIL 84 / INVALID 6 (2026-10-14 HNSB2021 30개 추가 전: 622개, PASS 532)
+합계: 652개, PASS 563 / FAIL 83 / INVALID 6 (2026-10-14 묶음 23 전: PASS 562 / FAIL 84; HNSB2021 30개 추가 전: 622개, PASS 532)
 2026-10-13 HNSSCREEN 15개 추가(방벽 해제 — #10829 앞당김 6d08adc6, 진영 문구 db62d527, 배리어프리 타이머 d4e3b8b6): 클라우드
   저장소 코드 d4e3b8b6에서 kortests/run.sh <저장소> kor-screen 8 → 532/622. 그 전 607개의 상태 줄은 그대로(정렬 비교 차이 0),
   새 15개 모두 PASS. summary.txt는 이 실행 요약 그대로(테스트가 늘어 hydra 실패 목록 앞 50줄의 선택만 2줄 바뀜 — 상태 줄은 그대로).
@@ -23,8 +23,13 @@ summary.txt = 한글 회귀 기대 요약(kortests/run.sh 출력 그대로: 정�
   이식 전 트리(세트만, run.sh <트리> <label> 4 HNSB2021): d4e3b8b6(묶음 20 전) 15/30, bce0ad13(#10636만, #10645 전) 18/30,
   da0adeaa(#10661 전) 21/30, 4b5fa7b7(#10682 전) 27/30, HEAD + upstream #10645 GetBattleMoveTarget hunk(재확인 66에서 뺀 4줄) 25/30
   (A4a~e FAIL). 모든 트리에서 PASS인 것(A1b·A1c·A3·B7~B10·C4~C6)은 유지해야 할 동작을 지키는 테스트다.
+2026-10-14 full-sync 묶음 23(seq 352~363): seq 361 upstream #9211이 트레이너 슬라이드를 ENDTURN_DYNAMAX 뒤로 옮겨
+  HNS9680 4-16(`UPSTREAM ORDER CHANGE EXPECTED: Dynamax end before the trainer slide of the same turn`)이 기대대로 FAIL → PASS.
+  코드 = 클라우드 저장소 18dfc352(묶음 23 마지막 이식), kortests/run.sh <저장소> kor-b25 8 → 563/652. 다른 651개 상태 줄은 그대로
+  (compare.py 차이 = 4-16 한 줄뿐). summary.txt는 이 실행 요약 그대로(hydra 실패 목록 앞 50줄에서 4-16이 빠지고 HNS9717 K1-14가
+  들어옴 — 상태 줄 변화 아님). 이 요약을 기대로 넣고 다시 돌린 결과는 아래 README 기대와 같음(full-sync-seq-352-363.md 검증 절).
 세트          PASS / 전체   파일(kortests/sets/)
-  HNS9680      66 /  70    zz_hns9680_endturn1~4.c
+  HNS9680      67 /  70    zz_hns9680_endturn1~4.c
   HNS9714      29 /  34    zz_hns9714_b1_defog.c, b2_tidyup_sub.c, b3_endturn.c, b4_doubles_gmax.c
   HNSFIX1      14 /  16    zz_hnsfix1_tmp.c
   HNSFIXOBS     0 /   1    zz_hnsfix1_obs.c (관찰용)
@@ -47,7 +52,7 @@ summary.txt = 한글 회귀 기대 요약(kortests/run.sh 출력 그대로: 정�
   K3-25 심술꾸러기 주눅구슬 FAIL(받아들인 변화: 도구 이름이 든 문장 `…주눅구슬로 스피드가 떨어졌다!`), HNSX1 21개 PASS
   (HNSX1 16: 정신력에 막힌 위협 → `…공격은 떨어지지 않는다!` → 도구 애니 → 상승 애니 → `…주눅구슬로 스피드가 올라갔다!`,
   X6 친구 결정 2026-10-07 저녁 본가대로. X6 전에는 HEAD의 미발동을 확인하던 탐침 `HNSX1 16 probe: …`였다)
-FAIL·INVALID 90개는 이름의 `UPSTREAM (ORDER) CHANGE EXPECTED`·`CHANGE EXPECTED`(뒤 PR이 들어오면 바뀔 것),
+FAIL·INVALID 89개는 이름의 `UPSTREAM (ORDER) CHANGE EXPECTED`·`CHANGE EXPECTED`(뒤 PR이 들어오면 바뀔 것),
   관찰용(HNSFIXOBS O1, HNS9717P P4), seq 181 #9730에서 받아들인 출력 변화(HNS9730), INVALID 6(HNSSW 4, HNS9784 K3-06, HNSFIX1 T13)
 HNS9918 K12·K22·K23(`#10214 CHANGE EXPECTED`)은 불바다 종료 문장의 진영이 반대인 이식 전 출력(재확인 6)을 고정한다.
   seq 385 #10214가 턴 끝 불바다 블록에 gBattlerAttacker를 넣으면 바뀐다(K11은 우연히 맞는 진영이라 그대로).

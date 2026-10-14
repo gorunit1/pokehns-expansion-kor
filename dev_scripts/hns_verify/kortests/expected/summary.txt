@@ -1,5 +1,4 @@
   - test/battle/zz_hns9680_endturn3.c:381: Unmatched ANIMATION - HNS9680 3-16 UPSTREAM CHANGE EXPECTED (part-C 5.2): Magic Room end loop stops after White Herb, foe Sitrus waits for next turn.
-  - test/battle/zz_hns9680_endturn4.c:344: Unmatched MESSAGE - HNS9680 4-16 UPSTREAM ORDER CHANGE EXPECTED: Dynamax end before the trainer slide of the same turn.
   - test/battle/zz_hns9680_endturn4.c:396: Matched ANIMATION - HNS9680 4-18 UPSTREAM CHANGE EXPECTED: last foe faints at end of turn while the player is Dynamaxed, no Dynamax end animation.
   - test/battle/zz_hns9714_b1_defog.c:472: Unmatched MESSAGE - HNS9714 1-13 Defog reflected by Magic Bounce or Magic Coat: the reflector's Defog clears the original user's side 1/2.
   - test/battle/zz_hns9714_b1_defog.c:510: Unmatched MESSAGE - HNS9714 1-14 Defog check pass against minimum evasion: nothing (fails), only the user's hazards (works), only the user's own Reflect (fails) 1/3.
@@ -8,6 +7,7 @@
   - test/battle/zz_hns9717_k1_ee.c:183: Unmatched ABILITY_POPUP - HNS9717 K1-07 UPSTREAM CHANGE EXPECTED: Sea of Fire with Air Balloon, no Grassy Terrain heal for the Emergency Exit mon.
   - test/battle/zz_hns9717_k1_ee.c:273: Unmatched MESSAGE - HNS9717 K1-11 UPSTREAM CHANGE EXPECTED: Perish Song count of the Emergency Exit mon is shown before it leaves.
   - test/battle/zz_hns9717_k1_ee.c:296: Unmatched ABILITY_POPUP - HNS9717 K1-12 UPSTREAM ORDER CHANGE EXPECTED: Octolock drops the Emergency Exit mon's stats before it leaves.
+  - test/battle/zz_hns9717_k1_ee.c:347: Unmatched ABILITY_POPUP - HNS9717 K1-14 UPSTREAM ORDER CHANGE EXPECTED: two foe Emergency Exits in one Sandstorm, each leaves and is replaced in turn.
   - test/battle/zz_hns9717_k1_ee.c:433: Unmatched ABILITY_POPUP - HNS9717 K1-18 UPSTREAM ORDER CHANGE EXPECTED: doubles, burned faster foe Emergency Exit, partner burn and player burn before replacement.
   - test/battle/zz_hns9717_k2_eject.c:95: Unmatched ABILITY_POPUP - HNS9717 K2-04 UPSTREAM ORDER CHANGE EXPECTED: Emergency Exit (burn) and Eject Pack (Octolock) in the same end of turn.
   - test/battle/zz_hns9717_k3_faint.c:84: Matched ABILITY_POPUP - HNS9717 K3-04 UPSTREAM CHANGE EXPECTED (softlock without the HnS KO-animation fix): faster player Emergency Exit (poison) and the last foe faints from poison.
@@ -48,8 +48,8 @@
   - test/battle/zz_hns9784_k1_items.c:87: Matched MESSAGE - HNS9784 K1-04 CHANGE EXPECTED: faster Eject Button, then slower Red Card should also activate (pre: only Eject Button).
   - test/battle/zz_hnsfix1_tmp.c:413: Unmatched ABILITY_POPUP - HNSFIX1 T9 Leer at two Magic Bounce mons after Eject Button 2/2.
   - test/battle/zz_hnspopup_p3.c:305: Unmatched ANIMATION - HNSPOPUP S08 side effect: Kee Berry (R19).
-- Tests FAILED :         90    Add TESTS='X' to run tests with the defined prefix.
-- Tests PASSED:          562
+- Tests FAILED :         89    Add TESTS='X' to run tests with the defined prefix.
+- Tests PASSED:          563
 - Tests TOTAL:           652
 HNS9168 K01 status cure berries (Cheri, Rawst, Pecha, Chesto) after the status move: PASS
 HNS9168 K02 Aspear Berry thaws the holder on switch-in (opponent side): PASS
@@ -154,7 +154,7 @@ HNS9680 4-12 Sandstorm knocks out the last foe: battle won before Leftovers and 
 HNS9680 4-13 Dynamax ends after three turns: PASS
 HNS9680 4-14 UPSTREAM ORDER CHANGE EXPECTED: Dynamax ends before the fainted foe is replaced: FAIL
 HNS9680 4-15 Trainer slide at end of turn comes after Speed Boost: PASS
-HNS9680 4-16 UPSTREAM ORDER CHANGE EXPECTED: Dynamax end before the trainer slide of the same turn: FAIL
+HNS9680 4-16 UPSTREAM ORDER CHANGE EXPECTED: Dynamax end before the trainer slide of the same turn: PASS
 HNS9680 4-17 Stage order in one end of turn (doubles): weather, abilities, items, seed, status, Speed Boost, orbs: PASS
 HNS9680 4-18 UPSTREAM CHANGE EXPECTED: last foe faints at end of turn while the player is Dynamaxed, no Dynamax end animation: FAIL
 HNS9714 1-01 Defog by the player removes each foe-side screen: Reflect, Light Screen, Mist, Aurora Veil, Safeguard: PASS
