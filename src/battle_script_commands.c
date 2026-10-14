@@ -3525,7 +3525,7 @@ void SetMoveEffect(enum BattlerId battlerAtk, enum BattlerId effectBattler, enum
                 gBattlescriptCurrInstr = BattleScript_TargetPRLZHeal;
                 break;
             case STATUS1_SLEEP:
-                TryDeactivateSleepClause(GetBattlerSide(effectBattler), gBattlerPartyIndexes[effectBattler]);
+                TryDeactivateSleepClause(effectBattler, gBattlerPartyIndexes[effectBattler]);
                 gBattlescriptCurrInstr = BattleScript_TargetWokeUp;
                 break;
             case STATUS1_BURN:
@@ -8568,7 +8568,7 @@ static void Cmd_healpartystatus(void)
             if (!(isSoundMove && ability == ABILITY_SOUNDPROOF))
             {
                 toHeal |= (1 << i);
-                TryDeactivateSleepClause(GetBattlerSide(gBattlerAttacker), i);
+                TryDeactivateSleepClause(gBattlerAttacker, i);
             }
         }
     }
@@ -9006,7 +9006,7 @@ static void Cmd_curestatuswithmove(void)
         gBattleCommunication[MULTISTRING_CHOOSER] = GetCuredStatusMessage(gBattleMons[gBattlerAttacker].status1);
         gBattleScripting.battler = gBattlerAttacker;
         if (gBattleMons[gBattlerAttacker].status1 & STATUS1_SLEEP)
-            TryDeactivateSleepClause(GetBattlerSide(gBattlerAttacker), gBattlerPartyIndexes[gBattlerAttacker]);
+            TryDeactivateSleepClause(gBattlerAttacker, gBattlerPartyIndexes[gBattlerAttacker]);
 
         gBattleMons[gBattlerAttacker].status1 = 0;
         gBattlescriptCurrInstr = cmd->nextInstr;
@@ -9556,7 +9556,7 @@ static void Cmd_switchoutabilities(void)
     {
     case ABILITY_NATURAL_CURE:
         if (gBattleMons[battler].status1 & STATUS1_SLEEP)
-            TryDeactivateSleepClause(GetBattlerSide(battler), gBattlerPartyIndexes[battler]);
+            TryDeactivateSleepClause(battler, gBattlerPartyIndexes[battler]);
 
         gBattleMons[battler].status1 = 0;
         BtlController_EmitSetMonData(battler, B_COMM_TO_CONTROLLER, REQUEST_STATUS_BATTLE,
@@ -13754,7 +13754,7 @@ void BS_CureStatus(void)
     gBattleCommunication[MULTISTRING_CHOOSER] = GetCuredStatusMessage(gBattleMons[battler].status1);
     gBattleScripting.battler = battler;
     if (gBattleMons[battler].status1 & STATUS1_SLEEP)
-        TryDeactivateSleepClause(GetBattlerSide(battler), gBattlerPartyIndexes[battler]);
+        TryDeactivateSleepClause(battler, gBattlerPartyIndexes[battler]);
 
     gBattleMons[battler].status1 = 0;
     BtlController_EmitSetMonData(battler, B_COMM_TO_CONTROLLER, REQUEST_STATUS_BATTLE, 0, sizeof(gBattleMons[battler].status1), &gBattleMons[battler].status1);
@@ -14378,7 +14378,7 @@ void BS_TryWakeBattlersUproar(void)
 
         if (IsBattlerAlive(battler) && gBattleMons[battler].status1 & STATUS1_SLEEP && !hasSoundproof)
         {
-            TryDeactivateSleepClause(GetBattlerSide(battler), gBattlerPartyIndexes[battler]);
+            TryDeactivateSleepClause(battler, gBattlerPartyIndexes[battler]);
             gBattleMons[battler].status1 = 0;
             gEffectBattler = battler;
             BtlController_EmitSetMonData(battler, B_COMM_TO_CONTROLLER, REQUEST_STATUS_BATTLE, 0, sizeof(gBattleMons[battler].status1), &gBattleMons[battler].status1);
