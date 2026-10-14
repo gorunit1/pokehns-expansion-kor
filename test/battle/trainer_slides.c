@@ -514,8 +514,8 @@ AI_DOUBLE_BATTLE_TEST("Trainer Slide: Doubles: Attacker Lands First STAB Hit")
         OPPONENT(SPECIES_BULBASAUR);
         OPPONENT(SPECIES_BULBASAUR);
     } WHEN {
-        TURN { EXPECT_MOVE(opponentLeft, MOVE_VINE_WHIP, target: playerLeft); }
-        TURN { EXPECT_MOVE(opponentRight, MOVE_VINE_WHIP, target: playerLeft); }
+        TURN { EXPECT_MOVE(opponentLeft, MOVE_VINE_WHIP); }
+        TURN { EXPECT_MOVE(opponentRight, MOVE_VINE_WHIP); }
     } SCENE {
         MESSAGE("The opposing Bulbasaur used Vine Whip!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_VINE_WHIP, opponentLeft);
@@ -566,8 +566,8 @@ AI_DOUBLE_BATTLE_TEST("Trainer Slide: Doubles: Attacker Lands First Super Effect
         OPPONENT(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
-        TURN { EXPECT_MOVE(opponentLeft, MOVE_BITE, target: playerLeft); }
-        TURN { EXPECT_MOVE(opponentRight, MOVE_BITE, target: playerLeft); }
+        TURN { EXPECT_MOVE(opponentLeft, MOVE_BITE); }
+        TURN { EXPECT_MOVE(opponentRight, MOVE_BITE); }
     } SCENE {
         MESSAGE("It's super effective!");
         MESSAGE("Trainer A: This message plays after the attacker lands their first super effective hit.{PAUSE_UNTIL_PRESS}");
@@ -743,7 +743,7 @@ AI_DOUBLE_BATTLE_TEST("Trainer Slide: Doubles: Opponent Last Half Hp")
     } WHEN {
         TURN {
             MOVE(playerRight, MOVE_MEMENTO, target: playerLeft);
-            EXPECT_MOVE(opponentLeft, MOVE_SUPER_FANG, target: playerLeft);}
+            EXPECT_MOVE(opponentLeft, MOVE_SUPER_FANG);}
     } SCENE {
         MESSAGE("Trainer A: Opponent last Mon has < 51% HP.{PAUSE_UNTIL_PRESS}");
         NONE_OF {
@@ -785,7 +785,7 @@ AI_DOUBLE_BATTLE_TEST("Trainer Slide: Doubles: Opponent Last Low Hp")
     } WHEN {
         TURN {
             MOVE(playerRight, MOVE_MEMENTO, target: playerLeft);
-            EXPECT_MOVE(opponentLeft, MOVE_FALSE_SWIPE, target: playerLeft);
+            EXPECT_MOVE(opponentLeft, MOVE_FALSE_SWIPE);
         }
     } SCENE {
         MESSAGE("Trainer A: Opponent last Mon has < 26% HP.{PAUSE_UNTIL_PRESS}");
@@ -1329,7 +1329,7 @@ AI_MULTI_BATTLE_TEST("Trainer Slide: Multi: Opponent Last Switchin")
     } WHEN {
         TURN {
             MOVE(playerLeft, MOVE_MEMENTO, target: opponentRight); SEND_OUT(playerLeft,1);
-            EXPECT_MOVE(opponentLeft, MOVE_MEMENTO, target: playerRight); EXPECT_SEND_OUT(opponentLeft,1);
+            EXPECT_MOVE(opponentLeft, MOVE_MEMENTO); EXPECT_SEND_OUT(opponentLeft,1);
             MOVE(playerRight, MOVE_MEMENTO, target: opponentRight); SEND_OUT(playerRight,1);
             EXPECT_MOVE(opponentRight, MOVE_CELEBRATE);
         }
@@ -1655,9 +1655,9 @@ AI_MULTI_BATTLE_TEST("Trainer Slide: Multi: Opponent Z Move")
     } WHEN {
         TURN {
             MOVE(playerLeft, MOVE_QUICK_ATTACK, gimmick: GIMMICK_Z_MOVE, target: opponentLeft);
-            EXPECT_MOVE(opponentLeft, MOVE_QUICK_ATTACK, gimmick: GIMMICK_Z_MOVE, target: playerLeft);
+            EXPECT_MOVE(opponentLeft, MOVE_QUICK_ATTACK, gimmick: GIMMICK_Z_MOVE);
             MOVE(playerRight, MOVE_QUICK_ATTACK, gimmick: GIMMICK_Z_MOVE, target: opponentLeft);
-            EXPECT_MOVE(opponentRight, MOVE_QUICK_ATTACK, gimmick: GIMMICK_Z_MOVE, target: playerLeft);
+            EXPECT_MOVE(opponentRight, MOVE_QUICK_ATTACK, gimmick: GIMMICK_Z_MOVE);
         }
     } SCENE {
         NONE_OF {
