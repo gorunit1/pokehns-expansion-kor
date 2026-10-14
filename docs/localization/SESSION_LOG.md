@@ -2,6 +2,16 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-14 — 친구 답 2026-10-14(3): 재확인 66·67 확정, 집계 기준, `HNSB2021`, 너즐록 보존 테스트 (클라우드 세션)
+
+- 요청: 사용자가 친구 답(묶음 20·21·A1~A3 확인 — 66 제외 유지·67 보호 장치 유지·64 정정 확인, 검사·집계 확인 요청) 전달. 원문 `FRIEND_REPLY_2026-10-14c.md`.
+- 수정 파일: `test/hns_nuzlocke_whiteout.c`(새), `dev_scripts/hns_verify/kortests/sets/zz_hnsb2021_kor.c`(새), `kortests/expected/summary.txt`·`summary.meta`, `dev_scripts/hns_verify/README.md`, `kortests/run.sh` 주석. 문서 — `friend-reply-2026-10-14c.md`(새), `TRANSLATION_PENDING.md`(새), `evidence/seq348-10711/`(새), `test-baseline-hnsfix1014c.txt`(새), `RECHECK_BEFORE_COMPLETION.md`(35·64·66·67 갱신, 69·70 새), `friend-reply-2026-10-14.md`, `full-sync-seq-337-350.md`, `full-sync-seq-351.md`, `port_sequence.tsv`(`port_status` 열), `BATTLE_MESSAGE_OUTPUT_CHANGES.md`, `TRANSLATION_POLICY.md`, STATUS·SESSION_LOG.
+- 결정: 친구 — 66·67 유지, 64 철회 확인. 메인(요청 범위) — 너즐록 테스트는 `test/`(평소 make check), 한글 회귀는 kortests 세트. 하드코어(69)는 친구에게 질문.
+- 조사: 집계 차이는 메인이 원 로그에서 PASS 줄 수와 고유 수를 세어 같은 이름 4쌍을 찾음. #10656 감사는 메인이 `91d4f798` 변경 줄 161곳을 스크립트로 분류하고 남은 6곳을 직접 읽음. 사전 분석 2갈래(세션 임시 `b24/` — 한글 세트, 너즐록)가 각각 이식 전·보호 장치 없는 트리와 대조. 너즐록 갈래가 하드코어 세이브 삭제 경로(69)를 찾았고 메인이 `CB2_WhiteOut`을 읽어 확인.
+- 검증: STATUS 현재 절.
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 다음 시작점: 친구 문자 → seq 352 #9688.
+
 ### 2026-10-14 — full-sync 묶음 22(seq 351 #9927 + #10089·#10142 앞당김) (클라우드 세션)
 
 - 요청: 사용자 "보냈어"(친구 문자) → seq 351 단독 묶음 제안 → "혼자 할 수 있는 것이라면 ㄱㄱ". 사전 분석 1갈래(사본 `b23/w`, 보고서 `b23/seq351-9927.md`).
