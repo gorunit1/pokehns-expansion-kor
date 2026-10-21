@@ -1,16 +1,22 @@
 # 현재 인수인계 상태
 
-## 2026-10-21 — full-sync 묶음 24(seq 365 #8678 + 회귀 수정 앞당김) (진행 중, 클라우드 세션)
+## 2026-10-21 — full-sync 묶음 24(seq 365 #8678 + 회귀 수정 앞당김) (현재, 클라우드 세션)
 
-- **범위(사용자 "나 혼자 할 수 있는거야? 그렇다면 ㄱㄱ"):** seq 365 #8678 Dynamic trainerbattle Scripts + 같은 unit의 회귀 수정 #10168(동등 판정, 2줄)·#10233(389)·#10286(402)·#10339(421)·#10462(435)을 PR별 커밋으로 365 바로 뒤에 앞당김. 사전 분석(세션 임시 `b26/`)에서 사용자 혼자 정할 수 있다고 판단 — HnS 적응 3개(새 snippet `waitstate` 2줄 — HnS에는 upstream implicit waitstate가 없음, 피라미드 시선 트레이너 스크립트 `_hns`, HG 조우 음악 case 유지), 세이브 정적 PASS, 새 배틀 문장 0.
-- **완료 기준:** 커밋마다 `make hns -j8` 종료 0·새 경고 0, 세이브 정적 비교(이식 전 사실 = 세션 임시 `verify/save/pre-365`, 코드 `4bc77b1c`), 전체 테스트 `test-baseline-seq363.txt` 대비, 한글 회귀 563/652. 실기(시선 트레이너·말 걸기·재대결·더블·no_intro·피라미드)는 친구.
+- **다음 할 일**
+  1. **친구 문자(맥락 끝에 한 번에, 아직 안 만듦):** 묶음 24 알림 + 실기 후보(시선 트레이너가 다가온 뒤 대사, 말 걸기·double·no_intro·재대결·HG 음악·피라미드) + 실기용 ROM `f7a23eb4`/SHA1 `34bb2798…`. 내용은 `full-sync-seq-365.md` "실기 후보"·"upstream 결함"과 같다. 친구 결정이 필요한 새 질문은 없다.
+  2. **친구 답 대기(이전 그대로):** 72(Set Ability 방어), 70 (a)(b), 71(묶음 23), 69 하드 삭제 실기, 실기 결과들.
+  3. **full-sync 다음 seq 366 #10080**(Add the Ability to Disable Map Name in Map Preview Screen, S, unit `U-9557`) — 사용자 지시 때 시작. 389·402·421·435는 앞당김(다시 넣지 않음). 테스트 기준 **`test-baseline-seq363.txt`**, 한글 회귀 기대 **563/652**, 세이브 비교 이식 전 사실은 코드 `f7a23eb4`에서 `make hns -j8` 뒤 `save_compat.py collect`(세션 임시 `verify/save/pre-365`는 이식 전 `4bc77b1c` 기준 — 세션이 바뀌면 다시 만든다).
+- **결과** [`full-sync-seq-365.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-365.md). 커밋 `0a086b20`(#8678 + HnS 적응), `71325bc5`(#10168 동등), `1c037f41`(#10233, 389), `fdb0be06`(#10286, 402), `c6e59024`(#10339, 421), `f7a23eb4`(#10462, 435), 문서 `9c60d122`·이 커밋.
+  - **HnS 적응:** 새 snippet `EventSnippet_TrainerApproach`·`EventSnippet_DoRematchTrainerBattle`에 `waitstate`(HnS에는 upstream implicit waitstate가 없음 — 빠지면 시선 트레이너가 다가오기 전에 대사, 재확인 76), `GetBattlePyramidTrainerScript` HnS `_hns`(77), `InBattlePyramid` HnS 레이아웃 유지, HG 조우 음악 13 case 유지, `ScriptCall` HnS NULL 검사 유지. upstream 결함 3개 기록만(78 — HnS 미도달).
+  - HnS 맵 스크립트 변경 0(래퍼 인자 같음), 새 배틀 문장 0, 배틀 밖 새 텍스트 0(영문 튜토리얼·디버그 매크로만).
+- **검증(코드 `f7a23eb4`):** 커밋마다 `make hns -j8` 종료 0·새 경고 0, ROM 32,963,652 → **32,964,468 B**(+816), EWRAM·IWRAM 같음, SHA1 **`34bb27986ebbcc57fabd79f5ef6bd53561e0f183`**(사전 분석 사본과 같음). 세이브 정적 비교(`pre-365` 대비) PASS(FAIL 0·WARN 0). 전체 `make check` 러너 2,721 / 5,675, 목록 PASS 2,717 — `test-baseline-seq363.txt`와 바이트 같음. 한글 회귀 563/652 기대와 바이트 같음. **실기: 하지 않음(친구).**
 
 ## 2026-10-21 — 친구 답 2026-10-21: 재확인 69 결정·70 수정안, 디버그 슬롯 수정, 타이틀 v3, 금액 표시 (클라우드 세션)
 
 - **다음 할 일**
   1. ~~친구 문자~~ **보냄**(2026-10-21 사용자 확인): 이번 반영 결과 + 질문 3개(재확인 72 Set Ability 방어 1줄, 재확인 70 (a) 파티 제한을 꽉 채운 알·(b) 파트너 배틀 화이트아웃 관찰) + 알림(엄마 저금 오른쪽 정렬, 배너 `-num_colors` 무시) + 실기용 ROM `4bc77b1c`/SHA1 `0ba15dd8…`. 내용은 `friend-reply-2026-10-21.md` "친구에게 물을 것·알릴 것"과 같다. 문안은 세션 답변(저장소 밖).
   2. **친구 답 대기:** 72·70(위), **71**(묶음 23 문자 — 이번 원문은 묶음 23 전 기준이라 다루지 않음), 69 하드 삭제 실기, 실기 결과(이번 디버그·타이틀·금액, 묶음 23 후보 5개, 그 전 미러·너즐록·아테나·웅·경혈찌르기·호출 전체기·트랩셸·텅구리 알로라·오프닝·방벽).
-  3. **full-sync 다음 seq 365 #8678**(Dynamic trainerbattle Scripts, XL, unit `U-8678`) — 사용자 지시 때 시작. 364는 앞당김(`4ae4d7e1`). 테스트 기준 **`test-baseline-seq363.txt`**(이번 코드에서도 바이트 같음), 한글 회귀 기대 **563/652**. 세이브 비교 이식 전 사실은 코드 `4bc77b1c`에서 `make hns -j8` 뒤 `save_compat.py collect`로 만든다(README 3.3절, 세션이 바뀌면 다시 만든다 — 이 세션 임시 사실은 `post-363`뿐).
+  3. ~~full-sync 다음 seq 365 #8678~~ → 묶음 24(위 절). 364는 앞당김(`4ae4d7e1`). 테스트 기준 **`test-baseline-seq363.txt`**(이번 코드에서도 바이트 같음), 한글 회귀 기대 **563/652**. 세이브 비교 이식 전 사실은 코드 `4bc77b1c`에서 `make hns -j8` 뒤 `save_compat.py collect`로 만든다(README 3.3절, 세션이 바뀌면 다시 만든다 — 이 세션 임시 사실은 `post-363`뿐).
 - **원문** [`FRIEND_REPLY_2026-10-21.md`](../friend-handoff/FRIEND_REPLY_2026-10-21.md)(첨부 `attachments/2026-10-21/`), **결과** [`friend-reply-2026-10-21.md`](../friend-handoff/results/1.17.0-port/friend-reply-2026-10-21.md).
 - **커밋:** `e4bb2368`(원문·첨부), `a71a6cad`(디버그 친밀도·포켓러스 `tPartyId = 0;` 2줄 삭제 — 재확인 73), `98f74651`(타이틀 v3: 그래픽 3개, HnS 배너 X 165/229·Y 61, BG 16뱅크·OBJ 9뱅크, `rayquaza.bin` 뱅크 14→15, 팔레트 규칙 240/144 — 재확인 75), `4bc77b1c`(공통 `PrintMoneyAmount` 창 폭 오른쪽 정렬 — 재확인 74), `9e729556`·이 커밋(문서: 재확인 69 확정, 70 보류+수정안, 8za 메모, 72~75 추가).
 - **적용 안 한 것(친구 결정 대기):** Set Ability 취소 방어 1줄(72), 재확인 70 수정. 묶음 23 이전 기록(3·4·5절)은 바꾸지 않고 확인만.

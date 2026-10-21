@@ -2,6 +2,16 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-21 — full-sync 묶음 24(seq 365 #8678 + 회귀 수정 앞당김) (클라우드 세션)
+
+- 요청: 사용자 "나 혼자 할 수 있는거야? 그렇다면 ㄱㄱ" → 사전 분석으로 혼자 정할 수 있는 범위인지 판단 → 그렇다고 보고 바로 적용.
+- 사전 분석: 세션 임시 `b26/w`(로컬 클론 + 빌드 산출물 tar 복사 — 컨테이너에 `rsync`가 없어 `mkcopy.sh`는 실패)에 upstream `format-patch`를 `git apply --reject`. 거부 hunk 4파일(`battle_setup.c` 음악 함수, `battle_pyramid.c` 이름, `script.c` 2개, `SUMMARY.md`). 함수 단위 3자 대조(upstream #8678 전·후 vs HnS)로 HnS가 다른 함수가 `CB2_EndTrainerBattle`(#10568, 이미 적용)·`PlayTrainerEncounterMusic`·`InBattlePyramid_`·`ScriptCall`뿐임을 확인. upstream `specials.inc`의 `waitstate=1`과 HnS `special` 매크로를 비교해 implicit waitstate 부재를 찾음(400788ddf6). 회귀 수정 4개 + #10168을 넣은 뒤 바뀐 함수·매크로가 upstream 1.17.1과 같음(HG 음악 case 제외)을 확인.
+- 수정 파일: 커밋별 — `full-sync-seq-365.md` 커밋 표. 문서 — `full-sync-seq-365.md`(새), `RECHECK_BEFORE_COMPLETION.md` 76~78, `port_sequence.tsv` 365·389·402·421·435, STATUS·SESSION_LOG.
+- 결정(메인, 사용자 위임 범위): 회귀 수정 PR별 커밋으로 앞당김(묶음 22 선례), HnS 적응 3개(옛 HnS 동작 보존), upstream 결함 3개 기록만(HnS 미도달), 추가한 줄 끝 공백 36줄 제거·튜토리얼 끝 줄바꿈. 친구 질문 없음(알림·실기만).
+- 검증: STATUS 현재 절. `make check`는 `build/b26-check.log`(저장소 밖으로 무시됨), 한글 회귀 `kor-b26`.
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 다음 시작점: 친구 문자(묶음 24 알림·실기) → seq 366 #10080.
+
 ### 2026-10-21 — 친구 답 2026-10-21: 재확인 69·70, 디버그 슬롯, 타이틀 v3, 금액 표시 (클라우드 세션)
 
 - 요청: 사용자(새 컨테이너)가 문서·git 대조 뒤 친구 메시지를 기다리라고 함 → 친구 원문 + 첨부 3개 전달 → ① 원문 저장 ② 대기 목록과 대조 ③ 결정 구분 보고 → "ㄱㄱ".

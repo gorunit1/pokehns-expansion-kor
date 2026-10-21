@@ -64,7 +64,9 @@
 
 - **빌드:** 커밋마다 `make hns -j8` 종료 0, 새 경고 0(`warncheck.sh`). ROM은 위 표. `0a086b20`→`71325bc5`는 크기가 같고 SHA1만 다르다(`battle_setup.c` 줄 번호가 바뀌어 `assertf`의 `__LINE__`이 달라짐).
 - **세이브 정적 비교**(이식 전 사실 = 세션 임시 `verify/save/pre-365`, 코드 `4bc77b1c`): **PASS(FAIL 0, WARN 0)**.
-- **전체 테스트·한글 회귀:** 진행 중(다음 커밋에 결과).
+- **전체 테스트**(`GITHUB_ACTION=1 make check BUILD=hns -j8`, 코드 `f7a23eb4`): 러너 PASSED 2,721 / TOTAL 5,675(KNOWN_FAILING 25), 목록 PASS 2,717 — **`test-baseline-seq363.txt`와 바이트 같음**(새 PASS 0, 사라진 PASS 0). 트레이너 배틀 스크립트를 직접 도는 테스트는 저장소에 없어 흐름은 위 코드 대조로만 확인했다. 다음 기준도 `test-baseline-seq363.txt` 그대로.
+- **한글 회귀**(`ALLOW_REPO=1 kortests/run.sh <저장소> kor-b26 8`, 코드 `f7a23eb4`): **563/652**, 기대와 바이트 같음, `판정: PASS (기대와 같음)`.
+- **실기: 하지 않음(친구).**
 
 ## 실기(mGBA) 후보 — 친구
 
