@@ -1,5 +1,11 @@
 # 현재 인수인계 상태
 
+## 2026-10-21 — 친구 답 2026-10-21 처리 (진행 중, 클라우드 세션)
+
+- **범위(사용자 "ㄱㄱ"):** 원문 [`FRIEND_REPLY_2026-10-21.md`](../friend-handoff/FRIEND_REPLY_2026-10-21.md)(`e4bb2368`). 커밋을 나눠서 ① 디버그 친밀도·포켓러스 슬롯 0 덮어쓰기 2줄 삭제(`src/debug.c`) ② 타이틀 v3(그래픽 3개·`src/title_screen.c`·`graphics_file_rules.mk`·`rayquaza.bin`) ③ 공통 금액 출력 폭(`src/money.c`) ④ 문서(재확인 69 결정, 70 수정안 보고, Set Ability 방어안 보고 — 둘 다 적용 안 함). 재확인 71·묶음 23 실기 후보는 이번 원문에 없어 계속 대기.
+- **진행:** 코드 커밋 `a71a6cad`(디버그)·`98f74651`(타이틀 v3)·`4bc77b1c`(금액) 끝, 빌드 종료 0·새 경고 0, 세이브 정적 PASS. 결과 [`friend-reply-2026-10-21.md`](../friend-handoff/results/1.17.0-port/friend-reply-2026-10-21.md), 재확인 69·70·8za 갱신·72~75 추가. **남은 것:** 전체 `make check`(`build/f1021-check.log`) → `testlist.sh` 대 `test-baseline-seq363.txt`, 한글 회귀 563/652, 결과 문서 검증 절·SESSION_LOG 마무리, 친구 문자(맥락 끝에 한 번에).
+- **완료 기준:** 커밋마다 `make hns -j8` 종료 0·새 경고 0, 세이브 정적 비교(이식 전 사실 = 세션 임시 `verify/save/post-363`, 코드 `18dfc352` = ROM SHA1 `c474df46…` 재현 확인), 전체 테스트 `test-baseline-seq363.txt` 대비, 한글 회귀 563/652. 실기는 친구.
+
 ## 2026-10-14 — full-sync 묶음 23(seq 352~363, 353은 묶음 22에서 앞당김) (현재, 클라우드 세션)
 
 - **다음 할 일**
