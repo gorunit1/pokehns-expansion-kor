@@ -162,7 +162,9 @@
 
 - **빌드:** 커밋마다 `make hns -j8` 종료 0, 새 경고 0(`warncheck.sh`). EWRAM 250,408 B·IWRAM 25,516 B는 묶음 23과 같다. ROM은 32,960,564 B(`a71a6cad`, SHA1 `a24e0af9…`) → 32,963,668 B(`98f74651`, `a1420ec7…`) → **32,963,652 B(`4bc77b1c`, SHA1 `0ba15dd8e71619b8392c8db858693221ba187f21`)**. 이식 전 기준 `18dfc352`를 이 컨테이너에서 다시 빌드하면 SHA1 `c474df46…`로 묶음 23과 같다(툴체인 같음).
 - **세이브 정적 비교**(이식 전 사실 = 세션 임시 `verify/save/post-363`, 코드 `18dfc352`): **PASS(FAIL 0, WARN 0)**. 세이브 구조 변화 없음.
-- **전체 테스트·한글 회귀:** 진행 중(다음 커밋에 결과).
+- **전체 테스트**(`GITHUB_ACTION=1 make check BUILD=hns -j8`, 코드 `4bc77b1c`): 러너 PASSED **2,721** / TOTAL 5,675(KNOWN_FAILING 25)로 묶음 23과 같다. 목록(`testlist.sh`, 고유 행) PASS **2,717**, **`test-baseline-seq363.txt`와 바이트 같음**(새 PASS 0, 사라진 PASS 0). 같은 집계 기준(목록 대 목록)으로 비교했다. 러너 = 목록 + 4. 기준 목록은 그대로 둔다. `make` 종료 코드 2는 기존 FAIL 때문이며 묶음 23과 같다.
+- **한글 회귀**(`ALLOW_REPO=1 kortests/run.sh <저장소> kor-f1021 8`, 코드 `4bc77b1c`): **563/652**, `status lines that differ from expected: 0`, 요약 파일이 기대와 바이트 같음, `판정: PASS (기대와 같음)`. `HNSB2021` 30/30.
+- **실기: 하지 않음(친구).** 친구 자동 검사 PASS·실기 PASS와 위 클라우드 자동 검사는 따로 관리한다.
 
 ## 실기(mGBA) 후보 — 친구
 

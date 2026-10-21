@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-21 — 친구 답 2026-10-21: 재확인 69·70, 디버그 슬롯, 타이틀 v3, 금액 표시 (클라우드 세션)
+
+- 요청: 사용자(새 컨테이너)가 문서·git 대조 뒤 친구 메시지를 기다리라고 함 → 친구 원문 + 첨부 3개 전달 → ① 원문 저장 ② 대기 목록과 대조 ③ 결정 구분 보고 → "ㄱㄱ".
+- 환경: upstream 사본 `/home/user/pokeemerald-expansion-upstream`은 이미 있었다(전체 히스토리, 다시 클론 안 함). `18dfc352` 빌드 SHA1 `c474df46…` = 묶음 23 → 세션 임시 `verify/save/post-363` 수집.
+- 수정 파일: `src/debug.c`(`a71a6cad`); `graphics/title_screen/hns/{pokemon_logo.png,pokemon_logo.pal,emerald_version.png,rayquaza.bin}`·`src/title_screen.c`·`graphics_file_rules.mk`(`98f74651`); `src/money.c`(`4bc77b1c`). 문서 — `FRIEND_REPLY_2026-10-21.md`·`attachments/2026-10-21/`(새, `e4bb2368`), `friend-reply-2026-10-21.md`(새), `RECHECK_BEFORE_COMPLETION.md`(69·70·8za, 72~75 새), STATUS·SESSION_LOG.
+- 결정: 친구 — 69 하드 삭제 유지, 70 보류, 디버그 2줄 삭제, 타이틀 v3 값, 금액 요구 1~6. 메인(요청 범위) — 금액은 참고 패치에서 `left = 0` 분기 제외(수량 표시를 지움, 닿지 않음)·지우는 색을 글꼴 배경 속성으로, 엄마 저금 입력도 요구대로 오른쪽 정렬(친구 알림). 배너 `-num_colors 144`는 gbagfx가 PNG 입력에서 무시함을 확인하고 규칙은 요청대로 둠(알림). Set Ability 방어·70 수정은 보고만.
+- 조사: Set Ability 취소 주소를 `pokehns.map`으로 확인(`gParties` `0x0203490C` + 25,500 → `0x0203ACA8`, `gOamMatrices` 끝)하고 `IsBadEgg()` 쓰기 경로를 읽음. upstream `git grep`으로 master도 같음(`waitstate` 없음), `git log`로 #10121(seq 449)이 디버그 편집기를 다시 씀을 확인. 1.17.1까지 `money.c` PR은 #10322(seq 259, 이미 적용)뿐, 타이틀은 없음. 70은 `NuzlockeDeleteFaintedPartyPokemon`·`CompactPartySlots`·`MoveFirstBoxPokemonToParty`·`HealPlayerParty`·`CalculatePlayerPartyCount`를 읽고 파트너 배틀 예외를 관찰(미측정). 금액은 테스트 러너 임시 테스트(세션 임시 `zz_money_tmp.c`)로 진짜 창 버퍼를 읽어 수정 전·후를 실측.
+- 검증: STATUS 현재 절. `make check`는 `build/f1021-check.log`(저장소 밖으로 무시됨), 한글 회귀 `kor-f1021`.
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 다음 시작점: 친구 문자 → 친구 답(72·70·71·실기) 또는 사용자 지시 시 seq 365 #8678.
+
 ### 2026-10-14 — full-sync 묶음 23(seq 352~363) (클라우드 세션)
 
 - 요청: 사용자 "ㄱㄱ"(seq 352부터) → 사전 분석 결정 보고 → "추천대로 적용". 사전 분석 3갈래(세션 임시 `b25/` — a 352·354·356·362, b 355, c 357~361·363), 각 사본에서 빌드·테스트.
