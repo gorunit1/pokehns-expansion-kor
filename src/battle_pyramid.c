@@ -1679,7 +1679,7 @@ u8 CurrentBattlePyramidLocation(void)
         return PYRAMID_LOCATION_NONE;
 }
 
-bool8 InBattlePyramid_(void)
+bool8 InBattlePyramid(void)
 {
     return (gMapHeader.mapLayoutId == LAYOUT_BATTLE_FRONTIER_BATTLE_PYRAMID_FLOOR || gMapHeader.mapLayoutId == LAYOUT_BATTLE_FRONTIER_BATTLE_PYRAMID_FLOOR_HNS)
         || (gMapHeader.mapLayoutId == LAYOUT_BATTLE_FRONTIER_BATTLE_PYRAMID_TOP || gMapHeader.mapLayoutId == LAYOUT_BATTLE_FRONTIER_BATTLE_PYRAMID_TOP_HNS);
@@ -2262,4 +2262,12 @@ u16 GetBattlePyramidPickupItemId(void)
         return sPickupItemsLvlOpen[round][i];
     else
         return sPickupItemsLvl50[round][i];
+}
+
+const u8 *GetBattlePyramidTrainerScript() {
+#if IS_HNS
+    return BattlePyramid_TrainerBattle_hns;
+#else
+    return BattlePyramid_TrainerBattle;
+#endif
 }
