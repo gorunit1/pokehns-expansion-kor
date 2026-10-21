@@ -332,7 +332,10 @@ $(TITLESCREENGFXDIR)/pokemon_logo.gbapal: %.gbapal: %.pal
 	$(GFX) $< $@ -num_colors 224
 
 $(TITLESCREENGFXDIR)/hns/pokemon_logo.gbapal: %.gbapal: %.pal
-	$(GFX) $< $@ -num_colors 224
+	$(GFX) $< $@ -num_colors 240
+
+$(TITLESCREENGFXDIR)/hns/emerald_version.gbapal: %.gbapal: %.png
+	$(GFX) $< $@ -num_colors 144
 
 $(TITLESCREENGFXDIR)/emerald_version.8bpp: %.8bpp: %.png
 	$(GFX) $< $@ -mwidth 8 -mheight 4

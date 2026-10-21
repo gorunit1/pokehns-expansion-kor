@@ -30,11 +30,16 @@ enum {
 };
 
 #define VERSION_BANNER_RIGHT_TILEOFFSET 64
+#if IS_HNS
+#define VERSION_BANNER_LEFT_X 165
+#define VERSION_BANNER_RIGHT_X 229
+#else
 #define VERSION_BANNER_LEFT_X 98
 #define VERSION_BANNER_RIGHT_X 162
+#endif
 #define VERSION_BANNER_Y 2
 #if IS_HNS
-#define VERSION_BANNER_Y_GOAL 58
+#define VERSION_BANNER_Y_GOAL 61
 #else
 #define VERSION_BANNER_Y_GOAL 66
 #endif
@@ -612,7 +617,11 @@ void CB2_InitTitleScreen(void)
         // bg2
         DecompressDataWithHeaderVram(gTitleScreenPokemonLogoGfx, (void *)(BG_CHAR_ADDR(0)));
         DecompressDataWithHeaderVram(gTitleScreenPokemonLogoTilemap, (void *)(BG_SCREEN_ADDR(9)));
+        #if IS_HNS
+        LoadPalette(gTitleScreenBgPalettes, BG_PLTT_ID(0), 16 * PLTT_SIZE_4BPP);
+        #else
         LoadPalette(gTitleScreenBgPalettes, BG_PLTT_ID(0), 15 * PLTT_SIZE_4BPP);
+        #endif
         // bg3
         DecompressDataWithHeaderVram(sTitleScreenRayquazaGfx, (void *)(BG_CHAR_ADDR(2)));
         DecompressDataWithHeaderVram(sTitleScreenRayquazaTilemap, (void *)(BG_SCREEN_ADDR(26)));
@@ -629,7 +638,11 @@ void CB2_InitTitleScreen(void)
         LoadCompressedSpriteSheet(&sSpriteSheet_EmeraldVersion[0]);
         LoadCompressedSpriteSheet(&sSpriteSheet_PressStart[0]);
         LoadCompressedSpriteSheet(&sPokemonLogoShineSpriteSheet[0]);
+        #if IS_HNS
+        LoadPalette(gTitleScreenEmeraldVersionPal, OBJ_PLTT_ID(0), 9 * PLTT_SIZE_4BPP);
+        #else
         LoadPalette(gTitleScreenEmeraldVersionPal, OBJ_PLTT_ID(0), PLTT_SIZE_4BPP);
+        #endif
         LoadSpritePalette(&sSpritePalette_PressStart[0]);
         gMain.state = 2;
         break;
