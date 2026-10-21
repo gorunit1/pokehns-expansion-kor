@@ -5812,7 +5812,6 @@ static void DebugNativeStep_Party_SetFriendshipMain(u8 taskId)
     gTasks[taskId].tFriendship = friendship;
     gTasks[taskId].tInput = friendship;
     gTasks[taskId].tDigit = 0;
-    gTasks[taskId].tPartyId = 0;
 }
 
 void DebugNative_Party_SetFriendship(void)
@@ -5914,7 +5913,6 @@ static void DebugNativeStep_Party_SetPokerusMain(u8 taskId)
     gTasks[taskId].tStrain = strain;
     gTasks[taskId].tInput = strain;
     gTasks[taskId].tDigit = 0;
-    gTasks[taskId].tPartyId = 0;
 }
 
 void DebugNative_Party_SetPokerus(void)
