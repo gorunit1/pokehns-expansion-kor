@@ -11,7 +11,8 @@
 - 조사: Set Ability 취소 주소를 `pokehns.map`으로 확인(`gParties` `0x0203490C` + 25,500 → `0x0203ACA8`, `gOamMatrices` 끝)하고 `IsBadEgg()` 쓰기 경로를 읽음. upstream `git grep`으로 master도 같음(`waitstate` 없음), `git log`로 #10121(seq 449)이 디버그 편집기를 다시 씀을 확인. 1.17.1까지 `money.c` PR은 #10322(seq 259, 이미 적용)뿐, 타이틀은 없음. 70은 `NuzlockeDeleteFaintedPartyPokemon`·`CompactPartySlots`·`MoveFirstBoxPokemonToParty`·`HealPlayerParty`·`CalculatePlayerPartyCount`를 읽고 파트너 배틀 예외를 관찰(미측정). 금액은 테스트 러너 임시 테스트(세션 임시 `zz_money_tmp.c`)로 진짜 창 버퍼를 읽어 수정 전·후를 실측.
 - 검증: STATUS 현재 절. `make check`는 `build/f1021-check.log`(저장소 밖으로 무시됨), 한글 회귀 `kor-f1021`.
 - 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
-- 다음 시작점: 친구 문자 → 친구 답(72·70·71·실기) 또는 사용자 지시 시 seq 365 #8678.
+- 친구 문자: 보냄(2026-10-21 사용자 확인, 문안은 세션 답변 — 내용은 `friend-reply-2026-10-21.md` "친구에게 물을 것·알릴 것"과 같다).
+- 다음 시작점: 친구 답(72·70·71·실기) 또는 사용자 지시 시 seq 365 #8678.
 
 ### 2026-10-14 — full-sync 묶음 23(seq 352~363) (클라우드 세션)
 
