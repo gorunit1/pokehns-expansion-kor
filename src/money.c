@@ -183,31 +183,32 @@ void PrintMoneyAmountInMoneyBox(u8 windowId, int amount, u8 speed)
     PrintMoneyAmount(windowId, CalculateMoneyTextHorizontalPosition(amount), 1, amount, speed);
 }
 
-static u32 CalculateLeadingSpacesForMoney(u32 numDigits)
-{
-    u32 leadingSpaces = CountDigits(INT_MAX) - StringLength(gStringVar1);
-    return (numDigits > 8) ? leadingSpaces : leadingSpaces - 2;
-}
+// HnS: the amount ends with the Korean "원" instead of starting with "¥", so padding it with spacers
+// to a fixed width from x pushed "원" 2 px past the 80 px money windows. x is now the left limit
+// (money label or item count before it); the amount is right-aligned to the window's own width.
+#define MONEY_RIGHT_PADDING 2
 
 void PrintMoneyAmount(u8 windowId, u8 x, u8 y, int amount, u8 speed)
 {
-    u8 *txtPtr = gStringVar4;
-    u32 numDigits = CountDigits(amount);
-    u32 maxDigits = (numDigits > 6) ? MAX_MONEY_DIGITS: 6;
-    u32 leadingSpaces;
+    u32 windowWidth = WindowWidthPx(windowId);
+    u32 availableWidth, stringWidth, fontId;
 
-    ConvertIntToDecimalStringN(gStringVar1, amount, STR_CONV_MODE_LEFT_ALIGN, maxDigits);
+    ConvertIntToDecimalStringN(gStringVar1, amount, STR_CONV_MODE_LEFT_ALIGN, MAX_MONEY_DIGITS);
+    StringExpandPlaceholders(gStringVar4, gText_PokedollarVar1);
 
-    leadingSpaces = CalculateLeadingSpacesForMoney(numDigits);
+    if (x + MONEY_RIGHT_PADDING >= windowWidth)
+        x = 0;
+    availableWidth = windowWidth - x - MONEY_RIGHT_PADDING;
+    fontId = GetFontIdToFit(gStringVar4, FONT_NORMAL, 0, availableWidth);
+    stringWidth = GetStringWidth(fontId, gStringVar4, 0);
 
-    while (leadingSpaces-- > 0)
-        *(txtPtr++) = CHAR_SPACER;
+    // Clear the previous amount, which can be wider than the new one.
+    FillWindowPixelRect(windowId, PIXEL_FILL(GetFontAttribute(FONT_NORMAL, FONTATTR_COLOR_BACKGROUND)),
+                        x, 0, windowWidth - x, GetWindowAttribute(windowId, WINDOW_HEIGHT) * 8);
 
-    StringExpandPlaceholders(txtPtr, gText_PokedollarVar1);
-
-    if (numDigits > 8)
-        PrependFontIdToFit(gStringVar4, txtPtr + 1 + numDigits, FONT_NORMAL, 54);
-    AddTextPrinterParameterized(windowId, FONT_NORMAL, gStringVar4, x, y, speed, NULL);
+    if (stringWidth <= availableWidth)
+        x = windowWidth - MONEY_RIGHT_PADDING - stringWidth;
+    AddTextPrinterParameterized(windowId, fontId, gStringVar4, x, y, speed, NULL);
 }
 
 void PrintMoneyAmountInMoneyBoxWithBorder(u8 windowId, u16 tileStart, u8 pallete, int amount)
