@@ -1261,8 +1261,11 @@ static bool16 IsInfiltratedSpaceCenter(struct WarpData *warp)
     return FALSE;
 }
 
+// HnS: checks the map being asked about (warp), not the player's current location. With the current
+// location, GetWarpDestinationMusic/TransitionMapMusic got the takeover theme for every destination
+// while leaving a takeover map, so the old track kept playing or was cut without a fade.
 #define IS_MAP(mapGroupId, mapNumId) \
-    (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(mapGroupId) && gSaveBlock1Ptr->location.mapNum == MAP_NUM(mapNumId))
+    (warp->mapGroup == MAP_GROUP(mapGroupId) && warp->mapNum == MAP_NUM(mapNumId))
 
 static bool16 IsRocketTakeover(struct WarpData *warp)
 {
@@ -1276,7 +1279,9 @@ static bool16 IsRocketTakeover(struct WarpData *warp)
             IS_MAP(MAP_GOLDENROD_CITY_RADIO_TOWER_4F_HNS, MAP_GOLDENROD_CITY_RADIO_TOWER_4F_HNS) ||
             IS_MAP(MAP_GOLDENROD_CITY_RADIO_TOWER_5F_HNS, MAP_GOLDENROD_CITY_RADIO_TOWER_5F_HNS) ||
             IS_MAP(MAP_GOLDENROD_CITY_UNDERGROUND_ENTRANCE_HNS, MAP_GOLDENROD_CITY_UNDERGROUND_ENTRANCE_HNS) ||
-            IS_MAP(MAP_GOLDENROD_CITY_UNDERGROUND_TUNNEL_HNS, MAP_GOLDENROD_CITY_UNDERGROUND_TUNNEL_HNS))
+            IS_MAP(MAP_GOLDENROD_CITY_UNDERGROUND_TUNNEL_HNS, MAP_GOLDENROD_CITY_UNDERGROUND_TUNNEL_HNS) ||
+            IS_MAP(MAP_GOLDENROD_CITY_UNDERGROUND_SWITCHES_HNS, MAP_GOLDENROD_CITY_UNDERGROUND_SWITCHES_HNS) ||
+            IS_MAP(MAP_GOLDENROD_CITY_UNDERGROUND_STORAGE_HNS, MAP_GOLDENROD_CITY_UNDERGROUND_STORAGE_HNS))
             return TRUE;
     }
     return FALSE;
