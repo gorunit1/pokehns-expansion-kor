@@ -1,10 +1,16 @@
 # 현재 인수인계 상태
 
-## 2026-10-22 — 친구 요청 2026-10-22: 장소별 BGM을 HGSS 원작과 맞추기 (진행 중, 클라우드 세션)
+## 2026-10-22 — 친구 요청 2026-10-22: 장소별 BGM을 HGSS 원작과 맞추기 (현재, 클라우드 세션)
 
-- **범위(사용자 "ㄱㄱ"):** 원문 [`FRIEND_REPLY_2026-10-22.md`](../friend-handoff/FRIEND_REPLY_2026-10-22.md)(`50b9825a`). 커밋 ① `map.json` 음악 ID(관동 센터 11·체육관 8·사파리 4·28번도로 쪽 3·방울소리좁은길·벼랑끝 게이트·매몰탑·유적 5·금빛 지하 2) ② 금빛 지하 스위치방·창고를 `IsRocketTakeover`에(점거 중 점거 곡 유지) ③ 방울탑 옥상 `MUS_NONE` + 은빛산 정상식 바람(`SE_M_BLIZZARD` 루프, 시작 메뉴 재개, 호오 배틀 뒤 재개, 호오 이벤트 `waitse` 삭제 — 루프 때문에 소프트락). 원작 대조 자료는 pret pokeheartgold `src/data/map_headers.h`(세션 임시 `phg/`). 추가 불일치는 보고만.
-- **진행:** 커밋 `3f718b1a`(map.json 36개)·`fc5ff3fc`(점거 목록 + `IS_MAP` 목적지 수정)·`c5415296`(옥상 바람) 끝, 빌드 종료 0·새 경고 0, 세이브 정적 PASS. 결과 [`bgm-hgss-2026-10-22.md`](../friend-handoff/results/bgm-hgss-2026-10-22.md)(추가 불일치 7건 보고만). **남은 것:** 전체 `make check`(`build/bgm-check.log`)·한글 회귀 결과, SESSION_LOG, 친구 문자.
-- **완료 기준:** 커밋마다 `make hns -j8` 종료 0·새 경고 0, 세이브 정적 비교, 전체 테스트 `test-baseline-seq363.txt` 대비, 한글 회귀 563/652. 실기는 친구.
+- **다음 할 일**
+  1. **친구 문자(맥락 끝에 한 번에, 아직 안 보냄):** 반영 결과 + 질문 2개(6절 추가 불일치 7건을 바꿀지, 은빛산·옥상 바람 중 DexNav 멈춤 위험) + 알림(`IS_MAP` 목적지 수정, 호오 `waitse` 삭제, 밤 옥상 미도달) + 실기용 ROM `c5415296`. 내용은 `bgm-hgss-2026-10-22.md` 8·9절과 같다.
+  2. **친구 답 대기(이전 그대로):** 72(Set Ability), 70 (a)(b), 71(묶음 23), 69 하드 삭제 실기, 실기 결과(묶음 23·24, 10-21 반영, 이번 BGM).
+  3. **full-sync 다음 seq 366 #10080** — 사용자 지시 때. 테스트 기준 `test-baseline-seq363.txt`, 한글 회귀 563/652, 세이브 비교 이식 전 사실은 코드 `c5415296`에서 `make hns -j8` 뒤 `collect`.
+- **원문** [`FRIEND_REPLY_2026-10-22.md`](../friend-handoff/FRIEND_REPLY_2026-10-22.md)(`50b9825a`), **결과** [`bgm-hgss-2026-10-22.md`](../friend-handoff/results/bgm-hgss-2026-10-22.md). 원작 자료 pret pokeheartgold `src/data/map_headers.h`·`src/sys_flags.c`(세션 임시 `phg/`, 2026-10-22).
+- **커밋:** `3f718b1a`(map.json 36개 — 관동 센터 11·체육관 8 → HG, 연분홍 사파리 4 → `MUS_HG_SAFARI_ZONE`, 28번도로·집·은빛산 외부 → `MUS_HG_POKEMON_LEAGUE`, 방울소리좁은길 → `MUS_NONE`, 벼랑끝 게이트 → `MUS_HG_ROUTE34`, 매몰탑·유적 방 5·금빛 지하 2 → `MUS_HG_UNION_CAVE`), `fc5ff3fc`(금빛 지하 2를 `IsRocketTakeover`에 — 점거 중 점거 곡 유지, `IS_MAP`이 현재 위치 대신 목적지를 보게 — 점거 중 금빛시티 → 도로에서 점거 곡이 남던 버그), `c5415296`(방울탑 옥상 `MUS_NONE` + `SE_M_BLIZZARD` 루프 바람, 시작 메뉴·호오 배틀 뒤 재개, 호오 이벤트 `waitse` 삭제 — 루프 때문에 소프트락), 문서 `b6f68486`·이 커밋.
+- **연속성:** 엔진이 같은 곡이면 워프·연결 모두 이어 재생(`TryFadeOutOldMapMusic`·`Overworld_PlaySpecialMapMusic`·`TransitionMapMusic`) — `map.json`만으로 충분, 공통 음악 함수 변경 0.
+- **보고만(친구 판단):** 금빛 자전거 가게·백화점 지하·엘리베이터, 노랑 격투 도장, 상록 집 2, 소용돌이섬 루기아 방(원작 무음), 성도 사파리 구역(원작 헤더 34번도로 계열).
+- **검증(코드 `c5415296`):** 커밋마다 `make hns -j8` 종료 0·새 경고 0, ROM **32,964,580 B**(BGM 전 32,964,468), EWRAM·IWRAM 같음. 세이브 정적 PASS(FAIL 0·WARN 0). 전체 `make check` 러너 2,721 / 5,675, 목록 `test-baseline-seq363.txt`와 바이트 같음. 한글 회귀 563/652 바이트 같음. **실기: 하지 않음(친구).**
 
 ## 2026-10-21 — full-sync 묶음 24(seq 365 #8678 + 회귀 수정 앞당김) (클라우드 세션)
 

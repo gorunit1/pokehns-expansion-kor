@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-22 — 친구 요청: 장소별 BGM을 HGSS 원작과 맞추기 (클라우드 세션)
+
+- 요청: 사용자가 친구 BGM 요청 전달 → 원문 저장·분석 보고 → "ㄱㄱ".
+- 출처: pret pokeheartgold(`https://github.com/pret/pokeheartgold`, 2026-10-22 sparse 클론, 세션 임시 `phg/`) `src/data/map_headers.h`(맵 540개 낮·밤 곡), `src/sys_flags.c`(이벤트 음악 덮어쓰기 — 점거는 라디오타워만), `include/constants/sndseq.h`. 외부 자료라 데이터로만 씀.
+- 수정 파일: `data/maps/*_hns/map.json` 36개(`3f718b1a`), `src/overworld.c`(`fc5ff3fc`), `data/maps/TinTower_Roof{Day,Night}_hns/{map.json,scripts.inc}`·`include/constants/vars_hns.h`·`src/start_menu.c`(`c5415296`). 문서 — `FRIEND_REPLY_2026-10-22.md`(새), `bgm-hgss-2026-10-22.md`(새), STATUS·SESSION_LOG.
+- 결정: 친구 — 대상 맵과 곡. 메인(요청 범위) — 금빛 지하 점거 중 점거 곡 유지("이벤트 음악 우선"), `IS_MAP` 목적지 수정(새 곡 전환이 끊기지 않게), 옥상 바람은 은빛산 구조 그대로 + 배틀 뒤 재개, 호오 `waitse` 삭제(소프트락 방지). 추가 불일치는 보고만.
+- 조사: `sound.c`·`overworld.c` 음악 상태 기계 읽음(`MUS_NONE` → `PlayBGM` 0번). `SE_M_BLIZZARD`가 `GOTO` 루프 SE1이고 `SE_EXIT`(SE1)가 덮는 것, `waitse`·`Std_FindItem`·DexNav의 `IsSEPlaying()` 대기, 배틀 시작의 30프레임 SE 정지를 확인. 전체 대조는 세션 임시 `audit.py`(지역별 곡 집합 + 같은 지역 이름 짝짓기, 잘못 짝지은 것 손으로 거름).
+- 검증: STATUS 현재 절.
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 다음 시작점: 친구 문자 → 친구 답 또는 seq 366 #10080.
+
 ### 2026-10-21 — full-sync 묶음 24(seq 365 #8678 + 회귀 수정 앞당김) (클라우드 세션)
 
 - 요청: 사용자 "나 혼자 할 수 있는거야? 그렇다면 ㄱㄱ" → 사전 분석으로 혼자 정할 수 있는 범위인지 판단 → 그렇다고 보고 바로 적용.
