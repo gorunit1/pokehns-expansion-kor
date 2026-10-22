@@ -2,7 +2,7 @@
   "id": "MAP_BELLCHIME_TRAIL_HNS",
   "name": "BellchimeTrail_hns",
   "layout": "LAYOUT_BELLCHIME_TRAIL_HNS",
-  "music": "MUS_HG_BELL_TOWER",
+  "music": "MUS_NONE",
   "region_map_section": "MAPSEC_ECRUTEAK_CITY",
   "requires_flash": false,
   "weather": "WEATHER_LEAVES",

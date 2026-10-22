@@ -2,7 +2,7 @@
   "id": "MAP_FUCHSIA_CITY_SAFARI_ZONE_CAVE_HNS",
   "name": "FuchsiaCity_SafariZoneCave_hns",
   "layout": "LAYOUT_FUCHSIA_CITY_SAFARI_ZONE_CAVE_HNS",
-  "music": "MUS_SAFARI_ZONE",
+  "music": "MUS_HG_SAFARI_ZONE",
   "region_map_section": "MAPSEC_FUCHSIA_CITY",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
