@@ -366,18 +366,18 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 363	10096	623	1.17.0	g6_overworld_refactors	U-owe-8434	9537,8434	M	refactor	N	N	-3KB(추정)	Use `overworld_ascending_frames` in picture tables	부분 적용(sPicTable_JumpLongGrass HnS 유지) 18dfc352
 364	10142	626	1.17.0	g5_general_cleanup_docs	U-outbreak-9927	9927	S	fix	N	N	0(앞당김 적용 4ae4d7e1, 2026-10-14 — seq 351 바로 뒤)	Fix Debug Menu's `Fly to map` not working immediately	앞당김 적용 4ae4d7e1(351 바로 뒤)
 365	8678	627	1.17.0	g5_general_cleanup_docs	U-8678	-	XL	feature	N	N	+2~4KB	Dynamic trainerbattle Scripts	부분 적용(HnS 적응 — snippet waitstate 2줄·피라미드 _hns 스크립트·HG 조우 음악) 0a086b20
-366	10080	628	1.17.0	g6_overworld_refactors	U-9557	9557	S	feature	N	N	~0	Add the Ability to Disable Map Name in Map Preview Screen	
-367	9878	629	1.17.0	g6_overworld_refactors	U-egg-9878	8943,10051	M	refactor	N	N	~0	Rework egg creation and hatching mechanisms	
-368	9955	630	1.17.0	g6_overworld_refactors	U-dailyseed-9920	9920,10050	S	feature	N	N	~0	Add config to use daily seed for lottery tickets and mirage island	
-369	9966	631	1.17.0	g6_overworld_refactors	U-owe-8434	8434	S	refactor	N	N	-1KB	Do not set overworld var species for vanilla ow mons	
-370	10076	632	1.17.0	g6_overworld_refactors	U-owe-8434	8434	S	refactor	N	N	~0	Use `GetDirectionToFace` in `DetermineObjectEventDirectionFromObject`	
-371	9080	633	1.17.0	g6_overworld_refactors	U-mapheader-9461	9461,7975	M	feature	N	N	+3KB(맵 헤더당 2B, #10159에서 회수)	Add support for night music	
-372	10127	634	1.17.0	g5_general_cleanup_docs	U-enum-10127	9466	XL	refactor	N	N	~0	Even more enums	
-373	10152	636	1.17.0	g5_general_cleanup_docs	U-unused-10179	-	M	refactor	N	N	~0	Clean up unused variables and functions	
-374	10167	637	1.17.0	g6_overworld_refactors	U-mapheader-9461	9080	S	refactor	N	N	~0	rename NightSong to night_music to match json style	
-375	10166	638	1.17.0	g5_general_cleanup_docs	U-10166	-	S	refactor	N	N	~0	Remove obsolete MAX_LEVEL_UP_MOVES	
+366	10080	628	1.17.0	g6_overworld_refactors	U-9557	9557	S	feature	N	N	~0	Add the Ability to Disable Map Name in Map Preview Screen	부분 적용(튜토리얼 hunk 제외 — #9557 미이식) 524d400b
+367	9878	629	1.17.0	g6_overworld_refactors	U-egg-9878	8943,10051	M	refactor	N	N	~0	Rework egg creation and hatching mechanisms	잔여분 적용(게임 코드는 2026-09-15 선반영, 테스트·공백) — HnS 알기술 전수 규칙 유지(재확인 79) 64d2a8e3
+368	9955	630	1.17.0	g6_overworld_refactors	U-dailyseed-9920	9920,10050	S	feature	N	N	~0	Add config to use daily seed for lottery tickets and mirage island	부분 적용(new_game.c 중복 include 제외) 86037d5f
+369	9966	631	1.17.0	g6_overworld_refactors	U-owe-8434	8434	S	refactor	N	N	-1KB	Do not set overworld var species for vanilla ow mons	적용 ff04dcd8
+370	10076	632	1.17.0	g6_overworld_refactors	U-owe-8434	8434	S	refactor	N	N	~0	Use `GetDirectionToFace` in `DetermineObjectEventDirectionFromObject`	적용 b6d23d42
+371	9080	633	1.17.0	g6_overworld_refactors	U-mapheader-9461	9461,7975	M	feature	N	N	+3KB(맵 헤더당 2B, #10159에서 회수)	Add support for night music	부분 적용(HnS 적응 — END_MUS=DP_MUSIC_END·표 범위 검사·시각 갱신 TransitionMapMusic 제외(377)) 830aee6c(재확인 81)
+372	10127	634	1.17.0	g5_general_cleanup_docs	U-enum-10127	9466	XL	refactor	N	N	~0	Even more enums	부분 적용(HnS 시그니처 차이 손 맞춤, 테스트 3파일 해당 없음) 0edad98c
+373	10152	636	1.17.0	g5_general_cleanup_docs	U-unused-10179	-	M	refactor	N	N	~0	Clean up unused variables and functions	적용 4c5718ae
+374	10167	637	1.17.0	g6_overworld_refactors	U-mapheader-9461	9080	S	refactor	N	N	~0	rename NightSong to night_music to match json style	적용(map_data_rules.mk 손 맞춤) 2c6edd5f
+375	10166	638	1.17.0	g5_general_cleanup_docs	U-10166	-	S	refactor	N	N	~0	Remove obsolete MAX_LEVEL_UP_MOVES	적용(HnS 상한 40 제거 — 최장 학습표 30) f34a6921
 376	8893	641	1.17.0	g3_battle_changes_moves_abilities_items	U-8893	10011,9429,9667,9730,10428	XL	data	N	N	+1KB	The big grammar update	
-377	10176	642	1.17.0	g6_overworld_refactors	U-mapheader-9461	9080	S	fix	N	N	~0	Remove clock-based music transition	
+377	10176	642	1.17.0	g6_overworld_refactors	U-mapheader-9461	9080	S	fix	N	N	~0	Remove clock-based music transition	371에 흡수(시각 갱신 TransitionMapMusic 호출을 넣지 않음) 830aee6c
 378	10162	643	1.17.0	g5_general_cleanup_docs	U-enum-10127	9466	M	refactor	N	N	~0	A smidge of enums and type checking additions	
 379	10178	644	1.17.0	g5_general_cleanup_docs	U-enum-10127	-	S	refactor	N	N	~0	Clean up header files	
 380	10170	645	1.17.0	g3_battle_changes_moves_abilities_items	U-weather-10170	-	M	feature	N	N	+0.3KB	Starting Status for Weather	
@@ -461,7 +461,7 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 459	10690	773	1.17.0	g2_battle_fixed_b	U-10690	-	M	fix	N	N	+60B	Split move target selection and resolution	
 460	10070	1000000	1.16.0	g5_general_cleanup_docs	U-10070	-	S	refactor	N	N	~0	28//05/26 Master to upcoming merge	
 461	10113	1000000	1.16.1	g5_general_cleanup_docs	U-10113	-	M	refactor	Y	N	~0	1st of June, 2026 in [#10113](https://github.com/rh-hideout/pokeemerald-expansion/pull/10113)	
-462	10159	1000000	1.17.0	g6_overworld_refactors	U-mapheader-9461	9461,7975,9080	S	refactor	N	N	-3KB	Optimize map header structure	
+462	10159	1000000	1.17.0	g6_overworld_refactors	U-mapheader-9461	9461,7975,9080	S	refactor	N	N	-3KB	Optimize map header structure	앞당김 적용 e13a671b(371 바로 뒤 — #9080 맵 헤더 정렬 깨짐)
 463	10556	1000000	1.16.4	g2_battle_fixed_b	U-statchange-9730	9730	S	fix	N	N	-600B	X items fix	
 464	10721	1000000	1.16.4	g5_general_cleanup_docs	U-pret-10721	-	M	fix	N	N	~0	Pret merge (31st of August, 2026)	
 465	9408	1000000	1.16.0	g3_battle_changes_moves_abilities_items	U-9408	-	M	refactor	N	N	~0	Simplify Scale Shot effect activation	
