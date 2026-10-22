@@ -6686,7 +6686,7 @@ s32 GetFoeStatChangeScore(enum BattlerId battlerAtk, enum BattlerId battlerDef, 
     return (score > BEST_EFFECT) ? BEST_EFFECT : score;
 }
 
-s32 GetAllyStatChangeScore(u32 battlerAtk, u32 partner, u32 move)
+s32 GetAllyStatChangeScore(enum BattlerId battlerAtk, enum BattlerId partner, enum Move move)
 {
     s32 tempScore = 0;
     enum BattlerId foe = GetBattlerLeftFoe(battlerAtk);

@@ -669,7 +669,9 @@ bool8 IsBattleSEPlaying(enum BattlerId battler)
 
 void BattleLoadMonSpriteGfx(struct Pokemon *mon, enum BattlerId battler)
 {
-    u32 personalityValue, isShiny, species, paletteOffset;
+    u32 personalityValue, paletteOffset;
+    bool32 isShiny;
+    enum Species species;
     enum BattlerPosition position;
     const u16 *paletteData;
     struct Pokemon *illusionMon = GetIllusionMonPtr(battler);
@@ -981,7 +983,8 @@ void CopyBattleSpriteInvisibility(enum BattlerId battler)
 
 void HandleSpeciesGfxDataChange(enum BattlerId battlerAtk, enum BattlerId battlerDef, u8 changeType)
 {
-    u32 personalityValue, paletteOffset, targetSpecies;
+    u32 personalityValue, paletteOffset;
+    enum Species targetSpecies;
     enum BattlerPosition position;
     bool32 isShiny;
     const void *src;
