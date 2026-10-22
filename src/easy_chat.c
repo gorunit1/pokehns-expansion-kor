@@ -2777,11 +2777,6 @@ static u8 GetWordSelectLastRow(void)
     return sEasyChatScreen->wordSelectLastRow;
 }
 
-static u8 UNUSED UnusedDummy(void)
-{
-    return FALSE;
-}
-
 static bool32 CanScrollUp(void)
 {
     switch (sEasyChatScreen->inputState)
