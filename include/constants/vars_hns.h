@@ -292,5 +292,7 @@
 
 // VAR_TEMP_A used due to limited use elsewhere.
 #define VAR_TEMP_MTSILVER_RESUME_BLIZZARD_SE  VAR_TEMP_B
+// Same wind loop on the Tin Tower roof (MAPSEC_TIN_TOWER, roof layouts only).
+#define VAR_TEMP_TINTOWER_RESUME_WIND_SE      VAR_TEMP_B
 
 #endif // GUARD_CONSTANTS_VARS_HNS_H

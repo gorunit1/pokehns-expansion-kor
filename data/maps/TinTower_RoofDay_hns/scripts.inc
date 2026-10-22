@@ -1,6 +1,19 @@
 TinTower_RoofDay_hns_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, TinTower_RoofDay_OnTransition
+	map_script MAP_SCRIPT_ON_FRAME_TABLE, TinTower_Roof_OnFrame
 	.byte 0
+
+@ Wind on the roof, as on the Mt. Silver summit (MtSilver_SummitDay_OnFrame): the map music is
+@ MUS_NONE and SE_M_BLIZZARD loops until another SE1 sound replaces it (the exit warp's SE_EXIT).
+@ HideStartMenu and the Ho-Oh battles reset the var so the wind starts again.
+TinTower_Roof_OnFrame::
+	map_script_2 VAR_TEMP_TINTOWER_RESUME_WIND_SE, 0, TinTower_Roof_Wind
+	.2byte 0
+
+TinTower_Roof_Wind::
+	playse SE_M_BLIZZARD
+	setvar VAR_TEMP_TINTOWER_RESUME_WIND_SE, 1
+	end
 
 TinTower_RoofDay_OnTransition:
 	call_if_set FLAG_DAY_POKEMON, TinTower_RoofDay_EventScript_SetNight
@@ -169,7 +182,6 @@ TinTower_RoofDay_EventScript_TalkToKimono::
 TinTower_RoofDay_EventScript_HoOh::
 	lockall
 	goto_if_eq VAR_COMPLETED_HO_OH, 4, TinTower_RoofDay_EventScript_HoOhPostgame
-	waitse
 	playmoncry SPECIES_HO_OH, CRY_MODE_ENCOUNTER
 	delay 30
 	waitmoncry
@@ -179,6 +191,7 @@ TinTower_RoofDay_EventScript_HoOh::
 	special BattleSetup_StartLegendaryBattle
 	waitstate
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	setvar VAR_TEMP_TINTOWER_RESUME_WIND_SE, 0
 	setvar VAR_LAST_TALKED, LOCALID_HO_OH
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, TinTower_RoofDay_EventScript_RanFromHoOh
@@ -206,6 +219,7 @@ TinTower_RoofDay_EventScript_HoOhPostgame::
 	special BattleSetup_StartLegendaryBattle
 	waitstate
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	setvar VAR_TEMP_TINTOWER_RESUME_WIND_SE, 0
 	setvar VAR_LAST_TALKED, LOCALID_HO_OH
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, TinTower_RoofDay_EventScript_RanFromHoOh
