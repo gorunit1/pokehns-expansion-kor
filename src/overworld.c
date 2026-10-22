@@ -1287,6 +1287,23 @@ static bool16 IsRocketTakeover(struct WarpData *warp)
     return FALSE;
 }
 
+static const u16 sNightMusicTable[END_MUS - START_MUS] =
+{
+    // example usage: [MUS_SOOTOPOLIS - START_MUS] = MUS_LITTLEROOT,
+};
+
+static u16 GetNightMusicFromTrack(u16 track)
+{
+    if (GetTimeOfDay() != TIME_NIGHT)
+        return track;
+    // HnS: tracks outside the table (MUS_NONE, END_MUS itself) are kept as is
+    if (track < START_MUS || track - START_MUS >= ARRAY_COUNT(sNightMusicTable))
+        return track;
+    if (sNightMusicTable[track - START_MUS] >= START_MUS && sNightMusicTable[track - START_MUS] <= END_MUS)
+        return sNightMusicTable[track - START_MUS];
+    return track;
+}
+
 u16 GetLocationMusic(struct WarpData *warp)
 {
     if (IsRocketTakeover(warp) == TRUE)
@@ -1299,8 +1316,12 @@ u16 GetLocationMusic(struct WarpData *warp)
         return MUS_ENCOUNTER_MAGMA;
     else if (IsInfiltratedWeatherInstitute(warp) == TRUE)
         return MUS_MT_CHIMNEY;
-    else
-        return Overworld_GetMapHeaderByGroupAndId(warp->mapGroup, warp->mapNum)->music;
+
+    const struct MapHeader *mapHeader = Overworld_GetMapHeaderByGroupAndId(warp->mapGroup, warp->mapNum);
+    if (mapHeader->nightMusic != MUS_NONE && GetTimeOfDay() == TIME_NIGHT)
+        return mapHeader->nightMusic;
+
+    return mapHeader->music;
 }
 
 u16 GetCurrLocationDefaultMusic(void)
@@ -1375,6 +1396,8 @@ void Overworld_PlaySpecialMapMusic(void)
             music = (IS_HNS ? MUS_HG_SURF : IS_FRLG ? MUS_RG_SURF : MUS_SURF);
     }
 
+    music = GetNightMusicFromTrack(music);
+
     if (music != GetCurrentMapMusic())
         PlayNewMapMusic(music);
 }
@@ -1411,6 +1434,7 @@ static void TransitionMapMusic(void)
             if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING) && !gSaveblock3.challengeSettings.surfMusic)
                 newMusic = (IS_HNS ? MUS_HG_SURF : IS_FRLG ? MUS_RG_SURF : MUS_SURF);
         }
+        newMusic = GetNightMusicFromTrack(newMusic);
         if (newMusic != currentMusic)
         {
             if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_MACH_BIKE | PLAYER_AVATAR_FLAG_ACRO_BIKE))
@@ -1447,7 +1471,7 @@ u8 GetMapMusicFadeoutSpeed(void)
 void TryFadeOutOldMapMusic(void)
 {
     u16 currentMusic = GetCurrentMapMusic();
-    u16 warpMusic = GetWarpDestinationMusic();
+    u16 warpMusic = GetNightMusicFromTrack(GetWarpDestinationMusic());
     if (FlagGet(FLAG_DONT_TRANSITION_MUSIC) != TRUE && warpMusic != GetCurrentMapMusic())
     {
         if ((currentMusic == MUS_SURF
