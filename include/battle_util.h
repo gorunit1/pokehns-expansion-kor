@@ -151,6 +151,14 @@ enum EjectPackTiming
     OTHER,
 };
 
+enum WeatherFailure
+{
+    WEATHER_FAILURE_SAME_WEATHER,
+    WEATHER_FAILURE_OVERWORLD,
+    WEATHER_FAILURE_PRIMAL,
+    WEATHER_FAILURE_SUCCESS,
+};
+
 void HandleAction_ThrowBall(void);
 u32 GetCurrentBattleWeather(void);
 bool32 EndOrContinueWeather(void);
@@ -193,7 +201,7 @@ s32 GetDrainedBigRootHp(enum BattlerId battler, s32 hp);
 bool32 IsAbilityAndRecord(enum BattlerId battler, enum Ability battlerAbility, enum Ability abilityToCheck);
 bool32 HandleFaintedMonActions(void);
 bool32 HasNoMonsToSwitch(enum BattlerId battler, u8 partyIdBattlerOn1, u8 partyIdBattlerOn2);
-bool32 TryChangeBattleWeather(enum BattlerId battler, u32 battleWeatherId, enum Ability ability);
+enum WeatherFailure TryChangeBattleWeather(enum BattlerId battler, u32 battleWeatherId, enum Ability ability);
 bool32 TryChangeBattleTerrain(enum BattlerId battler, u32 statusFlag);
 bool32 CanTargetBlockPranksterMove(struct DamageContext *ctx, s32 movePriority);
 bool32 CanPsychicTerrainProtectTarget(struct DamageContext *ctx, s32 movePriority);

@@ -750,6 +750,7 @@ struct BattleStruct
     u8 intimidateActivated:1;
     u8 allowPartingShot:1;
     u8 adrenalineOrbActivated:1; // prevents looping after an adrenaline stat changed
+    u8 overworldWeatherPresent:1;
     u8 removedScreens[NUM_BATTLE_SIDES]; // HnS: B_MSG_BREAK_* bits of the screens just removed on each side, for their messages
 };
 
