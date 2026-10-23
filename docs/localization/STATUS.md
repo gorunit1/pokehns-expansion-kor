@@ -3,7 +3,7 @@
 ## 2026-10-23 — full-sync 묶음 28(seq 385.5 #10454) (현재, 클라우드 세션)
 
 - **다음 할 일**
-  1. **친구 문자 보내기**(사용자가 보냄, 문안은 세션 답변): 묶음 28 결과 + **질문 1개(재확인 82 — 필드 날씨 Gen 9 동작을 켤지, A 지금 동작 유지(추천·적용 값 `GEN_8`) / B Gen 9)** + 알림(모래뿜기 HnS 가드 83) + 실기 3개 + ROM `6002c047`/SHA1 `472d4622…`. 내용은 `full-sync-seq-385_5.md`와 같다. 보낸 뒤 "보냄"으로 기록.
+  1. ~~친구 문자~~ **보냄**(2026-10-23 사용자 확인, 문안은 세션 답변): 묶음 28 결과 + **질문 1개(재확인 82 — 필드 날씨 Gen 9 동작을 켤지, A 지금 동작 유지(추천·적용 값 `GEN_8`) / B Gen 9)** + 알림(모래뿜기 HnS 가드 83) + 실기 3개 + ROM `6002c047`/SHA1 `472d4622…`. 내용은 `full-sync-seq-385_5.md`와 같다.
   2. **친구 답 대기:** 82(새), 79(알기술 전수), 72(Set Ability), 70 (a)(b), 71(묶음 23), 69 하드 삭제 실기, 실기 결과(묶음 23~28, 10-21 반영, BGM 10-22·10-23). 82가 B면 `include/config/battle.h` `B_OVERWORLD_WEATHER_OVERRIDE`를 `GEN_LATEST`로(한 줄) — 새 테스트는 `WITH_CONFIG`라 그대로.
   3. **full-sync 다음 seq 386 #10217**(Pickpocket activation fix, L) — 사용자 지시 때. 테스트 기준 **`test-baseline-seq385_5.txt`**, 한글 회귀 기대 **558/652**, 세이브 비교 이식 전 사실은 코드 `6002c047`에서 `make hns -j8` 뒤 `save_compat.py collect`(세션 임시 `b29/save-pre`는 `a3572d8d` 기준).
 - **결과** [`full-sync-seq-385_5.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-385_5.md). 커밋 `6002c047`(#10454), 문서 `de752ae3`·이 커밋.
