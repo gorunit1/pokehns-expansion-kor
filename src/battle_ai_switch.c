@@ -74,7 +74,6 @@ static enum Ability GetPartyMonAbilityForSwitchCalc(enum BattlerId battler, u32 
 static void InitializeSwitchinCandidate(enum BattlerId switchinBattler, u32 monIndex, struct Pokemon *mon)
 {
     u32 storeCurrBattlerPartyIndex = gBattlerPartyIndexes[switchinBattler]; // Rage Fist fix
-    u8 savedSupremeOverlordCounter = gBattleStruct->supremeOverlordCounter[switchinBattler];
     PokemonToBattleMon(mon, &gBattleMons[switchinBattler]);
     gBattlerPartyIndexes[switchinBattler] = monIndex;
     CopyMonAbilityAndTypesToBattleMon(switchinBattler, mon);
@@ -98,7 +97,6 @@ static void InitializeSwitchinCandidate(enum BattlerId switchinBattler, u32 monI
     }
 
     gAiLogicData->switchInCalc = FALSE;
-    gBattleStruct->supremeOverlordCounter[switchinBattler] = savedSupremeOverlordCounter;
     gBattlerPartyIndexes[switchinBattler] = storeCurrBattlerPartyIndex;
     gAiThinkingStruct->saved[switchinBattler].saved = FALSE;
 }
@@ -2829,8 +2827,12 @@ static void SetBattlerStatusForSwitchin(enum BattlerId battler)
 static void SetBattlerStatStagesForSwitchin(enum BattlerId battler, enum BattlerId opposingBattler, u32 fieldStatus)
 {
     enum Ability aiAbility = gAiLogicData->abilities[battler];
+    enum HoldEffect aiHoldEffect = gAiLogicData->holdEffects[battler];
     enum Item aiItem = gAiLogicData->items[battler];
-    bool32 isStickyWebsAffected = (IsHazardOnSide(GetBattlerSide(battler), HAZARDS_STICKY_WEB) && IsBattlerAffectedByHazards(battler, GetItemHoldEffect(aiItem), FALSE) && IsBattlerGrounded(battler, gAiLogicData->abilities[battler], GetItemHoldEffect(aiItem)));
+    bool32 isStickyWebsAffected = (IsHazardOnSide(GetBattlerSide(battler), HAZARDS_STICKY_WEB)
+                                && IsBattlerAffectedByHazards(battler, aiHoldEffect, FALSE)
+                                && IsBattlerGrounded(battler, aiAbility, aiHoldEffect));
+
     bool32 opponentStatDrop = FALSE;
 
     // Ability stat changes
@@ -2901,7 +2903,7 @@ static void SetBattlerStatStagesForSwitchin(enum BattlerId battler, enum Battler
     }
 
     // Item stat changes
-    switch(GetItemHoldEffect(aiItem))
+    switch(aiHoldEffect)
     {
     case HOLD_EFFECT_TERRAIN_SEED:
     {
@@ -2947,7 +2949,7 @@ static void SetBattlerStatStagesForSwitchin(enum BattlerId battler, enum Battler
     }
 
     // Hazard stat changes
-    if (isStickyWebsAffected && GetItemHoldEffect(aiItem) != HOLD_EFFECT_WHITE_HERB)
+    if (isStickyWebsAffected && aiHoldEffect != HOLD_EFFECT_WHITE_HERB)
         gBattleMons[battler].statStages[STAT_SPEED] -= 1;
 }
 
@@ -2973,7 +2975,6 @@ static void SetBattlerHPChangeForSwitch(enum BattlerId battler, enum BattlerId o
 // Set potential field effect from ability for switch in
 static void SetBattlerVolatilesForSwitchin(enum BattlerId battler, u32 weather, u32 fieldStatus)
 {
-    enum Item aiItem = gAiLogicData->items[battler];
     switch (gAiLogicData->abilities[battler])
     {
     case ABILITY_VESSEL_OF_RUIN:
@@ -2989,11 +2990,11 @@ static void SetBattlerVolatilesForSwitchin(enum BattlerId battler, u32 weather, 
         gBattleMons[battler].volatiles.beadsOfRuin = TRUE;
         break;
     case ABILITY_QUARK_DRIVE:
-        if ((fieldStatus & STATUS_FIELD_ELECTRIC_TERRAIN) || GetItemHoldEffect(aiItem) == HOLD_EFFECT_BOOSTER_ENERGY)
+        if ((fieldStatus & STATUS_FIELD_ELECTRIC_TERRAIN) || gAiLogicData->holdEffects[battler] == HOLD_EFFECT_BOOSTER_ENERGY)
             gBattleMons[battler].volatiles.boosterEnergyActivated = TRUE;
         break;
     case ABILITY_PROTOSYNTHESIS:
-        if ((weather & B_WEATHER_SUN) || GetItemHoldEffect(aiItem) == HOLD_EFFECT_BOOSTER_ENERGY)
+        if ((weather & B_WEATHER_SUN) || gAiLogicData->holdEffects[battler] == HOLD_EFFECT_BOOSTER_ENERGY)
             gBattleMons[battler].volatiles.boosterEnergyActivated = TRUE;
         break;
     case ABILITY_WIND_POWER:
@@ -3001,14 +3002,7 @@ static void SetBattlerVolatilesForSwitchin(enum BattlerId battler, u32 weather, 
             gBattleMons[battler].volatiles.chargeTimer = 2;
         break;
     case ABILITY_SUPREME_OVERLORD:
-        // Champions calculates Supreme Overlord for the hypothetical switch-in too.
-        // HNS stores the counter in BattleStruct rather than in BattleMon volatiles,
-        // so InitializeSwitchinCandidate saves and restores it around the switch-in calcs.
-        if (B_UPDATED_ABILITY_DATA >= GEN_CHAMPIONS)
-        {
-            u8 faintCounter = gBattleStruct->faintCounter[GetBattlerTrainer(battler)];
-            gBattleStruct->supremeOverlordCounter[battler] = min(5, faintCounter);
-        }
+        gBattleMons[battler].volatiles.supremeOverlordCounter = min(5, gBattleStruct->faintCounter[GetBattlerTrainer(battler)]);
         break;
     default:
         break;
