@@ -25896,7 +25896,7 @@ const u16 gMonShinyPalette_GarchompMegaZ[] = INCBIN_U16("graphics/pokemon/garcho
 #endif //P_FAMILY_CHARCADET
 
 #if P_FAMILY_TADBULB
-    const u32 gMonFrontPic_Tadbulb[] = INCBIN_U32("graphics/pokemon/tadbulb/front.4bpp.smol");
+    const u32 gMonFrontPic_Tadbulb[] = INCBIN_U32("graphics/pokemon/tadbulb/anim_front.4bpp.smol");
     const u16 gMonPalette_Tadbulb[] = INCBIN_U16("graphics/pokemon/tadbulb/normal.gbapal");
     const u32 gMonBackPic_Tadbulb[] = INCBIN_U32("graphics/pokemon/tadbulb/back.4bpp.smol");
     const u16 gMonShinyPalette_Tadbulb[] = INCBIN_U16("graphics/pokemon/tadbulb/shiny.gbapal");
@@ -25912,7 +25912,7 @@ const u16 gMonShinyPalette_GarchompMegaZ[] = INCBIN_U16("graphics/pokemon/garcho
 #endif //OW_PKMN_OBJECTS_SHARE_PALETTES
 #endif //OW_POKEMON_OBJECT_EVENTS
 
-    const u32 gMonFrontPic_Bellibolt[] = INCBIN_U32("graphics/pokemon/bellibolt/front.4bpp.smol");
+    const u32 gMonFrontPic_Bellibolt[] = INCBIN_U32("graphics/pokemon/bellibolt/anim_front.4bpp.smol");
     const u16 gMonPalette_Bellibolt[] = INCBIN_U16("graphics/pokemon/bellibolt/normal.gbapal");
     const u32 gMonBackPic_Bellibolt[] = INCBIN_U32("graphics/pokemon/bellibolt/back.4bpp.smol");
     const u16 gMonShinyPalette_Bellibolt[] = INCBIN_U16("graphics/pokemon/bellibolt/shiny.gbapal");
