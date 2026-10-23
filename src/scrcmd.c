@@ -3205,14 +3205,9 @@ bool8 ScrCmd_hidemoneybox(struct ScriptContext *ctx)
 
 bool8 ScrCmd_updatemoneybox(struct ScriptContext *ctx)
 {
-    u8 ignore = ScriptReadByte(ctx);
+    Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
-    if (!ignore)
-    {
-        Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
-
-        ChangeAmountInMoneyBox(GetMoney(&gSaveBlock1Ptr->money));
-    }
+    ChangeAmountInMoneyBox(GetMoney(&gSaveBlock1Ptr->money));
     return FALSE;
 }
 
