@@ -388,11 +388,11 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 385	10214	653	1.17.0	g4_ai_tests_pokemon_sprites	U-startstatus-10170	10170	M	fix	Y	N	+0.1KB	Fix Starting Status messages not printing at start of battle	앞당김 적용 cf44d86e(380 바로 뒤 — 시작 상태 메시지 회귀, battle_message.c는 HnS에 이미 있음)
 385.5	10454	733	1.17.0	g3_battle_changes_moves_abilities_items	U-weather-10170	10395,10170,10214	M	feature	Y	N	+0.4KB	Add Gen 9 Overworld Weather Behavior	적용(설정 HnS 값 GEN_8 — 동작 유지, 친구 질문 재확인 82; 모래뿜기 스크립트 배틀러 HnS 가드 83; 지형은 gFieldStatuses) 6002c047
 386	10217	654	1.17.0	g2_battle_fixed_b	U-10217	9494,8943,10354	L	fix	Y	N	+400B	Fixes Pickpocket activation when the original attacker isn't on the field	적용(MoveEnd cv 전 형태 손 맞춤, 한글 토큰 {B_BUFF2}, 일루전 이름 HnS 보정 85, 기술 밖 교체 뒤 초기화 HnS 보정 84 + 회귀 테스트) 467845f6
-387	10206	655	1.17.0	g4_ai_tests_pokemon_sprites	U-10206	-	S	gfx	N	N	+0.4KB	Add second front frames to Tadbulb and Bellibolt	
-388	10117	656	1.17.0	g6_overworld_refactors	U-relearner-9006	9006	S	feature	N	N	~0	Config to hide Contest Data in Summary Screen and Move Relearner	
+387	10206	655	1.17.0	g4_ai_tests_pokemon_sprites	U-10206	-	S	gfx	N	N	+0.4KB	Add second front frames to Tadbulb and Bellibolt	적용(HnS INCBIN 경로 2줄 손 맞춤) da60e130
+388	10117	656	1.17.0	g6_overworld_refactors	U-relearner-9006	9006	S	feature	N	N	~0	Config to hide Contest Data in Summary Screen and Move Relearner	적용(C_HIDE_CONTEST_DATA FALSE 유지, 우선순위 버그는 523 #10747 앞당김) 78e9b1b1
 389	10233	657	1.17.0	g6_overworld_refactors	U-trainerbattle-8678	8678	S	fix	N	N	~0	fix dynamic trainer script regression	앞당김 적용 1c037f41(365 바로 뒤)
-390	10223	659	1.17.0	g6_overworld_refactors	U-relearner-9006	9006,10117	M	feature	N	N	~0	Move relearner selection inside move relearner scene	
-391	10124	661	1.17.0	g4_ai_tests_pokemon_sprites	U-10124	9359	M	test	N	N	~0	AI triggers ally's Spicy Spray when burn is beneficial	
+390	10223	659	1.17.0	g6_overworld_refactors	U-relearner-9006	9006,10117	M	feature	N	N	~0	Move relearner selection inside move relearner scene	적용(chooseboxmon 1줄은 133에 선반영, UIEndTask는 1.17.0 최종형 RedrawMoveList; HnS 도달 없음) 4a132aaa
+391	10124	661	1.17.0	g4_ai_tests_pokemon_sprites	U-10124	9359	M	test	N	N	~0	AI triggers ally's Spicy Spray when burn is beneficial	게임 코드는 2026-09-15 선별 이식분으로 이미 있음 → 테스트만 6fc0a840
 392	10243	663	1.17.0	g4_ai_tests_pokemon_sprites	U-10243	-	M	test	N	N	~0	Modular AI Omniscience Flags	
 393	10253	666	1.17.0	g3_battle_changes_moves_abilities_items	U-10253	-	S	refactor	N	N	-0.1KB	Remove redundant Sub checks	
 394	10268	668	1.17.0	g2_battle_fixed_b	U-10268	-	M	fix	Y	N	+250B	Champions Battle Messages post-mortem fixes	
@@ -527,7 +527,7 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 520	10731	2000002	1.17.1	g7_1.17.1	U-10731	10326	S	build	N	N	미측정	Fix build error on master	
 521	10732	2000003	1.17.1	g7_1.17.1	U-10732	-	S	data	N	N	미측정	Move type changes should use `B_UPDATED_MOVE_TYPES`	
 522	10698	2000004	1.17.1	g7_1.17.1	U-10698	9532,9494,9657,9674,9730,10091,10354,8893,10384,10151,10488,10600,10593,10630	XL	fix	Y	N	미측정	Coding TODOs and currently KNOWN_FAILING regression tests 1/3	
-523	10747	2000005	1.17.1	g7_1.17.1	U-10747	10117	S	fix	N	N	미측정	Fix contest move page in summary screen	
+523	10747	2000005	1.17.1	g7_1.17.1	U-10747	10117	S	fix	N	N	미측정	Fix contest move page in summary screen	앞당김 적용 97dd8439(388 #10117 바로 뒤 — 요약 화면 콘테스트 기술 페이지 우선순위 버그)
 524	10753	2000006	1.17.1	g7_1.17.1	U-10753	8434	S	fix	N	N	미측정	Fix overworld encounter flee sound playing every step in towns	
 525	10741	2000007	1.17.1	g7_1.17.1	U-10741	10028,10426,10593	S	fix	N	N	미측정	Fix Sheer Force suppressing King's Rock and Razor Fang flinches	
 526	10773	2000008	1.17.1	g7_1.17.1	U-multi-10773	10711,9440	S	fix	N	N	미측정	Fix custom multi-battle return and party detection	
