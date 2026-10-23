@@ -6098,7 +6098,7 @@ bool32 IsBattlerGrounded(enum BattlerId battler, enum Ability ability, enum Hold
     return IsBattlerGroundedInverseCheck(battler, ability, holdEffect, NOT_INVERSE_BATTLE, FALSE);
 }
 
-u32 GetMoveSlot(u16 *moves, enum Move move)
+u32 GetMoveSlot(enum Move *moves, enum Move move)
 {
     u32 i;
 
@@ -8014,7 +8014,7 @@ u32 GetCriticalHitOdds(u32 critChance)
     return sCriticalHitOdds[critChance];
 }
 
-static inline u32 IsBattlerLeekAffected(enum BattlerId battler, enum HoldEffect holdEffect)
+static inline bool32 IsBattlerLeekAffected(enum BattlerId battler, enum HoldEffect holdEffect)
 {
     if (holdEffect == HOLD_EFFECT_LEEK)
     {
@@ -8641,7 +8641,7 @@ bool32 IsPartnerMonFromSameTrainer(enum BattlerId battler)
         return !(gBattleTypeFlags & BATTLE_TYPE_MULTI);
 }
 
-bool32 DoesSpeciesUseHoldItemToChangeForm(enum Species species, u16 heldItemId)
+bool32 DoesSpeciesUseHoldItemToChangeForm(enum Species species, enum Item heldItemId)
 {
     u32 i;
     const struct FormChange *formChanges = GetSpeciesFormChanges(species);
