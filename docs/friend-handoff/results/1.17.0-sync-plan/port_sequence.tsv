@@ -381,10 +381,10 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 378	10162	643	1.17.0	g5_general_cleanup_docs	U-enum-10127	9466	M	refactor	N	N	~0	A smidge of enums and type checking additions	적용(HnS 문맥 4곳 손 맞춤) 8155c3e5
 379	10178	644	1.17.0	g5_general_cleanup_docs	U-enum-10127	-	S	refactor	N	N	~0	Clean up header files	적용(선언 위치 손 맞춤) 8742b635
 380	10170	645	1.17.0	g3_battle_changes_moves_abilities_items	U-weather-10170	-	M	feature	N	N	+0.3KB	Starting Status for Weather	적용(주석 공백 hunk 제외, HnS 미사용) 4dbc706d
-381	10181	646	1.17.0	g5_general_cleanup_docs	U-enum-10127	10127	XL	refactor	N	N	~0	Type checking paradise	
-382	9147	647	1.17.0	g6_overworld_refactors	U-door-9147	-	L	refactor	N	N	~0	Door Size Refactor	
-383	10145	648	1.17.0	g3_battle_changes_moves_abilities_items	U-10145	9124	S	refactor	N	N	~0	Improve AI thinking time by removing direct ability calls in calc dmg	
-384	10211	652	1.17.0	g5_general_cleanup_docs	U-debug-9890	9890	S	fix	N	N	~0	fix(debug): incorrect use of const	
+381	10181	646	1.17.0	g5_general_cleanup_docs	U-enum-10127	10127	XL	refactor	N	N	~0	Type checking paradise	적용(HnS 문맥 손 맞춤 — usedHeldItem·GetMoveSlot·트레이너힐 상품 등) ddbef189
+382	9147	647	1.17.0	g6_overworld_refactors	U-door-9147	-	L	refactor	N	N	~0	Door Size Refactor	적용(HnS 표·타일 유지, GetDoorSize/GetDoorTileStart로 HnS 크기·타일 시작) add4d68b
+383	10145	648	1.17.0	g3_battle_changes_moves_abilities_items	U-10145	9124	S	refactor	N	N	~0	Improve AI thinking time by removing direct ability calls in calc dmg	적용(총대장 트레이너별 기절 수 유지, HnS 저장·복원·게이트·GetDamageCalcAbility 제거, 재확인 46 해결) a3572d8d
+384	10211	652	1.17.0	g5_general_cleanup_docs	U-debug-9890	9890	S	fix	N	N	~0	fix(debug): incorrect use of const	이미 적용(HnS debug.c에 같은 const 위치 — 2026-09-15 선별 이식분), 변경 없음
 385	10214	653	1.17.0	g4_ai_tests_pokemon_sprites	U-startstatus-10170	10170	M	fix	Y	N	+0.1KB	Fix Starting Status messages not printing at start of battle	앞당김 적용 cf44d86e(380 바로 뒤 — 시작 상태 메시지 회귀, battle_message.c는 HnS에 이미 있음)
 385.5	10454	733	1.17.0	g3_battle_changes_moves_abilities_items	U-weather-10170	10395,10170,10214	M	feature	Y	N	+0.4KB	Add Gen 9 Overworld Weather Behavior	
 386	10217	654	1.17.0	g2_battle_fixed_b	U-10217	9494,8943,10354	L	fix	Y	N	+400B	Fixes Pickpocket activation when the original attacker isn't on the field	

@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-23 — full-sync 묶음 27(seq 381~384) (클라우드 세션)
+
+- 요청: 사용자 "나 혼자 할 수 있는거야? 그렇다면 ㄱㄱ" → 사전 분석으로 혼자 정할 수 있는 범위라고 판단(아래 결정) → 바로 적용.
+- 사전 분석: #10181은 패치 + 거부 hunk 손 적용, #9147은 upstream 후 `field_door.c`에 HnS 부분을 다시 얹음, #10145는 세션 임시 `m10145/`에 파일별 3-way(`b28/merge3.py`) 후 충돌 16곳(`battle_util.c`)·AI 교체 1곳 손 해결(목표는 upstream HEAD 형태 + HnS `GetPartnerBattler`·트레이너별 기절 수). #10211은 HnS에 이미 있음.
+- 수정 파일: 커밋별 — `full-sync-seq-381-384.md` 커밋 표. 문서 — `full-sync-seq-381-384.md`(새), `test-baseline-seq384.txt`(새), `RECHECK_BEFORE_COMPLETION.md` 46 해결, `port_sequence.tsv` 381~384, STATUS·SESSION_LOG.
+- 결정(메인, 사용자 위임 범위): HnS 문 동작 유지 적응, 총대장 HnS 게이트·저장 복원 제거(결과 같은 코드), 과도기 함수 제거, `ai_thinking_time.c` HnS 상한 유지, `GetBattlerSideFaintCounter` 선언 안 넣음.
+- 검증: STATUS 현재 절.
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 친구 문자: 문안 세션 답변(질문 없음). 사용자가 보내면 "보냄" 기록.
+- 다음 시작점: seq 385.5 #10454 또는 친구 답.
+
 ### 2026-10-23 — full-sync 묶음 26(seq 376~380 + #10214 앞당김) (클라우드 세션)
 
 - 요청: 사용자 "나 혼자 할 수 있는게 있을까" → 범위 설명(#8893은 TRANSLATION_POLICY 5·6항으로 이미 정해진 경우) → "ㄱㄱ".
