@@ -3410,7 +3410,8 @@ void PlayRoulette(void)
 {
     u8 taskId;
     LockPlayerFieldControls();
-    ShowCoinsWindow(GetCoins(), 1, 1);
+    // HnS: ShowCoinsWindow adds 1 to x/y since upstream #9335; keep the coin window where it was.
+    ShowCoinsWindow(GetCoins(), 0, 0);
     taskId = CreateTask(Task_PrintRouletteEntryMsg, 0);
     gTasks[taskId].tCoins = GetCoins();
 }

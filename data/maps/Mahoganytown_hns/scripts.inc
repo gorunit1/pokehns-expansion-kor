@@ -102,10 +102,10 @@ MahoganyTown_EventScript_MerchantTrigger::
 	showmoneybox 0, 0
 	msgbox MahoganyTown_Text_RageCandyBarMerchantTryOne, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, FALSE, MahoganyTown_EventScript_MerchantRefused
-	checkmoney 300, 0
+	checkmoney 300
 	goto_if_eq VAR_RESULT, FALSE, MahoganyTown_EventScript_MerchantBroke
 	removemoney 300
-	updatemoneybox 0
+	updatemoneybox
 	playse SE_SHOP
 	msgbox MahoganyTown_Text_RageCandyBarMerchantSavorIt, MSGBOX_DEFAULT
 	giveitem ITEM_RAGE_CANDY_BAR
@@ -134,10 +134,10 @@ MahoganyTown_EventScript_Merchant::
 	showmoneybox 0, 0
 	msgbox MahoganyTown_Text_RageCandyBarMerchantTryOne, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, FALSE, MahoganyTown_EventScript_MerchantRefused
-	checkmoney 300, 0
+	checkmoney 300
 	goto_if_eq VAR_RESULT, FALSE, MahoganyTown_EventScript_MerchantBroke
 	removemoney 300
-	updatemoneybox 0
+	updatemoneybox
 	msgbox MahoganyTown_Text_RageCandyBarMerchantSavorIt, MSGBOX_DEFAULT
 	giveitem ITEM_RAGE_CANDY_BAR
 	hidemoneybox

@@ -247,7 +247,7 @@ FuchsiaCity_SafariZoneEntrance_UpgradeGuy1::
 	checkmoney 200000
 	goto_if_eq VAR_RESULT, FALSE, FuchsiaCity_SafariZoneEntrance_UpgradeGuyNotEnoughMoney
 	removemoney 200000
-	updatemoneybox 0
+	updatemoneybox
 	playse SE_SHOP
 	waitse
 	msgbox FuchsiaCity_SafariZoneEntrance_Text_UpgradeGuyAccepted, MSGBOX_NPC
@@ -262,7 +262,7 @@ FuchsiaCity_SafariZoneEntrance_UpgradeGuy2::
 	checkmoney 300000
 	goto_if_eq VAR_RESULT, FALSE, FuchsiaCity_SafariZoneEntrance_UpgradeGuyNotEnoughMoney
 	removemoney 300000
-	updatemoneybox 0
+	updatemoneybox
 	playse SE_SHOP
 	waitse
 	msgbox FuchsiaCity_SafariZoneEntrance_Text_UpgradeGuyAccepted, MSGBOX_NPC
@@ -277,7 +277,7 @@ FuchsiaCity_SafariZoneEntrance_UpgradeGuy3::
 	checkmoney 400000
 	goto_if_eq VAR_RESULT, FALSE, FuchsiaCity_SafariZoneEntrance_UpgradeGuyNotEnoughMoney
 	removemoney 400000
-	updatemoneybox 0
+	updatemoneybox
 	playse SE_SHOP
 	waitse
 	msgbox FuchsiaCity_SafariZoneEntrance_Text_UpgradeGuyAccepted, MSGBOX_NPC

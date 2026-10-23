@@ -165,10 +165,10 @@ GoldenrodUnderground_EventScript_Haircut1::
 	goto_if_ge VAR_0x8004, PARTY_SIZE, GoldenrodUnderground_EventScript_Declined_Haircut1
 	specialvar VAR_RESULT, ScriptGetPartyMonSpecies
 	goto_if_eq VAR_RESULT, SPECIES_EGG, GoldenrodUnderground_EventScript_Declined_Haircut1
-	checkmoney 500, 0
+	checkmoney 500
 	goto_if_eq VAR_RESULT, FALSE, GoldenrodUnderground_EventScript_NotEnough_Haircut1
 	removemoney 500
-	updatemoneybox 0
+	updatemoneybox
 	playse SE_SHOP
 	msgbox GoldenrodUnderground_Text_OlderBrotherWatchItBeautiful
 	closemessage
@@ -227,10 +227,10 @@ GoldenrodUnderground_EventScript_Haircut2::
 	goto_if_ge VAR_0x8004, PARTY_SIZE, GoldenrodUnderground_EventScript_Declined_Haircut2
 	specialvar VAR_RESULT, ScriptGetPartyMonSpecies
 	goto_if_eq VAR_RESULT, SPECIES_EGG, GoldenrodUnderground_EventScript_Declined_Haircut2
-	checkmoney 300, 0
+	checkmoney 300
 	goto_if_eq VAR_RESULT, FALSE, GoldenrodUnderground_EventScript_NotEnough_Haircut2
 	removemoney 300
-	updatemoneybox 0
+	updatemoneybox
 	playse SE_SHOP
 	msgbox GoldenrodUnderground_Text_YoungerBrotherLookCool
 	closemessage

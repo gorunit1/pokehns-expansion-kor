@@ -56,12 +56,12 @@ NewSinjoh_MilkMan_EventScript_Seller::
 	end
 
 NewSinjoh_EventScript_MilkMan_BuyMilk::
-	checkmoney 500, 0
+	checkmoney 500
 	goto_if_eq VAR_RESULT, FALSE, NewSinjoh_MilkMan_NotEnough
 	additem ITEM_MOOMOO_MILK
 	goto_if_eq VAR_RESULT, FALSE, NewSinjoh_MilkMan_BagFull
 	removemoney 500
-	updatemoneybox 0
+	updatemoneybox
 	msgbox NewSinjoh_MilkMan_Text_WouldYouLikeAnother, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, TRUE, NewSinjoh_EventScript_MilkMan_BuyMilk
 

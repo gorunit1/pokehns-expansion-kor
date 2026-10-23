@@ -40,12 +40,12 @@ Route39_FarmHouse_EventScript_FarmerM::
 	end
 
 Route39_FarmHouse_EventScript_FarmerMBuyMilk::
-	checkmoney 500, 0
+	checkmoney 500
 	goto_if_eq VAR_RESULT, FALSE, Route39_FarmHouse_EventScript_FarmerM_NotEnough
 	additem ITEM_MOOMOO_MILK
 	goto_if_eq VAR_RESULT, FALSE, Route39_FarmHouse_EventScript_FarmerM_BagFull
 	removemoney 500
-	updatemoneybox 0
+	updatemoneybox
 	msgbox Route39FarmHouse_Text_WouldYouLikeAnother, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, TRUE, Route39_FarmHouse_EventScript_FarmerMBuyMilk
 

@@ -246,7 +246,7 @@ SaffronCity_FightingDojo_SetZeroNoMoney::
 	end
 
 SaffronCity_FightingDojo_Ability_CheckMoney:
-	checkmoney 25000, 0
+	checkmoney 25000
 	compare VAR_RESULT, TRUE
 	goto_if_eq SaffronCity_FightingDojo_Ability_Continue
 	compare VAR_RESULT, FALSE
@@ -278,7 +278,7 @@ SaffronCity_FightingDojo_Ability_Finish:
 	waitse
 	playse SE_EXP_MAX
 	msgbox SaffronCity_FightingDojo_Ability_Finish_Text, MSGBOX_DEFAULT
-	removemoney 25000, 0
+	removemoney 25000
 	closemessage
 	release
 	end

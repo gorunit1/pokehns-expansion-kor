@@ -3156,42 +3156,31 @@ bool8 ScrCmd_checkpartymove(struct ScriptContext *ctx)
 bool8 ScrCmd_addmoney(struct ScriptContext *ctx)
 {
     u32 amount = ScriptReadWord(ctx);
-    u8 ignore = ScriptReadByte(ctx);
 
-    if (!ignore)
-    {
-        Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
+    Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
 
-        AddMoney(&gSaveBlock1Ptr->money, amount);
-    }
+    AddMoney(&gSaveBlock1Ptr->money, amount);
     return FALSE;
 }
 
 bool8 ScrCmd_removemoney(struct ScriptContext *ctx)
 {
     u32 amount = ScriptReadWord(ctx);
-    u8 ignore = ScriptReadByte(ctx);
 
-    if (!ignore)
-    {
-        Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
+    Script_RequestEffects(SCREFF_V1 | SCREFF_SAVE);
 
-        RemoveMoney(&gSaveBlock1Ptr->money, amount);
-    }
+    RemoveMoney(&gSaveBlock1Ptr->money, amount);
     return FALSE;
 }
 
 bool8 ScrCmd_checkmoney(struct ScriptContext *ctx)
 {
     u32 amount = ScriptReadWord(ctx);
-    u8 ignore = ScriptReadByte(ctx);
 
-    if (!ignore)
-    {
-        Script_RequestEffects(SCREFF_V1);
+    Script_RequestEffects(SCREFF_V1);
 
-        gSpecialVar_Result = IsEnoughMoney(&gSaveBlock1Ptr->money, amount);
-    }
+    gSpecialVar_Result = IsEnoughMoney(&gSaveBlock1Ptr->money, amount);
+
     return FALSE;
 }
 
@@ -3199,14 +3188,10 @@ bool8 ScrCmd_showmoneybox(struct ScriptContext *ctx)
 {
     u8 x = ScriptReadByte(ctx);
     u8 y = ScriptReadByte(ctx);
-    u8 ignore = ScriptReadByte(ctx);
 
-    if (!ignore)
-    {
-        Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
+    Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
-        DrawMoneyBox(GetMoney(&gSaveBlock1Ptr->money), x, y);
-    }
+    DrawMoneyBox(GetMoney(&gSaveBlock1Ptr->money), x, y);
     return FALSE;
 }
 
@@ -3214,17 +3199,12 @@ bool8 ScrCmd_hidemoneybox(struct ScriptContext *ctx)
 {
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
-    /*u8 x = ScriptReadByte(ctx);
-    u8 y = ScriptReadByte(ctx);*/
-
     HideMoneyBox();
     return FALSE;
 }
 
 bool8 ScrCmd_updatemoneybox(struct ScriptContext *ctx)
 {
-    u8 UNUSED x = ScriptReadByte(ctx);
-    u8 UNUSED y = ScriptReadByte(ctx);
     u8 ignore = ScriptReadByte(ctx);
 
     if (!ignore)
@@ -3249,9 +3229,6 @@ bool8 ScrCmd_showcoinsbox(struct ScriptContext *ctx)
 
 bool8 ScrCmd_hidecoinsbox(struct ScriptContext *ctx)
 {
-    u8 UNUSED x = ScriptReadByte(ctx);
-    u8 UNUSED y = ScriptReadByte(ctx);
-
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
     HideCoinsWindow();
@@ -3260,9 +3237,6 @@ bool8 ScrCmd_hidecoinsbox(struct ScriptContext *ctx)
 
 bool8 ScrCmd_updatecoinsbox(struct ScriptContext *ctx)
 {
-    u8 UNUSED x = ScriptReadByte(ctx);
-    u8 UNUSED y = ScriptReadByte(ctx);
-
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
 
     PrintCoinsString(GetCoins());
