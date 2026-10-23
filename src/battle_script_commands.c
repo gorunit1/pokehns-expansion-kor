@@ -13748,7 +13748,8 @@ void BS_ShowAbilityPopup(void)
 void BS_UpdateAbilityPopup(void)
 {
     NATIVE_ARGS();
-    UpdateAbilityPopup(gBattlerAbility);
+    if (!gTestRunnerHeadless)
+        UpdateAbilityPopup(gBattlerAbility);
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
