@@ -397,10 +397,10 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 393	10253	666	1.17.0	g3_battle_changes_moves_abilities_items	U-10253	-	S	refactor	N	N	-0.1KB	Remove redundant Sub checks	적용(HnS 문맥 손 맞춤 — MoveEnd cv 전 형태, 자보·애터 미래예지 검사) a512bb9b
 394	10268	668	1.17.0	g2_battle_fixed_b	U-10268	-	M	fix	Y	N	+250B	Champions Battle Messages post-mortem fixes	보류 — 재확인 36(도구·특성 팝업 끝까지 대기) 친구 결정 대기. 작업분은 세션 임시 b32/10268-wip.patch
 395	10265	669	1.17.0	g3_battle_changes_moves_abilities_items	U-statchange-9730	9168,9730	S	fix	Y	N	~0	Fix stat change berries showing held item anim twice	이미 적용(HnS 스크립트가 고쳐진 형태 — 재확인 8o, seq 181), 변경 없음
-396	10258	671	1.17.0	g4_ai_tests_pokemon_sprites	U-10258	-	S	test	N	N	~0	AI avoids self-KOs with recoil	
-397	9969	672	1.17.0	g6_overworld_refactors	U-randommon-9896	9896,9927	M	feature	N	N	+2KB(디버그)	Add debug menu actions to quickly test randomizer results	
-398	10274	674	1.17.0	g5_general_cleanup_docs	U-10274	-	M	test	N	N	~0	Fix anim tests	
-399	9265	675	1.17.0	g3_battle_changes_moves_abilities_items	U-9265	-	S	test	N	N	~0	New tests: Eviolite, Charge, Grassy Terrain & Misty Terrain	
+396	10258	671	1.17.0	g4_ai_tests_pokemon_sprites	U-10258	-	S	test	N	N	~0	AI avoids self-KOs with recoil	게임 코드는 2026-09-15 선별 이식분으로 이미 있음 → 테스트만 babcb780
+397	9969	672	1.17.0	g6_overworld_refactors	U-randommon-9896	9896,9927	M	feature	N	N	+2KB(디버그)	Add debug menu actions to quickly test randomizer results	적용(디버그 메뉴 목록 손 맞춤 — HnS 목호·실버 멀티 유지, 새 영어 디버그 텍스트) f6d6e037
+398	10274	674	1.17.0	g5_general_cleanup_docs	U-10274	-	M	test	N	N	~0	Fix anim tests	적용(sprite.c 손 — HnS TAG_NONE 문맥) dcf82156
+399	9265	675	1.17.0	g3_battle_changes_moves_abilities_items	U-9265	-	S	test	N	N	~0	New tests: Eviolite, Charge, Grassy Terrain & Misty Terrain	적용(테스트만) 2c45bf17
 400	9440	676	1.17.0	g6_overworld_refactors	U-trainergen-9440	9562,8943,10051,10059	L	refactor	N	N	~0	Use a single function for FillPartnerParty and CreateNPCTrainerPartyFromTrainer	
 401	10179	678	1.17.0	g5_general_cleanup_docs	U-unused-10179	-	L	refactor	N	N	~0	Remove unused functions	
 402	10286	679	1.17.0	g2_battle_fixed_b	U-trainerbattle-8678	8678	S	fix	N	N	~0	fix no continue script after early rival battle	앞당김 적용 fdb0be06(365 바로 뒤) — HnS 미도달: earlyrival은 FRLG 맵만
