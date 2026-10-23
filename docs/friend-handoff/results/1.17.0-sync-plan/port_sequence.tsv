@@ -401,7 +401,7 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 397	9969	672	1.17.0	g6_overworld_refactors	U-randommon-9896	9896,9927	M	feature	N	N	+2KB(디버그)	Add debug menu actions to quickly test randomizer results	적용(디버그 메뉴 목록 손 맞춤 — HnS 목호·실버 멀티 유지, 새 영어 디버그 텍스트) f6d6e037
 398	10274	674	1.17.0	g5_general_cleanup_docs	U-10274	-	M	test	N	N	~0	Fix anim tests	적용(sprite.c 손 — HnS TAG_NONE 문맥) dcf82156
 399	9265	675	1.17.0	g3_battle_changes_moves_abilities_items	U-9265	-	S	test	N	N	~0	New tests: Eviolite, Charge, Grassy Terrain & Misty Terrain	적용(테스트만) 2c45bf17
-400	9440	676	1.17.0	g6_overworld_refactors	U-trainergen-9440	9562,8943,10051,10059	L	refactor	N	N	~0	Use a single function for FillPartnerParty and CreateNPCTrainerPartyFromTrainer	
+400	9440	676	1.17.0	g6_overworld_refactors	U-trainergen-9440	9562,8943,10051,10059	L	refactor	N	N	~0	Use a single function for FillPartnerParty and CreateNPCTrainerPartyFromTrainer	적용(재확인 51 방침 — 볼·생성기 클래스는 동작 클래스, 시드는 파티+동작 클래스 해시, 랜더마이저 speciesOverride, 챌린지 스케일링·미러 유지; 전 트레이너 파티 비교 같음) 0e85395c
 401	10179	678	1.17.0	g5_general_cleanup_docs	U-unused-10179	-	L	refactor	N	N	~0	Remove unused functions	
 402	10286	679	1.17.0	g2_battle_fixed_b	U-trainerbattle-8678	8678	S	fix	N	N	~0	fix no continue script after early rival battle	앞당김 적용 fdb0be06(365 바로 뒤) — HnS 미도달: earlyrival은 FRLG 맵만
 403	9970	680	1.17.0	g6_overworld_refactors	U-randommon-9896	8434,9879,9896,10051,8678	L	refactor	N	N	~0	More mon generation cleanup	
@@ -437,7 +437,7 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 435	10462	729	1.17.0	g6_overworld_refactors	U-trainerbattle-8678	8678	S	fix	N	N	~0	fix facing player snippet not checking face player param	앞당김 적용 f7a23eb4(365 바로 뒤)
 436	10466	730	1.17.0	g2_battle_fixed_b	U-moveargs-10404	10404,10440	S	fix	N	N	~0	Fix two-turn moves firing during any weather	
 437	10452	731	1.17.0	g6_overworld_refactors	U-10452	-	M	feature	N	N	+1KB	Show Pokémon Icons in Dynamic Multichoice	
-438	10463	732	1.17.0	g2_battle_fixed_b	U-10463	9440	M	refactor	N	N	-50B, EWRAM(힙) -2B	ShouldTrainerBattlerUseGimmick rework	
+438	10463	732	1.17.0	g2_battle_fixed_b	U-10463	9440	M	refactor	N	N	-50B, EWRAM(힙) -2B	ShouldTrainerBattlerUseGimmick rework	앞당김 적용 6029378d(400 바로 뒤 — #9440 뒤 트레이너 테라·다이맥스 불가 회귀; HnS는 스마트 테라도 지정 항목만, 비트레이너 데이터 배틀 가드)
 439	10443	734	1.17.0	g2_battle_fixed_b	U-10443	-	L	fix	Y	N	+400B	Fixed Beak Blast, Focus Punch, and Shell Trap's incorrect interactions	
 440	10471	735	1.17.0	g3_battle_changes_moves_abilities_items	U-10471	9730	M	refactor	Y	N	~0	Remove infiniteConfusion flag	
 441	10467	737	1.17.0	g2_battle_fixed_b	U-10467	-	M	fix	N	N	+300B	Add Protect animation + bug fixes	
