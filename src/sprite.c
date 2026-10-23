@@ -1522,9 +1522,9 @@ static u16 LoadSpriteSheetWithOffset(const struct SpriteSheet *sheet, u32 offset
 
     if (tileStart < 0)
     {
-#if T_SHOULD_RUN_MOVE_ANIM
+#if TESTING
         gLoadFail = TRUE;
-#endif // T_SHOULD_RUN_MOVE_ANIM
+#endif // TESTING
         return TAG_NONE;
     }
     else
