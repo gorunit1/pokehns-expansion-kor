@@ -3411,7 +3411,6 @@ static enum MoveEndResult MoveEndMoveBlock(void)
              && IsBattlerTurnDamaged(battlerDef, EXCLUDING_SUBSTITUTES)
              && IsBattlerAlive(gBattlerAttacker)
              && !(B_KNOCK_OFF_REMOVAL >= GEN_5 && side == B_SIDE_PLAYER && !(gBattleTypeFlags & BATTLE_TYPE_TRAINER))
-             && !DoesSubstituteBlockMove(gBattlerAttacker, battlerDef, gCurrentMove)
              && CanBattlerGetOrLoseItem(battlerDef, gBattlerAttacker, gBattleMons[battlerDef].item)
              && !NoAliveMonsForEitherParty())
             {
