@@ -361,7 +361,6 @@ void ClearPursuitValuesIfSet(enum BattlerId battler);
 void ClearPursuitValues(void);
 bool32 HasWeatherEffect(void);
 bool32 HadMoreThanHalfHpNowDoesnt(enum BattlerId battler);
-void ChooseStatBoostAnimation(enum BattlerId battler);
 bool32 TrySwitchInEjectPack(enum EjectPackTiming timing);
 bool32 EmergencyExitCanBeTriggered(enum BattlerId battler, enum Ability ability);
 bool32 TryTriggerSymbiosis(enum BattlerId battler, u32 ally);
