@@ -11,7 +11,7 @@ summary.txt = 한글 회귀 기대 요약(kortests/run.sh 출력 그대로: 정�
   K4-12도 PASS 그대로여서 summary.txt는 바이트 그대로다(hnsfix-1010e mkcopy 사본 + trace.patch, kortests/run.sh <사본> post 8:
   517/607, 기대와 바이트 동일, trace는 K4-12 2줄만 다름). 고친 K4-12를 8세대 코드에서 돌리면 `Matched ANIMATION`
   (zz_hns9730_k4_interact.c:290)으로 FAIL한다.
-합계: 652개, PASS 563 / FAIL 83 / INVALID 6 (2026-10-14 묶음 23 전: PASS 562 / FAIL 84; HNSB2021 30개 추가 전: 622개, PASS 532)
+합계: 652개, PASS 558 / FAIL 88 / INVALID 6 (2026-10-23 묶음 26 #10214 전: PASS 563 / FAIL 83; 2026-10-14 묶음 23 전: PASS 562 / FAIL 84; HNSB2021 30개 추가 전: 622개, PASS 532)
 2026-10-13 HNSSCREEN 15개 추가(방벽 해제 — #10829 앞당김 6d08adc6, 진영 문구 db62d527, 배리어프리 타이머 d4e3b8b6): 클라우드
   저장소 코드 d4e3b8b6에서 kortests/run.sh <저장소> kor-screen 8 → 532/622. 그 전 607개의 상태 줄은 그대로(정렬 비교 차이 0),
   새 15개 모두 PASS. summary.txt는 이 실행 요약 그대로(테스트가 늘어 hydra 실패 목록 앞 50줄의 선택만 2줄 바뀜 — 상태 줄은 그대로).
@@ -28,9 +28,15 @@ summary.txt = 한글 회귀 기대 요약(kortests/run.sh 출력 그대로: 정�
   코드 = 클라우드 저장소 18dfc352(묶음 23 마지막 이식), kortests/run.sh <저장소> kor-b25 8 → 563/652. 다른 651개 상태 줄은 그대로
   (compare.py 차이 = 4-16 한 줄뿐). summary.txt는 이 실행 요약 그대로(hydra 실패 목록 앞 50줄에서 4-16이 빠지고 HNS9717 K1-14가
   들어옴 — 상태 줄 변화 아님). 이 요약을 기대로 넣고 다시 돌린 결과는 아래 README 기대와 같음(full-sync-seq-352-363.md 검증 절).
+2026-10-23 full-sync 묶음 26(seq 376~380 + 385 #10214 앞당김): #10214가 턴 끝 무지개·불바다·습지 종료 때 gBattlerAttacker를 넣어
+  불바다 종료 문장 `{B_ATK_TEAM2} 주변의\n불바다가 사라졌다!`의 진영이 맞게 나온다(재확인 6 해결). 이식 전 출력(진영 반대)을
+  고정하던 5개가 기대대로 PASS → FAIL: HNS9918 K12·K22·K23(`#10214 CHANGE EXPECTED`), HNS9680 2-13(1/3), HNS9714 3-04(2/12)
+  (모두 `Unmatched MESSAGE`, 기대 문장이 반대 진영 `우리 편/상대 주변의 불바다가 사라졌다!`). 코드 = 클라우드 저장소 cf44d86e,
+  ALLOW_REPO=1 kortests/run.sh <저장소> kor-b26b 8 → 558/652. 다른 647개 상태 줄은 그대로(compare.py 차이 = 위 5개). summary.txt는
+  이 실행 요약 그대로이고, 다시 돌린 결과(kor-b26c)가 이 기대와 바이트 같다(full-sync-seq-376-380.md 검증 절).
 세트          PASS / 전체   파일(kortests/sets/)
-  HNS9680      67 /  70    zz_hns9680_endturn1~4.c
-  HNS9714      29 /  34    zz_hns9714_b1_defog.c, b2_tidyup_sub.c, b3_endturn.c, b4_doubles_gmax.c
+  HNS9680      66 /  70    zz_hns9680_endturn1~4.c
+  HNS9714      28 /  34    zz_hns9714_b1_defog.c, b2_tidyup_sub.c, b3_endturn.c, b4_doubles_gmax.c
   HNSFIX1      14 /  16    zz_hnsfix1_tmp.c
   HNSFIXOBS     0 /   1    zz_hnsfix1_obs.c (관찰용)
   HNSREV        8 /   8    zz_hnsreview_tmp.c
@@ -46,16 +52,17 @@ summary.txt = 한글 회귀 기대 요약(kortests/run.sh 출력 그대로: 정�
   HNSSCREEN    15 /  15    zz_hnsscreen_kor.c (방벽 해제: T 깨뜨리다류 타이머·이름·만료·피해, P 진영 접두어·공격자 복구·안개제거, C 배리어프리 4경우·없음·뒤 방벽·상대 사용)
   HNSB2021     30 /  30    zz_hnsb2021_kor.c (묶음 20·21: A 경혈찌르기 대상 — 파트너 기절·같은 턴 기절·살아 있는 파트너·호출(손가락흔들기/잠꼬대),
                            B 호출 전체기 스피드스타(파트너 안 맞음)·지진/파도타기(아군도 맞음), C 트랩셸 순서·당신먼저·따라가때리기, D 공생, E 흉내쟁이)
-  HNS9918      23 /  23    zz_hns9918_pledge.c (맹세 콤보·무지개·불바다·습지 시작/턴 끝/종료 문장과 진영 이름, 시작 상태 경로,
+  HNS9918      20 /  23    zz_hns9918_pledge.c (맹세 콤보·무지개·불바다·습지 시작/턴 끝/종료 문장과 진영 이름, 시작 상태 경로,
                            무지개 2배·습지 1/4·불바다 1/8, 미래예지·파멸의소원; seq 188 이식 전 출력 고정)
 저장소 테스트가 없는 문장을 지키는 것(리뷰 R3): HNS9730 K1-51 충전 PASS, K2-16 위협 vs 주눅구슬 PASS,
   K3-25 심술꾸러기 주눅구슬 FAIL(받아들인 변화: 도구 이름이 든 문장 `…주눅구슬로 스피드가 떨어졌다!`), HNSX1 21개 PASS
   (HNSX1 16: 정신력에 막힌 위협 → `…공격은 떨어지지 않는다!` → 도구 애니 → 상승 애니 → `…주눅구슬로 스피드가 올라갔다!`,
   X6 친구 결정 2026-10-07 저녁 본가대로. X6 전에는 HEAD의 미발동을 확인하던 탐침 `HNSX1 16 probe: …`였다)
-FAIL·INVALID 89개는 이름의 `UPSTREAM (ORDER) CHANGE EXPECTED`·`CHANGE EXPECTED`(뒤 PR이 들어오면 바뀔 것),
+FAIL·INVALID 94개는 이름의 `UPSTREAM (ORDER) CHANGE EXPECTED`·`CHANGE EXPECTED`(뒤 PR이 들어오면 바뀔 것),
   관찰용(HNSFIXOBS O1, HNS9717P P4), seq 181 #9730에서 받아들인 출력 변화(HNS9730), INVALID 6(HNSSW 4, HNS9784 K3-06, HNSFIX1 T13)
 HNS9918 K12·K22·K23(`#10214 CHANGE EXPECTED`)은 불바다 종료 문장의 진영이 반대인 이식 전 출력(재확인 6)을 고정한다.
-  seq 385 #10214가 턴 끝 불바다 블록에 gBattlerAttacker를 넣으면 바뀐다(K11은 우연히 맞는 진영이라 그대로).
+  seq 385 #10214(묶음 26에서 앞당김, cf44d86e)가 턴 끝 불바다 블록에 gBattlerAttacker를 넣어 이제 FAIL이다(K11은 우연히 맞는 진영이라 그대로).
+  HNS9680 2-13·HNS9714 3-04의 불바다 종료 줄도 같은 이유로 FAIL이다.
 HNS9918 K07은 맹독엄니 추가 효과 판정을 실패로 고정한다(`WITH_RNG(RNG_SECONDARY_EFFECT, FALSE)`, X7 2026-10-07 밤). 테스트 러너가
   추가 효과 판정을 기본으로 성공시켜, 그 전에는 무지개 2배를 빼도 PASS였다(리뷰 R1). 무지개 아래 100%는 판정을 거치지 않으므로
   출력은 같고, 같은 줄을 고쳐 이 요약도 바이트 그대로다.

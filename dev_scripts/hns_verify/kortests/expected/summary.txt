@@ -1,13 +1,13 @@
+  - test/battle/zz_hns9680_endturn2.c:414: Unmatched MESSAGE - HNS9680 2-13 Pledge field effects: sea of fire damage and end, rainbow end, swamp end 1/3.
   - test/battle/zz_hns9680_endturn3.c:381: Unmatched ANIMATION - HNS9680 3-16 UPSTREAM CHANGE EXPECTED (part-C 5.2): Magic Room end loop stops after White Herb, foe Sitrus waits for next turn.
   - test/battle/zz_hns9680_endturn4.c:396: Matched ANIMATION - HNS9680 4-18 UPSTREAM CHANGE EXPECTED: last foe faints at end of turn while the player is Dynamaxed, no Dynamax end animation.
-  - test/battle/zz_hns9714_b1_defog.c:472: Unmatched MESSAGE - HNS9714 1-13 Defog reflected by Magic Bounce or Magic Coat: the reflector's Defog clears the original user's side 1/2.
   - test/battle/zz_hns9714_b1_defog.c:510: Unmatched MESSAGE - HNS9714 1-14 Defog check pass against minimum evasion: nothing (fails), only the user's hazards (works), only the user's own Reflect (fails) 1/3.
+  - test/battle/zz_hns9714_b3_endturn.c:179: Unmatched MESSAGE - HNS9714 3-04 Pledge fields end: sea of fire, rainbow, swamp on the player side, the foe side, both 2/12.
   - test/battle/zz_hns9714_b4_doubles_gmax.c:101: Matched MESSAGE - HNS9714 4-03 UPSTREAM CHANGE EXPECTED: G-Max Wind Rage against foe-side screens (and the user's own) 1/2.
   - test/battle/zz_hns9717_k1_ee.c:146: Unmatched MESSAGE - HNS9717 K1-06 UPSTREAM CHANGE EXPECTED: Leech Seed, then poison and Salt Cure still hit before Emergency Exit.
   - test/battle/zz_hns9717_k1_ee.c:183: Unmatched ABILITY_POPUP - HNS9717 K1-07 UPSTREAM CHANGE EXPECTED: Sea of Fire with Air Balloon, no Grassy Terrain heal for the Emergency Exit mon.
   - test/battle/zz_hns9717_k1_ee.c:273: Unmatched MESSAGE - HNS9717 K1-11 UPSTREAM CHANGE EXPECTED: Perish Song count of the Emergency Exit mon is shown before it leaves.
   - test/battle/zz_hns9717_k1_ee.c:296: Unmatched ABILITY_POPUP - HNS9717 K1-12 UPSTREAM ORDER CHANGE EXPECTED: Octolock drops the Emergency Exit mon's stats before it leaves.
-  - test/battle/zz_hns9717_k1_ee.c:347: Unmatched ABILITY_POPUP - HNS9717 K1-14 UPSTREAM ORDER CHANGE EXPECTED: two foe Emergency Exits in one Sandstorm, each leaves and is replaced in turn.
   - test/battle/zz_hns9717_k1_ee.c:433: Unmatched ABILITY_POPUP - HNS9717 K1-18 UPSTREAM ORDER CHANGE EXPECTED: doubles, burned faster foe Emergency Exit, partner burn and player burn before replacement.
   - test/battle/zz_hns9717_k2_eject.c:95: Unmatched ABILITY_POPUP - HNS9717 K2-04 UPSTREAM ORDER CHANGE EXPECTED: Emergency Exit (burn) and Eject Pack (Octolock) in the same end of turn.
   - test/battle/zz_hns9717_k3_faint.c:84: Matched ABILITY_POPUP - HNS9717 K3-04 UPSTREAM CHANGE EXPECTED (softlock without the HnS KO-animation fix): faster player Emergency Exit (poison) and the last foe faints from poison.
@@ -33,7 +33,6 @@
   - test/battle/zz_hns9730_k4_interact.c:950: Unmatched ANIMATION - HNS9730 K4-44 Growl into a Mirror Armor foe and a plain foe.
   - test/battle/zz_hns9784_k1_items.c:213: TURN 1 incomplete - HNS9784 K2-02 CHANGE EXPECTED: Eject Button: raw-faster holder under Slow Start should activate (pre: effective-Speed holder).
   - test/battle/zz_hns9784_k1_items.c:233: TURN 1 incomplete - HNS9784 K2-03 CHANGE EXPECTED: Eject Button: all four Speed tied, raw sort should pick the right foe (pre: left foe).
-  - test/battle/zz_hns9784_k1_items.c:316: TURN 1 incomplete - HNS9784 K3-02 CHANGE EXPECTED: Eject Pack: raw-faster holder under Slow Start should activate (pre: effective-Speed holder).
   - test/battle/zz_hns9784_k1_items.c:352: Unmatched ANIMATION - HNS9784 K3-03 CHANGE EXPECTED: faster Eject Pack should come before slower White Herb (pre: White Herb first).
   - test/battle/zz_hns9784_k1_items.c:396: Unmatched MESSAGE - HNS9784 K3-05 CHANGE EXPECTED: user Throat Spray, then foes Eject Pack and White Herb by raw Speed (pre: White Herb, Throat Spray, Eject Pack).
   - test/battle/zz_hns9784_k1_items.c:410: SEND_OUT not required (is the send out random?) - HNS9784 K3-06 CHANGE EXPECTED: Weak Armor on U-turn: Eject Pack should not activate (pre: it fires at the U-turn replacement switch-in).
@@ -46,10 +45,11 @@
   - test/battle/zz_hns9784_k1_items.c:694: Unmatched ANIMATION - HNS9784 K5-05 CHANGE EXPECTED: two Mirror Herb holders by raw Speed, right one faster should go first (pre: battler order).
   - test/battle/zz_hns9784_k1_items.c:792: Unmatched MESSAGE - HNS9784 K7-01 CHANGE EXPECTED: Magician steals a Sitrus Berry below half HP: should eat it in the same move end (pre: after the foe acts).
   - test/battle/zz_hns9784_k1_items.c:87: Matched MESSAGE - HNS9784 K1-04 CHANGE EXPECTED: faster Eject Button, then slower Red Card should also activate (pre: only Eject Button).
-  - test/battle/zz_hnsfix1_tmp.c:413: Unmatched ABILITY_POPUP - HNSFIX1 T9 Leer at two Magic Bounce mons after Eject Button 2/2.
-  - test/battle/zz_hnspopup_p3.c:305: Unmatched ANIMATION - HNSPOPUP S08 side effect: Kee Berry (R19).
-- Tests FAILED :         89    Add TESTS='X' to run tests with the defined prefix.
-- Tests PASSED:          563
+  - test/battle/zz_hns9918_pledge.c:322: Unmatched MESSAGE - HNS9918 K12 Sea of fire on the opposing side ends; the player is faster, the foe hit last (#10214 CHANGE EXPECTED).
+  - test/battle/zz_hns9918_pledge.c:522: Unmatched MESSAGE - HNS9918 K22 Sea of fire on the player's side ends; the foe is faster, the player hit last (#10214 CHANGE EXPECTED).
+  - test/battle/zz_hns9918_pledge.c:543: Unmatched MESSAGE - HNS9918 K23 Starting status: sea of fire on the opposing side ends (#10214 CHANGE EXPECTED).
+- Tests FAILED :         94    Add TESTS='X' to run tests with the defined prefix.
+- Tests PASSED:          558
 - Tests TOTAL:           652
 HNS9168 K01 status cure berries (Cheri, Rawst, Pecha, Chesto) after the status move: PASS
 HNS9168 K02 Aspear Berry thaws the holder on switch-in (opponent side): PASS
@@ -117,7 +117,7 @@ HNS9680 2-09 Aqua Ring and Ingrain heal: PASS
 HNS9680 2-10 Grassy Terrain heals each turn, then ends: PASS
 HNS9680 2-11 Wish comes true, Future Sight hits two turns later: PASS
 HNS9680 2-12 Wish at full HP and under Heal Block: PASS
-HNS9680 2-13 Pledge field effects: sea of fire damage and end, rainbow end, swamp end: PASS
+HNS9680 2-13 Pledge field effects: sea of fire damage and end, rainbow end, swamp end 1/3: FAIL
 HNS9680 2-14 Perish Song count, both faint, replacements: PASS
 HNS9680 2-15 Yawn: falls asleep, Electric/Misty Terrain prevent, Sweet Veil (HnS text): PASS
 HNS9680 2-16 G-Max Wildfire residual damage at end of turn: PASS
@@ -184,7 +184,7 @@ HNS9714 2-10 Multi-hit move breaks a Substitute on the second hit: PASS
 HNS9714 3-01 Player-side Reflect, Light Screen, Mist, Aurora Veil, Safeguard, Tailwind, Lucky Chant expire: PASS
 HNS9714 3-02 Foe-side Reflect, Light Screen, Mist, Aurora Veil, Safeguard, Tailwind, Lucky Chant expire: PASS
 HNS9714 3-03 Doubles: both sides expire in the same end of turn, player side first, block order per side: PASS
-HNS9714 3-04 Pledge fields end: sea of fire, rainbow, swamp on the player side, the foe side, both: PASS
+HNS9714 3-04 Pledge fields end: sea of fire, rainbow, swamp on the player side, the foe side, both 2/12: FAIL
 HNS9714 3-05 Terrain ends at end of turn (set by player or foe): text and background animation: PASS
 HNS9714 3-06 Electric Terrain ends at end of turn: Booster Energy activates Quark Drive: PASS
 HNS9714 4-01 Doubles: right-side Defog users (player and foe), screens, hazards both sides, later movers keep their names: PASS
@@ -544,7 +544,7 @@ HNS9918 K08 Swamp quarters the Speed of the opposing side (turn order flips): PA
 HNS9918 K09 Sea of fire deals 1/8 of max HP at the end of the turn: PASS
 HNS9918 K10 Pledge user waits, then its partner is asleep: no combined move: PASS
 HNS9918 K11 Sea of fire on the opposing side and swamp on the player's side end in the same turn: PASS
-HNS9918 K12 Sea of fire on the opposing side ends; the player is faster, the foe hit last (#10214 CHANGE EXPECTED): PASS
+HNS9918 K12 Sea of fire on the opposing side ends; the player is faster, the foe hit last (#10214 CHANGE EXPECTED): FAIL
 HNS9918 K13 Swamp on the player's side ends after the opponent hit on the last turn: PASS
 HNS9918 K14 Starting status: swamp on the opposing side (4 turns): PASS
 HNS9918 K15 Starting status: swamp on the player's side (4 turns): PASS
@@ -554,8 +554,8 @@ HNS9918 K18 Starting status: rainbow on the player's side (4 turns): PASS
 HNS9918 K19 Starting status: rainbow on the opposing side (4 turns): PASS
 HNS9918 K20 Future Sight is foreseen and hits two turns later: PASS
 HNS9918 K21 Doom Desire is chosen as destiny and hits two turns later: PASS
-HNS9918 K22 Sea of fire on the player's side ends; the foe is faster, the player hit last (#10214 CHANGE EXPECTED): PASS
-HNS9918 K23 Starting status: sea of fire on the opposing side ends (#10214 CHANGE EXPECTED): PASS
+HNS9918 K22 Sea of fire on the player's side ends; the foe is faster, the player hit last (#10214 CHANGE EXPECTED): FAIL
+HNS9918 K23 Starting status: sea of fire on the opposing side ends (#10214 CHANGE EXPECTED): FAIL
 HNSB2021 A1a partner fainted last turn: Acupressure aimed at the fainted partner raises the user (#10636 CancelerSetTargets): PASS
 HNSB2021 A1b partner fainted last turn: Acupressure aimed at the user raises the user (target the fixed player controller sends): PASS
 HNSB2021 A1c AI: partner fainted, the AI's Acupressure raises the AI user (#10645 SetFinalChosenTarget): PASS
