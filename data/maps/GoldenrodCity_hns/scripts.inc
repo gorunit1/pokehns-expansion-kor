@@ -49,7 +49,6 @@ GoldenrodCity_EventScript_Trigger:: @flagheap
 GoldenrodCity_Trigger_Music::
 	goto_if_lt VAR_GOLDENROD_CITY_STATE, 6, GoldenrodCity_Trigger_MusicNotYet
 	goto_if_ge VAR_GOLDENROD_CITY_STATE, 11, GoldenrodCity_Trigger_MusicNotYet
-	fadenewbgm MUS_HG_ROCKET_TAKEOVER
 	special ShowMapNamePopup
 	setvar VAR_TEMP_0, 1 
 	end
