@@ -242,12 +242,6 @@ static const u8 *const sPokeNewsTextGroup_Ending[NUM_POKENEWS_TYPES + 1] = {
     [POKENEWS_BLENDMASTER] = gPokeNewsTextBlendMaster_Ending
 };
 
-u8 *const gTVStringVarPtrs[] = {
-    gStringVar1,
-    gStringVar2,
-    gStringVar3
-};
-
 static const u8 *const sTVFanClubTextGroup[] = {
     gTVFanClubText00,
     gTVFanClubText01,
@@ -2600,16 +2594,16 @@ void CopyContestRankToStringVar(u8 varIdx, u8 rank)
     switch (rank)
     {
     case CONTEST_RANK_NORMAL:
-        StringCopy(gTVStringVarPtrs[varIdx], gStdStrings[STDSTRING_NORMAL]);
+        StringCopy(GetStringVar(varIdx), gStdStrings[STDSTRING_NORMAL]);
         break;
     case CONTEST_RANK_SUPER:
-        StringCopy(gTVStringVarPtrs[varIdx], gStdStrings[STDSTRING_SUPER]);
+        StringCopy(GetStringVar(varIdx), gStdStrings[STDSTRING_SUPER]);
         break;
     case CONTEST_RANK_HYPER:
-        StringCopy(gTVStringVarPtrs[varIdx], gStdStrings[STDSTRING_HYPER]);
+        StringCopy(GetStringVar(varIdx), gStdStrings[STDSTRING_HYPER]);
         break;
     case CONTEST_RANK_MASTER:
-        StringCopy(gTVStringVarPtrs[varIdx], gStdStrings[STDSTRING_MASTER]);
+        StringCopy(GetStringVar(varIdx), gStdStrings[STDSTRING_MASTER]);
         break;
     }
 }
@@ -2619,19 +2613,19 @@ void CopyContestCategoryToStringVar(u8 varIdx, enum ContestCategories category)
     switch (category)
     {
     case CONTEST_CATEGORY_COOL:
-        StringCopy(gTVStringVarPtrs[varIdx], gStdStrings[STDSTRING_COOL]);
+        StringCopy(GetStringVar(varIdx), gStdStrings[STDSTRING_COOL]);
         break;
     case CONTEST_CATEGORY_BEAUTY:
-        StringCopy(gTVStringVarPtrs[varIdx], gStdStrings[STDSTRING_BEAUTY]);
+        StringCopy(GetStringVar(varIdx), gStdStrings[STDSTRING_BEAUTY]);
         break;
     case CONTEST_CATEGORY_CUTE:
-        StringCopy(gTVStringVarPtrs[varIdx], gStdStrings[STDSTRING_CUTE]);
+        StringCopy(GetStringVar(varIdx), gStdStrings[STDSTRING_CUTE]);
         break;
     case CONTEST_CATEGORY_SMART:
-        StringCopy(gTVStringVarPtrs[varIdx], gStdStrings[STDSTRING_SMART]);
+        StringCopy(GetStringVar(varIdx), gStdStrings[STDSTRING_SMART]);
         break;
     case CONTEST_CATEGORY_TOUGH:
-        StringCopy(gTVStringVarPtrs[varIdx], gStdStrings[STDSTRING_TOUGH]);
+        StringCopy(GetStringVar(varIdx), gStdStrings[STDSTRING_TOUGH]);
         break;
     default:
         break;
@@ -2647,7 +2641,7 @@ void SetContestCategoryStringVarForInterview(void)
 void ConvertIntToDecimalString(u8 varIdx, int value)
 {
     int nDigits = CountDigits(value);
-    ConvertIntToDecimalStringN(gTVStringVarPtrs[varIdx], value, STR_CONV_MODE_LEFT_ALIGN, nDigits);
+    ConvertIntToDecimalStringN(GetStringVar(varIdx), value, STR_CONV_MODE_LEFT_ALIGN, nDigits);
 }
 
 size_t CountDigits(int value)
@@ -2939,7 +2933,7 @@ static void CompactTVShowArray(TVShow *shows)
 static enum Species GetRandomDifferentSpeciesAndNameSeenByPlayer(u8 varIdx, enum Species excludedSpecies)
 {
     enum Species species = GetRandomDifferentSpeciesSeenByPlayer(excludedSpecies);
-    StringCopy(gTVStringVarPtrs[varIdx], GetSpeciesName(species));
+    StringCopy(GetStringVar(varIdx), GetSpeciesName(species));
     return species;
 }
 
@@ -3119,7 +3113,7 @@ static void GetNicknameSubstring(u8 varIdx, u8 whichPosition, u8 charParam, u16 
             buff[1] = GetSpeciesName(species)[strlen - (whichPosition + 1)];
         }
     }
-    StringCopy(gTVStringVarPtrs[varIdx], buff);
+    StringCopy(GetStringVar(varIdx), buff);
 }
 
 // Unused script special

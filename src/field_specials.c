@@ -544,7 +544,7 @@ u8 GetLinkPartnerNames(void)
     {
         if (myLinkPlayerNumber != i)
         {
-            StringCopy(gTVStringVarPtrs[j], gLinkPlayers[i].name);
+            StringCopy(GetStringVar(j), gLinkPlayers[i].name);
             j++;
         }
     }

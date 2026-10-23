@@ -107,12 +107,6 @@ static const u8 sScriptConditionTable[COMPARISON_OPERATORS_COUNT][3] =
     [NOT_EQUAL] =              {1, 0, 1},
 };
 
-static u8 *const sScriptStringVars[] =
-{
-    gStringVar1,
-    gStringVar2,
-    gStringVar3,
-};
 
 bool8 ScrCmd_nop(struct ScriptContext *ctx)
 {
@@ -1891,7 +1885,7 @@ bool8 ScrCmd_buffermoncategory(struct ScriptContext *ctx)
     u8 stringVarIndex = ScriptReadByte(ctx);
     u16 species = VarGet(ScriptReadHalfword(ctx));
 
-    StringCopy(sScriptStringVars[stringVarIndex], GetSpeciesCategory(species));
+    StringCopy(GetStringVar(stringVarIndex), GetSpeciesCategory(species));
     return FALSE;
 }
 
@@ -2840,7 +2834,7 @@ bool8 ScrCmd_bufferspeciesname(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1);
 
-    StringCopy(sScriptStringVars[stringVarIndex], GetSpeciesName(species));
+    StringCopy(GetStringVar(stringVarIndex), GetSpeciesName(species));
     return FALSE;
 }
 
@@ -2850,7 +2844,7 @@ bool8 ScrCmd_bufferleadmonspeciesname(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1);
 
-    u8 *dest = sScriptStringVars[stringVarIndex];
+    u8 *dest = GetStringVar(stringVarIndex);
     u8 partyIndex = GetLeadMonIndex();
     enum Species species = GetMonData(&gParties[B_TRAINER_PLAYER][partyIndex], MON_DATA_SPECIES);
     StringCopy(dest, GetSpeciesName(species));
@@ -2863,8 +2857,8 @@ void BufferFirstLiveMonNickname(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1);
 
-    GetMonData(GetFirstLiveMon(), MON_DATA_NICKNAME, sScriptStringVars[stringVarIndex]);
-    StringGet_Nickname(sScriptStringVars[stringVarIndex]);
+    GetMonData(GetFirstLiveMon(), MON_DATA_NICKNAME, GetStringVar(stringVarIndex));
+    StringGet_Nickname(GetStringVar(stringVarIndex));
 }
 
 bool8 ScrCmd_bufferpartymonnick(struct ScriptContext *ctx)
@@ -2874,8 +2868,8 @@ bool8 ScrCmd_bufferpartymonnick(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1);
 
-    GetMonData(&gParties[B_TRAINER_PLAYER][partyIndex], MON_DATA_NICKNAME, sScriptStringVars[stringVarIndex]);
-    StringGet_Nickname(sScriptStringVars[stringVarIndex]);
+    GetMonData(&gParties[B_TRAINER_PLAYER][partyIndex], MON_DATA_NICKNAME, GetStringVar(stringVarIndex));
+    StringGet_Nickname(GetStringVar(stringVarIndex));
     return FALSE;
 }
 
@@ -2886,7 +2880,7 @@ bool8 ScrCmd_bufferitemname(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1);
 
-    CopyItemName(itemId, sScriptStringVars[stringVarIndex]);
+    CopyItemName(itemId, GetStringVar(stringVarIndex));
     return FALSE;
 }
 
@@ -2898,7 +2892,7 @@ bool8 ScrCmd_bufferitemnameplural(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1);
 
-    CopyItemNameHandlePlural(itemId, sScriptStringVars[stringVarIndex], quantity);
+    CopyItemNameHandlePlural(itemId, GetStringVar(stringVarIndex), quantity);
     return FALSE;
 }
 
@@ -2909,7 +2903,7 @@ bool8 ScrCmd_bufferdecorationname(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1);
 
-    StringCopy(sScriptStringVars[stringVarIndex], gDecorations[decorId].name);
+    StringCopy(GetStringVar(stringVarIndex), gDecorations[decorId].name);
     return FALSE;
 }
 
@@ -2920,7 +2914,7 @@ bool8 ScrCmd_buffermovename(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1);
 
-    StringCopy(sScriptStringVars[stringVarIndex], GetMoveName(move));
+    StringCopy(GetStringVar(stringVarIndex), GetMoveName(move));
     return FALSE;
 }
 
@@ -2932,7 +2926,7 @@ bool8 ScrCmd_buffernumberstring(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1);
 
-    ConvertIntToDecimalStringN(sScriptStringVars[stringVarIndex], num, STR_CONV_MODE_LEFT_ALIGN, numDigits);
+    ConvertIntToDecimalStringN(GetStringVar(stringVarIndex), num, STR_CONV_MODE_LEFT_ALIGN, numDigits);
     return FALSE;
 }
 
@@ -2943,7 +2937,7 @@ bool8 ScrCmd_bufferstdstring(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1);
 
-    StringCopy(sScriptStringVars[stringVarIndex], gStdStrings[index]);
+    StringCopy(GetStringVar(stringVarIndex), gStdStrings[index]);
     return FALSE;
 }
 
@@ -2954,7 +2948,7 @@ bool8 ScrCmd_buffercontestname(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1);
 
-    BufferContestName(sScriptStringVars[stringVarIndex], category);
+    BufferContestName(GetStringVar(stringVarIndex), category);
     return FALSE;
 }
 
@@ -2965,7 +2959,7 @@ bool8 ScrCmd_bufferstring(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1);
 
-    StringCopy(sScriptStringVars[stringVarIndex], text);
+    StringCopy(GetStringVar(stringVarIndex), text);
     return FALSE;
 }
 
@@ -2987,7 +2981,7 @@ bool8 ScrCmd_vbufferstring(struct ScriptContext *ctx)
     Script_RequestEffects(SCREFF_V1);
 
     const u8 *src = (u8 *)(addr - sAddressOffset);
-    u8 *dest = sScriptStringVars[stringVarIndex];
+    u8 *dest = GetStringVar(stringVarIndex);
     StringCopy(dest, src);
     return FALSE;
 }
@@ -2999,7 +2993,7 @@ bool8 ScrCmd_bufferboxname(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1);
 
-    StringCopy(sScriptStringVars[stringVarIndex], GetBoxNamePtr(boxId));
+    StringCopy(GetStringVar(stringVarIndex), GetBoxNamePtr(boxId));
     return FALSE;
 }
 
@@ -3921,7 +3915,7 @@ bool8 ScrCmd_buffertrainerclassname(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1);
 
-    StringCopy(sScriptStringVars[stringVarIndex], GetTrainerClassNameFromId(trainerClassId));
+    StringCopy(GetStringVar(stringVarIndex), GetTrainerClassNameFromId(trainerClassId));
     return FALSE;
 }
 
@@ -3932,7 +3926,7 @@ bool8 ScrCmd_buffertrainername(struct ScriptContext *ctx)
 
     Script_RequestEffects(SCREFF_V1);
 
-    StringCopy(sScriptStringVars[stringVarIndex], GetTrainerNameFromId(trainerClassId));
+    StringCopy(GetStringVar(stringVarIndex), GetTrainerNameFromId(trainerClassId));
     return FALSE;
 }
 
