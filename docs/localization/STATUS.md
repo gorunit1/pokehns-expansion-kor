@@ -1,11 +1,23 @@
 # 현재 인수인계 상태
 
-## 2026-10-23 — full-sync 묶음 28(seq 385.5 #10454) (현재, 클라우드 세션)
+## 2026-10-23 — full-sync 묶음 29(seq 386 #10217) (현재, 클라우드 세션)
+
+- **다음 할 일**
+  1. **친구 문자 보내기**(사용자가 보냄, 문안은 세션 답변): 묶음 29 결과 + 알림(upstream 회귀 보정 84 — 기술 밖 교체 뒤 생명의구슬·유턴 등, 일루전 이름 보정 85, 빼앗기 문장 토큰 1개, 소매치기 새 동작) + 실기 3개 + ROM `467845f6`/SHA1 `f82541bc…`. 질문 없음. 내용은 `full-sync-seq-386.md`와 같다. 보낸 뒤 "보냄"으로 기록.
+  2. **친구 답 대기:** 82(필드 날씨 Gen 9), 79(알기술 전수), 72(Set Ability), 70 (a)(b), 71(묶음 23), 69 하드 삭제 실기, 실기 결과(묶음 23~29, 10-21 반영, BGM 10-22·10-23).
+  3. **full-sync 다음 seq 387 #10206**(Tadbulb·Bellibolt 둘째 앞모습, S) — 사용자 지시 때. 389는 앞당김(다시 넣지 않음). 테스트 기준 **`test-baseline-seq386.txt`**, 한글 회귀 기대 **558/652**, 세이브 비교 이식 전 사실은 코드 `467845f6`에서 `make hns -j8` 뒤 `save_compat.py collect`(세션 임시 `b30/save-pre`는 `6002c047` 기준).
+- **결과** [`full-sync-seq-386.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-386.md). 커밋 `467845f6`(#10217 + HnS 보정 + 회귀 테스트), 문서 이 커밋.
+  - upstream: 레드카드 플래그 → `originalBattlerPartyId`, 기술 중 빠진 원래 공격자에게서도 소매치기, 점착 판정 C로, 빼앗기 문장 이름이 버퍼로.
+  - HnS: MoveEnd `cv` 전 형태 손 맞춤, 한글 토큰 `{B_DEF_NAME_WITH_PREFIX}` → `{B_BUFF2}`(정책 74, 문구 그대로), **일루전 이름 보정(85)**, **기술 시작 때 공격자 값 초기화(84)** — upstream 그대로면 양쪽 교체 뒤 첫 기술에 생명의구슬 반동·유턴 교체가 빠짐(프로브 FAIL 2 → 보정 후 PASS, 회귀 테스트 `test/battle/hns_original_battler_reset.c`).
+  - 새 배틀 문장 0, 출력 변화 1행(레드카드 등으로 빠진 공격자에게서 소매치기).
+- **검증(코드 `467845f6`):** `make hns -j8` 종료 0·새 경고 0, ROM 32,962,948 → **32,963,348 B**(+400), EWRAM·IWRAM 같음, SHA1 **`f82541bc993741cf3a573cce1ed867140eb09b47`**. 세이브 정적 PASS(FAIL 0·WARN 0). 전체 `make check` 러너 2,752 / 5,726 — seq385.5 기준 사라진 PASS 0·새 PASS 2(HnS 테스트), 문장 폭 테스트 첫 실패 번호만 바뀜(테스트가 버퍼를 비워 둬서, 결과 문서), 새 기준 `test-baseline-seq386.txt`. 한글 회귀 558/652 기대와 바이트 같음. 한글 프로브(세션 임시): 소매치기·도둑 문장 이식 전·후 같음. **실기: 하지 않음(친구).**
+
+## 2026-10-23 — full-sync 묶음 28(seq 385.5 #10454) (클라우드 세션)
 
 - **다음 할 일**
   1. ~~친구 문자~~ **보냄**(2026-10-23 사용자 확인, 문안은 세션 답변): 묶음 28 결과 + **질문 1개(재확인 82 — 필드 날씨 Gen 9 동작을 켤지, A 지금 동작 유지(추천·적용 값 `GEN_8`) / B Gen 9)** + 알림(모래뿜기 HnS 가드 83) + 실기 3개 + ROM `6002c047`/SHA1 `472d4622…`. 내용은 `full-sync-seq-385_5.md`와 같다.
   2. **친구 답 대기:** 82(새), 79(알기술 전수), 72(Set Ability), 70 (a)(b), 71(묶음 23), 69 하드 삭제 실기, 실기 결과(묶음 23~28, 10-21 반영, BGM 10-22·10-23). 82가 B면 `include/config/battle.h` `B_OVERWORLD_WEATHER_OVERRIDE`를 `GEN_LATEST`로(한 줄) — 새 테스트는 `WITH_CONFIG`라 그대로.
-  3. **full-sync 다음 seq 386 #10217**(Pickpocket activation fix, L) — **사전 분석 끝(2026-10-23): 사용자 혼자 가능, 적용 지시 대기.** 원래 공격자가 레드카드 등으로 빠져도 소매치기가 파티의 그 포켓몬 도구를 훔침, 점착 판정을 C로, 마술사 점착 판정에서 생존 조건 삭제. HnS 손 맞춤: MoveEnd 함수가 아직 `cv` 전 형태(`gBattlerAttacker`·`GetBattlerAbility`), HnS `attackerInParty` 검사는 upstream HEAD처럼 맨 앞 조기 반환. **한글 문장 토큰 1개**: `STRINGID_PKMNSTOLEITEM`의 `{B_DEF_NAME_WITH_PREFIX}` → `{B_BUFF2}`(정책 74 — 문구 그대로, 접두어 `상대 `/`야생 `·조사 같음). upstream 버퍼는 일루전 변장 이름을 무시 → HnS는 `StealTargetItem`에서 일루전 포켓몬 파티 번호를 넣어 지금 출력 유지(제안). HnS 트레이너 소매치기 0·도둑/탐내다/마술사 1. 테스트 기준 **`test-baseline-seq385_5.txt`**, 한글 회귀 기대 **558/652**, 세이브 비교 이식 전 사실은 코드 `6002c047`에서 `make hns -j8` 뒤 `save_compat.py collect`(세션 임시 `b29/save-pre`는 `a3572d8d` 기준).
+  3. ~~full-sync 다음 seq 386 #10217~~ **적용함(묶음 29, 위 절).** 사전 분석 메모: 원래 공격자가 레드카드 등으로 빠져도 소매치기가 파티의 그 포켓몬 도구를 훔침, 점착 판정을 C로, 마술사 점착 판정에서 생존 조건 삭제. HnS 손 맞춤: MoveEnd 함수가 아직 `cv` 전 형태(`gBattlerAttacker`·`GetBattlerAbility`), HnS `attackerInParty` 검사는 upstream HEAD처럼 맨 앞 조기 반환. **한글 문장 토큰 1개**: `STRINGID_PKMNSTOLEITEM`의 `{B_DEF_NAME_WITH_PREFIX}` → `{B_BUFF2}`(정책 74 — 문구 그대로, 접두어 `상대 `/`야생 `·조사 같음). upstream 버퍼는 일루전 변장 이름을 무시 → HnS는 `StealTargetItem`에서 일루전 포켓몬 파티 번호를 넣어 지금 출력 유지(제안). HnS 트레이너 소매치기 0·도둑/탐내다/마술사 1. 테스트 기준 **`test-baseline-seq385_5.txt`**, 한글 회귀 기대 **558/652**, 세이브 비교 이식 전 사실은 코드 `6002c047`에서 `make hns -j8` 뒤 `save_compat.py collect`(세션 임시 `b29/save-pre`는 `a3572d8d` 기준).
 - **결과** [`full-sync-seq-385_5.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-385_5.md). 커밋 `6002c047`(#10454), 문서 `de752ae3`·이 커밋.
   - 새 설정 `B_OVERWORLD_WEATHER_OVERRIDE` HnS 값 **`GEN_8`**(게임 동작 변화 0, 사용자 결정 2026-10-23 "1번" — 친구 질문). Gen 9면 HnS 날씨 맵 15곳·스크립트 날씨 4곳에서 날씨 기술·특성이 실패하고, 은빛산 정상 레드 OBC 후 팀 쾌청이 실패.
   - 날씨 특성 처리 통합(`TryChangeWeatherWithAbility`). 모래뿜기 `gBattleScripting.battler`는 HnS 가드로 유지(83). 지형 판정은 HnS `gFieldStatuses`. `GEN_8`에서도 바뀌는 드문 경우: 구름제거·에어록 + 원시 날씨에서 날씨 특성 막힘 문장, 모래뿜기 애니 값.

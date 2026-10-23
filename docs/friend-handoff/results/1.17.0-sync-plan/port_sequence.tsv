@@ -387,7 +387,7 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 384	10211	652	1.17.0	g5_general_cleanup_docs	U-debug-9890	9890	S	fix	N	N	~0	fix(debug): incorrect use of const	이미 적용(HnS debug.c에 같은 const 위치 — 2026-09-15 선별 이식분), 변경 없음
 385	10214	653	1.17.0	g4_ai_tests_pokemon_sprites	U-startstatus-10170	10170	M	fix	Y	N	+0.1KB	Fix Starting Status messages not printing at start of battle	앞당김 적용 cf44d86e(380 바로 뒤 — 시작 상태 메시지 회귀, battle_message.c는 HnS에 이미 있음)
 385.5	10454	733	1.17.0	g3_battle_changes_moves_abilities_items	U-weather-10170	10395,10170,10214	M	feature	Y	N	+0.4KB	Add Gen 9 Overworld Weather Behavior	적용(설정 HnS 값 GEN_8 — 동작 유지, 친구 질문 재확인 82; 모래뿜기 스크립트 배틀러 HnS 가드 83; 지형은 gFieldStatuses) 6002c047
-386	10217	654	1.17.0	g2_battle_fixed_b	U-10217	9494,8943,10354	L	fix	Y	N	+400B	Fixes Pickpocket activation when the original attacker isn't on the field	
+386	10217	654	1.17.0	g2_battle_fixed_b	U-10217	9494,8943,10354	L	fix	Y	N	+400B	Fixes Pickpocket activation when the original attacker isn't on the field	적용(MoveEnd cv 전 형태 손 맞춤, 한글 토큰 {B_BUFF2}, 일루전 이름 HnS 보정 85, 기술 밖 교체 뒤 초기화 HnS 보정 84 + 회귀 테스트) 467845f6
 387	10206	655	1.17.0	g4_ai_tests_pokemon_sprites	U-10206	-	S	gfx	N	N	+0.4KB	Add second front frames to Tadbulb and Bellibolt	
 388	10117	656	1.17.0	g6_overworld_refactors	U-relearner-9006	9006	S	feature	N	N	~0	Config to hide Contest Data in Summary Screen and Move Relearner	
 389	10233	657	1.17.0	g6_overworld_refactors	U-trainerbattle-8678	8678	S	fix	N	N	~0	fix dynamic trainer script regression	앞당김 적용 1c037f41(365 바로 뒤)

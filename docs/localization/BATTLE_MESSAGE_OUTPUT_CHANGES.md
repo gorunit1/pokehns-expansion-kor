@@ -204,6 +204,7 @@
 | 더블에서 플레이어 쪽 파티 번호 k의 포켓몬이 탁쳐서떨구기로 도구를 잃었거나 트레이너전에서 원래 도구를 빼앗긴 뒤, 같은 배틀에서 파티 번호가 k인 다른 배틀러(상대·목호 파트너 포함)가 도구를 써 옆 포켓몬의 공생이 발동할 상황 (upstream #10483 + #10577 이식, seq 313·318. 새 문장 0) | 공생이 발동하지 않음(도구 이전·팝업·문장 없음) | 공생 팝업 → `STRINGID_SYMBIOSISITEMPASS`(`…은(는) …(으)로부터⏎…을(를) 받았다!`, 기존 문장) | `TrySymbiosis()`의 `itemLost[B_SIDE_PLAYER][…].stolen` 조건 삭제 |
 | 다이맥스한 포켓몬의 맥스기술이 저주받은바디 상대를 맞힘 (upstream #10639 이식, seq 328 — HnS 본 게임은 다이맥스 불가라 테스트·랜더마이저 밖 경로) | 30% 확률로 저주받은바디 팝업 뒤 `STRINGID_CURSEDBODYDISABLED`(`{공격자}의⏎{맥스기술}{을를} 봉인했다!`), 맥스기술이 사슬묶기됨 | 팝업·문장 없음, 사슬묶기 없음 | `AbilityBattleEffects` `ABILITY_CURSED_BODY` 조건에 `GetActiveGimmick(gBattlerAttacker) != GIMMICK_DYNAMAX` |
 | 더블 전체기(지진 등)로 반감열매가 발동하고 공생으로 도구를 받음 (upstream #10653 이식, seq 334. 새 문장 0) | 받은 도구에 다시 도구 팝업·열매 애니 → `상대 피카츄는 입는 데미지를⏎상처약이 약하게 했다!` 후 그 도구 소모 | 나오지 않음, 받은 도구 유지 | `MoveEndSymbiosis` `berryReduced` 초기화 |
+| 소매치기 포켓몬을 접촉기로 때린 공격자가 같은 기술 중 레드카드 등으로 교체됨 (upstream #10217 이식, seq 386. 새 문장 0) | 소매치기 발동 없음 | 소매치기 팝업 → `상대 포푸니는 마자용으로부터⏎몬스터볼을 빼앗았다!`(파티로 돌아간 원래 공격자의 도구를 훔침, 이름은 원래 공격자). 원래 공격자가 점착이어도 교체된 뒤라 막지 않음. HnS 트레이너 소매치기 0 — 플레이어·랜더마이저에서만 | `MoveEndPickpocket`, `StealTargetItem`, `STRINGID_PKMNSTOLEITEM` 토큰 `{B_BUFF2}` |
 
 ## 제외한 변경
 

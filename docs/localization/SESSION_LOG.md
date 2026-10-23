@@ -2,6 +2,18 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-23 — full-sync 묶음 29(seq 386 #10217) (클라우드 세션)
+
+- 요청: 사용자 "ㄱㄱ 혼자 되는지 보자" → 사전 분석(혼자 가능, 한글 토큰 1개는 정책 74, 일루전 보정 제안) → "ㄱㄱ".
+- 적용: `git apply --reject` 후 거부 12 hunk 손 적용(`redCardSwitched` 치환, `MoveEndPickpocket`은 upstream HEAD 형태를 HnS `gBattlerAttacker`로). 한글 토큰 1개, `StealTargetItem` 일루전 보정.
+- 발견·보정: `switchoutabilities`가 기술 밖 교체에서도 값을 적는데 기술 끝에서만 지워서, 양쪽 교체 뒤 첫 기술에 생명의구슬 반동·유턴 교체가 빠짐(세션 임시 클론 프로브 — 이식 전 PASS, upstream 그대로 FAIL, 보정 후 PASS). `HandleAction_UseMove`에서 초기화, 회귀 테스트 추가(재확인 84).
+- 수정 파일: 커밋 `467845f6`(12파일, 새 `test/battle/hns_original_battler_reset.c`). 문서 — `full-sync-seq-386.md`(새), `test-baseline-seq386.txt`(새), `RECHECK_BEFORE_COMPLETION.md` 84·85, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 1행, `port_sequence.tsv` 386, STATUS·SESSION_LOG.
+- 결정: 사용자 — 적용·일루전 보정. 메인 — 회귀 보정 84(이식 전 동작 유지, 위임 범위)와 회귀 테스트.
+- 검증: STATUS 현재 절.
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 친구 문자: 문안 세션 답변(질문 없음). 사용자가 보내면 "보냄" 기록.
+- 다음 시작점: seq 387 #10206 또는 친구 답.
+
 ### 2026-10-23 — full-sync 묶음 28(seq 385.5 #10454) (클라우드 세션)
 
 - 요청: 사용자 "ㄱㄱ 혼자 되는지, 친구 물어봐야하는지 보자" → 사전 분석 보고(설정 값 1개는 친구 결정, 나머지는 혼자 가능) → "1번으로 가자"(코드는 넣고 값은 HnS 동작 유지 `GEN_8`, 질문은 결과 문자와 함께). 질문은 결과 문자와 함께 보냄.
