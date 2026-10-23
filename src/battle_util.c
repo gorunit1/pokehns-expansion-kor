@@ -428,6 +428,11 @@ void HandleAction_UseMove(void)
         return;
     }
 
+    // HnS: originalBattlerPartyId is otherwise only cleared at the end of a move, so a switch made
+    // outside a move (switch action, switch-in after a faint) would carry over into this move and
+    // skip Life Orb, Shell Bell, U-turn and the other "same battler" checks.
+    gBattleStruct->battlerState[gBattlerAttacker].originalBattlerPartyId = PARTY_SIZE;
+
     gCurrMovePos = gChosenMovePos = gBattleStruct->chosenMovePositions[gBattlerAttacker];
 
     // choose move
@@ -4532,13 +4537,13 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
                     if (!(magicianTargets & 1u << targetBattler))
                         continue;
 
-                    if (GetBattlerAbility(targetBattler) == ABILITY_STICKY_HOLD && IsBattlerAlive(targetBattler))
+                    if (GetBattlerAbility(targetBattler) == ABILITY_STICKY_HOLD)
                     {
                         effect = FALSE;
                         break;
                     }
 
-                    StealTargetItem(battler, targetBattler);
+                    StealTargetItem(battler, targetBattler, ITEM_NONE);
                     gBattlerAbility = battler;
                     gEffectBattler = targetBattler;
                     BattleScriptCall(BattleScript_MagicianActivates);
