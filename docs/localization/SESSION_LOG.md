@@ -10,7 +10,7 @@
 - 조사: pokeheartgold `sMusicOverrideMap`(라디오타워 1~5F·전망대·엘리베이터), 금빛 지하 원작 곡(`TUNNEL_1F`·`B1F` = `C_KOGANE`, `B2F`·`WAREHOUSE` = `D_CHIKATSUURO`). HnS 라디오타워 맵은 1~5F뿐. `VAR_GOLDENROD_CITY_STATE` 6~10과 `VAR_MAHOGANY_TOWN_STATE` 16이 같은 스크립트에서 함께 바뀜을 확인.
 - 검증: STATUS 현재 절(정적 + 참고 빌드).
 - 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
-- 친구 문자: 아직(사용자가 보냄 — 문안은 세션 답변).
+- 친구 문자: 보냄(2026-10-23 사용자 확인 — 보고 5항목, 남쪽 입구 트리거 1줄 삭제 알림, 실기 5개. 내용은 `bgm-hgss-2026-10-23.md`와 같다).
 - 다음 시작점: seq 376 #8893 또는 친구 답.
 
 ### 2026-10-22 — full-sync 묶음 25(seq 366~375 + #10159 앞당김·#10176 흡수) (클라우드 세션)
