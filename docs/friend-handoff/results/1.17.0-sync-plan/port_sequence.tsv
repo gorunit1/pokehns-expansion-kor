@@ -402,14 +402,14 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 398	10274	674	1.17.0	g5_general_cleanup_docs	U-10274	-	M	test	N	N	~0	Fix anim tests	적용(sprite.c 손 — HnS TAG_NONE 문맥) dcf82156
 399	9265	675	1.17.0	g3_battle_changes_moves_abilities_items	U-9265	-	S	test	N	N	~0	New tests: Eviolite, Charge, Grassy Terrain & Misty Terrain	적용(테스트만) 2c45bf17
 400	9440	676	1.17.0	g6_overworld_refactors	U-trainergen-9440	9562,8943,10051,10059	L	refactor	N	N	~0	Use a single function for FillPartnerParty and CreateNPCTrainerPartyFromTrainer	적용(재확인 51 방침 — 볼·생성기 클래스는 동작 클래스, 시드는 파티+동작 클래스 해시, 랜더마이저 speciesOverride, 챌린지 스케일링·미러 유지; 전 트레이너 파티 비교 같음) 0e85395c
-401	10179	678	1.17.0	g5_general_cleanup_docs	U-unused-10179	-	L	refactor	N	N	~0	Remove unused functions	
+401	10179	678	1.17.0	g5_general_cleanup_docs	U-unused-10179	-	L	refactor	N	N	~0	Remove unused functions	적용 c9cb789a(호출 0 확인 뒤 손·퍼지 삭제 23 hunk, 삭제 목록 upstream과 같음)
 402	10286	679	1.17.0	g2_battle_fixed_b	U-trainerbattle-8678	8678	S	fix	N	N	~0	fix no continue script after early rival battle	앞당김 적용 fdb0be06(365 바로 뒤) — HnS 미도달: earlyrival은 FRLG 맵만
-403	9970	680	1.17.0	g6_overworld_refactors	U-randommon-9896	8434,9879,9896,10051,8678	L	refactor	N	N	~0	More mon generation cleanup	
-404	10294	681	1.17.0	g2_battle_fixed_b	U-berryanim-9168	9168	S	fix	Y	N	~0	Fix Item Heal Animation showing recovery on the wrong target	
-406	9987	683	1.17.0	g4_ai_tests_pokemon_sprites	U-9987	-	S	data	N	N	~0	Better quality Legends Z-A cries	
+403	9970	680	1.17.0	g6_overworld_refactors	U-randommon-9896	8434,9879,9896,10051,8678	L	refactor	N	N	~0	More mon generation cleanup	적용(HnS 적응 — NUM_ABILITY_PERSONALITY 지정 안 함, 개체값 최대 챌린지, 기본 기술 4개는 GiveMonInitialMoveset, 싱크로 종 인자, debug.c 미이식; 재확인 87) e01cf28b
+404	10294	681	1.17.0	g2_battle_fixed_b	U-berryanim-9168	9168	S	fix	Y	N	~0	Fix Item Heal Animation showing recovery on the wrong target	변경 없음 — 대상 줄은 #9777(seq 475)이 넣음, 475 때 BS_SCRIPTING으로(재확인 8zb)
+406	9987	683	1.17.0	g4_ai_tests_pokemon_sprites	U-9987	-	S	data	N	N	~0	Better quality Legends Z-A cries	적용 안 함 — 2026-09-16 사용자 결정(메가 울음소리 WAV 26개 되돌림, P_MODIFIED_MEGA_CRIES FALSE)
 407	10293	684	1.17.0	g5_general_cleanup_docs	U-10293	-	M	feature	N	N	~+0.1KB	refactor(sprite): add sprite flag to create OBJWIN copies of oams	
 409	10314	686	1.17.0	g5_general_cleanup_docs	U-10314	-	M	refactor	Y	N	~-0.2KB	Replaced original sprite print behavior with actual sprite printer	
-410	10320	687	1.17.0	g6_overworld_refactors	U-randommon-9896	9970	S	fix	N	N	~0	fix givemon not setting pp	
+410	10320	687	1.17.0	g6_overworld_refactors	U-randommon-9896	9970	S	fix	N	N	~0	fix givemon not setting pp	앞당김 적용 5fba1e7d(403 바로 뒤 — #9970 뒤 givemon 지정 기술 PP 0 회귀)
 411	10297	689	1.17.0	g3_battle_changes_moves_abilities_items	U-10297	-	S	fix	N	N	~0	New Knock Off cases	
 412	10328	691	1.17.0	g5_general_cleanup_docs	U-10328	-	M	refactor	N	N	~0	refactor(string): consolidate stringvar arrays with getter function	
 413	10321	692	1.17.0	g4_ai_tests_pokemon_sprites	U-10321	7360,9642	M	test	N	N	~0(비테스트 빌드는 gTestRunnerEnabled=const FALSE)	feat(test-runner): add support for item popups	
