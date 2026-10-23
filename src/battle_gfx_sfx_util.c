@@ -756,40 +756,6 @@ void FreeTrainerFrontPicPalette(enum TrainerPicID trainerPicId)
     FreeSpritePaletteByTag(GetTrainerPicTag(trainerPicId, TRUE));
 }
 
-// Unused.
-void BattleLoadAllHealthBoxesGfxAtOnce(void)
-{
-    u8 numberOfBattlers = 0;
-    u8 i;
-    struct SpritePalette palettes[2];
-    struct CompressedSpriteSheet sheet;
-
-    GetHealthBoxHealthBarPalettes(palettes);
-    LoadSpritePalette(&palettes[0]);
-    LoadSpritePalette(&palettes[1]);
-    if (!IsDoubleBattle())
-    {
-        sheet = GetSinglesPlayerHealthbox();
-        LoadCompressedSpriteSheet(&sheet);
-        sheet = GetSinglesOpponentHealthbox();
-        LoadCompressedSpriteSheet(&sheet);
-        numberOfBattlers = 2;
-    }
-    else
-    {
-        struct CompressedSpriteSheet doublesSheets[2];
-        GetDoublesPlayerHealthbox(doublesSheets);
-        LoadCompressedSpriteSheet(&doublesSheets[0]);
-        LoadCompressedSpriteSheet(&doublesSheets[1]);
-        GetDoublesOpponentHealthbox(doublesSheets);
-        LoadCompressedSpriteSheet(&doublesSheets[0]);
-        LoadCompressedSpriteSheet(&doublesSheets[1]);
-        numberOfBattlers = MAX_BATTLERS_COUNT;
-    }
-    for (i = 0; i < numberOfBattlers; i++)
-        LoadCompressedSpriteSheet(&sSpriteSheets_HealthBar[GetBattlerPosition(i)]);
-}
-
 bool8 BattleLoadAllHealthBoxesGfx(u8 state)
 {
     bool8 retVal = FALSE;
@@ -1176,14 +1142,6 @@ void BattleStopLowHpSound(void)
         gBattleSpritesDataPtr->battlerData[GetPartnerBattler(playerBattler)].lowHpSong = 0;
 
     m4aSongNumStop(SE_LOW_HEALTH, FlagGet(FLAG_SYS_GBS_ENABLED));
-}
-
-u8 GetMonHPBarLevel(struct Pokemon *mon)
-{
-    u16 hp = GetMonData(mon, MON_DATA_HP);
-    u16 maxHP = GetMonData(mon, MON_DATA_MAX_HP);
-
-    return GetHPBarLevel(hp, maxHP);
 }
 
 void HandleBattleLowHpMusicChange(void)

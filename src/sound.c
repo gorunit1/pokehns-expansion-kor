@@ -257,16 +257,6 @@ bool8 WaitFanfare(bool8 stop)
     }
 }
 
-// Unused
-void StopFanfareByFanfareNum(u8 fanfareNum)
-{
-#if IS_HNS
-    m4aSongNumStop(sFanfaresHnS[fanfareNum].songNum, FlagGet(FLAG_SYS_GBS_ENABLED));
-#else
-    m4aSongNumStop(sFanfares[fanfareNum].songNum, FlagGet(FLAG_SYS_GBS_ENABLED));
-#endif
-}
-
 void PlayFanfare(u16 songNum)
 {
     s32 i;
