@@ -1,6 +1,18 @@
 # 현재 인수인계 상태
 
-## 2026-10-23 — full-sync 묶음 27(seq 381~384) (현재, 클라우드 세션)
+## 2026-10-23 — full-sync 묶음 28(seq 385.5 #10454) (현재, 클라우드 세션)
+
+- **다음 할 일**
+  1. **친구 문자 보내기**(사용자가 보냄, 문안은 세션 답변): 묶음 28 결과 + **질문 1개(재확인 82 — 필드 날씨 Gen 9 동작을 켤지, A 지금 동작 유지(추천·적용 값 `GEN_8`) / B Gen 9)** + 알림(모래뿜기 HnS 가드 83) + 실기 3개 + ROM `6002c047`/SHA1 `472d4622…`. 내용은 `full-sync-seq-385_5.md`와 같다. 보낸 뒤 "보냄"으로 기록.
+  2. **친구 답 대기:** 82(새), 79(알기술 전수), 72(Set Ability), 70 (a)(b), 71(묶음 23), 69 하드 삭제 실기, 실기 결과(묶음 23~28, 10-21 반영, BGM 10-22·10-23). 82가 B면 `include/config/battle.h` `B_OVERWORLD_WEATHER_OVERRIDE`를 `GEN_LATEST`로(한 줄) — 새 테스트는 `WITH_CONFIG`라 그대로.
+  3. **full-sync 다음 seq 386 #10217**(Pickpocket activation fix, L) — 사용자 지시 때. 테스트 기준 **`test-baseline-seq385_5.txt`**, 한글 회귀 기대 **558/652**, 세이브 비교 이식 전 사실은 코드 `6002c047`에서 `make hns -j8` 뒤 `save_compat.py collect`(세션 임시 `b29/save-pre`는 `a3572d8d` 기준).
+- **결과** [`full-sync-seq-385_5.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-385_5.md). 커밋 `6002c047`(#10454), 문서 `de752ae3`·이 커밋.
+  - 새 설정 `B_OVERWORLD_WEATHER_OVERRIDE` HnS 값 **`GEN_8`**(게임 동작 변화 0, 사용자 결정 2026-10-23 "1번" — 친구 질문). Gen 9면 HnS 날씨 맵 15곳·스크립트 날씨 4곳에서 날씨 기술·특성이 실패하고, 은빛산 정상 레드 OBC 후 팀 쾌청이 실패.
+  - 날씨 특성 처리 통합(`TryChangeWeatherWithAbility`). 모래뿜기 `gBattleScripting.battler`는 HnS 가드로 유지(83). 지형 판정은 HnS `gFieldStatuses`. `GEN_8`에서도 바뀌는 드문 경우: 구름제거·에어록 + 원시 날씨에서 날씨 특성 막힘 문장, 모래뿜기 애니 값.
+  - 새 배틀 문장 0(`STRINGID_BUTITFAILED` 재사용), 기존 텍스트 변경 0.
+- **검증(코드 `6002c047`):** `make hns -j8` 종료 0·새 경고 0, ROM 32,963,060 → **32,962,948 B**(−112), EWRAM·IWRAM 같음, SHA1 **`472d4622106d5a4e48e49bd954661df0c8bc88e0`**. 세이브 정적 PASS(FAIL 0·WARN 0). 전체 `make check` 러너 2,750 / 5,721, 목록 PASS 2,745 — seq384 기준 사라진 PASS 0·새 테스트 8(PASS 1, FAIL 7은 모두 영어 `MESSAGE`), 새 기준 `test-baseline-seq385_5.txt`. 한글 회귀 558/652 기대와 바이트 같음. **실기: 하지 않음(친구).**
+
+## 2026-10-23 — full-sync 묶음 27(seq 381~384) (클라우드 세션)
 
 - **다음 할 일**
   1. ~~친구 문자~~ **보냄**(2026-10-23 사용자 확인, 문안은 세션 답변): 묶음 27 결과 + 알림(#9147 문 크기 HnS 적응, #10145 총대장 카운터 volatile·재확인 46 해결·#9710 D3 해소, #10211 이미 있음) + 실기 4개 + ROM `a3572d8d`/SHA1 `d0b08d51…`. 질문 없음. 내용은 `full-sync-seq-381-384.md`와 같다.
