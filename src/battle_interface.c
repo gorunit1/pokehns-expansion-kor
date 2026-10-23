@@ -2976,9 +2976,12 @@ void CreateItemPopUp(enum BattlerId battler)
     struct SpriteTemplate template;
     const s16 (*coords)[2];
 
-    // HnS: headless-test part of upstream #10321 (seq 413): no pop-up sprites/tasks in headless tests
-    if (gTestRunnerHeadless)
-        return;
+    if (gTestRunnerEnabled)
+    {
+        TestRunner_Battle_RecordItemPopUp(battler, gLastUsedItem);
+        if (gTestRunnerHeadless)
+            return;
+    }
 
     ClearStaleAbilityPopUpMarks();
     if (!IsAnyAbilityPopUpActive())
