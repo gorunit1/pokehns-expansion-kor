@@ -3,7 +3,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_NONE] =
     {
         .name = _("-------"),
-        .description = COMPOUND_STRING("No special ability."),
+        .description = COMPOUND_STRING("No Ability."),
         .aiRating = 0,
         .cantBeSwapped = TRUE,
         .cantBeTraced = TRUE,
@@ -12,7 +12,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_STENCH] =
     {
         .name = _("악취"),
-        .description = COMPOUND_STRING("May cause a foe to flinch."),
+        .description = COMPOUND_STRING("Moves may cause flinching."),
         .aiRating = 1,
     },
 
@@ -26,7 +26,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_SPEED_BOOST] =
     {
         .name = _("가속"),
-        .description = COMPOUND_STRING("Gradually boosts Speed."),
+        .description = COMPOUND_STRING("Speed raises every turn."),
         .aiRating = 9,
     },
 
@@ -73,14 +73,14 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_STATIC] =
     {
         .name = _("정전기"),
-        .description = COMPOUND_STRING("Paralyzes on contact."),
+        .description = COMPOUND_STRING("May paralyze on contact."),
         .aiRating = 4,
     },
 
     [ABILITY_VOLT_ABSORB] =
     {
         .name = _("축전"),
-        .description = COMPOUND_STRING("Turns electricity into HP."),
+        .description = COMPOUND_STRING("Restores if hit by Electric."),
         .aiRating = 7,
         .breakable = TRUE,
     },
@@ -88,7 +88,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_WATER_ABSORB] =
     {
         .name = _("저수"),
-        .description = COMPOUND_STRING("Changes water into HP."),
+        .description = COMPOUND_STRING("Restores HP if hit by Water."),
         .aiRating = 7,
         .breakable = TRUE,
     },
@@ -96,7 +96,12 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_OBLIVIOUS] =
     {
         .name = _("둔감"),
-        .description = COMPOUND_STRING("Prevents attraction."),
+        .description = COMPOUND_STRING(
+        #if B_OBLIVIOUS_TAUNT >= GEN_6
+            "Blocks Attract and Taunt."),
+        #else
+            "Prevents attraction."),
+        #endif
         .aiRating = 2,
         .breakable = TRUE,
     },
@@ -111,7 +116,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_COMPOUND_EYES] =
     {
         .name = _("복안"),
-        .description = COMPOUND_STRING("Raises accuracy."),
+        .description = COMPOUND_STRING("Boosts accuracy."),
         .aiRating = 7,
     },
 
@@ -141,7 +146,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_FLASH_FIRE] =
     {
         .name = _("타오르는불꽃"),
-        .description = COMPOUND_STRING("Powers up if hit by fire."),
+        .description = COMPOUND_STRING("Powers up Fire if hit by it."),
         .aiRating = 6,
         .breakable = TRUE,
     },
@@ -149,7 +154,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_SHIELD_DUST] =
     {
         .name = _("인분"),
-        .description = COMPOUND_STRING("Prevents added effects."),
+        .description = COMPOUND_STRING("Blocks foes' added effects."),
         .aiRating = 5,
         .breakable = TRUE,
     },
@@ -165,7 +170,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_SUCTION_CUPS] =
     {
         .name = _("흡반"),
-        .description = COMPOUND_STRING("Firmly anchors the body."),
+        .description = COMPOUND_STRING("Can't be forced to switch."),
         .aiRating = 2,
         .breakable = TRUE,
     },
@@ -173,28 +178,28 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_INTIMIDATE] =
     {
         .name = _("위협"),
-        .description = COMPOUND_STRING("Lowers the foe's Attack."),
+        .description = COMPOUND_STRING("Lowers foes' Atk on entry."),
         .aiRating = 7,
     },
 
     [ABILITY_SHADOW_TAG] =
     {
         .name = _("그림자밟기"),
-        .description = COMPOUND_STRING("Prevents the foe's escape."),
+        .description = COMPOUND_STRING("Prevents the foes' escape."),
         .aiRating = 10,
     },
 
     [ABILITY_ROUGH_SKIN] =
     {
         .name = _("까칠한피부"),
-        .description = COMPOUND_STRING("Hurts to touch."),
+        .description = COMPOUND_STRING("Damages foe on contact."),
         .aiRating = 6,
     },
 
     [ABILITY_WONDER_GUARD] =
     {
         .name = _("불가사의부적"),
-        .description = COMPOUND_STRING("Only “Supereffective” hits."),
+        .description = COMPOUND_STRING("Only “supereffective” hits."),
         .aiRating = 10,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
@@ -212,21 +217,21 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_EFFECT_SPORE] =
     {
         .name = _("포자"),
-        .description = COMPOUND_STRING("Leaves spores on contact."),
+        .description = COMPOUND_STRING("Contact may psn/slp/par."),
         .aiRating = 4,
     },
 
     [ABILITY_SYNCHRONIZE] =
     {
         .name = _("싱크로"),
-        .description = COMPOUND_STRING("Passes on status problems."),
+        .description = COMPOUND_STRING("Passes on brn/par/psn."),
         .aiRating = 4,
     },
 
     [ABILITY_CLEAR_BODY] =
     {
         .name = _("클리어바디"),
-        .description = COMPOUND_STRING("Prevents ability reduction."),
+        .description = COMPOUND_STRING("Stats can't be lowered."),
         .aiRating = 4,
         .breakable = TRUE,
     },
@@ -234,14 +239,19 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_NATURAL_CURE] =
     {
         .name = _("자연회복"),
-        .description = COMPOUND_STRING("Heals upon switching out."),
+        .description = COMPOUND_STRING("Heals status upon switch."),
         .aiRating = 7,
     },
 
     [ABILITY_LIGHTNING_ROD] =
     {
         .name = _("피뢰침"),
-        .description = COMPOUND_STRING("Draws electrical moves."),
+        .description = COMPOUND_STRING(
+        #if B_REDIRECT_ABILITY_IMMUNITY >= GEN_4
+            "Draws Electr. to up Sp. Atk."),
+        #else
+            "Draws Electric moves."),
+        #endif
         .aiRating = 7,
         .breakable = TRUE,
     },
@@ -256,21 +266,26 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_SWIFT_SWIM] =
     {
         .name = _("쓱쓱"),
-        .description = COMPOUND_STRING("Raises Speed in rain."),
+        .description = COMPOUND_STRING("Boosts Speed in rain."),
         .aiRating = 6,
     },
 
     [ABILITY_CHLOROPHYLL] =
     {
         .name = _("엽록소"),
-        .description = COMPOUND_STRING("Raises Speed in sunshine."),
+        .description = COMPOUND_STRING("Boosts Speed in sunlight."),
         .aiRating = 6,
     },
 
     [ABILITY_ILLUMINATE] =
     {
         .name = _("발광"),
-        .description = COMPOUND_STRING("Encounter rate increases."),
+        .description =
+        #if B_ILLUMINATE_EFFECT >= GEN_9
+            COMPOUND_STRING("Accuracy can't be lowered."),
+        #else
+            COMPOUND_STRING("Encounter rate increases."),
+        #endif
         .aiRating = 0,
         .breakable = TRUE,
     },
@@ -278,7 +293,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_TRACE] =
     {
         .name = _("트레이스"),
-        .description = COMPOUND_STRING("Copies special ability."),
+        .description = COMPOUND_STRING("Copies a foe's Ability."),
         .aiRating = 6,
         .cantBeCopied = TRUE,
         .cantBeTraced = TRUE, //B_UPDATED_ABILITY_DATA >= GEN_4
@@ -287,14 +302,14 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_HUGE_POWER] =
     {
         .name = _("천하장사"),
-        .description = COMPOUND_STRING("Raises Attack."),
+        .description = COMPOUND_STRING("Doubles Attack."),
         .aiRating = 10,
     },
 
     [ABILITY_POISON_POINT] =
     {
         .name = _("독가시"),
-        .description = COMPOUND_STRING("Poisons foe on contact."),
+        .description = COMPOUND_STRING("May poison foe on contact."),
         .aiRating = 4,
     },
 
@@ -309,7 +324,12 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_MAGMA_ARMOR] =
     {
         .name = _("마그마의무장"),
-        .description = COMPOUND_STRING("Prevents freezing."),
+        .description = COMPOUND_STRING(
+        #if B_USE_FROSTBITE
+            "Prevents frostbite."),
+        #else
+            "Prevents freezing."),
+        #endif
         .aiRating = 1,
         .breakable = TRUE,
     },
@@ -325,7 +345,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_MAGNET_PULL] =
     {
         .name = _("자력"),
-        .description = COMPOUND_STRING("Traps Steel-type Pokémon."),
+        .description = COMPOUND_STRING("Traps Steel-type foes."),
         .aiRating = 9,
     },
 
@@ -361,7 +381,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_THICK_FAT] =
     {
         .name = _("두꺼운지방"),
-        .description = COMPOUND_STRING("Heat-and-cold protection."),
+        .description = COMPOUND_STRING("Halves Fire and Ice damage."),
         .aiRating = 7,
         .breakable = TRUE,
     },
@@ -369,28 +389,28 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_EARLY_BIRD] =
     {
         .name = _("일찍기상"),
-        .description = COMPOUND_STRING("Awakens quickly from sleep."),
+        .description = COMPOUND_STRING("Awakens twice as fast."),
         .aiRating = 4,
     },
 
     [ABILITY_FLAME_BODY] =
     {
         .name = _("불꽃몸"),
-        .description = COMPOUND_STRING("Burns the foe on contact."),
+        .description = COMPOUND_STRING("May burn foe on contact."),
         .aiRating = 4,
     },
 
     [ABILITY_RUN_AWAY] =
     {
         .name = _("도주"),
-        .description = COMPOUND_STRING("Makes escaping easier."),
+        .description = COMPOUND_STRING("Enables a sure getaway."),
         .aiRating = 0,
     },
 
     [ABILITY_KEEN_EYE] =
     {
         .name = _("날카로운눈"),
-        .description = COMPOUND_STRING("Prevents loss of accuracy."),
+        .description = COMPOUND_STRING("Accuracy can't be lowered."),
         .aiRating = 1,
         .breakable = TRUE,
     },
@@ -398,7 +418,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_HYPER_CUTTER] =
     {
         .name = _("괴력집게"),
-        .description = COMPOUND_STRING("Prevents Attack reduction."),
+        .description = COMPOUND_STRING("Attack can't be lowered."),
         .aiRating = 3,
         .breakable = TRUE,
     },
@@ -428,21 +448,31 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_CUTE_CHARM] =
     {
         .name = _("헤롱헤롱바디"),
-        .description = COMPOUND_STRING("Infatuates on contact."),
+        .description = COMPOUND_STRING("May infatuate on contact."),
         .aiRating = 2,
     },
 
     [ABILITY_PLUS] =
     {
         .name = _("플러스"),
-        .description = COMPOUND_STRING("Powers up with Minus."),
+        .description =
+        #if B_PLUS_MINUS_INTERACTION >= GEN_5
+            COMPOUND_STRING("Ups Sp. Atk with Minus."),
+        #else
+            COMPOUND_STRING("Plus or Minus ups Sp. Atk."),
+        #endif
         .aiRating = 0,
     },
 
     [ABILITY_MINUS] =
     {
         .name = _("마이너스"),
-        .description = COMPOUND_STRING("Powers up with Plus."),
+        .description =
+        #if B_PLUS_MINUS_INTERACTION >= GEN_5
+            COMPOUND_STRING("Ups Sp. Atk with Plus."),
+        #else
+            COMPOUND_STRING("Plus or Minus ups Sp. Atk."),
+        #endif
         .aiRating = 0,
     },
 
@@ -459,7 +489,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_STICKY_HOLD] =
     {
         .name = _("점착"),
-        .description = COMPOUND_STRING("Prevents item theft."),
+        .description = COMPOUND_STRING("Held item can't be removed."),
         .aiRating = 3,
         .breakable = TRUE,
     },
@@ -467,21 +497,21 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_SHED_SKIN] =
     {
         .name = _("탈피"),
-        .description = COMPOUND_STRING("Heals the body by shedding."),
+        .description = COMPOUND_STRING("May heal status problems."),
         .aiRating = 7,
     },
 
     [ABILITY_GUTS] =
     {
         .name = _("근성"),
-        .description = COMPOUND_STRING("Ups Attack if suffering."),
+        .description = COMPOUND_STRING("Boosts Attack if statused."),
         .aiRating = 6,
     },
 
     [ABILITY_MARVEL_SCALE] =
     {
         .name = _("이상한비늘"),
-        .description = COMPOUND_STRING("Ups Defense if suffering."),
+        .description = COMPOUND_STRING("Ups Defense if statused."),
         .aiRating = 5,
         .breakable = TRUE,
     },
@@ -489,35 +519,35 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_LIQUID_OOZE] =
     {
         .name = _("해감액"),
-        .description = COMPOUND_STRING("Draining causes injury."),
+        .description = COMPOUND_STRING("Damages HP-draining foes."),
         .aiRating = 3,
     },
 
     [ABILITY_OVERGROW] =
     {
         .name = _("심록"),
-        .description = COMPOUND_STRING("Ups Grass moves in a pinch."),
+        .description = COMPOUND_STRING("Ups Grass moves at low HP."),
         .aiRating = 5,
     },
 
     [ABILITY_BLAZE] =
     {
         .name = _("맹화"),
-        .description = COMPOUND_STRING("Ups Fire moves in a pinch."),
+        .description = COMPOUND_STRING("Ups Fire moves at low HP."),
         .aiRating = 5,
     },
 
     [ABILITY_TORRENT] =
     {
         .name = _("급류"),
-        .description = COMPOUND_STRING("Ups Water moves in a pinch."),
+        .description = COMPOUND_STRING("Ups Water moves at low HP."),
         .aiRating = 5,
     },
 
     [ABILITY_SWARM] =
     {
         .name = _("벌레의알림"),
-        .description = COMPOUND_STRING("Ups Bug moves in a pinch."),
+        .description = COMPOUND_STRING("Ups Bug moves at low HP."),
         .aiRating = 5,
     },
 
@@ -538,7 +568,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_ARENA_TRAP] =
     {
         .name = _("개미지옥"),
-        .description = COMPOUND_STRING("Prevents fleeing."),
+        .description = COMPOUND_STRING("Prevents foes from fleeing."),
         .aiRating = 9,
     },
 
@@ -553,7 +583,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_WHITE_SMOKE] =
     {
         .name = _("하얀연기"),
-        .description = COMPOUND_STRING("Prevents ability reduction."),
+        .description = COMPOUND_STRING("Stats can't be lowered."),
         .aiRating = 4,
         .breakable = TRUE,
     },
@@ -561,7 +591,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_PURE_POWER] =
     {
         .name = _("순수한힘"),
-        .description = COMPOUND_STRING("Raises Attack."),
+        .description = COMPOUND_STRING("Doubles Attack."),
         .aiRating = 10,
     },
 
@@ -583,7 +613,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_TANGLED_FEET] =
     {
         .name = _("갈지자걸음"),
-        .description = COMPOUND_STRING("Ups evasion if confused."),
+        .description = COMPOUND_STRING("Boosts evasion if confused."),
         .aiRating = 2,
         .breakable = TRUE,
     },
@@ -591,7 +621,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_MOTOR_DRIVE] =
     {
         .name = _("전기엔진"),
-        .description = COMPOUND_STRING("Electricity raises Speed."),
+        .description = COMPOUND_STRING("Ups Speed if hit by Electr."),
         .aiRating = 6,
         .breakable = TRUE,
     },
@@ -599,7 +629,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_RIVALRY] =
     {
         .name = _("투쟁심"),
-        .description = COMPOUND_STRING("Powers up against rivals."),
+        .description = COMPOUND_STRING("Strong vs. opposite gender."),
         .aiRating = 1,
     },
 
@@ -613,7 +643,14 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_SNOW_CLOAK] =
     {
         .name = _("눈숨기"),
-        .description = COMPOUND_STRING("Ups evasion in Hail or Snow."),
+        .description = COMPOUND_STRING(
+        #if B_PREFERRED_ICE_WEATHER == B_ICE_WEATHER_HAIL
+            "Boosts evasion in hail."),
+        #elif B_PREFERRED_ICE_WEATHER == B_ICE_WEATHER_SNOW
+            "Boosts evasion in snow."),
+        #else
+            "Ups evasion in hail or snow."),
+        #endif
         .aiRating = 3,
         .breakable = TRUE,
     },
@@ -621,28 +658,28 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_GLUTTONY] =
     {
         .name = _("먹보"),
-        .description = COMPOUND_STRING("Eats Berries early."),
+        .description = COMPOUND_STRING("Eats Berries at half HP."),
         .aiRating = 3,
     },
 
     [ABILITY_ANGER_POINT] =
     {
         .name = _("분노의경혈"),
-        .description = COMPOUND_STRING("Critical hits raise Attack."),
+        .description = COMPOUND_STRING("Maxes Attack when crit."),
         .aiRating = 4,
     },
 
     [ABILITY_UNBURDEN] =
     {
         .name = _("곡예"),
-        .description = COMPOUND_STRING("Using a hold item ups Speed."),
+        .description = COMPOUND_STRING("Item loss boosts Speed."),
         .aiRating = 7,
     },
 
     [ABILITY_HEATPROOF] =
     {
         .name = _("내열"),
-        .description = COMPOUND_STRING("Heat and burn protection."),
+        .description = COMPOUND_STRING("Halves Fire-type damage."),
         .aiRating = 5,
         .breakable = TRUE,
     },
@@ -650,7 +687,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_SIMPLE] =
     {
         .name = _("단순"),
-        .description = COMPOUND_STRING("Prone to wild stat changes."),
+        .description = COMPOUND_STRING("Doubles stat changes."),
         .aiRating = 8,
         .breakable = TRUE,
     },
@@ -658,7 +695,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_DRY_SKIN] =
     {
         .name = _("건조피부"),
-        .description = COMPOUND_STRING("Prefers moisture to heat."),
+        .description = COMPOUND_STRING("Heat hurts, Water restores."),
         .aiRating = 6,
         .breakable = TRUE,
     },
@@ -666,14 +703,14 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_DOWNLOAD] =
     {
         .name = _("다운로드"),
-        .description = COMPOUND_STRING("Adjusts power favorably."),
+        .description = COMPOUND_STRING("Ups offense based on foe."),
         .aiRating = 7,
     },
 
     [ABILITY_IRON_FIST] =
     {
         .name = _("철주먹"),
-        .description = COMPOUND_STRING("Boosts punching moves."),
+        .description = COMPOUND_STRING("Powers up punching moves."),
         .aiRating = 6,
     },
 
@@ -687,14 +724,14 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_ADAPTABILITY] =
     {
         .name = _("적응력"),
-        .description = COMPOUND_STRING("Boosts same type attacks."),
+        .description = COMPOUND_STRING("Powers up same-type moves."),
         .aiRating = 8,
     },
 
     [ABILITY_SKILL_LINK] =
     {
         .name = _("스킬링크"),
-        .description = COMPOUND_STRING("Multi-hit moves hit 5 times."),
+        .description = COMPOUND_STRING("Maxes multistrike hits."),
         .aiRating = 7,
     },
 
@@ -708,14 +745,14 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_SOLAR_POWER] =
     {
         .name = _("선파워"),
-        .description = COMPOUND_STRING("Powers up in sunshine."),
+        .description = COMPOUND_STRING("Sunlight boosts, but hurts."),
         .aiRating = 3,
     },
 
     [ABILITY_QUICK_FEET] =
     {
         .name = _("속보"),
-        .description = COMPOUND_STRING("Ups Speed if suffering."),
+        .description = COMPOUND_STRING("Boosts Speed if statused."),
         .aiRating = 5,
     },
 
@@ -729,7 +766,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_SNIPER] =
     {
         .name = _("스나이퍼"),
-        .description = COMPOUND_STRING("Boosts critical hits."),
+        .description = COMPOUND_STRING("Powers up critical hits."),
         .aiRating = 3,
     },
 
@@ -743,28 +780,28 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_NO_GUARD] =
     {
         .name = _("노가드"),
-        .description = COMPOUND_STRING("Ensures that all moves hit."),
+        .description = COMPOUND_STRING("Ensures all attacks land."),
         .aiRating = 8,
     },
 
     [ABILITY_STALL] =
     {
         .name = _("시간벌기"),
-        .description = COMPOUND_STRING("Always moves last."),
+        .description = COMPOUND_STRING("Always last to use moves."),
         .aiRating = -1,
     },
 
     [ABILITY_TECHNICIAN] =
     {
         .name = _("테크니션"),
-        .description = COMPOUND_STRING("Boosts weaker moves."),
+        .description = COMPOUND_STRING("Powers up weak moves."),
         .aiRating = 8,
     },
 
     [ABILITY_LEAF_GUARD] =
     {
         .name = _("리프가드"),
-        .description = COMPOUND_STRING("Blocks status in sunshine."),
+        .description = COMPOUND_STRING("Blocks status in sunlight."),
         .aiRating = 2,
         .breakable = TRUE,
     },
@@ -772,21 +809,21 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_KLUTZ] =
     {
         .name = _("서투름"),
-        .description = COMPOUND_STRING("Can't use hold items."),
+        .description = COMPOUND_STRING("Can't use held items."),
         .aiRating = -1,
     },
 
     [ABILITY_MOLD_BREAKER] =
     {
         .name = _("틀깨기"),
-        .description = COMPOUND_STRING("Moves hit through abilities."),
+        .description = COMPOUND_STRING("Moves ignore Abilities."),
         .aiRating = 7,
     },
 
     [ABILITY_SUPER_LUCK] =
     {
         .name = _("대운"),
-        .description = COMPOUND_STRING("Critical hits land often."),
+        .description = COMPOUND_STRING("Raises critical-hit ratio."),
         .aiRating = 3,
     },
 
@@ -814,7 +851,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_UNAWARE] =
     {
         .name = _("천진"),
-        .description = COMPOUND_STRING("Ignores stat changes."),
+        .description = COMPOUND_STRING("Ignores foes' stat changes."),
         .aiRating = 6,
         .breakable = TRUE,
     },
@@ -837,21 +874,26 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_SLOW_START] =
     {
         .name = _("슬로스타트"),
-        .description = COMPOUND_STRING("Takes a while to get going."),
+        .description = COMPOUND_STRING("Takes 5 turns to get going."),
         .aiRating = -2,
     },
 
     [ABILITY_SCRAPPY] =
     {
         .name = _("배짱"),
-        .description = COMPOUND_STRING("Hits Ghost-type Pokémon."),
+        .description = COMPOUND_STRING("Normal & Fight. hit Ghosts."),
         .aiRating = 6,
     },
 
     [ABILITY_STORM_DRAIN] =
     {
         .name = _("마중물"),
-        .description = COMPOUND_STRING("Draws in Water moves."),
+        .description = COMPOUND_STRING(
+        #if B_REDIRECT_ABILITY_IMMUNITY >= GEN_4
+            "Draws Water to up Sp. Atk."),
+        #else
+            "Draws Water-type moves."),
+        #endif
         .aiRating = 7,
         .breakable = TRUE,
     },
@@ -859,7 +901,14 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_ICE_BODY] =
     {
         .name = _("아이스바디"),
-        .description = COMPOUND_STRING("HP recovery in Hail or Snow."),
+        .description = COMPOUND_STRING(
+        #if B_PREFERRED_ICE_WEATHER == B_ICE_WEATHER_HAIL
+            "Slight HP recovery in hail."),
+        #elif B_PREFERRED_ICE_WEATHER == B_ICE_WEATHER_SNOW
+            "Slight HP recovery in snow."),
+        #else
+            "HP recovery in hail or snow."),
+        #endif
         .aiRating = 3,
     },
 
@@ -892,21 +941,21 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_FRISK] =
     {
         .name = _("통찰"),
-        .description = COMPOUND_STRING("Checks a foe's item."),
+        .description = COMPOUND_STRING("Checks a foe's held item."),
         .aiRating = 3,
     },
 
     [ABILITY_RECKLESS] =
     {
         .name = _("이판사판"),
-        .description = COMPOUND_STRING("Boosts moves with recoil."),
+        .description = COMPOUND_STRING("Powers up recoil moves."),
         .aiRating = 6,
     },
 
     [ABILITY_MULTITYPE] =
     {
         .name = _("멀티타입"),
-        .description = COMPOUND_STRING("Changes type to its Plate."),
+        .description = COMPOUND_STRING("Matches Plate or Z-Crystal."),
         .aiRating = 8,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
@@ -919,7 +968,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_FLOWER_GIFT] =
     {
         .name = _("플라워기프트"),
-        .description = COMPOUND_STRING("Allies power up in sunshine."),
+        .description = COMPOUND_STRING("Sun ups allies' Atk & Sp.Def."),
         .aiRating = 4,
         .cantBeCopied = TRUE,
         .cantBeTraced = B_UPDATED_ABILITY_DATA >= GEN_5,
@@ -929,14 +978,14 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_BAD_DREAMS] =
     {
         .name = _("나이트메어"),
-        .description = COMPOUND_STRING("Damages sleeping Pokémon."),
+        .description = COMPOUND_STRING("Damages sleeping foes."),
         .aiRating = 4,
     },
 
     [ABILITY_PICKPOCKET] =
     {
         .name = _("나쁜손버릇"),
-        .description = COMPOUND_STRING("Steals the foe's held item."),
+        .description = COMPOUND_STRING("Steals foe's item if hit."),
         .aiRating = 3,
     },
 
@@ -950,7 +999,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_CONTRARY] =
     {
         .name = _("심술꾸러기"),
-        .description = COMPOUND_STRING("Inverts stat changes."),
+        .description = COMPOUND_STRING("Reverses stat changes."),
         .aiRating = 8,
         .breakable = TRUE,
     },
@@ -965,35 +1014,35 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_DEFIANT] =
     {
         .name = _("오기"),
-        .description = COMPOUND_STRING("Lowered stats up Attack."),
+        .description = COMPOUND_STRING("Stat-lowering ups Attack."),
         .aiRating = 5,
     },
 
     [ABILITY_DEFEATIST] =
     {
         .name = _("무기력"),
-        .description = COMPOUND_STRING("Gives up at half HP."),
+        .description = COMPOUND_STRING("Halves offenses at half HP."),
         .aiRating = -1,
     },
 
     [ABILITY_CURSED_BODY] =
     {
         .name = _("저주받은바디"),
-        .description = COMPOUND_STRING("Disables moves on contact."),
+        .description = COMPOUND_STRING("Contact may disable move."),
         .aiRating = 4,
     },
 
     [ABILITY_HEALER] =
     {
         .name = _("치유의마음"),
-        .description = COMPOUND_STRING("Heals partner Pokémon."),
+        .description = COMPOUND_STRING("May cure ally's status."),
         .aiRating = 0,
     },
 
     [ABILITY_FRIEND_GUARD] =
     {
         .name = _("프렌드가드"),
-        .description = COMPOUND_STRING("Lowers damage to partner."),
+        .description = COMPOUND_STRING("Reduces damage to allies."),
         .aiRating = 0,
         .breakable = TRUE,
     },
@@ -1001,7 +1050,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_WEAK_ARMOR] =
     {
         .name = _("깨어진갑옷"),
-        .description = COMPOUND_STRING("Its stats change when hit."),
+        .description = COMPOUND_STRING("Hits change Def and Speed."),
         .aiRating = 2,
     },
 
@@ -1024,7 +1073,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_MULTISCALE] =
     {
         .name = _("멀티스케일"),
-        .description = COMPOUND_STRING("Halves damage at full HP."),
+        .description = COMPOUND_STRING("Reduces damage at full HP."),
         .aiRating = 8,
         .breakable = TRUE,
     },
@@ -1032,28 +1081,28 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_TOXIC_BOOST] =
     {
         .name = _("독폭주"),
-        .description = COMPOUND_STRING("Ups Attack if poisoned."),
+        .description = COMPOUND_STRING("Boosts Attack if poisoned."),
         .aiRating = 6,
     },
 
     [ABILITY_FLARE_BOOST] =
     {
         .name = _("열폭주"),
-        .description = COMPOUND_STRING("Ups Sp. Atk if burned."),
+        .description = COMPOUND_STRING("Boosts Sp. Atk if burned."),
         .aiRating = 5,
     },
 
     [ABILITY_HARVEST] =
     {
         .name = _("수확"),
-        .description = COMPOUND_STRING("May recycle a used Berry."),
+        .description = COMPOUND_STRING("May create another Berry."),
         .aiRating = 5,
     },
 
     [ABILITY_TELEPATHY] =
     {
         .name = _("텔레파시"),
-        .description = COMPOUND_STRING("Can't be damaged by an ally."),
+        .description = COMPOUND_STRING("Dodges ally's attacks."),
         .aiRating = 0,
         .breakable = TRUE,
     },
@@ -1061,14 +1110,19 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_MOODY] =
     {
         .name = _("변덕쟁이"),
-        .description = COMPOUND_STRING("Stats change gradually."),
+        .description = COMPOUND_STRING("Stats change every turn."),
         .aiRating = 10,
     },
 
     [ABILITY_OVERCOAT] =
     {
         .name = _("방진"),
-        .description = COMPOUND_STRING("Blocks weather and powder."),
+        .description = COMPOUND_STRING(
+        #if B_POWDER_OVERCOAT >= GEN_6
+            "Blocks weather and powder."),
+        #else
+            "Prevents weather damage."),
+        #endif
         .aiRating = 5,
         .breakable = TRUE,
     },
@@ -1076,21 +1130,21 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_POISON_TOUCH] =
     {
         .name = _("독수"),
-        .description = COMPOUND_STRING("Poisons foe on contact."),
+        .description = COMPOUND_STRING("Contact moves may poison."),
         .aiRating = 4,
     },
 
     [ABILITY_REGENERATOR] =
     {
         .name = _("재생력"),
-        .description = COMPOUND_STRING("Heals upon switching out."),
+        .description = COMPOUND_STRING("Restores HP upon switch."),
         .aiRating = 8,
     },
 
     [ABILITY_BIG_PECKS] =
     {
         .name = _("부풀린가슴"),
-        .description = COMPOUND_STRING("Prevents Defense loss."),
+        .description = COMPOUND_STRING("Defense can't be lowered."),
         .aiRating = 1,
         .breakable = TRUE,
     },
@@ -1105,7 +1159,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_WONDER_SKIN] =
     {
         .name = _("미라클스킨"),
-        .description = COMPOUND_STRING("May avoid status problems."),
+        .description = COMPOUND_STRING("May avoid status moves."),
         .aiRating = 4,
         .breakable = TRUE,
     },
@@ -1113,14 +1167,14 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_ANALYTIC] =
     {
         .name = _("애널라이즈"),
-        .description = COMPOUND_STRING("Moving last boosts power."),
+        .description = COMPOUND_STRING("Boosts power if last to act."),
         .aiRating = 5,
     },
 
     [ABILITY_ILLUSION] =
     {
         .name = _("일루전"),
-        .description = COMPOUND_STRING("Appears as a partner."),
+        .description = COMPOUND_STRING("Disguises as a partner."),
         .aiRating = 8,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
@@ -1146,21 +1200,21 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_MUMMY] =
     {
         .name = _("미라"),
-        .description = COMPOUND_STRING("Spreads with contact."),
+        .description = COMPOUND_STRING("Ability spreads on contact."),
         .aiRating = 5,
     },
 
     [ABILITY_MOXIE] =
     {
         .name = _("자기과신"),
-        .description = COMPOUND_STRING("KOs raise Attack."),
+        .description = COMPOUND_STRING("Raises Attack after KOs."),
         .aiRating = 7,
     },
 
     [ABILITY_JUSTIFIED] =
     {
         .name = _("정의의마음"),
-        .description = COMPOUND_STRING("Dark hits raise Attack."),
+        .description = COMPOUND_STRING("Ups Attack if hit by Dark."),
         .aiRating = 4,
     },
 
@@ -1182,7 +1236,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_SAP_SIPPER] =
     {
         .name = _("초식"),
-        .description = COMPOUND_STRING("Grass increases Attack."),
+        .description = COMPOUND_STRING("Ups Attack if hit by Grass."),
         .aiRating = 7,
         .breakable = TRUE,
     },
@@ -1190,7 +1244,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_PRANKSTER] =
     {
         .name = _("짓궂은마음"),
-        .description = COMPOUND_STRING("Status moves go first."),
+        .description = COMPOUND_STRING("Status moves have priority."),
         .aiRating = 8,
     },
 
@@ -1204,14 +1258,14 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_IRON_BARBS] =
     {
         .name = _("철가시"),
-        .description = COMPOUND_STRING("Hurts to touch."),
+        .description = COMPOUND_STRING("Damages foe on contact."),
         .aiRating = 6,
     },
 
     [ABILITY_ZEN_MODE] =
     {
         .name = _("달마모드"),
-        .description = COMPOUND_STRING("Transforms at half HP."),
+        .description = COMPOUND_STRING("Changes shape at half HP."),
         .aiRating = -1,
         .cantBeCopied = TRUE,
         .cantBeSwapped = B_UPDATED_ABILITY_DATA >= GEN_7,
@@ -1224,28 +1278,28 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_VICTORY_STAR] =
     {
         .name = _("승리의별"),
-        .description = COMPOUND_STRING("Raises party accuracy."),
+        .description = COMPOUND_STRING("Boosts allies' accuracy."),
         .aiRating = 6,
     },
 
     [ABILITY_TURBOBLAZE] =
     {
         .name = _("터보블레이즈"),
-        .description = COMPOUND_STRING("Moves hit through abilities."),
+        .description = COMPOUND_STRING("Moves ignore Abilities."),
         .aiRating = 7,
     },
 
     [ABILITY_TERAVOLT] =
     {
         .name = _("테라볼티지"),
-        .description = COMPOUND_STRING("Moves hit through abilities."),
+        .description = COMPOUND_STRING("Moves ignore Abilities."),
         .aiRating = 7,
     },
 
     [ABILITY_AROMA_VEIL] =
     {
         .name = _("아로마베일"),
-        .description = COMPOUND_STRING("Prevents limiting of moves."),
+        .description = COMPOUND_STRING("Allies can't be move-bound."),
         .aiRating = 3,
         .breakable = TRUE,
     },
@@ -1253,7 +1307,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_FLOWER_VEIL] =
     {
         .name = _("플라워베일"),
-        .description = COMPOUND_STRING("Protects Grass-types."),
+        .description = COMPOUND_STRING("Mist for Grass-type allies."),
         .aiRating = 0,
         .breakable = TRUE,
     },
@@ -1261,7 +1315,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_CHEEK_POUCH] =
     {
         .name = _("볼주머니"),
-        .description = COMPOUND_STRING("Eating Berries restores HP."),
+        .description = COMPOUND_STRING("Eating a Berry restores HP."),
         .aiRating = 4,
     },
 
@@ -1275,7 +1329,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_FUR_COAT] =
     {
         .name = _("퍼코트"),
-        .description = COMPOUND_STRING("Raises Defense."),
+        .description = COMPOUND_STRING("Halves physical damage."),
         .aiRating = 7,
         .breakable = TRUE,
     },
@@ -1290,7 +1344,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_BULLETPROOF] =
     {
         .name = _("방탄"),
-        .description = COMPOUND_STRING("Avoids some projectiles."),
+        .description = COMPOUND_STRING("Blocks ball and bomb moves."),
         .breakable = TRUE,
         .aiRating = 7,
     },
@@ -1298,7 +1352,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_COMPETITIVE] =
     {
         .name = _("승기"),
-        .description = COMPOUND_STRING("Lowered stats up Sp. Atk."),
+        .description = COMPOUND_STRING("Stat-lowering ups Sp. Atk."),
         .aiRating = 5,
     },
 
@@ -1319,7 +1373,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_SWEET_VEIL] =
     {
         .name = _("스위트베일"),
-        .description = COMPOUND_STRING("Prevents party from sleep."),
+        .description = COMPOUND_STRING("Protects allies from sleep."),
         .aiRating = 4,
         .breakable = TRUE,
     },
@@ -1327,7 +1381,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_STANCE_CHANGE] =
     {
         .name = _("배틀스위치"),
-        .description = COMPOUND_STRING("Transforms as it battles."),
+        .description = COMPOUND_STRING("Swaps Forme as it battles."),
         .aiRating = 10,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
@@ -1340,21 +1394,21 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_GALE_WINGS] =
     {
         .name = _("질풍날개"),
-        .description = COMPOUND_STRING("Flying moves go first."),
+        .description = COMPOUND_STRING("Flying moves have priority."),
         .aiRating = 6,
     },
 
     [ABILITY_MEGA_LAUNCHER] =
     {
         .name = _("메가런처"),
-        .description = COMPOUND_STRING("Boosts pulse moves."),
+        .description = COMPOUND_STRING("Powers up pulse moves."),
         .aiRating = 7,
     },
 
     [ABILITY_GRASS_PELT] =
     {
         .name = _("풀모피"),
-        .description = COMPOUND_STRING("Ups Defense in grass."),
+        .description = COMPOUND_STRING("Grassy Terrain ups Defense."),
         .aiRating = 2,
         .breakable = TRUE,
     },
@@ -1362,14 +1416,14 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_SYMBIOSIS] =
     {
         .name = _("공생"),
-        .description = COMPOUND_STRING("Passes its item to an ally."),
+        .description = COMPOUND_STRING("Passes held item to ally."),
         .aiRating = 0,
     },
 
     [ABILITY_TOUGH_CLAWS] =
     {
         .name = _("단단한발톱"),
-        .description = COMPOUND_STRING("Boosts contact moves."),
+        .description = COMPOUND_STRING("Powers up contact moves."),
         .aiRating = 7,
     },
 
@@ -1383,7 +1437,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_GOOEY] =
     {
         .name = _("미끈미끈"),
-        .description = COMPOUND_STRING("Lowers Speed on contact."),
+        .description = COMPOUND_STRING("Contact lowers foe's Speed."),
         .aiRating = 5,
     },
 
@@ -1397,14 +1451,14 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_PARENTAL_BOND] =
     {
         .name = _("부자유친"),
-        .description = COMPOUND_STRING("Moves hit twice."),
+        .description = COMPOUND_STRING("Parent & child each attack."),
         .aiRating = 10,
     },
 
     [ABILITY_DARK_AURA] =
     {
         .name = _("다크오라"),
-        .description = COMPOUND_STRING("Boosts Dark moves."),
+        .description = COMPOUND_STRING("Ups all Dark-type moves."),
         .aiRating = 6,
         .breakable = B_UPDATED_ABILITY_DATA < GEN_8,
     },
@@ -1412,7 +1466,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_FAIRY_AURA] =
     {
         .name = _("페어리오라"),
-        .description = COMPOUND_STRING("Boosts Fairy moves."),
+        .description = COMPOUND_STRING("Ups all Fairy-type moves."),
         .aiRating = 6,
         .breakable = B_UPDATED_ABILITY_DATA < GEN_8,
     },
@@ -1420,7 +1474,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_AURA_BREAK] =
     {
         .name = _("오라브레이크"),
-        .description = COMPOUND_STRING("Reverse aura abilities."),
+        .description = COMPOUND_STRING("Reverses Aura Abilities."),
         .aiRating = 3,
         .breakable = TRUE,
     },
@@ -1435,7 +1489,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_DESOLATE_LAND] =
     {
         .name = _("끝의대지"),
-        .description = COMPOUND_STRING("Summons intense sunlight."),
+        .description = COMPOUND_STRING("Summons extreme sunlight."),
         .aiRating = 10,
     },
 
@@ -1449,35 +1503,35 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_STAMINA] =
     {
         .name = _("지구력"),
-        .description = COMPOUND_STRING("Boosts Defense when hit."),
+        .description = COMPOUND_STRING("Raises Defense when hit."),
         .aiRating = 6,
     },
 
     [ABILITY_WIMP_OUT] =
     {
         .name = _("도망태세"),
-        .description = COMPOUND_STRING("Flees at half HP."),
+        .description = COMPOUND_STRING("Switches out at half HP."),
         .aiRating = 3,
     },
 
     [ABILITY_EMERGENCY_EXIT] =
     {
         .name = _("위기회피"),
-        .description = COMPOUND_STRING("Flees at half HP."),
+        .description = COMPOUND_STRING("Switches out at half HP."),
         .aiRating = 3,
     },
 
     [ABILITY_WATER_COMPACTION] =
     {
         .name = _("꾸덕꾸덕굳기"),
-        .description = COMPOUND_STRING("Water boosts Defense."),
+        .description = COMPOUND_STRING("Ups Defense if hit by Water."),
         .aiRating = 4,
     },
 
     [ABILITY_MERCILESS] =
     {
         .name = _("무도한행동"),
-        .description = COMPOUND_STRING("Criticals poisoned foes."),
+        .description = COMPOUND_STRING("Critical hits poisoned foes."),
         .aiRating = 4,
     },
 
@@ -1497,14 +1551,14 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_STAKEOUT] =
     {
         .name = _("잠복"),
-        .description = COMPOUND_STRING("Stronger as foes switch in."),
+        .description = COMPOUND_STRING("Stronger on foe's switch in."),
         .aiRating = 6,
     },
 
     [ABILITY_WATER_BUBBLE] =
     {
         .name = _("수포"),
-        .description = COMPOUND_STRING("Guards from fire and burns."),
+        .description = COMPOUND_STRING("Guards from Fire and burns."),
         .aiRating = 8,
         .breakable = TRUE,
     },
@@ -1512,42 +1566,49 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_STEELWORKER] =
     {
         .name = _("강철술사"),
-        .description = COMPOUND_STRING("Powers up Steel moves."),
+        .description = COMPOUND_STRING("Ups Steel-type moves."),
         .aiRating = 6,
     },
 
     [ABILITY_BERSERK] =
     {
         .name = _("발끈"),
-        .description = COMPOUND_STRING("Boosts Sp. Atk at low HP."),
+        .description = COMPOUND_STRING("Boosts Sp. Atk at half HP."),
         .aiRating = 5,
     },
 
     [ABILITY_SLUSH_RUSH] =
     {
         .name = _("눈치우기"),
-        .description = COMPOUND_STRING("Raises Speed in Hail/Snow."),
+        .description = COMPOUND_STRING(
+        #if B_PREFERRED_ICE_WEATHER == B_ICE_WEATHER_HAIL
+            "Boosts Speed in hail."),
+        #elif B_PREFERRED_ICE_WEATHER == B_ICE_WEATHER_SNOW
+            "Boosts Speed in snow."),
+        #else
+            "Ups Speed in hail or snow."),
+        #endif
         .aiRating = 5,
     },
 
     [ABILITY_LONG_REACH] =
     {
         .name = _("원격"),
-        .description = COMPOUND_STRING("Never makes contact."),
+        .description = COMPOUND_STRING("Moves don't make contact."),
         .aiRating = 3,
     },
 
     [ABILITY_LIQUID_VOICE] =
     {
         .name = _("촉촉보이스"),
-        .description = COMPOUND_STRING("Makes sound moves Water."),
+        .description = COMPOUND_STRING("Sound moves become Water."),
         .aiRating = 5,
     },
 
     [ABILITY_TRIAGE] =
     {
         .name = _("힐링시프트"),
-        .description = COMPOUND_STRING("Healing moves go first."),
+        .description = COMPOUND_STRING("Healing moves have priority."),
         .aiRating = 7,
     },
 
@@ -1561,14 +1622,14 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_SURGE_SURFER] =
     {
         .name = _("서핑테일"),
-        .description = COMPOUND_STRING("Faster on electricity."),
+        .description = COMPOUND_STRING("Electric Terrain ups Speed."),
         .aiRating = 4,
     },
 
     [ABILITY_SCHOOLING] =
     {
         .name = _("어군"),
-        .description = COMPOUND_STRING("Forms a school when strong."),
+        .description = COMPOUND_STRING("Forms a school at high HP."),
         .aiRating = 6,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
@@ -1581,7 +1642,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_DISGUISE] =
     {
         .name = _("탈"),
-        .description = COMPOUND_STRING("Decoy protects it once."),
+        .description = COMPOUND_STRING("Shroud protects once."),
         .aiRating = 8,
         .breakable = TRUE,
         .cantBeCopied = TRUE,
@@ -1608,7 +1669,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_POWER_CONSTRUCT] =
     {
         .name = _("스웜체인지"),
-        .description = COMPOUND_STRING("Cells aid it when weakened."),
+        .description = COMPOUND_STRING("Changes Forme at half HP."),
         .aiRating = 10,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
@@ -1621,7 +1682,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_CORROSION] =
     {
         .name = _("부식"),
-        .description = COMPOUND_STRING("Poisons any type."),
+        .description = COMPOUND_STRING("Can poison Steel & Poison."),
         .aiRating = 5,
     },
 
@@ -1640,7 +1701,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_QUEENLY_MAJESTY] =
     {
         .name = _("여왕의위엄"),
-        .description = COMPOUND_STRING("Protects from priority."),
+        .description = COMPOUND_STRING("Allies block priority moves."),
         .aiRating = 6,
         .breakable = TRUE,
     },
@@ -1648,7 +1709,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_INNARDS_OUT] =
     {
         .name = _("내용물분출"),
-        .description = COMPOUND_STRING("Hurts foe when defeated."),
+        .description = COMPOUND_STRING("Damages the foe if KO'd."),
         .aiRating = 5,
     },
 
@@ -1669,7 +1730,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_FLUFFY] =
     {
         .name = _("복슬복슬"),
-        .description = COMPOUND_STRING("Tougher but flammable."),
+        .description = COMPOUND_STRING("Halves contact, heat hurts."),
         .aiRating = 5,
         .breakable = TRUE,
     },
@@ -1677,7 +1738,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_DAZZLING] =
     {
         .name = _("비비드바디"),
-        .description = COMPOUND_STRING("Protects from priority."),
+        .description = COMPOUND_STRING("Allies block priority moves."),
         .aiRating = 5,
         .breakable = TRUE,
     },
@@ -1685,21 +1746,21 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_SOUL_HEART] =
     {
         .name = _("소울하트"),
-        .description = COMPOUND_STRING("KOs raise Sp. Atk."),
+        .description = COMPOUND_STRING("Others fainting ups Sp. Atk."),
         .aiRating = 7,
     },
 
     [ABILITY_TANGLING_HAIR] =
     {
         .name = _("컬리헤어"),
-        .description = COMPOUND_STRING("Lowers Speed on contact."),
+        .description = COMPOUND_STRING("Contact lowers foe's Speed."),
         .aiRating = 5,
     },
 
     [ABILITY_RECEIVER] =
     {
         .name = _("리시버"),
-        .description = COMPOUND_STRING("Copies ally's ability."),
+        .description = COMPOUND_STRING("Copies fainted ally Ability."),
         .aiRating = 0,
         .cantBeCopied = TRUE,
         .cantBeTraced = TRUE,
@@ -1708,7 +1769,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_POWER_OF_ALCHEMY] =
     {
         .name = _("과학의힘"),
-        .description = COMPOUND_STRING("Copies ally's ability."),
+        .description = COMPOUND_STRING("Copies fainted ally Ability."),
         .aiRating = 0,
         .cantBeCopied = TRUE,
         .cantBeTraced = TRUE,
@@ -1717,14 +1778,14 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_BEAST_BOOST] =
     {
         .name = _("비스트부스트"),
-        .description = COMPOUND_STRING("KOs boost best stat."),
+        .description = COMPOUND_STRING("Raises best stat after KOs."),
         .aiRating = 7,
     },
 
     [ABILITY_RKS_SYSTEM] =
     {
         .name = _("AR시스템"),
-        .description = COMPOUND_STRING("Memories change its type."),
+        .description = COMPOUND_STRING("Matches held memory's type."),
         .aiRating = 8,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
@@ -1737,42 +1798,42 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_ELECTRIC_SURGE] =
     {
         .name = _("일렉트릭메이커"),
-        .description = COMPOUND_STRING("Field becomes Electric."),
+        .description = COMPOUND_STRING("Makes the field electrified."),
         .aiRating = 8,
     },
 
     [ABILITY_PSYCHIC_SURGE] =
     {
         .name = _("사이코메이커"),
-        .description = COMPOUND_STRING("Field becomes weird."),
+        .description = COMPOUND_STRING("Makes the field weird."),
         .aiRating = 8,
     },
 
     [ABILITY_MISTY_SURGE] =
     {
         .name = _("미스트메이커"),
-        .description = COMPOUND_STRING("Field becomes misty."),
+        .description = COMPOUND_STRING("Makes the field misty."),
         .aiRating = 8,
     },
 
     [ABILITY_GRASSY_SURGE] =
     {
         .name = _("그래스메이커"),
-        .description = COMPOUND_STRING("Field becomes grassy."),
+        .description = COMPOUND_STRING("Makes the field grassy."),
         .aiRating = 8,
     },
 
     [ABILITY_FULL_METAL_BODY] =
     {
         .name = _("메탈프로텍트"),
-        .description = COMPOUND_STRING("Prevents stat reduction."),
+        .description = COMPOUND_STRING("Stats can't be lowered."),
         .aiRating = 4,
     },
 
     [ABILITY_SHADOW_SHIELD] =
     {
         .name = _("스펙터가드"),
-        .description = COMPOUND_STRING("Halves damage at full HP."),
+        .description = COMPOUND_STRING("Reduces damage at full HP."),
         .aiRating = 8,
     },
 
@@ -1786,55 +1847,65 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_NEUROFORCE] =
     {
         .name = _("브레인포스"),
-        .description = COMPOUND_STRING("Ups “supereffective”."),
+        .description = COMPOUND_STRING("Ups “supereffective” hits."),
         .aiRating = 6,
     },
 
     [ABILITY_INTREPID_SWORD] =
     {
         .name = _("불요의검"),
-        .description = COMPOUND_STRING("Ups Attack on entry."),
+        .description = COMPOUND_STRING(
+        #if B_INTREPID_SWORD >= GEN_9
+            "Ups Attack on entry once."),
+        #else
+            "Raises Attack on entry."),
+        #endif
         .aiRating = 3,
     },
 
     [ABILITY_DAUNTLESS_SHIELD] =
     {
         .name = _("불굴의방패"),
-        .description = COMPOUND_STRING("Ups Defense on entry."),
+        .description = COMPOUND_STRING(
+        #if B_DAUNTLESS_SHIELD >= GEN_9
+            "Ups Defense on entry once."),
+        #else
+            "Raises Defense on entry."),
+        #endif
         .aiRating = 3,
     },
 
     [ABILITY_LIBERO] =
     {
         .name = _("리베로"),
-        .description = COMPOUND_STRING("Changes type to move's."),
+        .description = COMPOUND_STRING("Changes type to used move."),
     },
 
     [ABILITY_BALL_FETCH] =
     {
         .name = _("볼줍기"),
-        .description = COMPOUND_STRING("Fetches failed Poké Ball."),
+        .description = COMPOUND_STRING("Fetches first failed Ball."),
         .aiRating = 0,
     },
 
     [ABILITY_COTTON_DOWN] =
     {
         .name = _("솜털"),
-        .description = COMPOUND_STRING("Lower Speed of all when hit."),
+        .description = COMPOUND_STRING("Lowers others' Speed if hit."),
         .aiRating = 3,
     },
 
     [ABILITY_PROPELLER_TAIL] =
     {
         .name = _("스크루지느러미"),
-        .description = COMPOUND_STRING("Ignores foe's redirection."),
+        .description = COMPOUND_STRING("Ignores foes' move-drawing."),
         .aiRating = 2,
     },
 
     [ABILITY_MIRROR_ARMOR] =
     {
         .name = _("미러아머"),
-        .description = COMPOUND_STRING("Reflect stat decreases."),
+        .description = COMPOUND_STRING("Bounces stat-lowering."),
         .aiRating = 6,
         .breakable = TRUE,
     },
@@ -1842,7 +1913,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_GULP_MISSILE] =
     {
         .name = _("그대로꿀꺽미사일"),
-        .description = COMPOUND_STRING("If hit, spits prey from sea."),
+        .description = COMPOUND_STRING("Spits when hit after Dive."),
         .aiRating = 3,
         .cantBeSwapped = B_UPDATED_ABILITY_DATA < GEN_9,
         .cantBeCopied = B_UPDATED_ABILITY_DATA < GEN_9,
@@ -1855,21 +1926,21 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_STALWART] =
     {
         .name = _("굳건한신념"),
-        .description = COMPOUND_STRING("Ignores foe's redirection."),
+        .description = COMPOUND_STRING("Ignores foes' move-drawing."),
         .aiRating = 2,
     },
 
     [ABILITY_STEAM_ENGINE] =
     {
         .name = _("증기기관"),
-        .description = COMPOUND_STRING("Fire or Water hits up Speed."),
+        .description = COMPOUND_STRING("Fire & Water hits up Speed."),
         .aiRating = 3,
     },
 
     [ABILITY_PUNK_ROCK] =
     {
         .name = _("펑크록"),
-        .description = COMPOUND_STRING("Ups and resists sound."),
+        .description = COMPOUND_STRING("Boosts and resists sound."),
         .aiRating = 2,
         .breakable = TRUE,
     },
@@ -1877,7 +1948,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_SAND_SPIT] =
     {
         .name = _("모래뿜기"),
-        .description = COMPOUND_STRING("Creates a sandstorm if hit."),
+        .description = COMPOUND_STRING("Summons a sandstorm if hit."),
         .aiRating = 5,
     },
 
@@ -1892,14 +1963,21 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_RIPEN] =
     {
         .name = _("숙성"),
-        .description = COMPOUND_STRING("Doubles effect of Berries."),
+        .description = COMPOUND_STRING("Doubles Berry effects."),
         .aiRating = 4,
     },
 
     [ABILITY_ICE_FACE] =
     {
         .name = _("아이스페이스"),
-        .description = COMPOUND_STRING("Hail or Snow renew free hit."),
+        .description = COMPOUND_STRING(
+        #if B_PREFERRED_ICE_WEATHER == B_ICE_WEATHER_HAIL
+            "Hail renews one free hit."),
+        #elif B_PREFERRED_ICE_WEATHER == B_ICE_WEATHER_SNOW
+            "Snow renews one free hit."),
+        #else
+            "Hail & snow renew free hit."),
+        #endif
         .aiRating = 4,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
@@ -1913,7 +1991,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_POWER_SPOT] =
     {
         .name = _("파워스폿"),
-        .description = COMPOUND_STRING("Powers up ally moves."),
+        .description = COMPOUND_STRING("Powers up ally's moves."),
         .aiRating = 2,
     },
 
@@ -1927,14 +2005,14 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_SCREEN_CLEANER] =
     {
         .name = _("배리어프리"),
-        .description = COMPOUND_STRING("Removes walls of light."),
+        .description = COMPOUND_STRING("Nullifies barriers on entry."),
         .aiRating = 3,
     },
 
     [ABILITY_STEELY_SPIRIT] =
     {
         .name = _("강철정신"),
-        .description = COMPOUND_STRING("Boosts ally's Steel moves."),
+        .description = COMPOUND_STRING("Ups allies' Steel moves."),
         .aiRating = 2,
     },
 
@@ -1948,7 +2026,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_WANDERING_SPIRIT] =
     {
         .name = _("떠도는영혼"),
-        .description = COMPOUND_STRING("Trade abilities on contact."),
+        .description = COMPOUND_STRING("Swaps Abilities on contact."),
         .aiRating = 2,
     },
 
@@ -1962,7 +2040,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_NEUTRALIZING_GAS] =
     {
         .name = _("화학변화가스"),
-        .description = COMPOUND_STRING("All Abilities are nullified."),
+        .description = COMPOUND_STRING("Nullifies others' Abilities."),
         .aiRating = 5,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
@@ -1973,7 +2051,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_PASTEL_VEIL] =
     {
         .name = _("파스텔베일"),
-        .description = COMPOUND_STRING("Protects team from poison."),
+        .description = COMPOUND_STRING("Allies can't be poisoned."),
         .aiRating = 4,
         .breakable = TRUE,
     },
@@ -1981,7 +2059,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_HUNGER_SWITCH] =
     {
         .name = _("꼬르륵스위치"),
-        .description = COMPOUND_STRING("Changes form each turn."),
+        .description = COMPOUND_STRING("Changes form every turn."),
         .aiRating = 2,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
@@ -1992,7 +2070,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_QUICK_DRAW] =
     {
         .name = _("퀵드로"),
-        .description = COMPOUND_STRING("Moves first occasionally."),
+        .description = COMPOUND_STRING("Occasionally moves first."),
         .aiRating = 4,
     },
 
@@ -2006,7 +2084,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_CURIOUS_MEDICINE] =
     {
         .name = _("기묘한약"),
-        .description = COMPOUND_STRING("Remove ally's stat changes."),
+        .description = COMPOUND_STRING("Removes ally stat changes."),
         .aiRating = 3,
     },
 
@@ -2027,14 +2105,14 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_CHILLING_NEIGH] =
     {
         .name = _("백의울음"),
-        .description = COMPOUND_STRING("KOs boost Attack stat."),
+        .description = COMPOUND_STRING("Raises Attack after KOs."),
         .aiRating = 7,
     },
 
     [ABILITY_GRIM_NEIGH] =
     {
         .name = _("흑의울음"),
-        .description = COMPOUND_STRING("KOs boost Sp. Atk stat."),
+        .description = COMPOUND_STRING("Raises Sp. Atk after KOs."),
         .aiRating = 7,
     },
 
@@ -2065,21 +2143,21 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_LINGERING_AROMA] =
     {
         .name = _("가시지않는향기"),
-        .description = COMPOUND_STRING("Spreads with contact."),
+        .description = COMPOUND_STRING("Ability spreads on contact."),
         .aiRating = 5,
     },
 
     [ABILITY_SEED_SOWER] =
     {
         .name = _("넘치는씨"),
-        .description = COMPOUND_STRING("Affects terrain when hit."),
+        .description = COMPOUND_STRING("Makes field grassy if hit."),
         .aiRating = 5,
     },
 
     [ABILITY_THERMAL_EXCHANGE] =
     {
         .name = _("열교환"),
-        .description = COMPOUND_STRING("Fire hits up Attack."),
+        .description = COMPOUND_STRING("Ups Attack if hit by Fire."),
         .aiRating = 4,
         .breakable = TRUE,
     },
@@ -2087,14 +2165,14 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_ANGER_SHELL] =
     {
         .name = _("분노의껍질"),
-        .description = COMPOUND_STRING("Gets angry at half HP."),
+        .description = COMPOUND_STRING("Changes stats at half HP."),
         .aiRating = 3,
     },
 
     [ABILITY_PURIFYING_SALT] =
     {
         .name = _("정화의소금"),
-        .description = COMPOUND_STRING("Protected by pure salts."),
+        .description = COMPOUND_STRING("Guards from status & Ghost."),
         .aiRating = 6,
         .breakable = TRUE,
     },
@@ -2102,7 +2180,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_WELL_BAKED_BODY] =
     {
         .name = _("노릇노릇바디"),
-        .description = COMPOUND_STRING("Strengthened by Fire."),
+        .description = COMPOUND_STRING("Ups Defense if hit by Fire."),
         .aiRating = 5,
         .breakable = TRUE,
     },
@@ -2110,7 +2188,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_WIND_RIDER] =
     {
         .name = _("바람타기"),
-        .description = COMPOUND_STRING("Ups Attack if hit by wind."),
+        .description = COMPOUND_STRING("Wind moves raise Attack."),
         .aiRating = 4,
         .breakable = TRUE,
     },
@@ -2118,7 +2196,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_GUARD_DOG] =
     {
         .name = _("파수견"),
-        .description = COMPOUND_STRING("Cannot be intimidated."),
+        .description = COMPOUND_STRING("Raises Atk if intimidated."),
         .aiRating = 5,
         .breakable = TRUE,
     },
@@ -2126,21 +2204,21 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_ROCKY_PAYLOAD] =
     {
         .name = _("바위나르기"),
-        .description = COMPOUND_STRING("Powers up Rock moves."),
+        .description = COMPOUND_STRING("Powers up Rock-type moves."),
         .aiRating = 6,
     },
 
     [ABILITY_WIND_POWER] =
     {
         .name = _("풍력발전"),
-        .description = COMPOUND_STRING("Gets charged by wind."),
+        .description = COMPOUND_STRING("Gets charged if hit by wind."),
         .aiRating = 4,
     },
 
     [ABILITY_ZERO_TO_HERO] =
     {
         .name = _("마이티체인지"),
-        .description = COMPOUND_STRING("Changes form on switch out."),
+        .description = COMPOUND_STRING("Changes form upon switch."),
         .aiRating = 10,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
@@ -2153,7 +2231,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_COMMANDER] =
     {
         .name = _("사령탑"),
-        .description = COMPOUND_STRING("Commands from Dondozo."),
+        .description = COMPOUND_STRING("Commands from ally Dondozo."),
         .aiRating = 10,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
@@ -2163,14 +2241,14 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_ELECTROMORPHOSIS] =
     {
         .name = _("전기로바꾸기"),
-        .description = COMPOUND_STRING("Gets Charged when hit."),
+        .description = COMPOUND_STRING("Becomes charged when hit."),
         .aiRating = 5,
     },
 
     [ABILITY_PROTOSYNTHESIS] =
     {
         .name = _("고대활성"),
-        .description = COMPOUND_STRING("Sun boosts best stat."),
+        .description = COMPOUND_STRING("Sunlight boosts best stat."),
         .aiRating = 7,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
@@ -2181,7 +2259,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_QUARK_DRIVE] =
     {
         .name = _("쿼크차지"),
-        .description = COMPOUND_STRING("Elec. field ups best stat."),
+        .description = COMPOUND_STRING("Electr. field ups best stat."),
         .aiRating = 7,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
@@ -2192,7 +2270,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_GOOD_AS_GOLD] =
     {
         .name = _("황금몸"),
-        .description = COMPOUND_STRING("Avoids status moves."),
+        .description = COMPOUND_STRING("Immunity to status moves."),
         .aiRating = 8,
         .breakable = TRUE,
     },
@@ -2200,7 +2278,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_VESSEL_OF_RUIN] =
     {
         .name = _("재앙의그릇"),
-        .description = COMPOUND_STRING("Lowers foes' sp. damage."),
+        .description = COMPOUND_STRING("Reduces others' Sp. Atk."),
         .aiRating = 5,
         .breakable = TRUE,
     },
@@ -2208,7 +2286,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_SWORD_OF_RUIN] =
     {
         .name = _("재앙의검"),
-        .description = COMPOUND_STRING("Lowers foes' Defense."),
+        .description = COMPOUND_STRING("Reduces others' Defense."),
         .aiRating = 5,
         .breakable = TRUE,
     },
@@ -2216,7 +2294,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_TABLETS_OF_RUIN] =
     {
         .name = _("재앙의목간"),
-        .description = COMPOUND_STRING("Lowers foes' damage."),
+        .description = COMPOUND_STRING("Reduces others' Attack."),
         .aiRating = 5,
         .breakable = TRUE,
     },
@@ -2224,7 +2302,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_BEADS_OF_RUIN] =
     {
         .name = _("재앙의구슬"),
-        .description = COMPOUND_STRING("Lowers foes' Sp. Defense."),
+        .description = COMPOUND_STRING("Reduces others' Sp. Def."),
         .aiRating = 5,
         .breakable = TRUE,
     },
@@ -2232,42 +2310,42 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_ORICHALCUM_PULSE] =
     {
         .name = _("진홍빛고동"),
-        .description = COMPOUND_STRING("Summons sunlight in battle."),
+        .description = COMPOUND_STRING("Summons sun and ups Atk."),
         .aiRating = 8,
     },
 
     [ABILITY_HADRON_ENGINE] =
     {
         .name = _("하드론엔진"),
-        .description = COMPOUND_STRING("Field becomes Electric."),
+        .description = COMPOUND_STRING("Electr. Surge & ups Sp. Atk."),
         .aiRating = 8,
     },
 
     [ABILITY_OPPORTUNIST] =
     {
         .name = _("편승"),
-        .description = COMPOUND_STRING("Copies foe's stat change."),
+        .description = COMPOUND_STRING("Copies a foe's stat boost."),
         .aiRating = 5,
     },
 
     [ABILITY_CUD_CHEW] =
     {
         .name = _("되새김질"),
-        .description = COMPOUND_STRING("Eats a used berry again."),
+        .description = COMPOUND_STRING("Eats Berry again next turn."),
         .aiRating = 4,
     },
 
     [ABILITY_SHARPNESS] =
     {
         .name = _("예리함"),
-        .description = COMPOUND_STRING("Strengthens slicing moves."),
+        .description = COMPOUND_STRING("Powers up slicing moves."),
         .aiRating = 7,
     },
 
     [ABILITY_SUPREME_OVERLORD] =
     {
         .name = _("총대장"),
-        .description = COMPOUND_STRING("Inherits fallen's strength."),
+        .description = COMPOUND_STRING("Fainted partners up power."),
         .aiRating = 6,
     },
 
@@ -2281,14 +2359,14 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_TOXIC_DEBRIS] =
     {
         .name = _("독치장"),
-        .description = COMPOUND_STRING("Throws poison spikes if hit."),
+        .description = COMPOUND_STRING("Lays poison spikes if hit."),
         .aiRating = 4,
     },
 
     [ABILITY_ARMOR_TAIL] =
     {
         .name = _("테일아머"),
-        .description = COMPOUND_STRING("Protects from priority."),
+        .description = COMPOUND_STRING("Allies block priority moves."),
         .aiRating = 5,
         .breakable = TRUE,
     },
@@ -2296,7 +2374,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_EARTH_EATER] =
     {
         .name = _("흙먹기"),
-        .description = COMPOUND_STRING("Eats ground to heal HP."),
+        .description = COMPOUND_STRING("Restores if hit by Ground."),
         .aiRating = 7,
         .breakable = TRUE,
     },
@@ -2304,21 +2382,21 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_MYCELIUM_MIGHT] =
     {
         .name = _("균사의힘"),
-        .description = COMPOUND_STRING("Status moves never fail."),
+        .description = COMPOUND_STRING("Status moves can't fail."),
         .aiRating = 2,
     },
 
     [ABILITY_HOSPITALITY] =
     {
         .name = _("대접"),
-        .description = COMPOUND_STRING("Restores ally's HP."),
+        .description = COMPOUND_STRING("Restores ally's HP on entry."),
         .aiRating = 5,
     },
 
     [ABILITY_MINDS_EYE] =
     {
         .name = _("심안"),
-        .description = COMPOUND_STRING("Keen Eye and Scrappy."),
+        .description = COMPOUND_STRING("Grants Foresight."),
         .aiRating = 8,
         .breakable = TRUE,
     },
@@ -2326,7 +2404,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_EMBODY_ASPECT_TEAL_MASK] =
     {
         .name = _("초상투영"),
-        .description = COMPOUND_STRING("Raises Speed."),
+        .description = COMPOUND_STRING("Terastal raises Speed."),
         .aiRating = 6,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
@@ -2337,7 +2415,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_EMBODY_ASPECT_HEARTHFLAME_MASK] =
     {
         .name = _("초상투영"),
-        .description = COMPOUND_STRING("Raises Attack."),
+        .description = COMPOUND_STRING("Terastal raises Attack."),
         .aiRating = 6,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
@@ -2348,7 +2426,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_EMBODY_ASPECT_WELLSPRING_MASK] =
     {
         .name = _("초상투영"),
-        .description = COMPOUND_STRING("Raises Sp. Def."),
+        .description = COMPOUND_STRING("Terastal raises Sp. Def."),
         .aiRating = 6,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
@@ -2359,7 +2437,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_EMBODY_ASPECT_CORNERSTONE_MASK] =
     {
         .name = _("초상투영"),
-        .description = COMPOUND_STRING("Raises Defense."),
+        .description = COMPOUND_STRING("Terastal raises Defense."),
         .aiRating = 6,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
@@ -2370,21 +2448,21 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_TOXIC_CHAIN] =
     {
         .name = _("독사슬"),
-        .description = COMPOUND_STRING("Moves can poison."),
+        .description = COMPOUND_STRING("Attacks may badly poison."),
         .aiRating = 8,
     },
 
     [ABILITY_SUPERSWEET_SYRUP] =
     {
         .name = _("감미로운꿀"),
-        .description = COMPOUND_STRING("Lowers the foe's Evasion."),
+        .description = COMPOUND_STRING("Lowers foes' evasion once."),
         .aiRating = 5,
     },
 
     [ABILITY_TERA_SHIFT] =
     {
         .name = _("테라체인지"),
-        .description = COMPOUND_STRING("Terastallizes upon entry."),
+        .description = COMPOUND_STRING("Changes form on entry."),
         .aiRating = 10,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
@@ -2397,7 +2475,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_TERA_SHELL] =
     {
         .name = _("테라셸"),
-        .description = COMPOUND_STRING("Resists all at full HP."),
+        .description = COMPOUND_STRING("Resists all types at full HP."),
         .aiRating = 10,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
@@ -2418,7 +2496,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_POISON_PUPPETEER] =
     {
         .name = _("독조종"),
-        .description = COMPOUND_STRING("Confuses poisoned foes."),
+        .description = COMPOUND_STRING("Poisoning also confuses."),
         .aiRating = 8,
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
