@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-23 — 친구 답: BGM 추가 7곳·로켓단 점거 곡 라디오타워만 (클라우드 세션)
+
+- 요청: 사용자가 친구 답 전달 → 원문 저장·대조·분석 보고(트리거 1줄 삭제와 참고 빌드를 추천) → "ㄱㄱ".
+- 수정 파일: `data/maps/{GoldenrodCity_BikeShop,GoldenrodCity_DepartmentStoreBasement,GoldenrodCity_DepartmentStoreElevator,ViridianCity_House1,ViridianCity_House2,WhirlIslands_LugiaChamber,PokemonLeague_HallOfFame}_hns/map.json`(`4c8ad588`), `src/overworld.c`·`data/maps/GoldenrodCity_hns/scripts.inc`(`c25ec76d`). 문서 — `FRIEND_REPLY_2026-10-23.md`(새), `bgm-hgss-2026-10-23.md`(새), `bgm-hgss-2026-10-22.md` 3절 머리 메모, STATUS·SESSION_LOG.
+- 결정: 친구 — 대상 맵·곡, 점거 범위. 사용자 — 금빛시티 남쪽 입구 트리거(`GoldenrodCity_Trigger_Music`, 점거 기간)의 `fadenewbgm MUS_HG_ROCKET_TAKEOVER` 삭제(친구 표 "시내 = 금빛 곡"에 맞춤), 참고 빌드 실행.
+- 조사: pokeheartgold `sMusicOverrideMap`(라디오타워 1~5F·전망대·엘리베이터), 금빛 지하 원작 곡(`TUNNEL_1F`·`B1F` = `C_KOGANE`, `B2F`·`WAREHOUSE` = `D_CHIKATSUURO`). HnS 라디오타워 맵은 1~5F뿐. `VAR_GOLDENROD_CITY_STATE` 6~10과 `VAR_MAHOGANY_TOWN_STATE` 16이 같은 스크립트에서 함께 바뀜을 확인.
+- 검증: STATUS 현재 절(정적 + 참고 빌드).
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 친구 문자: 아직(사용자가 보냄 — 문안은 세션 답변).
+- 다음 시작점: seq 376 #8893 또는 친구 답.
+
 ### 2026-10-22 — full-sync 묶음 25(seq 366~375 + #10159 앞당김·#10176 흡수) (클라우드 세션)
 
 - 요청: 사용자 "나 혼자 할 수 있는거야? 그렇다면 ㄱㄱ" → 사전 분석으로 혼자 정할 수 있는 범위인지 판단 → 그렇다고 보고 바로 적용.
