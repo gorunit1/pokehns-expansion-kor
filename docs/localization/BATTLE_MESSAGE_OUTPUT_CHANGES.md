@@ -67,6 +67,7 @@
 | 상대가 앵콜로 집중펀치·부리캐논·트랩셸에 묶임(그 턴에 다른 기술을 골랐음) (upstream #10443, seq 439. `B_MOVE_EFFECTS_BEFORE_MOVES` = Champions) | 앵콜 문장 뒤 준비 애니·문장 없음 | 앵콜 문장 바로 뒤에 준비 애니·문장(위 3문장) | `BattleScript_EffectEncore` `trydomoveeffectsbeforemoves`, `*SetUpEncored` |
 | 부리캐논 준비 중인 포켓몬을 흡수 계열 접촉기로 때림 (upstream #10443, seq 439. 새 문장 0) | 화상 문장 → 흡수 회복 문장 | 흡수 회복 문장 → 화상 문장(자체 MoveEnd 단계, 접촉기만) | `MoveEndBeakBlast`(`MOVEEND_RAGE` 뒤·`MOVEEND_ABILITIES` 앞) |
 | 싱글 배틀에서 와이드가드를 쓴 포켓몬에게 상대가 전체기(지진·눈보라 등)를 씀 (upstream #10467 일부, seq 441. 새 문장 0) | 막지 못하고 맞음 | `{포켓몬}{은는} 공격으로부터⏎몸을 지켰다!` — 막음 | `IsBattlerProtected` `PROTECT_WIDE_GUARD` 대상 종류 비교 |
+| 비늘뿌리기로 상대의 마지막 포켓몬을 쓰러뜨림 (upstream #9408 이식, seq 465. 새 문장 0 — 세션 임시 테스트로 이식 전후 확인) | 능력 변화 없이 배틀 끝 | 능력 변화 애니와 방어 하락·스피드 상승 문장 뒤 배틀 끝(상대가 남아 있을 때와 같음, upstream 1.17.0과 같음) | `MoveEndMoveBlock` `EFFECT_SCALE_SHOT`(`NoAliveMonsForEitherParty` 검사 없음) |
 
 ## 상태이상·회복·잠자기
 

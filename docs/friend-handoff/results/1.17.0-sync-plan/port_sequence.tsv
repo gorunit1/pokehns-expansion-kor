@@ -166,7 +166,7 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 164	9811	248	1.16.0	g1_battle_fixed_a	U-12v12-8943	8943	S	fix	N	N	~0	Use GetBattlerTrainer instead of GetBattlerSide in GetBattlerPartyState	
 165	9813	249	1.16.0	g5_general_cleanup_docs	U-fillsprite-9973	9973	S	fix	N	N	~0	Improve `FillSpriteRect` performance	
 166	9784	250	1.16.0	g1_battle_fixed_a	U-queuedswitch-9494	9494,8943,9717	L	refactor	N	N	+200B EWRAM+4B	Adjustments for Eject Items / Mirror Herb / White Herb	
-167	9819	251	1.16.0	g6_overworld_refactors	U-fieldmove-9819	-	S	refactor	N	N	~0	Refactor rock climb and defog to be defined at all times	
+167	9819	251	1.16.0	g6_overworld_refactors	U-fieldmove-9819	-	S	refactor	N	N	~0	Refactor rock climb and defog to be defined at all times	적용 e2f680cd(#10548 바로 앞 — 재확인 7)
 168	9832	252	1.16.0	g3_battle_changes_moves_abilities_items	U-eject-9784	9494,9784	S	refactor	N	N	~0	Clean up for eject item changes	
 169	9835	253	1.16.0	g5_general_cleanup_docs	U-9835	-	S	build	N	N	~0	Fix declaration after label	
 170	9751	254	1.16.0	g6_overworld_refactors	U-12v12-8943	8943	S	test	N	N	~0	Adds AreMultiPartiesFullTeams and Test_BattlersShareParty handling to tests	
@@ -445,26 +445,26 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 443	10531	739	1.17.0	g5_general_cleanup_docs	U-10531	-	S	refactor	N	N	~0	Rename sBattleWeatherInfo to  gBattleWeatherInfo	적용 a4d0b7c4
 444	10521	741	1.17.0	g6_overworld_refactors	U-10521	-	S	feature	Y	N	~0	FontIdToFit: move and ability descriptions	보류 — 친구 질문(한글 설명 92개 글꼴 바뀜, 재확인 90)
 445	10499	742	1.17.0	g5_general_cleanup_docs	U-10499	-	S	refactor	N	N	~0	Remove empty file from repo	적용 1d086e41
-446	10548	744	1.17.0	g6_overworld_refactors	U-fieldmove-9819	9819	M	refactor	N	N	~0	Minor field move fixes (upcoming)	
-447	10459	746	1.17.0	g3_battle_changes_moves_abilities_items	U-absent-10459	-	M	refactor	N	N	~0	Replaced / Removed some battlerAbsent checks in favor of IsBattlerAlive	
-448	10025	749	1.17.0	g3_battle_changes_moves_abilities_items	U-10025	-	M	gfx	N	N	+1KB	Implement opponent HP percentage display	
-449	10121	750	1.17.0	g6_overworld_refactors	U-debugmenu-10121	8943,8434,9879,9890,9896,9927,9969,9970,10408	L	refactor	N	N	+3KB(디버그)	Another debug menu refactor	
-450	10610	758	1.17.0	g4_ai_tests_pokemon_sprites	U-10610	-	S	test	N	N	0	Minor battle_util.c fixes	
-451	10619	764	1.17.0	g5_general_cleanup_docs	U-10619	-	S	test	N	N	~0	Fix test summary alignment for FAILED	
-452	10634	765	1.17.0	g3_battle_changes_moves_abilities_items	U-absent-10459	10542,10459	S	fix	N	N	~0	Partially reversion of gAbsentBattler pr	
-453	10624	766	1.17.0	g2_battle_fixed_b	U-trainerslide-9211	10571,9211	M	fix	Y	N	-1KB	Fix gimmick slides	
+446	10548	744	1.17.0	g6_overworld_refactors	U-fieldmove-9819	9819	M	refactor	N	N	~0	Minor field move fixes (upcoming)	적용(HnS 배지 번호 IS_HNS, 파티 메뉴 두 갈래) 7093554d
+447	10459	746	1.17.0	g3_battle_changes_moves_abilities_items	U-absent-10459	-	M	refactor	N	N	~0	Replaced / Removed some battlerAbsent checks in favor of IsBattlerAlive	적용(HnS 헤더 블록, #10547이 덮은 2곳 제외) 3230fd5a
+448	10025	749	1.17.0	g3_battle_changes_moves_abilities_items	U-10025	-	M	gfx	N	N	+1KB	Implement opponent HP percentage display	이미 적용(9/15 선별 이식분, HnS 형태)
+449	10121	750	1.17.0	g6_overworld_refactors	U-debugmenu-10121	8943,8434,9879,9890,9896,9927,9969,9970,10408	L	refactor	N	N	+3KB(디버그)	Another debug menu refactor	일부 적용(ResolveEVs 공개만, debug.c 제외 — 재확인 87) e7f105a5
+450	10610	758	1.17.0	g4_ai_tests_pokemon_sprites	U-10610	-	S	test	N	N	0	Minor battle_util.c fixes	적용(게임 코드 이미 있음 — 테스트만) a3700381
+451	10619	764	1.17.0	g5_general_cleanup_docs	U-10619	-	S	test	N	N	~0	Fix test summary alignment for FAILED	적용 815a69b7
+452	10634	765	1.17.0	g3_battle_changes_moves_abilities_items	U-absent-10459	10542,10459	S	fix	N	N	~0	Partially reversion of gAbsentBattler pr	앞당김 적용 67998f39(447 바로 뒤 — 행동 선택 회귀)
+453	10624	766	1.17.0	g2_battle_fixed_b	U-trainerslide-9211	10571,9211	M	fix	Y	N	-1KB	Fix gimmick slides	적용(HnS 슬라이드 데이터 없음 — 게임 변화 0) 586b9a86
 454	10618	767	1.17.0	g2_battle_fixed_b	U-victorycatch-9008	9906,9008	S	fix	N	N	-4B	fix(battle): fix memory leak when opening bag in battle	앞당김 적용 8b39877e(355 HnS 적응 — 가방 이중 호출 제거)
-455	10621	769	1.17.0	g2_battle_fixed_b	U-hpdisplay-10025	10025	M	gfx	N	N	+150B	fix(healthbar): fix hp bar elements being shown when they shouldn't be	
-456	10665	770	1.17.0	g4_ai_tests_pokemon_sprites	U-10665	-	S	test	N	N	~0(테스트 ELF만)	upcoming: Clear callbacks between tests	
-457	10688	771	1.17.0	g4_ai_tests_pokemon_sprites	U-10688	8647	S	test	N	N	0	upcoming: Fix Fusion Move AI turn-order checks	
-458	10659	772	1.17.0	g5_general_cleanup_docs	U-10659	-	M	fix	N	N	~0	Unify default move targeting between tests and in-game	
-459	10690	773	1.17.0	g2_battle_fixed_b	U-10690	-	M	fix	N	N	+60B	Split move target selection and resolution	
-460	10070	1000000	1.16.0	g5_general_cleanup_docs	U-10070	-	S	refactor	N	N	~0	28//05/26 Master to upcoming merge	
-461	10113	1000000	1.16.1	g5_general_cleanup_docs	U-10113	-	M	refactor	Y	N	~0	1st of June, 2026 in [#10113](https://github.com/rh-hideout/pokeemerald-expansion/pull/10113)	
+455	10621	769	1.17.0	g2_battle_fixed_b	U-hpdisplay-10025	10025	M	gfx	N	N	+150B	fix(healthbar): fix hp bar elements being shown when they shouldn't be	해당 없음(#10025 upstream 구조 전용 경로, HnS 형태에 없음)
+456	10665	770	1.17.0	g4_ai_tests_pokemon_sprites	U-10665	-	S	test	N	N	~0(테스트 ELF만)	upcoming: Clear callbacks between tests	적용 55bd1ae8
+457	10688	771	1.17.0	g4_ai_tests_pokemon_sprites	U-10688	8647	S	test	N	N	0	upcoming: Fix Fusion Move AI turn-order checks	적용(게임 코드 이미 있음 — 테스트만) 00fce630
+458	10659	772	1.17.0	g5_general_cleanup_docs	U-10659	-	M	fix	N	N	~0	Unify default move targeting between tests and in-game	적용 d38b5c56
+459	10690	773	1.17.0	g2_battle_fixed_b	U-10690	-	M	fix	N	N	+60B	Split move target selection and resolution	적용 0be558d0
+460	10070	1000000	1.16.0	g5_general_cleanup_docs	U-10070	-	S	refactor	N	N	~0	28//05/26 Master to upcoming merge	충족(컨테이너 병합 — 각 PR 행으로)
+461	10113	1000000	1.16.1	g5_general_cleanup_docs	U-10113	-	M	refactor	Y	N	~0	1st of June, 2026 in [#10113](https://github.com/rh-hideout/pokeemerald-expansion/pull/10113)	적용(한글 파일은 제어 코드 표기만, 오브젝트 바이트 같음 — 정책 74) 617580ad
 462	10159	1000000	1.17.0	g6_overworld_refactors	U-mapheader-9461	9461,7975,9080	S	refactor	N	N	-3KB	Optimize map header structure	앞당김 적용 e13a671b(371 바로 뒤 — #9080 맵 헤더 정렬 깨짐)
-463	10556	1000000	1.16.4	g2_battle_fixed_b	U-statchange-9730	9730	S	fix	N	N	-600B	X items fix	
-464	10721	1000000	1.16.4	g5_general_cleanup_docs	U-pret-10721	-	M	fix	N	N	~0	Pret merge (31st of August, 2026)	
-465	9408	1000000	1.16.0	g3_battle_changes_moves_abilities_items	U-9408	-	M	refactor	N	N	~0	Simplify Scale Shot effect activation	
+463	10556	1000000	1.16.4	g2_battle_fixed_b	U-statchange-9730	9730	S	fix	N	N	-600B	X items fix	적용(GetConfig·테스트, 나머지 이미 없음) 13f3ceff
+464	10721	1000000	1.16.4	g5_general_cleanup_docs	U-pret-10721	-	M	fix	N	N	~0	Pret merge (31st of August, 2026)	적용(battle_anim.h HnS 원형 유지) e1d60a0d
+465	9408	1000000	1.16.0	g3_battle_changes_moves_abilities_items	U-9408	-	M	refactor	N	N	~0	Simplify Scale Shot effect activation	적용(1.17.0 최종형, 대상별 루프) 1859ff22
 466	9859	261	1.16.0	g6_overworld_refactors	U-calcvalue-9859	9176,9417,9249,9494,9657,9674,9784,9408	L	refactor	N	N	~0	Adds CalcValue struct to MoveEnd	
 467	9841	255	1.16.0	g5_general_cleanup_docs	U-9841	9859	S	test	N	N	~0	Remove known failing for Blunder Policy/Darts interaction	
 468	9898	264	1.16.0	g3_battle_changes_moves_abilities_items	U-9898	9784,9859	M	fix	N	N	~0	IsAnyTargetAffected and GetDynamicMoveType changes	

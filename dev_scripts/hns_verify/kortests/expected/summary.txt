@@ -48,7 +48,7 @@
   - test/battle/zz_hns9918_pledge.c:322: Unmatched MESSAGE - HNS9918 K12 Sea of fire on the opposing side ends; the player is faster, the foe hit last (#10214 CHANGE EXPECTED).
   - test/battle/zz_hns9918_pledge.c:522: Unmatched MESSAGE - HNS9918 K22 Sea of fire on the player's side ends; the foe is faster, the player hit last (#10214 CHANGE EXPECTED).
   - test/battle/zz_hns9918_pledge.c:543: Unmatched MESSAGE - HNS9918 K23 Starting status: sea of fire on the opposing side ends (#10214 CHANGE EXPECTED).
-- Tests FAILED :         94    Add TESTS='X' to run tests with the defined prefix.
+- Tests FAILED:          94    Add TESTS='X' to run tests with the defined prefix.
 - Tests PASSED:          558
 - Tests TOTAL:           652
 HNS9168 K01 status cure berries (Cheri, Rawst, Pecha, Chesto) after the status move: PASS

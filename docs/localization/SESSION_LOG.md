@@ -2,6 +2,16 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-24 — full-sync 묶음 38(seq 446~465 + 167 #9819, 452 앞당김) (클라우드 세션, 사용자 취침 중)
+
+- 요청: 묶음 32 때 지시의 연속.
+- 판단: 167은 재확인 7대로 #10548 바로 앞. #10459의 회귀는 upstream #10634를 바로 뒤로 앞당김(선례). 448·450·457은 9/15 선별 이식분으로 게임 코드가 이미 있음, 455는 HnS 형태에 해당 경로 없음, 449는 디버그 메뉴 제외(재확인 87). 461은 한글 파일 표기만(바이트 같음 확인). 465는 1.17.0 최종형으로 — 마지막 상대 KO 때 능력 변화가 생기는 것을 세션 임시 테스트로 확인해 메시지 표에 기록.
+- 수정 파일: 커밋별 — `full-sync-seq-446-465.md` 커밋 표. 문서 — `full-sync-seq-446-465.md`(새), `test-baseline-seq465.txt`(새), `RECHECK_BEFORE_COMPLETION.md` 7 해결·27·32 진행, `port_sequence.tsv` 167·446~465, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 1행, `dev_scripts/hns_verify/kortests/expected/summary.txt`·`summary.meta`(FAILED 줄 모양), STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절.
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 친구 문자: 마지막에 합본으로.
+- 다음 시작점: seq 466 #9859(STATUS 다음 할 일 3의 방법).
+
 ### 2026-10-24 — full-sync 묶음 37(seq 434~445, 441 일부, 444 보류) (클라우드 세션, 사용자 취침 중)
 
 - 요청: 묶음 32 때 지시의 연속.

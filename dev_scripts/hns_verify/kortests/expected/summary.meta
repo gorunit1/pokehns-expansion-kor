@@ -34,6 +34,8 @@ summary.txt = 한글 회귀 기대 요약(kortests/run.sh 출력 그대로: 정�
   (모두 `Unmatched MESSAGE`, 기대 문장이 반대 진영 `우리 편/상대 주변의 불바다가 사라졌다!`). 코드 = 클라우드 저장소 cf44d86e,
   ALLOW_REPO=1 kortests/run.sh <저장소> kor-b26b 8 → 558/652. 다른 647개 상태 줄은 그대로(compare.py 차이 = 위 5개). summary.txt는
   이 실행 요약 그대로이고, 다시 돌린 결과(kor-b26c)가 이 기대와 바이트 같다(full-sync-seq-376-380.md 검증 절).
+2026-10-24 full-sync 묶음 38: #10619(seq 451)가 테스트 요약의 FAILED 줄을 upstream 모양(`- Tests FAILED:` 뒤 공백 10칸)으로 바꿔
+  summary.txt의 그 한 줄만 새 모양으로 고쳤다(숫자 94 그대로). 상태 줄 차이 0, 합계 558/652 그대로(kor-b40, 코드 1859ff22).
 세트          PASS / 전체   파일(kortests/sets/)
   HNS9680      66 /  70    zz_hns9680_endturn1~4.c
   HNS9714      28 /  34    zz_hns9714_b1_defog.c, b2_tidyup_sub.c, b3_endturn.c, b4_doubles_gmax.c
