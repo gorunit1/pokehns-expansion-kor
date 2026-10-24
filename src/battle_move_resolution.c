@@ -1700,13 +1700,13 @@ static bool32 CanTwoTurnMoveFireThisTurn(struct BattleCalcValues *cv, bool32 *sh
 
     u32 weather = GetWeather();
     u32 attackerWeather = GetAttackerWeather(cv->holdEffects[cv->battlerAtk], cv->abilities[cv->battlerAtk], weather);
-    u32 moveWeather = GetMoveTwoTurnAttackWeather(cv->move);
+    enum BattleWeather moveWeather = GetTwoTurnMoveWeather(cv->move);
 
     // Actual weather without Mega Sol; Utility Umbrella blocks sun and rain
-    if (GetAttackerWeather(cv->holdEffects[cv->battlerAtk], ABILITY_NONE, weather) & moveWeather)
+    if (GetCurrentBattleWeather(GetAttackerWeather(cv->holdEffects[cv->battlerAtk], ABILITY_NONE, weather)) == moveWeather)
         return TRUE;
 
-    if (attackerWeather & moveWeather)
+    if (GetCurrentBattleWeather(attackerWeather) == moveWeather)
     {
         *showAbilityPopUp = TRUE;
         return TRUE;
@@ -1803,7 +1803,7 @@ static enum CancelerResult CancelerCharging(struct BattleCalcValues *cv)
         gLockedMoves[cv->battlerAtk] = cv->move;
         gProtectStructs[cv->battlerAtk].chargingTurn = TRUE;
         if (gBattleMoveEffects[GetMoveEffect(cv->move)].semiInvulnerableEffect)
-            gBattleMons[cv->battlerAtk].volatiles.semiInvulnerable = GetMoveTwoTurnAttackStatus(cv->move);
+            gBattleMons[cv->battlerAtk].volatiles.semiInvulnerable = GetTwoTurnMoveSemiInvulnerability(cv->move);
         BattleScriptCall(BattleScript_TwoTurnMoveCharging);
         result = CANCELER_RESULT_RUN_SCRIPT;
     }
