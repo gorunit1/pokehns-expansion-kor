@@ -23336,7 +23336,7 @@ const u16 gMonShinyPalette_GarchompMegaZ[] = INCBIN_U16("graphics/pokemon/garcho
 #endif //P_FAMILY_GROOKEY
 
 #if P_FAMILY_SCORBUNNY
-    const u32 gMonFrontPic_Scorbunny[] = INCBIN_U32("graphics/pokemon/scorbunny/front.4bpp.smol");
+    const u32 gMonFrontPic_Scorbunny[] = INCBIN_U32("graphics/pokemon/scorbunny/anim_front.4bpp.smol");
     const u16 gMonPalette_Scorbunny[] = INCBIN_U16("graphics/pokemon/scorbunny/normal.gbapal");
     const u32 gMonBackPic_Scorbunny[] = INCBIN_U32("graphics/pokemon/scorbunny/back.4bpp.smol");
     const u16 gMonShinyPalette_Scorbunny[] = INCBIN_U16("graphics/pokemon/scorbunny/shiny.gbapal");
@@ -23352,7 +23352,7 @@ const u16 gMonShinyPalette_GarchompMegaZ[] = INCBIN_U16("graphics/pokemon/garcho
 #endif //OW_PKMN_OBJECTS_SHARE_PALETTES
 #endif //OW_POKEMON_OBJECT_EVENTS
 
-    const u32 gMonFrontPic_Raboot[] = INCBIN_U32("graphics/pokemon/raboot/front.4bpp.smol");
+    const u32 gMonFrontPic_Raboot[] = INCBIN_U32("graphics/pokemon/raboot/anim_front.4bpp.smol");
     const u16 gMonPalette_Raboot[] = INCBIN_U16("graphics/pokemon/raboot/normal.gbapal");
     const u32 gMonBackPic_Raboot[] = INCBIN_U32("graphics/pokemon/raboot/back.4bpp.smol");
     const u16 gMonShinyPalette_Raboot[] = INCBIN_U16("graphics/pokemon/raboot/shiny.gbapal");
@@ -23368,7 +23368,7 @@ const u16 gMonShinyPalette_GarchompMegaZ[] = INCBIN_U16("graphics/pokemon/garcho
 #endif //OW_PKMN_OBJECTS_SHARE_PALETTES
 #endif //OW_POKEMON_OBJECT_EVENTS
 
-    const u32 gMonFrontPic_Cinderace[] = INCBIN_U32("graphics/pokemon/cinderace/front.4bpp.smol");
+    const u32 gMonFrontPic_Cinderace[] = INCBIN_U32("graphics/pokemon/cinderace/anim_front.4bpp.smol");
     const u16 gMonPalette_Cinderace[] = INCBIN_U16("graphics/pokemon/cinderace/normal.gbapal");
     const u32 gMonBackPic_Cinderace[] = INCBIN_U32("graphics/pokemon/cinderace/back.4bpp.smol");
     const u16 gMonShinyPalette_Cinderace[] = INCBIN_U16("graphics/pokemon/cinderace/shiny.gbapal");
