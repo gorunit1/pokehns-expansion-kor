@@ -465,9 +465,9 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 463	10556	1000000	1.16.4	g2_battle_fixed_b	U-statchange-9730	9730	S	fix	N	N	-600B	X items fix	적용(GetConfig·테스트, 나머지 이미 없음) 13f3ceff
 464	10721	1000000	1.16.4	g5_general_cleanup_docs	U-pret-10721	-	M	fix	N	N	~0	Pret merge (31st of August, 2026)	적용(battle_anim.h HnS 원형 유지) e1d60a0d
 465	9408	1000000	1.16.0	g3_battle_changes_moves_abilities_items	U-9408	-	M	refactor	N	N	~0	Simplify Scale Shot effect activation	적용(1.17.0 최종형, 대상별 루프) 1859ff22
-466	9859	261	1.16.0	g6_overworld_refactors	U-calcvalue-9859	9176,9417,9249,9494,9657,9674,9784,9408	L	refactor	N	N	~0	Adds CalcValue struct to MoveEnd	
-467	9841	255	1.16.0	g5_general_cleanup_docs	U-9841	9859	S	test	N	N	~0	Remove known failing for Blunder Policy/Darts interaction	
-468	9898	264	1.16.0	g3_battle_changes_moves_abilities_items	U-9898	9784,9859	M	fix	N	N	~0	IsAnyTargetAffected and GetDynamicMoveType changes	
+466	9859	261	1.16.0	g6_overworld_refactors	U-calcvalue-9859	9176,9417,9249,9494,9657,9674,9784,9408	L	refactor	N	N	~0	Adds CalcValue struct to MoveEnd	적용(함수 단위 같은 줄만 cv, HnS 다음 대상 CONTINUE 경로 cv 동기화) ec79adbc
+467	9841	255	1.16.0	g5_general_cleanup_docs	U-9841	9859	S	test	N	N	~0	Remove known failing for Blunder Policy/Darts interaction	적용(테스트만) ff86566b
+468	9898	264	1.16.0	g3_battle_changes_moves_abilities_items	U-9898	9784,9859	M	fix	N	N	~0	IsAnyTargetAffected and GetDynamicMoveType changes	적용(HnS GetDynamicMoveType 시그니처 유지) 4d9f0306
 469	9916	274	1.16.0	g3_battle_changes_moves_abilities_items	U-9916	9532,9494,9859	M	refactor	Y	N	-0.2KB	Minor Battle Struct clean up and script clean up	
 470	9939	281	1.16.0	g3_battle_changes_moves_abilities_items	U-accuracy-9939	9176,9514,9610,9494,9657,9655,9859,9730	XL	refactor	Y	N	+0.5KB	Integrate accuracy check into canceler	
 471	9983	291	1.16.0	g1_battle_fixed_a	U-accuracy-9939	9657,9939	M	fix	Y	N	+60B	Fix multi hit result message	
