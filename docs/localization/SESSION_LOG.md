@@ -9,7 +9,7 @@
 - 수정 파일: `src/daycare.c`, `test/hns_daycare_egg_moves.c`(새), `src/data/trainers_hns.party`, `data/maps/PokemonLeague_ChampionsRoom_hns/scripts.inc`. 문서 — 원문, `results/egg-move-bgm-2026-10-24.md`(새), `RECHECK_BEFORE_COMPLETION.md` 79 해결·정정, `full-sync-seq-366-375.md` 정정, `test-baseline-seq468b.txt`(새), STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절.
 - 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
-- 친구 문자: 세션 답변 문안(질문 2·실기 3).
+- 친구 문자: 세션 답변 문안(질문 2·실기 3, ROM SHA1 `9d319c09…`) — **보냄**(2026-10-24 사용자 확인).
 - 다음 시작점: 친구 답, 또는 seq 469 #9916.
 
 ### 2026-10-24 — full-sync 묶음 39(seq 466~468) (클라우드 세션, 사용자 취침 중)

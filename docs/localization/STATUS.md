@@ -3,7 +3,7 @@
 ## 2026-10-24 — 친구 요청: 알기술 전수(재확인 79)·트레이너 조우 BGM·목호 패배 장면 음악 (현재, 클라우드 세션)
 
 - **다음 할 일**
-  1. 친구에게 결과 문자(세션 답변 문안) — 질문 2개: (1) 동작 클래스(Behavior Class) 때문에 HGSS 표시 클래스와 다른 조우곡 20명 유지/HGSS로, (2) 성도 과학자 5명(로켓단 아지트·라디오타워) `SUSPICIOUS_1` 유지/HGSS `ROCKET`. 실기 3항목.
+  1. ~~친구에게 결과 문자~~ **보냄**(2026-10-24 사용자 확인). 문안은 세션 답변 — 질문 2개: (1) 동작 클래스(Behavior Class) 때문에 HGSS 표시 클래스와 다른 조우곡 20명 유지/HGSS로, (2) 성도 과학자 5명(로켓단 아지트·라디오타워) `SUSPICIOUS_1` 유지/HGSS `ROCKET`. 실기 3항목.
   2. **친구 답 대기:** 위 2개, 36(394 팝업 대기), 89(3)(428 A/B/C), 90 (1) 441 A/B (2) 444 A/B, 82, 72, 70 (a)(b), 71, 69, 실기 결과. (선택) 86. **79는 해결.**
   3. full-sync 다음 seq 469 #9916(아래 묶음 39 절의 3과 같음). 테스트 기준 **`test-baseline-seq468b.txt`**(seq468 + 새 알기술 테스트 9), 한글 회귀 기대 **558/652**, 세이브 이전 사실은 코드 `4ec770aa`.
 - **결과** [`egg-move-bgm-2026-10-24.md`](../friend-handoff/results/egg-move-bgm-2026-10-24.md), 원문 [`FRIEND_REPLY_2026-10-24.md`](../friend-handoff/FRIEND_REPLY_2026-10-24.md). 커밋 `7f69a3be`(알기술 전수 + `test/hns_daycare_egg_moves.c`), `17755b4d`(수영팬티 남 23명 `Hg Suspicious 2`), `4ec770aa`(챔피언 방 `playbgm MUS_HG_ENCOUNTER_GIRL_1, FALSE` 2곳), 문서 이 커밋.
