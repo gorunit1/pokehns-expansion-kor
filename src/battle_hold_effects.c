@@ -74,7 +74,7 @@ enum ItemEffect TryBoosterEnergy(enum BattlerId battler, enum Ability ability)
         gBattlerAbility = gBattleScripting.battler = battler;
         gBattleMons[battler].volatiles.boosterEnergyActivated = TRUE;
         RecordAbilityBattle(battler, ability);
-        BattleScriptCall(BattleScript_BoosterEnergyRet);
+        BattleScriptCall(BattleScript_BoosterEnergy);
         effect = ITEM_EFFECT_OTHER;
     }
 
@@ -130,26 +130,16 @@ static enum ItemEffect TryTerrainSeeds(enum BattlerId battler, enum Item item)
     return effect;
 }
 
-static bool32 CanBeInfinitelyConfused(enum BattlerId battler)
-{
-    enum Ability ability = GetBattlerAbility(battler);
-    if  (ability == ABILITY_OWN_TEMPO
-      || IsMistyTerrainAffected(battler, ability, GetBattlerHoldEffect(battler), gFieldStatuses)
-      || gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_SAFEGUARD)
-        return FALSE;
-    return TRUE;
-}
-
 static enum ItemEffect TryBerserkGene(enum BattlerId battler)
 {
     if (CompareStat(battler, STAT_ATK, MAX_STAT_STAGE, CMP_EQUAL, GetBattlerAbility(battler)))
         return ITEM_NO_EFFECT;
 
-    if (CanBeInfinitelyConfused(battler))
-        gBattleMons[battler].volatiles.infiniteConfusion = TRUE;
+    if (CanBeConfused(battler, battler))
+        gBattleMons[battler].volatiles.confusionTimer = PERMANENT_VOLATILE;
 
     SetStatChange(battler, STAT_ATK, 2);
-    BattleScriptCall(BattleScript_BerserkGeneRet);
+    BattleScriptCall(BattleScript_BerserkGene);
     return ITEM_STATS_CHANGE;
 }
 
@@ -768,9 +758,9 @@ static enum ItemEffect TryCureConfusion(enum BattlerId battler)
 {
     enum ItemEffect effect = ITEM_NO_EFFECT;
 
-    if (gBattleMons[battler].volatiles.confusionTurns > 0)
+    if (gBattleMons[battler].volatiles.confusionTimer > 0)
     {
-        RemoveConfusionStatus(battler);
+        gBattleMons[battler].volatiles.confusionTimer = 0;
         BattleScriptCall(BattleScript_BerryCureConfusionRet);
         effect = ITEM_EFFECT_OTHER;
     }
@@ -782,7 +772,7 @@ static enum ItemEffect TryCureAnyStatus(enum BattlerId battler)
 {
     enum ItemEffect effect = ITEM_NO_EFFECT;
 
-    if ((gBattleMons[battler].status1 & STATUS1_ANY || gBattleMons[battler].volatiles.confusionTurns > 0))
+    if ((gBattleMons[battler].status1 & STATUS1_ANY || gBattleMons[battler].volatiles.confusionTimer > 0))
     {
         if (gBattleMons[battler].status1 & STATUS1_SLEEP)
         {
@@ -791,10 +781,10 @@ static enum ItemEffect TryCureAnyStatus(enum BattlerId battler)
         }
 
         gBattleScripting.lumBerryCureStatusMask = gBattleMons[battler].status1;
-        if (gBattleMons[battler].volatiles.confusionTurns > 0)
+        if (gBattleMons[battler].volatiles.confusionTimer > 0)
             gBattleScripting.lumBerryCureStatusMask |= (1u << 31);
         gBattleMons[battler].status1 = 0;
-        RemoveConfusionStatus(battler);
+        gBattleMons[battler].volatiles.confusionTimer = 0;
         BattleScriptCall(BattleScript_LumBerryCureStatusRet);
         effect = ITEM_STATUS_CHANGE;
     }
