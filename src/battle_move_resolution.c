@@ -3470,7 +3470,8 @@ static enum MoveEndResult MoveEndMoveBlock(struct BattleCalcValues *cv)
 
             if (GetBattlerAbility(battlerDef) == ABILITY_STICKY_HOLD)
             {
-                BattleScriptCall(BattleScript_NoItemSteal);
+                BattleScriptCall(BattleScript_StickyHoldActivatesRet);
+                gBattlerAbility = battlerDef;
                 gLastUsedAbility = gBattleMons[battlerDef].ability;
                 RecordAbilityBattle(battlerDef, gLastUsedAbility);
                 return MOVEEND_RESULT_RUN_SCRIPT;
