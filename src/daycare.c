@@ -177,67 +177,68 @@ s8 Daycare_FindEmptySpot(struct DayCare *daycare)
     return -1;
 }
 
-// Gives a daycare mon Egg Moves known by the other daycare mon. In Gen 9+, a
-// Mirror Herb permits transfer between different species. The separate pool pass
-// also preserves baby-form-only moves without overflowing the egg-move buffer.
-static void TransferEggMovesFromPool(u32 daycareIdx, u16 poolSpecies)
+// HnS: the receiver's Egg Move pool. For an evolved member of an incense baby line
+// the non-baby list counts too (below Gen 9 only that list), so baby-form-only moves
+// are kept as before.
+static bool32 IsDaycareEggMove(enum Species receiverSpecies, enum Move move)
 {
-    const u16 *eggMoveLearnset = GetSpeciesEggMoves(poolSpecies);
-    enum Species learnerSpecies = GetBoxMonData(&gSaveBlock1Ptr->daycare.mons[daycareIdx].mon, MON_DATA_SPECIES);
+    enum Species eggSpecies = GetEggSpecies(receiverSpecies);
+    u16 nonBabySpecies = SPECIES_NONE;
 
-    for (u32 j = 0; eggMoveLearnset[j] != MOVE_UNAVAILABLE; j++)
+    if (eggSpecies != receiverSpecies)
     {
-        for (u32 k = 0; k < DAYCARE_MON_COUNT; k++)
+        for (u32 i = 0; i < ARRAY_COUNT(sIncenseBabyTable); i++)
         {
-            struct BoxPokemon *teacher = &gSaveBlock1Ptr->daycare.mons[k].mon;
-            enum Species teacherSpecies = GetBoxMonData(teacher, MON_DATA_SPECIES);
-
-            if (k == daycareIdx || !GetBoxMonData(teacher, MON_DATA_SANITY_HAS_SPECIES))
-                continue;
-            if (GET_BASE_SPECIES_ID(teacherSpecies) != GET_BASE_SPECIES_ID(learnerSpecies)
-                && (GetConfig(EGG_MOVE_TRANSFER) < GEN_9
-                 || GetBoxMonData(&gSaveBlock1Ptr->daycare.mons[daycareIdx].mon, MON_DATA_HELD_ITEM) != ITEM_MIRROR_HERB))
-                continue;
-
-            for (u32 l = 0; l < MAX_MON_MOVES; l++)
+            if (sIncenseBabyTable[i].babySpecies == eggSpecies)
             {
-                if (GetBoxMonData(teacher, MON_DATA_MOVE1 + l) != eggMoveLearnset[j])
-                    continue;
-                if (GiveMoveToBoxMon(&gSaveBlock1Ptr->daycare.mons[daycareIdx].mon, eggMoveLearnset[j]) == MON_HAS_MAX_MOVES)
-                    break;
+                nonBabySpecies = sIncenseBabyTable[i].currSpecies;
+                break;
             }
         }
+    }
+
+    if (!(GetConfig(EGG_MOVE_TRANSFER) < GEN_9 && nonBabySpecies != SPECIES_NONE)
+     && SpeciesHasEggMove(eggSpecies, move))
+        return TRUE;
+    if (nonBabySpecies != SPECIES_NONE && SpeciesHasEggMove(nonBabySpecies, move))
+        return TRUE;
+    return FALSE;
+}
+
+// Gives the receiver the Egg Moves the giver knows, checking the giver's moves in
+// slot order and filling empty slots only. Gen 8: only between the same species.
+// Gen 9+: the receiver must hold a Mirror Herb, whatever the species (SV's rule,
+// applied to the HnS Day Care; the herb is not used up).
+static void TransferEggMovesFromBoxmonToBoxmon(struct BoxPokemon *receiver, struct BoxPokemon *giver)
+{
+    if (!GetBoxMonData(receiver, MON_DATA_SANITY_HAS_SPECIES) || !GetBoxMonData(giver, MON_DATA_SANITY_HAS_SPECIES))
+        return;
+
+    enum Species receiverSpecies = GetBoxMonData(receiver, MON_DATA_SPECIES);
+    enum Species giverSpecies = GetBoxMonData(giver, MON_DATA_SPECIES);
+
+    if (GetConfig(EGG_MOVE_TRANSFER) < GEN_9 && GET_BASE_SPECIES_ID(receiverSpecies) != GET_BASE_SPECIES_ID(giverSpecies))
+        return;
+    if (GetConfig(EGG_MOVE_TRANSFER) >= GEN_9 && GetBoxMonData(receiver, MON_DATA_HELD_ITEM) != ITEM_MIRROR_HERB)
+        return;
+
+    for (u32 i = 0; i < MAX_MON_MOVES; i++)
+    {
+        enum Move move = GetBoxMonData(giver, MON_DATA_MOVE1 + i);
+
+        if (move == MOVE_NONE || BoxMonKnowsMove(receiver, move) || !IsDaycareEggMove(receiverSpecies, move))
+            continue;
+        if (GiveMoveToBoxMon(receiver, move) == MON_HAS_MAX_MOVES)
+            return;
     }
 }
 
+// HnS: runs on every deposit; with one Pokémon in the Day Care the giver slot is empty
+// and nothing happens.
 static void TransferEggMoves(void)
 {
-    for (u32 i = 0; i < DAYCARE_MON_COUNT; i++)
-    {
-        enum Species learnerSpecies = GetBoxMonData(&gSaveBlock1Ptr->daycare.mons[i].mon, MON_DATA_SPECIES);
-        enum Species eggSpecies = GetEggSpecies(learnerSpecies);
-        u16 nonBabySpecies = SPECIES_NONE;
-
-        if (!GetBoxMonData(&gSaveBlock1Ptr->daycare.mons[i].mon, MON_DATA_SANITY_HAS_SPECIES))
-            continue;
-
-        if (eggSpecies != learnerSpecies)
-        {
-            for (u32 j = 0; j < ARRAY_COUNT(sIncenseBabyTable); j++)
-            {
-                if (sIncenseBabyTable[j].babySpecies == eggSpecies)
-                {
-                    nonBabySpecies = sIncenseBabyTable[j].currSpecies;
-                    break;
-                }
-            }
-        }
-
-        if (!(GetConfig(EGG_MOVE_TRANSFER) < GEN_9 && nonBabySpecies != SPECIES_NONE))
-            TransferEggMovesFromPool(i, eggSpecies);
-        if (nonBabySpecies != SPECIES_NONE)
-            TransferEggMovesFromPool(i, nonBabySpecies);
-    }
+    TransferEggMovesFromBoxmonToBoxmon(&gSaveBlock1Ptr->daycare.mons[0].mon, &gSaveBlock1Ptr->daycare.mons[1].mon);
+    TransferEggMovesFromBoxmonToBoxmon(&gSaveBlock1Ptr->daycare.mons[1].mon, &gSaveBlock1Ptr->daycare.mons[0].mon);
 }
 
 void StorePokemonInDaycare(struct Pokemon *mon, struct DaycareMon *daycareMon)
