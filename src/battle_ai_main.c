@@ -193,8 +193,7 @@ void BattleAI_SetupAIData(u8 defaultScoreMoves, enum BattlerId battler)
         defaultScoreMoves >>= 1;
     }
 
-    gBattlerTarget = SetRandomTarget(battler);
-    gAiBattleData->chosenTarget[battler] = gBattlerTarget;
+    gAiBattleData->chosenTarget[battler] = SetRandomTarget(battler);
 }
 
 void BattleAI_SetupItems(void)
