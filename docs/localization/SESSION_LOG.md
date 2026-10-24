@@ -2,6 +2,16 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-24 — 친구 요청: 알기술 전수·트레이너 조우 BGM·목호 패배 장면 음악 (클라우드 세션)
+
+- 요청: 사용자가 친구 메시지를 붙여 줌(원문 `docs/friend-handoff/FRIEND_REPLY_2026-10-24.md`). 재확인 79 결정 반영, HnS 트레이너 조우곡을 HGSS 클래스 표와 대조해 틀린 것만 고치기, 목호 패배 뒤 문 열림에 `MUS_HG_ENCOUNTER_GIRL_1`. 기존 작업 브랜치에서 필요한 부분만, mGBA는 친구.
+- 판단: 알기술은 upstream `TransferEggMovesFromBoxmonToBoxmon` 모양(가르치는 쪽 순서, 빈 칸만)에 HnS 맡길 때마다·향로 베이비 목록을 얹음. upstream 테스트는 Gen 3 학습표 때문에 ASSUME에서 멈추므로 새 게임 기본값(현대 기술)을 켠 HnS 테스트 9개를 새로 씀(이전 코드에서 4개 FAIL로 규칙 차이를 잡는 것 확인). BGM은 pokeheartgold `field_bgm.c` 표로 651명 대조, 동작 클래스가 있는 트레이너는 10-10b 결정상 HnS 의도라 고치지 않고 질문. 목호 장면은 `playbgm …, FALSE`(저장 안 함)로 전당 워프 때 원래 맵 곡으로 돌아가는 것을 코드로 추적.
+- 수정 파일: `src/daycare.c`, `test/hns_daycare_egg_moves.c`(새), `src/data/trainers_hns.party`, `data/maps/PokemonLeague_ChampionsRoom_hns/scripts.inc`. 문서 — 원문, `results/egg-move-bgm-2026-10-24.md`(새), `RECHECK_BEFORE_COMPLETION.md` 79 해결·정정, `full-sync-seq-366-375.md` 정정, `test-baseline-seq468b.txt`(새), STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절.
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 친구 문자: 세션 답변 문안(질문 2·실기 3).
+- 다음 시작점: 친구 답, 또는 seq 469 #9916.
+
 ### 2026-10-24 — full-sync 묶음 39(seq 466~468) (클라우드 세션, 사용자 취침 중)
 
 - 요청: 묶음 32 때 지시의 연속.

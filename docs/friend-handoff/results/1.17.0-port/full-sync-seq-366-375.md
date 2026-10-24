@@ -36,7 +36,7 @@
 
 - 게임 코드는 이미 들어와 있었다(원작업자 2026-09-15 선별 이식: 설정 `P_BALL_INHERITANCE`·`P_MOVE_INHERITANCE`, `givemon`/`createmon` `isEgg`, RNG 태그, 도감·DexNav 알기술 계산). 3-way 비교에서 upstream 변경 대부분이 HnS와 같아 충돌 없이 맞았다.
 - 남은 차이는 모두 **HnS가 일부러 바꾼 것**이라 유지했다(게임 코드 변경 0):
-  1. **알기술 전수(재확인 79):** HnS `TransferEggMoves`는 Gen 8+에서 같은 종이면 미러허브 없이, 다른 종이면 Gen 9에서 미러허브로 전수하고, 향로 베이비 기술도 본다. 맡길 때마다(어느 칸이든) 돈다. upstream `TransferEggMovesFromBoxmonToBoxmon`은 Gen 9에서 **같은 종이라도 미러허브가 필요**하고, 둘째 칸이 찰 때만 돈다(첫째 칸을 찾아간 뒤 다시 맡기면 안 돎). HnS 쪽이 설정 주석(`include/config/pokemon.h:33`)과 맞는다.
+  1. **알기술 전수(재확인 79):** HnS `TransferEggMoves`는 Gen 8+에서 같은 종이면 미러허브 없이, 다른 종이면 Gen 9에서 미러허브로 전수하고, 향로 베이비 기술도 본다. 맡길 때마다(어느 칸이든) 돈다. upstream `TransferEggMovesFromBoxmonToBoxmon`은 Gen 9에서 **같은 종이라도 미러허브가 필요**하고, 둘째 칸이 찰 때만 돈다(첫째 칸을 찾아간 뒤 다시 맡기면 안 돎). HnS 쪽이 설정 주석(`include/config/pokemon.h:33`)과 맞는다. **정정(2026-10-24):** 괄호 안 설명은 틀렸다 — upstream도 찾을 때 `ShiftDaycareSlots`가 남은 포켓몬을 칸 0으로 당겨서 다시 맡기면 칸 1이 차고 전수 검사가 돈다. 이 규칙은 친구 결정으로 바뀌었다([`egg-move-bgm-2026-10-24.md`](../egg-move-bgm-2026-10-24.md) 1절, 재확인 79 해결).
   2. `SetInitialEggData`: HnS 줍는 순간 이로치 판정(`P_EGG_SHINY_ROLL_ON_PICKUP`)·초기 기술.
   3. 부화 걸음: 남은 사이클이 감소량보다 작으면 바로 부화(너즐록 부화 차단 포함). upstream은 1 빼고 다음 사이클에 부화.
 - 새 테스트 결과: PASS 26(아래 검증). FAIL 2는 **HnS 설정 `P_SEPARATE_REGIONAL_FORMS TRUE`** 때문이다(재확인 80): 알로라 나옹 엄마 × 나옹 → HnS는 알로라 나옹 알(upstream 기대는 지역 기본형 나옹), 식스테일 × 알로라 식스테일은 HnS에서 다른 종이라 아빠 볼을 물려받지 않음. 알기술 전수 테스트 6개는 HnS 이상해씨 알기술 데이터가 달라 `ASSUME`에서 멈춘다(HnS 규칙 차이는 이 테스트로 드러나지 않음).
