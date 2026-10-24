@@ -2075,9 +2075,9 @@ static enum CancelerResult CancelerTargetFailure(struct BattleCalcValues *cv)
             gBattleStruct->moveResultFlags[cv->battlerDef] |= MOVE_RESULT_MISSED;
             gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_PROTECTED;
             if (cv->moveEffect == EFFECT_FLING)
-                BattleScriptCall(BattleScript_TargetAvoidsAttackConsumeFlingItem);
+                BattleScriptCall(BattleScript_TargetProtectedConsumeFlingItem);
             else
-                BattleScriptCall(BattleScript_TargetAvoidsAttack);
+                BattleScriptCall(BattleScript_TargetProtected);
             targetAvoidedAttack = TRUE;
         }
         else if (CanBattlerBounceBackMove(cv))

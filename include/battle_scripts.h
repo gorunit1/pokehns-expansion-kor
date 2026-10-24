@@ -462,6 +462,8 @@ extern const u8 BattleScript_MoveEffectStealthRock[];
 extern const u8 BattleScript_CouldntFullyProtect[];
 extern const u8 BattleScript_TargetAvoidsAttack[];
 extern const u8 BattleScript_TargetAvoidsAttackConsumeFlingItem[];
+extern const u8 BattleScript_TargetProtected[];
+extern const u8 BattleScript_TargetProtectedConsumeFlingItem[];
 extern const u8 BattleScript_MoveEffectStockpileWoreOff[];
 extern const u8 BattleScript_MoveEffectSpikes[];
 extern const u8 BattleScript_BerserkGene[];

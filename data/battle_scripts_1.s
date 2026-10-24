@@ -6558,6 +6558,21 @@ BattleScript_TargetAvoidsAttack::
 	waitmessage B_WAIT_TIME_LONG
 	return
 
+@ HnS: upstream #10467 BattleScript_TargetProtected. The protecting Pokémon (BS_SCRIPTING) shows the protect
+@ animation, then the same "protected itself" message as before (gMissStringIds, B_MSG_PROTECTED).
+BattleScript_TargetProtected::
+	pause B_WAIT_TIME_SHORT
+	playanimation BS_SCRIPTING, B_ANIM_PROTECTED_ITSELF
+	waitanimation
+	printfromtable gMissStringIds
+	waitmessage B_WAIT_TIME_LONG
+	return
+
+BattleScript_TargetProtectedConsumeFlingItem::
+	call BattleScript_TargetProtected
+	removeitem BS_ATTACKER
+	return
+
 BattleScript_CouldntFullyProtect::
 	printstring STRINGID_COULDNTFULLYPROTECT
 	waitmessage B_WAIT_TIME_LONG
