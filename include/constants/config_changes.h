@@ -159,6 +159,7 @@
     F(B_STURDY,                    sturdy,                  (u32, GEN_COUNT - 1)) \
     F(B_PLUS_MINUS_INTERACTION,    plusMinusInteraction,    (u32, GEN_COUNT - 1)) /* TODO: use in tests */ \
     F(B_WEATHER_FORMS,             weatherForms,            (u32, GEN_COUNT - 1)) /* TODO: use in tests */ \
+    F(B_MOVE_EFFECTS_BEFORE_MOVES, moveEffectsBeforeMoves,  (u32, GEN_COUNT - 1)) \
     F(B_SYMBIOSIS_GEMS,            symbiosisGems,           (u32, GEN_COUNT - 1)) \
     F(B_REDIRECT_ABILITY_IMMUNITY, redirectAbilityImmunity, (u32, GEN_COUNT - 1)) \
     F(B_REDIRECT_ABILITY_ALLIES,   redirectAbilityAllies,   (u32, GEN_COUNT - 1)) /* TODO: use in tests */ \

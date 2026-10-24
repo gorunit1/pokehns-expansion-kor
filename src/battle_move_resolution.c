@@ -1259,6 +1259,10 @@ static enum CancelerResult CancelerMoveFailure(struct BattleCalcValues *cv)
         if (gBattleMons[cv->battlerAtk].volatiles.noRetreat)
             battleScript = BattleScript_ButItFailed;
         break;
+    case EFFECT_BEAK_BLAST:
+        if (!gBattleStruct->battlerState[cv->battlerAtk].focusPunchBattlers && GetConfig(B_MOVE_EFFECTS_BEFORE_MOVES) <= GEN_9)
+            battleScript = BattleScript_ButItFailed;
+        break;
     case EFFECT_PROTECT:
     case EFFECT_ENDURE:
         TryResetConsecutiveUseCounter(cv->battlerAtk);
@@ -1837,6 +1841,7 @@ static enum CancelerResult CancelerCharging(struct BattleCalcValues *cv)
         {
             gBattleScripting.animTurn = 1;
             gBattleScripting.animTargetsHit = 0;
+            gBattleScripting.battler = cv->battlerAtk;
             gProtectStructs[cv->battlerAtk].chargingTurn = FALSE;
             if (gBattleMoveEffects[GetMoveEffect(cv->move)].semiInvulnerableEffect)
                 gBattleMons[cv->battlerAtk].volatiles.semiInvulnerable = STATE_NONE;
@@ -2487,18 +2492,6 @@ static enum MoveEndResult MoveEndProtectLikeEffect(void)
         break;
     }
 
-    // Not strictly a protect effect, but works the same way
-    if (IsBattlerUsingBeakBlast(gBattlerTarget)
-     && IsBattlerTurnDamaged(gBattlerTarget, EXCLUDING_SUBSTITUTES)
-     && CanBeBurned(gBattlerAttacker, gBattlerAttacker, GetBattlerAbility(gBattlerAttacker)))
-    {
-        gBattleMons[gBattlerAttacker].status1 = STATUS1_BURN;
-        BtlController_EmitSetMonData(gBattlerAttacker, B_COMM_TO_CONTROLLER, REQUEST_STATUS_BATTLE, 0, sizeof(gBattleMons[gBattlerAttacker].status1), &gBattleMons[gBattlerAttacker].status1);
-        MarkBattlerForControllerExec(gBattlerAttacker);
-        BattleScriptCall(BattleScript_BeakBlastBurn);
-        result = MOVEEND_RESULT_RUN_SCRIPT;
-    }
-
     gBattleScripting.moveendState++;
     return result;
 }
@@ -2603,6 +2596,27 @@ static enum MoveEndResult MoveEndRage(void)
         // Does rage show any anim or does it just increase by one and print the rage message?
         SetStatChange(gBattlerTarget, STAT_ATK, 1);
         BattleScriptCall(BattleScript_RageIsBuilding);
+        result = MOVEEND_RESULT_RUN_SCRIPT;
+    }
+
+    gBattleScripting.moveendState++;
+    return result;
+}
+
+// HnS: MoveEnd handlers here are still the pre-BattleCalcValues (void) form
+static enum MoveEndResult MoveEndBeakBlast(void)
+{
+    enum MoveEndResult result = MOVEEND_RESULT_CONTINUE;
+
+    if (IsBattlerUsingBeakBlast(gBattlerTarget)
+     && IsBattlerTurnDamaged(gBattlerTarget, EXCLUDING_SUBSTITUTES)
+     && IsMoveMakingContact(gBattlerAttacker, gBattlerTarget, GetBattlerAbility(gBattlerAttacker), GetBattlerHoldEffect(gBattlerAttacker), gCurrentMove)
+     && CanBeBurned(gBattlerAttacker, gBattlerAttacker, GetBattlerAbility(gBattlerAttacker)))
+    {
+        gBattleMons[gBattlerAttacker].status1 = STATUS1_BURN;
+        BtlController_EmitSetMonData(gBattlerAttacker, B_COMM_TO_CONTROLLER, REQUEST_STATUS_BATTLE, 0, sizeof(gBattleMons[gBattlerAttacker].status1), &gBattleMons[gBattlerAttacker].status1);
+        MarkBattlerForControllerExec(gBattlerAttacker);
+        BattleScriptCall(BattleScript_BeakBlastBurn);
         result = MOVEEND_RESULT_RUN_SCRIPT;
     }
 
@@ -4462,6 +4476,7 @@ static enum MoveEndResult (*const sMoveEndHandlers[])(void) =
     [MOVEEND_PROTECT_LIKE_EFFECT] = MoveEndProtectLikeEffect,
     [MOVEEND_ABSORB] = MoveEndAbsorb,
     [MOVEEND_RAGE] = MoveEndRage,
+    [MOVEEND_BEAK_BLAST] = MoveEndBeakBlast,
     [MOVEEND_ABILITIES] = MoveEndAbilities,
     [MOVEEND_FORM_CHANGE_ON_HIT] = MoveEndFormChangeOnHit,
     [MOVEEND_ABILITIES_ATTACKER] = MoveEndAbilitiesAttacker,

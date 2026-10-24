@@ -181,6 +181,8 @@
 #define B_UPDATED_INTIMIDATE        GEN_LATEST // In Gen8+, Intimidate no longer works on opponents with the Inner Focus, Scrappy, Own Tempo or Oblivious Abilities. It also activates Rattled.
 #define B_OBLIVIOUS_TAUNT           GEN_LATEST // In Gen6+, Pokémon with Oblivious can no longer be taunted.
 #define B_STURDY                    GEN_LATEST // In Gen5+, Sturdy causes a Pokémon to have 1 HP remaining if another Pokémon's attack or confusion damage would have knocked it out from full HP.
+#define B_MOVE_EFFECTS_BEFORE_MOVES     GEN_LATEST // In Champions, Beak Blast will work when Encored into from a different move
+                                                   // Additionally, the charging animation will occur 
 #define B_PLUS_MINUS_INTERACTION    GEN_LATEST // In Gen5+, Plus and Minus can be activated by themselves in addition to the opposite Ability.
 #define B_WEATHER_FORMS             GEN_LATEST // In Gen5+, Castform and Cherrim revert to their base form upon losing their respective Ability. Cherrim needs Flower Gift to change forms.
 #define B_SYMBIOSIS_GEMS            GEN_LATEST // In Gen7+, Symbiosis passes an item after a Gem-boosted attack. Previously, items were passed before the Gem-boosted attack hit, making the item's effect apply.

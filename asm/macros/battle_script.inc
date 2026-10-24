@@ -2183,3 +2183,7 @@
 	.macro catchornot
 	callnative BS_CatchOrNot
 	.endm
+
+	.macro trydomoveeffectsbeforemoves
+	callnative BS_TryDoMoveEffectsBeforeMoves
+	.endm
