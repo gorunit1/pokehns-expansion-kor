@@ -9,7 +9,7 @@
 - 수정 파일: 결과 문서 커밋 표. 문서 — 원문, `ai-tera-anim-font-2026-10-24b.md`(새), `RECHECK_BEFORE_COMPLETION.md` 86·89·90·91, `full-sync-seq-423-431.md` 솔라빔, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 1행, `test-baseline-seq468c.txt`(새), STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절.
 - 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
-- 친구 문자: 세션 답변 문안.
+- 친구 문자: 세션 답변 문안(질문 91, 실기 6, ROM SHA1 `ce168c03…`) — **보냄**(2026-10-24 사용자 확인).
 - 다음 시작점: 친구 답, 또는 seq 469 #9916.
 
 ### 2026-10-24 — 친구 요청: 알기술 전수·트레이너 조우 BGM·목호 패배 장면 음악 (클라우드 세션)
