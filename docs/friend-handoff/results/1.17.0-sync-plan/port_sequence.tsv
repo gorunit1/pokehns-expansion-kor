@@ -432,19 +432,19 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 430	10277	723	1.17.0	g4_ai_tests_pokemon_sprites	U-9779	9779	S	test	N	N	~0	Ai thinking time and accuracy improvements	이미 적용(9/15 선별 이식분, HnS 형태)
 431	10453	724	1.17.0	g4_ai_tests_pokemon_sprites	U-aicalc-9548	9548	S	refactor	N	N	~0	Tidy up AI_CalcDamage signature with a struct	이미 적용(9/15 선별 이식분)
 432	10440	725	1.17.0	g2_battle_fixed_b	U-moveargs-10404	10404	M	fix	N	N	+100B	Fix Solar Beam/Electro Shot not working in Primal Weather	앞당김 적용 a2f82aa8(423 바로 뒤 — 원시 날씨 솔라빔 회귀)
-434	8647	727	1.17.0	g4_ai_tests_pokemon_sprites	U-aicalc-9548	9460,9548,9462,9710,9779,10381	M	refactor	N	N	-0.1KB	Adds Round / Pledge combo attack	
-434.5	10461	728	1.17.0	g4_ai_tests_pokemon_sprites	U-10461	-	S	refactor	N	N	~0	Minor AI score calculation clean up	
+434	8647	727	1.17.0	g4_ai_tests_pokemon_sprites	U-aicalc-9548	9460,9548,9462,9710,9779,10381	M	refactor	N	N	-0.1KB	Adds Round / Pledge combo attack	적용(게임 코드 이미 있음 — 테스트·죽은 함수만) 3e3af39f
+434.5	10461	728	1.17.0	g4_ai_tests_pokemon_sprites	U-10461	-	S	refactor	N	N	~0	Minor AI score calculation clean up	적용(남은 hunk 1) c26873e5
 435	10462	729	1.17.0	g6_overworld_refactors	U-trainerbattle-8678	8678	S	fix	N	N	~0	fix facing player snippet not checking face player param	앞당김 적용 f7a23eb4(365 바로 뒤)
 436	10466	730	1.17.0	g2_battle_fixed_b	U-moveargs-10404	10404,10440	S	fix	N	N	~0	Fix two-turn moves firing during any weather	앞당김 적용 0e58320f(432 바로 뒤 — 날씨 인자 없는 두 턴 기술이 비에서 즉발하는 회귀)
-437	10452	731	1.17.0	g6_overworld_refactors	U-10452	-	M	feature	N	N	+1KB	Show Pokémon Icons in Dynamic Multichoice	
+437	10452	731	1.17.0	g6_overworld_refactors	U-10452	-	M	feature	N	N	+1KB	Show Pokémon Icons in Dynamic Multichoice	적용(HnS 슬롯 가드 유지) 8aaadb00
 438	10463	732	1.17.0	g2_battle_fixed_b	U-10463	9440	M	refactor	N	N	-50B, EWRAM(힙) -2B	ShouldTrainerBattlerUseGimmick rework	앞당김 적용 6029378d(400 바로 뒤 — #9440 뒤 트레이너 테라·다이맥스 불가 회귀; HnS는 스마트 테라도 지정 항목만, 비트레이너 데이터 배틀 가드)
-439	10443	734	1.17.0	g2_battle_fixed_b	U-10443	-	L	fix	Y	N	+400B	Fixed Beak Blast, Focus Punch, and Shell Trap's incorrect interactions	
-440	10471	735	1.17.0	g3_battle_changes_moves_abilities_items	U-10471	9730	M	refactor	Y	N	~0	Remove infiniteConfusion flag	
-441	10467	737	1.17.0	g2_battle_fixed_b	U-10467	-	M	fix	N	N	+300B	Add Protect animation + bug fixes	
-442	10523	738	1.17.0	g5_general_cleanup_docs	U-partnergen-9440	9440	S	fix	N	N	~0	Fix smartTera assignment in MakePartnerGenerator	
-443	10531	739	1.17.0	g5_general_cleanup_docs	U-10531	-	S	refactor	N	N	~0	Rename sBattleWeatherInfo to  gBattleWeatherInfo	
-444	10521	741	1.17.0	g6_overworld_refactors	U-10521	-	S	feature	Y	N	~0	FontIdToFit: move and ability descriptions	
-445	10499	742	1.17.0	g5_general_cleanup_docs	U-10499	-	S	refactor	N	N	~0	Remove empty file from repo	
+439	10443	734	1.17.0	g2_battle_fixed_b	U-10443	-	L	fix	Y	N	+400B	Fixed Beak Blast, Focus Punch, and Shell Trap's incorrect interactions	적용(한글 이름 토큰 B_ATK→B_SCR 3개, 정책 74; HnS MoveEnd 형태) e81ae8cd
+440	10471	735	1.17.0	g3_battle_changes_moves_abilities_items	U-10471	9730	M	refactor	Y	N	~0	Remove infiniteConfusion flag	적용(HnS 버서크유전자 스크립트·헤롱헤롱 문장 유지) 98a3b6fc
+441	10467	737	1.17.0	g2_battle_fixed_b	U-10467	-	M	fix	N	N	+300B	Add Protect animation + bug fixes	일부 적용(와이드가드 싱글) d7b990b4 — 방어함 애니 보류(친구 질문, 재확인 90)
+442	10523	738	1.17.0	g5_general_cleanup_docs	U-partnergen-9440	9440	S	fix	N	N	~0	Fix smartTera assignment in MakePartnerGenerator	적용(HnS는 smartTera 안 읽음) dcd28c3f
+443	10531	739	1.17.0	g5_general_cleanup_docs	U-10531	-	S	refactor	N	N	~0	Rename sBattleWeatherInfo to  gBattleWeatherInfo	적용 a4d0b7c4
+444	10521	741	1.17.0	g6_overworld_refactors	U-10521	-	S	feature	Y	N	~0	FontIdToFit: move and ability descriptions	보류 — 친구 질문(한글 설명 92개 글꼴 바뀜, 재확인 90)
+445	10499	742	1.17.0	g5_general_cleanup_docs	U-10499	-	S	refactor	N	N	~0	Remove empty file from repo	적용 1d086e41
 446	10548	744	1.17.0	g6_overworld_refactors	U-fieldmove-9819	9819	M	refactor	N	N	~0	Minor field move fixes (upcoming)	
 447	10459	746	1.17.0	g3_battle_changes_moves_abilities_items	U-absent-10459	-	M	refactor	N	N	~0	Replaced / Removed some battlerAbsent checks in favor of IsBattlerAlive	
 448	10025	749	1.17.0	g3_battle_changes_moves_abilities_items	U-10025	-	M	gfx	N	N	+1KB	Implement opponent HP percentage display	

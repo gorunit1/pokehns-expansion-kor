@@ -119,7 +119,7 @@ SINGLE_BATTLE_TEST("HNS9168 K04 Lum Berry cures confusion only (HnS pop-up R30)"
         ANIMATION(ANIM_TYPE_GENERAL, HNS_BERRY_ANIM, player);
         MESSAGE("마자용은 리샘열매로 혼란이 풀렸다!");
     } THEN {
-        EXPECT(player->volatiles.confusionTurns == 0);
+        EXPECT(player->volatiles.confusionTimer == 0);
     }
 }
 
@@ -142,7 +142,7 @@ SINGLE_BATTLE_TEST("HNS9168 K05 Lum Berry received by Switcheroo cures paralysis
         STATUS_ICON(player, none: TRUE);
     } THEN {
         EXPECT_EQ(player->status1, STATUS1_NONE);
-        EXPECT(player->volatiles.confusionTurns == 0);
+        EXPECT(player->volatiles.confusionTimer == 0);
     }
 }
 
@@ -260,7 +260,7 @@ SINGLE_BATTLE_TEST("HNS9168 K11 Figy Berry, flavor not disliked")
         HP_BAR(player);
         NOT MESSAGE("마자용은 혼란에 빠졌다!");
     } THEN {
-        EXPECT(player->volatiles.confusionTurns == 0);
+        EXPECT(player->volatiles.confusionTimer == 0);
     }
 }
 

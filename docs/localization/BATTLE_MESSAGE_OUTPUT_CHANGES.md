@@ -63,6 +63,10 @@
 | 더블에서 트랩셸을 준비한 포켓몬이 물리 전체기(지진 등)를 맞음 (upstream #10682 이식, seq 345. 새 문장 0) | 전체기의 대상 순서에 따라 트랩셸이 다른 포켓몬의 행동 뒤로 늦어짐 | 맞은 바로 다음에 트랩셸(기존 문장), 둘이면 빠른 쪽부터 | `MoveEndShellTrap`, `ChangeOrderTargetAfterAttacker(battlerDef)` |
 | 상대가 테라스탈함 (upstream #9211 이식, seq 361. 새 문장 0 — HnS 본 게임은 전당 뒤 레드만) | 바로 `STRINGID_PKMNSTORINGENERGY`(`{B_ATK_NAME_WITH_PREFIX}{B_TXT_EUNNEUN} 참고 있다` — 기존 ID 공유, `TRANSLATION_PENDING.md`) | 빈 문자열로 창을 한 번 비운 뒤 같은 문장 | `BattleScript_Terastallization`·`BattleScript_TeraFormChange` `flushtextbox` |
 | 불바다(불꽃의맹세+풀의맹세)가 사라지는 턴 끝 — 깐 쪽과 턴 끝 처리 순서에 따라 (upstream #10214 앞당김, seq 385 → 묶음 26 `cf44d86e`. 새 문장 0, 재확인 6 해결) | `{B_ATK_TEAM2}`가 그 턴의 다른 배틀러를 가리켜 진영이 반대로 나올 수 있었다: 예) 상대 쪽 불바다가 끝나는데 `우리 편 주변의\n불바다가 사라졌다!`(내가 빠르고 상대가 마지막에 맞음, 시작 상태 불바다), 내 쪽인데 `상대 주변의…`(상대가 빠르고 내가 마지막에 맞음) | 불바다가 깔린 쪽 그대로 `상대 주변의\n불바다가 사라졌다!` / `우리 편 주변의\n불바다가 사라졌다!`. 무지개·습지 종료 문장은 그대로(이미 그 쪽으로 정해졌음) | `HandleEndTurnSecondEventBlock` `SECOND_EVENT_BLOCK_SEA_OF_FIRE`·`RAINBOW`·`SWAMP`에서 종료 때 `gBattlerAttacker = GetBattlerSideForMessage(side)`. 한글 회귀 HNS9918 K12·K22·K23, HNS9680 2-13, HNS9714 3-04가 기대대로 바뀜 |
+| 집중펀치·부리캐논·트랩셸을 고른 포켓몬이 잠듦·게으름(쉬는 턴)·쓸 기술 없음 (upstream #10443 이식, seq 439. 새 문장 0, 한글 3문장 이름 토큰 `B_ATK`→`B_SCR` — 정책 74) | 턴 시작 준비 애니·문장 없음 | 턴 시작에 준비 애니와 `{포켓몬}{은는}⏎집중력을 높이고 있다!`/`부리를 가열하기 시작했다!`/`트랩셸을 설치했다!`, 이후 원래대로 잠듦 등으로 행동 못 함 | `TryDoMoveEffectsBeforeMoves`, `GetChargingSetUpScript` |
+| 상대가 앵콜로 집중펀치·부리캐논·트랩셸에 묶임(그 턴에 다른 기술을 골랐음) (upstream #10443, seq 439. `B_MOVE_EFFECTS_BEFORE_MOVES` = Champions) | 앵콜 문장 뒤 준비 애니·문장 없음 | 앵콜 문장 바로 뒤에 준비 애니·문장(위 3문장) | `BattleScript_EffectEncore` `trydomoveeffectsbeforemoves`, `*SetUpEncored` |
+| 부리캐논 준비 중인 포켓몬을 흡수 계열 접촉기로 때림 (upstream #10443, seq 439. 새 문장 0) | 화상 문장 → 흡수 회복 문장 | 흡수 회복 문장 → 화상 문장(자체 MoveEnd 단계, 접촉기만) | `MoveEndBeakBlast`(`MOVEEND_RAGE` 뒤·`MOVEEND_ABILITIES` 앞) |
+| 싱글 배틀에서 와이드가드를 쓴 포켓몬에게 상대가 전체기(지진·눈보라 등)를 씀 (upstream #10467 일부, seq 441. 새 문장 0) | 막지 못하고 맞음 | `{포켓몬}{은는} 공격으로부터⏎몸을 지켰다!` — 막음 | `IsBattlerProtected` `PROTECT_WIDE_GUARD` 대상 종류 비교 |
 
 ## 상태이상·회복·잠자기
 
