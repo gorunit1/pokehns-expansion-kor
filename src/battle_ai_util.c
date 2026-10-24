@@ -4193,18 +4193,6 @@ void AI_SetBattlerTurnOrder(u8 *aiTurnOrder)
     }
 }
 
-enum Move GetAllyChosenMove(enum BattlerId battlerId)
-{
-    enum BattlerId partnerBattler = GetPartnerBattler(battlerId);
-
-    if (!IsBattlerAlive(partnerBattler) || !IsAiBattlerAware(partnerBattler))
-        return MOVE_NONE;
-    else if (partnerBattler > battlerId) // Battler with the lower id chooses the move first.
-        return gAiLogicData->lastUsedMove[partnerBattler];
-    else
-        return GetBattlerChosenMove(partnerBattler);
-}
-
 bool32 AreMovesEquivalent(enum BattlerId battlerAtk, enum BattlerId battlerAtkPartner, enum Move move, enum Move partnerMove)
 {
     if (!IsBattlerAlive(battlerAtkPartner) || partnerMove == MOVE_NONE)
