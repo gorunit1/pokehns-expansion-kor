@@ -5012,6 +5012,12 @@ static bool32 TryActivateGimmick(enum BattlerId battler)
 {
     if ((gBattleStruct->gimmick.toActivate & (1u << battler)) && !(gProtectStructs[battler].noValidMoves))
     {
+        // HnS: B_AI_TERASTALLIZATION, checked again at activation.
+        if (gBattleStruct->gimmick.usableGimmick[battler] == GIMMICK_TERA && !IsAiTerastallizationAllowed(battler))
+        {
+            gBattleStruct->gimmick.toActivate &= ~(1u << battler);
+            return FALSE;
+        }
         if (gBattleStruct->gimmick.usableGimmick[battler] != GIMMICK_Z_MOVE && TryTrainerSlideGimmick(battler))
         {
             return TRUE;

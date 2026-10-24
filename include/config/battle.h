@@ -387,6 +387,13 @@
 #define B_PARTNER_MONS_MARKED_SEEN      FALSE      // If set to TRUE, if your Double Battle partner sends out a Pokémon you haven't encountered yet, it will be marked as SEEN in your Pokédex.
 #define B_MULTI_HALF_TEAMS              FALSE      // If TRUE, trainers will be capped at 3 Pokémon each when there are 2 trainers on one side in a battle. If FALSE, per-battle capping may still be set using `Multi Party: Half` in `trainers.party`
 #define B_TERA_ORB_ALWAYS_CHARGED       FALSE      // If TRUE, causes the Tera Orb to always be charged all the time in every case, overriding B_FLAG_TERA_ORB_CHARGED. Use that for modularity.
+// HnS addition (not an upstream setting): if FALSE, Trainers whose Pokémon the AI controls (opponents and in-game partners)
+// can't Terastallize, even with a set Tera Type or AI_FLAG_SMART_TERA. The player's Tera Orb conditions are separate.
+#ifdef POKEMON_HNS
+#define B_AI_TERASTALLIZATION           FALSE      // HnS: AI Trainers don't Terastallize (friend decision 2026-10-24b).
+#else
+#define B_AI_TERASTALLIZATION           TRUE
+#endif
 
 #define NUM_BEEPS_GEN_LATEST            4                    // Loops 4 times
 #define NUM_BEEPS_GEN_3                 -1                   // Loops infinitely

@@ -231,6 +231,7 @@
     F(B_USE_FROSTBITE,             useFrostbite,            (u32, GEN_COUNT - 1)) /* TODO: use in tests */ \
     F(B_SANDSTORM_SOLAR_BEAM,      standstormSolarBeam,     (u32, GEN_COUNT - 1)) \
     F(B_MULTI_BATTLE_WHITEOUT,     multiBattleWhiteout,     (u32, GEN_COUNT - 1)) \
+    F(B_AI_TERASTALLIZATION,       aiTerastallization,      (u32, TRUE))          /* HnS */ \
 
 
 #define POKEMON_CONFIG_DEFINITIONS(F) \

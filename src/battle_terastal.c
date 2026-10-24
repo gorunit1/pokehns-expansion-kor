@@ -65,6 +65,13 @@ bool32 IsTeraOrbCharged(void)
     return FlagGet(B_FLAG_TERA_ORB_CHARGED);
 }
 
+// HnS: B_AI_TERASTALLIZATION. Battlers whose moves the AI chooses (opponents and in-game partners such as
+// Lance) can only Terastallize when it is TRUE; the player and link players are never blocked here.
+bool32 IsAiTerastallizationAllowed(enum BattlerId battler)
+{
+    return GetConfig(B_AI_TERASTALLIZATION) || !BattlerHasAi(battler);
+}
+
 // Returns whether a battler can Terastallize.
 bool32 CanTerastallize(enum BattlerId battler)
 {
@@ -89,6 +96,10 @@ bool32 CanTerastallize(enum BattlerId battler)
     {
         return FALSE;
     }
+
+    // HnS: AI Trainers only when B_AI_TERASTALLIZATION allows it (also checked again when the gimmick fires).
+    if (!IsAiTerastallizationAllowed(battler))
+        return FALSE;
 
     // Check if Trainer has already Terastallized.
     if (HasTrainerUsedGimmick(battler, GIMMICK_TERA))
