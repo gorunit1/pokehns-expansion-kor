@@ -422,20 +422,20 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 420	10383	705	1.17.0	g6_overworld_refactors	U-dailyseed-9920	9877	S	refactor	N	Y	~0	Adds overworld weather enum	적용(재확인 31 — 날씨 번호 20~24 유지, FOG → NONE 유지) 9872aa10
 421	10339	709	1.17.0	g6_overworld_refactors	U-trainerbattle-8678	8678	S	fix	N	N	~0	fix(trainerbattle): fix trainerbattle always checking the trainerflag	앞당김 적용 c6e59024(365 바로 뒤)
 422	10407	710	1.17.0	g6_overworld_refactors	U-coins-9335	9335	S	fix	N	N	~0	Make updatemoneybox actually a one-byte opcode	앞당김 적용 092bbc85(417 바로 뒤 — updatemoneybox가 바이트를 더 읽는 회귀)
-423	10404	711	1.17.0	g5_general_cleanup_docs	U-statchange-9730	9730	M	refactor	N	N	~0	Fix argument field taking to much space in moves info	
-424	10408	712	1.17.0	g6_overworld_refactors	U-randommon-9896	9955,9970	S	feature	N	N	~0	Add options to ignore total EV check	
-425	10421	715	1.17.0	g3_battle_changes_moves_abilities_items	U-10421	9172	M	refactor	N	N	~0	Updated `battle_anim_new.c` to match style guide	
-426	10236	717	1.17.0	g4_ai_tests_pokemon_sprites	U-10236	-	M	test	N	N	~0	Adds Dragon Darts Ai	
-427	10434	720	1.17.0	g2_battle_fixed_b	U-10434	10389	S	fix	N	N	+30B	Fix failed contact moves activating contact effects of protect moves	
-428	10416	721	1.17.0	g3_battle_changes_moves_abilities_items	U-10416	-	S	gfx	N	N	~0	Add Ability Pop-Ups to Mega Sol	
-429	10252	722	1.17.0	g4_ai_tests_pokemon_sprites	U-10252	-	S	gfx	N	N	+1.2KB	Scorbunny line front anim	
-430	10277	723	1.17.0	g4_ai_tests_pokemon_sprites	U-9779	9779	S	test	N	N	~0	Ai thinking time and accuracy improvements	
-431	10453	724	1.17.0	g4_ai_tests_pokemon_sprites	U-aicalc-9548	9548	S	refactor	N	N	~0	Tidy up AI_CalcDamage signature with a struct	
-432	10440	725	1.17.0	g2_battle_fixed_b	U-moveargs-10404	10404	M	fix	N	N	+100B	Fix Solar Beam/Electro Shot not working in Primal Weather	
+423	10404	711	1.17.0	g5_general_cleanup_docs	U-statchange-9730	9730	M	refactor	N	N	~0	Fix argument field taking to much space in moves info	적용(UNUSED_39 HnS 위치, 메가솔 분기 HnS 규칙) 09ddb8e0
+424	10408	712	1.17.0	g6_overworld_refactors	U-randommon-9896	9955,9970	S	feature	N	N	~0	Add options to ignore total EV check	적용 61507806
+425	10421	715	1.17.0	g3_battle_changes_moves_abilities_items	U-10421	9172	M	refactor	N	N	~0	Updated `battle_anim_new.c` to match style guide	적용 0a1b5137
+426	10236	717	1.17.0	g4_ai_tests_pokemon_sprites	U-10236	-	M	test	N	N	~0	Adds Dragon Darts Ai	적용(게임 코드 이미 있음 — 테스트만, 1개 FAIL 재확인 89) 2e8550b4
+427	10434	720	1.17.0	g2_battle_fixed_b	U-10434	10389	S	fix	N	N	+30B	Fix failed contact moves activating contact effects of protect moves	적용(HnS MoveEnd 형태 손, GetProtectBypassMethod hunk는 #9777 때) 4ddcca5a
+428	10416	721	1.17.0	g3_battle_changes_moves_abilities_items	U-10416	-	S	gfx	N	N	~0	Add Ability Pop-Ups to Mega Sol	보류 — 친구 질문(회복 기술 반짝임: 9/15 이식 때 애니만 빠짐, 재확인 89)
+429	10252	722	1.17.0	g4_ai_tests_pokemon_sprites	U-10252	-	S	gfx	N	N	+1.2KB	Scorbunny line front anim	적용 0b76d041
+430	10277	723	1.17.0	g4_ai_tests_pokemon_sprites	U-9779	9779	S	test	N	N	~0	Ai thinking time and accuracy improvements	이미 적용(9/15 선별 이식분, HnS 형태)
+431	10453	724	1.17.0	g4_ai_tests_pokemon_sprites	U-aicalc-9548	9548	S	refactor	N	N	~0	Tidy up AI_CalcDamage signature with a struct	이미 적용(9/15 선별 이식분)
+432	10440	725	1.17.0	g2_battle_fixed_b	U-moveargs-10404	10404	M	fix	N	N	+100B	Fix Solar Beam/Electro Shot not working in Primal Weather	앞당김 적용 a2f82aa8(423 바로 뒤 — 원시 날씨 솔라빔 회귀)
 434	8647	727	1.17.0	g4_ai_tests_pokemon_sprites	U-aicalc-9548	9460,9548,9462,9710,9779,10381	M	refactor	N	N	-0.1KB	Adds Round / Pledge combo attack	
 434.5	10461	728	1.17.0	g4_ai_tests_pokemon_sprites	U-10461	-	S	refactor	N	N	~0	Minor AI score calculation clean up	
 435	10462	729	1.17.0	g6_overworld_refactors	U-trainerbattle-8678	8678	S	fix	N	N	~0	fix facing player snippet not checking face player param	앞당김 적용 f7a23eb4(365 바로 뒤)
-436	10466	730	1.17.0	g2_battle_fixed_b	U-moveargs-10404	10404,10440	S	fix	N	N	~0	Fix two-turn moves firing during any weather	
+436	10466	730	1.17.0	g2_battle_fixed_b	U-moveargs-10404	10404,10440	S	fix	N	N	~0	Fix two-turn moves firing during any weather	앞당김 적용 0e58320f(432 바로 뒤 — 날씨 인자 없는 두 턴 기술이 비에서 즉발하는 회귀)
 437	10452	731	1.17.0	g6_overworld_refactors	U-10452	-	M	feature	N	N	+1KB	Show Pokémon Icons in Dynamic Multichoice	
 438	10463	732	1.17.0	g2_battle_fixed_b	U-10463	9440	M	refactor	N	N	-50B, EWRAM(힙) -2B	ShouldTrainerBattlerUseGimmick rework	앞당김 적용 6029378d(400 바로 뒤 — #9440 뒤 트레이너 테라·다이맥스 불가 회귀; HnS는 스마트 테라도 지정 항목만, 비트레이너 데이터 배틀 가드)
 439	10443	734	1.17.0	g2_battle_fixed_b	U-10443	-	L	fix	Y	N	+400B	Fixed Beak Blast, Focus Punch, and Shell Trap's incorrect interactions	
