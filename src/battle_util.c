@@ -271,9 +271,9 @@ const struct BattleWeatherInfo sBattleWeatherInfo[BATTLE_WEATHER_COUNT] = {
     },
 };
 
-enum BattleWeather GetCurrentBattleWeather(u32 weather)
+enum BattleWeather GetBattleWeather(u32 weather)
 {
-    u32 currBattleWeather = 0xFF;
+    u32 currBattleWeather = BATTLE_WEATHER_NONE;
 
     for (u32 i = 0; i < ARRAY_COUNT(sBattleWeatherInfo); i++)
     {
@@ -289,9 +289,9 @@ enum BattleWeather GetCurrentBattleWeather(u32 weather)
 
 bool32 EndOrContinueWeather(void)
 {
-    enum BattleWeather currBattleWeather = GetCurrentBattleWeather(gBattleWeather);
+    enum BattleWeather currBattleWeather = GetBattleWeather(gBattleWeather);
 
-    if (currBattleWeather == 0xFF)
+    if (currBattleWeather == BATTLE_WEATHER_NONE)
         return FALSE;
 
     if (gBattleStruct->weatherDuration > 0 && --gBattleStruct->weatherDuration == 0)
