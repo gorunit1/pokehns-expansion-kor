@@ -1700,13 +1700,19 @@ static bool32 CanTwoTurnMoveFireThisTurn(struct BattleCalcValues *cv, bool32 *sh
 
     u32 weather = GetWeather();
     u32 attackerWeather = GetAttackerWeather(cv->holdEffects[cv->battlerAtk], cv->abilities[cv->battlerAtk], weather);
-    enum BattleWeather moveWeather = GetTwoTurnMoveWeather(cv->move);
+    if (attackerWeather == B_WEATHER_NONE)
+        return FALSE;
 
-    // Actual weather without Mega Sol; Utility Umbrella blocks sun and rain
-    if (GetCurrentBattleWeather(GetAttackerWeather(cv->holdEffects[cv->battlerAtk], ABILITY_NONE, weather)) == moveWeather)
+    enum BattleWeather moveAffectedByWeather = GetTwoTurnMoveWeather(cv->move);
+    // HnS: actual weather without Mega Sol; Utility Umbrella blocks sun and rain (upstream uses the raw weather)
+    u32 actualWeather = GetAttackerWeather(cv->holdEffects[cv->battlerAtk], ABILITY_NONE, weather);
+    enum BattleWeather weatherType = sBattleWeatherInfo[GetCurrentBattleWeather(actualWeather)].type;
+    enum BattleWeather attackerWeatherType = sBattleWeatherInfo[GetCurrentBattleWeather(attackerWeather)].type;
+
+    if (weatherType == moveAffectedByWeather)
         return TRUE;
 
-    if (GetCurrentBattleWeather(attackerWeather) == moveWeather)
+    if (attackerWeatherType == moveAffectedByWeather)
     {
         *showAbilityPopUp = TRUE;
         return TRUE;

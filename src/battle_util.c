@@ -149,18 +149,7 @@ static const u8 sPkblToEscapeFactor[][3] = {
 static const u8 sGoNearCounterToCatchFactor[] = {4, 3, 2, 1};
 static const u8 sGoNearCounterToEscapeFactor[] = {4, 4, 4, 4};
 
-struct BattleWeatherInfo
-{
-    u16 flag;
-    u8 rock;
-    u8 abilityStartMessage;
-    u8 moveStartMessage;
-    u8 endMessage;
-    u8 continuesMessage;
-    u8 animation;
-};
-
-static const struct BattleWeatherInfo sBattleWeatherInfo[BATTLE_WEATHER_COUNT] = {
+const struct BattleWeatherInfo sBattleWeatherInfo[BATTLE_WEATHER_COUNT] = {
     [BATTLE_WEATHER_RAIN] =
     {
         .flag = B_WEATHER_RAIN_NORMAL,
@@ -170,6 +159,7 @@ static const struct BattleWeatherInfo sBattleWeatherInfo[BATTLE_WEATHER_COUNT] =
         .endMessage = B_MSG_WEATHER_END_RAIN,
         .continuesMessage = B_MSG_WEATHER_TURN_RAIN,
         .animation = B_ANIM_RAIN_CONTINUES,
+        .type = BATTLE_WEATHER_RAIN,
     },
 
     [BATTLE_WEATHER_RAIN_PRIMAL] =
@@ -181,6 +171,7 @@ static const struct BattleWeatherInfo sBattleWeatherInfo[BATTLE_WEATHER_COUNT] =
         .endMessage = B_MSG_WEATHER_END_RAIN,
         .continuesMessage = B_MSG_WEATHER_TURN_RAIN,
         .animation = B_ANIM_RAIN_CONTINUES,
+        .type = BATTLE_WEATHER_RAIN,
     },
 
     [BATTLE_WEATHER_RAIN_DOWNPOUR] =
@@ -192,6 +183,7 @@ static const struct BattleWeatherInfo sBattleWeatherInfo[BATTLE_WEATHER_COUNT] =
         .endMessage = B_MSG_WEATHER_END_RAIN,
         .continuesMessage = B_MSG_WEATHER_TURN_DOWNPOUR,
         .animation = B_ANIM_RAIN_CONTINUES,
+        .type = BATTLE_WEATHER_RAIN,
     },
 
     [BATTLE_WEATHER_SUN] =
@@ -203,6 +195,7 @@ static const struct BattleWeatherInfo sBattleWeatherInfo[BATTLE_WEATHER_COUNT] =
         .endMessage = B_MSG_WEATHER_END_SUN,
         .continuesMessage = B_MSG_WEATHER_TURN_SUN,
         .animation = B_ANIM_SUN_CONTINUES,
+        .type = BATTLE_WEATHER_SUN,
     },
 
     [BATTLE_WEATHER_SUN_PRIMAL] =
@@ -214,6 +207,7 @@ static const struct BattleWeatherInfo sBattleWeatherInfo[BATTLE_WEATHER_COUNT] =
         .endMessage = B_MSG_WEATHER_END_SUN,
         .continuesMessage = B_MSG_WEATHER_TURN_SUN,
         .animation = B_ANIM_SUN_CONTINUES,
+        .type = BATTLE_WEATHER_SUN,
     },
 
     [BATTLE_WEATHER_SANDSTORM] =
@@ -225,6 +219,7 @@ static const struct BattleWeatherInfo sBattleWeatherInfo[BATTLE_WEATHER_COUNT] =
         .endMessage = B_MSG_WEATHER_END_SANDSTORM,
         .continuesMessage = B_MSG_WEATHER_TURN_SANDSTORM,
         .animation = B_ANIM_SANDSTORM_CONTINUES,
+        .type = BATTLE_WEATHER_SANDSTORM,
     },
 
     [BATTLE_WEATHER_HAIL] =
@@ -236,6 +231,7 @@ static const struct BattleWeatherInfo sBattleWeatherInfo[BATTLE_WEATHER_COUNT] =
         .endMessage = B_MSG_WEATHER_END_HAIL,
         .continuesMessage = B_MSG_WEATHER_TURN_HAIL,
         .animation = B_ANIM_HAIL_CONTINUES,
+        .type = BATTLE_WEATHER_SNOW,
     },
 
     [BATTLE_WEATHER_SNOW] =
@@ -247,6 +243,7 @@ static const struct BattleWeatherInfo sBattleWeatherInfo[BATTLE_WEATHER_COUNT] =
         .endMessage = B_MSG_WEATHER_END_SNOW,
         .continuesMessage = B_MSG_WEATHER_TURN_SNOW,
         .animation = B_ANIM_SNOW_CONTINUES,
+        .type = BATTLE_WEATHER_SNOW,
     },
 
     [BATTLE_WEATHER_FOG] =
@@ -258,6 +255,7 @@ static const struct BattleWeatherInfo sBattleWeatherInfo[BATTLE_WEATHER_COUNT] =
         .endMessage = B_MSG_WEATHER_END_FOG,
         .continuesMessage = B_MSG_WEATHER_TURN_FOG,
         .animation = B_ANIM_FOG_CONTINUES,
+        .type = BATTLE_WEATHER_FOG,
     },
 
     [BATTLE_WEATHER_STRONG_WINDS] =
@@ -269,6 +267,7 @@ static const struct BattleWeatherInfo sBattleWeatherInfo[BATTLE_WEATHER_COUNT] =
         .endMessage = B_MSG_WEATHER_END_STRONG_WINDS,
         .continuesMessage = B_MSG_WEATHER_TURN_STRONG_WINDS,
         .animation = B_ANIM_STRONG_WINDS,
+        .type = BATTLE_WEATHER_STRONG_WINDS,
     },
 };
 
