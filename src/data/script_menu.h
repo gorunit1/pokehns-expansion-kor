@@ -216,9 +216,9 @@ static const struct MenuAction MultichoiceList_Mechadoll5_Q3[] =
 
 static const struct MenuAction MultichoiceList_VendingMachine[] =
 {
-    {COMPOUND_STRING("맛있는물{CLEAR_TO 0x48}200원")},
-    {COMPOUND_STRING("미네랄사이다{CLEAR_TO 0x48}300원")},
-    {COMPOUND_STRING("후르츠밀크{CLEAR_TO 0x48}350원")},
+    {COMPOUND_STRING("맛있는물{CLEAR_TO 72}200원")},
+    {COMPOUND_STRING("미네랄사이다{CLEAR_TO 72}300원")},
+    {COMPOUND_STRING("후르츠밀크{CLEAR_TO 72}350원")},
     {gText_Exit},
 };
 
@@ -265,7 +265,7 @@ static const struct MenuAction MultichoiceList_UnusedAshVendor[] =
 
 static const struct MenuAction MultichoiceList_GameCornerDolls[] =
 {
-    {COMPOUND_STRING("나무지기인형{CLEAR_TO 0x3a}1000개")},
+    {COMPOUND_STRING("나무지기인형{CLEAR_TO 58}1000개")},
     {COMPOUND_STRING("아차모인형      1000개")},
     {COMPOUND_STRING("물짱이인형      1000개")},
     {gText_Exit},
@@ -274,34 +274,34 @@ static const struct MenuAction MultichoiceList_GameCornerDolls[] =
 static const struct MenuAction MultichoiceList_GameCornerDolls2[] =
 {
     {COMPOUND_STRING("레지락인형      9000개")},
-    {COMPOUND_STRING("레지아이스인형{CLEAR_TO 0x3a}9000개")},
-    {COMPOUND_STRING("레지스틸인형{CLEAR_TO 0x3a}9000개")},
+    {COMPOUND_STRING("레지아이스인형{CLEAR_TO 58}9000개")},
+    {COMPOUND_STRING("레지스틸인형{CLEAR_TO 58}9000개")},
     {gText_Exit},
 };
 
 static const struct MenuAction MultichoiceList_PrizeMons[] = 
 {
-    {COMPOUND_STRING("케이시{CLEAR_TO 0x40}120개")},
-    {COMPOUND_STRING("삐삐{CLEAR_TO 0x40}500개")},
-    {COMPOUND_STRING("먹고자{CLEAR_TO 0x3a}2800개")},
-    {COMPOUND_STRING("미뇽{CLEAR_TO 0x3a}5500개")},
-    {COMPOUND_STRING("폴리곤{CLEAR_TO 0x3a}6500개")},
+    {COMPOUND_STRING("케이시{CLEAR_TO 64}120개")},
+    {COMPOUND_STRING("삐삐{CLEAR_TO 64}500개")},
+    {COMPOUND_STRING("먹고자{CLEAR_TO 58}2800개")},
+    {COMPOUND_STRING("미뇽{CLEAR_TO 58}5500개")},
+    {COMPOUND_STRING("폴리곤{CLEAR_TO 58}6500개")},
     {gText_Exit},
 };
 
 static const struct MenuAction MultichoiceList_GameCornerTMs[] =
 {
-    {COMPOUND_STRING("그림자분신{CLEAR_TO 0x3a}1500개")},
-    {COMPOUND_STRING("사이코키네시스{CLEAR_TO 0x3a}3500개")},
-    {COMPOUND_STRING("냉동빔{CLEAR_TO 0x3a}4000개")},
-    {COMPOUND_STRING("10만볼트{CLEAR_TO 0x3a}4000개")},
-    {COMPOUND_STRING("화염방사{CLEAR_TO 0x3a}4000개")},
+    {COMPOUND_STRING("그림자분신{CLEAR_TO 58}1500개")},
+    {COMPOUND_STRING("사이코키네시스{CLEAR_TO 58}3500개")},
+    {COMPOUND_STRING("냉동빔{CLEAR_TO 58}4000개")},
+    {COMPOUND_STRING("10만볼트{CLEAR_TO 58}4000개")},
+    {COMPOUND_STRING("화염방사{CLEAR_TO 58}4000개")},
     {gText_Exit},
 };
 
 static const struct MenuAction MultichoiceList_GameCornerCoins[] =
 {
-    {COMPOUND_STRING("    50개   {CLEAR_TO 0x03}1000원")},
+    {COMPOUND_STRING("    50개   {CLEAR_TO 3}1000원")},
     {COMPOUND_STRING("  500개 10000원")},
     {COMPOUND_STRING("1000개 10000원")},
     {COMPOUND_STRING("2500개 25000원")},
@@ -848,7 +848,7 @@ static const struct MenuAction MultichoiceList_BerryPlot[] =
 };
 
 static const struct MenuAction sMultichoiceList_BikeShop[] = {
-    {COMPOUND_STRING("자전거{CLEAR_TO 0x49}1000000원")},
+    {COMPOUND_STRING("자전거{CLEAR_TO 73}1000000원")},
     {COMPOUND_STRING("NO THANKS")}
 };
 
@@ -939,36 +939,36 @@ const u8 sText_NoThanks[] = _("NO THANKS");
 
 static const struct MenuAction sMultichoiceList_GameCornerPokemonPrizes[] = {
 #if defined(FIRERED)
-    {COMPOUND_STRING("ABRA{CLEAR_TO 0x55} 180 COINS")},
-    {COMPOUND_STRING("CLEFAIRY{CLEAR_TO 0x55} 500 COINS")},
-    {COMPOUND_STRING("DRATINI{CLEAR_TO 0x4B} 2,800 COINS")},
-    {COMPOUND_STRING("SCYTHER{CLEAR_TO 0x4B} 5,500 COINS")},
-    {COMPOUND_STRING("PORYGON{CLEAR_TO 0x4B} 9,999 COINS")},
+    {COMPOUND_STRING("ABRA{CLEAR_TO 85} 180 COINS")},
+    {COMPOUND_STRING("CLEFAIRY{CLEAR_TO 85} 500 COINS")},
+    {COMPOUND_STRING("DRATINI{CLEAR_TO 75} 2,800 COINS")},
+    {COMPOUND_STRING("SCYTHER{CLEAR_TO 75} 5,500 COINS")},
+    {COMPOUND_STRING("PORYGON{CLEAR_TO 75} 9,999 COINS")},
 #else
-    {COMPOUND_STRING("ABRA{CLEAR_TO 0x55} 120")},
-    {COMPOUND_STRING("CLEFAIRY{CLEAR_TO 0x55} 750")},
-    {COMPOUND_STRING("PINSIR{CLEAR_TO 0x4B} 2,500")},
-    {COMPOUND_STRING("DRATINI{CLEAR_TO 0x4B} 4,600")},
-    {COMPOUND_STRING("PORYGON{CLEAR_TO 0x4B} 6,500")},
+    {COMPOUND_STRING("ABRA{CLEAR_TO 85} 120")},
+    {COMPOUND_STRING("CLEFAIRY{CLEAR_TO 85} 750")},
+    {COMPOUND_STRING("PINSIR{CLEAR_TO 75} 2,500")},
+    {COMPOUND_STRING("DRATINI{CLEAR_TO 75} 4,600")},
+    {COMPOUND_STRING("PORYGON{CLEAR_TO 75} 6,500")},
 #endif
     {sText_NoThanks}
 };
 
 static const struct MenuAction sMultichoiceList_GameCornerTMPrizes[] = {
-    {COMPOUND_STRING("TM13{CLEAR_TO 0x48}4,000 COINS")},
-    {COMPOUND_STRING("TM23{CLEAR_TO 0x48}3,500 COINS")},
-    {COMPOUND_STRING("TM24{CLEAR_TO 0x48}4,000 COINS")},
-    {COMPOUND_STRING("TM30{CLEAR_TO 0x48}4,500 COINS")},
-    {COMPOUND_STRING("TM35{CLEAR_TO 0x48}4,000 COINS")},
+    {COMPOUND_STRING("TM13{CLEAR_TO 72}4,000 COINS")},
+    {COMPOUND_STRING("TM23{CLEAR_TO 72}3,500 COINS")},
+    {COMPOUND_STRING("TM24{CLEAR_TO 72}4,000 COINS")},
+    {COMPOUND_STRING("TM30{CLEAR_TO 72}4,500 COINS")},
+    {COMPOUND_STRING("TM35{CLEAR_TO 72}4,000 COINS")},
     {sText_NoThanks}
 };
 
 static const struct MenuAction sMultichoiceList_GameCornerBattleItemPrizes[] = {
-    {COMPOUND_STRING("SMOKE BALL{CLEAR_TO 0x5A}800 COINS")},
-    {COMPOUND_STRING("MIRACLE SEED{CLEAR_TO 0x50}1,000 COINS")},
-    {COMPOUND_STRING("CHARCOAL{CLEAR_TO 0x50}1,000 COINS")},
-    {COMPOUND_STRING("MYSTIC WATER{CLEAR_TO 0x50}1,000 COINS")},
-    {COMPOUND_STRING("YELLOW FLUTE{CLEAR_TO 0x50}1,600 COINS")},
+    {COMPOUND_STRING("SMOKE BALL{CLEAR_TO 90}800 COINS")},
+    {COMPOUND_STRING("MIRACLE SEED{CLEAR_TO 80}1,000 COINS")},
+    {COMPOUND_STRING("CHARCOAL{CLEAR_TO 80}1,000 COINS")},
+    {COMPOUND_STRING("MYSTIC WATER{CLEAR_TO 80}1,000 COINS")},
+    {COMPOUND_STRING("YELLOW FLUTE{CLEAR_TO 80}1,600 COINS")},
     {sText_NoThanks}
 };
 
@@ -982,8 +982,8 @@ static const struct MenuAction sMultichoiceList_DeptStoreElevator[] = {
 };
 
 static const struct MenuAction sMultichoiceList_GameCornerCoinPurchaseCounter[] = {
-    {COMPOUND_STRING(" 50 COINS{CLEAR_TO 0x45}¥1,000")},
-    {COMPOUND_STRING("500 COINS{CLEAR_TO 0x40}¥10,000")},
+    {COMPOUND_STRING(" 50 COINS{CLEAR_TO 69}¥1,000")},
+    {COMPOUND_STRING("500 COINS{CLEAR_TO 64}¥10,000")},
     {gText_Exit}
 };
 
@@ -995,9 +995,9 @@ static const struct MenuAction sMultichoiceList_LinkedDirectUnion[] = {
 };
 
 static const struct MenuAction sMultichoiceList_CeladonVendingMachine[] = {
-    {COMPOUND_STRING("FRESH WATER{CLEAR_TO 0x57}¥200")},
-    {COMPOUND_STRING("SODA POP{CLEAR_TO 0x57}¥300")},
-    {COMPOUND_STRING("LEMONADE{CLEAR_TO 0x57}¥350")},
+    {COMPOUND_STRING("FRESH WATER{CLEAR_TO 87}¥200")},
+    {COMPOUND_STRING("SODA POP{CLEAR_TO 87}¥300")},
+    {COMPOUND_STRING("LEMONADE{CLEAR_TO 87}¥350")},
     {gText_Exit}
 };
 
