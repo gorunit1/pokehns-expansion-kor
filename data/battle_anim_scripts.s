@@ -9208,7 +9208,6 @@ gBattleAnimMove_ShoreUp::
 	createsprite gFlyingSandCrescentSpriteTemplate, ANIM_ATTACKER, 40, 0, 2816, 96, 0
 	delay 10
 	createsprite gFlyingSandCrescentSpriteTemplate, ANIM_ATTACKER, 40, 60, 2560, 96, 0
-	call HealingEffect
 	waitforvisualfinish
 	end
 
@@ -22266,8 +22265,6 @@ gBattleAnimMove_MilkDrink::
 	playsewithpan SE_M_MILK_DRINK, SOUND_PAN_ATTACKER
 	waitforvisualfinish
 	clearmonbg ANIM_TARGET
-	call HealingEffect2
-	waitforvisualfinish
 	end
 
 gBattleAnimMove_Magnitude::
@@ -24713,8 +24710,6 @@ gBattleAnimMove_Synthesis::
 	unloadspritegfx ANIM_TAG_SPARKLE_2
 	unloadspritepal ANIM_TAG_SPARKLE_2
 	delay 1
-	call HealingEffect
-	waitforvisualfinish
 	end
 
 gBattleAnimMove_Toxic::

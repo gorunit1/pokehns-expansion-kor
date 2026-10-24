@@ -2368,7 +2368,7 @@ BattleScript_MegaSolActivatesHealing::
 	waitanimation
 	call BattleScript_AbilityPopUp
 	pause B_WAIT_TIME_SHORT
-	goto BattleScript_PresentHealTarget
+	goto BattleScript_PresentHealTargetContinue
 
 BattleScript_MegaSolActivatesTwoTurnMove::
 	call BattleScript_AbilityPopUpScripting
@@ -2492,6 +2492,8 @@ BattleScript_EffectSoftboiled::
 BattleScript_PresentHealTarget::
 	attackanimation
 	waitanimation
+BattleScript_PresentHealTargetContinue::
+	playanimation BS_TARGET, B_ANIM_SIMPLE_HEAL @ HnS: on the Pokémon that recovers (upstream #10416 uses BS_ATTACKER; Present heals the target)
 	healthbarupdate BS_TARGET, PASSIVE_HP_UPDATE
 	datahpupdate BS_TARGET, PASSIVE_HP_UPDATE
 	printstring STRINGID_PKMNREGAINEDHEALTH
