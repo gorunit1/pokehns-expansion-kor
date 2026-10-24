@@ -85,6 +85,9 @@ PokemonLeague_WillsRoom_EventScript_LanceOnDefeatJohto::
 	special ShakeCamera
 	waitstate
 	special DrawWholeMapView
+	@ HGSS (scr_seq_0824_T10R0601): once the door is open, StopBGM + PlayBGM SEQ_GS_EYE_J_SHOUJO for Mary and Oak.
+	@ Not saved, so the warp to the Hall of Fame plays that map's music again.
+	playbgm MUS_HG_ENCOUNTER_GIRL_1, FALSE
 	playse SE_PIN
 	applymovement LOCALID_LEAGUE_LANCE, Common_Movement_ExclamationMark
 	delay 55
@@ -155,6 +158,9 @@ PokemonLeague_WillsRoom_EventScript_LanceOnDefeatKanto::
 	special ShakeCamera
 	waitstate
 	special DrawWholeMapView
+	@ HGSS (scr_seq_0824_T10R0601): once the door is open, StopBGM + PlayBGM SEQ_GS_EYE_J_SHOUJO for Mary and Oak.
+	@ Not saved, so the warp to the Hall of Fame plays that map's music again.
+	playbgm MUS_HG_ENCOUNTER_GIRL_1, FALSE
 	playse SE_PIN
 	applymovement LOCALID_LEAGUE_LANCE, Common_Movement_ExclamationMark
 	delay 55
