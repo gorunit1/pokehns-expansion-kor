@@ -93,15 +93,32 @@ TEST("Move names fit on Move Relearner Screen")
     EXPECT_LE(GetStringWidth(fontId, GetMoveName(move), 0), widthPx);
 }
 
+// HnS: Korean glyphs are 8 px wide in FONT_NORMAL/FONT_NARROW but 11 px in FONT_NARROWER, so FONT_NARROWER is not
+// the narrowest font for Korean text. These description tests check the font GetFontIdToFit actually picks
+// (as the screens do since #10521) instead of FONT_NARROWER.
 TEST("Move descriptions fit on Pokemon Summary Screen")
 {
     u32 i;
-    const u32 fontId = FONT_NORMAL, widthPx = 152;
+    const u32 widthPx = 152;
     enum Move move = MOVE_NONE;
     for (i = 1; i < MOVES_COUNT_ALL; i++)
     {
         PARAMETRIZE_LABEL("%S", GetMoveDescription(i)) { move = i; }
     }
+    u32 fontId = GetFontIdToFit(GetMoveDescription(move), FONT_NORMAL, 0, widthPx);
+    EXPECT_LE(GetStringWidth(fontId, GetMoveDescription(move), 0), widthPx);
+}
+
+TEST("Move descriptions fit on battle move info window")
+{
+    u32 i;
+    const u32 widthPx = 144;
+    enum Move move = MOVE_NONE;
+    for (i = 1; i < MOVES_COUNT_ALL; i++)
+    {
+        PARAMETRIZE_LABEL("%S", GetMoveDescription(i)) { move = i; }
+    }
+    u32 fontId = GetFontIdToFit(GetMoveDescription(move), FONT_NORMAL, 0, widthPx);
     EXPECT_LE(GetStringWidth(fontId, GetMoveDescription(move), 0), widthPx);
 }
 
@@ -529,12 +546,13 @@ TEST("Ability names fit on Ability Pop-Up")
 TEST("Ability descriptions fit on Pokemon Summary Screen")
 {
     u32 i;
-    const u32 fontId = FONT_NORMAL, widthPx = 146;
+    const u32 widthPx = 146;
     enum Ability ability = ABILITY_NONE;
     for (i = 1; i < ABILITIES_COUNT; i++)
     {
         PARAMETRIZE_LABEL("%S", gAbilitiesInfo[i].description) { ability = i; }
     }
+    u32 fontId = GetFontIdToFit(gAbilitiesInfo[ability].description, FONT_NORMAL, 0, widthPx); // HnS: see the move description tests
     EXPECT_LE(GetStringWidth(fontId, gAbilitiesInfo[ability].description, 0), widthPx);
 }
 
