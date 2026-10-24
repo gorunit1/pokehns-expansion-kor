@@ -2429,6 +2429,12 @@ static enum MoveEndResult MoveEndProtectLikeEffect(void)
         return result;
     }
 
+    if (gBattleStruct->unableToUseMove)
+    {
+        gBattleScripting.moveendState++;
+        return result;
+    }
+
     switch (method)
     {
     case PROTECT_SPIKY_SHIELD:
