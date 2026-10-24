@@ -5843,7 +5843,7 @@ enum Type GetDynamicMoveType(struct Pokemon *mon, enum Move move, enum BattlerId
     enum BattleMoveEffects moveEffect = GetMoveEffect(move);
     enum Species species;
     enum Item heldItem;
-    enum Type type1, type2, type3;
+    enum Type types[3];
     enum Gimmick gimmick = GIMMICK_NONE;
 
     if (state == MON_IN_BATTLE)
@@ -5853,9 +5853,7 @@ enum Type GetDynamicMoveType(struct Pokemon *mon, enum Move move, enum BattlerId
 
         species = gBattleMons[battler].species;
         heldItem = gBattleMons[battler].item;
-        type1 = gBattleMons[battler].types[0];
-        type2 = gBattleMons[battler].types[1];
-        type3 = gBattleMons[battler].types[2];
+        GetBattlerTypes(battler, FALSE, types);
         gimmick = GetActiveGimmick(battler);
     }
     else
@@ -5864,9 +5862,9 @@ enum Type GetDynamicMoveType(struct Pokemon *mon, enum Move move, enum BattlerId
         heldItem = GetMonData(mon, MON_DATA_HELD_ITEM, 0);
         holdEffect = GetItemHoldEffect(heldItem);
         ability = GetMonAbility(mon);
-        type1 = GetSpeciesType(species, 0);
-        type2 = GetSpeciesType(species, 1);
-        type3 = TYPE_MYSTERY;
+        types[0] = GetSpeciesType(species, 0);
+        types[1] = GetSpeciesType(species, 1);
+        types[2] = TYPE_MYSTERY;
         gimmick = GIMMICK_NONE;
     }
 
@@ -5956,20 +5954,20 @@ enum Type GetDynamicMoveType(struct Pokemon *mon, enum Move move, enum BattlerId
                 enum Type teraType;
                 if (gimmick == GIMMICK_TERA && ((teraType = GetMonData(mon, MON_DATA_TERA_TYPE)) != TYPE_STELLAR))
                     return teraType;
-                if (type1 != TYPE_MYSTERY && !(gBattleMons[battler].volatiles.roostActive && type1 == TYPE_FLYING))
-                    return type1;
-                if (type2 != TYPE_MYSTERY && !(gBattleMons[battler].volatiles.roostActive && type2 == TYPE_FLYING))
-                    return type2;
+                if (types[0] != TYPE_MYSTERY && !(gBattleMons[battler].volatiles.roostActive && types[0] == TYPE_FLYING))
+                    return types[0];
+                if (types[1] != TYPE_MYSTERY && !(gBattleMons[battler].volatiles.roostActive && types[1] == TYPE_FLYING))
+                    return types[1];
                 if (gBattleMons[battler].volatiles.roostActive)
                     return (B_ROOST_PURE_FLYING >= GEN_5 ? TYPE_NORMAL : TYPE_MYSTERY);
-                if (type3 != TYPE_MYSTERY)
-                    return type3;
+                if (types[2] != TYPE_MYSTERY)
+                    return types[2];
 
                 return TYPE_MYSTERY;
             }
             else
             {
-                return type1;
+                return types[0];
             }
         }
         break;
