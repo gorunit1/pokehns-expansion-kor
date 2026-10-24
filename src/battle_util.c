@@ -419,9 +419,8 @@ static bool32 IsUnnerveAbilityOnOpposingSide(enum BattlerId battler)
 void HandleAction_UseMove(void)
 {
     gBattlerAttacker = gBattlerByTurnOrder[gCurrentTurnActionNumber];
-    if (gAbsentBattlerFlags & 1u << gBattlerAttacker
-     || gBattleStruct->battlerState[gBattlerAttacker].commandingDondozo
-     || !IsBattlerAlive(gBattlerAttacker))
+    if (!IsBattlerAlive(gBattlerAttacker)
+     || gBattleStruct->battlerState[gBattlerAttacker].commandingDondozo)
     {
         gCurrentActionFuncId = B_ACTION_FINISHED;
         return;
@@ -550,8 +549,7 @@ void HandleAction_Switch(void)
     gBattlerAttacker = gBattlerByTurnOrder[gCurrentTurnActionNumber];
 
     // if switching to a mon that is already on field, cancel switch
-    if (!(gAbsentBattlerFlags & (1u << GetPartnerBattler(gBattlerAttacker)))
-     && IsBattlerAlive(GetPartnerBattler(gBattlerAttacker))
+    if (IsBattlerAlive(GetPartnerBattler(gBattlerAttacker))
      && gBattlerPartyIndexes[GetPartnerBattler(gBattlerAttacker)] == gBattleStruct->monToSwitchIntoId[gBattlerAttacker]
      && BattlersShareParty(gBattlerAttacker, GetPartnerBattler(gBattlerAttacker)))
     {
@@ -6117,28 +6115,28 @@ bool32 BattlerHasCopyableChanges(enum BattlerId battler)
 
 u32 GetMoveTargetCount(struct DamageContext *ctx)
 {
-    enum BattlerId battlerAtk = ctx->battlerAtk;
-    enum BattlerId battlerDef = ctx->battlerDef;
-    enum Move move = ctx->move;
-
-    switch (GetBattlerMoveTargetType(battlerAtk, move))
+    switch (GetBattlerMoveTargetType(ctx->battlerAtk, ctx->move))
     {
     case TARGET_BOTH:
-        return !(gAbsentBattlerFlags & (1u << battlerDef))
-             + !(gAbsentBattlerFlags & (1u << GetPartnerBattler(battlerDef)));
+        return CountTrue(
+            IsBattlerAlive(ctx->battlerDef),
+            IsBattlerAlive(GetPartnerBattler(ctx->battlerDef))
+        );
     case TARGET_FOES_AND_ALLY:
-        return !(gAbsentBattlerFlags & (1u << battlerDef))
-             + !(gAbsentBattlerFlags & (1u << GetPartnerBattler(battlerDef)))
-             + !(gAbsentBattlerFlags & (1u << GetPartnerBattler(battlerAtk)));
+        return CountTrue(
+            IsBattlerAlive(ctx->battlerDef),
+            IsBattlerAlive(GetPartnerBattler(ctx->battlerDef)),
+            IsBattlerAlive(GetPartnerBattler(ctx->battlerAtk))
+        );
     case TARGET_OPPONENTS_FIELD:
         return 1;
     case TARGET_DEPENDS:
     case TARGET_SELECTED:
     case TARGET_RANDOM:
     case TARGET_OPPONENT:
-        return IsBattlerAlive(battlerDef);
+        return CountTrue(IsBattlerAlive(ctx->battlerDef));
     case TARGET_USER:
-        return IsBattlerAlive(battlerAtk);
+        return CountTrue(IsBattlerAlive(ctx->battlerAtk));
     default:
         return 0;
     }
