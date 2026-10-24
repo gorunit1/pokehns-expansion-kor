@@ -1768,11 +1768,6 @@ BattleScript_MultiHitPrintStrings::
 	waitmessage B_WAIT_TIME_LONG
 	return
 
-BattleScript_ScaleShot::
-	call BattleScript_MultiHitPrintStrings
-	@ HnS: Scale Shot is still MOVE_EFFECT_SCALE_SHOT here (#9408 not ported yet). The C caller queues Def -1 / Speed +1 with SetStatChange
-	goto BattleScript_MoveEffectStatChange
-
 BattleScript_EffectConversion::
 	attackcanceler
 	tryconversiontypechange BattleScript_ButItFailed

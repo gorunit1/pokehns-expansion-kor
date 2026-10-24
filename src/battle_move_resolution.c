@@ -3215,15 +3215,7 @@ static enum MoveEndResult MoveEndMultihitMove(void)
         gBattleScripting.multihitString[4]++;
         if (gMultiHitCounter == 0)
         {
-            if (MoveHasAdditionalEffect(gCurrentMove, MOVE_EFFECT_SCALE_SHOT) && !NoAliveMonsForEitherParty())
-            {
-                // HnS: #9408 not ported, Scale Shot still runs from here. Queue the stat changes upstream #9730 sets in MoveEndMoveBlock.
-                SetStatChange(gBattlerAttacker, STAT_DEF, -1);
-                SetStatChange(gBattlerAttacker, STAT_SPEED, 1);
-                BattleScriptCall(BattleScript_ScaleShot);
-                result = MOVEEND_RESULT_RUN_SCRIPT;
-            }
-            else if (target != TARGET_SMART) // Dragon Darts doesn't print hit x times message
+            if (target != TARGET_SMART) // Dragon Darts doesn't print hit x times message
             {
                 BattleScriptCall(BattleScript_MultiHitPrintStrings);
                 result = MOVEEND_RESULT_RUN_SCRIPT;
@@ -3622,6 +3614,18 @@ static enum MoveEndResult MoveEndMoveBlock(void)
                     gBattleScripting.moveendState++;
                     return MOVEEND_RESULT_RUN_SCRIPT;
                 }
+            }
+            break;
+        case EFFECT_SCALE_SHOT:
+            if (IsBattlerAlive(gBattlerAttacker)
+             && IsBattlerTurnDamaged(battlerDef, INCLUDING_SUBSTITUTES))
+            {
+                SetStatChange(gBattlerAttacker, STAT_DEF, -1);
+                SetStatChange(gBattlerAttacker, STAT_SPEED, 1);
+                BattleScriptCall(BattleScript_MoveEffectStatChange);
+                gBattleStruct->eventState.moveEndBattler = 0;
+                gBattleScripting.moveendState++;
+                return MOVEEND_RESULT_RUN_SCRIPT;
             }
             break;
         default:

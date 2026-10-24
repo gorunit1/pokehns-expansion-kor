@@ -429,7 +429,6 @@ extern const u8 BattleScript_BeakBlastBurn[];
 extern const u8 BattleScript_AffectionBasedStatusHeal[];
 extern const u8 BattleScript_AffectionBasedEndurance[];
 extern const u8 BattleScript_SymbiosisActivates[];
-extern const u8 BattleScript_ScaleShot[];
 extern const u8 BattleScript_MultiHitPrintStrings[];
 extern const u8 BattleScript_RemoveFireType[];
 extern const u8 BattleScript_AbilityStatChange[];
