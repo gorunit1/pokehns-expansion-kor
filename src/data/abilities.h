@@ -1768,7 +1768,7 @@ const struct AbilityInfo gAbilitiesInfo[ABILITIES_COUNT] =
 
     [ABILITY_POWER_OF_ALCHEMY] =
     {
-        .name = _("과학의힘"),
+        .name = _("화학의힘"),
         .description = COMPOUND_STRING("Copies fainted ally Ability."),
         .aiRating = 0,
         .cantBeCopied = TRUE,
