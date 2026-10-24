@@ -659,6 +659,8 @@ void ScrCmd_createmon(struct ScriptContext *ctx)
         monTemplate.origin = STATIC_WILDMON_ORIGIN;
     }
 
+    monTemplate.ignoreTotalEvCheck = flags >> 26;
+
 #if RANDOMIZER_AVAILABLE
     if (FlagGet(FLAG_SYS_POKEMON_GET))
     {
