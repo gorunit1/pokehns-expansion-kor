@@ -480,7 +480,7 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 475.6	10299	682	1.17.0	g6_overworld_refactors	U-10299	9514,9730,9918,10151	S	refactor	N	N	~0	Adds `MOVE_EFFECT_RANDOM_FROM_LIST` to replace Tri Attack and Dire Claw	
 475.7	10310	685	1.17.0	g3_battle_changes_moves_abilities_items	U-10310	10151	S	test	N	N	~0	Tests for Victory Star not being ignored by Ally	
 475.8	10282	726	1.17.0	g4_ai_tests_pokemon_sprites	U-10282	10151	M	test	Y	N	+0.1KB	Fix failing tests using GEN_CHAMPIONS	
-476	10220	667	1.17.0	g6_overworld_refactors	U-canceler-10220	9249,9610,9532,9657,9674,9717,9730,9918,9939,9008,9211	L	refactor	N	N	~0	Move pre attack effects and damage calc to canceler	
+476	10220	667	1.17.0	g6_overworld_refactors	U-canceler-10220	9249,9610,9532,9657,9674,9717,9730,9918,9939,9008,9211	L	refactor	N	N	~0	Move pre attack effects and damage calc to canceler	적용(CancelerDamageCalc에 HnS baseMove(#10616) 유지, 잠자기 사용자 기준 유지, 재확인 32 cv->moveEffect 0fed230b) 84d0b6f8
 477	10311	688	1.17.0	g6_overworld_refactors	U-end2-10311	9674,9680,9008,9777,10220,10151	M	refactor	Y	N	-0.5KB	Remove end2 (merge end and end2)	
 478	10300	695	1.17.0	g6_overworld_refactors	U-10300	9176,9657,9918,9983,10220,10151	M	refactor	N	N	~0	Refactor dynamic move category and remove Present script	
 479	10330	701	1.17.0	g6_overworld_refactors	U-10330	9657,9674,9730,9939,9211,10220	M	refactor	N	N	~0	Adjust TargetFailure to be slightly more accurate	
