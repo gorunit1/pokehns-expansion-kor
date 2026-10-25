@@ -105,3 +105,24 @@ SINGLE_BATTLE_TEST("HnS 9939: Stomping Tantrum doubles after a miss")
         EXPECT_MUL_EQ(damage[0], Q_4_12(2.0), damage[1]);
     }
 }
+
+// seq 471 #9983: a later strike of a multi-hit move that misses names the target, then the hit count
+// (No Guard is replaced by Lingering Aroma after the first contact, so the second kick checks accuracy).
+SINGLE_BATTLE_TEST("HnS 9939: a multi-hit move missing a later strike names the target and the hit count")
+{
+    GIVEN {
+        ASSUME(GetMoveEffect(MOVE_TRIPLE_KICK) == EFFECT_TRIPLE_KICK);
+        ASSUME(MoveMakesContact(MOVE_TRIPLE_KICK));
+        PLAYER(SPECIES_WOBBUFFET) { Ability(ABILITY_NO_GUARD); }
+        OPPONENT(SPECIES_WYNAUT) { Ability(ABILITY_LINGERING_AROMA); }
+    } WHEN {
+        TURN { MOVE(player, MOVE_TRIPLE_KICK, WITH_RNG(RNG_ACCURACY, FALSE)); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_TRIPLE_KICK, player);
+        HP_BAR(opponent);
+        ABILITY_POPUP(opponent, ABILITY_LINGERING_AROMA);
+        NOT HP_BAR(opponent);
+        MESSAGE("상대 마자에게는 맞지 않았다!");
+        MESSAGE("1번 맞았다!");
+    }
+}
