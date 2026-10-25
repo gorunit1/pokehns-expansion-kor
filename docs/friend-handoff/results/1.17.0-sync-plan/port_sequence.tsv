@@ -485,13 +485,13 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 478	10300	695	1.17.0	g6_overworld_refactors	U-10300	9176,9657,9918,9983,10220,10151	M	refactor	N	N	~0	Refactor dynamic move category and remove Present script	적용(HnS: 프레젠트 회복을 하위 스크립트로 실행 — upstream은 회복 안 됨, SetTypeBeforeUsingMove 동적 타입 초기화 유지, 행동마다 동적 분류 초기화, 프레젠트 회복 반짝임, optionStyle 유지, 재확인 96) 00ff6d5a
 479	10330	701	1.17.0	g6_overworld_refactors	U-10330	9657,9674,9730,9939,9211,10220	M	refactor	N	N	~0	Adjust TargetFailure to be slightly more accurate	적용(검사별 루프 — 더블 메시지 순서 변화, HnS checkUserFailure·GetPartnerBattler 유지, HnS: 쓰러진 대상을 첫 검사에서 FAILED — upstream은 #10566(seq 486)까지 안 거름, 재확인 97) d1e2dcae
 480	10365	702	1.17.0	g2_battle_fixed_b	U-category-10300	10300	S	fix	N	N	+4B	Fixes off by one error for category icons	앞당김 적용 00ff6d5a(478과 같은 커밋 — 분류 아이콘 표 NULL 첫 칸)
-481	10326	706	1.17.0	g6_overworld_refactors	U-terrain-10326	9446,9124,9680,9847,9730,9928,9777,10220,10151,10311	L	refactor	N	N	-2KB(추정)	Battle Terrain Refactor	
+481	10326	706	1.17.0	g6_overworld_refactors	U-terrain-10326	9446,9124,9680,9847,9730,9928,9777,10220,10151,10311	L	refactor	N	N	-2KB(추정)	Battle Terrain Refactor	적용(3-way 병합, HnS AiCalcValues·하드론엔진 두 갈래·Teraform Zero 필드 날씨 갈래 등 뒤쪽 형태 유지, LEFT_ALLY 풀어 씀, HnS: Teraform Zero 지형 없으면 제거 건너뜀 — 재확인 98, #10586 앞당김) 15bb0685
 482	10362	708	1.17.0	g6_overworld_refactors	U-canceler-10362	9610,9655,9730,9939,9777,10220,10300,10330	L	refactor	Y	N	~0	Adds moveanim, sound, hitanim and hpupdate to Canceler	일부 앞당김: SetDynamicMoveCategory 프레젠트 presentBasePower = 0 한 줄만 00ff6d5a(478) — 나머지는 482에서
 483	10431	714	1.17.0	g2_battle_fixed_b	U-canceler-10362	10268,10362	M	fix	Y	N	+150B	Fixes Resist Berry order	
 484	10426	716	1.17.0	g6_overworld_refactors	U-absorb-10426	9176,9514,9680,9717,9730,9918,10220,10151,10299,10311	M	refactor	Y	N	~0	Refactor absorb and change SetMoveEffect signature	
 485	10488	740	1.17.0	g2_battle_fixed_b	U-10488	10362	L	fix	Y	N	+80B	Fixes Assurance inconsistencies	
 486	10566	747	1.17.0	g2_battle_fixed_b	U-canceler-10362	9730,9939,10362	M	fix	Y	N	+150B	Fix HP bars emitting for non-present battlers and extraneous result battle messages	
-487	10586	753	1.17.0	g2_battle_fixed_b	U-terrain-10326	10326	S	fix	N	N	~0	Fix terrain not being reset before battle background load	
+487	10586	753	1.17.0	g2_battle_fixed_b	U-terrain-10326	10326	S	fix	N	N	~0	Fix terrain not being reset before battle background load	앞당김 적용 15bb0685(481과 같은 커밋 — FreeBattleResources에서 지형 초기화, B_TERRAIN_BG_CHANGE TRUE라 HnS에서 보임)
 488	10595	754	1.17.0	g3_battle_changes_moves_abilities_items	U-accuracy-9939	9657,9859,9730,9939,10220,10362,10426	L	refactor	Y	N	-0.3KB	Move Substitute check to move resolution and remove acc check in scripts	
 489	10600	755	1.17.0	g2_battle_fixed_b	U-10600	9657,10220	M	fix	N	N	+80B	Fix Scrappy not bypassing Ghosts types if ability was changed	
 490	10593	756	1.17.0	g3_battle_changes_moves_abilities_items	U-setmoveeffect-10593	9176,9514,9657,9859,9730,9918,10220,10299,10326,10426	XL	refactor	Y	N	+0.5KB	Change SetMoveEffect into a function table and move to a new file	

@@ -2,6 +2,16 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-25 — full-sync 묶음 47(seq 481 #10326 + 487 #10586) (클라우드 세션)
+
+- 요청: 사용자 "ㄱㄱ 481 시작해 혼자해도 되는거라면".
+- 판단: kor=N 리팩터라 혼자 진행. 48파일 → 파일별 3-way 병합, 충돌 37곳은 upstream master(둘 다 들어간 형태)를 기준으로 HnS 뒤쪽 형태 유지. 병합 뒤 변경 줄 대조로 정렬 실수 2줄(일렉트릭메이커·하드론엔진의 옛 상수) 발견·수정. 테스트 작성 중 Teraform Zero 결함 발견(보정, 재확인 98). `B_TERRAIN_BG_CHANGE = TRUE`라 같은 단위 #10586을 앞당김. AI 테스트 1개 `KNOWN_FAILING_PASSING`은 upstream 테스트 파일을 건드리지 않고 기록만.
+- 수정 파일: 커밋 `15bb0685`(49파일 — upstream 46 + `src/battle_util2.c`(#10586) + `test/battle/ai/values_moves_over_splash.c`(upstream `can_use_all_moves.c` 자리) + `test/hns_10326_terrain.c`(새) + 한글 회귀 세트 `zz_hns9717_k1_ee.c` 이름). 문서 — `full-sync-seq-481.md`(새), `test-baseline-seq481.txt`(새), `RECHECK_BEFORE_COMPLETION.md` 98, `port_sequence.tsv` 481·487, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. 이식 전 비교는 scratchpad 클론 `588d3ea1`에서 옛 상수로 바꾼 `ZZ old` 사본(커밋 안 함, 지움).
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 친구 문자: 세션 답변 문안(새 질문 없음).
+- 다음 시작점: seq 482 #10362.
+
 ### 2026-10-25 — full-sync 묶음 46(seq 479 #10330) (클라우드 세션)
 
 - 요청: 사용자 "seq 479 #10330(Adjust TargetFailure)부터 이어서" — 문서·git log 대조, STATUS 검증 절차대로.

@@ -1,11 +1,25 @@
 # 현재 인수인계 상태
 
-## 2026-10-25 — full-sync 묶음 46(seq 479 #10330 대상 실패 판정을 검사별로) (현재, 클라우드 세션)
+## 2026-10-25 — full-sync 묶음 47(seq 481 #10326 배틀 필드(지형) 리팩터 + 487 #10586 앞당김) (현재, 클라우드 세션)
+
+- **다음 할 일**
+  1. 친구 문자(묶음 47) — 문안은 세션 답변. ROM SHA1 `66c764e9…`(코드 `15bb0685`), 새 질문 없음, 화면 변화는 #10586(지형 남긴 채 끝난 다음 배틀 시작 배경 바로잡힘), AI 판단 변화(더블 날씨·지형), HnS 보정 1(재확인 98), 실기 후보 4.
+  2. 친구 답 대기: 92·93·94·95, 36(394 팝업 대기), 89 (1) 메모, 82, 72, 70 (a)(b), 71, 69, 실기 결과.
+  3. full-sync 다음 seq **482 #10362**(Adds moveanim, sound, hitanim and hpupdate to Canceler, L — 483·486·493이 같은 단위, 재확인 96 프레젠트 보정 3개·97 쓰러진 대상 보정(486) 다시 확인). 487은 적용함. 테스트 기준 **`test-baseline-seq481.txt`**, 한글 회귀 기대 **558/652**, 세이브 이전 사실은 코드 `15bb0685`.
+- **검증 절차:** 묶음 45 절의 "새 세션 검증 절차" 그대로. 큰 PR은 파일별 3-way 병합(`git merge-file <HnS> <upstream 전> <upstream 후>`) 뒤 "upstream 변경 줄 ↔ HnS 변경 줄" 비교로 정렬 실수를 찾음(이번 결과 문서 "적용 방법"). 이식 전 비교 테스트는 새 상수를 쓰면 옛 이름으로 바꾼 사본으로.
+- **결과** [`full-sync-seq-481.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-481.md). 커밋 `15bb0685`(481 + 487), 문서 이 커밋.
+  - 지형이 `gFieldTimers.terrain` 값 하나 + `gBattleTerrainInfo` 표로, 지형 기술 효과 4개 → `EFFECT_TERRAIN`, `jumpifterrain` 추가, `FieldTimer` u8. 48파일 중 13파일 충돌 37곳 손으로 — HnS가 먼저 가진 뒤쪽 형태(`AiCalcValues`, 하드론엔진 두 갈래, Teraform Zero 필드 날씨, #10471 등) 유지, 지워진 매크로는 함수로.
+  - upstream 동작 변화: 더블 AI 날씨·지형 판단 방식, AI가 교체 후보 지형을 대미지 계산에서 봄(upstream `KNOWN_FAILING` 1개가 HnS에서 통과). 한글 문장 변화 0.
+  - HnS 보정(재확인 98): Teraform Zero가 날씨만 지울 때 지형 제거로 흘러가지 않게(upstream은 표 밖 문장). #10586: 지형 남긴 채 끝난 배틀 다음의 시작 배경.
+  - 새 한글 테스트 `test/hns_10326_terrain.c` 8개 PASS — 보정 뺀 upstream 그대로 7/8, 이식 전 코드 8/8(옛 상수 사본).
+- **검증:** `make hns -j8` 종료 0·새 경고 0. 전체 `make check` — 기준(seq479) 대비 새 PASS 8뿐(사라진 PASS 0, `KNOWN_FAILING` 1개 통과로 목록에서 빠짐). 세이브 정적 PASS(FAIL 0·WARN 3 — assert 줄 번호 상수, 배틀 전용 `gFieldTimers` −4 B; 이전 = `588d3ea1` 클론 빌드, SHA1 `aa9b0c7a…`로 seq 479 기록과 같음). 한글 회귀 558/652 기대와 같음. ROM 32,959,124 → **32,958,804 B**(−320), SHA1 **`66c764e90a803fbc347d8c63fec46441043e7987`**(gcc 13.2.1, 클라우드 컨테이너). **실기: 하지 않음(친구).**
+
+## 2026-10-25 — full-sync 묶음 46(seq 479 #10330 대상 실패 판정을 검사별로) (클라우드 세션)
 
 - **다음 할 일**
   1. ~~친구 문자(묶음 46)~~ **보냄**(2026-10-25 사용자 확인). ROM SHA1 `aa9b0c7a…`(코드 `d1e2dcae`), 새 질문 없음, 동작 변화 1(더블 전체기 막힘 문장 순서), HnS 보정 1(재확인 97), 실기 후보 3.
   2. 친구 답 대기: 92·93·94·95, 36(394 팝업 대기), 89 (1) 메모, 82, 72, 70 (a)(b), 71, 69, 실기 결과.
-  3. full-sync 다음 seq **481 #10326**(Battle Terrain Refactor, L — 487 #10586이 같은 단위). 480은 적용함, 482는 `presentBasePower = 0` 한 줄만 앞당긴 상태(재확인 96). 테스트 기준 **`test-baseline-seq479.txt`**, 한글 회귀 기대 **558/652**, 세이브 이전 사실은 코드 `d1e2dcae`. 486 #10566 때 재확인 97(HnS 쓰러진 대상 보정 정리).
+  3. ~~full-sync 다음 seq **481 #10326**(Battle Terrain Refactor, L — 487 #10586이 같은 단위)~~ **적용함(묶음 47, 위 절).** 480은 적용함, 482는 `presentBasePower = 0` 한 줄만 앞당긴 상태(재확인 96). 테스트 기준 **`test-baseline-seq479.txt`**, 한글 회귀 기대 **558/652**, 세이브 이전 사실은 코드 `d1e2dcae`. 486 #10566 때 재확인 97(HnS 쓰러진 대상 보정 정리).
 - **검증 절차:** 아래 묶음 45 절의 "새 세션 검증 절차" 그대로(이번에도 그 명령으로 함 — `HNS_WORK`를 scratchpad로 둬 목록이 `$HNS_WORK/verify-runs/testlist/`에 생김).
 - **결과** [`full-sync-seq-479.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-479.md). 커밋 `d1e2dcae`(479), 문서 이 커밋.
   - `CancelerTargetFailure`가 검사마다 모든 대상을 돎(공중·땅속 → 사이코필드 → 방어 → 반사 → 특성·도구 → 타입 무효, `eventState.moveEndBlock`으로 이어 돌기). 꿈먹기·싱크로노이즈·프리폴 무효는 `IsTargetUnaffectedByMoveEffect`. HnS `checkUserFailure`·`GetPartnerBattler`·`baseMove` 유지(3-way 병합, 충돌 4곳 손으로).
