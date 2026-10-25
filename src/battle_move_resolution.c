@@ -1,5 +1,6 @@
 #include "global.h"
 #include "battle.h"
+#include "battle_arena.h"
 #include "battle_environment.h"
 #include "battle_hold_effects.h"
 #include "challenge_menu.h"
@@ -4623,6 +4624,9 @@ static enum MoveEndResult MoveEndClearBits(struct BattleCalcValues *cv)
 
     enum Move originallyUsedMove = GetOriginallyUsedMove(gChosenMove);
     enum Type moveType = GetBattleMoveType(gCurrentMove);
+
+    if (gBattleTypeFlags & BATTLE_TYPE_ARENA)
+        BattleArena_AddSkillPoints(cv->battlerAtk);
 
     bool32 futureSightHit = IsEndTurnFutureSightHit(); // HnS
 
