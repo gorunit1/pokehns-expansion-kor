@@ -1260,7 +1260,7 @@
 	.macro jumpifterrainaffected battler:req, terrainFlags:req, jumpInstr:req
 	callnative BS_JumpIfTerrainAffected
 	.byte \battler
-	.4byte \terrainFlags
+	.byte \terrainFlags
 	.4byte \jumpInstr
 	.endm
 
@@ -2157,4 +2157,11 @@
 
 	.macro trydomoveeffectsbeforemoves
 	callnative BS_TryDoMoveEffectsBeforeMoves
+	.endm
+
+	.macro jumpifterrain comparison:req, terrain:req, jumpInstr:req
+	.byte B_SCR_OP_JUMPIFTERRAIN
+	.byte \comparison
+	.byte \terrain
+	.4byte \jumpInstr
 	.endm

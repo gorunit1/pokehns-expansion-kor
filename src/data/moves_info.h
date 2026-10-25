@@ -15461,7 +15461,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .description = COMPOUND_STRING(
             "The ground turns to grass\n"
             "for 5 turns. Restores HP."),
-        .effect = EFFECT_GRASSY_TERRAIN,
+        .effect = EFFECT_TERRAIN,
         .power = 0,
         .type = TYPE_GRASS,
         .accuracy = 0,
@@ -15469,6 +15469,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .target = TARGET_FIELD,
         .priority = 0,
         .category = DAMAGE_CATEGORY_STATUS,
+        .argument = { .terrainType = B_TERRAIN_GRASSY },
         .zMove = { .effect = Z_EFFECT_DEF_UP_1 },
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
@@ -15486,7 +15487,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .description = COMPOUND_STRING(
             "Covers the ground with mist\n"
             "for 5 turns. Blocks status."),
-        .effect = EFFECT_MISTY_TERRAIN,
+        .effect = EFFECT_TERRAIN,
         .power = 0,
         .type = TYPE_FAIRY,
         .accuracy = 0,
@@ -15494,6 +15495,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .target = TARGET_FIELD,
         .priority = 0,
         .category = DAMAGE_CATEGORY_STATUS,
+        .argument = { .terrainType = B_TERRAIN_MISTY },
         .zMove = { .effect = Z_EFFECT_SPDEF_UP_1 },
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
@@ -16107,7 +16109,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .description = COMPOUND_STRING(
             "Electrifies the ground for\n"
             "5 turns. Prevents sleep."),
-        .effect = EFFECT_ELECTRIC_TERRAIN,
+        .effect = EFFECT_TERRAIN,
         .power = 0,
         .type = TYPE_ELECTRIC,
         .accuracy = 0,
@@ -16115,6 +16117,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .target = TARGET_FIELD,
         .priority = 0,
         .category = DAMAGE_CATEGORY_STATUS,
+        .argument = { .terrainType = B_TERRAIN_ELECTRIC },
         .zMove = { .effect = Z_EFFECT_SPD_UP_1 },
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
@@ -17058,7 +17061,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .description = COMPOUND_STRING(
             "The ground turns weird for\n"
             "5 turns. Blocks priority."),
-        .effect = EFFECT_PSYCHIC_TERRAIN,
+        .effect = EFFECT_TERRAIN,
         .power = 0,
         .type = TYPE_PSYCHIC,
         .accuracy = 0,
@@ -17066,6 +17069,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .target = TARGET_FIELD,
         .priority = 0,
         .category = DAMAGE_CATEGORY_STATUS,
+        .argument = { .terrainType = B_TERRAIN_PSYCHIC },
         .zMove = { .effect = Z_EFFECT_SPATK_UP_1 },
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
@@ -19198,7 +19202,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
         .argument.terrainBoost = {
-            .terrain = STATUS_FIELD_PSYCHIC_TERRAIN,
+            .terrain = B_TERRAIN_PSYCHIC,
             .percent = 50,
             .groundCheck = GROUND_CHECK_USER,
             .hitsBothFoes = TRUE,
@@ -19327,7 +19331,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .explosion = TRUE,
         .dampBanned = TRUE,
         .argument.terrainBoost = {
-            .terrain = STATUS_FIELD_MISTY_TERRAIN,
+            .terrain = B_TERRAIN_MISTY,
             .percent = 50,
             .groundCheck = GROUND_CHECK_USER,
         },
@@ -19376,7 +19380,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
         .argument.terrainBoost = {
-            .terrain = STATUS_FIELD_ELECTRIC_TERRAIN,
+            .terrain = B_TERRAIN_ELECTRIC,
             .percent = 100,
             .groundCheck = GROUND_CHECK_TARGET,
         },
@@ -21629,7 +21633,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_ALL] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
         .argument.terrainBoost = {
-            .terrain = STATUS_FIELD_ELECTRIC_TERRAIN,
+            .terrain = B_TERRAIN_ELECTRIC,
             .percent = 50,
             .groundCheck = GROUND_CHECK_NONE,
         },

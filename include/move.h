@@ -188,10 +188,11 @@ struct MoveInfo
             u16 damageCategories:4; // bit field
         } reflectDamage;
         struct {
-            u16 terrain;
-            u16 percent:13;
+            enum BattleTerrain terrain:8;
+            u32 percent:13;
             enum TerrainGroundCheck groundCheck:2;
-            u16 hitsBothFoes:1;
+            u32 hitsBothFoes:1;
+            u32 padding:8;
         } terrainBoost;
         struct {
             u16 comboMove;
@@ -209,6 +210,7 @@ struct MoveInfo
         u32 nonVolatileStatus;
         u32 overwriteAbility;
         u32 weatherType;
+        u32 terrainType;
     } argument;
 
     // primary/secondary effects
@@ -643,7 +645,7 @@ static inline u32 GetMoveReflectDamage_DamageCategories(enum Move moveId)
     return gMovesInfo[SanitizeMoveId(moveId)].argument.reflectDamage.damageCategories;
 }
 
-static inline u32 GetMoveTerrainBoost_Terrain(enum Move moveId)
+static inline enum BattleTerrain GetMoveTerrainBoost_Terrain(enum Move moveId)
 {
     moveId = SanitizeMoveId(moveId);
     assertf(gMovesInfo[moveId].effect == EFFECT_TERRAIN_BOOST, "not a terrain boosted move: %S", GetMoveName(moveId));
@@ -798,6 +800,12 @@ static inline enum BattleWeather GetMoveWeatherType(enum Move move)
 {
     assertf(gMovesInfo[move].effect == EFFECT_WEATHER || gMovesInfo[move].effect == EFFECT_WEATHER_AND_SWITCH, "not a move that sets weather: %S", gMovesInfo[move].name);
     return gMovesInfo[SanitizeMoveId(move)].argument.weatherType;
+}
+
+static inline enum BattleTerrain GetMoveTerrainType(enum Move move)
+{
+    assertf(gMovesInfo[move].effect == EFFECT_TERRAIN, "not a move that sets terrain: %S", gMovesInfo[move].name);
+    return gMovesInfo[SanitizeMoveId(move)].argument.terrainType;
 }
 
 static inline const struct AdditionalEffect *GetMoveAdditionalEffectById(enum Move moveId, u32 effect)

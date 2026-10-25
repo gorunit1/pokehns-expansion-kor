@@ -420,8 +420,7 @@ AI_DOUBLE_BATTLE_TEST("AI values moves above Splash, 501-600")
         case EFFECT_STAT_CHANGE:
         case EFFECT_ROTOTILLER:
         case EFFECT_FLOWER_SHIELD:
-        case EFFECT_GRASSY_TERRAIN:
-        case EFFECT_MISTY_TERRAIN:
+        case EFFECT_TERRAIN:
 
         // Skipped on purpose.
         case EFFECT_PROTECT:
@@ -488,8 +487,7 @@ AI_DOUBLE_BATTLE_TEST("AI values moves above Splash, 601-700")
         case EFFECT_STAT_CHANGE:
         case EFFECT_STUFF_CHEEKS:
         case EFFECT_GEOMANCY:
-        case EFFECT_ELECTRIC_TERRAIN:
-        case EFFECT_PSYCHIC_TERRAIN:
+        case EFFECT_TERRAIN:
         case EFFECT_AURORA_VEIL:
 
         // Skipped on purpose.

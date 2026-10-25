@@ -75,7 +75,7 @@ static bool32 AI_CanBattlerHitBothFoesInTerrain(enum BattlerId battler, enum Mov
 {
     return effect == EFFECT_TERRAIN_BOOST
         && GetMoveTerrainBoost_HitsBothFoes(move)
-        && IsBattlerTerrainAffected(battler, gAiLogicData->abilities[battler], gAiLogicData->holdEffects[battler], gFieldStatuses, GetMoveTerrainBoost_Terrain(move));
+        && IsBattlerTerrainAffected(battler, gAiLogicData->abilities[battler], gAiLogicData->holdEffects[battler], GetMoveTerrainBoost_Terrain(move), gFieldTimers.terrain);
 }
 
 enum MoveTarget AI_GetBattlerMoveTargetType(enum BattlerId battler, enum Move move)
@@ -544,7 +544,7 @@ struct SimulatedDamage AI_CalcDamageSaveBattlers(enum Move move, enum BattlerId 
         .gimmickAtk = gimmickAtk,
         .gimmickDef = gimmickDef,
         .weather = AI_GetWeather(),
-        .fieldStatuses = gFieldStatuses,
+        .terrain = gFieldTimers.terrain,
     };
 
     SaveBattlerData(battlerAtk);
@@ -647,7 +647,7 @@ bool32 IsDamageMoveUnusable(struct DamageContext *ctx)
             return TRUE;
         break;
     case EFFECT_STEEL_ROLLER:
-        if (!(gFieldStatuses & STATUS_FIELD_TERRAIN_ANY))
+        if (gFieldTimers.terrain == B_TERRAIN_NONE)
             return TRUE;
         break;
     case EFFECT_POLTERGEIST:
@@ -923,9 +923,9 @@ struct SimulatedDamage AI_CalcDamage(struct AiCalcValues *aiCalc, enum BattlerId
     ctx.move = ctx.chosenMove = move;
     ctx.baseMove = baseMove;
     ctx.moveType = GetBattleMoveType(move);
-    ctx.fieldStatuses = aiCalc->fieldStatuses;
     ctx.randomFactor = FALSE;
     ctx.updateFlags = FALSE;
+    ctx.terrain = aiCalc->terrain;
     ctx.weather = aiCalc->weather;
     ctx.fixedBasePower = 0;
 
@@ -1371,6 +1371,8 @@ uq4_12_t AI_GetMoveEffectiveness(enum Move move, enum BattlerId battlerAtk, enum
     ctx.move = ctx.chosenMove = ctx.baseMove = move;
     ctx.moveType = GetBattleMoveType(move);
     ctx.updateFlags = FALSE;
+    ctx.weather = AI_GetWeather();
+    ctx.terrain = gFieldTimers.terrain;
     ctx.abilities[ctx.battlerAtk] = gAiLogicData->abilities[battlerAtk];
     ctx.abilities[ctx.battlerDef] = gAiLogicData->abilities[battlerDef];
     ctx.holdEffects[ctx.battlerAtk] = gAiLogicData->holdEffects[battlerAtk];
@@ -1909,40 +1911,36 @@ u32 AI_GetSwitchinWeather(enum BattlerId battler)
     }
 }
 
-u32 SwitchinChangeBattleTerrain(u32 newTerrain, u32 fieldStatus)
+u32 AI_GetSwitchinTerrain(enum BattlerId battler)
 {
+    enum BattleTerrain newTerrain;
+
     if (gBattleStruct->isSkyBattle)
-        return fieldStatus;
+        return gFieldTimers.terrain;
 
-    if (!(fieldStatus & newTerrain))
-    {
-        fieldStatus &= ~STATUS_FIELD_TERRAIN_ANY;
-        fieldStatus |= newTerrain;
-        return fieldStatus;
-    }
-
-    return fieldStatus;
-}
-
-u32 AI_GetSwitchinFieldStatus(enum BattlerId battler)
-{
-    enum Ability ability = gAiLogicData->abilities[battler];
-    u32 startingFieldStatus = gFieldStatuses;
     // Switchin will introduce new terrain
-    switch (ability)
+    switch (gAiLogicData->abilities[battler])
     {
     case ABILITY_ELECTRIC_SURGE:
     case ABILITY_HADRON_ENGINE:
-        return SwitchinChangeBattleTerrain(STATUS_FIELD_ELECTRIC_TERRAIN, startingFieldStatus);
+        newTerrain = B_TERRAIN_ELECTRIC;
+        break;
     case ABILITY_GRASSY_SURGE:
-        return SwitchinChangeBattleTerrain(STATUS_FIELD_GRASSY_TERRAIN, startingFieldStatus);
+        newTerrain = B_TERRAIN_GRASSY;
+        break;
     case ABILITY_MISTY_SURGE:
-        return SwitchinChangeBattleTerrain(STATUS_FIELD_MISTY_TERRAIN, startingFieldStatus);
+        newTerrain = B_TERRAIN_MISTY;
+        break;
     case ABILITY_PSYCHIC_SURGE:
-        return SwitchinChangeBattleTerrain(STATUS_FIELD_PSYCHIC_TERRAIN, startingFieldStatus);
+        newTerrain = B_TERRAIN_PSYCHIC;
+        break;
     default:
-        return startingFieldStatus;
+        return gFieldTimers.terrain;
     }
+
+    if (gFieldTimers.terrain != newTerrain)
+        return newTerrain;
+    return gFieldTimers.terrain;
 }
 
 enum WeatherState IsWeatherActive(u32 flags)
@@ -2203,6 +2201,16 @@ bool32 ShouldSetWeather(enum BattlerId battler, u32 weather)
 bool32 ShouldClearWeather(enum BattlerId battler, u32 weather)
 {
     return WeatherChecker(battler, weather, FIELD_EFFECT_NEGATIVE);
+}
+
+bool32 ShouldSetTerrain(enum BattlerId battler, enum BattleTerrain terrain)
+{
+    return TerrainChecker(battler, terrain, FIELD_EFFECT_POSITIVE);
+}
+
+bool32 ShouldClearTerrain(enum BattlerId battler, enum BattleTerrain terrain)
+{
+    return TerrainChecker(battler, terrain, FIELD_EFFECT_NEGATIVE);
 }
 
 bool32 ShouldSetFieldStatus(enum BattlerId battler, u32 fieldStatus)
@@ -3689,7 +3697,7 @@ bool32 AI_CanBeConfused(enum BattlerId battlerAtk, enum BattlerId battlerDef, en
 {
     if (gBattleMons[battlerDef].volatiles.confusionTimer > 0
      || (abilityDef == ABILITY_OWN_TEMPO && !DoesBattlerIgnoreAbilityChecks(battlerAtk, gAiLogicData->abilities[battlerAtk], move))
-     || IsMistyTerrainAffected(battlerDef, abilityDef, gAiLogicData->holdEffects[battlerDef], gFieldStatuses)
+     || IsMistyTerrainAffected(battlerDef, abilityDef, gAiLogicData->holdEffects[battlerDef], gFieldTimers.terrain)
      || IsSafeguardProtected(battlerAtk, battlerDef, gAiLogicData->abilities[battlerAtk])
      || DoesSubstituteBlockMove(battlerAtk, battlerDef, move))
         return FALSE;
@@ -4238,10 +4246,7 @@ static u32 GetAIEffectGroup(enum BattleMoveEffects effect)
     case EFFECT_WEATHER_AND_SWITCH:
         aiEffect |= AI_EFFECT_WEATHER;
         break;
-    case EFFECT_ELECTRIC_TERRAIN:
-    case EFFECT_GRASSY_TERRAIN:
-    case EFFECT_MISTY_TERRAIN:
-    case EFFECT_PSYCHIC_TERRAIN:
+    case EFFECT_TERRAIN:
     case EFFECT_STEEL_ROLLER:
     case EFFECT_ICE_SPINNER:
         aiEffect |= AI_EFFECT_TERRAIN;
@@ -5439,13 +5444,13 @@ void DecideTerastal(enum BattlerId battler)
         .gimmickAtk = GIMMICK_NONE,
         .gimmickDef = GIMMICK_NONE,
         .weather = weather,
-        .fieldStatuses = gFieldStatuses,
+        .terrain = gFieldTimers.terrain,
     };
     struct AiCalcValues aiCalcWithTera = {
         .gimmickAtk = gBattleStruct->gimmick.usableGimmick[opposingBattler],
         .gimmickDef = gBattleStruct->gimmick.usableGimmick[battler],
         .weather = weather,
-        .fieldStatuses = gFieldStatuses,
+        .terrain = gFieldTimers.terrain,
     };
 
     for (u32 moveIndex = 0; moveIndex < MAX_MON_MOVES; moveIndex++)

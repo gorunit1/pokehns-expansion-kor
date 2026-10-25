@@ -84,7 +84,7 @@ struct AiCalcValues
     enum Move move;
     uq4_12_t typeEffectiveness;
     u32 weather;
-    u32 fieldStatuses;
+    enum BattleTerrain terrain:8;
     enum Gimmick gimmickAtk:8;
     enum Gimmick gimmickDef:8;
 };
@@ -137,7 +137,7 @@ enum HoldEffect AI_DecideHoldEffectForTurn(enum BattlerId battlerId);
 bool32 DoesBattlerIgnoreAbilityChecks(enum BattlerId battlerAtk, enum Ability atkAbility, enum Move move);
 u32 AI_GetWeather(void);
 u32 AI_GetSwitchinWeather(enum BattlerId battler);
-u32 AI_GetSwitchinFieldStatus(enum BattlerId battler);
+u32 AI_GetSwitchinTerrain(enum BattlerId battler);
 enum WeatherState IsWeatherActive(u32 flags);
 bool32 CanAIFaintTarget(enum BattlerId battlerAtk, enum BattlerId battlerDef, u32 numHits);
 bool32 CanIndexMoveFaintTarget(enum BattlerId battlerAtk, enum BattlerId battlerDef, u32 index, enum DamageCalcContext calcContext);
@@ -226,6 +226,8 @@ s32 ProtectChecks(enum BattlerId battlerAtk, enum BattlerId battlerDef, enum Mov
 bool32 ShouldRaiseAnyStat(enum BattlerId battlerAtk, enum BattlerId battlerDef);
 bool32 ShouldSetWeather(enum BattlerId battler, u32 weather);
 bool32 ShouldClearWeather(enum BattlerId battler, u32 weather);
+bool32 ShouldSetTerrain(enum BattlerId battler, enum BattleTerrain terrain);
+bool32 ShouldClearTerrain(enum BattlerId battler, enum BattleTerrain terrain);
 bool32 ShouldSetFieldStatus(enum BattlerId battler, u32 fieldStatus);
 bool32 ShouldClearFieldStatus(enum BattlerId battler, u32 fieldStatus);
 bool32 HasSleepMoveWithLowAccuracy(enum BattlerId battlerAtk, enum BattlerId battlerDef);
