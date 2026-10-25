@@ -2,6 +2,16 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-25 — full-sync 묶음 44(seq 477 #10311) (클라우드 세션)
+
+- 요청: 사용자 "ㄱㄱ 477 시작해 혼자해도 되는거라면".
+- 판단: `end2` → `end` 기계적 치환(43곳)과 라벨 이름, 명령 표·enum 정리(HnS `UNUSED_39` 이미 있음). 실패 턴 4개 스크립트가 전체 MoveEnd로 끝나는 건 upstream 그대로 — 새 테스트로 이식 전과 비교해 분함의발구르기 2배만 달라짐을 확인. 아레나 기술 점수는 upstream 루프가 공격자 자신을 세어 점수가 바뀌는 것을 코드에서 발견 → 이식 전 점수 유지(HnS 적응) + 친구 질문(재확인 95).
+- 수정 파일: 커밋 `63b6a114`(스크립트 2, 매크로, 헤더 3, `battle_arena.c`, `battle_main.c`, `battle_move_resolution.c`, `battle_script_commands.c`, 튜토리얼 문서, `test/hns_10311_end.c`). 문서 — `full-sync-seq-477.md`(새), `test-baseline-seq477.txt`(새), `RECHECK_BEFORE_COMPLETION.md` 95, `port_sequence.tsv` 477, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. 이식 전 비교는 클론 `a8f6dfb8`에서 임시 이름으로(커밋 안 함, 지움).
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 친구 문자: 묶음 43+44 합쳐서(세션 답변).
+- 다음 시작점: seq 478 #10300.
+
 ### 2026-10-25 — full-sync 묶음 43(seq 476 #10220) (클라우드 세션)
 
 - 요청: 사용자 "ㄱㄱ 476 시작해 혼자해도 되는거라면".
