@@ -9,7 +9,7 @@
 - 수정 파일: 커밋 표(결과 문서 0절). 문서 — 원문, `results/bgm-font-2026-10-25.md`(새), `RECHECK_BEFORE_COMPLETION.md` 91 해결·92 새, `trainer-class-2026-10-11/README.md` 10절, `egg-move-bgm-2026-10-24.md` 2.4 메모, `test-baseline-bgmfont.txt`(새), STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. 임시 측정 테스트는 커밋하지 않고 지움.
 - 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
-- 친구 문자: 세션 답변 문안(새 ROM SHA1 `d58ccdf8…`, 질문 92).
+- 친구 문자: 세션 답변 문안(새 ROM SHA1 `d58ccdf8…`, 질문 92) — **보냄**(2026-10-25 사용자 확인).
 - 다음 시작점: 친구 답, 또는 seq 475 #9777.
 
 ### 2026-10-25 — full-sync 묶음 41(seq 470~474) (클라우드 세션)
