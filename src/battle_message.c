@@ -883,7 +883,6 @@ const u8 *const gBattleStringsTable[STRINGID_COUNT] =
     [STRINGID_BLOCKEDBYSLEEPCLAUSE]                 = COMPOUND_STRING("Sleep Clause kept {B_DEF_NAME_WITH_PREFIX2} awake!"), // no official SV/Champions battle message
     [STRINGID_SUPEREFFECTIVETWOFOES]                = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX2}{B_TXT_WAGWA} {B_DEF_PARTNER_NAME}에게\n효과가 굉장했다!"),
     [STRINGID_NOTVERYEFFECTIVETWOFOES]              = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX2}{B_TXT_WAGWA} {B_DEF_PARTNER_NAME}에게\n효과가 별로였다."),
-    [STRINGID_ITDOESNTAFFECTTWOFOES]                = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX2}{B_TXT_WAGWA} {B_DEF_PARTNER_NAME}에게는\n효과가 없는 것 같다…"),
     [STRINGID_SENDCAUGHTMONPARTYORBOX]              = COMPOUND_STRING("{B_DEF_NAME}{B_TXT_EULREUL}\n지닌 포켓몬에 넣겠습니까?"),
     [STRINGID_PKMNSENTTOPCAFTERCATCH]               = gText_PkmnSentToPCAfterCatch,
     [STRINGID_PKMNDYNAMAXED]                        = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} grew huge into its Dynamax form!"), //다이맥스
