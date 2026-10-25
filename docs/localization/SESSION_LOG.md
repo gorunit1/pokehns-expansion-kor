@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-25 — full-sync 묶음 45(seq 478 #10300 + 480 #10365) (클라우드 세션)
+
+- 요청: 사용자 "ㄱㄱ 478 시작해 혼자해도 되는거라면".
+- 판단: 분류 enum 앞에 `NONE`이 들어가 번호가 밀리는 것을 먼저 점검 — 분류 아이콘 애니 표가 번호로 골라 upstream 그 시점 표가 어긋남 → 같은 단위 #10365(seq 480)을 앞당김. 나머지는 upstream대로 손 병합(`git apply --reject` 뒤 거부 hunk 손으로). HnS `optionStyle` 조건·프레젠트 회복 반짝임 유지.
+- 발견·수정(upstream 결함 3개, 재확인 96): 프레젠트 회복이 회복하지 않음(`attackcanceler`가 스크립트를 덮어씀 → 하위 스크립트 실행), 동적 타입 초기화가 지워져 호출 기술이 앞 타입을 이어받음(초기화 유지), 동적 분류가 스마트 AI 턴에만 지워짐(행동마다 초기화). 회복 추첨의 지난 위력은 #10362(seq 482) 한 줄 앞당김. 세 보정과 그 한 줄은 각각 빼고 돌려 해당 테스트가 FAIL함을 확인.
+- 실수: 짓궂은마음 테스트에 처음 깜까미(고스트)를 써서 몸통박치기가 안 맞아 엉뚱한 FAIL → 니로우로 바꿈.
+- 수정 파일: 커밋 `00ff6d5a`(스크립트, 매크로, 헤더 4, AI 2, 애니, `battle_main.c`, `battle_move_resolution.c`, `battle_script_commands.c`, `battle_util.c`, Z기술, 기술 효과 표, 요약 화면, `test/hns_heal_sparkle.c` 주석, `test/hns_10300_category.c`). 문서 — `full-sync-seq-478.md`(새), `test-baseline-seq478.txt`(새), `RECHECK_BEFORE_COMPLETION.md` 96, `port_sequence.tsv` 478·480·482, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. 이식 전 비교는 클론 `014ea81b`에서 임시 이름으로(커밋 안 함, 지움). 보정 확인용으로 고친 파일은 백업에서 원복(`grep` 확인).
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 다음 시작점: seq 479 #10330.
+
 ### 2026-10-25 — full-sync 묶음 44(seq 477 #10311) (클라우드 세션)
 
 - 요청: 사용자 "ㄱㄱ 477 시작해 혼자해도 되는거라면".

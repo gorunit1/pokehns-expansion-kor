@@ -482,11 +482,11 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 475.8	10282	726	1.17.0	g4_ai_tests_pokemon_sprites	U-10282	10151	M	test	Y	N	+0.1KB	Fix failing tests using GEN_CHAMPIONS	
 476	10220	667	1.17.0	g6_overworld_refactors	U-canceler-10220	9249,9610,9532,9657,9674,9717,9730,9918,9939,9008,9211	L	refactor	N	N	~0	Move pre attack effects and damage calc to canceler	적용(CancelerDamageCalc에 HnS baseMove(#10616) 유지, 잠자기 사용자 기준 유지, 재확인 32 cv->moveEffect 0fed230b) 84d0b6f8
 477	10311	688	1.17.0	g6_overworld_refactors	U-end2-10311	9674,9680,9008,9777,10220,10151	M	refactor	Y	N	-0.5KB	Remove end2 (merge end and end2)	적용(B_SCR_OP_END2 삭제, HnS UNUSED_39 이미 있어 추가 안 함, 아레나 기술 점수 이식 전 유지 — 재확인 95, 게으름·불복종 실패 턴 뒤 분함의발구르기 2배) 63b6a114
-478	10300	695	1.17.0	g6_overworld_refactors	U-10300	9176,9657,9918,9983,10220,10151	M	refactor	N	N	~0	Refactor dynamic move category and remove Present script	
+478	10300	695	1.17.0	g6_overworld_refactors	U-10300	9176,9657,9918,9983,10220,10151	M	refactor	N	N	~0	Refactor dynamic move category and remove Present script	적용(HnS: 프레젠트 회복을 하위 스크립트로 실행 — upstream은 회복 안 됨, SetTypeBeforeUsingMove 동적 타입 초기화 유지, 행동마다 동적 분류 초기화, 프레젠트 회복 반짝임, optionStyle 유지, 재확인 96) 00ff6d5a
 479	10330	701	1.17.0	g6_overworld_refactors	U-10330	9657,9674,9730,9939,9211,10220	M	refactor	N	N	~0	Adjust TargetFailure to be slightly more accurate	
-480	10365	702	1.17.0	g2_battle_fixed_b	U-category-10300	10300	S	fix	N	N	+4B	Fixes off by one error for category icons	
+480	10365	702	1.17.0	g2_battle_fixed_b	U-category-10300	10300	S	fix	N	N	+4B	Fixes off by one error for category icons	앞당김 적용 00ff6d5a(478과 같은 커밋 — 분류 아이콘 표 NULL 첫 칸)
 481	10326	706	1.17.0	g6_overworld_refactors	U-terrain-10326	9446,9124,9680,9847,9730,9928,9777,10220,10151,10311	L	refactor	N	N	-2KB(추정)	Battle Terrain Refactor	
-482	10362	708	1.17.0	g6_overworld_refactors	U-canceler-10362	9610,9655,9730,9939,9777,10220,10300,10330	L	refactor	Y	N	~0	Adds moveanim, sound, hitanim and hpupdate to Canceler	
+482	10362	708	1.17.0	g6_overworld_refactors	U-canceler-10362	9610,9655,9730,9939,9777,10220,10300,10330	L	refactor	Y	N	~0	Adds moveanim, sound, hitanim and hpupdate to Canceler	일부 앞당김: SetDynamicMoveCategory 프레젠트 presentBasePower = 0 한 줄만 00ff6d5a(478) — 나머지는 482에서
 483	10431	714	1.17.0	g2_battle_fixed_b	U-canceler-10362	10268,10362	M	fix	Y	N	+150B	Fixes Resist Berry order	
 484	10426	716	1.17.0	g6_overworld_refactors	U-absorb-10426	9176,9514,9680,9717,9730,9918,10220,10151,10299,10311	M	refactor	Y	N	~0	Refactor absorb and change SetMoveEffect signature	
 485	10488	740	1.17.0	g2_battle_fixed_b	U-10488	10362	L	fix	Y	N	+80B	Fixes Assurance inconsistencies	
