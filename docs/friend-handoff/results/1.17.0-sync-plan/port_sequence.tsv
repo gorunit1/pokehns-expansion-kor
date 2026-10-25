@@ -486,8 +486,8 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 479	10330	701	1.17.0	g6_overworld_refactors	U-10330	9657,9674,9730,9939,9211,10220	M	refactor	N	N	~0	Adjust TargetFailure to be slightly more accurate	적용(검사별 루프 — 더블 메시지 순서 변화, HnS checkUserFailure·GetPartnerBattler 유지, HnS: 쓰러진 대상을 첫 검사에서 FAILED — upstream은 #10566(seq 486)까지 안 거름, 재확인 97) d1e2dcae
 480	10365	702	1.17.0	g2_battle_fixed_b	U-category-10300	10300	S	fix	N	N	+4B	Fixes off by one error for category icons	앞당김 적용 00ff6d5a(478과 같은 커밋 — 분류 아이콘 표 NULL 첫 칸)
 481	10326	706	1.17.0	g6_overworld_refactors	U-terrain-10326	9446,9124,9680,9847,9730,9928,9777,10220,10151,10311	L	refactor	N	N	-2KB(추정)	Battle Terrain Refactor	적용(3-way 병합, HnS AiCalcValues·하드론엔진 두 갈래·Teraform Zero 필드 날씨 갈래 등 뒤쪽 형태 유지, LEFT_ALLY 풀어 씀, HnS: Teraform Zero 지형 없으면 제거 건너뜀 — 재확인 98, #10586 앞당김) 15bb0685
-482	10362	708	1.17.0	g6_overworld_refactors	U-canceler-10362	9610,9655,9730,9939,9777,10220,10300,10330	L	refactor	Y	N	~0	Adds moveanim, sound, hitanim and hpupdate to Canceler	일부 앞당김: SetDynamicMoveCategory 프레젠트 presentBasePower = 0 한 줄만 00ff6d5a(478) — 나머지는 482에서
-483	10431	714	1.17.0	g2_battle_fixed_b	U-canceler-10362	10268,10362	M	fix	Y	N	+150B	Fixes Resist Berry order	
+482	10362	708	1.17.0	g6_overworld_refactors	U-canceler-10362	9610,9655,9730,9939,9777,10220,10300,10330	L	refactor	Y	N	~0	Adds moveanim, sound, hitanim and hpupdate to Canceler	적용(일부 앞당김이던 presentBasePower 줄 포함 전체, 482+483+493 한 커밋, HnS 회복 반짝임·얼음몸 문장 없음·UnsetPsychicBg 이름 유지, 재확인 96 (1) upstream 형태로 정리·(2)(3) 유지) e6b976e0
+483	10431	714	1.17.0	g2_battle_fixed_b	U-canceler-10362	10268,10362	M	fix	Y	N	+150B	Fixes Resist Berry order	적용 e6b976e0(482와 같은 커밋 — 친구 Q9 반감열매 순서, 재확인 8l 해결, waitabilitypopup은 394 대기라 뺌 — 재확인 36)
 484	10426	716	1.17.0	g6_overworld_refactors	U-absorb-10426	9176,9514,9680,9717,9730,9918,10220,10151,10299,10311	M	refactor	Y	N	~0	Refactor absorb and change SetMoveEffect signature	
 485	10488	740	1.17.0	g2_battle_fixed_b	U-10488	10362	L	fix	Y	N	+80B	Fixes Assurance inconsistencies	
 486	10566	747	1.17.0	g2_battle_fixed_b	U-canceler-10362	9730,9939,10362	M	fix	Y	N	+150B	Fix HP bars emitting for non-present battlers and extraneous result battle messages	
@@ -497,7 +497,7 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 490	10593	756	1.17.0	g3_battle_changes_moves_abilities_items	U-setmoveeffect-10593	9176,9514,9657,9859,9730,9918,10220,10299,10326,10426	XL	refactor	Y	N	+0.5KB	Change SetMoveEffect into a function table and move to a new file	
 491	10630	763	1.17.0	g3_battle_changes_moves_abilities_items	U-10630	10593	M	refactor	N	N	~0	Remove redundant embargo and heal block flags	
 492	10640	768	1.17.0	g3_battle_changes_moves_abilities_items	U-10640	9939	S	refactor	Y	N	~0	Add MSG_DISPLAY constants and helper function for strings with wait	
-493	10714	776	1.17.0	g2_battle_fixed_b	U-canceler-10362	10362	S	fix	N	N	+60B	Fix moveanim regression	
+493	10714	776	1.17.0	g2_battle_fixed_b	U-canceler-10362	10362	S	fix	N	N	+60B	Fix moveanim regression	앞당김 적용 e6b976e0(482와 같은 커밋 — 전투 애니 끄기 옵션에서 공격 애니가 나오던 482 회귀)
 494	9641	1000000	1.16.0	g5_general_cleanup_docs	U-9641	-	M	feature	N	N	+~0.5KB	feat(debug): add quickstart from titlescreen	
 495	9677	1000000	1.16.0	g5_general_cleanup_docs	U-9677	-	M	refactor	N	N	~0	Converted move animation magic numbers to defines	
 496	9676	243	1.16.0	g3_battle_changes_moves_abilities_items	U-9676	9172,9677	M	refactor	N	N	~0	Created macros for fist and foot animations	
