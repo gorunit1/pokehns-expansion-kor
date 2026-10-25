@@ -2661,10 +2661,33 @@ u8 *PrependFontIdToFit(u8 *start, u8 *end, u32 fontId, u32 width)
     return end + 3;
 }
 
-u8 *WrapFontIdToFit(u8 *start, u8 *end, u32 fontId, u32 width)
+// HnS: GetFontIdToFit steps down the narrower fonts without measuring the last one, but HnS Korean glyphs are
+// 8 px in FONT_NORMAL and FONT_NARROW and 11 px in FONT_NARROWER (the larger Korean glyph set), so an overflowing
+// Korean line would get wider. For the description screens only (summary ability, move and contest descriptions,
+// Move Relearner move description, battle move info - friend decision 2026-10-25, RECHECK 91 plan A) a narrower
+// font is taken only if the string really measures narrower in it: the first font in the chain that fits, else the
+// one measuring narrowest, else fontId. A string that still overflows keeps that font; nothing is cut or rewrapped.
+u32 GetDescriptionFontIdToFit(const u8 *string, u32 fontId, u32 letterSpacing, u32 widthPx)
 {
+    u32 bestFontId = fontId;
+    u32 bestWidth = GetStringWidth(fontId, string, letterSpacing);
+    s32 candidateFontId = sNarrowerFontIds[fontId];
 
-    u32 fitFontId = GetFontIdToFit(start, fontId, 0, width);
+    while (bestWidth > widthPx && candidateFontId != -1)
+    {
+        u32 width = GetStringWidth(candidateFontId, string, letterSpacing);
+        if (width < bestWidth)
+        {
+            bestFontId = candidateFontId;
+            bestWidth = width;
+        }
+        candidateFontId = sNarrowerFontIds[candidateFontId];
+    }
+    return bestFontId;
+}
+
+static u8 *WrapFontId(u8 *start, u8 *end, u32 fontId, u32 fitFontId)
+{
     if (fitFontId != fontId)
     {
         memmove(&start[3], &start[0], end - start);
@@ -2681,6 +2704,17 @@ u8 *WrapFontIdToFit(u8 *start, u8 *end, u32 fontId, u32 width)
     {
         return end;
     }
+}
+
+u8 *WrapFontIdToFit(u8 *start, u8 *end, u32 fontId, u32 width)
+{
+    return WrapFontId(start, end, fontId, GetFontIdToFit(start, fontId, 0, width));
+}
+
+// HnS: WrapFontIdToFit for the battle move info description (see GetDescriptionFontIdToFit).
+u8 *WrapDescriptionFontIdToFit(u8 *start, u8 *end, u32 fontId, u32 width)
+{
+    return WrapFontId(start, end, fontId, GetDescriptionFontIdToFit(start, fontId, 0, width));
 }
 
 static struct TextPrinter *AllocateTextPrinter(void)

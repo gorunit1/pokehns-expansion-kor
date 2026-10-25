@@ -808,7 +808,7 @@ static void MoveRelearnerLoadBattleMoveDescription(u32 chosenMove)
     AddTextPrinterParameterized(RELEARNERWIN_DESC_BATTLE, FONT_NORMAL, str, 106, 41, TEXT_SKIP_DRAW, NULL);
 
     const u8 *moveDescription = GetMoveDescription(chosenMove);
-    u32 fontId = GetFontIdToFit(moveDescription, FONT_NARROW, 0, WindowWidthPx(RELEARNERWIN_DESC_BATTLE));
+    u32 fontId = GetDescriptionFontIdToFit(moveDescription, FONT_NARROW, 0, WindowWidthPx(RELEARNERWIN_DESC_BATTLE)); // HnS: RECHECK 91
     AddTextPrinterParameterized(RELEARNERWIN_DESC_BATTLE, fontId, moveDescription, 0, 65, 0, NULL);
 }
 

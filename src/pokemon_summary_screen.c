@@ -3333,6 +3333,14 @@ static void PrintTextOnWindowToFit(u8 windowId, const u8 *string, u8 x, u8 y, u8
     PrintTextOnWindowToFitPx(windowId, string, x, y, lineSpacing, colorId, WindowWidthPx(windowId));
 }
 
+// HnS: ability, move and contest descriptions only - a narrower font only if the description really gets narrower
+// in it (GetDescriptionFontIdToFit, RECHECK 91 plan A). Measured against the window width as before (#10521).
+static void PrintDescriptionOnWindowToFit(u8 windowId, const u8 *string, u8 x, u8 y, u8 lineSpacing, u8 colorId)
+{
+    u32 fontId = GetDescriptionFontIdToFit(string, FONT_NORMAL, 0, WindowWidthPx(windowId));
+    PrintTextOnWindowWithFont(windowId, string, x, y, lineSpacing, colorId, fontId);
+}
+
 static void PrintMonInfo(void)
 {
     FillWindowPixelBuffer(PSS_LABEL_WINDOW_PORTRAIT_DEX_NUMBER, PIXEL_FILL(0));
@@ -3703,7 +3711,7 @@ static void PrintMonAbilityName(void)
 static void PrintMonAbilityDescription(void)
 {
     enum Ability ability = GetAbilityBySpecies(sMonSummaryScreen->summary.species, sMonSummaryScreen->summary.abilityNum);
-    PrintTextOnWindowToFit(AddWindowFromTemplateList(sPageInfoTemplate, PSS_DATA_WINDOW_INFO_ABILITY), gAbilitiesInfo[ability].description, 0, 17, 0, 0);
+    PrintDescriptionOnWindowToFit(AddWindowFromTemplateList(sPageInfoTemplate, PSS_DATA_WINDOW_INFO_ABILITY), gAbilitiesInfo[ability].description, 0, 17, 0, 0);
 }
 
 static void BufferMonTrainerMemo(void)
@@ -4353,7 +4361,7 @@ static void PrintContestMoveDescription(u8 moveSlot)
     if (move != MOVE_NONE)
     {
         u8 windowId = AddWindowFromTemplateList(sPageMovesTemplate, PSS_DATA_WINDOW_MOVE_DESCRIPTION);
-        PrintTextOnWindowToFit(windowId, gContestEffects[GetMoveContestEffect(move)].description, 6, 1, 0, 0);
+        PrintDescriptionOnWindowToFit(windowId, gContestEffects[GetMoveContestEffect(move)].description, 6, 1, 0, 0);
     }
 }
 
@@ -4368,11 +4376,11 @@ static void PrintMoveDetails(enum Move move)
             if (B_SHOW_CATEGORY_ICON == TRUE)
                 ShowCategoryIcon(GetBattleMoveCategory(move));
             PrintMovePowerAndAccuracy(move);
-            PrintTextOnWindowToFit(windowId, GetMoveDescription(move), 6, 1, 0, 0);
+            PrintDescriptionOnWindowToFit(windowId, GetMoveDescription(move), 6, 1, 0, 0);
         }
         else
         {
-            PrintTextOnWindowToFit(windowId, gContestEffects[GetMoveContestEffect(move)].description, 6, 1, 0, 0);
+            PrintDescriptionOnWindowToFit(windowId, gContestEffects[GetMoveContestEffect(move)].description, 6, 1, 0, 0);
         }
         PutWindowTilemap(windowId);
     }
