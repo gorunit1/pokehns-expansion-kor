@@ -2013,6 +2013,7 @@ static void SetDamageContextValues(struct DamageContext *ctx, struct BattleCalcV
     ctx->battlerDef = cv->battlerDef;
     ctx->move = cv->move;
     ctx->chosenMove = gChosenMove;
+    ctx->baseMove = gBattleStruct->baseMove;
     ctx->moveType = GetBattleMoveType(cv->move);
     ctx->updateFlags = TRUE;
     ctx->runScript = TRUE;
