@@ -11,6 +11,7 @@
 - 수정 파일: 커밋 `00ff6d5a`(스크립트, 매크로, 헤더 4, AI 2, 애니, `battle_main.c`, `battle_move_resolution.c`, `battle_script_commands.c`, `battle_util.c`, Z기술, 기술 효과 표, 요약 화면, `test/hns_heal_sparkle.c` 주석, `test/hns_10300_category.c`). 문서 — `full-sync-seq-478.md`(새), `test-baseline-seq478.txt`(새), `RECHECK_BEFORE_COMPLETION.md` 96, `port_sequence.tsv` 478·480·482, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. 이식 전 비교는 클론 `014ea81b`에서 임시 이름으로(커밋 안 함, 지움). 보정 확인용으로 고친 파일은 백업에서 원복(`grep` 확인).
 - 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 친구 문자: 묶음 43·44·45 합쳐 보냄(사용자 확인). 다음 seq는 새 세션에서 — 검증 절차를 STATUS 현재 절에 명령으로 정리(이 세션의 임시 스크립트는 남지 않음).
 - 다음 시작점: seq 479 #10330.
 
 ### 2026-10-25 — full-sync 묶음 44(seq 477 #10311) (클라우드 세션)
