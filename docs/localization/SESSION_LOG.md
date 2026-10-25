@@ -9,7 +9,7 @@
 - 수정 파일: 커밋 `15bb0685`(49파일 — upstream 46 + `src/battle_util2.c`(#10586) + `test/battle/ai/values_moves_over_splash.c`(upstream `can_use_all_moves.c` 자리) + `test/hns_10326_terrain.c`(새) + 한글 회귀 세트 `zz_hns9717_k1_ee.c` 이름). 문서 — `full-sync-seq-481.md`(새), `test-baseline-seq481.txt`(새), `RECHECK_BEFORE_COMPLETION.md` 98, `port_sequence.tsv` 481·487, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. 이식 전 비교는 scratchpad 클론 `588d3ea1`에서 옛 상수로 바꾼 `ZZ old` 사본(커밋 안 함, 지움).
 - 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
-- 친구 문자: 세션 답변 문안(새 질문 없음).
+- 친구 문자: 세션 답변 문안(새 질문 없음, 실기 4) — **보냄**(2026-10-25 사용자 확인).
 - 다음 시작점: seq 482 #10362.
 
 ### 2026-10-25 — full-sync 묶음 46(seq 479 #10330) (클라우드 세션)
