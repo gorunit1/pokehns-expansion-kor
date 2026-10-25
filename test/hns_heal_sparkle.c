@@ -1,5 +1,6 @@
 // HnS 회복 반짝임(B_ANIM_SIMPLE_HEAL) 회귀 테스트 — seq 428 #10416 A안, 친구 결정(2026-10-24b).
-// 공통 회복 처리(BattleScript_PresentHealTarget)에서 실제로 회복하는 포켓몬(BS_TARGET)에게 한 번만 나온다.
+// 공통 회복 처리(BattleScript_HealTarget, seq 478 #10300 전 이름 PresentHealTarget)와 프레젠트 회복(BattleScript_PresentHeal)에서
+// 실제로 회복하는 포켓몬(BS_TARGET)에게 한 번만 나온다.
 // 이 경로를 타는 기술 애니 안의 개별 반짝임(HealingEffect)은 지웠다 — 애니 안쪽 호출이라 테스트로는 보이지 않고, 정적 대조로 확인.
 // 회복·태만함·회복지령(EFFECT_RESTORE_HP)은 이 경로가 아니어서(BattleScript_EffectRestoreHp) 기술 애니 안 반짝임 그대로다.
 // 이름이 모두 "HnS heal sparkle:"로 시작한다(TESTS='HnS heal sparkle'). 문장은 보지 않는다(언어 무관).

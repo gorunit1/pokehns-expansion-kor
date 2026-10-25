@@ -3008,9 +3008,6 @@ static void BattleStartClearSetData(void)
         }
     }
 
-    gBattleStruct->swapDamageCategory = FALSE; // Photon Geyser, Shell Side Arm, Light That Burns the Sky
-    gBattleStruct->categoryOverride = FALSE; // used for Z-Moves and Max Moves
-
     ClearPursuitValues();
     gSelectedMonPartyId = PARTY_SIZE; // Revival Blessing
     gCategoryIconSpriteId = 0xFF;
@@ -5213,6 +5210,7 @@ static void CheckChangingTurnOrderEffects(void)
     gCurrentTurnActionNumber = 0;
     gCurrentActionFuncId = gActionsByTurnOrder[0];
     gBattleStruct->dynamicMoveType = 0;
+    gBattleStruct->dynamicMoveCategory = DAMAGE_CATEGORY_NONE; // HnS: as the dynamic type
     gBattleStruct->effectsBeforeUsingMoveDone = FALSE;
     for (i = 0; i < gBattlersCount; i++)
     {
@@ -5944,7 +5942,7 @@ enum Type GetDynamicMoveType(struct Pokemon *mon, enum Move move, enum BattlerId
                     hpTypes[hpTypeCount++] = i;
             }
             moveType = ((hpTypeCount - 1) * typeBits) / 63;
-            return ((hpTypes[moveType] | F_DYNAMIC_TYPE_IGNORE_PHYSICALITY) & 0x3F);
+            return hpTypes[moveType];
         }
         break;
     case EFFECT_CHANGE_TYPE_ON_ITEM:
@@ -6097,7 +6095,10 @@ void SetTypeBeforeUsingMove(enum Move move, enum BattlerId battler, enum Ability
     enum Type moveType;
     enum Item heldItem = gBattleMons[battler].item;
 
-    gBattleStruct->dynamicMoveType = 0;
+    // HnS: keep clearing the dynamic type (upstream #10300 drops this line). GetDynamicMoveType returns TYPE_NONE for a
+    // move without one, so a called move (Sleep Talk, Metronome) or the AI's next move would keep the last move's type.
+    gBattleStruct->dynamicMoveType = TYPE_NONE;
+    gBattleStruct->dynamicMoveCategory = DAMAGE_CATEGORY_NONE;
     gBattleStruct->battlerState[battler].ateBoost = FALSE;
     gSpecialStatuses[battler].gemBoost = FALSE;
 
@@ -6109,12 +6110,12 @@ void SetTypeBeforeUsingMove(enum Move move, enum BattlerId battler, enum Ability
                                   MON_IN_BATTLE);
 
     if (moveType != TYPE_NONE)
-        gBattleStruct->dynamicMoveType = moveType | F_DYNAMIC_TYPE_SET;
+        gBattleStruct->dynamicMoveType = moveType;
 
     moveType = GetBattleMoveType(move);
     if ((gFieldStatuses & STATUS_FIELD_ION_DELUGE && moveType == TYPE_NORMAL)
      || gBattleMons[battler].volatiles.electrified)
-        gBattleStruct->dynamicMoveType = TYPE_ELECTRIC | F_DYNAMIC_TYPE_SET;
+        gBattleStruct->dynamicMoveType = TYPE_ELECTRIC;
 
     // Check if a gem should activate.
     u32 effect = GetMoveEffect(move);

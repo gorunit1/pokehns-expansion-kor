@@ -1461,7 +1461,7 @@ BattleScript_EffectRoost::
 	attackcanceler
 	tryhealhalfhealth BS_TARGET, BattleScript_AlreadyAtFullHp
 	setroost
-	goto BattleScript_PresentHealTarget
+	goto BattleScript_HealTarget
 
 BattleScript_EffectHealBlock::
 	attackcanceler
@@ -1787,7 +1787,7 @@ BattleScript_EffectRest::
 	waitmessage B_WAIT_TIME_LONG
 	updatestatusicon BS_ATTACKER
 	waitstate
-	goto BattleScript_PresentHealTarget
+	goto BattleScript_HealTarget
 
 BattleScript_RestCantSleep::
 	pause B_WAIT_TIME_LONG
@@ -2281,23 +2281,21 @@ BattleScript_EffectAttract::
 	call BattleScript_TryDestinyKnotAttacker
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectPresent::
+BattleScript_PresentHeal::
 	attackcanceler
-	typecalc
-	presentdamagecalculation
 	attackanimation
 	waitanimation
-	effectivenesssound
-	hitanimation BS_TARGET
-	waitstate
-	healthbarupdate BS_TARGET, MOVE_DAMAGE_HP_UPDATE
-	datahpupdate BS_TARGET, MOVE_DAMAGE_HP_UPDATE
-	critmessage
+	goto BattleScript_PresentHealGetTarget
+BattleScript_PresentHealNextTarget:
+	playanimation BS_TARGET, B_ANIM_SIMPLE_HEAL @ HnS: the heal sparkle on the healed target, as in BattleScript_HealTargetContinue
+	healthbarupdate BS_TARGET, PASSIVE_HP_UPDATE
+	datahpupdate BS_TARGET, PASSIVE_HP_UPDATE
+	printstring STRINGID_PKMNREGAINEDHEALTH
 	waitmessage B_WAIT_TIME_LONG
-	resultmessage
-	waitmessage B_WAIT_TIME_LONG
-	setadditionaleffects
-	moveendall
+	goto BattleScript_MoveEnd
+BattleScript_PresentHealGetTarget:
+	getpossiblenexttarget BattleScript_PresentHealNextTarget
+	moveendfrom MOVEEND_ITEM_EFFECTS_ATTACKER_2
 	end
 
 BattleScript_EffectSafeguard::
@@ -2335,14 +2333,14 @@ BattleScript_EffectMoonlight::
 BattleScript_EffectShoreUp::
 	attackcanceler
 	recoverbasedonsunlight BattleScript_AlreadyAtFullHp
-	goto BattleScript_PresentHealTarget
+	goto BattleScript_HealTarget
 
 BattleScript_MegaSolActivatesHealing::
 	attackanimation
 	waitanimation
 	call BattleScript_AbilityPopUp
 	pause B_WAIT_TIME_SHORT
-	goto BattleScript_PresentHealTargetContinue
+	goto BattleScript_HealTargetContinue
 
 BattleScript_MegaSolActivatesTwoTurnMove::
 	call BattleScript_AbilityPopUpScripting
@@ -2463,10 +2461,10 @@ BattleScript_BeatUpAttackMessage::
 BattleScript_EffectSoftboiled::
 	attackcanceler
 	tryhealhalfhealth BS_TARGET, BattleScript_AlreadyAtFullHp
-BattleScript_PresentHealTarget::
+BattleScript_HealTarget::
 	attackanimation
 	waitanimation
-BattleScript_PresentHealTargetContinue::
+BattleScript_HealTargetContinue::
 	playanimation BS_TARGET, B_ANIM_SIMPLE_HEAL @ HnS: on the Pokémon that recovers (upstream #10416 uses BS_ATTACKER; Present heals the target)
 	healthbarupdate BS_TARGET, PASSIVE_HP_UPDATE
 	datahpupdate BS_TARGET, PASSIVE_HP_UPDATE
