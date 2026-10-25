@@ -2,6 +2,16 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-25 — full-sync 묶음 46(seq 479 #10330) (클라우드 세션)
+
+- 요청: 사용자 "seq 479 #10330(Adjust TargetFailure)부터 이어서" — 문서·git log 대조, STATUS 검증 절차대로.
+- 판단: 2파일 게임 코드 리팩터라 upstream 전·후 파일로 3-way 병합(`git merge-file`), 충돌 4곳 손으로(HnS `checkUserFailure`·`GetPartnerBattler` 유지, HnS에서 위치가 다른 꿈먹기 함수 삭제, 반사 블록 삭제). 결과 함수 영역이 upstream과 같음을 diff로 확인. upstream이 지운 "쓰러진 대상" 분기를 upstream master와 비교해 #10566(seq 486)에서야 다시 걸러짐을 확인 → 사이 구간 회귀 후보 6개를 한글 테스트로 → 쓰러진 고스트 무효 문장 1개만 실제 FAIL → HnS 보정(재확인 97).
+- 수정 파일: 커밋 `d1e2dcae`(`include/constants/battle_move_resolution.h`, `src/battle_move_resolution.c`, `test/hns_10330_target_failure.c`(새)). 문서 — `full-sync-seq-479.md`(새), `test-baseline-seq479.txt`(새), `RECHECK_BEFORE_COMPLETION.md` 97, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 2행, `port_sequence.tsv` 479, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. 이식 전 비교는 scratchpad 클론 `7b2c0b9e`에서 임시 이름으로(커밋 안 함, 지움). 이 컨테이너의 클론 ROM SHA1이 seq 478 기록과 같아 빌드 재현 확인.
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 친구 문자: 세션 답변 문안(새 질문 없음).
+- 다음 시작점: seq 481 #10326.
+
 ### 2026-10-25 — full-sync 묶음 45(seq 478 #10300 + 480 #10365) (클라우드 세션)
 
 - 요청: 사용자 "ㄱㄱ 478 시작해 혼자해도 되는거라면".

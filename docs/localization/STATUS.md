@@ -1,11 +1,25 @@
 # 현재 인수인계 상태
 
-## 2026-10-25 — full-sync 묶음 45(seq 478 #10300 동적 기술 분류·프레젠트 + 480 #10365 앞당김) (현재, 클라우드 세션)
+## 2026-10-25 — full-sync 묶음 46(seq 479 #10330 대상 실패 판정을 검사별로) (현재, 클라우드 세션)
+
+- **다음 할 일**
+  1. 친구 문자(묶음 46) — 문안은 세션 답변. ROM SHA1 `aa9b0c7a…`(코드 `d1e2dcae`), 새 질문 없음, 동작 변화 1(더블 전체기 막힘 문장 순서), HnS 보정 1(재확인 97), 실기 후보 3. 다음 묶음과 합쳐 보내도 됨.
+  2. 친구 답 대기: 92·93·94·95, 36(394 팝업 대기), 89 (1) 메모, 82, 72, 70 (a)(b), 71, 69, 실기 결과.
+  3. full-sync 다음 seq **481 #10326**(Battle Terrain Refactor, L — 487 #10586이 같은 단위). 480은 적용함, 482는 `presentBasePower = 0` 한 줄만 앞당긴 상태(재확인 96). 테스트 기준 **`test-baseline-seq479.txt`**, 한글 회귀 기대 **558/652**, 세이브 이전 사실은 코드 `d1e2dcae`. 486 #10566 때 재확인 97(HnS 쓰러진 대상 보정 정리).
+- **검증 절차:** 아래 묶음 45 절의 "새 세션 검증 절차" 그대로(이번에도 그 명령으로 함 — `HNS_WORK`를 scratchpad로 둬 목록이 `$HNS_WORK/verify-runs/testlist/`에 생김).
+- **결과** [`full-sync-seq-479.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-479.md). 커밋 `d1e2dcae`(479), 문서 이 커밋.
+  - `CancelerTargetFailure`가 검사마다 모든 대상을 돎(공중·땅속 → 사이코필드 → 방어 → 반사 → 특성·도구 → 타입 무효, `eventState.moveEndBlock`으로 이어 돌기). 꿈먹기·싱크로노이즈·프리폴 무효는 `IsTargetUnaffectedByMoveEffect`. HnS `checkUserFailure`·`GetPartnerBattler`·`baseMove` 유지(3-way 병합, 충돌 4곳 손으로).
+  - 동작 변화: 더블 전체기에서 대상들이 서로 다른 이유로 막히면 문장이 검사 순서대로(예: 공중 "맞지 않았다" → 방어 "몸을 지켰다"). 꿈먹기 무효 대기 짧아짐(코드 감사만).
+  - HnS 보정(재확인 97): upstream이 지운 "쓰러진 대상 → 실패"를 첫 검사 블록에 유지 — 없으면 먼저 쓰러진 고스트에게 전체기가 "효과가 없는 것 같다..."를 띄움(upstream은 #10566 seq 486에서 고침).
+  - 새 한글 테스트 `test/hns_10330_target_failure.c` 6개 PASS — 보정 뺀 upstream 그대로 5/6(쓰러진 고스트만 FAIL), 이식 전 코드 5/6(순서 테스트만 FAIL = 동작 변화).
+- **검증:** `make hns -j8` 종료 0·새 경고 0. 전체 `make check` — upstream 그대로는 기준(seq478)과 바이트 같음, 보정 + 새 테스트는 새 PASS 6뿐(사라진 PASS 0). 세이브 정적 PASS(FAIL 0·WARN 0, 이전 = `7b2c0b9e` 클론 빌드 — SHA1 `117e8515…`로 seq 478 기록과 같음). 한글 회귀 558/652 기대와 같음. ROM 32,958,340 → **32,959,124 B**(+784), SHA1 **`aa9b0c7a8d17f3a8bacd52ae673106a91b6878c8`**(gcc 13.2.1, 클라우드 컨테이너). **실기: 하지 않음(친구).**
+
+## 2026-10-25 — full-sync 묶음 45(seq 478 #10300 동적 기술 분류·프레젠트 + 480 #10365 앞당김) (클라우드 세션)
 
 - **다음 할 일**
   1. ~~친구 문자(묶음 43·44·45 합쳐서)~~ **보냄**(2026-10-25 사용자 확인). ROM SHA1 `117e8515…`(커밋 `53358a79`), 새 질문 재확인 95(배틀아레나 기술 점수), 477 동작 변화(게으름·불복종 뒤 분함의발구르기 2배) 알림, 실기 후보 6(분류 아이콘·프레젠트 회복·챌린지 옵션 변화기 아이콘·게을킹 분함의발구르기·대타출동꼬리/불복종 낮잠·아레나 판정).
   2. 친구 답 대기: 92·93·94·95, 36(394 팝업 대기), 89 (1) 메모, 82, 72, 70 (a)(b), 71, 69, 실기 결과.
-  3. full-sync 다음 seq 479 #10330(Adjust TargetFailure). 480은 적용함, 482는 `presentBasePower = 0` 한 줄만 앞당김(재확인 96 — 482 때 HnS 보정 3개 다시 확인). 테스트 기준 **`test-baseline-seq478.txt`**, 한글 회귀 기대 **558/652**, 세이브 이전 사실은 코드 `00ff6d5a`.
+  3. ~~full-sync 다음 seq 479 #10330(Adjust TargetFailure)~~ **적용함(묶음 46, 위 절).** 480은 적용함, 482는 `presentBasePower = 0` 한 줄만 앞당김(재확인 96 — 482 때 HnS 보정 3개 다시 확인). 테스트 기준 **`test-baseline-seq478.txt`**, 한글 회귀 기대 **558/652**, 세이브 이전 사실은 코드 `00ff6d5a`.
 - **새 세션 검증 절차(full-sync 한 seq, 2026-10-25 정리 — 이전 세션의 임시 스크립트는 남지 않음).** `W`는 저장소 밖 임시 폴더(세션 scratchpad 등), `PRE`는 이식 직전 커밋, `L`은 실행 이름.
   1. 빌드: `make hns -j8 > $W/build.log 2>&1` → `dev_scripts/hns_verify/warncheck.sh $W/build.log`(새 경고 0). ROM 사용 크기 `python3 -c "print(len(open('pokehns.gba','rb').read().rstrip(b'\xff')))"`, `sha1sum pokehns.gba`.
   2. 전체 테스트: `GITHUB_ACTION=1 make check BUILD=hns -j8 > build/$L-check.log 2>&1` → `dev_scripts/hns_verify/testlist.sh build/$L-check.log docs/friend-handoff/results/1.17.0-port/test-baseline-seq<직전>.txt`(사라진 PASS 0 확인). 목록은 `/root/hns-sync-work/verify-runs/testlist/$L-check.txt` → 커밋 뒤 실행분을 `test-baseline-seq<이번>.txt`로 복사. 부분 실행은 `TESTS='접두어'`.
