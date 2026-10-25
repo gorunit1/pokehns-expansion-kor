@@ -144,7 +144,7 @@ SINGLE_BATTLE_TEST("HNS9680 3-06 Embargo ends and a Sitrus Berry activates")
         NONE_OF { MESSAGE("상대 마자는 자뭉열매로 체력을 회복했다!"); }
         MESSAGE("상대 마자는 도구를 쓸 수 있게 되었다!");
         ANIMATION(ANIM_TYPE_GENERAL, HNS_BERRY_ANIM, opponent);
-        MESSAGE("상대 마자는 자뭉열매로 체력을 회복했다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, opponent); // seq 475 #9777: heal animation, no message any more (was "상대 마자는 자뭉열매로 체력을 회복했다!")
         HP_BAR(opponent, damage: -30);
     }
 }
@@ -257,7 +257,7 @@ SINGLE_BATTLE_TEST("HNS9680 3-11 Magic Room ends and a Sitrus Berry activates")
         NONE_OF { MESSAGE("상대 마자는 자뭉열매로 체력을 회복했다!"); }
         MESSAGE("매직룸이 해제되어 도구의 효과가 원래대로 되돌아왔다!");
         ANIMATION(ANIM_TYPE_GENERAL, HNS_BERRY_ANIM, opponent);
-        MESSAGE("상대 마자는 자뭉열매로 체력을 회복했다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, opponent); // seq 475 #9777: heal animation, no message any more (was "상대 마자는 자뭉열매로 체력을 회복했다!")
         HP_BAR(opponent, damage: -30);
     }
 }
@@ -379,7 +379,7 @@ SINGLE_BATTLE_TEST("HNS9680 3-16 UPSTREAM CHANGE EXPECTED (part-C 5.2): Magic Ro
         // only before the next action. After #9680 (upstream Call) it activates inside the loop.
         MESSAGE("마자용은 축하를 썼다!");
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, opponent);
-        MESSAGE("상대 마자는 자뭉열매로 체력을 회복했다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, opponent); // seq 475 #9777: heal animation, no message any more (was "상대 마자는 자뭉열매로 체력을 회복했다!")
         HP_BAR(opponent, damage: -30);
     }
 }

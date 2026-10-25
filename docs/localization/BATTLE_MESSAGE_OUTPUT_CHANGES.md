@@ -75,6 +75,10 @@
 | 부리캐논 준비 중인 포켓몬을 흡수 계열 접촉기로 때림 (upstream #10443, seq 439. 새 문장 0) | 화상 문장 → 흡수 회복 문장 | 흡수 회복 문장 → 화상 문장(자체 MoveEnd 단계, 접촉기만) | `MoveEndBeakBlast`(`MOVEEND_RAGE` 뒤·`MOVEEND_ABILITIES` 앞) |
 | 싱글 배틀에서 와이드가드를 쓴 포켓몬에게 상대가 전체기(지진·눈보라 등)를 씀 (upstream #10467 일부, seq 441. 새 문장 0) | 막지 못하고 맞음 | `{포켓몬}{은는} 공격으로부터⏎몸을 지켰다!` — 막음 | `IsBattlerProtected` `PROTECT_WIDE_GUARD` 대상 종류 비교 |
 | 비늘뿌리기로 상대의 마지막 포켓몬을 쓰러뜨림 (upstream #9408 이식, seq 465. 새 문장 0 — 세션 임시 테스트로 이식 전후 확인) | 능력 변화 없이 배틀 끝 | 능력 변화 애니와 방어 하락·스피드 상승 문장 뒤 배틀 끝(상대가 남아 있을 때와 같음, upstream 1.17.0과 같음) | `MoveEndMoveBlock` `EFFECT_SCALE_SHOT`(`NoAliveMonsForEitherParty` 검사 없음) |
+| 연속기(트리플킥 등)의 뒤 타격이 빗나감 (upstream #9777 이식, seq 475 `5cd8e493`) | `{대상}에게는\n맞지 않았다!` 뒤 `N번 맞았다!`(seq 471 #9983) | `N번 맞았다!`만(그 앞 대기가 길어짐) — seq 471 전과 같은 문장 순서. 맞은 횟수 복수형 처리(`multihitplurality`)는 한글 문장에 영향 없음 | `BattleScript_BattlerAvoidedMultiHit` |
+| Z기술·다이맥스 기술이 방어(방어·판별 등)를 뚫음 (seq 475 `5cd8e493`) | 기술 애니 **전**에 `{대상}{은/는}\n공격을 막아 내지 못하고 데미지를 입었다!` | 같은 문장이 **피해 뒤**(기술 종료 단계)에 | `MoveEndProtectBypassEffects`, `BattleScript_CouldntFullyProtect`(이름 토큰 `{B_SCR}` — 정책 74) |
+| 보이지않는주먹·관통드릴의 접촉 기술이 방어를 뚫음 (seq 475 `5cd8e493`) | 팝업·문장 없음 | 피해 뒤 **특성 팝업** → `{대상}{은/는}\n공격을 막아 내지 못하고 데미지를 입었다!`(대상마다). 비접촉 기술은 그대로 막힘(팝업·문장 없음) | `BattleScript_UnseenFist` |
+| 그래스필드 턴 끝 회복 (seq 475 `5cd8e493`) | `…의\n체력이 회복되었다!` → HP 바 | **회복 애니메이션**(`B_ANIM_SIMPLE_HEAL`) → 같은 문장 → HP 바 | `BattleScript_GrassyTerrainHeals` |
 
 ## 상태이상·회복·잠자기
 
@@ -218,6 +222,15 @@
 | 더블 전체기(지진 등)로 반감열매가 발동하고 공생으로 도구를 받음 (upstream #10653 이식, seq 334. 새 문장 0) | 받은 도구에 다시 도구 팝업·열매 애니 → `상대 피카츄는 입는 데미지를⏎상처약이 약하게 했다!` 후 그 도구 소모 | 나오지 않음, 받은 도구 유지 | `MoveEndSymbiosis` `berryReduced` 초기화 |
 | 소매치기 포켓몬을 접촉기로 때린 공격자가 같은 기술 중 레드카드 등으로 교체됨 (upstream #10217 이식, seq 386. 새 문장 0) | 소매치기 발동 없음 | 소매치기 팝업 → `상대 포푸니는 마자용으로부터⏎몬스터볼을 빼앗았다!`(파티로 돌아간 원래 공격자의 도구를 훔침, 이름은 원래 공격자). 원래 공격자가 점착이어도 교체된 뒤라 막지 않음. HnS 트레이너 소매치기 0 — 플레이어·랜더마이저에서만 | `MoveEndPickpocket`, `StealTargetItem`, `STRINGID_PKMNSTOLEITEM` 토큰 `{B_BUFF2}` |
 | 더블에서 아군이 초식인데 아로마테라피 (upstream #10388 이식, seq 473 `f675759b`) | 아군 초식 무시, 상태이상 회복만 | 아군 초식 발동(공격 +1, 기존 문장), 사용자 회복은 그대로 | 아로마테라피·치료방울 대상 `TARGET_USER_AND_ALLY` |
+| 먹다남은음식·검은오물(독 타입) 회복, 조개껍질방울 회복 (친구 답 Q3·Q4, upstream #9777 이식, seq 475 `5cd8e493`, 재확인 8k) | 도구 팝업 → 도구 애니 → `{보유자}은(는)\n{도구}으로 인해 조금 회복했다.` → HP 바 | 도구 팝업 → 도구 애니 → **회복 애니** → HP 바(**문장 없음**) | `BattleScript_ItemHealHP_Ret` |
+| 자뭉열매·오랭열매 등 HP 회복 열매(먹은 뒤 소모), 그 밖의 HP 회복 도구 (친구 답 Q5, seq 475, 재확인 8k·8zb) | 도구 팝업 → 열매(도구) 애니 → `{보유자}은(는) {도구}로\n체력을 회복했다!` → HP 바 | 도구 팝업 → 열매(도구) 애니 → **회복 애니(보유자)** → HP 바(**문장 없음**). 숙성은 특성 팝업 뒤 | `BattleScript_ItemHealHP_RemoveItemRet_AnimContinue`(`BS_SCRIPTING` — upstream #10294 수정과 같음) |
+| 혼란 회복 열매(Figy·Wiki·Mago·Aguav·Iapapa — 맛이 싫으면 혼란) (seq 475) | 열매 애니 → `…{도구}로\n체력을 회복했다!` → HP 바 → (맛이 싫으면) 혼란. 도구 팝업 없음 | **도구 팝업** → 열매 애니 → **회복 애니** → HP 바(**회복 문장 없음**) → 혼란 문장은 그대로 | `BattleScript_BerryConfuseHealRet_Anim` |
+| 유폭(접촉으로 쓰러짐) (seq 475) | 특성 팝업 → HP 바 → `{공격자}은(는)\n상처를 입었다!` | 특성 팝업 → HP 바(**문장 없음**) | `BattleScript_AftermathDmg` |
+| 까칠한피부·철가시 (seq 475) | 특성 팝업 → HP 바 → `{공격자}은(는)\n상처를 입었다!` | 특성 팝업 → HP 바(**문장 없음**). 울퉁불퉁멧은 그대로 문장 있음 | `BattleScript_RoughSkinActivates` → `BattleScript_HurtAttackerNoMsg` |
+| 능력 상승 열매(치리열매 등 핀치 열매) (친구 답 2026-10-05 Q6 A안, seq 475) | 열매 애니 → `…은(는) {열매}로\n{능력}이 올라갔다!` | **도구 팝업** → 같은 애니 → 같은 문장 | `BattleScript_ConsumableBerryStatRaise`(숙성 경로 포함) |
+| 약점보험·눈덩이·빛이끼·충전지·구근·허탕보험 발동, 거울허브, Berserk Gene, 부스트에너지 (seq 475) | 도구 애니 → 기존 문장 | **도구 팝업** → 같은 애니 → 같은 문장 | `BattleScript_ItemStatChange`, `BattleScript_MirrorHerbCopyStatChange`, `BattleScript_BerserkGene`, `BattleScript_BoosterEnergy` |
+| 끈적끈적바늘 턴 끝 피해, 검은오물(독 아님) 피해 (seq 475) | 피격 애니 → 기존 피해 문장 | **도구 팝업** → 같은 애니 → 같은 문장 | `BattleScript_ItemHurtWithAnim` |
+| 주눅구슬 발동 (seq 475, 친구 결정 7 유지 — 재확인 30 질문) | 도구 애니 → `…은(는) 주눅구슬로\n스피드가 올라갔다!` | **도구 팝업(주눅구슬)** → 같은 애니 → 같은 문장(도구 이름 유지). upstream은 팝업 뒤 도구 이름 없는 문장이고 팝업 도구 이름을 채우지 않는다(결함) — HnS는 팝업 앞에서 도구를 정함 | `BattleScript_AdrenalineOrbActivates` |
 
 ## 제외한 변경
 

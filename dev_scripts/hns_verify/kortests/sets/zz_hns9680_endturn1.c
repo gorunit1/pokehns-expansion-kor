@@ -170,7 +170,7 @@ SINGLE_BATTLE_TEST("HNS9680 1-07 Leftovers heal and Black Sludge damage")
     } SCENE {
         MESSAGE("상대 마자는 축하를 썼다!");
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
-        MESSAGE("마자용은 먹다남은음식으로 인해 조금 회복했다.");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, player); // seq 475 #9777: heal animation, no message any more (was "마자용은 먹다남은음식으로 인해 조금 회복했다.")
         HP_BAR(player, damage: -30);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_MON_HIT, opponent);
         HP_BAR(opponent, damage: 37);
@@ -188,7 +188,7 @@ SINGLE_BATTLE_TEST("HNS9680 1-08 Black Sludge heals a Poison type, Sticky Barb d
     } SCENE {
         MESSAGE("상대 마자는 축하를 썼다!");
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
-        MESSAGE("아보는 검은오물로 인해 조금 회복했다.");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, player); // seq 475 #9777: heal animation, no message any more (was "아보는 검은오물로 인해 조금 회복했다.")
         HP_BAR(player, damage: -11);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_MON_HIT, opponent);
         HP_BAR(opponent, damage: 37);
@@ -314,7 +314,7 @@ SINGLE_BATTLE_TEST("HNS9680 1-14 Harvest, then Cud Chew next turn")
         TURN {}
         TURN {}
     } SCENE {
-        MESSAGE("마자용은 자뭉열매로 체력을 회복했다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, player); // seq 475 #9777: heal animation, no message any more (was "마자용은 자뭉열매로 체력을 회복했다!")
         HP_BAR(player, damage: -30);
         ABILITY_POPUP(player, ABILITY_HARVEST);
         MESSAGE("마자용은 자뭉열매를 수확했다!");
@@ -322,7 +322,7 @@ SINGLE_BATTLE_TEST("HNS9680 1-14 Harvest, then Cud Chew next turn")
         MESSAGE("상대 마자는 축하를 썼다!");
         ABILITY_POPUP(opponent, ABILITY_CUD_CHEW);
         ANIMATION(ANIM_TYPE_GENERAL, HNS_BERRY_ANIM, opponent);
-        MESSAGE("상대 마자는 자뭉열매로 체력을 회복했다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, opponent); // seq 475 #9777: heal animation, no message any more (was "상대 마자는 자뭉열매로 체력을 회복했다!")
         HP_BAR(opponent, damage: -30);
     }
 }
@@ -335,7 +335,7 @@ SINGLE_BATTLE_TEST("HNS9680 1-15 Pickup")
     } WHEN {
         TURN { MOVE(player, MOVE_SUPER_FANG); }
     } SCENE {
-        MESSAGE("상대 마자는 자뭉열매로 체력을 회복했다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, opponent); // seq 475 #9777: heal animation, no message any more (was "상대 마자는 자뭉열매로 체력을 회복했다!")
         MESSAGE("상대 마자는 축하를 썼다!");
         ABILITY_POPUP(player, ABILITY_PICKUP);
         MESSAGE("마자용은 자뭉열매를 주워 왔다!");

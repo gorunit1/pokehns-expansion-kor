@@ -66,7 +66,7 @@ SINGLE_BATTLE_TEST("HNS9717 K3-03 Emergency Exit foe at weather damage: replacem
         MESSAGE("모래바람이 상대 갑주무사를 덮쳤다!");
         ABILITY_POPUP(opponent, ABILITY_EMERGENCY_EXIT);
         MESSAGE("2는 마자를 내보냈다!");
-        MESSAGE("마자용은 먹다남은음식으로 인해 조금 회복했다.");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, player); // seq 475 #9777: heal animation, no message any more (was "마자용은 먹다남은음식으로 인해 조금 회복했다.")
     }
 }
 

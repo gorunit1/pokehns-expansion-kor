@@ -789,7 +789,7 @@ SINGLE_BATTLE_TEST("HNS9784 K7-01 CHANGE EXPECTED: Magician steals a Sitrus Berr
         ABILITY_POPUP(player, ABILITY_MAGICIAN);
         MESSAGE("클레피는 상대 마자용으로부터 자뭉열매를 빼앗았다!");
         MESSAGE("상대 마자용은 축하를 썼다!");
-        MESSAGE("클레피는 자뭉열매로 체력을 회복했다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, player); // seq 475 #9777: heal animation, no message any more (was "클레피는 자뭉열매로 체력을 회복했다!")
     }
 }
 
@@ -819,7 +819,7 @@ SINGLE_BATTLE_TEST("HNS9784 K7-03 Sitrus Berry of the target dropping below half
         TURN {}
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, player);
-        MESSAGE("상대 마자용은 자뭉열매로 체력을 회복했다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, opponent); // seq 475 #9777: heal animation, no message any more (was "상대 마자용은 자뭉열매로 체력을 회복했다!")
         MESSAGE("상대 마자용은 축하를 썼다!");
     }
 }

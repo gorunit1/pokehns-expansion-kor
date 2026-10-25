@@ -182,9 +182,9 @@ SINGLE_BATTLE_TEST("HNS9168 K07 Oran and Sitrus Berry restore HP after a hit")
         HP_BAR(player, damage: 40);
         ANIMATION(ANIM_TYPE_GENERAL, HNS_BERRY_ANIM, player);
         if (item == ITEM_ORAN_BERRY)
-            MESSAGE("마자용은 오랭열매로 체력을 회복했다!");
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, player); // seq 475 #9777: heal animation, no message any more (was "마자용은 오랭열매로 체력을 회복했다!")
         else
-            MESSAGE("마자용은 자뭉열매로 체력을 회복했다!");
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, player); // seq 475 #9777: heal animation, no message any more (was "마자용은 자뭉열매로 체력을 회복했다!")
         HP_BAR(player);
     }
 }
@@ -202,7 +202,7 @@ SINGLE_BATTLE_TEST("HNS9168 K08 Berry Juice restores HP after a hit (not a berry
         ANIMATION(ANIM_TYPE_MOVE, MOVE_DRAGON_RAGE, opponent);
         HP_BAR(player, damage: 40);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
-        MESSAGE("마자용은 나무열매쥬스로 체력을 회복했다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, player); // seq 475 #9777: heal animation, no message any more (was "마자용은 나무열매쥬스로 체력을 회복했다!")
         HP_BAR(player, damage: -20);
     }
 }
@@ -219,7 +219,7 @@ SINGLE_BATTLE_TEST("HNS9168 K09 Oran Berry with Ripen (ability pop-up, item pop-
         ANIMATION(ANIM_TYPE_MOVE, MOVE_DRAGON_RAGE, opponent);
         ABILITY_POPUP(player, ABILITY_RIPEN);
         ANIMATION(ANIM_TYPE_GENERAL, HNS_BERRY_ANIM, player);
-        MESSAGE("과사삭벌레는 오랭열매로 체력을 회복했다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, player); // seq 475 #9777: heal animation, no message any more (was "과사삭벌레는 오랭열매로 체력을 회복했다!")
         HP_BAR(player, damage: -20);
     }
 }
@@ -240,7 +240,7 @@ SINGLE_BATTLE_TEST("HNS9168 K10 [RIPEN POPUP] Berry Juice held by a Ripen Pokemo
         ABILITY_POPUP(player, ABILITY_RIPEN);
 #endif
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
-        MESSAGE("과사삭벌레는 나무열매쥬스로 체력을 회복했다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, player); // seq 475 #9777: heal animation, no message any more (was "과사삭벌레는 나무열매쥬스로 체력을 회복했다!")
         HP_BAR(player, damage: -20);
     }
 }
@@ -256,7 +256,7 @@ SINGLE_BATTLE_TEST("HNS9168 K11 Figy Berry, flavor not disliked")
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_DRAGON_RAGE, opponent);
         ANIMATION(ANIM_TYPE_GENERAL, HNS_BERRY_ANIM, player);
-        MESSAGE("마자용은 무화열매로 체력을 회복했다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, player); // seq 475 #9777: heal animation, no message any more (was "마자용은 무화열매로 체력을 회복했다!")
         HP_BAR(player);
         NOT MESSAGE("마자용은 혼란에 빠졌다!");
     } THEN {
@@ -275,7 +275,7 @@ SINGLE_BATTLE_TEST("HNS9168 K12 Figy Berry, disliked flavor (BerryConfuseHeal, n
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_DRAGON_RAGE, opponent);
         ANIMATION(ANIM_TYPE_GENERAL, HNS_BERRY_ANIM, player);
-        MESSAGE("마자용은 무화열매로 체력을 회복했다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, player); // seq 475 #9777: heal animation, no message any more (was "마자용은 무화열매로 체력을 회복했다!")
         HP_BAR(player);
         ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_CONFUSION, player);
         MESSAGE("마자용은 혼란에 빠졌다!");
@@ -295,7 +295,7 @@ SINGLE_BATTLE_TEST("HNS9168 K13 Enigma Berry after a super effective hit")
         HP_BAR(player);
         MESSAGE("효과가 굉장했다!");
         ANIMATION(ANIM_TYPE_GENERAL, HNS_BERRY_ANIM, player);
-        MESSAGE("마자용은 의문열매로 체력을 회복했다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, player); // seq 475 #9777: heal animation, no message any more (was "마자용은 의문열매로 체력을 회복했다!")
         HP_BAR(player);
     }
 }
@@ -565,7 +565,7 @@ SINGLE_BATTLE_TEST("HNS9168 K26 [ANIM ADDED] Fling throws a berry that the targe
         MESSAGE("효과가 굉장했다!");
         EATEN_BERRY_ANIM(opponent);
         if (item == ITEM_ORAN_BERRY) {
-            MESSAGE("상대 마자는 오랭열매로 체력을 회복했다!");
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, opponent); // seq 475 #9777: heal animation, no message any more (was "상대 마자는 오랭열매로 체력을 회복했다!")
             HP_BAR(opponent);
         } else if (item == ITEM_CHERI_BERRY) {
             MESSAGE("상대 마자는 버치열매로 마비가 풀렸다!");
@@ -596,7 +596,7 @@ SINGLE_BATTLE_TEST("HNS9168 K27 [ANIM ADDED] Bug Bite eats the target's berry (S
         if (item == ITEM_SITRUS_BERRY) {
             MESSAGE("마자용은 자뭉열매를 빼앗아 먹었다!");
             EATEN_BERRY_ANIM(player);
-            MESSAGE("마자용은 자뭉열매로 체력을 회복했다!");
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, player); // seq 475 #9777: heal animation, no message any more (was "마자용은 자뭉열매로 체력을 회복했다!")
             HP_BAR(player);
         } else {
             MESSAGE("마자용은 치리열매를 빼앗아 먹었다!");
@@ -623,7 +623,7 @@ SINGLE_BATTLE_TEST("HNS9168 K28 [ANIM ADDED] Bug Bite eats a disliked Figy Berry
         MESSAGE("효과가 굉장했다!");
         MESSAGE("마자용은 무화열매를 빼앗아 먹었다!");
         EATEN_BERRY_ANIM(player);
-        MESSAGE("마자용은 무화열매로 체력을 회복했다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, player); // seq 475 #9777: heal animation, no message any more (was "마자용은 무화열매로 체력을 회복했다!")
         HP_BAR(player);
         EATEN_CONFUSION_ANIM(player);
         MESSAGE("마자용은 혼란에 빠졌다!");
@@ -646,7 +646,7 @@ SINGLE_BATTLE_TEST("HNS9168 K29 [ANIM ADDED] Stuff Cheeks (Oran, Liechi)")
         ANIMATION(ANIM_TYPE_MOVE, MOVE_STUFF_CHEEKS, player);
         EATEN_BERRY_ANIM(player);
         if (item == ITEM_ORAN_BERRY) {
-            MESSAGE("탐리스는 오랭열매로 체력을 회복했다!");
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, player); // seq 475 #9777: heal animation, no message any more (was "탐리스는 오랭열매로 체력을 회복했다!")
             HP_BAR(player);
         } else {
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
@@ -674,12 +674,12 @@ SINGLE_BATTLE_TEST("HNS9168 K30 Cud Chew eats the Oran Berry again on the next t
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_DRAGON_RAGE, player);
         ANIMATION(ANIM_TYPE_GENERAL, HNS_BERRY_ANIM, opponent);
-        MESSAGE("상대 켄타로스는 오랭열매로 체력을 회복했다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, opponent); // seq 475 #9777: heal animation, no message any more (was "상대 켄타로스는 오랭열매로 체력을 회복했다!")
         HP_BAR(opponent, damage: -10);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, player);
         ABILITY_POPUP(opponent, ABILITY_CUD_CHEW);
         ANIMATION(ANIM_TYPE_GENERAL, HNS_BERRY_ANIM, opponent);
-        MESSAGE("상대 켄타로스는 오랭열매로 체력을 회복했다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, opponent); // seq 475 #9777: heal animation, no message any more (was "상대 켄타로스는 오랭열매로 체력을 회복했다!")
         HP_BAR(opponent, damage: -10);
     }
 }
@@ -713,12 +713,12 @@ SINGLE_BATTLE_TEST("HNS9168 K32 Harvest restores the Sitrus Berry in sunlight")
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_SCRATCH, player);
         ANIMATION(ANIM_TYPE_GENERAL, HNS_BERRY_ANIM, opponent);
-        MESSAGE("상대 나시는 자뭉열매로 체력을 회복했다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, opponent); // seq 475 #9777: heal animation, no message any more (was "상대 나시는 자뭉열매로 체력을 회복했다!")
         ABILITY_POPUP(opponent, ABILITY_HARVEST);
         MESSAGE("상대 나시는 자뭉열매를 수확했다!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_DRAGON_RAGE, player);
         ANIMATION(ANIM_TYPE_GENERAL, HNS_BERRY_ANIM, opponent);
-        MESSAGE("상대 나시는 자뭉열매로 체력을 회복했다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, opponent); // seq 475 #9777: heal animation, no message any more (was "상대 나시는 자뭉열매로 체력을 회복했다!")
         ABILITY_POPUP(opponent, ABILITY_HARVEST);
         MESSAGE("상대 나시는 자뭉열매를 수확했다!");
     }
@@ -735,7 +735,7 @@ SINGLE_BATTLE_TEST("HNS9168 K33 Cheek Pouch after an Oran Berry")
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_SUPER_FANG, opponent);
         ANIMATION(ANIM_TYPE_GENERAL, HNS_BERRY_ANIM, player);
-        MESSAGE("요씽리스는 오랭열매로 체력을 회복했다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, player); // seq 475 #9777: heal animation, no message any more (was "요씽리스는 오랭열매로 체력을 회복했다!")
         HP_BAR(player, damage: -10);
         ABILITY_POPUP(player, ABILITY_CHEEK_POUCH);
         HP_BAR(player, damage: -20);
@@ -769,7 +769,7 @@ SINGLE_BATTLE_TEST("HNS9168 K34 control: Mental Herb, White Herb, Leftovers")
         else if (item == ITEM_WHITE_HERB)
             MESSAGE("마자용은 하양허브로 상태를 원래대로 되돌렸다!");
         else
-            MESSAGE("마자용은 먹다남은음식으로 인해 조금 회복했다.");
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, player); // seq 475 #9777: heal animation, no message any more (was "마자용은 먹다남은음식으로 인해 조금 회복했다.")
     }
 }
 
@@ -806,8 +806,8 @@ DOUBLE_BATTLE_TEST("HNS9168 K36 doubles: two Sitrus Berries after a spread move"
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_SURF, playerLeft);
         ANIMATION(ANIM_TYPE_GENERAL, HNS_BERRY_ANIM, opponentLeft);
-        MESSAGE("상대 마자용은 자뭉열매로 체력을 회복했다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, opponentLeft); // seq 475 #9777: heal animation, no message any more (was "상대 마자용은 자뭉열매로 체력을 회복했다!")
         ANIMATION(ANIM_TYPE_GENERAL, HNS_BERRY_ANIM, opponentRight);
-        MESSAGE("상대 마자는 자뭉열매로 체력을 회복했다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, opponentRight); // seq 475 #9777: heal animation, no message any more (was "상대 마자는 자뭉열매로 체력을 회복했다!")
     }
 }

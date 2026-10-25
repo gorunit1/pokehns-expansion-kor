@@ -208,7 +208,7 @@ DOUBLE_BATTLE_TEST("HNS9717 K1-08 UPSTREAM CHANGE EXPECTED: Sea of Fire, Grassy 
         HP_BAR(playerLeft, damage: 32);
         MESSAGE("갑주무사의 체력이 회복되었다!");
         HP_BAR(playerLeft, damage: -16);
-        MESSAGE("갑주무사는 먹다남은음식으로 인해 조금 회복했다.");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, playerLeft); // seq 475 #9777: heal animation, no message any more (was "갑주무사는 먹다남은음식으로 인해 조금 회복했다.")
         HP_BAR(playerLeft, damage: -16);
         NONE_OF { ABILITY_POPUP(playerLeft, ABILITY_EMERGENCY_EXIT); }
     }
@@ -227,7 +227,7 @@ SINGLE_BATTLE_TEST("HNS9717 K1-09 Sandstorm then Sitrus Berry back above half: n
     } SCENE {
         MESSAGE("모래바람이 상대 갑주무사를 덮쳤다!");
         HP_BAR(opponent);
-        MESSAGE("상대 갑주무사는 자뭉열매로 체력을 회복했다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, opponent); // seq 475 #9777: heal animation, no message any more (was "상대 갑주무사는 자뭉열매로 체력을 회복했다!")
         HP_BAR(opponent);
         NONE_OF { ABILITY_POPUP(opponent, ABILITY_EMERGENCY_EXIT); }
     }

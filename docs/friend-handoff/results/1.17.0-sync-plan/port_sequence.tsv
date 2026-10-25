@@ -475,7 +475,7 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 472	10034	299	1.16.0	g1_battle_fixed_a	U-statchange-9730	10035,9859,9730	S	fix	Y	N	~0	Fix Strength Sap activation on miss and buffer correct stat	이미 적용(흡수력 빗나감·능력치 버퍼 코드·테스트 있음)
 473	10388	452	1.16.3	g2_battle_fixed_b	U-10388	9898,10175	S	data	N	N	~0	Fix Aromatherapy not being blocked by Sap Sipper	적용 f675759b
 474	10606	563	1.16.4	g2_battle_fixed_b	U-accuracy-9939	9939	S	fix	N	N	~0	Fix Dragon Darts checking the same target multiple times	적용 00bfe24a
-475	9777	664	1.17.0	g3_battle_changes_moves_abilities_items	U-champmsg-9777	9655,9859,9730,9939	L	feature	Y	N	+1KB	Battle Messages from Pokémon Champions	
+475	9777	664	1.17.0	g3_battle_changes_moves_abilities_items	U-champmsg-9777	9655,9859,9730,9939	L	feature	Y	N	+1KB	Battle Messages from Pokémon Champions	적용(9/19·20 선별분 위에 나머지 — 회복 문장 삭제 Q3~Q5, 팝업 추가분, 방어 우회 HnS형 breaksThroughProtectFully·{B_SCR} 이름, 주눅구슬 결정 7 유지(재확인 93), 맹독·화염구슬 HnS 유지(재확인 94), 기존 문자열 한글 유지) 5cd8e493
 475.5	10151	670	1.17.0	g3_battle_changes_moves_abilities_items	U-champions-10151	9514,9657,9616,9859,9777	XL	feature	Y	N	+2KB	Add Champions battle mechanics changes (v1.0.X)	
 475.6	10299	682	1.17.0	g6_overworld_refactors	U-10299	9514,9730,9918,10151	S	refactor	N	N	~0	Adds `MOVE_EFFECT_RANDOM_FROM_LIST` to replace Tri Attack and Dire Claw	
 475.7	10310	685	1.17.0	g3_battle_changes_moves_abilities_items	U-10310	10151	S	test	N	N	~0	Tests for Victory Star not being ignored by Ally	

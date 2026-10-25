@@ -209,7 +209,7 @@ DOUBLE_BATTLE_TEST("HNS9680 4-10 Two foes faint at end of turn (doubles): remain
         TURN { SEND_OUT(opponentLeft, 2); SEND_OUT(opponentRight, 3); }
         TURN {}
     } SCENE {
-        MESSAGE("마자는 먹다남은음식으로 인해 조금 회복했다.");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, playerRight); // seq 475 #9777: heal animation, no message any more (was "마자는 먹다남은음식으로 인해 조금 회복했다.")
         MESSAGE("상대 마자는 독에 의한 데미지를 입고 있다!");
         MESSAGE("상대 마자는 쓰러졌다!");
         MESSAGE("상대 마자용은 화상 데미지를 입고 있다!");
@@ -218,7 +218,7 @@ DOUBLE_BATTLE_TEST("HNS9680 4-10 Two foes faint at end of turn (doubles): remain
         MESSAGE("마자용의 스피드가 올라갔다!");
         MESSAGE("2는 마자를 내보냈다!");
         MESSAGE("2는 마자용을 내보냈다!");
-        MESSAGE("마자는 먹다남은음식으로 인해 조금 회복했다.");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, playerRight); // seq 475 #9777: heal animation, no message any more (was "마자는 먹다남은음식으로 인해 조금 회복했다.")
     }
 }
 
@@ -252,7 +252,7 @@ SINGLE_BATTLE_TEST("HNS9680 4-12 Sandstorm knocks out the last foe: battle won b
         MESSAGE("상대 마자는 쓰러졌다!");
         NONE_OF {
             MESSAGE("모래바람이 마자용을 덮쳤다!");
-            MESSAGE("마자용은 먹다남은음식으로 인해 조금 회복했다.");
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, player); // seq 475 #9777: heal animation, no message any more (was "마자용은 먹다남은음식으로 인해 조금 회복했다.")
             ABILITY_POPUP(player, ABILITY_SPEED_BOOST);
         }
         MESSAGE("2와의 승부에서 이겼다!");
@@ -362,7 +362,7 @@ DOUBLE_BATTLE_TEST("HNS9680 4-17 Stage order in one end of turn (doubles): weath
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_RAIN_CONTINUES);
         ABILITY_POPUP(playerRight, ABILITY_RAIN_DISH);
         HP_BAR(playerRight, damage: -18);
-        MESSAGE("마자용은 먹다남은음식으로 인해 조금 회복했다.");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_SIMPLE_HEAL, playerLeft); // seq 475 #9777: heal animation, no message any more (was "마자용은 먹다남은음식으로 인해 조금 회복했다.")
         HP_BAR(playerLeft, damage: -30);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_LEECH_SEED_DRAIN, opponentLeft);
         HP_BAR(opponentLeft, damage: 61);
