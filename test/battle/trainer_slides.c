@@ -1233,8 +1233,10 @@ AI_MULTI_BATTLE_TEST("Trainer Slide: Multi: Self Mon Unaffected")
         MESSAGE("It doesn't affect Gastly…");
         MESSAGE("It doesn't affect the opposing Gengar…");
         MESSAGE("It doesn't affect the opposing Haunter…");
-        NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_BOOMBURST, playerLeft);
-        NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_BOOMBURST, opponentLeft);
+        NONE_OF {
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_BOOMBURST, playerLeft);
+            ANIMATION(ANIM_TYPE_MOVE, MOVE_BOOMBURST, opponentLeft);
+        }
         MESSAGE("It doesn't affect Gastly and Gastly…");
         MESSAGE("Trainer A: Opponent attacked defender with ineffective move.{PAUSE_UNTIL_PRESS}");
         MESSAGE("Trainer B: Opponent attacked defender with ineffective move.{PAUSE_UNTIL_PRESS}");
