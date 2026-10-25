@@ -188,9 +188,12 @@ BattleScript_DefiantActivates::
 	return
 
 BattleScript_AdrenalineOrbActivates::
-	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT
-	@ HnS: keep the item name in the stat message (STAT_CHANGE_ITEM) as before #9730 until the item pop-up of #9777 (seq 475) replaces it
+	@ HnS: keep the item name in the stat message (STAT_CHANGE_ITEM) as before #9730 (friend decision 7, 2026-10-07; the
+	@ #9777 pop-up is shown as well - RECHECK 30 asks the friend whether to drop the name now). Set before the pop-up so it
+	@ shows the Adrenaline Orb (upstream leaves gLastUsedItem as it was here)
 	setlastuseditem BS_SCRIPTING
+	call BattleScript_ItemPopUp_Scripting
+	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT
 	@ HnS: STAT_CHANGE_CERTAIN as before #9730 (main series too): the holder's own Speed drop with Contrary is not stopped by Mist or Flower Veil
 	trybattlerstatchange BS_SCRIPTING, STAT_CHANGE_SECOND_QUEUE | STAT_CHANGE_ITEM | STAT_CHANGE_CERTAIN
 	removeitem BS_SCRIPTING
@@ -208,27 +211,28 @@ BattleScript_MoveEffectStatChange::
 	return
 
 BattleScript_ItemStatChange::
+	call BattleScript_ItemPopUp_Scripting
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT
 	trybattlerstatchange BS_SCRIPTING, STAT_CHANGE_ITEM
 	removeitem BS_SCRIPTING
 	return
 
 BattleScript_ConsumableBerryStatRaise::
+	call BattleScript_ItemPopUp_Scripting
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_BERRY
-	@ HnS: no pop-up for stat berries yet (upstream adds it with #9777/#10268)
 	trybattlerstatchange BS_SCRIPTING, STAT_CHANGE_ITEM | STAT_CHANGE_CERTAIN
 	removeitem BS_SCRIPTING
 	return
 
 BattleScript_ConsumableBerryStatRaiseRipen::
 	call BattleScript_AbilityPopUp
+	call BattleScript_ItemPopUp_Scripting
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_BERRY
 	trybattlerstatchange BS_SCRIPTING, STAT_CHANGE_ITEM | STAT_CHANGE_CERTAIN
 	removeitem BS_SCRIPTING
 	return
 
 BattleScript_ConsumableItemStatRaise::
-	@ HnS: item pop-up as in Champions (terrain seeds; Room Service shares this label). upstream 1.17.0 has it here (#9777)
 	call BattleScript_ItemPopUp_Scripting
 BattleScript_ConsumableItemStatRaiseNoPopup:
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT
@@ -1740,15 +1744,15 @@ BattleScript_MultiHitPrintStrings::
 	resultmessage
 	waitmessage B_WAIT_TIME_LONG
 	copyarray gBattleTextBuff1, sMULTIHIT_STRING, 6
+	multihitplurality
 	printstring STRINGID_HITXTIMES
 	waitmessage B_WAIT_TIME_LONG
 	return
 
 BattleScript_BattlerAvoidedMultiHit::
-	pause B_WAIT_TIME_SHORT
-	printstring STRINGID_BATTLERAVOIDEDATTACK
-	waitmessage B_WAIT_TIME_LONG
+	pause B_WAIT_TIME_LONG
 	copyarray gBattleTextBuff1, sMULTIHIT_STRING, 6
+	multihitplurality
 	printstring STRINGID_HITXTIMES
 	waitmessage B_WAIT_TIME_LONG
 	return
@@ -4311,8 +4315,6 @@ BattleScript_AftermathDmg::
 	jumpifability BS_ATTACKER, ABILITY_MAGIC_GUARD, BattleScript_AftermathDmgRet
 	healthbarupdate BS_ATTACKER, PASSIVE_HP_UPDATE
 	datahpupdate BS_ATTACKER, PASSIVE_HP_UPDATE
-	printstring STRINGID_AFTERMATHDMG
-	waitmessage B_WAIT_TIME_LONG
 	tryfaintmon BS_ATTACKER
 BattleScript_AftermathDmgRet:
 	return
@@ -4635,6 +4637,8 @@ BattleScript_MoveEffectPoison::
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_UpdateEffectStatusIconRet
 
+BattleScript_FlameOrbActivates::
+	call BattleScript_ItemPopUp_Scripting
 BattleScript_MoveEffectBurn::
 	statusanimation BS_EFFECT_BATTLER
 	printfromtable gGotBurnedStringIds
@@ -4668,6 +4672,8 @@ BattleScript_MoveEffectUproar::
 BattleScript_MoveEffectUproarEnd:
 	return
 
+BattleScript_ToxicOrbActivates::
+	call BattleScript_ItemPopUp_Scripting
 BattleScript_MoveEffectToxic::
 	statusanimation BS_EFFECT_BATTLER
 	printstring STRINGID_PKMNBADLYPOISONED
@@ -5218,6 +5224,7 @@ BattleScript_MoveUsedPsychicTerrainPrevents::
 	return
 
 BattleScript_GrassyTerrainHeals::
+	playanimation BS_ATTACKER, B_ANIM_SIMPLE_HEAL
 	printstring STRINGID_GRASSYTERRAINHEALS
 	waitmessage B_WAIT_TIME_LONG
 	healthbarupdate BS_ATTACKER, PASSIVE_HP_UPDATE
@@ -5354,9 +5361,15 @@ BattleScript_HurtAttacker:
 	tryfaintmon BS_ATTACKER
 	return
 
+BattleScript_HurtAttackerNoMsg:
+	healthbarupdate BS_ATTACKER, PASSIVE_HP_UPDATE
+	datahpupdate BS_ATTACKER, PASSIVE_HP_UPDATE
+	tryfaintmon BS_ATTACKER
+	return
+
 BattleScript_RoughSkinActivates::
 	call BattleScript_AbilityPopUp
-	call BattleScript_HurtAttacker
+	call BattleScript_HurtAttackerNoMsg
 	return
 
 BattleScript_RockyHelmetActivates::
@@ -5369,7 +5382,7 @@ BattleScript_SpikyShieldEffect::
 	clearmoveresultflags MOVE_RESULT_NO_EFFECT
 	healthbarupdate BS_ATTACKER, PASSIVE_HP_UPDATE
 	datahpupdate BS_ATTACKER, PASSIVE_HP_UPDATE
-	printstring STRINGID_AFTERMATHDMG
+	printstring STRINGID_PKMNWASHURT
 	waitmessage B_WAIT_TIME_LONG
 	tryfaintmon BS_ATTACKER
 	setmoveresultflags MOVE_RESULT_MISSED
@@ -5636,8 +5649,7 @@ BattleScript_ItemHealHP_RemoveItem::
 	return
 
 BattleScript_ItemHealHP_RemoveItemRet_AnimContinue:
-	printstring STRINGID_PKMNSITEMRESTOREDHEALTH
-	waitmessage B_WAIT_TIME_LONG
+	playanimation BS_SCRIPTING, B_ANIM_SIMPLE_HEAL
 	healthbarupdate BS_SCRIPTING, PASSIVE_HP_UPDATE
 	datahpupdate BS_SCRIPTING, PASSIVE_HP_UPDATE
 	removeitem BS_SCRIPTING
@@ -5687,17 +5699,16 @@ BattleScript_LifeOrbActivates::
 	return
 
 BattleScript_ItemHurtWithAnim::
+	call BattleScript_ItemPopUp_Attacker
 	playanimation BS_ATTACKER, B_ANIM_MON_HIT
 	waitanimation
 	call BattleScript_ItemHurtRet
 	return
 
 BattleScript_ItemHealHP_Ret::
-	@ HnS: item pop-up as in Champions (Leftovers, Shell Bell; Black Sludge heal shares this label). upstream 1.17.0 has it here (#9777); the HP message goes with #9777 at seq 475
 	call BattleScript_ItemPopUp_Attacker
 	playanimation BS_ATTACKER, B_ANIM_HELD_ITEM_EFFECT
-	printstring STRINGID_PKMNSITEMRESTOREDHPALITTLE
-	waitmessage B_WAIT_TIME_LONG
+	playanimation BS_ATTACKER, B_ANIM_SIMPLE_HEAL
 	healthbarupdate BS_ATTACKER, PASSIVE_HP_UPDATE
 	datahpupdate BS_ATTACKER, PASSIVE_HP_UPDATE
 	return
@@ -5750,9 +5761,9 @@ BattleScript_BerryConfuseHeal::
 BattleScript_BerryConfuseHealRet_AbilityPopup:
 	call BattleScript_AbilityPopUp
 BattleScript_BerryConfuseHealRet_Anim:
+	call BattleScript_ItemPopUp_Scripting
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_BERRY
-	printstring STRINGID_PKMNSITEMRESTOREDHEALTH
-	waitmessage B_WAIT_TIME_LONG
+	playanimation BS_SCRIPTING, B_ANIM_SIMPLE_HEAL
 	healthbarupdate BS_SCRIPTING, PASSIVE_HP_UPDATE
 	datahpupdate BS_SCRIPTING, PASSIVE_HP_UPDATE
 	seteffectprimary BS_SCRIPTING, BS_SCRIPTING, MOVE_EFFECT_CONFUSION
@@ -5911,6 +5922,7 @@ BattleScript_PrintPlayerForfeitedLinkBattle::
 	end2
 
 BattleScript_MirrorHerbCopyStatChange::
+	call BattleScript_ItemPopUp_Scripting
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT, NULL
 	printstring STRINGID_MIRRORHERBCOPIED
 	waitmessage B_WAIT_TIME_LONG
@@ -6539,12 +6551,16 @@ BattleScript_TargetProtectedConsumeFlingItem::
 	removeitem BS_ATTACKER
 	return
 
+BattleScript_UnseenFist::
+	copybyte gBattlerAbility, gBattlerAttacker
+	call BattleScript_AbilityPopUp
 BattleScript_CouldntFullyProtect::
 	printstring STRINGID_COULDNTFULLYPROTECT
 	waitmessage B_WAIT_TIME_LONG
 	return
 
 BattleScript_BerserkGene::
+	call BattleScript_ItemPopUp_Scripting
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT, sB_ANIM_ARG1
 	trybattlerstatchange BS_SCRIPTING, STAT_CHANGE_ITEM
 	jumpifability BS_SCRIPTING, ABILITY_OWN_TEMPO, BattleScript_BerserkGene_OwnTempoPrevents
@@ -6573,6 +6589,7 @@ BattleScript_BerserkGene_Confuse::
 	goto BattleScript_BerserkGene_End
 
 BattleScript_BoosterEnergy::
+	call BattleScript_ItemPopUp_Scripting
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT, sB_ANIM_ARG1
 	call BattleScript_AbilityPopUpScripting
 	printstring STRINGID_BOOSTERENERGYACTIVATES

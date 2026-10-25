@@ -614,7 +614,7 @@ const u8 *const gBattleStringsTable[STRINGID_COUNT] =
     [STRINGID_SLOWSTARTENTERS]                      = COMPOUND_STRING("{B_SCR_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n컨디션이 좋아지지 않는다!"),
     [STRINGID_SLOWSTARTEND]                         = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n컨디션을 회복했다!"),
     [STRINGID_SOLARPOWERHPDROP]                     = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX}'s {B_ATK_ABILITY} takes its toll!"), //don't think this message is displayed anymore
-    [STRINGID_AFTERMATHDMG]                         = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n상처를 입었다!"),
+    [STRINGID_PKMNWASHURT]                          = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n상처를 입었다!"),
     [STRINGID_ANTICIPATIONACTIVATES]                = COMPOUND_STRING("{B_SCR_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n몸을 떨었다!"),
     [STRINGID_FOREWARNACTIVATES]                    = COMPOUND_STRING("{B_EFF_NAME_WITH_PREFIX2}의\n{B_BUFF1}{B_TXT_EULREUL} 간파했다!"),
     [STRINGID_ICEBODYHPGAIN]                        = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX}'s {B_ATK_ABILITY} healed it a little bit!"), //don't think this message is displayed anymore
@@ -800,7 +800,7 @@ const u8 *const gBattleStringsTable[STRINGID_COUNT] =
     [STRINGID_TOXICSPIKESDISAPPEAREDFROMTEAM]       = COMPOUND_STRING("{B_ATK_TEAM2} 발밑의\n독압정이 사라졌다!"),
     [STRINGID_STICKYWEBDISAPPEAREDFROMTEAM]         = COMPOUND_STRING("{B_ATK_TEAM2} 발밑의\n끈적끈적네트가 사라졌다!"),
     [STRINGID_STEALTHROCKDISAPPEAREDFROMTEAM]       = COMPOUND_STRING("{B_ATK_TEAM2} 주변의\n스텔스록이 사라졌다!"),
-    [STRINGID_COULDNTFULLYPROTECT]                  = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n공격을 막아 내지 못하고 데미지를 입었다!"),
+    [STRINGID_COULDNTFULLYPROTECT]                  = COMPOUND_STRING("{B_SCR_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n공격을 막아 내지 못하고 데미지를 입었다!"),
     [STRINGID_STOCKPILEDEFFECTWOREOFF]              = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n비축해 두었던 효과가 사라졌다!"),
     [STRINGID_PKMNREVIVEDREADYTOFIGHT]              = COMPOUND_STRING("{B_BUFF1}{B_TXT_EUNNEUN}\n정신을 차려 싸울 수 있게 되었다!"),
     [STRINGID_ITEMRESTOREDSPECIESHEALTH]            = COMPOUND_STRING("{B_BUFF1}의\n체력이 회복되었다."),
@@ -883,6 +883,7 @@ const u8 *const gBattleStringsTable[STRINGID_COUNT] =
     [STRINGID_BLOCKEDBYSLEEPCLAUSE]                 = COMPOUND_STRING("Sleep Clause kept {B_DEF_NAME_WITH_PREFIX2} awake!"), // no official SV/Champions battle message
     [STRINGID_SUPEREFFECTIVETWOFOES]                = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX2}{B_TXT_WAGWA} {B_DEF_PARTNER_NAME}에게\n효과가 굉장했다!"),
     [STRINGID_NOTVERYEFFECTIVETWOFOES]              = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX2}{B_TXT_WAGWA} {B_DEF_PARTNER_NAME}에게\n효과가 별로였다."),
+    [STRINGID_ITDOESNTAFFECTTWOFOES]                = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX2}{B_TXT_WAGWA} {B_DEF_PARTNER_NAME}에게는\n효과가 없는 것 같다…"), // HnS: unused, kept like upstream (#9777 brings it back after #10144)
     [STRINGID_SENDCAUGHTMONPARTYORBOX]              = COMPOUND_STRING("{B_DEF_NAME}{B_TXT_EULREUL}\n지닌 포켓몬에 넣겠습니까?"),
     [STRINGID_PKMNSENTTOPCAFTERCATCH]               = gText_PkmnSentToPCAfterCatch,
     [STRINGID_PKMNDYNAMAXED]                        = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} grew huge into its Dynamax form!"), //다이맥스
@@ -1508,7 +1509,7 @@ const u16 gPartyCureStatusStringIds[] =
 
 const u16 gHurtByStringIds[] =
 {
-    [B_MSG_HURT] = STRINGID_AFTERMATHDMG,
+    [B_MSG_HURT] = STRINGID_PKMNWASHURT,
     [B_MSG_HURT_BY_ITEM] = STRINGID_PKMNHURTSWITH,
 };
 
