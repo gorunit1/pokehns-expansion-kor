@@ -9,7 +9,7 @@
 - 수정 파일: 커밋 `d1e2dcae`(`include/constants/battle_move_resolution.h`, `src/battle_move_resolution.c`, `test/hns_10330_target_failure.c`(새)). 문서 — `full-sync-seq-479.md`(새), `test-baseline-seq479.txt`(새), `RECHECK_BEFORE_COMPLETION.md` 97, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 2행, `port_sequence.tsv` 479, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. 이식 전 비교는 scratchpad 클론 `7b2c0b9e`에서 임시 이름으로(커밋 안 함, 지움). 이 컨테이너의 클론 ROM SHA1이 seq 478 기록과 같아 빌드 재현 확인.
 - 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
-- 친구 문자: 세션 답변 문안(새 질문 없음).
+- 친구 문자: 세션 답변 문안(새 질문 없음, 실기 3) — **보냄**(2026-10-25 사용자 확인).
 - 다음 시작점: seq 481 #10326.
 
 ### 2026-10-25 — full-sync 묶음 45(seq 478 #10300 + 480 #10365) (클라우드 세션)
