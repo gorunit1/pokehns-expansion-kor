@@ -10,7 +10,7 @@
 - 수정 파일: 커밋 `e6b976e0`(27파일 — upstream 25 + `test/hns_10362_canceler.c`(새) + 한글 회귀 세트 `zz_hns9680_endturn2.c`), `50dcea2e`(공생 테스트, `kortests/expected/summary.txt`·`summary.meta`). 문서 — `full-sync-seq-482.md`(새), `test-baseline-seq482.txt`(새), `RECHECK_BEFORE_COMPLETION.md` 8l 해결·36 메모·96 진행, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 2행, `port_sequence.tsv` 482·483·493, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. 이식 전 비교는 scratchpad 클론 `ec6cbcc5`에서 `ZZ old` 사본(커밋 안 함, 지움). 열매 문장 순서 확인용 임시 테스트도 지움.
 - 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
-- 친구 문자: 세션 답변 문안(새 질문 없음).
+- 친구 문자: 세션 답변 문안(새 질문 없음, 실기 5) — **보냄**(2026-10-25 사용자 확인).
 - 다음 시작점: seq 484 #10426.
 
 ### 2026-10-25 — full-sync 묶음 47(seq 481 #10326 + 487 #10586) (클라우드 세션)
