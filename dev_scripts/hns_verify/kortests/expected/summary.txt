@@ -1,3 +1,4 @@
+  - test/battle/zz_hns9168_k1_berry.c:535: Unmatched ANIMATION - HNS9168 K25 Colbur Berry weakens a super effective Bite.
   - test/battle/zz_hns9680_endturn2.c:414: Unmatched MESSAGE - HNS9680 2-13 Pledge field effects: sea of fire damage and end, rainbow end, swamp end 1/3.
   - test/battle/zz_hns9680_endturn3.c:381: Unmatched ANIMATION - HNS9680 3-16 UPSTREAM CHANGE EXPECTED (part-C 5.2): Magic Room end loop stops after White Herb, foe Sitrus waits for next turn.
   - test/battle/zz_hns9680_endturn4.c:396: Matched ANIMATION - HNS9680 4-18 UPSTREAM CHANGE EXPECTED: last foe faints at end of turn while the player is Dynamaxed, no Dynamax end animation.
@@ -36,20 +37,19 @@
   - test/battle/zz_hns9784_k1_items.c:352: Unmatched ANIMATION - HNS9784 K3-03 CHANGE EXPECTED: faster Eject Pack should come before slower White Herb (pre: White Herb first).
   - test/battle/zz_hns9784_k1_items.c:396: Unmatched MESSAGE - HNS9784 K3-05 CHANGE EXPECTED: user Throat Spray, then foes Eject Pack and White Herb by raw Speed (pre: White Herb, Throat Spray, Eject Pack).
   - test/battle/zz_hns9784_k1_items.c:410: SEND_OUT not required (is the send out random?) - HNS9784 K3-06 CHANGE EXPECTED: Weak Armor on U-turn: Eject Pack should not activate (pre: it fires at the U-turn replacement switch-in).
-  - test/battle/zz_hns9784_k1_items.c:492: Unmatched ABILITY_POPUP - HNS9784 K4-02 CHANGE EXPECTED: Shell Smash: foe Opportunist should come before the user White Herb (pre: White Herb first).
   - test/battle/zz_hns9784_k1_items.c:511: Unmatched ANIMATION - HNS9784 K4-03 CHANGE EXPECTED: Snarl: user Throat Spray should come before the foe White Herb (pre: White Herb first).
   - test/battle/zz_hns9784_k1_items.c:530: Unmatched MESSAGE - HNS9784 K4-04 CHANGE EXPECTED: two foes White Herb by raw Speed, right foe faster should go first (pre: battler order, left first).
-  - test/battle/zz_hns9784_k1_items.c:640: EXPECT_EQ(808, 708) failed - HNS9784 K5-07 CHANGE EXPECTED: Clangorous Soul with Throat Spray vs Mirror Herb, reveal only (pre 708 = Mirror Herb copies before Throat Spray; 1.17.0 808).
   - test/battle/zz_hns9784_k1_items.c:657: Unmatched ANIMATION - HNS9784 K5-03 CHANGE EXPECTED: Shell Smash: faster foe Mirror Herb should come before the user White Herb (pre: White Herb first).
   - test/battle/zz_hns9784_k1_items.c:65: Unmatched ANIMATION - HNS9784 K1-03 CHANGE EXPECTED: Red Card: raw-faster holder under Slow Start should activate (pre: effective-Speed holder).
   - test/battle/zz_hns9784_k1_items.c:694: Unmatched ANIMATION - HNS9784 K5-05 CHANGE EXPECTED: two Mirror Herb holders by raw Speed, right one faster should go first (pre: battler order).
-  - test/battle/zz_hns9784_k1_items.c:792: Unmatched MESSAGE - HNS9784 K7-01 CHANGE EXPECTED: Magician steals a Sitrus Berry below half HP: should eat it in the same move end (pre: after the foe acts).
+  - test/battle/zz_hns9784_k1_items.c:792: Unmatched ANIMATION - HNS9784 K7-01 CHANGE EXPECTED: Magician steals a Sitrus Berry below half HP: should eat it in the same move end (pre: after the foe acts).
   - test/battle/zz_hns9784_k1_items.c:87: Matched MESSAGE - HNS9784 K1-04 CHANGE EXPECTED: faster Eject Button, then slower Red Card should also activate (pre: only Eject Button).
   - test/battle/zz_hns9918_pledge.c:322: Unmatched MESSAGE - HNS9918 K12 Sea of fire on the opposing side ends; the player is faster, the foe hit last (#10214 CHANGE EXPECTED).
   - test/battle/zz_hns9918_pledge.c:522: Unmatched MESSAGE - HNS9918 K22 Sea of fire on the player's side ends; the foe is faster, the player hit last (#10214 CHANGE EXPECTED).
   - test/battle/zz_hns9918_pledge.c:543: Unmatched MESSAGE - HNS9918 K23 Starting status: sea of fire on the opposing side ends (#10214 CHANGE EXPECTED).
-- Tests FAILED:          94    Add TESTS='X' to run tests with the defined prefix.
-- Tests PASSED:          558
+  - test/battle/zz_hnsb2021_kor.c:838: Unmatched ANIMATION - HNSB2021 D1 Symbiosis item received during a spread move is not used again as a resistance Berry (#10653).
+- Tests FAILED:          96    Add TESTS='X' to run tests with the defined prefix.
+- Tests PASSED:          556
 - Tests TOTAL:           652
 HNS9168 K01 status cure berries (Cheri, Rawst, Pecha, Chesto) after the status move: PASS
 HNS9168 K02 Aspear Berry thaws the holder on switch-in (opponent side): PASS
@@ -75,7 +75,7 @@ HNS9168 K21 Lansat Berry: PASS
 HNS9168 K22 Micle Berry: PASS
 HNS9168 K23 Custap Berry: PASS
 HNS9168 K24 Jaboca Berry (physical) and Rowap Berry (special): PASS
-HNS9168 K25 Colbur Berry weakens a super effective Bite: PASS
+HNS9168 K25 Colbur Berry weakens a super effective Bite: FAIL
 HNS9168 K26 [ANIM ADDED] Fling throws a berry that the target eats (Oran, Cheri, Liechi): PASS
 HNS9168 K27 [ANIM ADDED] Bug Bite eats the target's berry (Sitrus, Liechi): PASS
 HNS9168 K28 [ANIM ADDED] Bug Bite eats a disliked Figy Berry (confusion animation too): PASS
@@ -583,7 +583,7 @@ HNSB2021 C3 two Shell Trap users hit by one spread move activate in speed order 
 HNSB2021 C4 Shell Trap user hit by a single-target physical move moves right after it: PASS
 HNSB2021 C5 After You: the slowest target moves right after the user (same turn-order function as #10682): PASS
 HNSB2021 C6 two foes Pursuit a switching player mon from fastest to slowest (same turn-order function as #10682): PASS
-HNSB2021 D1 Symbiosis item received during a spread move is not used again as a resistance Berry (#10653): PASS
+HNSB2021 D1 Symbiosis item received during a spread move is not used again as a resistance Berry (#10653): FAIL
 HNSB2021 E1 Copycat copies the player's move that fainted its foe target (#10654): PASS
 HNSB2021 E2 Copycat copies the foe's move that fainted the user's partner (#10654): PASS
 HNSFIX1 T1 Eject Button replacement with Magic Bounce bounces in the same turn: PASS

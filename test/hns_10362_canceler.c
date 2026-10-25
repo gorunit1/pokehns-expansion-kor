@@ -136,3 +136,40 @@ DOUBLE_BATTLE_TEST("HnS 10362: a spread move plays one animation and both HP bar
         NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_HYPER_VOICE, playerLeft);
     }
 }
+
+// Friend 2026-10-14c: a Symbiosis item received during a spread move is not used again as a resist berry (#10653).
+// Same check as kortests HNSB2021 D1 in the new order: berry animations in slot order (ally first) before the move,
+// the berry lines after the hit, then Symbiosis without a second berry.
+DOUBLE_BATTLE_TEST("HnS 10362: a Symbiosis item received during a spread move is not used again as a resist berry")
+{
+    GIVEN {
+        ASSUME(GetMoveTarget(MOVE_EARTHQUAKE) == TARGET_FOES_AND_ALLY);
+        ASSUME(GetItemHoldEffect(ITEM_SHUCA_BERRY) == HOLD_EFFECT_RESIST_BERRY);
+        ASSUME(GetItemHoldEffectParam(ITEM_SHUCA_BERRY) == TYPE_GROUND);
+        PLAYER(SPECIES_ORANGURU) { Ability(ABILITY_SYMBIOSIS); Item(ITEM_POTION); }
+        PLAYER(SPECIES_PIKACHU) { Item(ITEM_SHUCA_BERRY); }
+        OPPONENT(SPECIES_PIKACHU) { Item(ITEM_SHUCA_BERRY); }
+        OPPONENT(SPECIES_ORANGURU) { Ability(ABILITY_SYMBIOSIS); Item(ITEM_POTION); }
+    } WHEN {
+        TURN { MOVE(playerLeft, MOVE_EARTHQUAKE); }
+    } SCENE {
+        MESSAGE("하랑우탄은 지진을 썼다!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_BERRY, playerRight);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_BERRY, opponentLeft);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_EARTHQUAKE, playerLeft);
+        HP_BAR(opponentLeft);
+        HP_BAR(playerRight);
+        HP_BAR(opponentRight);
+        NONE_OF {
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_BERRY, opponentLeft);
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_BERRY, playerRight);
+            MESSAGE("상대 피카츄는 입는 데미지를 상처약이 약하게 했다!");
+            MESSAGE("피카츄는 입는 데미지를 상처약이 약하게 했다!");
+        }
+    } THEN {
+        EXPECT_EQ(playerLeft->item, ITEM_NONE);
+        EXPECT_EQ(playerRight->item, ITEM_POTION);
+        EXPECT_EQ(opponentLeft->item, ITEM_POTION);
+        EXPECT_EQ(opponentRight->item, ITEM_NONE);
+    }
+}

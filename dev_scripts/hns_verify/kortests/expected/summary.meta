@@ -11,7 +11,7 @@ summary.txt = 한글 회귀 기대 요약(kortests/run.sh 출력 그대로: 정�
   K4-12도 PASS 그대로여서 summary.txt는 바이트 그대로다(hnsfix-1010e mkcopy 사본 + trace.patch, kortests/run.sh <사본> post 8:
   517/607, 기대와 바이트 동일, trace는 K4-12 2줄만 다름). 고친 K4-12를 8세대 코드에서 돌리면 `Matched ANIMATION`
   (zz_hns9730_k4_interact.c:290)으로 FAIL한다.
-합계: 652개, PASS 558 / FAIL 88 / INVALID 6 (2026-10-23 묶음 26 #10214 전: PASS 563 / FAIL 83; 2026-10-14 묶음 23 전: PASS 562 / FAIL 84; HNSB2021 30개 추가 전: 622개, PASS 532)
+합계: 652개, PASS 556 / FAIL 90 / INVALID 6 (2026-10-25 묶음 48 #10362·#10431 전: PASS 558 / FAIL 88; 2026-10-23 묶음 26 #10214 전: PASS 563 / FAIL 83; 2026-10-14 묶음 23 전: PASS 562 / FAIL 84; HNSB2021 30개 추가 전: 622개, PASS 532)
 2026-10-13 HNSSCREEN 15개 추가(방벽 해제 — #10829 앞당김 6d08adc6, 진영 문구 db62d527, 배리어프리 타이머 d4e3b8b6): 클라우드
   저장소 코드 d4e3b8b6에서 kortests/run.sh <저장소> kor-screen 8 → 532/622. 그 전 607개의 상태 줄은 그대로(정렬 비교 차이 0),
   새 15개 모두 PASS. summary.txt는 이 실행 요약 그대로(테스트가 늘어 hydra 실패 목록 앞 50줄의 선택만 2줄 바뀜 — 상태 줄은 그대로).
@@ -36,6 +36,14 @@ summary.txt = 한글 회귀 기대 요약(kortests/run.sh 출력 그대로: 정�
   이 실행 요약 그대로이고, 다시 돌린 결과(kor-b26c)가 이 기대와 바이트 같다(full-sync-seq-376-380.md 검증 절).
 2026-10-24 full-sync 묶음 38: #10619(seq 451)가 테스트 요약의 FAILED 줄을 upstream 모양(`- Tests FAILED:` 뒤 공백 10칸)으로 바꿔
   summary.txt의 그 한 줄만 새 모양으로 고쳤다(숫자 94 그대로). 상태 줄 차이 0, 합계 558/652 그대로(kor-b40, 코드 1859ff22).
+2026-10-25 full-sync 묶음 48(seq 482 #10362 + 483 #10431 + 493 #10714 앞당김): 반감열매 애니가 공격 애니 전에 대상 슬롯 순서
+  (공격자 → 파트너 → 왼쪽 상대 → 오른쪽 상대)로, "…입는 데미지를 …이(가) 약하게 했다!"는 피격 뒤(기술 끝 단계)로 옮겨져(친구 Q9
+  2026-10-04, 재확인 8l) 이식 전 순서를 고정하던 2개가 기대대로 PASS → FAIL: HNS9168 K25(마코열매 문장이 공격 애니 전),
+  HNSB2021 D1(상대 열매 애니가 아군보다 먼저 — 공생 도구를 다시 쓰지 않는 동작은 새 순서의 test/hns_10362_canceler.c
+  "HnS 10362: a Symbiosis item received …"로 PASS 확인). 같은 묶음에서 zz_hns9680_endturn2.c 2곳의 미래예지 착탄 검사를 지워진
+  일반 애니 B_ANIM_FUTURE_SIGHT_HIT에서 기술 애니(ANIM_TYPE_MOVE, MOVE_FUTURE_SIGHT)로 바꿈(줄 수 같음, 두 테스트 PASS 그대로).
+  코드 = 클라우드 저장소 e6b976e0, ALLOW_REPO=1 kortests/run.sh <저장소> kor-s482 8 → 556/652. 다른 650개 상태 줄은 그대로
+  (compare.py 차이 = 위 2개). summary.txt는 이 실행 요약 그대로(full-sync-seq-482.md 검증 절).
 세트          PASS / 전체   파일(kortests/sets/)
   HNS9680      66 /  70    zz_hns9680_endturn1~4.c
   HNS9714      28 /  34    zz_hns9714_b1_defog.c, b2_tidyup_sub.c, b3_endturn.c, b4_doubles_gmax.c
@@ -60,7 +68,7 @@ summary.txt = 한글 회귀 기대 요약(kortests/run.sh 출력 그대로: 정�
   K3-25 심술꾸러기 주눅구슬 FAIL(받아들인 변화: 도구 이름이 든 문장 `…주눅구슬로 스피드가 떨어졌다!`), HNSX1 21개 PASS
   (HNSX1 16: 정신력에 막힌 위협 → `…공격은 떨어지지 않는다!` → 도구 애니 → 상승 애니 → `…주눅구슬로 스피드가 올라갔다!`,
   X6 친구 결정 2026-10-07 저녁 본가대로. X6 전에는 HEAD의 미발동을 확인하던 탐침 `HNSX1 16 probe: …`였다)
-FAIL·INVALID 94개는 이름의 `UPSTREAM (ORDER) CHANGE EXPECTED`·`CHANGE EXPECTED`(뒤 PR이 들어오면 바뀔 것),
+FAIL·INVALID 96개는 이름의 `UPSTREAM (ORDER) CHANGE EXPECTED`·`CHANGE EXPECTED`(뒤 PR이 들어오면 바뀔 것),
   관찰용(HNSFIXOBS O1, HNS9717P P4), seq 181 #9730에서 받아들인 출력 변화(HNS9730), INVALID 6(HNSSW 4, HNS9784 K3-06, HNSFIX1 T13)
 HNS9918 K12·K22·K23(`#10214 CHANGE EXPECTED`)은 불바다 종료 문장의 진영이 반대인 이식 전 출력(재확인 6)을 고정한다.
   seq 385 #10214(묶음 26에서 앞당김, cf44d86e)가 턴 끝 불바다 블록에 gBattlerAttacker를 넣어 이제 FAIL이다(K11은 우연히 맞는 진영이라 그대로).
