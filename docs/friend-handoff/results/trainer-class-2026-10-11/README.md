@@ -118,3 +118,8 @@
 ## 9. 웅 머그샷 표시 범위 교체 (2026-10-14)
 
 - 친구 요청 [`FRIEND_REPLY_2026-10-14b.md`](../../FRIEND_REPLY_2026-10-14b.md) — 7절 `4b885582`의 `y2 -= 8`(그림 아래 경계도 함께 올라가 몸이 띠 아래보다 먼저 끝남)을 `5e7e97c2`로 교체: 상대 A/B가 `TRAINER_PIC_LEADER_BROCK_HNS`이면 `sheetTileStart += 8` + `SetSpriteSheetFrameTileNum()` — 그림 원본 8~39행을 읽고 표시 영역은 그대로. 결과·검증은 [`../1.17.0-port/friend-reply-2026-10-14.md`](../1.17.0-port/friend-reply-2026-10-14.md) 2절. 친구 로컬 실기 PASS(한 장면, 친구 로컬 ROM SHA1 `6bb6acc0…`)와 이 저장소의 빌드·자동 검증은 따로 기록.
+
+## 10. 조우곡 — 25개 엔트리만 표시 클래스 기준 (2026-10-25)
+
+- 친구 결정 [`FRIEND_REPLY_2026-10-25.md`](../../FRIEND_REPLY_2026-10-25.md) 1절: 트레이너 발견 때 조우곡은 **표시 클래스에 대응하는 HGSS 곡**. 기존 "동작 클래스에 맞는 조우곡도 보존" 방침은 **지정된 25개 엔트리의 조우곡(`Music:`)에 한해** 바뀜. 동작 클래스(상금·볼·랜더마이저·배틀 BGM·승리 BGM 등)는 그대로.
+- 적용 `45cb1e1b`: ROY·BRET·COLETTE·SHIRLEY·HILLARY(×3)·COREY·DORIS·RONALD·BRAD·DOUGLAS·TREVOR(×3)·ALEX(×3)·ALLAN·THOM_AND_KAE(20) + 성도 과학자 ROSS·MITCH·JED·MARC·RICH(5, ROCKET). 엔트리별 전후 곡과 ROM 비교는 [`../bgm-font-2026-10-25.md`](../bgm-font-2026-10-25.md) 1절.
