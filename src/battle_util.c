@@ -10068,13 +10068,11 @@ void ClearDamageCalcResults(void)
     }
 
     gBattleStruct->doneDoublesSpreadHit = FALSE;
-    gBattleStruct->calculatedDamageDone = FALSE;
     gBattleStruct->calculatedSpreadMoveAccuracy = FALSE;
     gBattleStruct->printedStrongWindsWeakenedAttack = FALSE;
     gBattleStruct->numSpreadTargets = 0;
     gBattleStruct->unableToUseMove = FALSE;
     gBattleStruct->attackAnimPlayed = FALSE;
-    gBattleStruct->preAttackEffectHappened = FALSE;
     gBattleScripting.savedDmg = 0;
     if (gCurrentMove != MOVE_NONE)
         gBattleStruct->moldBreakerActive = IsMoldBreakerTypeAbility(gBattlerAttacker, GetBattlerAbility(gBattlerAttacker), gCurrentMove) || MoveIgnoresTargetAbility(gCurrentMove);
@@ -11304,4 +11302,9 @@ bool32 IsVictoryCatchGuaranteed(void)
 {
     return gBattleTypeFlags & BATTLE_TYPE_RAID
         || FlagGet(B_FLAG_VICTORY_CATCH_GUARANTEED);
+}
+
+bool32 IsAsleepOrComatose(enum BattlerId battler, enum Ability ability)
+{
+    return (gBattleMons[battler].status1 & STATUS1_SLEEP) || ability == ABILITY_COMATOSE;
 }

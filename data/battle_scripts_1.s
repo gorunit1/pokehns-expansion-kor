@@ -590,9 +590,7 @@ BattleScript_ShellTrapSetUpEncored::
 	waitmessage B_WAIT_TIME_LONG
 	end
 
-BattleScript_EffectShellTrap::
-	attackcanceler
-	jumpifshelltrap BS_ATTACKER, BattleScript_HitFromAccCheck
+BattleScript_ShellTrapFailed::
 	printstring STRINGID_SHELLTRAPDIDNTWORK
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
@@ -1494,21 +1492,6 @@ BattleScript_EffectPlaceholder::
 
 BattleScript_EffectHit::
 	attackcanceler
-BattleScript_HitFromAccCheck::
-	copybyte gEffectBattler, gBattlerAttacker
-	setpreattackadditionaleffect
-BattleScript_HitFromDamageCalc::
-	damagecalc
-	call BattleScript_Hit_RetFromAtkAnimation
-BattleScript_MoveEnd::
-	moveendall
-	end
-
-BattleScript_EffectHit_RetFromAccCheck::
-	copybyte gEffectBattler, gBattlerAttacker
-	setpreattackadditionaleffect
-	damagecalc
-BattleScript_Hit_RetFromAtkAnimation::
 	attackanimation
 	waitanimation
 	effectivenesssound
@@ -1521,7 +1504,9 @@ BattleScript_Hit_RetFromAtkAnimation::
 	resultmessage
 	waitmessage B_WAIT_TIME_LONG
 	setadditionaleffects
-	return
+BattleScript_MoveEnd::
+	moveendall
+	end
 
 BattleScript_MakeMoveMissed::
 	setmoveresultflags MOVE_RESULT_MISSED
@@ -1686,18 +1671,6 @@ BattleScript_MaxHp50Recoil::
 	datahpupdate BS_ATTACKER, PASSIVE_HP_UPDATE
 	tryfaintmon BS_ATTACKER
 	return
-
-BattleScript_EffectDreamEater::
-	attackcanceler
-	jumpifgenconfiglowerthan CONFIG_B_DREAM_EATER_SUBSTITUTE, GEN_5, BattleScript_DreamEaterSubstituteCheck
-BattleScript_DreamEaterSleepCheck:
-	jumpifstatus BS_TARGET, STATUS1_SLEEP, BattleScript_HitFromAccCheck
-	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_HitFromAccCheck
-	goto BattleScript_DoesntAffectTargetAtkString
-
-BattleScript_DreamEaterSubstituteCheck:
-	jumpifsubstituteblocks BattleScript_DoesntAffectTargetAtkString
-	goto BattleScript_DreamEaterSleepCheck
 
 BattleScript_StatUp::
 	printfromtable gStatUpStringIds
@@ -2310,9 +2283,22 @@ BattleScript_EffectAttract::
 
 BattleScript_EffectPresent::
 	attackcanceler
-	accuracycheck
 	typecalc
 	presentdamagecalculation
+	attackanimation
+	waitanimation
+	effectivenesssound
+	hitanimation BS_TARGET
+	waitstate
+	healthbarupdate BS_TARGET, MOVE_DAMAGE_HP_UPDATE
+	datahpupdate BS_TARGET, MOVE_DAMAGE_HP_UPDATE
+	critmessage
+	waitmessage B_WAIT_TIME_LONG
+	resultmessage
+	waitmessage B_WAIT_TIME_LONG
+	setadditionaleffects
+	moveendall
+	end
 
 BattleScript_EffectSafeguard::
 	attackcanceler
@@ -3835,9 +3821,6 @@ BattleScript_MonTookFutureAttack::
 	printstring STRINGID_PKMNTOOKATTACK
 	waitmessage B_WAIT_TIME_LONG
 	futuresighttargetfailure BattleScript_DoFutureAttackResult
-	jumpifmovehadnoeffect BattleScript_FutureAttackEnd
-	damagecalc
-	jumpifmovehadnoeffect BattleScript_DoFutureAttackResult
 	jumpifbyte CMP_NOT_EQUAL, cMULTISTRING_CHOOSER, B_MSG_FUTURE_SIGHT, BattleScript_FutureHitAnimDoomDesire
 	playanimation BS_ATTACKER, B_ANIM_FUTURE_SIGHT_HIT
 	goto BattleScript_DoFutureAttackHit
