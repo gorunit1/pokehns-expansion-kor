@@ -349,7 +349,7 @@ SINGLE_BATTLE_TEST("HNS9680 2-11 Wish comes true, Future Sight hits two turns la
         MESSAGE("마자용은 축하를 썼다!");
         MESSAGE("상대 마자는 축하를 썼다!");
         MESSAGE("마자용은 미래예지 공격을 받았다!");
-        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_FUTURE_SIGHT_HIT);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_FUTURE_SIGHT, opponent);
         HP_BAR(player);
         MESSAGE("효과가 별로인 듯하다.");
     }
@@ -534,7 +534,7 @@ SINGLE_BATTLE_TEST("HNS9680 2-17 Future Sight knocks out the foe at end of turn,
     } SCENE {
         MESSAGE("마자용은 미래의 공격을 예지했다!");
         MESSAGE("상대 마자는 미래예지 공격을 받았다!");
-        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_FUTURE_SIGHT_HIT);
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_FUTURE_SIGHT, player);
         HP_BAR(opponent, hp: 0);
         MESSAGE("효과가 별로인 듯하다.");
         MESSAGE("상대 마자는 쓰러졌다!");
