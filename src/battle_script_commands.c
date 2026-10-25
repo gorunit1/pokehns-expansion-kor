@@ -348,7 +348,6 @@ static void TryUpdateRoundTurnOrder(void);
 void ApplyExperienceMultipliers(s32 *expAmount, u8 expGetterMonId, u8 faintedBattler);
 static void RemoveAllWeather(void);
 static void RemoveAllTerrains(void);
-static void AccuracyCheck(bool32 recalcDragonDarts, const u8 *nextInstr, const u8 *failInstr);
 static void ResetValuesForCalledMove(void);
 static bool32 CanAbilityShieldActivateForBattler(enum BattlerId battler);
 static void PlayAnimation(enum BattlerId battler, u8 animId, const u16 *argPtr, const u8 *nextInstr);
@@ -1047,23 +1046,6 @@ static void Cmd_setchargingturn(void)
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
-static bool32 ShouldSkipAccuracyCalcPastFirstHit(enum BattlerId battlerAtk, enum Ability abilityAtk, enum HoldEffect holdEffectAtk, u32 moveEffect)
-{
-    if (gSpecialStatuses[battlerAtk].parentalBondState == PARENTAL_BOND_2ND_HIT)
-        return TRUE;
-
-    if (!gSpecialStatuses[battlerAtk].multiHitOn)
-        return FALSE;
-
-    if (abilityAtk == ABILITY_SKILL_LINK || holdEffectAtk == HOLD_EFFECT_LOADED_DICE)
-        return TRUE;
-
-    if (moveEffect == EFFECT_TRIPLE_KICK || moveEffect == EFFECT_POPULATION_BOMB)
-        return FALSE;
-
-    return TRUE; // multiHitOn is set so skip Acc check for everything else
-}
-
 static bool32 ShouldSkipFRLGAccuracyCheck(void)
 {
     if (!IS_FRLG)
@@ -1083,122 +1065,45 @@ static bool32 ShouldSkipFRLGAccuracyCheck(void)
     return FALSE;
 }
 
-static void AccuracyCheck(bool32 recalcDragonDarts, const u8 *nextInstr, const u8 *failInstr)
+static void Cmd_accuracycheck(void)
 {
-    enum Ability abilityAtk = GetBattlerAbility(gBattlerAttacker);
-    enum HoldEffect holdEffectAtk = GetBattlerHoldEffect(gBattlerAttacker);
+    CMD_ARGS();
 
-    if (ShouldSkipFRLGAccuracyCheck()
-     || ShouldSkipAccuracyCalcPastFirstHit(gBattlerAttacker, abilityAtk, holdEffectAtk, GetMoveEffect(gCurrentMove))
+    if ((GetMovePower(gCurrentMove) > 0) // Only used for non damage moves (damaging moves are handled in move resolution)
+     || ShouldSkipFRLGAccuracyCheck()
      || IsMaxMove(gCurrentMove)
      || IsZMove(gCurrentMove))
     {
-        gBattlescriptCurrInstr = nextInstr;
+        gBattlescriptCurrInstr = cmd->nextInstr;
         return;
     }
 
-    u32 numTargets = 0, numMisses = 0;
-    enum MoveTarget moveTarget = GetBattlerMoveTargetType(gBattlerAttacker, gCurrentMove);
-    bool32 calcSpreadMove = IsSpreadMove(moveTarget);
+    struct BattleCalcValues cv = {0};
+    cv.move = gCurrentMove;
+    cv.battlerAtk = gBattlerAttacker;
+    cv.battlerDef = gBattlerTarget;
+    cv.abilities[gBattlerAttacker] = GetBattlerAbility(gBattlerAttacker);
+    cv.abilities[gBattlerTarget] = GetBattlerAbility(gBattlerTarget);
+    cv.holdEffects[gBattlerAttacker] = GetBattlerHoldEffect(gBattlerAttacker);
+    cv.holdEffects[gBattlerTarget] = GetBattlerHoldEffect(gBattlerTarget);
 
-    for (enum BattlerId battlerDef = 0; battlerDef < gBattlersCount; battlerDef++)
+    if (DoesMoveMissTarget(&cv))
     {
-        if (gBattleStruct->calculatedSpreadMoveAccuracy)
-            break;
-
-        if (!calcSpreadMove && battlerDef != gBattlerTarget)
-            continue;
-
-        if (IsBattlerInvalidForSpreadMove(gBattlerAttacker, battlerDef))
-            continue;
-
-        numTargets++;
-
-        struct BattleCalcValues cv = {0};
-        cv.move = gCurrentMove;
-        cv.battlerAtk = gBattlerAttacker;
-        cv.battlerDef = battlerDef;
-        cv.abilities[gBattlerAttacker] = abilityAtk;
-        cv.abilities[battlerDef] = GetBattlerAbility(battlerDef);
-        cv.holdEffects[gBattlerAttacker] = holdEffectAtk;
-        cv.holdEffects[battlerDef] = GetBattlerHoldEffect(battlerDef);
-
-        if (DoesMoveMissTarget(&cv))
-        {
-            gBattleStruct->moveResultFlags[battlerDef] |= MOVE_RESULT_MISSED;
-            gBattleCommunication[MISS_TYPE] = STRINGID_PKMNEVADEDATTACK;
-            numMisses++;
-
-            enum BattleMoveEffects moveEffect = GetMoveEffect(gCurrentMove);
-            if (holdEffectAtk == HOLD_EFFECT_BLUNDER_POLICY
-             && moveEffect != EFFECT_OHKO
-             && !gSpecialStatuses[gBattlerAttacker].multiHitOn)
-                gBattleStruct->blunderPolicy = TRUE;    // Only activates from missing through acc/evasion checks
-
-            if (moveTarget == TARGET_SMART
-                && !IsAffectedByFollowMe(gBattlerAttacker, GetBattlerSide(battlerDef), gCurrentMove)
-                && !recalcDragonDarts // So we don't jump back and forth between targets
-                && CanTargetPartner(gBattlerAttacker, battlerDef)
-                && !IsBattlerUnaffectedByMove(GetPartnerBattler(battlerDef)))
-            {
-                // Smart target to partner if miss
-                numMisses = 0; // Other dart might hit
-                gBattlerTarget = GetPartnerBattler(battlerDef);
-                AccuracyCheck(TRUE, nextInstr, failInstr);
-                return;
-            }
-        }
+        gBattleStruct->moveResultFlags[gBattlerTarget] |= MOVE_RESULT_MISSED;
+        if (cv.holdEffects[gBattlerAttacker] == HOLD_EFFECT_BLUNDER_POLICY)
+            gBattleStruct->blunderPolicy = TRUE;
     }
-
-    if (numTargets != 0 && numTargets == numMisses)
-    {
-        SetOrClearRageVolatile();
-        gBattleStruct->battlerState[gBattlerAttacker].stompingTantrumTimer = 2;
-    }
-
-    if (calcSpreadMove)
-        gBattleStruct->calculatedSpreadMoveAccuracy = TRUE;
 
     if (gBattleStruct->moveResultFlags[gBattlerTarget] & MOVE_RESULT_MISSED)
     {
         gLastLandedMoves[gBattlerTarget] = 0;
         gLastHitByType[gBattlerTarget] = 0;
-
-        if (gBattleStruct->moveResultFlags[gBattlerTarget] & MOVE_RESULT_ONE_HIT_KO_STURDY)
-        {
-            gLastUsedAbility = ABILITY_STURDY;
-            gBattlescriptCurrInstr = BattleScript_SturdyPreventsOHKO;
-            gBattlerAbility = gBattlerTarget;
-        }
-        else
-        {
-            if (GetMoveEffect(gCurrentMove) == EFFECT_FLING)
-                gBattlescriptCurrInstr = BattleScript_FlingMissed;
-            else
-                gBattlescriptCurrInstr = failInstr == BattleScript_ButItFailed
-                    ? BattleScript_TargetAvoidsAttackEnd
-                    : failInstr;
-        }
-
-        if (gBattleStruct->moveResultFlags[gBattlerTarget] & (MOVE_RESULT_ONE_HIT_KO_NO_AFFECT | MOVE_RESULT_ONE_HIT_KO_STURDY))
-            gBattleStruct->moveResultFlags[gBattlerTarget] = MOVE_RESULT_DOESNT_AFFECT_FOE;
-        else
-            gBattleStruct->moveResultFlags[gBattlerTarget] = MOVE_RESULT_MISSED;
+        gBattlescriptCurrInstr = BattleScript_MoveMissedPause;
     }
     else
     {
-        gBattlescriptCurrInstr = nextInstr;
+        gBattlescriptCurrInstr = cmd->nextInstr;
     }
-}
-
-static void Cmd_accuracycheck(void)
-{
-    CMD_ARGS(const u8 *failInstr);
-
-    // The main body of this function has been moved to AccuracyCheck() to accomodate
-    // Dragon Darts' multiple accuracy checks on a single attack;
-    // each dart can try to re-target once after missing.
-    AccuracyCheck(FALSE, cmd->nextInstr, cmd->failInstr);
 }
 
 static void Cmd_printattackstring(void)
@@ -2011,7 +1916,7 @@ static void Cmd_resultmessage(void)
         else
         {
             gBattleCommunication[MSG_DISPLAY] = 1;
-            stringId = STRINGID_PKMNAVOIDEDATTACK; // HnS: upstream uses STRINGID_PKMNEVADEDATTACK; HnS prints the same miss message as gMissStringIds (D1)
+            stringId = STRINGID_PKMNAVOIDEDATTACK;
         }
     }
     else
@@ -6284,7 +6189,7 @@ static void Cmd_statusanimation(void)
     }
 }
 
-#define DONE_TARGET_FAILURE (gBattleStruct->eventState.atkCanceler == CANCELER_TARGET_FAILURE + 1)
+#define DONE_TARGET_FAILURE (gBattleStruct->eventState.atkCanceler == CANCELER_END)
 static void Cmd_futuresighttargetfailure(void)
 {
     CMD_ARGS(const u8 *failInstr);
