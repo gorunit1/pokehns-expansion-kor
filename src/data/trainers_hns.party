@@ -19,7 +19,7 @@ Class: Scientist Hns
 Behavior Class: Collector Hns
 Pic: Scientist Hns
 Gender: Male
-Music: Hg Suspicious 1
+Music: Rocket
 Double Battle: No
 AI: Check Bad Move
 
@@ -37,7 +37,7 @@ Class: Scientist Hns
 Behavior Class: Collector Hns
 Pic: Scientist Hns
 Gender: Male
-Music: Hg Suspicious 1
+Music: Rocket
 Double Battle: No
 AI: Check Bad Move
 
@@ -51,7 +51,7 @@ Class: Scientist Hns
 Behavior Class: Collector Hns
 Pic: Scientist Hns
 Gender: Male
-Music: Hg Suspicious 1
+Music: Rocket
 Double Battle: No
 AI: Check Bad Move
 
@@ -69,7 +69,7 @@ Class: Scientist Hns
 Behavior Class: Collector Hns
 Pic: Scientist Hns
 Gender: Male
-Music: Hg Suspicious 1
+Music: Rocket
 Double Battle: No
 AI: Check Bad Move
 
@@ -83,7 +83,7 @@ Class: Scientist Hns
 Behavior Class: Collector Hns
 Pic: Scientist Hns
 Gender: Male
-Music: Hg Suspicious 1
+Music: Rocket
 Double Battle: No
 AI: Check Bad Move
 
@@ -603,7 +603,7 @@ Class: Bird Keeper Hns
 Behavior Class: Biker Hns
 Pic: Bird Keeper Hgss Hns
 Gender: Male
-Music: Hg Suspicious 2
+Music: Hg Boy 1
 Double Battle: No
 AI: Check Bad Move
 
@@ -710,7 +710,7 @@ Class: Bird Keeper Hns
 Behavior Class: Juggler Hns
 Pic: Bird Keeper Hgss Hns
 Gender: Male
-Music: Hg Suspicious 1
+Music: Hg Boy 1
 Double Battle: No
 AI: Check Bad Move
 
@@ -2935,7 +2935,7 @@ Class: Teacher Hns
 Behavior Class: Expert Hns
 Pic: Teacher Hns
 Gender: Female
-Music: Hg Sage
+Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
 
@@ -2949,7 +2949,7 @@ Class: Teacher Hns
 Behavior Class: Lass Hns
 Pic: Teacher Hns
 Gender: Female
-Music: Hg Girl 2
+Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
 
@@ -2967,7 +2967,7 @@ Class: Teacher Hns
 Behavior Class: Expert Hns
 Pic: Teacher Hns
 Gender: Female
-Music: Hg Sage
+Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
 
@@ -5151,7 +5151,7 @@ Class: Burglar Hns
 Behavior Class: Firebreather Hns
 Pic: Burglar Hns
 Gender: Male
-Music: Hg Suspicious 2
+Music: Hg Suspicious 1
 Double Battle: No
 AI: Check Bad Move
 
@@ -6609,7 +6609,7 @@ Class: Medium Hns
 Behavior Class: Psychic Hns
 Pic: Medium Hns
 Gender: Female
-Music: Hg Girl 2
+Music: Hg Sage
 Double Battle: No
 AI: Check Bad Move
 
@@ -6631,7 +6631,7 @@ Class: Boarder Hns
 Behavior Class: Skier Hns
 Pic: Boarder Hgss Hns
 Gender: Male
-Music: Hg Boy 2
+Music: Hg Suspicious 2
 Double Battle: No
 AI: Check Bad Move
 
@@ -6649,7 +6649,7 @@ Class: Boarder Hns
 Behavior Class: Skier Hns
 Pic: Boarder Hgss Hns
 Gender: Male
-Music: Hg Boy 2
+Music: Hg Suspicious 2
 Double Battle: No
 AI: Check Bad Move
 
@@ -6667,7 +6667,7 @@ Class: Boarder Hns
 Behavior Class: Skier Hns
 Pic: Boarder Hgss Hns
 Gender: Male
-Music: Hg Boy 2
+Music: Hg Suspicious 2
 Double Battle: No
 AI: Check Bad Move
 
@@ -6774,7 +6774,7 @@ Class: Pokefan Hns
 Behavior Class: Juggler Hns
 Pic: Pokefan M
 Gender: Male
-Music: Hg Suspicious 1
+Music: Hg Suspicious 2
 Double Battle: No
 AI: Check Bad Move
 
@@ -6835,7 +6835,7 @@ Class: Pokefan Hns
 Behavior Class: Battle Girl Hns
 Pic: Pokefan M
 Gender: Male
-Music: Hg Girl 1
+Music: Hg Suspicious 2
 Double Battle: No
 AI: Check Bad Move
 
@@ -6870,7 +6870,7 @@ Class: Pokefan Hns
 Behavior Class: Camper HnS
 Pic: Pokefan M
 Gender: Male
-Music: Hg Boy 1
+Music: Hg Suspicious 2
 Double Battle: No
 AI: Check Bad Move
 
@@ -7168,7 +7168,7 @@ Class: Double Team Hns
 Behavior Class: Young Couple Hns
 Pic: Double Team Hgss Hns
 Gender: Male
-Music: Hg Girl 1
+Music: Hg Boy 2
 Double Battle: Yes
 AI: Check Bad Move
 
@@ -12963,7 +12963,7 @@ Class: Pokefan Hns
 Behavior Class: Battle Girl Hns
 Pic: Pokefan M
 Gender: Male
-Music: Hg Girl 1
+Music: Hg Suspicious 2
 Double Battle: No
 AI: Check Bad Move
 
@@ -12985,7 +12985,7 @@ Class: Pokefan Hns
 Behavior Class: Battle Girl Hns
 Pic: Pokefan M
 Gender: Male
-Music: Hg Girl 1
+Music: Hg Suspicious 2
 Double Battle: No
 AI: Check Bad Move
 
@@ -13061,7 +13061,7 @@ Class: Pokefan Hns
 Behavior Class: Juggler Hns
 Pic: Pokefan M
 Gender: Male
-Music: Hg Suspicious 1
+Music: Hg Suspicious 2
 Double Battle: No
 AI: Check Bad Move
 
@@ -13077,7 +13077,7 @@ Class: Pokefan Hns
 Behavior Class: Juggler Hns
 Pic: Pokefan M
 Gender: Male
-Music: Hg Suspicious 1
+Music: Hg Suspicious 2
 Double Battle: No
 AI: Check Bad Move
 
@@ -13171,7 +13171,7 @@ Class: Teacher Hns
 Behavior Class: Lass Hns
 Pic: Teacher Hns
 Gender: Female
-Music: Hg Girl 2
+Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
 
@@ -13190,7 +13190,7 @@ Class: Teacher Hns
 Behavior Class: Lass Hns
 Pic: Teacher Hns
 Gender: Female
-Music: Hg Girl 2
+Music: Hg Girl 1
 Double Battle: No
 AI: Check Bad Move
 
