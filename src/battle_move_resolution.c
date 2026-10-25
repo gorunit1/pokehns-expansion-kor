@@ -1654,7 +1654,7 @@ static bool32 CanPledgeComboAttackHappen(struct BattleCalcValues *cv)
 
 static enum CancelerResult CancelerInterruptibleMoves(struct BattleCalcValues *cv)
 {
-    switch (GetMoveEffect(cv->move))
+    switch (cv->moveEffect)
     {
     case EFFECT_FUTURE_SIGHT:
         gBattleStruct->futureSight[cv->battlerDef].move = cv->move;
