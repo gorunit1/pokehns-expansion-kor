@@ -253,7 +253,7 @@ SINGLE_BATTLE_TEST("HNS9680 1-11 Shed Skin and Hydration cure messages")
         PLAYER(SPECIES_WOBBUFFET) { Ability(ABILITY_SHED_SKIN); Status1(STATUS1_BURN); }
         OPPONENT(SPECIES_WYNAUT) { Ability(ABILITY_HYDRATION); Status1(STATUS1_PARALYSIS); }
     } WHEN {
-        TURN { MOVE(opponent, MOVE_RAIN_DANCE); }
+        TURN { MOVE(opponent, MOVE_RAIN_DANCE, WITH_RNG(RNG_PARALYSIS, FALSE)); } // seq 475.8 #10282: paralysis is a weighted roll whose test default is the last (paralyzed) slot
     } SCENE {
         MESSAGE("비가 내리고 있다!");
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_RAIN_CONTINUES);

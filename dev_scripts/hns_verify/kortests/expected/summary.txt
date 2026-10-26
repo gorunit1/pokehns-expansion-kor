@@ -1,4 +1,5 @@
   - test/battle/zz_hns9168_k1_berry.c:535: Unmatched ANIMATION - HNS9168 K25 Colbur Berry weakens a super effective Bite.
+  - test/battle/zz_hns9680_endturn2.c:257: Unmatched HP_BAR - HNS9680 2-08 Salt Cure, Octolock and Syrup Bomb end-of-turn effects 1/3.
   - test/battle/zz_hns9680_endturn2.c:414: Unmatched MESSAGE - HNS9680 2-13 Pledge field effects: sea of fire damage and end, rainbow end, swamp end 1/3.
   - test/battle/zz_hns9680_endturn3.c:381: Unmatched ANIMATION - HNS9680 3-16 UPSTREAM CHANGE EXPECTED (part-C 5.2): Magic Room end loop stops after White Herb, foe Sitrus waits for next turn.
   - test/battle/zz_hns9680_endturn4.c:396: Matched ANIMATION - HNS9680 4-18 UPSTREAM CHANGE EXPECTED: last foe faints at end of turn while the player is Dynamaxed, no Dynamax end animation.
@@ -42,14 +43,13 @@
   - test/battle/zz_hns9784_k1_items.c:657: Unmatched ANIMATION - HNS9784 K5-03 CHANGE EXPECTED: Shell Smash: faster foe Mirror Herb should come before the user White Herb (pre: White Herb first).
   - test/battle/zz_hns9784_k1_items.c:65: Unmatched ANIMATION - HNS9784 K1-03 CHANGE EXPECTED: Red Card: raw-faster holder under Slow Start should activate (pre: effective-Speed holder).
   - test/battle/zz_hns9784_k1_items.c:694: Unmatched ANIMATION - HNS9784 K5-05 CHANGE EXPECTED: two Mirror Herb holders by raw Speed, right one faster should go first (pre: battler order).
-  - test/battle/zz_hns9784_k1_items.c:792: Unmatched ANIMATION - HNS9784 K7-01 CHANGE EXPECTED: Magician steals a Sitrus Berry below half HP: should eat it in the same move end (pre: after the foe acts).
   - test/battle/zz_hns9784_k1_items.c:87: Matched MESSAGE - HNS9784 K1-04 CHANGE EXPECTED: faster Eject Button, then slower Red Card should also activate (pre: only Eject Button).
   - test/battle/zz_hns9918_pledge.c:322: Unmatched MESSAGE - HNS9918 K12 Sea of fire on the opposing side ends; the player is faster, the foe hit last (#10214 CHANGE EXPECTED).
   - test/battle/zz_hns9918_pledge.c:522: Unmatched MESSAGE - HNS9918 K22 Sea of fire on the player's side ends; the foe is faster, the player hit last (#10214 CHANGE EXPECTED).
   - test/battle/zz_hns9918_pledge.c:543: Unmatched MESSAGE - HNS9918 K23 Starting status: sea of fire on the opposing side ends (#10214 CHANGE EXPECTED).
   - test/battle/zz_hnsb2021_kor.c:838: Unmatched ANIMATION - HNSB2021 D1 Symbiosis item received during a spread move is not used again as a resistance Berry (#10653).
-- Tests FAILED:          96    Add TESTS='X' to run tests with the defined prefix.
-- Tests PASSED:          556
+- Tests FAILED:          97    Add TESTS='X' to run tests with the defined prefix.
+- Tests PASSED:          555
 - Tests TOTAL:           652
 HNS9168 K01 status cure berries (Cheri, Rawst, Pecha, Chesto) after the status move: PASS
 HNS9168 K02 Aspear Berry thaws the holder on switch-in (opponent side): PASS
@@ -112,7 +112,7 @@ HNS9680 2-04 Poison, Toxic, Burn, Frostbite damage: text, status animation, HP b
 HNS9680 2-05 Leech Seed: drain, Liquid Ooze, receiver under Heal Block: PASS
 HNS9680 2-06 Wrap: turn damage five times, then freed: PASS
 HNS9680 2-07 Nightmare and Curse damage: PASS
-HNS9680 2-08 Salt Cure, Octolock and Syrup Bomb end-of-turn effects: PASS
+HNS9680 2-08 Salt Cure, Octolock and Syrup Bomb end-of-turn effects 1/3: FAIL
 HNS9680 2-09 Aqua Ring and Ingrain heal: PASS
 HNS9680 2-10 Grassy Terrain heals each turn, then ends: PASS
 HNS9680 2-11 Wish comes true, Future Sight hits two turns later: PASS

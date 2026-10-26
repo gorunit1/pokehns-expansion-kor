@@ -121,6 +121,7 @@ TEST("EXPECT_FAIL allows expected failing tests to pass")
 AI_SINGLE_BATTLE_TEST("EXPECT_FAIL detects failures caused by EXPECT_MOVE")
 {
     GIVEN {
+        WITH_CONFIG(B_FIRST_TURN_MOVE, GEN_9); // HnS: GEN_LATEST is GEN_CHAMPIONS in HnS; this test checks the Gen 9 behaviour (Fake Out still selectable on turn 2)
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET) { Item(ITEM_CHOICE_SCARF); Moves(MOVE_FAKE_OUT, MOVE_BODY_SLAM); }
     } WHEN {
@@ -134,6 +135,7 @@ AI_SINGLE_BATTLE_TEST("EXPECT_FAIL detects failures caused by EXPECT_MOVE")
 AI_SINGLE_BATTLE_TEST("EXPECT_FAIL detects failures caused by EXPECT_SWITCH")
 {
     GIVEN {
+        WITH_CONFIG(B_FIRST_TURN_MOVE, GEN_9); // HnS: GEN_LATEST is GEN_CHAMPIONS in HnS; this test checks the Gen 9 behaviour (Fake Out still selectable on turn 2)
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET) { Item(ITEM_CHOICE_SCARF); Moves(MOVE_FAKE_OUT, MOVE_BODY_SLAM); }
         OPPONENT(SPECIES_WOBBUFFET);

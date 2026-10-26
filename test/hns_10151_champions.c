@@ -35,21 +35,21 @@ SINGLE_BATTLE_TEST("HnS 10151: an opposing Belch without an eaten Berry names th
     }
 }
 
-// Fake Out cannot be selected after the user's first turn; the turn goes to the other move.
+// Fake Out cannot be selected after the user's first turn: with Fake Out as its only move the user Struggles
+// (as upstream's Last Resort Champions test; allowed: FALSE alone does not check that the selection is refused).
 SINGLE_BATTLE_TEST("HnS 10151: Fake Out cannot be selected after the first turn")
 {
     GIVEN {
         ASSUME(GetMoveEffect(MOVE_FAKE_OUT) == EFFECT_FIRST_TURN_ONLY);
         ASSUME(GetConfig(B_FIRST_TURN_MOVE) >= GEN_CHAMPIONS);
-        PLAYER(SPECIES_WOBBUFFET) { Moves(MOVE_FAKE_OUT, MOVE_CELEBRATE); }
+        PLAYER(SPECIES_WOBBUFFET) { Moves(MOVE_FAKE_OUT); }
         OPPONENT(SPECIES_WYNAUT);
     } WHEN {
-        TURN { MOVE(player, MOVE_CELEBRATE); }
-        TURN { MOVE(player, MOVE_FAKE_OUT, allowed: FALSE); MOVE(player, MOVE_CELEBRATE); }
+        TURN { MOVE(player, MOVE_FAKE_OUT); }
+        TURN { MOVE(player, MOVE_FAKE_OUT, allowed: FALSE); }
     } SCENE {
-        MESSAGE("마자용은 축하를 썼다!");
-        MESSAGE("마자용은 축하를 썼다!");
-        NOT MESSAGE("마자용은 속이기를 썼다!");
+        MESSAGE("마자용은 속이기를 썼다!");
+        MESSAGE("마자용은 발버둥을 썼다!");
     }
 }
 

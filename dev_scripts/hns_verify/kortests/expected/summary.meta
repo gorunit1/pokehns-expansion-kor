@@ -11,7 +11,7 @@ summary.txt = 한글 회귀 기대 요약(kortests/run.sh 출력 그대로: 정�
   K4-12도 PASS 그대로여서 summary.txt는 바이트 그대로다(hnsfix-1010e mkcopy 사본 + trace.patch, kortests/run.sh <사본> post 8:
   517/607, 기대와 바이트 동일, trace는 K4-12 2줄만 다름). 고친 K4-12를 8세대 코드에서 돌리면 `Matched ANIMATION`
   (zz_hns9730_k4_interact.c:290)으로 FAIL한다.
-합계: 652개, PASS 556 / FAIL 90 / INVALID 6 (2026-10-25 묶음 48 #10362·#10431 전: PASS 558 / FAIL 88; 2026-10-23 묶음 26 #10214 전: PASS 563 / FAIL 83; 2026-10-14 묶음 23 전: PASS 562 / FAIL 84; HNSB2021 30개 추가 전: 622개, PASS 532)
+합계: 652개, PASS 555 / FAIL 91 / INVALID 6 (2026-10-26 묶음 51 #10151·#10282 전: PASS 556 / FAIL 90; 2026-10-25 묶음 48 #10362·#10431 전: PASS 558 / FAIL 88; 2026-10-23 묶음 26 #10214 전: PASS 563 / FAIL 83; 2026-10-14 묶음 23 전: PASS 562 / FAIL 84; HNSB2021 30개 추가 전: 622개, PASS 532)
 2026-10-13 HNSSCREEN 15개 추가(방벽 해제 — #10829 앞당김 6d08adc6, 진영 문구 db62d527, 배리어프리 타이머 d4e3b8b6): 클라우드
   저장소 코드 d4e3b8b6에서 kortests/run.sh <저장소> kor-screen 8 → 532/622. 그 전 607개의 상태 줄은 그대로(정렬 비교 차이 0),
   새 15개 모두 PASS. summary.txt는 이 실행 요약 그대로(테스트가 늘어 hydra 실패 목록 앞 50줄의 선택만 2줄 바뀜 — 상태 줄은 그대로).
@@ -44,8 +44,15 @@ summary.txt = 한글 회귀 기대 요약(kortests/run.sh 출력 그대로: 정�
   일반 애니 B_ANIM_FUTURE_SIGHT_HIT에서 기술 애니(ANIM_TYPE_MOVE, MOVE_FUTURE_SIGHT)로 바꿈(줄 수 같음, 두 테스트 PASS 그대로).
   코드 = 클라우드 저장소 e6b976e0, ALLOW_REPO=1 kortests/run.sh <저장소> kor-s482 8 → 556/652. 다른 650개 상태 줄은 그대로
   (compare.py 차이 = 위 2개). summary.txt는 이 실행 요약 그대로(full-sync-seq-482.md 검증 절).
+2026-10-26 full-sync 묶음 51(seq 475.5 #10151 + 475.8 #10282, 친구 결정 재확인 99 A — 새 Champions 설정이 HnS GEN_LATEST =
+  GEN_CHAMPIONS를 따름): 소금절이 턴 끝 피해가 1/8 → 1/16이 되어 9세대 값을 고정하던 HNS9680 2-08 소금절이 칸(HP_BAR damage 37,
+  zz_hns9680_endturn2.c)이 기대대로 PASS → FAIL(1/3; 문어굳히기·물엿폭탄 칸은 PASS). 같은 묶음에서 마비 판정이 가중 난수로 바뀌어
+  (#10282) 테스트 러너의 기본값이 "마비로 못 움직임"이 되므로, 마비 상태로 비바라기를 쓰는 HNS9680 1-11에 WITH_RNG(RNG_PARALYSIS,
+  FALSE)를 넣음(zz_hns9680_endturn1.c 같은 줄, 줄 수 같음 — 넣기 전 실행 kor-s51은 1-11 FAIL, 넣은 뒤 PASS 그대로).
+  코드 = 클라우드 저장소 131f14ba(+ d0995087·3ab91838, 게임 코드 같음), ALLOW_REPO=1 kortests/run.sh <저장소> kor-s51b 8 → 555/652.
+  다른 651개 상태 줄은 그대로(compare.py 차이 = 2-08 한 줄). summary.txt는 이 실행 요약 그대로(full-sync-seq-475.5-475.8.md 검증 절).
 세트          PASS / 전체   파일(kortests/sets/)
-  HNS9680      66 /  70    zz_hns9680_endturn1~4.c
+  HNS9680      65 /  70    zz_hns9680_endturn1~4.c
   HNS9714      28 /  34    zz_hns9714_b1_defog.c, b2_tidyup_sub.c, b3_endturn.c, b4_doubles_gmax.c
   HNSFIX1      14 /  16    zz_hnsfix1_tmp.c
   HNSFIXOBS     0 /   1    zz_hnsfix1_obs.c (관찰용)

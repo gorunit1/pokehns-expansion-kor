@@ -79,6 +79,7 @@ SINGLE_BATTLE_TEST("Unseen Fist bypasses protect effects without triggering thei
 SINGLE_BATTLE_TEST("Unseen Fist continues bypassing protect effects after being replaced during a multi-strike move")
 {
     GIVEN {
+        WITH_CONFIG(B_UNSEEN_FIST_PIERCING_DRILL, GEN_9); // HnS: GEN_LATEST is GEN_CHAMPIONS in HnS; this test checks the Gen 9 behaviour
         ASSUME(MoveMakesContact(MOVE_SURGING_STRIKES));
         ASSUME(GetMoveStrikeCount(MOVE_SURGING_STRIKES) == 3);
         ASSUME(GetMoveEffect(MOVE_OBSTRUCT) == EFFECT_PROTECT);
