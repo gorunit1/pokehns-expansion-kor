@@ -11,8 +11,8 @@
 - 수정 파일: 커밋 `28407e92`(upstream 9파일 + `test/hns_10299_random_effect.c`), `78571464`(`test/battle/ability/victory_star.c`). 문서 — `full-sync-seq-475.6-475.7.md`(새), `test-baseline-seq475.7.txt`(새), `RECHECK_BEFORE_COMPLETION.md` 99, `port_sequence.tsv` 475.5~475.8, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. 이식 전 비교는 scratchpad 클론 `18a89793`에서 옛 난수 태그 `ZZ old` 사본(커밋 안 함, 지움).
 - 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
-- 친구 문자: 세션 답변 문안(질문 99).
-- 다음 시작점: 사용자 확인 → seq 484 #10426.
+- 친구 문자: 세션 답변 문안(질문 99) — **보냄**(2026-10-26 사용자 확인).
+- 다음 시작점: 사용자 확인(484를 #10151 없이 진행할지) → seq 484 #10426.
 
 ### 2026-10-25 — full-sync 묶음 48(seq 482 #10362 + 483 #10431 + 493 #10714) (클라우드 세션)
 
