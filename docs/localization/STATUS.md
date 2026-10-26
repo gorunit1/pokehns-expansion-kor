@@ -1,12 +1,27 @@
 # 현재 인수인계 상태
 
-## 2026-10-26 — full-sync 묶음 50(seq 484 #10426 흡수 리팩터·`SetMoveEffect` 인자 구조체) (현재, 클라우드 세션)
+## 2026-10-26 — 친구 결정 반영: full-sync 묶음 51(seq 475.5 #10151 + 475.8 #10282 Champions), 재확인 92~95·36, 인주시티 무용극장 (현재, 클라우드 세션)
+
+- **요청:** 친구 답 2026-10-26([`FRIEND_REPLY_2026-10-26.md`](../friend-handoff/FRIEND_REPLY_2026-10-26.md), 사용자 전달). **코드 수정과 정적 확인까지 — 빌드·자동 테스트·세이브 정적 비교 도구·한글 회귀 세트·음악 청취·mGBA는 실행하지 말 것(친구 지시).** 새 ROM·SHA1 없음. 수정 기준 `ad68cdcc`.
+- **다음 할 일**
+  1. 친구 문자(묶음 51 결과) 보내기 — 세션 답변 문안. 완료 커밋은 아래 "결과", 검증은 전부 미실행으로.
+  2. **빌드가 허용되면 먼저 이번 세 커밋을 검증**(다음 seq 전에): `make hns -j8`(전체 재빌드 + `warncheck.sh`), 전체 `make check`(기준 `test-baseline-seq484.txt` — `GEN_LATEST = GEN_CHAMPIONS`라 설정을 고정하지 않은 upstream 테스트의 새 FAIL을 분류), `HnS 10151` 한글 테스트 8개(이식 전 클론 `ad68cdcc` 비교 포함), 세이브 정적 비교(이전 = `ad68cdcc` 클론), 한글 회귀(`HNS9680 2-08` 소금절이 37 → 18 등 예상 변화 — 결과 문서 "다음 실행 때 확인할 것"). 그 결과로 기준 파일과 `kortests/expected` 갱신.
+  3. full-sync 다음: seq 394 #10268을 재확인 36 **B**로(도구·특성 팝업 끝까지 대기 + `BattleScript_BerryReduceAnimation`의 `waitabilitypopup`), 그다음 485 #10488, 486 #10566(재확인 97 정리). 목표 1.17.1.
+  4. 친구 답 대기: 89 (1) 메모, 82, 72, 70 (a)(b), 71, 69, 실기 결과(묶음 47~51 후보).
+- **결과**
+  - 재확인 99 → [`full-sync-seq-475.5-475.8.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-475.5-475.8.md). 커밋 `131f14ba`. 새 설정 14개 `GEN_LATEST`(HnS = `GEN_CHAMPIONS`; upstream 1.17.0은 `GEN_9`) — 13개 구현, `B_SHEER_FORCE_AGAINST_ABILITIES`는 설정만(upstream 미구현, 1.17.1·master에도 후속 없음). 새 문장 2개 Champions 공식 한글(`이 기술은 쓸 수 없다!`, `…은(는)⏎나무열매를 먹지 않아서 기술을 쓸 수 없다!`). HnS 보정: 기술로 얼면 `freezeTurns` 0(upstream 2 → 다음 행동에 무조건 해동, 재확인 101), 트림 실행 실패에 `BELCHCANTUSE`(재확인 102). 한글 테스트 `test/hns_10151_champions.c` 8개 작성(미실행).
+  - 재확인 92 → `d0995087`(요약 기술·콘테스트 설명 154 px). 93·94·95 → 코드 변경 없음(SV 원문 7495·6535·6559행과 일치 확인, 아레나 보정 위치 확인). 36 → B 결정 기록, 반영은 394 때. [`friend-reply-2026-10-26.md`](../friend-handoff/results/1.17.0-port/friend-reply-2026-10-26.md).
+  - 무용극장 → `3ab91838`. 다섯 배틀 모두 회전 전에 `playbgm MUS_HG_ENCOUNTER_KIMONO_GIRL, FALSE`(HGSS `StopBGM`은 인자 무시·즉시 정지라 페이드 없음), 옥희 회전은 "예" 뒤 + HGSS 공식 한국어 00045, `trainerbattle_no_intro` 선택 인자 `music`(다섯 곳만 `NO_MUSIC`).
+- **검증:** 정적 확인만 — 3-way 대조, 1.17.1 함수 단위 비교, 새 식별자 정의·헤더 경로, `GetConfig` 설정 목록, 지워진 이름 0, 공식 원문 대조(Poké Corpus `57e5078`), HGSS 스크립트·`ScrCmd_StopBGM` 구현 대조, 글리프 폭 표로 문장 폭 추정. **빌드·테스트·세이브 비교·실기: 미실행.**
+- **커밋 메시지 메모:** `131f14ba`부터 꼬리 줄 `Co-Authored-By: Claude <noreply@anthropic.com>`(모델 이름 없음, 묶음 50 메모 참고).
+
+## 2026-10-26 — full-sync 묶음 50(seq 484 #10426 흡수 리팩터·`SetMoveEffect` 인자 구조체) (클라우드 세션)
 
 - **요청:** 사용자 "ㅇㅇ 혼자할 수 있다면 ㄱㄱ"(2026-10-26, 484를 #10151 없이 먼저).
 - **다음 할 일**
   1. ~~친구 문자(묶음 50)~~ **보냄**(2026-10-26 사용자 확인). ROM SHA1 `9b5935b0…`(코드 `15b75297`), 새 질문 없음, 화면 순서 변화 1(휘적휘적포 흡수 → 화상, 일반 진행엔 없음), HnS 보정 1(재확인 100), 실기 후보 4.
   2. 친구 답 대기: **99(#10151 Champions 설정 A/B·설정별, 새 문장 2개 한글)**, 92·93·94·95, 36, 89 (1) 메모, 82, 72, 70 (a)(b), 71, 69, 실기 결과.
-  3. full-sync 다음 seq **485 #10488**(Assurance), 486 #10566(재확인 97 정리). 475.5·475.8은 친구 답 뒤 그 시점 코드에 3-way(이번에 뺀 `brokeProtect` union 필드·5기술 줄 포함). 테스트 기준 **`test-baseline-seq484.txt`**, 한글 회귀 기대 **556/652**, 세이브 이전 사실은 코드 `15b75297`.
+  3. ~~full-sync 다음 seq 485~~ — 친구 답 2026-10-26으로 475.5·475.8을 먼저 적용(묶음 51, 위 절, `brokeProtect` 포함). 테스트 기준 **`test-baseline-seq484.txt`**, 한글 회귀 기대 **556/652**, 세이브 이전 사실은 코드 `15b75297`.
 - **결과** [`full-sync-seq-484.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-484.md). 커밋 `15b75297`(코드 + 한글 테스트), 문서 이 커밋.
   - 흡수 기술 13개가 추가 효과 `MOVE_EFFECT_ABSORB`로, `SetMoveEffect(cv, &se)`, `seteffectsecondary` 삭제, 씨뿌리기 턴 끝 배틀러 역할 정리, 한글 문장 3개 이름 토큰만(출력 같음).
   - HnS 유지: `brokeProtect` 없음(#10151 보류), 빈 명령 자리 `UNUSED_39`(`CALLNATIVE` 번호 같음), 흡혈 위력 60, `genOneRecharge` 챌린지 조건.
