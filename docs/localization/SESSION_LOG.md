@@ -10,7 +10,7 @@
 - 수정 파일: 커밋 `ba5922ac`(`test/battle/ability/unseen_fist.c`, `test/battle/move_effect/last_resort.c`, `test/test_test_runner.c`, `test/hns_10151_champions.c`, 한글 회귀 `zz_hns9680_endturn1.c`·`expected/summary.txt`·`summary.meta`). 문서 — `test-baseline-seq475.8.txt`(새), `full-sync-seq-475.5-475.8.md` 검증 절, `friend-reply-2026-10-26.md` 2차 검증, `RECHECK_BEFORE_COMPLETION.md` 92·99·101, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 표시, `port_sequence.tsv`, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. 이식 전 비교·얼음 보정 확인·한글 회귀 세트 단건 확인용 임시 파일은 커밋 안 함, 지움.
 - 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
-- 친구 문자: 세션 답변 문안 — 보내기 전.
+- 친구 문자: 세션 답변 문안 — **보냄**(2026-10-26 사용자 확인).
 - 다음 시작점: seq 394 #10268(재확인 36 B) → 485.
 
 ### 2026-10-26 — 친구 결정 반영: 묶음 51(seq 475.5·475.8), 재확인 92~95·36, 무용극장 (클라우드 세션)
