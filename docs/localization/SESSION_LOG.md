@@ -11,7 +11,7 @@
 - 수정 파일: 커밋 `131f14ba`(upstream #10151 45파일 + #10282 소스·테스트 + `include/constants/battle_util.h`·`src/battle_ai_main.c` + `test/hns_10151_champions.c`), `d0995087`(`src/pokemon_summary_screen.c`), `3ab91838`(`asm/macros/event.inc`, `data/maps/EcruteakCity_Theater_hns/scripts.inc`). 문서 — `FRIEND_REPLY_2026-10-26.md`(새), `full-sync-seq-475.5-475.8.md`(새), `friend-reply-2026-10-26.md`(새), `full-sync-seq-475.6-475.7.md`(녹화 배틀 메모·표현 정정), `RECHECK_BEFORE_COMPLETION.md` 36·92·93·94·95·99 결정, 101·102 새 행, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 5행, `port_sequence.tsv` 475.5·475.8, STATUS·SESSION_LOG.
 - 검증: 정적 확인만(STATUS 현재 절). 빌드·자동 테스트·세이브 정적 비교·한글 회귀·음악 청취·mGBA **미실행**.
 - 게임 화면 확인: 하지 않았다(친구가 새 ROM에서 직접 확인).
-- 친구 문자: 세션 답변 문안 — 보내기 전.
+- 친구 문자: 세션 답변 문안 — **보냄**(2026-10-26 사용자 확인).
 - 다음 시작점: 빌드 허용 시 이번 세 커밋 검증(STATUS 다음 할 일 2) → seq 394(36 B) → 485.
 
 ### 2026-10-26 — full-sync 묶음 50(seq 484 #10426) (클라우드 세션)
