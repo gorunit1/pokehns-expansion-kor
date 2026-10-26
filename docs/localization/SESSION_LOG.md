@@ -2,6 +2,18 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-26 — full-sync 묶음 50(seq 484 #10426) (클라우드 세션)
+
+- 요청: 사용자 "ㅇㅇ 혼자할 수 있다면 ㄱㄱ"(484를 #10151 없이).
+- 판단: 새 문장 0, 한글 문장은 이름 토큰만(정책 74), 화면 순서 변화는 일반 진행에 없는 휘적휘적포 하나라 혼자 진행. #10151의 `brokeProtect`(union 필드·5기술 줄·병합된 MULTISTRING 줄)만 빼고 upstream 그대로. 빈 명령 자리는 HnS 번호대로 `UNUSED_39`.
+- 발견: 첫 전체 테스트에서 `Liquid Ooze HP loss from Leech Seed is blocked by Magic Guard`가 사라진 PASS → #10426이 `gEffectBattler`를 채우지 않는 upstream 결함, upstream master 합치기 `5340d262a4`의 한 줄을 받음(빼면 FAIL 2개 확인, 재확인 100). 힘흡수 흡수 경로가 `gBattleScripting.battler`를 따로 안 채우는 것도 의심했으나 클리어바디(능력 하락 없음)에서도 대상 이름 PASS. 휘적휘적포 순서는 이식 전 코드에서 화상 → 흡수임을 임시 테스트로 확인(지움) 뒤 한글 테스트로 고정.
+- 실수: 결과 문서 초안에 페인트(Feint)를 속이기로, 이차원홀·이차원러시를 다른 이름으로, `genOneRecharge`를 잘못된 설명으로 적었다가 `moves_info.h`·`global.h`와 대조해 고침. 병합 중 `battle_scripts_1.s`의 빈 줄 하나가 빠진 것을 upstream 대조로 되돌림. 커밋 꼬리 줄에 모델 이름을 넣었다가 push 전 amend로 뺌(이전 push된 64개는 그대로 — STATUS 메모).
+- 수정 파일: 커밋 `15b75297`(upstream 25파일 + `test/hns_10426_absorb.c`(새)). 문서 — `full-sync-seq-484.md`(새), `test-baseline-seq484.txt`(새), `RECHECK_BEFORE_COMPLETION.md` 100, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 1행, `port_sequence.tsv` 484, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. 이식 전 비교는 scratchpad 클론 `989080a0`에서 효과 상수만 옛 이름으로 바꾼 `ZZ old` 사본(커밋 안 함, 지움).
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 친구 문자: 세션 답변 문안(새 질문 없음, 실기 4) — 보내기 전.
+- 다음 시작점: seq 485 #10488.
+
 ### 2026-10-25 — full-sync 묶음 49(건너뛴 seq 475.6·475.7 늦게, 475.5·475.8 보류) (클라우드 세션)
 
 - 요청: 사용자 "ㄱㄱ 484 시작해 혼자해도 되는거라면".
