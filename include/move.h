@@ -45,8 +45,9 @@ struct AdditionalEffect
     union PACKED {
         enum MoveEffect randomMoveEffects[MAX_RANDOM_ADDITIONAL_EFFECTS]; // Used by MOVE_EFFECT_RANDOM_FROM_LIST
         enum WrappedStringID wrapped:8;
+        enum BrokeProtectionStringID brokeProtect:8;
         u8 absorbPercentage;
-    } argument; // argument field for MOVE_EFFECTS (HnS: no brokeProtect yet — it comes with #10151, seq 475.5)
+    } argument; // argument field for MOVE_EFFECTS
 
     u8 chance; // 0% = effect certain, primary effect
     u8 stats;

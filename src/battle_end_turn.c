@@ -685,9 +685,9 @@ static bool32 HandleEndTurnWrap(enum BattlerId battler)
             BattleScriptCall(BattleScript_WrapTurnDmg);
             s32 bindDamage = 0;
             if (gBattleMons[battler].volatiles.wrappedBindingBand)
-                bindDamage = GetNonDynamaxMaxHP(battler) / (B_BINDING_DAMAGE >= GEN_6 ? 6 : 8);
+                bindDamage = GetNonDynamaxMaxHP(battler) / (GetConfig(B_BINDING_DAMAGE) >= GEN_6 ? 6 : 8);
             else
-                bindDamage = GetNonDynamaxMaxHP(battler) / (B_BINDING_DAMAGE >= GEN_6 ? 8 : 16);
+                bindDamage = GetNonDynamaxMaxHP(battler) / (GetConfig(B_BINDING_DAMAGE) >= GEN_6 ? 8 : 16);
             SetPassiveDamageAmount(battler, bindDamage);
         }
         else  // broke free
@@ -714,9 +714,9 @@ static bool32 HandleEndTurnSaltCure(enum BattlerId battler)
     {
         s32 saltCureDamage = 0;
         if (IS_BATTLER_ANY_TYPE(battler, TYPE_STEEL, TYPE_WATER))
-            saltCureDamage = GetNonDynamaxMaxHP(battler) / 4;
+            saltCureDamage = GetNonDynamaxMaxHP(battler) / (GetConfig(B_SALT_CURE_DAMAGE) >= GEN_CHAMPIONS ? 8 : 4);
         else
-            saltCureDamage = GetNonDynamaxMaxHP(battler) / 8;
+            saltCureDamage = GetNonDynamaxMaxHP(battler) / (GetConfig(B_SALT_CURE_DAMAGE) >= GEN_CHAMPIONS ? 16 : 8);
         SetPassiveDamageAmount(battler, saltCureDamage);
         PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_SALT_CURE);
         BattleScriptCall(BattleScript_SaltCureExtraDamage);
@@ -971,11 +971,12 @@ static bool32 HandleEndTurnYawn(enum BattlerId battler)
             }
             else
             {
-                if (B_SLEEP_TURNS >= GEN_CHAMPIONS)
+                // HnS: RNG_SLEEP_TURNS-tagged weighted roll from the earlier #10151 sleep port (same 1/3 two turns, 2/3 three turns as upstream Random() % 3)
+                if (GetConfig(B_SLEEP_TURNS) >= GEN_CHAMPIONS)
                     gBattleMons[battler].status1 |= (RandomWeighted(RNG_SLEEP_TURNS, 0, 0, 1, 2));
-                else if (B_SLEEP_TURNS >= GEN_5)
+                else if (GetConfig(B_SLEEP_TURNS) >= GEN_5)
                     gBattleMons[battler].status1 |= (RandomUniform(RNG_SLEEP_TURNS, 2, 4));
-                else if (B_SLEEP_TURNS >= GEN_3)
+                else if (GetConfig(B_SLEEP_TURNS) >= GEN_3)
                     gBattleMons[battler].status1 |= (RandomUniform(RNG_SLEEP_TURNS, 2, 5));
                 else
                     gBattleMons[battler].status1 |= (RandomUniform(RNG_SLEEP_TURNS, 2, 8));

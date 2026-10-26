@@ -1777,11 +1777,11 @@ static void SetNonVolatileStatus(enum BattlerId battlerAtk, enum BattlerId effec
     switch (effect)
     {
     case MOVE_EFFECT_SLEEP:
-        if (B_SLEEP_TURNS >= GEN_CHAMPIONS)
+        if (GetConfig(B_SLEEP_TURNS) >= GEN_CHAMPIONS)
             gBattleMons[effectBattler].status1 |= STATUS1_SLEEP_TURN(RandomWeighted(RNG_SLEEP_TURNS, 0, 0, 1, 2));
-        else if (B_SLEEP_TURNS >= GEN_5)
+        else if (GetConfig(B_SLEEP_TURNS) >= GEN_5)
             gBattleMons[effectBattler].status1 |= STATUS1_SLEEP_TURN(RandomUniform(RNG_SLEEP_TURNS, 2, 4));
-        else if (B_SLEEP_TURNS >= GEN_3)
+        else if (GetConfig(B_SLEEP_TURNS) >= GEN_3)
             gBattleMons[effectBattler].status1 |= STATUS1_SLEEP_TURN(RandomUniform(RNG_SLEEP_TURNS, 2, 5));
         else
             gBattleMons[effectBattler].status1 |= STATUS1_SLEEP_TURN(RandomUniform(RNG_SLEEP_TURNS, 2, 8));
@@ -1797,6 +1797,9 @@ static void SetNonVolatileStatus(enum BattlerId battlerAtk, enum BattlerId effec
         gBattlescriptCurrInstr = BattleScript_MoveEffectBurn;
         break;
     case MOVE_EFFECT_FREEZE:
+        // HnS: count from 0 like a Pokemon that starts frozen; upstream sets 2 here, which with the freezeTurns < 2 check
+        // thaws a Pokemon frozen by a move on its next action under every B_FREEZE_TURNS setting (#10151, master the same)
+        GetBattlerPartyState(effectBattler)->freezeTurns = 0;
         gBattleMons[effectBattler].status1 |= STATUS1_FREEZE;
         gBattlescriptCurrInstr = BattleScript_MoveEffectFreeze;
         break;
@@ -2269,13 +2272,9 @@ void SetMoveEffect(struct BattleCalcValues *cv, struct SetEffect *se)
         }
         if (i)
         {
+            gBattleCommunication[MULTISTRING_CHOOSER] = se->additionalEffect->argument.brokeProtect;
             BattleScriptPush(battleScript);
             gBattlescriptCurrInstr = BattleScript_MoveEffectFeint;
-
-            if (GetMoveEffect(gCurrentMove) == EFFECT_HYPERSPACE_FURY)
-                gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_HYPERSPACE_FURY;
-            else
-                gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_FEINT;
         }
         break;
     case MOVE_EFFECT_CORE_ENFORCER:
@@ -3731,7 +3730,7 @@ static void Cmd_getexp(void)
                     }
                     else
                     {
-                        CopyMonLevelAndBaseStatsToBattleMon(battler, &gParties[B_TRAINER_PLAYER][*expMonId]);
+                        CopyMonLevelAndBaseStatsToBattleMon(battler, &gParties[B_TRAINER_PLAYER][*expMonId], TRUE);
                     }
                     if (gBattleMons[battler].volatiles.powerTrick)
                         SWAP(gBattleMons[battler].attack, gBattleMons[battler].defense, temp);

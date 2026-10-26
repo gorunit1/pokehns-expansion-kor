@@ -120,7 +120,7 @@ void BattleScriptPushCursor(void);
 void BattleScriptCall(const u8 *bsPtr);
 void BattleScriptPop(void);
 u32 TrySetCantSelectMoveBattleScript(enum BattlerId battler);
-u32 CheckMoveLimitations(enum BattlerId battler, u8 unusableMoves, u16 check);
+u32 CheckMoveLimitations(enum BattlerId battler, u8 unusableMoves, u32 check);
 bool32 AreAllMovesUnusable(enum BattlerId battler);
 u8 GetImprisonedMovesCount(enum BattlerId battler, enum Move move);
 s32 GetDrainedBigRootHp(enum BattlerId battler, s32 hp);
@@ -231,7 +231,7 @@ enum MoveTarget GetBattlerMoveSelectionTargetType(enum BattlerId battler, enum M
 enum MoveTarget GetBattlerMoveTargetType(enum BattlerId battler, enum Move move);
 bool32 CanTargetBattler(enum BattlerId battlerAtk, enum BattlerId battlerDef, enum Move move);
 u32 GetNextTarget(u32 moveTarget, bool32 excludeCurrent);
-void CopyMonLevelAndBaseStatsToBattleMon(enum BattlerId battler, struct Pokemon *mon);
+void CopyMonLevelAndBaseStatsToBattleMon(enum BattlerId battler, struct Pokemon *mon, bool32 updateSpeedStat);
 void CopyMonAbilityAndTypesToBattleMon(enum BattlerId battler, struct Pokemon *mon);
 void RecalcBattlerStats(enum BattlerId battler, struct Pokemon *mon, bool32 isDynamaxing);
 bool32 IsGen6ExpShareEnabled(void);

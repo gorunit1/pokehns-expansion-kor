@@ -113,6 +113,7 @@ static enum CancelerResult CancelerChillyReception(struct BattleCalcValues *cv)
 
 static void DefrostBattler(enum BattlerId battler, u32 status)
 {
+    GetBattlerPartyState(battler)->freezeTurns = 0;
     gBattleScripting.battler = battler;
     gBattleMons[battler].status1 &= ~status;
     RequestNonVolatileChange(battler);
@@ -178,9 +179,11 @@ static enum CancelerResult CancelerAsleepOrFrozen(struct BattleCalcValues *cv)
     }
     else if (gBattleMons[cv->battlerAtk].status1 & STATUS1_FREEZE && !MoveThawsUser(cv->move))
     {
-        if (!RandomPercentage(RNG_FROZEN, 20))
+        if (!RandomPercentage(RNG_FROZEN, (GetConfig(B_FREEZE_TURNS) >= GEN_CHAMPIONS ? 25 : 20)) && GetBattlerPartyState(cv->battlerAtk)->freezeTurns < 2)
         {
             result = CANCELER_RESULT_FAILURE;
+            if (GetConfig(B_FREEZE_TURNS) >= GEN_CHAMPIONS)
+                GetBattlerPartyState(cv->battlerAtk)->freezeTurns++;
             gBattlescriptCurrInstr = BattleScript_MoveUsedIsFrozen;
         }
         else // unfreeze
@@ -464,7 +467,7 @@ static enum CancelerResult CancelerParalyzed(struct BattleCalcValues *cv)
 {
     if (gBattleMons[cv->battlerAtk].status1 & STATUS1_PARALYSIS
         && !(B_MAGIC_GUARD == GEN_4 && IsAbilityAndRecord(cv->battlerAtk, cv->abilities[cv->battlerAtk], ABILITY_MAGIC_GUARD))
-        && !RandomPercentage(RNG_PARALYSIS, 75))
+        && (RandomWeighted(RNG_PARALYSIS, (GetConfig(B_PARALYSIS_CHANCE) >= GEN_CHAMPIONS ? 7 : 3), 1)))
     {
         CancelMultiTurnMoves(gBattlerAttacker);
         gBattlescriptCurrInstr = BattleScript_MoveUsedIsParalyzed;
@@ -1353,6 +1356,10 @@ static enum CancelerResult CancelerMoveFailure(struct BattleCalcValues *cv)
          || cv->abilities[cv->battlerAtk] == ABILITY_KLUTZ
          || gBattleMons[cv->battlerAtk].volatiles.embargo)
             battleScript = BattleScript_ButItFailed;
+        break;
+    case EFFECT_BELCH:
+        if (!GetBattlerPartyState(cv->battlerAtk)->ateBerry)
+            battleScript = BattleScript_BelchFails;
         break;
     default:
         break;
@@ -3229,7 +3236,7 @@ static enum MoveEndResult MoveEndProtectLikeEffect(struct BattleCalcValues *cv)
         return result;
     }
 
-    if (gSpecialStatuses[gBattlerAttacker].breaksThroughProtectFully)
+    if (gSpecialStatuses[gBattlerAttacker].breaksThroughProtectFully && GetConfig(B_UNSEEN_FIST_PIERCING_DRILL) <= GEN_9)
     {
         gBattleScripting.moveendState++;
         return result;
@@ -4229,11 +4236,13 @@ static enum MoveEndResult MoveEndMoveBlock(struct BattleCalcValues *cv)
         case EFFECT_KNOCK_OFF:
             if (gBattleMons[battlerDef].item != ITEM_NONE
              && IsBattlerTurnDamaged(battlerDef, EXCLUDING_SUBSTITUTES)
-             && IsBattlerAlive(cv->battlerAtk)
              && !(B_KNOCK_OFF_REMOVAL >= GEN_5 && side == B_SIDE_PLAYER && !(gBattleTypeFlags & BATTLE_TYPE_TRAINER))
              && CanBattlerGetOrLoseItem(battlerDef, gBattlerAttacker, gBattleMons[battlerDef].item)
              && !NoAliveMonsForEitherParty())
             {
+                if (!IsBattlerAlive(cv->battlerAtk) && GetConfig(B_FAINT_MOVE_EFFECT_TIMING) < GEN_CHAMPIONS)
+                    break;
+
                 if (GetBattlerAbility(battlerDef) == ABILITY_STICKY_HOLD)
                 {
                     gBattlerAbility = battlerDef;
@@ -4268,7 +4277,7 @@ static enum MoveEndResult MoveEndMoveBlock(struct BattleCalcValues *cv)
             if (!IsBattlerTurnDamaged(battlerDef, EXCLUDING_SUBSTITUTES)
              || gBattleMons[cv->battlerAtk].item != ITEM_NONE
              || gBattleMons[battlerDef].item == ITEM_NONE
-             || !IsBattlerAlive(cv->battlerAtk)
+             || (!IsBattlerAlive(cv->battlerAtk) && GetConfig(B_FAINT_MOVE_EFFECT_TIMING) < GEN_CHAMPIONS)
              || !CanStealItem(gBattlerAttacker, battlerDef, gBattleMons[battlerDef].item))
                 continue;
 
@@ -4289,7 +4298,11 @@ static enum MoveEndResult MoveEndMoveBlock(struct BattleCalcValues *cv)
                 {
                     gBattleMons[cv->battlerAtk].item = gLastUsedItem;
                 }
-                BattleScriptCall(BattleScript_ItemSteal);
+                gEffectBattler = cv->battlerDef;
+                if (IsBattlerAlive(cv->battlerAtk))
+                    BattleScriptCall(BattleScript_ItemSteal);
+                else
+                    BattleScriptCall(BattleScript_ItemStealNoAnim);
                 return MOVEEND_RESULT_RUN_SCRIPT;
             }
             break;
@@ -4357,8 +4370,11 @@ static enum MoveEndResult MoveEndMoveBlock(struct BattleCalcValues *cv)
             }
             break;
         case EFFECT_RAPID_SPIN:
-            if (IsBattlerTurnDamaged(battlerDef, INCLUDING_SUBSTITUTES) && IsBattlerAlive(gBattlerAttacker))
+            if (IsBattlerTurnDamaged(battlerDef, INCLUDING_SUBSTITUTES))
             {
+                if (!IsBattlerAlive(cv->battlerAtk) && GetConfig(B_FAINT_MOVE_EFFECT_TIMING) < GEN_CHAMPIONS)
+                    break;
+
                 BattleScriptCall(BattleScript_RapidSpinAway);
                 gBattleStruct->eventState.moveEndBattler = 0;
                 gBattleScripting.moveendState++;
@@ -4908,10 +4924,11 @@ static enum MoveEndResult MoveEndThirdMoveBlock(struct BattleCalcValues *cv)
         break;
     case EFFECT_ICE_SPINNER:
         if (gFieldTimers.terrain != B_TERRAIN_NONE
-         && gLastPrintedMoves[cv->battlerAtk] == cv->move
-         && IsBattlerAlive(cv->battlerAtk)
          && IsBattlerTurnDamaged(gBattlerTarget, INCLUDING_SUBSTITUTES))
         {
+            if ((!IsBattlerAlive(cv->battlerAtk) || gLastPrintedMoves[cv->battlerAtk] != cv->move) && GetConfig(B_FAINT_MOVE_EFFECT_TIMING) < GEN_CHAMPIONS)
+                break;
+
             BattleScriptCall(BattleScript_RemoveTerrain);
             result = MOVEEND_RESULT_RUN_SCRIPT;
         }
@@ -6049,7 +6066,7 @@ static enum Move GetSleepTalkMove(void)
             unusableMovesBits |= (1 << (i));
     }
 
-    unusableMovesBits = CheckMoveLimitations(gBattlerAttacker, unusableMovesBits, ~(MOVE_LIMITATION_PP | MOVE_LIMITATION_CHOICE_ITEM));
+    unusableMovesBits = CheckMoveLimitations(gBattlerAttacker, unusableMovesBits, ~(MOVE_LIMITATION_PP | MOVE_LIMITATION_CHOICE_ITEM | MOVE_LIMITATION_UNUSABLE));
     if (unusableMovesBits == ALL_MOVES_MASK) // all 4 moves cannot be chosen
         return move;
 

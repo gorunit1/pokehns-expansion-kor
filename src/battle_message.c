@@ -919,6 +919,7 @@ const u8 *const gBattleStringsTable[STRINGID_COUNT] =
     [STRINGID_PARTYCUREDFROSTBITE]                  = COMPOUND_STRING("{B_BUFF1}의\n동상이 나았다!"),
     [STRINGID_PKMNATKNOTLOWERED]                    = COMPOUND_STRING("{B_SCR_NAME_WITH_PREFIX}의\n공격은 떨어지지 않는다!"),
     [STRINGID_VICTORYCATCH]                         = COMPOUND_STRING("{B_DEF_NAME}{B_TXT_IGA} 약해져 있다!\n지금이 볼을 던질 수 있는 기회다!"),
+    [STRINGID_CANTUSEMOVE]                          = COMPOUND_STRING("이 기술은 쓸 수 없다!\p"), // Champions BTL_STRID_STD_Waza_NG
     [STRINGID_WILDPKMNDROPPEDITEM]                  = COMPOUND_STRING("{B_SCR_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n{B_LAST_ITEM}{B_TXT_EULREUL} 떨어뜨렸다!\p"),
     [STRINGID_DROPPEDITEMBAGFULL]                   = COMPOUND_STRING("가방이 가득 차서\n아이템을 주울 수 없습니다!\p"),
     [STRINGID_MOSTLYINEFFECTIVE]                    = COMPOUND_STRING("효과가 매우 별로인 듯하다."),
@@ -932,6 +933,7 @@ const u8 *const gBattleStringsTable[STRINGID_COUNT] =
     [STRINGID_CRITICALHITONDEF]                     = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX2}의\n급소에 맞았다!"),
     [STRINGID_S]                                    = COMPOUND_STRING("s"), //영문 전용 복수형
     [STRINGID_LOSTSOMEOFITSHP]                      = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX}의\n생명이 조금 깎였다!"),
+    [STRINGID_BELCHCANTUSE]                         = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n나무열매를 먹지 않아서 기술을 쓸 수 없다!"), // Champions BTL_STRID_SET_GeppuFail(_E)
 };
 
 const u16 gTrainerUsedItemStringIds[] =
@@ -1109,8 +1111,8 @@ const u16 gProtectLikeUsedStringIds[] =
 
 const u16 gBrokeProtectionStringIds[] =
 {
-    [B_MSG_FEINT]           = STRINGID_FELLFORFEINT,
-    [B_MSG_HYPERSPACE_FURY] = STRINGID_BROKETHROUGHPROTECTION,
+    [B_MSG_FEINT]                 = STRINGID_FELLFORFEINT,
+    [B_MSG_BROKE_THROUGH_PROTECT] = STRINGID_BROKETHROUGHPROTECTION,
 };
 
 const u16 gReflectLightScreenSafeguardStringIds[] =

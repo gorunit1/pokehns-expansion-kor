@@ -712,7 +712,10 @@ static enum ItemEffect TryCureFreezeOrFrostbite(enum BattlerId battler)
     }
 
     if (effect == ITEM_STATUS_CHANGE)
+    {
+        GetBattlerPartyState(battler)->freezeTurns = 0;
         BattleScriptCall(BattleScript_BerryCureStatusRet);
+    }
 
     return effect;
 }

@@ -1271,6 +1271,8 @@ BattleScript_EffectGuardSwap::
 BattleScript_EffectSpeedSwap::
 	attackcanceler
 	swapstats STAT_SPEED
+	setvolatile BS_ATTACKER, VOLATILE_SPEED_SWAP, 1
+	setvolatile BS_TARGET, VOLATILE_SPEED_SWAP, 1
 	attackanimation
 	waitanimation
 	printstring STRINGID_ATTACKERSWITCHEDSTATWITHTARGET
@@ -4669,6 +4671,7 @@ BattleScript_MoveEffectRecoil::
 
 BattleScript_ItemSteal::
 	playanimation BS_EFFECT_BATTLER, B_ANIM_ITEM_STEAL
+BattleScript_ItemStealNoAnim::
 	printstring STRINGID_PKMNSTOLEITEM
 	waitmessage B_WAIT_TIME_LONG
 	tryactivateabilitywithabilityshield BS_ATTACKER, FALSE
@@ -5694,6 +5697,14 @@ BattleScript_SelectingNotAllowedMoveAssaultVestInPalace::
 	printstring STRINGID_ASSAULTVESTDOESNTALLOW
 	goto BattleScript_SelectingUnusableMoveInPalace
 
+BattleScript_SelectingCantUseMove::
+	printselectionstring STRINGID_CANTUSEMOVE
+	endselectionscript
+
+BattleScript_SelectingCantUseMoveInPalace::
+	printstring STRINGID_CANTUSEMOVE
+	goto BattleScript_SelectingUnusableMoveInPalace
+
 BattleScript_SelectingNotAllowedPlaceholder::
 	printselectionstring STRINGID_NOTDONEYET
 	endselectionscript
@@ -6679,3 +6690,10 @@ BattleScript_WildBattleVictory::
 BattleScript_WildBattleVictoryRet:
 	handlefailedvictorycatch
 	return
+
+BattleScript_BelchFails::
+	pause B_WAIT_TIME_SHORT
+	@ HnS: the Champions in-battle line (GeppuFail) instead of the selection line; upstream prints BELCHCANTSELECT here and leaves BELCHCANTUSE unused
+	printstring STRINGID_BELCHCANTUSE
+	waitmessage B_WAIT_TIME_LONG
+	goto BattleScript_MoveEnd
