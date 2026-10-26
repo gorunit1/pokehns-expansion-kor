@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-26 — 묶음 51 검증(빌드·전체 테스트·한글 회귀·세이브) (클라우드 세션)
+
+- 요청: 친구 메시지(사용자 전달) — 빌드, 전체 자동 테스트, 한글 회귀, 세이브 정적 비교 후 실기용 ROM 기준 커밋·SHA1·빌드 환경 보고.
+- 결과: 정적 이식(`131f14ba`)이 한 번에 컴파일·경고 0. 전체 테스트에서 9세대 기본값을 전제한 upstream 테스트 6개의 상태가 바뀜(HnS `GEN_LATEST = GEN_CHAMPIONS`) → `WITH_CONFIG(…, GEN_9)` 고정. 실제로 사라진 PASS 0. 한글 테스트 8/8, 이식 전 0/8, 얼음 보정 필요성 확인. 세이브 PASS(WARN 4 — `CalculateMonStatsCont` 본문이 옛 함수와 기계어 같음 확인). 한글 회귀는 2-08 소금절이(의도)·1-11(마비 가중 난수의 러너 기본값) → 1-11 고정, 기대 555/652로 갱신, 다시 돌려 바이트 같음.
+- 실수: 1차에 쓴 속이기 한글 테스트가 이식 전에도 PASS(`allowed: FALSE`는 기록에서 빼기만 함) — 발버둥 확인으로 고침. 1차 문서의 "한글 회귀 세트 `RNG_PARALYSIS` 사용 0"은 grep 출력이 30줄에서 잘려 놓친 것 — 실제 3곳(영향 없음), 문서 정정.
+- 수정 파일: 커밋 `ba5922ac`(`test/battle/ability/unseen_fist.c`, `test/battle/move_effect/last_resort.c`, `test/test_test_runner.c`, `test/hns_10151_champions.c`, 한글 회귀 `zz_hns9680_endturn1.c`·`expected/summary.txt`·`summary.meta`). 문서 — `test-baseline-seq475.8.txt`(새), `full-sync-seq-475.5-475.8.md` 검증 절, `friend-reply-2026-10-26.md` 2차 검증, `RECHECK_BEFORE_COMPLETION.md` 92·99·101, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 표시, `port_sequence.tsv`, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. 이식 전 비교·얼음 보정 확인·한글 회귀 세트 단건 확인용 임시 파일은 커밋 안 함, 지움.
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 친구 문자: 세션 답변 문안 — 보내기 전.
+- 다음 시작점: seq 394 #10268(재확인 36 B) → 485.
+
 ### 2026-10-26 — 친구 결정 반영: 묶음 51(seq 475.5·475.8), 재확인 92~95·36, 무용극장 (클라우드 세션)
 
 - 요청: 사용자가 친구 메시지 전달("맞다 친구한테 온 메시지가 있어") — 재확인 92~95·99 결정(전부 A), 36 B 확인, 무용극장 조우곡 수정. **빌드·테스트·ROM·실기 금지, 정적 확인까지.**
