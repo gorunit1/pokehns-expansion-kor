@@ -3335,10 +3335,13 @@ static void PrintTextOnWindowToFit(u8 windowId, const u8 *string, u8 x, u8 y, u8
 }
 
 // HnS: ability, move and contest descriptions only - a narrower font only if the description really gets narrower
-// in it (GetDescriptionFontIdToFit, RECHECK 91 plan A). Measured against the window width as before (#10521).
+// in it (GetDescriptionFontIdToFit, RECHECK 91 plan A). Measured against the width left after x (friend decision
+// RECHECK 92 plan A: the move and contest descriptions start at x 6 in the 160 px window, so 154 px; the ability
+// description starts at x 0 and keeps the window width).
 static void PrintDescriptionOnWindowToFit(u8 windowId, const u8 *string, u8 x, u8 y, u8 lineSpacing, u8 colorId)
 {
-    u32 fontId = GetDescriptionFontIdToFit(string, FONT_NORMAL, 0, WindowWidthPx(windowId));
+    u32 windowWidth = WindowWidthPx(windowId);
+    u32 fontId = GetDescriptionFontIdToFit(string, FONT_NORMAL, 0, windowWidth > x ? windowWidth - x : 0);
     PrintTextOnWindowWithFont(windowId, string, x, y, lineSpacing, colorId, fontId);
 }
 
