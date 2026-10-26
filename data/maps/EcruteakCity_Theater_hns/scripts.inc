@@ -685,22 +685,28 @@ EcruteakCity_Theater_EventScript_LegendaryCutscene::
 	call_if_eq VAR_LUGIA_OR_HOOH, 2, EcruteakCity_Theater_EventScript_HoohBuffer 
 	msgbox EcruteakCity_Theater_Text_ZukiSeen, MSGBOX_DEFAULT
 	closemessage
-	delay 20
-	playse SE_M_PETAL_DANCE
-	applymovement2 LOCALID_ECRUTEAK_ZUKI, EcruteakCity_Theater_Movement_KimonoSpin
-	waitmovement 0
 	setvar VAR_ECRUTEAK_CITY_THEATER, 6
 EcruteakCity_Theater_EventScript_ZukiBattle::
 	msgbox EcruteakCity_Theater_Text_ZukiSeenAgain, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, FALSE, EcruteakCity_Theater_EventScript_LegendaryDenied
+	closemessage
 	call_if_eq VAR_FACING, DIR_SOUTH, EcruteakCity_Theater_Movement_SouthCorrection
 	call_if_eq VAR_FACING, DIR_WEST, EcruteakCity_Theater_Movement_WestCorrection
 	call_if_eq VAR_FACING, DIR_EAST, EcruteakCity_Theater_Movement_EastCorrection
+	@ HnS: as HGSS (StopBGM 30 + PlayBGM SEQ_GS_EYE_MAIKO before each Kimono Girl's spin; HGSS StopBGM ignores its
+	@ argument and stops at once, playbgm switches at once). The map music is not saved, so it comes back after the battle.
+	playbgm MUS_HG_ENCOUNTER_KIMONO_GIRL, FALSE
+	delay 20
+	playse SE_M_PETAL_DANCE
+	applymovement2 LOCALID_ECRUTEAK_ZUKI, EcruteakCity_Theater_Movement_KimonoSpin
+	waitmovement 0
+	msgbox EcruteakCity_Theater_Text_ZukiBattleStart, MSGBOX_DEFAULT
 	settotemboost B_POSITION_OPPONENT_LEFT, 0, 0, 1, 2, 0, 0
-	trainerbattle_no_intro TRAINER_ZUKI_HNS, EcruteakCity_Theater_Text_KimonoGirlBeaten
+	trainerbattle_no_intro TRAINER_ZUKI_HNS, EcruteakCity_Theater_Text_KimonoGirlBeaten, NO_MUSIC
 	applymovement2 LOCALID_ECRUTEAK_ZUKI, EcruteakCity_Theater_Movement_ZukiWalkUp
 	waitmovement 0
 EcruteakCity_Theater_EventScript_NaokoBattle::
+	playbgm MUS_HG_ENCOUNTER_KIMONO_GIRL, FALSE
 	playse SE_M_PETAL_DANCE
 	applymovement2 LOCALID_ECRUTEAK_NAOKO, EcruteakCity_Theater_Movement_KimonoSpin
 	waitmovement 0
@@ -708,10 +714,11 @@ EcruteakCity_Theater_EventScript_NaokoBattle::
 	waitmovement 0
 	msgbox EcruteakCity_Theater_Text_NaokoSeen, MSGBOX_DEFAULT
 	settotemboost B_POSITION_OPPONENT_LEFT, 0, 1, 0, 1, 1, 0
-	trainerbattle_no_intro TRAINER_NAOKO_HNS, EcruteakCity_Theater_Text_KimonoGirlBeaten
+	trainerbattle_no_intro TRAINER_NAOKO_HNS, EcruteakCity_Theater_Text_KimonoGirlBeaten, NO_MUSIC
 	applymovement2 LOCALID_ECRUTEAK_NAOKO, EcruteakCity_Theater_Movement_NaokoWalkBack
 	waitmovement 0
 EcruteakCity_Theater_EventScript_MikiBattle::
+	playbgm MUS_HG_ENCOUNTER_KIMONO_GIRL, FALSE
 	playse SE_M_PETAL_DANCE
 	applymovement2 LOCALID_ECRUTEAK_MIKI, EcruteakCity_Theater_Movement_KimonoSpin
 	waitmovement 0
@@ -719,10 +726,11 @@ EcruteakCity_Theater_EventScript_MikiBattle::
 	waitmovement 0
 	msgbox EcruteakCity_Theater_Text_MikiSeen, MSGBOX_DEFAULT
 	settotemboost B_POSITION_OPPONENT_LEFT, 0, 0, 0, 1, 2, 0
-	trainerbattle_no_intro TRAINER_MIKI_HNS, EcruteakCity_Theater_Text_KimonoGirlBeaten
+	trainerbattle_no_intro TRAINER_MIKI_HNS, EcruteakCity_Theater_Text_KimonoGirlBeaten, NO_MUSIC
 	applymovement2 LOCALID_ECRUTEAK_MIKI, EcruteakCity_Theater_Movement_MikiWalkBack
 	waitmovement 0
 EcruteakCity_Theater_EventScript_SayoBattle::
+	playbgm MUS_HG_ENCOUNTER_KIMONO_GIRL, FALSE
 	playse SE_M_PETAL_DANCE
 	applymovement2 LOCALID_ECRUTEAK_SAYO, EcruteakCity_Theater_Movement_KimonoSpin
 	waitmovement 0
@@ -730,10 +738,11 @@ EcruteakCity_Theater_EventScript_SayoBattle::
 	waitmovement 0
 	msgbox EcruteakCity_Theater_Text_SayoSeen, MSGBOX_DEFAULT
 	settotemboost B_POSITION_OPPONENT_LEFT, 0, 0, 2, 1, 0, 0
-	trainerbattle_no_intro TRAINER_SAYO_HNS, EcruteakCity_Theater_Text_KimonoGirlBeaten
+	trainerbattle_no_intro TRAINER_SAYO_HNS, EcruteakCity_Theater_Text_KimonoGirlBeaten, NO_MUSIC
 	applymovement2 LOCALID_ECRUTEAK_SAYO, EcruteakCity_Theater_Movement_SayoWalkBack
 	waitmovement 0
 EcruteakCity_Theater_EventScript_KuniBattle::
+	playbgm MUS_HG_ENCOUNTER_KIMONO_GIRL, FALSE
 	playse SE_M_PETAL_DANCE
 	applymovement2 LOCALID_ECRUTEAK_KUNI, EcruteakCity_Theater_Movement_KimonoSpin
 	waitmovement 0
@@ -741,7 +750,7 @@ EcruteakCity_Theater_EventScript_KuniBattle::
 	waitmovement 0
 	msgbox EcruteakCity_Theater_Text_KuniSeen, MSGBOX_DEFAULT
 	settotemboost B_POSITION_OPPONENT_LEFT, 0, 2, 0, 0, 1, 0
-	trainerbattle_no_intro TRAINER_KUNI_HNS, EcruteakCity_Theater_Text_KimonoGirlBeaten
+	trainerbattle_no_intro TRAINER_KUNI_HNS, EcruteakCity_Theater_Text_KimonoGirlBeaten, NO_MUSIC
 	applymovement2 LOCALID_ECRUTEAK_KUNI, EcruteakCity_Theater_Movement_KuniWalkBack
 	waitmovement 0
 EcruteakCity_Theater_EventScript_BeatGauntlet::
@@ -987,6 +996,12 @@ EcruteakCity_Theater_Text_ZukiSeenAgain:
 	.string "I will test you to see if you are\n"
 	.string "a good Trainer.\p"
 	.string "Are you ready, {PLAYER}?$"
+
+@ HnS: HGSS official Korean msg_0618_T27R0501_00045 (Poke Corpus 57e5078 HeartGoldSoulSilver/ko_msg.txt line 26935)
+EcruteakCity_Theater_Text_ZukiBattleStart:
+	.string "그럼 당신과 포켓몬의\n"
+	.string "유대감이 얼마나 강한지\l"
+	.string "똑똑히 봐 두겠어요-$"
 
 EcruteakCity_Theater_Text_ZukiNo:
 	.string "That is fine...\n"

@@ -872,8 +872,9 @@
 	.endm
 
 	@ Starts a trainer battle, skipping intro text. Takes a trainer and loss text
-	.macro trainerbattle_no_intro trainer:req, lose_text:req
-	trainerbattle LOCALID_NONE, \trainer, NULL, \lose_text, NULL, LOCALID_NONE, TRAINER_NONE, NULL, NULL, NULL, NULL, NULL, FALSE, TRUE, FALSE, FALSE, TRUE, FALSE, FALSE, TRUE
+	@ HnS: optional music (default TRUE) - pass NO_MUSIC when the script already started the encounter music
+	.macro trainerbattle_no_intro trainer:req, lose_text:req, music=TRUE
+	trainerbattle LOCALID_NONE, \trainer, NULL, \lose_text, NULL, LOCALID_NONE, TRAINER_NONE, NULL, NULL, NULL, NULL, NULL, FALSE, \music, FALSE, FALSE, TRUE, FALSE, FALSE, TRUE
 	.endm
 
 	@ Starts a double battle with the player against two trainers
