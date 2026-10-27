@@ -11,7 +11,7 @@
 - 수정 파일: 커밋 `5fca546a`(`asm/macros/battle_script.inc`, `data/battle_scripts_1.s`, `include/battle_interface.h`, `src/battle_interface.c`, `src/battle_message.c`, `src/battle_move_resolution.c`, `src/battle_script_commands.c`, `test/battle/move_animations/all_anims.c`, `test/hns_10268_popup.c`(새)). 문서 — `full-sync-seq-394.md`(새), `test-baseline-seq394.txt`(새), `RECHECK_BEFORE_COMPLETION.md` 36 해결·103·104, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 3행, `port_sequence.tsv` 394, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. 이식 전 비교는 scratchpad 클론 `73cdc0b8`의 `ZZ old` 사본, 애슈 보정 확인은 작업 트리에서 되돌렸다 복구(둘 다 커밋 안 함).
 - 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
-- 친구 문자: 세션 답변 문안 — 사용자 확인 대기.
+- 친구 문자: 세션 답변 문안 — **보냄**(2026-10-27 사용자 확인).
 - 다음 시작점: seq 485 #10488.
 
 ### 2026-10-26 — 묶음 51 검증(빌드·전체 테스트·한글 회귀·세이브) (클라우드 세션)
