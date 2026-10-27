@@ -10,7 +10,7 @@
 - 수정 파일: 커밋 `2ae2ad83`(upstream 4파일 + `src/battle_move_resolution.c` HnS 보정 삭제 + `test/hns_10566_spread.c`(새)). 문서 — `full-sync-seq-486.md`(새), `test-baseline-seq486.txt`(새), `RECHECK_BEFORE_COMPLETION.md` 97 해결, `port_sequence.tsv` 486, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. 이식 전 비교는 scratchpad 클론 `00775c1f`의 `ZZ old` 사본, 생존 검사 제거 확인은 작업 트리에서 잠시 바꿨다 복구(둘 다 커밋 안 함).
 - 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
-- 친구 문자: 세션 답변 문안 — 사용자 확인 대기.
+- 친구 문자: 세션 답변 문안 — **보냄**(2026-10-27 사용자 확인).
 - 다음 시작점: seq 488 #10595.
 
 ### 2026-10-27 — full-sync 묶음 53(seq 485 #10488) (클라우드 세션)
