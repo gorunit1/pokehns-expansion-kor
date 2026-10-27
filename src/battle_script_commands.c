@@ -1284,7 +1284,7 @@ static void Cmd_healthbarupdate(void)
 
 static void Cmd_datahpupdate(void)
 {
-    CMD_ARGS(u8 battler);
+    CMD_ARGS(u8 battler, u8 assuranceDouble);
     enum BattlerId battler = GetBattlerForBattleScript(cmd->battler);
 
     if (gBattleControllerExecFlags)
@@ -1303,8 +1303,9 @@ static void Cmd_datahpupdate(void)
             gBattleMons[battler].hp -= gBattleStruct->passiveHpUpdate[battler];
         else
             gBattleMons[battler].hp = 0;
-        // Since this is reset for the next turn, it should be fine to set it here.
-        gProtectStructs[battler].assuranceDoubled = TRUE;
+
+        if (cmd->assuranceDouble == ASSURANCE_DOUBLE)
+            gProtectStructs[battler].assuranceDoubled = TRUE; // Will reset for the next turn
     }
 
     gBattleStruct->passiveHpUpdate[battler] = 0;

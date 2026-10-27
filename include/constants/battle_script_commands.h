@@ -403,4 +403,10 @@ enum SynchronizeState
     SYNCH_STATE_END,
 };
 
+enum AssuranceDoubleDamage
+{
+    ASSURANCE_DOUBLE,
+    ASSURANCE_IGNORE,
+};
+
 #endif // GUARD_CONSTANTS_BATTLE_SCRIPT_COMMANDS_H
