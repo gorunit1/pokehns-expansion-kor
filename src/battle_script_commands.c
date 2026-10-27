@@ -12837,6 +12837,14 @@ void BS_UpdateAbilityPopup(void)
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
+void BS_WaitAbilityPopup(void)
+{
+    NATIVE_ARGS();
+    if (IsAnyAbilityPopUpActive())
+        return;
+    gBattlescriptCurrInstr = cmd->nextInstr;
+}
+
 void BS_JumpIfTargetAlly(void)
 {
     NATIVE_ARGS(const u8 *jumpInstr);
@@ -13732,10 +13740,16 @@ void BS_ShowItemPopup(void)
 void BS_DestroyItemPopup(void)
 {
     NATIVE_ARGS();
-    // HnS: item pop-ups leave on the same timer as ability pop-ups (SpriteCb_AbilityPopUp: slide in, 48 frames, slide
-    // out). Closing every pop-up here, right after the helper's `pause`, left the item name readable for 1 frame with
-    // "skip battle delays" (33 without) and also cut off other battlers' pop-ups. Upstream #10268 (seq 394) instead
-    // makes this command wait until no pop-up is left.
+
+    // HnS: recheck 36 plan B (#10268) - wait until no pop-up is left on screen. HnS item pop-ups leave on the same
+    // timer as ability pop-ups (SpriteCb_AbilityPopUp), so nothing is left to close by then; DestroyAbilityPopUp
+    // does not cut off an item pop-up.
+    if (IsAnyAbilityPopUpActive())
+        return;
+
+    for (enum BattlerId battler = 0; battler < gBattlersCount; battler++)
+        DestroyAbilityPopUp(battler);
+
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 

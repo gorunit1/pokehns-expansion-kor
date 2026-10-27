@@ -2851,18 +2851,6 @@ static void PrintItemOnItemPopUp(enum Item item, u8 spriteId1, u8 spriteId2)
     PrintOnAbilityPopUp(GetItemName(item), spriteId1, spriteId2, x, y, FALSE);
 }
 
-static inline bool32 IsAnyAbilityPopUpActive(void)
-{
-    u32 activeAbilityPopUps = 0;
-    for (enum BattlerId battler = 0; battler < gBattlersCount; battler++)
-    {
-        if (gBattleStruct->battlerState[battler].activeAbilityPopUps)
-            activeAbilityPopUps++;
-    }
-
-    return activeAbilityPopUps;
-}
-
 // HnS: the battler's newest pop-up is really on screen. Checked on the sprite because a party or bag screen
 // resets the sprites without clearing activeAbilityPopUps.
 static bool32 IsBattlerPopUpSpriteLive(enum BattlerId battler)
@@ -2874,6 +2862,20 @@ static bool32 IsBattlerPopUpSpriteLive(enum BattlerId battler)
         && sprite->callback == SpriteCb_AbilityPopUp
         && sprite->sIsMain
         && sprite->sBattlerId == battler;
+}
+
+// HnS: counts only pop-ups whose sprite is still on screen. waitabilitypopup and destroyitempopup (#10268) wait on this,
+// and a mark left behind by a party or bag screen reset would otherwise make them wait forever.
+bool32 IsAnyAbilityPopUpActive(void)
+{
+    u32 activeAbilityPopUps = 0;
+    for (enum BattlerId battler = 0; battler < gBattlersCount; battler++)
+    {
+        if (IsBattlerPopUpSpriteLive(battler))
+            activeAbilityPopUps++;
+    }
+
+    return activeAbilityPopUps;
 }
 
 // HnS: drop marks left by such a reset so that the next pop-up loads its palette and gfx-free task again.

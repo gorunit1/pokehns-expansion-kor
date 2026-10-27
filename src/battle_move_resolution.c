@@ -3206,12 +3206,10 @@ static enum MoveEndResult MoveEndProtectBypassEffects(struct BattleCalcValues *c
     switch (protectBypassMethod)
     {
         case PROTECT_BYPASS_ABILITY_IGNORES:
-            gBattleScripting.battler = cv->battlerDef; // HnS: STRINGID_COULDNTFULLYPROTECT names {B_SCR}
             BattleScriptCall(BattleScript_UnseenFist);
             result = MOVEEND_RESULT_RUN_SCRIPT;
             break;
         case PROTECT_BYPASS_OTHER:
-            gBattleScripting.battler = cv->battlerDef;
             BattleScriptCall(BattleScript_CouldntFullyProtect);
             result = MOVEEND_RESULT_RUN_SCRIPT;
             break;
