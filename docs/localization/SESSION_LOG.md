@@ -2,6 +2,18 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-27 — full-sync 묶음 55(seq 488 #10595, 재확인 8v 해결·105) (클라우드 세션)
+
+- 요청: 사용자 "ㄱㄱ 488 시작해 혼자해도 되는거라면".
+- 판단: 새 문장 0. 명중 판정 순서 변화는 upstream이 본가(Showdown) 순서에 맞춘 것이라 그대로 받고 출력 변화로 기록. 빈 명령은 HnS 번호로(`UNUSED_40`·`41`). 옮겨진 다단 기술 코드에 HnS 3줄을 다시 얹음.
+- 발견: (1) 한글 회귀 `HNS9714 2-04`가 FAIL → 새 `CancelerSubstitute`가 상대 필드 기술을 대타출동으로 막는 upstream 결함(압정류 4종), HnS 보정(재확인 105). (2) 같은 함수 루프가 `cv->battlerDef`로 건너뜀을 보는데, 흔들흔들댄스·일구다 등 9개 장면을 이식 전과 상태 비교해 차이 없음 → 그대로.
+- 실수: 처음엔 루프 건 때문에 흔들흔들댄스가 대타출동을 뚫을 거라 추정했는데 실제로는 PASS(대상마다 판정). 초음파 대신 처음 쓴 이상한빛은 명중률 100이라 `hit: FALSE`가 안 먹어 테스트가 의미 없었음 → 초음파로. 결과 문서 초안의 삭제 줄 수(42·14)와 도희 이름을 upstream diff·트레이너 데이터로 고침.
+- 수정 파일: 커밋 `daca9a9c`(upstream 7파일 + `test/hns_10595_substitute.c`(새)), `c03e1b92`(`src/battle_move_resolution.c`, 테스트). 문서 — `full-sync-seq-488.md`(새), `test-baseline-seq488.txt`(새), `RECHECK_BEFORE_COMPLETION.md` 8v 해결·105, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 2행, `port_sequence.tsv` 488, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. 이식 전 비교·상태 비교 프로브는 scratchpad 클론 `05925d4a`와 작업 트리의 임시 `zz_probe_*` 테스트(커밋 안 함, 지움). 보정 필요성은 작업 트리에서 보정을 잠시 빼서 확인(복구).
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 친구 문자: 세션 답변 문안 — 사용자 확인 대기.
+- 다음 시작점: seq 489 #10600.
+
 ### 2026-10-27 — full-sync 묶음 54(seq 486 #10566, 재확인 97 해결) (클라우드 세션)
 
 - 요청: 사용자 "ㄱㄱ 486 시작해 혼자해도 되는거라면".
