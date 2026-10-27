@@ -395,7 +395,7 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 391	10124	661	1.17.0	g4_ai_tests_pokemon_sprites	U-10124	9359	M	test	N	N	~0	AI triggers ally's Spicy Spray when burn is beneficial	게임 코드는 2026-09-15 선별 이식분으로 이미 있음 → 테스트만 6fc0a840
 392	10243	663	1.17.0	g4_ai_tests_pokemon_sprites	U-10243	-	M	test	N	N	~0	Modular AI Omniscience Flags	게임 코드는 2026-09-15 선별 이식분으로 이미 있음 → 테스트·튜토리얼만 c9340152
 393	10253	666	1.17.0	g3_battle_changes_moves_abilities_items	U-10253	-	S	refactor	N	N	-0.1KB	Remove redundant Sub checks	적용(HnS 문맥 손 맞춤 — MoveEnd cv 전 형태, 자보·애터 미래예지 검사) a512bb9b
-394	10268	668	1.17.0	g2_battle_fixed_b	U-10268	-	M	fix	Y	N	+250B	Champions Battle Messages post-mortem fixes	보류 — 재확인 36(도구·특성 팝업 끝까지 대기) 친구 결정 대기. 작업분은 세션 임시 b32/10268-wip.patch
+394	10268	668	1.17.0	g2_battle_fixed_b	U-10268	-	M	fix	Y	N	+250B	Champions Battle Messages post-mortem fixes	적용(재확인 36 친구 결정 B — 팝업 끝까지 대기, 대기 판정은 살아 있는 팝업 스프라이트 = 재확인 104, HnS 보정: 애슈열매 팝업 BS_ATTACKER = 재확인 103, upcoming과 같은 수정) 5fca546a
 395	10265	669	1.17.0	g3_battle_changes_moves_abilities_items	U-statchange-9730	9168,9730	S	fix	Y	N	~0	Fix stat change berries showing held item anim twice	이미 적용(HnS 스크립트가 고쳐진 형태 — 재확인 8o, seq 181), 변경 없음
 396	10258	671	1.17.0	g4_ai_tests_pokemon_sprites	U-10258	-	S	test	N	N	~0	AI avoids self-KOs with recoil	게임 코드는 2026-09-15 선별 이식분으로 이미 있음 → 테스트만 babcb780
 397	9969	672	1.17.0	g6_overworld_refactors	U-randommon-9896	9896,9927	M	feature	N	N	+2KB(디버그)	Add debug menu actions to quickly test randomizer results	적용(디버그 메뉴 목록 손 맞춤 — HnS 목호·실버 멀티 유지, 새 영어 디버그 텍스트) f6d6e037

@@ -2,6 +2,18 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-27 — full-sync 묶음 52(seq 394 #10268, 재확인 36 B) (클라우드 세션)
+
+- 요청: 사용자 "ㄱㄱ 394 시작해 혼자해도 되는거라면".
+- 판단: 재확인 36은 친구 결정 B(2026-10-26)라 새 질문 없음, 새 문장 0. 묶음 31 작업분 대신 지금 코드에 다시 3-way(7파일). upstream 대기 조건(`activeAbilityPopUps` 표시만)은 HnS 파티·가방 화면 뒤 남은 표시 때문에 끝나지 않을 수 있어 `IsBattlerPopUpSpriteLive`로 셈(재확인 104). `BattleScript_BerryReduceAnimation`의 HnS 주석을 upstream `waitabilitypopup`으로.
+- 발견: upstream 애슈열매 팝업이 스크립트 배틀러(이미 다음 배틀러)에 뜸 — 한글 테스트로 확인, `BattleScript_ItemPopUp_Attacker`로(재확인 103). upstream `upcoming`도 같은 수정.
+- 실수: 묶음 31 질문 문안의 열매 이름(캄라·이바·초나)과 "`COULDNTFULLYPROTECT` 토큰은 이미 `B_DEF`" — 실제는 랑사·애슈·미클, `B_SCR` + 배틀러 지정. 결과 문서에 정정. 이번 세션 초안에서도 애슈열매를 다른 이름으로 불렀다가 공식 명칭·HnS 도구 이름과 대조해 고침.
+- 수정 파일: 커밋 `5fca546a`(`asm/macros/battle_script.inc`, `data/battle_scripts_1.s`, `include/battle_interface.h`, `src/battle_interface.c`, `src/battle_message.c`, `src/battle_move_resolution.c`, `src/battle_script_commands.c`, `test/battle/move_animations/all_anims.c`, `test/hns_10268_popup.c`(새)). 문서 — `full-sync-seq-394.md`(새), `test-baseline-seq394.txt`(새), `RECHECK_BEFORE_COMPLETION.md` 36 해결·103·104, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 3행, `port_sequence.tsv` 394, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. 이식 전 비교는 scratchpad 클론 `73cdc0b8`의 `ZZ old` 사본, 애슈 보정 확인은 작업 트리에서 되돌렸다 복구(둘 다 커밋 안 함).
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 친구 문자: 세션 답변 문안 — 사용자 확인 대기.
+- 다음 시작점: seq 485 #10488.
+
 ### 2026-10-26 — 묶음 51 검증(빌드·전체 테스트·한글 회귀·세이브) (클라우드 세션)
 
 - 요청: 친구 메시지(사용자 전달) — 빌드, 전체 자동 테스트, 한글 회귀, 세이브 정적 비교 후 실기용 ROM 기준 커밋·SHA1·빌드 환경 보고.
