@@ -2423,8 +2423,14 @@ static enum CancelerResult CancelerMultihitMoves(struct BattleCalcValues *cv)
 
 static enum CancelerResult CancelerSubstitute(struct BattleCalcValues *cv)
 {
+    enum MoveTarget moveTarget = GetBattlerMoveTargetType(cv->battlerAtk, cv->move);
+
+    // HnS: a move on the field or the foes' side (Spikes, Stealth Rock...) does not target the Pokemon behind a
+    // Substitute. Upstream #10595 counts the foes as its targets here, so hazards failed against a Substitute.
     if (!IsBattleMoveStatus(cv->move)
      || IsStatChangeMove(cv->move)
+     || moveTarget == TARGET_FIELD
+     || moveTarget == TARGET_OPPONENTS_FIELD
      || (cv->moveEffect == EFFECT_TRANSFORM && GetConfig(B_TRANSFORM_SUBSTITUTE_FAIL) < GEN_5))
         return CANCELER_RESULT_SUCCESS;
 

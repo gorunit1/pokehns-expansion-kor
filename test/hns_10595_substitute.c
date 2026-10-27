@@ -89,3 +89,30 @@ DOUBLE_BATTLE_TEST("HnS 10595: Teeter Dance does not confuse a foe behind a Subs
         EXPECT(opponentRight->volatiles.confusionTimer == 0);
     }
 }
+
+// HnS fix: entry hazards are set on the foes' side even if the foe is behind a Substitute (upstream #10595 made them fail).
+SINGLE_BATTLE_TEST("HnS 10595: entry hazards are set against a foe behind a Substitute")
+{
+    u32 move;
+    PARAMETRIZE { move = MOVE_STEALTH_ROCK; }
+    PARAMETRIZE { move = MOVE_SPIKES; }
+    PARAMETRIZE { move = MOVE_TOXIC_SPIKES; }
+    PARAMETRIZE { move = MOVE_STICKY_WEB; }
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET) { Speed(2); }
+        OPPONENT(SPECIES_WYNAUT) { Speed(1); }
+    } WHEN {
+        TURN { MOVE(player, MOVE_SUBSTITUTE); MOVE(opponent, move); }
+    } SCENE {
+        MESSAGE("마자용의 대타가 나타났다");
+        NOT MESSAGE("그러나 실패하고 말았다!");
+        if (move == MOVE_STEALTH_ROCK)
+            MESSAGE("우리 편의 주위에 뾰족한 바위가 떠다니기 시작했다!");
+        else if (move == MOVE_SPIKES)
+            MESSAGE("우리 편의 발밑에 압정이 뿌려졌다!");
+        else if (move == MOVE_TOXIC_SPIKES)
+            MESSAGE("우리 편의 발밑에 독압정이 뿌려졌다!");
+        else
+            MESSAGE("우리 편 발밑에 끈적끈적네트가 펼쳐졌다!");
+    }
+}
