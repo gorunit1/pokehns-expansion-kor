@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-27 — full-sync 묶음 54(seq 486 #10566, 재확인 97 해결) (클라우드 세션)
+
+- 요청: 사용자 "ㄱㄱ 486 시작해 혼자해도 되는거라면".
+- 판단: 새 문장 0, 재확인 97은 미리 정해 둔 정리(보정 줄 삭제 + `HnS 10330` 확인)라 혼자 진행. 충돌 1곳(상수 정의 순서 → upstream).
+- 발견: upstream 새 테스트 5개 중 영문 `NOT MESSAGE`만 보는 것은 HnS에서 늘 통과 — 같은 장면을 한글 문장으로 다시 검사(3개). 이식 전 코드도 같은 출력(HnS는 보정·다른 코드가 이미 막음). upstream 생존 검사를 잠시 빼서 테스트가 회귀를 잡는지 확인(5개 FAIL).
+- 수정 파일: 커밋 `2ae2ad83`(upstream 4파일 + `src/battle_move_resolution.c` HnS 보정 삭제 + `test/hns_10566_spread.c`(새)). 문서 — `full-sync-seq-486.md`(새), `test-baseline-seq486.txt`(새), `RECHECK_BEFORE_COMPLETION.md` 97 해결, `port_sequence.tsv` 486, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. 이식 전 비교는 scratchpad 클론 `00775c1f`의 `ZZ old` 사본, 생존 검사 제거 확인은 작업 트리에서 잠시 바꿨다 복구(둘 다 커밋 안 함).
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 친구 문자: 세션 답변 문안 — 사용자 확인 대기.
+- 다음 시작점: seq 488 #10595.
+
 ### 2026-10-27 — full-sync 묶음 53(seq 485 #10488) (클라우드 세션)
 
 - 요청: 사용자 "ㄱㄱ 485 시작해 혼자해도 되는거라면".

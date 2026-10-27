@@ -490,7 +490,7 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 483	10431	714	1.17.0	g2_battle_fixed_b	U-canceler-10362	10268,10362	M	fix	Y	N	+150B	Fixes Resist Berry order	적용 e6b976e0(482와 같은 커밋 — 친구 Q9 반감열매 순서, 재확인 8l 해결, waitabilitypopup은 394 대기라 뺌 — 재확인 36)
 484	10426	716	1.17.0	g6_overworld_refactors	U-absorb-10426	9176,9514,9680,9717,9730,9918,10220,10151,10299,10311	M	refactor	Y	N	~0	Refactor absorb and change SetMoveEffect signature	적용(#10151 brokeProtect 줄·필드만 없음, 빈 명령 자리 UNUSED_39, 흡혈 위력 60 유지, HnS 보정: 해감액 씨뿌리기 매직가드 줄 = upstream master 합치기 5340d262a4, 재확인 100) 15b75297
 485	10488	740	1.17.0	g2_battle_fixed_b	U-10488	10362	L	fix	Y	N	+80B	Fixes Assurance inconsistencies	적용(upstream 그대로, 충돌 1곳 — 아이스바디 HnS 문장 없음 형태 + 인자, 문장 변화 0) 312792d9
-486	10566	747	1.17.0	g2_battle_fixed_b	U-canceler-10362	9730,9939,10362	M	fix	Y	N	+150B	Fix HP bars emitting for non-present battlers and extraneous result battle messages	
+486	10566	747	1.17.0	g2_battle_fixed_b	U-canceler-10362	9730,9939,10362	M	fix	Y	N	+150B	Fix HP bars emitting for non-present battlers and extraneous result battle messages	적용(재확인 97 해결 — HnS 쓰러진 대상 보정 줄 삭제, upstream 생존 검사로; 충돌 1곳 상수 순서, 화면 변화 0) 2ae2ad83
 487	10586	753	1.17.0	g2_battle_fixed_b	U-terrain-10326	10326	S	fix	N	N	~0	Fix terrain not being reset before battle background load	앞당김 적용 15bb0685(481과 같은 커밋 — FreeBattleResources에서 지형 초기화, B_TERRAIN_BG_CHANGE TRUE라 HnS에서 보임)
 488	10595	754	1.17.0	g3_battle_changes_moves_abilities_items	U-accuracy-9939	9657,9859,9730,9939,10220,10362,10426	L	refactor	Y	N	-0.3KB	Move Substitute check to move resolution and remove acc check in scripts	
 489	10600	755	1.17.0	g2_battle_fixed_b	U-10600	9657,10220	M	fix	N	N	+80B	Fix Scrappy not bypassing Ghosts types if ability was changed	
