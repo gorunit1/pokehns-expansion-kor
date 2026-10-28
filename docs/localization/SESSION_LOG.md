@@ -10,7 +10,7 @@
 - 수정 파일: 커밋 `8da1491c`(upstream 7파일 + `test/hns_10640_msg_display.c`(새)). 문서 — `full-sync-seq-492.md`(새), `test-baseline-seq492.txt`(새), `port_sequence.tsv` 492, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. 이식 전 비교는 scratchpad 클론 `a6b4d7b1`의 `ZZ old` 사본(커밋 안 함, 지움).
 - 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
-- 친구 문자: 세션 답변 문안 — 사용자 확인 대기.
+- 친구 문자: 세션 답변 문안 — **보냄**(2026-10-28 사용자 확인).
 - 다음 시작점: seq 494 #9641.
 
 ### 2026-10-28 — full-sync 묶음 58(seq 491 #10630) (클라우드 세션)
