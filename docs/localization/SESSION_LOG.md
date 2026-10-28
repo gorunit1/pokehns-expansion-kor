@@ -9,7 +9,7 @@
 - 수정 파일: 커밋 `12f11105`(`asm/macros/battle_anim_script.inc`, `data/battle_anim_scripts.s`). 문서 — `full-sync-seq-499.md`(새), `RECHECK_BEFORE_COMPLETION.md` 108, `port_sequence.tsv` 499, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. 이전 클론 `$S/w`는 `99c7baeb`로 갱신해 빌드(SHA1 `88b276f6…` = 묶음 64 기록과 같음).
 - 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
-- 친구 문자: 세션 답변 문안 — 보내기 전.
+- 친구 문자: 세션 답변 문안 — **보냄**(2026-10-28 사용자 확인).
 - 다음 시작점: seq 500 #9881.
 
 ### 2026-10-28 — full-sync 묶음 64(seq 498 #10374, 재확인 107) (클라우드 세션)
