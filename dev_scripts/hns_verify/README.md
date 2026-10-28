@@ -24,6 +24,7 @@ full-sync 묶음과 HnS 수정 때 쓰는 **세이브 호환·한글 배틀 출�
 | `mkcopy.sh` | 스크래치 사본 만들기(`--allow-dirty`, `--patch`, `--trace`) |
 | `warncheck.sh`, `expected/warn-base.txt` | 새 컴파일 경고 확인(기준 42줄) |
 | `testlist.sh` | 전체 테스트 로그 → 비교용 목록, 사라진 PASS 확인 |
+| `animcmp/run.sh` | 두 트리의 `data/battle_anim_scripts.s`를 서브루틴 `call`을 펼친 뒤 애니메이션 라벨별 바이트·재배치로 비교(ROM 크기가 바뀌는 애니 리팩터용, seq 497) |
 
 ## 2. 환경 변수와 노트북 설정
 

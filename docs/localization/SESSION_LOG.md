@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-28 — full-sync 묶음 63(seq 497 #9924) (클라우드 세션)
+
+- 요청: 사용자 "ㄱㄱ 497 시작해 혼자해도 되는거라면".
+- 판단: 진흙쌓기는 HnS seq 428 결정대로 `call HealingEffect` 없이. 전기 연기 충돌은 upstream 쪽 + 빠진 매크로(pret#2290) 앞당김(재확인 106). ROM 크기가 바뀌어 라벨별 비교 도구를 만들어 확인.
+- 발견: 첫 빌드 어셈블 오류(`create_electric_puff_sprite` 없음 — pret 합치기가 순서표 뒤쪽). 첫 비교는 ARM REL 재배치의 더할 값이 바이트 안에 있어 323개가 달라 보였고, `Call`(대문자) 줄을 펼치지 못해 악마의키스·장난치기가 달라 보였음 → 고쳐서 4개만 남음(모두 upstream 수정).
+- 수정 파일: 커밋 `9d35c02a`(`asm/macros/battle_anim_script.inc`, `data/battle_anim_scripts.s`). 문서·도구 — `full-sync-seq-497.md`(새), `dev_scripts/hns_verify/animcmp/`(새: `run.sh`·`flatten.py`·`dump.sh`·`cmp.py`), `dev_scripts/hns_verify/README.md` 1행, `RECHECK_BEFORE_COMPLETION.md` 106, `port_sequence.tsv` 497, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. 비교 중간 파일은 scratchpad.
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 친구 문자: 세션 답변 문안 — 사용자 확인 대기.
+- 다음 시작점: seq 498 #10374.
+
 ### 2026-10-28 — full-sync 묶음 62(seq 496 #9676) (클라우드 세션)
 
 - 요청: 사용자 "ㄱㄱ 496 시작해 혼자해도 되는거라면".
