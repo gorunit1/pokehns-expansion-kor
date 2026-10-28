@@ -1017,22 +1017,21 @@ void AnimTask_CreateSurfWave(u8 taskId)
         AnimLoadCompressedBgTilemapHandleContest(&animBg, gBattleAnimBgTilemap_SurfContest, TRUE);
     }
     AnimLoadCompressedBgGfx(animBg.bgId, gBattleAnimBgImage_Surf, animBg.tilesOffset);
-    switch (cmd->palette)
-    {
-    case ANIM_SURF_PAL_SURF:
-    default:
-        if (B_NEW_SURF_PARTICLE_PALETTE == TRUE)
-            LoadPalette(gBattleAnimSpritePal_NewSurf, BG_PLTT_ID(animBg.paletteId), PLTT_SIZE_4BPP);
-        else
-            LoadPalette(gBattleAnimBgPalette_Surf, BG_PLTT_ID(animBg.paletteId), PLTT_SIZE_4BPP);
-        break;
-    case ANIM_SURF_PAL_MUDDY_WATER:
-        LoadPalette(gBattleAnimBackgroundImageMuddyWater_Pal, BG_PLTT_ID(animBg.paletteId), PLTT_SIZE_4BPP);
-        break;
-    case ANIM_SURF_PAL_SLUDGE_WAVE:
-        LoadPalette(gBattleAnimBgPalette_SludgeWave, BG_PLTT_ID(animBg.paletteId), PLTT_SIZE_4BPP);
-        break;
-    }
+
+    const u16 *const wavePalettes[] = {
+        [ANIM_SURF_PAL_SURF_ORIGINAL] = gBattleAnimBgPalette_Surf,
+        [ANIM_SURF_PAL_MUDDY_WATER]   = gBattleAnimBackgroundImageMuddyWater_Pal,
+        [ANIM_SURF_PAL_SLUDGE_WAVE]   = gBattleAnimBgPalette_SludgeWave,
+        [ANIM_SURF_PAL_SURF_NEW]      = gBattleAnimSpritePal_NewSurf,
+    };
+
+    // HnS: ANIM_SURF_PAL_SURF picks ANIM_SURF_PAL_SURF_NEW with `#if B_NEW_SURF_PARTICLE_PALETTE`, but TRUE is not
+    // defined when the animation scripts are preprocessed, so the scripts always pass ANIM_SURF_PAL_SURF_ORIGINAL.
+    // Apply the config here, as the old switch did.
+    u32 palette = cmd->palette;
+    if (palette == ANIM_SURF_PAL_SURF_ORIGINAL && B_NEW_SURF_PARTICLE_PALETTE == TRUE)
+        palette = ANIM_SURF_PAL_SURF_NEW;
+    LoadPalette(wavePalettes[palette], BG_PLTT_ID(animBg.paletteId), PLTT_SIZE_4BPP);
 
     taskId2 = CreateTask(AnimTask_SurfWaveScanlineEffect, gTasks[taskId].priority + 1);
     gTasks[taskId].data[15] = taskId2;
