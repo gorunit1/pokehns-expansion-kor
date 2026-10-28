@@ -52,6 +52,7 @@
   - [How to use Dynamic Weather](tutorials/how_to_dynamic_weather.md)
   - [How to use Random Mon Generation](tutorials/how_to_random_mon_generator.md)
   - [How to use dynamic trainer battle scripts](tutorials/how_to_dynamic_trainer_script.md)
+  - [Quickstart Documentation](tutorials/quickstart.md)
 - [Changelog](./CHANGELOG.md)
     - [1.15.x]()
         - [Version 1.15.1](changelogs/1.15.x/1.15.1.md)

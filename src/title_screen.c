@@ -1,5 +1,7 @@
 #include "global.h"
 #include "battle.h"
+#include "config/quickstart.h"
+#include "quickstart.h"
 #include "title_screen.h"
 #include "sprite.h"
 #include "gba/m4a_internal.h"
@@ -795,6 +797,8 @@ static void Task_TitleScreenPhase2(u8 taskId)
         CreatePressStartBanner(START_BANNER_X, 108);
         #endif
         CreateCopyrightBanner(START_BANNER_X, 148);
+        if (QUICKSTART && QUICKSTART_HUD)
+            CreateQuickstartHud();
         gTasks[taskId].tBg1Y = 0;
         gTasks[taskId].func = Task_TitleScreenPhase3;
     }
@@ -816,6 +820,9 @@ static void Task_TitleScreenPhase2(u8 taskId)
 // Show Rayquaza silhouette and process main title screen input
 static void Task_TitleScreenPhase3(u8 taskId)
 {
+    if (QUICKSTART && JOY_NEW(SELECT_BUTTON))
+        Quickstart();
+
     if (JOY_NEW(A_BUTTON) || JOY_NEW(START_BUTTON))
     {
         FadeOutBGM(4);
