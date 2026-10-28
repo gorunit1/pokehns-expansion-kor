@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-28 — full-sync 묶음 57(seq 490 #10593) (클라우드 세션)
+
+- 요청: 사용자 "ㄱㄱ 490 시작해 혼자해도 되는거라면".
+- 판단: 동작 같은 리팩터, 새 문장 0. 옮기기 전 함수를 upstream 이전 형태와 HnS 형태로 뽑아 비교해 HnS 줄 6종을 찾고 새 파일의 대응 함수에 다시 넣음. 불태우기 vs 점착은 동작 같은 upstream 형태로.
+- 발견: 새 파일이 `gSaveblock3`를 몰라 첫 빌드 실패 → `load_save.h` include(`// HnS:`). `battle_util.h` 충돌은 HnS가 그 자리에 둔 열거형 3개 때문 → 유지.
+- 수정 파일: 커밋 `98b25dbc`(upstream 9파일(새 3) + `test/hns_10593_set_effect.c`(새)). 문서 — `full-sync-seq-490.md`(새), `test-baseline-seq490.txt`(새), `port_sequence.tsv` 490, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. 이식 전 비교는 scratchpad 클론 `e7cb895f`의 `ZZ old` 사본(커밋 안 함, 지움).
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 친구 문자: 세션 답변 문안 — 사용자 확인 대기.
+- 다음 시작점: seq 491 #10630.
+
 ### 2026-10-28 — full-sync 묶음 56(seq 489 #10600) (클라우드 세션)
 
 - 요청: 사용자 "ㄱㄱ 489 시작해 혼자해도 되는거라면".
