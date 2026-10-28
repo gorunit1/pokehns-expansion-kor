@@ -10,7 +10,7 @@
 - 수정 파일: 커밋 `2bfd086c`(upstream 141파일 상당 + HnS C 소스 이관, 규칙 파일 2개, `dev_scripts/hns_verify/warncheck.sh`). 문서·도구 — `full-sync-seq-500.md`(새), `dev_scripts/hns_verify/incgfx/prune_rules.py`(새), `dev_scripts/hns_verify/README.md` 1행, `RECHECK_BEFORE_COMPLETION.md` 106 정정·109, `port_sequence.tsv` 500, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. 이전 클론 `$S/w`는 `04e2cfd6`로 갱신해 빌드(SHA1 `5ffecc87…`).
 - 게임 화면 확인: 하지 않았다(ROM 바이트 같음).
-- 친구 문자: 세션 답변 문안 — 보내기 전.
+- 친구 문자: 세션 답변 문안 — **보냄**(2026-10-28 사용자 확인). 친구 PC 빌드 확인 부탁 포함.
 - 다음 시작점: seq 501 #10036.
 
 ### 2026-10-28 — full-sync 묶음 65(seq 499 #10401, 재확인 108) (클라우드 세션)

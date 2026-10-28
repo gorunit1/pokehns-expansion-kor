@@ -4,9 +4,9 @@
 
 - **요청:** 사용자 "ㄱㄱ 500 시작해 혼자해도 되는거라면"(2026-10-28). 새 질문 없음(빌드 체계 변경, ROM 바이트 같음).
 - **다음 할 일**
-  1. 친구 문자(묶음 66 결과, ROM은 묶음 65와 같은 파일) — 세션 답변 문안. 친구 PC 새 clone 빌드 확인 부탁 포함.
+  1. ~~친구 문자(묶음 66 결과, ROM은 묶음 65와 같은 파일)~~ **보냄**(2026-10-28 사용자 확인). 친구 PC 빌드 확인(`make hns -j8`, SHA1 `5ffecc87…`) 답 대기.
   2. full-sync 다음: seq 501 #10036(압축 타일맵 INCGFX, HnS 전용 타일맵 포함 — `dev_scripts/hns_verify/incgfx/prune_rules.py`로 규칙 다시 정리). 목표 1.17.1. 테스트 기준 **`test-baseline-seq492.txt`**, 한글 회귀 기대 **555/652**, 세이브 이전 사실은 코드 `2bfd086c`. 재확인 106(전기 연기 매크로 중복)은 seq 516 #9986에서 정리(정정).
-  3. 친구 답 대기: 89 (1) 메모, 82, 72, 70 (a)(b), 71, 69, 실기 결과(묶음 47~65 후보).
+  3. 친구 답 대기: 89 (1) 메모, 82, 72, 70 (a)(b), 71, 69, 실기 결과(묶음 47~65 후보), 묶음 66 친구 PC 빌드 확인.
 - **결과** [`full-sync-seq-500.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-500.md). 커밋 `2bfd086c`(코드), 문서·도구 이 커밋.
   - preproc·scaninc `INCGFX`, 그림은 `build/assets`에 변환. HnS 트리 전체에 `migrate_incgfx.py`를 돌리고 upstream 손 고침을 덧붙임(INCGFX 25,208곳).
   - 규칙 파일은 아직 쓰는 것만(재확인 109): `graphics_file_rules.mk` 764→379줄, `spritesheet_rules.mk` 6,792→37줄. HnS 폰트 15(`data/fonts.s`), 포케기어 옵션 합치기, 타이틀 로고 팔레트, 금·크리스 시트 유지.
