@@ -246,6 +246,7 @@
 | 도구 팝업이 뜨는 모든 장면(열매·도구 전반) (upstream #10268 이식, seq 394 `5fca546a`, 재확인 36 친구 결정 B 2026-10-26. 새 문장 0. 헤드리스 테스트는 팝업 스프라이트가 없어 대기를 재지 못함 — 실기 미실행) | 도구 팝업이 저절로 퇴장하는 동안 다음 애니·문장 진행(스크립트는 기다리지 않음) | 화면의 팝업이 **모두 사라진 뒤** 다음 진행. "배틀 딜레이 생략" ON에서 도구 팝업마다 약 +110프레임(`hnsfix-2026-10-09b.md` 계측값, 다시 재지 않음), OFF는 `pause 64` 뒤 남은 시간 | `BS_DestroyItemPopup`·`BS_WaitAbilityPopup`(대기 판정 = 살아 있는 팝업 스프라이트, 재확인 104), 열매·도구 스크립트 15곳 `waitabilitypopup` |
 | 랑사·애슈·미클·자보·애터열매 발동 (seq 394 `5fca546a`. 새 문장 0. 한글 테스트 `HnS 10268` PASS, 실기 미실행) | 열매 애니 → 기존 문장(자보·애터는 HP 바). 도구 팝업 없음 | 지닌 포켓몬 쪽 **도구 팝업** → 같은 애니 → 같은 문장. 애슈열매는 HnS 보정으로 지닌 쪽(upstream 1.17.0은 다음 배틀러 쪽, 재확인 103) | `BattleScript_BerryFocusEnergy`·`CustapBerryActivation`·`MicleBerryActivate`·`JabocaRowapBerryActivates` |
 | 까칠한피부·철가시 (seq 394 `5fca546a`. 새 문장 0. 실기 미실행) | 앞 문장이 남은 채 특성 팝업 → 곧바로 HP 바 | 앞 문장을 비움 → 특성 팝업 → 짧은 대기(`B_WAIT_TIME_LONG`) → HP 바 → 팝업이 사라진 뒤 진행 | `BattleScript_RoughSkinActivates` |
+| 배짱 노말 다단 기술(더블어택 등)이 미라 고스트를 침 (upstream #10600 이식, seq 489 `1f406399`. 새 문장 0, 한글 테스트 `HnS 10600` PASS, 실기 미실행. HnS 트레이너 데이터에 미라 포켓몬 없음) | 첫 타격 → 미라 팝업 → `…은(는)⏎미라가 되었다!` → 두 번째 타격 없음(고스트 무효) | 같은 순서 뒤 두 번째 타격 HP 바 → `2번 맞았다!`(첫 판정의 상성 배율을 저장해 씀) | `CancelerTargetFailure`·`DoMoveDamageCalc`(`storedTypeEffectiveness`) |
 
 ## 제외한 변경
 

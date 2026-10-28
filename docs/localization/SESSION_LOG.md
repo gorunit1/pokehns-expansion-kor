@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-28 — full-sync 묶음 56(seq 489 #10600) (클라우드 세션)
+
+- 요청: 사용자 "ㄱㄱ 489 시작해 혼자해도 되는거라면".
+- 판단: 새 문장 0, upstream 그대로. 충돌 1곳(`BattleStruct` 끝 HnS `removedScreens`). 저장된 상성 배율이 계산되지 않은 대상에 쓰일 경로가 있는지 확인(저장·사용 단계의 건너뜀 조건이 같음) + 전체 테스트로 확인.
+- 실수: 한글 테스트 초안의 더블 지진 상대를 이상해씨(풀·독 — 지진 보통 효과)로 써서 FAIL → 치코리타로.
+- 수정 파일: 커밋 `1f406399`(upstream 6파일 + `test/hns_10600_scrappy.c`(새)). 문서 — `full-sync-seq-489.md`(새), `test-baseline-seq489.txt`(새), `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 1행, `port_sequence.tsv` 489, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. 이식 전 비교는 scratchpad 클론 `74fc1c60`의 `ZZ old` 사본(커밋 안 함, 지움).
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 친구 문자: 세션 답변 문안 — 사용자 확인 대기.
+- 다음 시작점: seq 490 #10593.
+
 ### 2026-10-27 — full-sync 묶음 55(seq 488 #10595, 재확인 8v 해결·105) (클라우드 세션)
 
 - 요청: 사용자 "ㄱㄱ 488 시작해 혼자해도 되는거라면".
