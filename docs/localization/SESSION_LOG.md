@@ -10,7 +10,7 @@
 - 수정 파일: 커밋 `9d35c02a`(`asm/macros/battle_anim_script.inc`, `data/battle_anim_scripts.s`). 문서·도구 — `full-sync-seq-497.md`(새), `dev_scripts/hns_verify/animcmp/`(새: `run.sh`·`flatten.py`·`dump.sh`·`cmp.py`), `dev_scripts/hns_verify/README.md` 1행, `RECHECK_BEFORE_COMPLETION.md` 106, `port_sequence.tsv` 497, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. 비교 중간 파일은 scratchpad.
 - 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
-- 친구 문자: 세션 답변 문안 — 사용자 확인 대기.
+- 친구 문자: 세션 답변 문안 — **보냄**(2026-10-28 사용자 확인).
 - 다음 시작점: seq 498 #10374.
 
 ### 2026-10-28 — full-sync 묶음 62(seq 496 #9676) (클라우드 세션)
