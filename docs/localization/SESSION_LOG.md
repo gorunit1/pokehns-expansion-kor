@@ -11,7 +11,7 @@
 - 수정 파일: 커밋 `daca9a9c`(upstream 7파일 + `test/hns_10595_substitute.c`(새)), `c03e1b92`(`src/battle_move_resolution.c`, 테스트). 문서 — `full-sync-seq-488.md`(새), `test-baseline-seq488.txt`(새), `RECHECK_BEFORE_COMPLETION.md` 8v 해결·105, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 2행, `port_sequence.tsv` 488, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. 이식 전 비교·상태 비교 프로브는 scratchpad 클론 `05925d4a`와 작업 트리의 임시 `zz_probe_*` 테스트(커밋 안 함, 지움). 보정 필요성은 작업 트리에서 보정을 잠시 빼서 확인(복구).
 - 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
-- 친구 문자: 세션 답변 문안 — 사용자 확인 대기.
+- 친구 문자: 세션 답변 문안 — **보냄**(2026-10-28 사용자 확인).
 - 다음 시작점: seq 489 #10600.
 
 ### 2026-10-27 — full-sync 묶음 54(seq 486 #10566, 재확인 97 해결) (클라우드 세션)
