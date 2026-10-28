@@ -10,7 +10,7 @@
 - 수정 파일: 커밋 `7c19730f`(upstream 5파일 + `src/battle_anim_water.c` HnS 보정). 문서 — `full-sync-seq-498.md`(새), `RECHECK_BEFORE_COMPLETION.md` 107, `port_sequence.tsv` 498, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절.
 - 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
-- 친구 문자: 세션 답변 문안 — 사용자 확인 대기.
+- 친구 문자: 세션 답변 문안 — **보냄**(2026-10-28 사용자 확인).
 - 다음 시작점: seq 499 #10401.
 
 ### 2026-10-28 — full-sync 묶음 63(seq 497 #9924) (클라우드 세션)
