@@ -2,6 +2,16 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-28 — full-sync 묶음 62(seq 496 #9676) (클라우드 세션)
+
+- 요청: 사용자 "ㄱㄱ 496 시작해 혼자해도 되는거라면".
+- 판단: 매크로로 묶는 정리, 충돌 0, ROM 바이트 같음(이식 전 ROM과 `cmp` 0).
+- 수정 파일: 커밋 `e254fc86`(`asm/macros/battle_anim_script.inc`, `data/battle_anim_scripts.s`). 문서 — `full-sync-seq-496.md`(새), `port_sequence.tsv` 496, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절.
+- 게임 화면 확인: 필요 없음(ROM 같음).
+- 친구 문자: 세션 답변 문안 — 사용자 확인 대기.
+- 다음 시작점: seq 497 #9924.
+
 ### 2026-10-28 — full-sync 묶음 61(seq 495 #9677) (클라우드 세션)
 
 - 요청: 사용자 "ㄱㄱ 495 시작해 혼자해도 되는거라면".

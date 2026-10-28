@@ -500,7 +500,7 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 493	10714	776	1.17.0	g2_battle_fixed_b	U-canceler-10362	10362	S	fix	N	N	+60B	Fix moveanim regression	앞당김 적용 e6b976e0(482와 같은 커밋 — 전투 애니 끄기 옵션에서 공격 애니가 나오던 482 회귀)
 494	9641	1000000	1.16.0	g5_general_cleanup_docs	U-9641	-	M	feature	N	N	+~0.5KB	feat(debug): add quickstart from titlescreen	적용(디버그 기능 — HnS 설정 ENABLE_QUICKSTART FALSE: make hns는 릴리스 빌드가 아니라 켜지면 인트로를 건너뛰고 타이틀 SELECT 조합과 겹침. 코드는 링크에서 빠짐, ROM 크기 같음) 44978ff2
 495	9677	1000000	1.16.0	g5_general_cleanup_docs	U-9677	-	M	refactor	N	N	~0	Converted move animation magic numbers to defines	적용(값 같은 상수화, 충돌 1곳 — 미래예지·파멸의소원 착탄 애니는 HnS가 seq 482에서 삭제; ROM 차이 1바이트 = 싸라기눈 효과음 위치 0→63, upstream 의도) 2fdced80
-496	9676	243	1.16.0	g3_battle_changes_moves_abilities_items	U-9676	9172,9677	M	refactor	N	N	~0	Created macros for fist and foot animations	
+496	9676	243	1.16.0	g3_battle_changes_moves_abilities_items	U-9676	9172,9677	M	refactor	N	N	~0	Created macros for fist and foot animations	적용(충돌 0, ROM 바이트 같음) e254fc86
 497	9924	677	1.17.0	g3_battle_changes_moves_abilities_items	U-animcommon-9924	9142,9172,9676,9677	XL	refactor	N	N	-2KB	Added more common anim functions	
 498	10374	707	1.17.0	g3_battle_changes_moves_abilities_items	U-10374	9142,9172,9924	M	refactor	N	N	~0	Cleaned up some move animations	
 499	10401	718	1.17.0	g3_battle_changes_moves_abilities_items	U-10401	9142,9172,9924	S	fix	N	N	~0	Set Leafage and Seed Flare's `target_both` to FALSE	
