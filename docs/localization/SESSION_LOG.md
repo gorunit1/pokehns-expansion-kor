@@ -10,7 +10,7 @@
 - 수정 파일: 커밋 `44978ff2`(upstream 11파일, `include/config/quickstart.h` HnS 1줄 + 주석). 문서 — `full-sync-seq-494.md`(새), `port_sequence.tsv` 494, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절.
 - 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
-- 친구 문자: 세션 답변 문안 — 사용자 확인 대기.
+- 친구 문자: 세션 답변 문안 — **보냄**(2026-10-28 사용자 확인).
 - 다음 시작점: seq 495 #9677.
 
 ### 2026-10-28 — full-sync 묶음 59(seq 492 #10640) (클라우드 세션)
