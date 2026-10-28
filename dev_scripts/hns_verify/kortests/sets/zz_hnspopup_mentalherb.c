@@ -129,7 +129,7 @@ SINGLE_BATTLE_TEST("HNSPOPUP 06 Mental Herb target: Heal Block and Psychic Noise
         // Pre-existing, not part of the pop-up patch: Psychic Noise leaves healBlockTimer set after the cure,
         // so the end-of-turn line repeats at turn 2 (fixed by upstream #10307, seq 254).
     } THEN {
-        EXPECT(player->volatiles.healBlock == FALSE);
+        EXPECT(player->volatiles.healBlockTimer == 0); // #10630 (seq 491) removed the healBlock flag
     }
 }
 
