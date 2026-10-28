@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-28 — full-sync 묶음 66(seq 500 #9881, 재확인 109) (클라우드 세션)
+
+- 요청: 사용자 "ㄱㄱ 500 시작해 혼자해도 되는거라면".
+- 판단: upstream C 변경이 `migrate_incgfx.py`의 결과(손 고침 2파일)임을 upstream 기반에서 확인 → HnS도 깨끗한 내보내기 트리에서 HnS 규칙으로 스크립트를 돌리고 손 고침 패치를 덧붙임. 규칙 파일은 3-way 병합이 안 맞아 정리 도구(`prune_rules.py`)를 만들어 upstream 기반 결과 재현을 먼저 확인한 뒤 HnS에 적용. 판정 기준 = ROM 바이트 같음(충족).
+- 발견: HnS preproc는 출력을 `CFile::printf`로 모으므로 upstream 새 `std::printf` 4곳을 멤버로(1.17.1과 같음). 재확인 106 매크로는 #9881에 없고 seq 516 #9986에 있음 → 정정. 모든 PNG를 빌드 때 변환하면서 libpng iCCP 도구 경고가 보여 warncheck에서 허용.
+- 수정 파일: 커밋 `2bfd086c`(upstream 141파일 상당 + HnS C 소스 이관, 규칙 파일 2개, `dev_scripts/hns_verify/warncheck.sh`). 문서·도구 — `full-sync-seq-500.md`(새), `dev_scripts/hns_verify/incgfx/prune_rules.py`(새), `dev_scripts/hns_verify/README.md` 1행, `RECHECK_BEFORE_COMPLETION.md` 106 정정·109, `port_sequence.tsv` 500, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. 이전 클론 `$S/w`는 `04e2cfd6`로 갱신해 빌드(SHA1 `5ffecc87…`).
+- 게임 화면 확인: 하지 않았다(ROM 바이트 같음).
+- 친구 문자: 세션 답변 문안 — 보내기 전.
+- 다음 시작점: seq 501 #10036.
+
 ### 2026-10-28 — full-sync 묶음 65(seq 499 #10401, 재확인 108) (클라우드 세션)
 
 - 요청: 사용자 "ㄱㄱ 499 시작해 혼자해도 되는거라면".

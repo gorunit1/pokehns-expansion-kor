@@ -25,6 +25,7 @@ full-sync 묶음과 HnS 수정 때 쓰는 **세이브 호환·한글 배틀 출�
 | `warncheck.sh`, `expected/warn-base.txt` | 새 컴파일 경고 확인(기준 42줄) |
 | `testlist.sh` | 전체 테스트 로그 → 비교용 목록, 사라진 PASS 확인 |
 | `animcmp/run.sh` | 두 트리의 `data/battle_anim_scripts.s`를 서브루틴 `call`을 펼친 뒤 애니메이션 라벨별 바이트·재배치로 비교(ROM 크기가 바뀌는 애니 리팩터용, seq 497) |
+| `incgfx/prune_rules.py` | INCGFX 이관 뒤 `graphics_file_rules.mk`·`spritesheet_rules.mk`에서 아직 쓰이는 규칙만 남김(C INCBIN·asm `.incbin`·다른 규칙의 선행 파일 기준, `PRUNE_BASE`/`PRUNE_THEIRS`를 주면 upstream이 남긴 기반 규칙도 유지). 깨끗한 트리(`git archive`)에서 돌리고 결과 폴더의 `.mk`·`report.txt`를 확인(seq 500 #9881) |
 
 ## 2. 환경 변수와 노트북 설정
 
