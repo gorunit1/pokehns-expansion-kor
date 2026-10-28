@@ -9,7 +9,7 @@
 - 수정 파일: 커밋 `2fdced80`(`data/battle_anim_scripts.s`, `include/constants/battle_anim.h`). 문서 — `full-sync-seq-495.md`(새), `port_sequence.tsv` 495, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절.
 - 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
-- 친구 문자: 세션 답변 문안 — 사용자 확인 대기.
+- 친구 문자: 세션 답변 문안 — **보냄**(2026-10-28 사용자 확인).
 - 다음 시작점: seq 496 #9676.
 
 ### 2026-10-28 — full-sync 묶음 60(seq 494 #9641, 빠른 시작 끔) (클라우드 세션)
