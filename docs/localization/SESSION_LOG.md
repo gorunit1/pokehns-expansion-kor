@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-28 — full-sync 묶음 58(seq 491 #10630) (클라우드 세션)
+
+- 요청: 사용자 "ㄱㄱ 491 시작해 혼자해도 되는거라면".
+- 판단: 동작 같은 정리, 새 문장 0, 충돌 0. 지워지는 필드를 HnS 코드·테스트·한글 회귀 세트에서 검색 → 세트 1줄을 upstream 테스트와 같은 검사로.
+- 실수: 배턴터치 한글 테스트 초안이 회복봉인 상태의 HP회복을 고르게 해서 테스트 기록 오류(선택 단계에서 막힘) → 발버둥 확인으로.
+- 수정 파일: 커밋 `c311121f`(upstream 14파일 + `dev_scripts/hns_verify/kortests/sets/zz_hnspopup_mentalherb.c` 1줄 + `test/hns_10630_heal_block_embargo.c`(새)). 문서 — `full-sync-seq-491.md`(새), `test-baseline-seq491.txt`(새), `port_sequence.tsv` 491, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. 이식 전 비교는 scratchpad 클론 `e83c57fb`의 `ZZ old` 사본(커밋 안 함, 지움).
+- 게임 화면 확인: 하지 않았다(친구가 mGBA로 함).
+- 친구 문자: 세션 답변 문안 — 사용자 확인 대기.
+- 다음 시작점: seq 492 #10640.
+
 ### 2026-10-28 — full-sync 묶음 57(seq 490 #10593) (클라우드 세션)
 
 - 요청: 사용자 "ㄱㄱ 490 시작해 혼자해도 되는거라면".
