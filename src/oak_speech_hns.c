@@ -141,11 +141,11 @@ static void DrawMainMenuWindowBorder(const struct WindowTemplate *, u16);
 
 // .rodata
 
-static const u16 sOakSpeechBgPal[] = INCBIN_U16("graphics/oak_speech/oak_speech_bg.gbapal");
-static const u32 sOakSpeechBgGfx[] = INCBIN_U32("graphics/oak_speech/oak_speech_bg.4bpp.smol");
+static const u16 sOakSpeechBgPal[] = INCGFX_U16("graphics/oak_speech/oak_speech_bg.png", ".gbapal");
+static const u32 sOakSpeechBgGfx[] = INCGFX_U32("graphics/oak_speech/oak_speech_bg.png", ".4bpp.smol");
 static const u32 sOakSpeechBgMap[] = INCBIN_U32("graphics/oak_speech/oak_speech_bg.bin.smolTM");
-static const u16 sOakSpeechOakPal[] = INCBIN_U16("graphics/oak_speech/oak/pal.gbapal");
-static const u32 sOakSpeechOakGfx[] = INCBIN_U32("graphics/oak_speech/oak/pic.8bpp.smol");
+static const u16 sOakSpeechOakPal[] = INCGFX_U16("graphics/oak_speech/oak/pal.pal", ".gbapal");
+static const u32 sOakSpeechOakGfx[] = INCGFX_U32("graphics/oak_speech/oak/pic.png", ".8bpp.smol");
 
 #define OAK_SPEECH_PIC_WIDTH       8
 #define OAK_SPEECH_PIC_HEIGHT      12
