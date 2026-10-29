@@ -9,7 +9,7 @@
 - 수정 파일: 커밋 `d4fc70b2`(`include/pokedex.h`, `include/pokedex_common.h`(새), `src/new_game.c`, `src/pokedex.c`, `src/pokedex_plus_hgss.c`). 문서 — `full-sync-seq-506.md`(새), `port_sequence.tsv` 506, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. 병합본은 세션 임시 폴더 클론에서 먼저 빌드(같은 SHA1). `verify_seq.sh 506 bfce163d <scratchpad>/v`.
 - 게임 화면 확인: 하지 않았다(새 후보 없음).
-- 친구 문자: 세션 답변 문안 — 묶음 68~72 한 통.
+- 친구 문자: 세션 답변 문안 — 묶음 68~72 한 통. **보냄**(2026-10-29 사용자 확인).
 - 다음 시작점: seq 507 #10334(`git -C ../pokeemerald-expansion-upstream log --all --oneline --grep='(#10334)'`).
 
 ### 2026-10-29 — full-sync 묶음 71(seq 505 #10184) (클라우드 세션)
@@ -20,7 +20,7 @@
 - 수정 파일: 커밋 `1b640f80`(`src/data/tilesets/graphics.h`). 문서·도구 — `full-sync-seq-505.md`(새), `dev_scripts/hns_verify/port/relocmp.py`(새), `dev_scripts/hns_verify/README.md` 1행, `port_sequence.tsv` 505, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. 이식 전 ELF는 세션 임시 폴더 클론 `b504`(`dda68a3f`)와 `verify_seq.sh`의 `$S/v/w`(`faf5cf81`) 둘 다로 비교.
 - 게임 화면 확인: 하지 않았다(내용 같음).
-- 친구 문자: 세션 답변 문안(묶음 68~70과 함께).
+- 친구 문자: 묶음 72 한 통에 포함 — **보냄**(2026-10-29 사용자 확인). 원래 문안(묶음 68~70과 함께).
 - 다음 시작점: seq 506 #10172(병합본 `<scratchpad>/s506/`에 있음 — 세션이 바뀌면 다시 만들 것: `pokedex.h` 충돌은 upstream 쪽, `pokedex_common.h`는 upstream 파일 + `OBTAINABLE_DEX_COUNT` 1줄).
 
 ### 2026-10-29 — full-sync 묶음 70(seq 504 #9518, 재확인 110) (클라우드 세션)
@@ -31,7 +31,7 @@
 - 수정 파일: 커밋 `dda68a3f`(`include/constants/pokemon.h`, `include/pokedex.h`, `include/pokedex_plus_hgss.h`, `src/pokedex.c`, `src/pokedex_plus_hgss.c`, `test/hns_9518_pokedex.c`(새)). 문서·도구 — `full-sync-seq-504.md`(새), `test-baseline-seq504.txt`(새), `dev_scripts/hns_verify/port/verify_seq.sh` 기준 목록 seq504로, `RECHECK_BEFORE_COMPLETION.md` 110, `port_sequence.tsv` 504, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. 병합본은 먼저 세션 임시 폴더 클론 `b504`에서 빌드·테스트(저장소 검증과 겹치지 않게), 같은 클론에서 이식 전 코드 + 새 테스트도 확인. `verify_seq.sh 504 3b2694a1 <scratchpad>/v`.
 - 게임 화면 확인: 하지 않았다(친구 mGBA — 도감 전 화면 6항목).
-- 친구 문자: 세션 답변 문안(묶음 68·69와 함께).
+- 친구 문자: 묶음 72 한 통에 포함 — **보냄**(2026-10-29 사용자 확인). 원래 문안(묶음 68·69와 함께).
 - 다음 시작점: seq 505 #10184.
 
 ### 2026-10-29 — full-sync 묶음 69(seq 503 #10561) (클라우드 세션)
@@ -41,7 +41,7 @@
 - 수정 파일: 커밋 `a5a0c700`(`src/data/graphics/pokemon.h` 주석 8줄). 문서 — `full-sync-seq-503.md`(새), `port_sequence.tsv` 503, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. `verify_seq.sh 503 0bf2156c <scratchpad>/v`.
 - 게임 화면 확인: 하지 않았다(ROM 바이트 같음).
-- 친구 문자: 세션 답변 문안(묶음 68과 함께).
+- 친구 문자: 묶음 72 한 통에 포함 — **보냄**(2026-10-29 사용자 확인). 원래 문안(묶음 68과 함께).
 - 다음 시작점: seq 504 #9518.
 
 ### 2026-10-29 — full-sync 묶음 68(seq 502 #10116) (클라우드 세션)
@@ -51,7 +51,7 @@
 - 수정 파일: 커밋 `21825159`(`src/data/graphics/pokemon.h` 4줄 공백). 문서 — `full-sync-seq-502.md`(새), `port_sequence.tsv` 502, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. `verify_seq.sh 502 0718a603 <scratchpad>/v`(이전 클론 `$S/v/w`, SHA1 `5ffecc87…`).
 - 게임 화면 확인: 하지 않았다(ROM 바이트 같음).
-- 친구 문자: 세션 답변 문안.
+- 친구 문자: 묶음 72 한 통에 포함 — **보냄**(2026-10-29 사용자 확인). 원래 문안 단독 전달 안 함.
 - 다음 시작점: seq 503 #10561(병합 미리 확인: 충돌 0, 마휘핑 주석 8줄), 그다음 504 #9518.
 
 ### 2026-10-29 — 세션 교체 준비(클라우드 세션)
