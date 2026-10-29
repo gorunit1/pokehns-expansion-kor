@@ -144,7 +144,7 @@ static void GeneratePokemonMusicContent(struct Pokenav_Radio *radio, u32 *n, u32
 
 static const u16 sRadioUI_Pal[] = INCGFX_U16("graphics/pokenav/hns/radio/ui.pal", ".gbapal");
 static const u32 sRadioUI_Gfx[] = INCGFX_U32("graphics/pokenav/hns/radio/ui_tiles.png", ".4bpp.smol", "-num_tiles 64 -Wnum_tiles");
-static const u32 sRadioUI_Tilemap[] = INCBIN_U32("graphics/pokenav/hns/radio/ui_map.bin.smolTM");
+static const u32 sRadioUI_Tilemap[] = INCGFX_U32("graphics/pokenav/hns/radio/ui_map.bin", ".smolTM");
 static const u32 sRadioDial_Gfx[] = INCGFX_U32("graphics/pokenav/hns/radio/dial.png", ".4bpp.smol");
 
 // Crystal frequencies (0-80) scaled to our range (0-63):

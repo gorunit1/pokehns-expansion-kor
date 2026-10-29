@@ -143,7 +143,7 @@ static void DrawMainMenuWindowBorder(const struct WindowTemplate *, u16);
 
 static const u16 sOakSpeechBgPal[] = INCGFX_U16("graphics/oak_speech/oak_speech_bg.png", ".gbapal");
 static const u32 sOakSpeechBgGfx[] = INCGFX_U32("graphics/oak_speech/oak_speech_bg.png", ".4bpp.smol");
-static const u32 sOakSpeechBgMap[] = INCBIN_U32("graphics/oak_speech/oak_speech_bg.bin.smolTM");
+static const u32 sOakSpeechBgMap[] = INCGFX_U32("graphics/oak_speech/oak_speech_bg.bin", ".smolTM");
 static const u16 sOakSpeechOakPal[] = INCGFX_U16("graphics/oak_speech/oak/pal.pal", ".gbapal");
 static const u32 sOakSpeechOakGfx[] = INCGFX_U32("graphics/oak_speech/oak/pic.png", ".8bpp.smol");
 
