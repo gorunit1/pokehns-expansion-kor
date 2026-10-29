@@ -9,7 +9,7 @@
 - 수정 파일: 커밋 `9ecda50d`(`include/assertf.h`, `src/assertf.c`·`bg.c`·`malloc.c`·`sprite.c`(+HnS 주석)·`window.c`, `test/test_test_runner.c`, `graphics/crash_screen/assertf.pal`(이름 바꿈)·`fatalf.pal`(새)). 문서 — `full-sync-seq-509.md`(새), `RECHECK_BEFORE_COMPLETION.md` 112, `port_sequence.tsv` 509, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. `verify_seq.sh 509 8859e5c0 <scratchpad>/v`.
 - 게임 화면 확인: 하지 않았다(화면 변화 없음).
-- 친구 문자: 세션 답변 문안.
+- 친구 문자: 세션 답변 문안 — **보냄**(2026-10-29 사용자 확인).
 - 다음 시작점: seq 510 #10155.
 
 ### 2026-10-29 — full-sync 묶음 74(seq 508 #9892) (클라우드 세션)
