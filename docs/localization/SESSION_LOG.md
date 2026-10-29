@@ -2,6 +2,16 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-29 — full-sync 묶음 68(seq 502 #10116) (클라우드 세션)
+
+- 요청: 사용자 "full-sync seq 502 #10116부터 port_sequence 순서대로 이어서 (목표 1.17.1)". upstream 사본은 `../pokeemerald-expansion-upstream`에 이미 있었음(태그 포함, 1.17.1 확인).
+- 판단: HnS는 seq 500 이관에서 같은 INCGFX 결과. 3-way 충돌 1곳은 들여쓰기 차이뿐(HnS가 주석 줄 `//    `째 지워 켬) → upstream 줄로 맞춤(1.17.1 블록과 같음). 판정 기준 = ROM 바이트 같음(충족).
+- 수정 파일: 커밋 `21825159`(`src/data/graphics/pokemon.h` 4줄 공백). 문서 — `full-sync-seq-502.md`(새), `port_sequence.tsv` 502, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. `verify_seq.sh 502 0718a603 <scratchpad>/v`(이전 클론 `$S/v/w`, SHA1 `5ffecc87…`).
+- 게임 화면 확인: 하지 않았다(ROM 바이트 같음).
+- 친구 문자: 세션 답변 문안.
+- 다음 시작점: seq 503 #10561(병합 미리 확인: 충돌 0, 마휘핑 주석 8줄), 그다음 504 #9518.
+
 ### 2026-10-29 — 세션 교체 준비(클라우드 세션)
 
 - 요청: 사용자 "컨텍스트를 너무 오래 써서 새 세션을 파서 하려고".
