@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-29 — full-sync 묶음 67(seq 501 #10036) (클라우드 세션)
+
+- 요청: 사용자 "ㄱㄱ 501 시작해 혼자해도 되는거라면".
+- 판단: upstream C·테스트 변경이 정규식 치환 하나임을 upstream 기반에서 확인(파일 차이 0) → HnS에 같은 치환(HnS 타일맵 59곳 포함). scaninc 3-way 충돌 0. 판정 기준 = ROM 바이트 같음(충족).
+- 발견: 없음. 규칙 파일은 더 지울 것 없음(정리 도구 확인).
+- 수정 파일: 커밋 `4358b753`(`src` 46파일·`test/compression/smol.c`·`tools/scaninc/scaninc.cpp`). 문서 — `full-sync-seq-501.md`(새), `RECHECK_BEFORE_COMPLETION.md` 109 보충, `port_sequence.tsv` 501, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. 이전 클론 `$S/w`는 `e56a58ef`로 갱신해 빌드(SHA1 `5ffecc87…`).
+- 게임 화면 확인: 하지 않았다(ROM 바이트 같음).
+- 친구 문자: 세션 답변 문안 — 보내기 전.
+- 다음 시작점: seq 502 #10116.
+
 ### 2026-10-28 — full-sync 묶음 66(seq 500 #9881, 재확인 109) (클라우드 세션)
 
 - 요청: 사용자 "ㄱㄱ 500 시작해 혼자해도 되는거라면".

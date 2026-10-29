@@ -505,7 +505,7 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 498	10374	707	1.17.0	g3_battle_changes_moves_abilities_items	U-10374	9142,9172,9924	M	refactor	N	N	~0	Cleaned up some move animations	적용(미래예지 애니는 HnS seq 482 형태 + UnsetBackground; HnS 보정: 파도 팔레트 설정을 C에서 적용 = 재확인 107; 독압정 새 그래픽은 upstream 의도, 실기 후보; 라벨별 비교 1,842 같음) 7c19730f
 499	10401	718	1.17.0	g3_battle_changes_moves_abilities_items	U-10401	9142,9172,9924	S	fix	N	N	~0	Set Leafage and Seed Flare's `target_both` to FALSE	적용(나뭇잎·시드플레어 잎이 더블에서 대상에게; HnS: 매지컬리프는 원래 잎 2줄 duration=32 유지 = 재확인 108; 라벨별 비교 1,840 같음·2 다름 = target_both 1→0 9곳) 12f11105
 500	9881	1000000	1.15.2	g5_general_cleanup_docs	U-incgfx-9881	-	XL	build	Y	N	~0	Merge pret#2283	적용(HnS 트리 전체에 migrate_incgfx.py + upstream 손 고침; 규칙은 prune_rules.py로 쓰는 것만 = 재확인 109, HnS 폰트 15·포케기어 옵션·타이틀 로고 팔레트·금/크리스 시트 유지; preproc 새 출력은 CFile::printf; ROM 바이트 같음) 2bfd086c
-501	10036	307	1.16.0	g5_general_cleanup_docs	U-incgfx-9881	9881	L	gfx	N	N	~0	Describe compressed tilemaps with INCGFX	
+501	10036	307	1.16.0	g5_general_cleanup_docs	U-incgfx-9881	9881	L	gfx	N	N	~0	Describe compressed tilemaps with INCGFX	적용(upstream 변경을 재현하는 정규식으로 HnS 타일맵 59곳 포함 446곳 변환, U8/U16·띄어 쓴 형태는 upstream처럼 INCBIN; scaninc $(SMOLTM) 규칙; 규칙 파일 변화 없음; ROM 바이트 같음) 4358b753
 502	10116	325	1.16.1	g4_ai_tests_pokemon_sprites	U-incgfx-9881	9881	S	build	N	N	~0	Fix missing incgfx for Mega Garchomp Z	
 503	10561	544	1.16.4	g4_ai_tests_pokemon_sprites	U-incgfx-9881	9881	S	build	N	N	~0	Converted Mega Staraptor's icon to INCGFX_U8	
 504	9518	624	1.17.0	g6_overworld_refactors	U-pokedex-9518	10116,9881	XL	refactor	Y	N	-10KB(추정)	Consolidation of Pokédex Files	
