@@ -10,7 +10,7 @@
 - 수정 파일: 커밋 `9dbdb90d`(`include/contest.h`, `src/contest.c`, `src/contest_painting.c`(+HnS 1줄), `src/contest_util.c`, `src/tv.c`, `test/hns_10334_contest_values.c`(새)). 문서·도구 — `full-sync-seq-507.md`(새), `test-baseline-seq507.txt`(새), `verify_seq.sh` 기준 seq507, `RECHECK_BEFORE_COMPLETION.md` 111, `port_sequence.tsv` 507, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. `verify_seq.sh 507 74bff041 <scratchpad>/v`, 이식 전 테스트는 `$S/v/w`에 임시 `test/zz_hns_10334_pre.c`(지움).
 - 게임 화면 확인: 하지 않았다(친구 mGBA — 콘테스트 4항목).
-- 친구 문자: 세션 답변 문안.
+- 친구 문자: 세션 답변 문안 — **보냄**(2026-10-29 사용자 확인).
 - 다음 시작점: seq 508 #9892.
 
 ### 2026-10-29 — full-sync 묶음 72(seq 506 #10172) (클라우드 세션)
