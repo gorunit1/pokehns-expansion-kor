@@ -10,7 +10,8 @@
 - 수정 파일: 커밋 `376139af`(upstream 109파일 중 108 + 새 3파일, `data/maps/SinjohRuins_ArceusRoom_hns/scripts.inc`). 문서·도구 — `full-sync-seq-516.md`(새), `dev_scripts/hns_verify/port/scriptcmp.py`(새)·README, `port_sequence.tsv` 516, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. `verify_seq.sh 516 1cd6f5e3 <scratchpad>/v`.
 - 게임 화면 확인: 하지 않음 — 친구 실기 3항목(아르세우스 방 우선).
-- 친구 문자: 세션 답변 문안.
+- 친구 문자: 세션 답변 문안 — **보냄**(2026-10-29 사용자 확인).
+- 기록: 문서 커밋 `ffd73e84` 제목 앞에 "Record full-sync bundle 78 is done;"가 잘못 붙음(내용은 묶음 81). push된 뒤라 그대로 둠.
 - 다음 시작점: seq 517 #10061.
 
 ### 2026-10-29 — full-sync 묶음 80(seq 515 #9914 — 이미 같음) (클라우드 세션)
