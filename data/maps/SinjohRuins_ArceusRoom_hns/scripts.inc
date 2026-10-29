@@ -52,7 +52,9 @@ SinjohRuins_ArceusRoom_TriggerScene::
 	delay 400
 	waitmovement 0
 	waitmovement OBJ_EVENT_ID_FOLLOWER
-	special FadeOutOrbEffect
+	@ HnS: callnative, not special: FadeOutOrbEffect now has an implicit waitstate (pret#2200) and this scene
+	@ keeps playing the weather and thunder while the orb fades, as before.
+	callnative FadeOutOrbEffect
 
 	setweather WEATHER_SUNNY
 	doweather
@@ -282,7 +284,8 @@ SinjohRuins_ArceusRoom_EventScript_Arceus::
 	setflag FLAG_NO_SHINY
 	setwildbossbattle species=SPECIES_ARCEUS_STEEL, level=100, item=ITEM_IRON_PLATE, move1_1=MOVE_JUDGMENT, move1_2=MOVE_HYDRO_PUMP, move1_3=MOVE_RECOVER move1_4=MOVE_DAZZLING_GLEAM
 	settotemboost B_POSITION_OPPONENT_LEFT, 2, 2, 0, 2, 2, 2
-	special BattleSetup_StartLegendaryBattle
+	@ HnS: callnative so the implicit waitstate (pret#2200) does not come before playbgm and wait twice.
+	callnative BattleSetup_StartLegendaryBattle
 	playbgm MUS_HG_VS_ARCEUS, 0
 	waitstate
 	specialvar VAR_RESULT, GetBattleOutcome
@@ -299,7 +302,8 @@ SinjohRuins_ArceusRoom_EventScript_ArceusPhase2::
 	waitmoncry
 	setwildbossbattle species=SPECIES_ARCEUS, level=80, item=ITEM_NONE, move1_1=MOVE_EXTREME_SPEED, move1_2=MOVE_EARTH_POWER, move1_3=MOVE_RECOVER move1_4=MOVE_HYPER_BEAM
 	@settotemboost B_POSITION_OPPONENT_LEFT, 1, 0, 2, 0, 0, 0
-	special BattleSetup_StartLegendaryBattle
+	@ HnS: callnative so the implicit waitstate (pret#2200) does not come before playbgm and wait twice.
+	callnative BattleSetup_StartLegendaryBattle
 	playbgm MUS_HG_VS_ARCEUS, 0
 	waitstate
 	specialvar VAR_RESULT, GetBattleOutcome

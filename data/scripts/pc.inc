@@ -98,7 +98,6 @@ EventScript_AccessPlayersPC::
 	playse SE_PC_LOGIN
 	msgbox gText_AccessedPlayersPC, MSGBOX_DEFAULT
 	special PlayerPC
-	waitstate
 	goto EventScript_PCMainMenu
 	end
 
@@ -116,7 +115,6 @@ EventScript_AccessPokemonStorage::
 	call_if_set FLAG_SYS_PC_LANETTE, EventScript_AccessLanettesPC
 	msgbox gText_StorageSystemOpened, MSGBOX_DEFAULT
 	special ShowPokemonStorageSystemPC
-	waitstate
 	goto EventScript_PCMainMenu
 	end
 
@@ -177,6 +175,5 @@ EventScript_AccessPokemonBoxLink::
 	playse SE_PC_LOGIN
 	msgbox gText_StorageSystemOpened, MSGBOX_DEFAULT
 	special ShowPokemonStorageSystemPC
-	waitstate
 	goto EventScript_TurnOffPC
 	end

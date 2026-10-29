@@ -13853,14 +13853,14 @@ gBattleAnimMove_TripleAxel::
 	jumpifmoveturn 1, TripleAxelTurn1
 	goto TripleAxelTurn2
 TripleAxelTurn0:
-	create_tall_foot_sprite ANIM_TARGET, 4, x=-16, y=-8, duration=20
+	create_narrow_foot_sprite ANIM_TARGET, 4, x=-16, y=-8, duration=20
 	create_basic_hitsplat_sprite ANIM_TARGET, 3, x=-16, y=-16, relative_to=ANIM_TARGET, animation=2
 	createsprite gTripleAxelIceCrystalSpriteTemplate, ANIM_TARGET, 1, -16, -8, -256, -40
 	createsprite gTripleAxelIceCrystalSpriteTemplate, ANIM_TARGET, 1, -16, -8, 416, -38
 	createvisualtask AnimTask_ShakeMon, 5, ANIM_TARGET, 4, 0, 4, 1
 	goto TripleAxelEnd
 TripleAxelTurn1:
-	create_tall_foot_sprite ANIM_TARGET, 4, x=8, y=8, duration=20
+	create_narrow_foot_sprite ANIM_TARGET, 4, x=8, y=8, duration=20
 	create_basic_hitsplat_sprite ANIM_TARGET, 3, x=8, y=0, relative_to=ANIM_TARGET, animation=2
 	createsprite gTripleAxelIceCrystalSpriteTemplate, ANIM_TARGET, 1, 8, 8, 160, -32
 	createsprite gTripleAxelIceCrystalSpriteTemplate, ANIM_TARGET, 1, 8, 8, -256, -40
@@ -13869,7 +13869,7 @@ TripleAxelTurn1:
 	createvisualtask AnimTask_ShakeMon, 5, ANIM_TARGET, 4, 0, 6, 1
 	goto TripleAxelEnd
 TripleAxelTurn2:
-	create_tall_foot_sprite ANIM_TARGET, 4, x=0, y=0, duration=20
+	create_narrow_foot_sprite ANIM_TARGET, 4, x=0, y=0, duration=20
 	create_basic_hitsplat_sprite ANIM_TARGET, 3, x=0, y=-8, relative_to=ANIM_TARGET, animation=1
 	createsprite gTripleAxelIceCrystalSpriteTemplate, ANIM_TARGET, 1, 0, 0, 160, -32
 	createsprite gTripleAxelIceCrystalSpriteTemplate, ANIM_TARGET, 1, 0, 0, -256, -40
