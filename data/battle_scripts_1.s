@@ -3961,7 +3961,7 @@ BattleScript_SelectingImprisonedMoveInPalace::
 	printstring STRINGID_PKMNCANTUSEMOVESEALED
 	goto BattleScript_SelectingUnusableMoveInPalace
 
-BattleScript_GrudgeTakesPp::
+BattleScript_GrudgeTakesPP::
 	printstring STRINGID_PKMNLOSTPPGRUDGE
 	waitmessage B_WAIT_TIME_LONG
 	return
