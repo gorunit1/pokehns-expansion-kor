@@ -11,7 +11,7 @@
 - 수정 파일: 커밋 `ee7fb48e`(`include/test/battle.h`, `include/test_result.h`, `test/test_runner.c`, `test/test_runner_battle.c`), `e4cd4538`(`test/battle/ghost.c`, `test/test_runner_battle.c`, `test/test_test_runner.c`). 문서·도구 — `full-sync-seq-511.md`(새), `test-baseline-seq511.txt`(새), `testlist.sh` FLAKY, `verify_seq.sh` 기준 seq511, `kortests/expected/summary.txt`·`summary.meta`, `RECHECK_BEFORE_COMPLETION.md` 113, `port_sequence.tsv` 511·513, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. `verify_seq.sh 511 fa537389`(511만, 목록 42줄 빠짐) → `verify_seq.sh 511b fa537389`(511+513).
 - 게임 화면 확인: 필요 없음(ROM 같음).
-- 친구 문자: 세션 답변 문안.
+- 친구 문자: 세션 답변 문안 — **보냄**(2026-10-29 사용자 확인).
 - 다음 시작점: seq 512 #10390, 그다음 514.
 
 ### 2026-10-29 — full-sync 묶음 76(seq 510 #10155) (클라우드 세션)
