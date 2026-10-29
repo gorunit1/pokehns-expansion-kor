@@ -10,7 +10,7 @@
 - 수정 파일: 커밋 `4358b753`(`src` 46파일·`test/compression/smol.c`·`tools/scaninc/scaninc.cpp`). 문서 — `full-sync-seq-501.md`(새), `RECHECK_BEFORE_COMPLETION.md` 109 보충, `port_sequence.tsv` 501, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. 이전 클론 `$S/w`는 `e56a58ef`로 갱신해 빌드(SHA1 `5ffecc87…`).
 - 게임 화면 확인: 하지 않았다(ROM 바이트 같음).
-- 친구 문자: 세션 답변 문안 — 보내기 전.
+- 친구 문자: 세션 답변 문안 — **보냄**(2026-10-29 사용자 확인).
 - 다음 시작점: seq 502 #10116.
 
 ### 2026-10-28 — full-sync 묶음 66(seq 500 #9881, 재확인 109) (클라우드 세션)
