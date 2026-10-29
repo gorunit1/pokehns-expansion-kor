@@ -10,7 +10,7 @@
 - 수정 파일: 커밋 `6c4ca257`(upstream 30파일, HnS 스크립트 70여 파일 `waitstate` 삭제, `data/specials.inc` 14줄). 문서 — `full-sync-seq-517.md`(새), `port_sequence.tsv` 517, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. `verify_seq.sh 517 47fbedf4 <scratchpad>/v`.
 - 게임 화면 확인: 필요 없음(ROM 같음).
-- 친구 문자: 세션 답변 문안.
+- 친구 문자: 세션 답변 문안 — **보냄**(2026-10-29 사용자 확인).
 - 다음 시작점: seq 518 #10555.
 
 ### 2026-10-29 — full-sync 묶음 81(seq 516 #9986 pret 병합) (클라우드 세션)
