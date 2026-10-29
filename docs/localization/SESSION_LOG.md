@@ -2,6 +2,16 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-29 — full-sync 묶음 72(seq 506 #10172) (클라우드 세션)
+
+- 요청: 묶음 68과 같은 요청(502부터 순서대로). 이 세션은 여기서 멈춤(도감 단위 끝, 친구 문자 전달).
+- 판단: 헤더 나누기. 충돌은 옮겨 가는 블록 안 HnS 1줄 → 새 헤더로. `[2]` 선언 크기·선언 이동은 9518~10172 사이 upstream 병합 커밋 몫이고 1.17.1과 같아 그대로. `gUnusedPokedexU8`는 HnS에서 이 커밋이 지우는 곳 말고 안 씀.
+- 수정 파일: 커밋 `d4fc70b2`(`include/pokedex.h`, `include/pokedex_common.h`(새), `src/new_game.c`, `src/pokedex.c`, `src/pokedex_plus_hgss.c`). 문서 — `full-sync-seq-506.md`(새), `port_sequence.tsv` 506, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. 병합본은 세션 임시 폴더 클론에서 먼저 빌드(같은 SHA1). `verify_seq.sh 506 bfce163d <scratchpad>/v`.
+- 게임 화면 확인: 하지 않았다(새 후보 없음).
+- 친구 문자: 세션 답변 문안 — 묶음 68~72 한 통.
+- 다음 시작점: seq 507 #10334(`git -C ../pokeemerald-expansion-upstream log --all --oneline --grep='(#10334)'`).
+
 ### 2026-10-29 — full-sync 묶음 71(seq 505 #10184) (클라우드 세션)
 
 - 요청: 묶음 68과 같은 요청(502부터 순서대로).
