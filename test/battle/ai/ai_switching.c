@@ -1,5 +1,7 @@
 #include "global.h"
 #include "test/battle.h"
+#include "battle_ai_main.h"
+#include "battle_ai_util.h"
 
 AI_SINGLE_BATTLE_TEST("AI gets baited by Protect Switch tactics") // This behavior is to be fixed.
 {
