@@ -10,7 +10,7 @@
 - 수정 파일: 커밋 `d84f57bf`(upstream 24파일). 문서·도구 — `full-sync-seq-508.md`(새), `test-baseline-seq508.txt`(새), `dev_scripts/hns_verify/port/wincheck.py`(새)·README 1행, `verify_seq.sh` 기준 seq508, `port_sequence.tsv` 508, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. `verify_seq.sh 508 ca00e564 <scratchpad>/v`.
 - 게임 화면 확인: 하지 않았다(화면 변화 없음, assert 화면이 나오면 친구가 사진).
-- 친구 문자: 세션 답변 문안.
+- 친구 문자: 세션 답변 문안 — **보냄**(2026-10-29 사용자 확인).
 - 다음 시작점: seq 509 #10156.
 
 ### 2026-10-29 — full-sync 묶음 73(seq 507 #10334, 재확인 111) (클라우드 세션)
