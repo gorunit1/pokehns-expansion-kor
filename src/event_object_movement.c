@@ -6897,6 +6897,7 @@ bool8 IsMetatileDirectionallyImpassable(struct ObjectEvent *objectEvent, s16 x, 
     // This can rarely happen with a sub-frame perfect a press when going down sideways stairs and trying to surf
     if (direction == DIR_NONE || direction > DIR_EAST)
         return TRUE;
+
     if (gOppositeDirectionBlockedMetatileFuncs[direction - 1](objectEvent->currentMetatileBehavior)
         || gDirectionBlockedMetatileFuncs[direction - 1](MapGridGetMetatileBehaviorAt(x, y)))
         return TRUE;
