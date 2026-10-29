@@ -537,7 +537,7 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 530	10781	2000012	1.17.1	g7_1.17.1	U-10781	-	S	data	N	N	미측정	Adds HM users to cheat start	적용(디버그 치트 시작) 6fe906e4
 531	10782	2000013	1.17.1	g7_1.17.1	U-10782	-	S	fix	N	N	미측정	Update Terastallization boost check to consider negative priority moves with less than 60 BP	적용(테라 60 위력 우선도 음수) 675f5b54
 532	10627	2000014	1.17.1	g7_1.17.1	U-stairs-10627	-	S	fix	N	N	미측정	Add bounds check to IsMetatileDirectionallyImpassable	이미 같음(HnS 대각선 가드가 같은 자리 — assert 없이 TRUE; 546과 한 단위, 기록만)
-533	10779	2000015	1.17.1	g7_1.17.1	U-10779	9466,9710,9865,10300,10326	M	fix	N	N	미측정	Fixes terrain access during ai calcs and paradox ability modifier	적용(충돌 1 테스트 끝 둘 다; 테스트 include 2줄 fbd2b3a9) f7c3e543
+533	10779	2000015	1.17.1	g7_1.17.1	U-10779	9466,9710,9865,10300,10326	M	fix	N	N	미측정	Fixes terrain access during ai calcs and paradox ability modifier	적용(충돌 1 테스트 끝 둘 다; 테스트 include 2줄 40aedacd) f7c3e543
 534	10788	2000016	1.17.1	g7_1.17.1	U-10788	9657,9730,10640	M	fix	Y	N	미측정	Fix two turn attack message wait and remove visual config	적용(2턴 기술 문장 대기 — 출력 변화 1행) c48f757f
 535	10792	2000017	1.17.1	g7_1.17.1	U-10792	-	S	tool	N	N	~0(도구)	Fix some move tutor scripts not beign parsed	적용(도구 — ROM 같음) 591fc5ad
 536	10812	2000018	1.17.1	g7_1.17.1	U-10812	9730	S	fix	N	N	미측정	Fix not all abilities/ hold effects being read for Gooey/Tangling Hair	적용(미끈미끈·컬리헤어 모든 배틀러) 9c0d12cd

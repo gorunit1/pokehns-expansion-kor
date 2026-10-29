@@ -13,7 +13,7 @@
 | 531 | #10782 | `675f5b54` | 테라스탈 60 위력 보정이 우선도 음수 기술도 포함 | `fddfaff9…` |
 | 532 | #10627 | 없음 | **이미 같음** — HnS `IsMetatileDirectionallyImpassable`에 같은 자리 대각선 가드(assert 없이 `TRUE`)가 있음 | — |
 | 546(앞당김) | #10830 | `26ca30ae` + `f9fd1b19`(빈 줄) | 옆 계단에서 주인공이 대각선으로 움직여도 방향은 동/서. #10627 assert 삭제분은 HnS 가드 유지(`// HnS:`) | `c1213a45…` |
-| 533 | #10779 | `f7c3e543` + `fbd2b3a9`(테스트 include) | AI 계산의 필드 상태, 고대활성·쿼크차지 배율 | `2f4a8eca…` |
+| 533 | #10779 | `f7c3e543` + `40aedacd`(테스트 include) | AI 계산의 필드 상태, 고대활성·쿼크차지 배율 | `2f4a8eca…` |
 | 534 | #10788 | `c48f757f` | 2턴 기술 충전 턴의 공격 문장 대기, 프리폴 충전 스크립트 통합, Gen5 미만 충전 애니 설정 삭제 | `74a875f1…` |
 | 535 | #10792 | `591fc5ad` | 기술 가르침 스크립트 파싱(도구) | 같음 |
 | 536 | #10812 | `9c0d12cd` | 미끈미끈·컬리헤어가 모든 배틀러 특성·도구를 읽음 | `214426b9…` |
@@ -25,12 +25,12 @@
 | 543 | #10807 | `f8a18c01` | `gBattleAnimMove_None`·따라하기 애니 끝 | `a1daaac3…` |
 | 544 | #10818 | `a17d238c` | 기술 떠올리기 팡파르가 끊기지 않게 | `c5518288…` |
 
-이식 전(`aa5eb494`, 게임 코드 = `e6097df6`) SHA1 `c469d4a8…` → 이식 후(`fbd2b3a9`) SHA1 **`c5518288f8ada6c05e7ed9acdc9fbaac02a977c0`**.
+이식 전(`aa5eb494`, 게임 코드 = `e6097df6`) SHA1 `c469d4a8…` → 이식 후(`40aedacd`) SHA1 **`c5518288f8ada6c05e7ed9acdc9fbaac02a977c0`**.
 
 ## HnS 판단
 
 - **532 #10627:** HnS는 이 함수 첫머리에 이미 같은 주석과 대각선 가드(`direction == DIR_NONE || direction > DIR_EAST` → `TRUE`)를 갖고 있음 → 바뀌는 것 없음. 546 #10830이 #10627의 assert를 지우는 hunk는 HnS 가드를 남김(1.17.1은 가드 자체가 없음 — HnS가 더 보수적). 546의 주인공 방향 코드는 1.17.1과 같음.
-- **533:** 충돌은 테스트 파일 끝에 upstream이 테스트 2개를 더한 자리 → 둘 다. 그 테스트가 쓰는 헤더 include가 HnS 파일에 없어 첫 전체 검증의 테스트 빌드가 실패 → 1.17.1처럼 include 2줄(`fbd2b3a9`).
+- **533:** 충돌은 테스트 파일 끝에 upstream이 테스트 2개를 더한 자리 → 둘 다. 그 테스트가 쓰는 헤더 include가 HnS 파일에 없어 첫 전체 검증의 테스트 빌드가 실패 → 1.17.1처럼 include 2줄(`40aedacd`).
 - **534(출력 변화, 친구 결정 대상):** `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 1행.
 - **537:** HnS가 고친 적 없는 그림(팔레트 8개는 줄 끝만 다름 — `.gitattributes` CRLF로 넣음).
 - **538:** 충돌은 배틀 테스트 정리 함수 — HnS `DeactivateAllTextPrinters()` 유지 + upstream 파티 번호 초기화.
@@ -42,10 +42,10 @@
 ## 검증
 
 - **빌드:** 각 seq `make hns -j8` 종료 0(위 표). 저장소 전체 재빌드: 종료 0, SHA1 `c5518288…`, 새 컴파일 경고 0(`warncheck.sh`).
-- **전체 테스트**(`GITHUB_ACTION=1 make check BUILD=hns -j8`, 코드 = `fbd2b3a9`): 첫 실행은 위 include 문제로 테스트 빌드 실패(목록 0줄) → 고친 뒤 기준 `test-baseline-seq528.txt` 대비 **새 PASS 7**(이번 PR 테스트: AI 2, 고대활성 피해, 파워풀허브 2턴 기술 3, 이름 바뀐 1), **사라진 PASS 1** = 이름 변경("ModifyPersonalityForNature can set any nature" → "… without affecting gender value", PASS). 새 기준 **`test-baseline-seq546.txt`**(`verify_seq.sh`도).
+- **전체 테스트**(`GITHUB_ACTION=1 make check BUILD=hns -j8`, 코드 = `40aedacd`): 첫 실행은 위 include 문제로 테스트 빌드 실패(목록 0줄) → 고친 뒤 기준 `test-baseline-seq528.txt` 대비 **새 PASS 7**(이번 PR 테스트: AI 2, 고대활성 피해, 파워풀허브 2턴 기술 3, 이름 바뀐 1), **사라진 PASS 1** = 이름 변경("ModifyPersonalityForNature can set any nature" → "… without affecting gender value", PASS). 새 기준 **`test-baseline-seq546.txt`**(`verify_seq.sh`도).
 - **세이브 정적 비교**(이전 = 클론 `aa5eb494` 빌드): **PASS(FAIL 0, WARN 0)**.
 - **한글 회귀**(`ALLOW_REPO=1 kortests/run.sh <저장소> kor-s544b 8`): **555/652, `판정: PASS (기대와 같음)`, 상태 줄 차이 0**.
-- **ROM**(커밋 `fbd2b3a9`): SHA1 `c5518288f8ada6c05e7ed9acdc9fbaac02a977c0`, 사용 32,977,588 B(묶음 85 대비 +4,032 — 그림 13종 애니 프레임), 파일 33,554,432 B, 클라우드 컨테이너 `make hns -j8`, arm-none-eabi-gcc 13.2.1.
+- **ROM**(커밋 `40aedacd`): SHA1 `c5518288f8ada6c05e7ed9acdc9fbaac02a977c0`, 사용 32,977,588 B(묶음 85 대비 +4,032 — 그림 13종 애니 프레임), 파일 33,554,432 B, 클라우드 컨테이너 `make hns -j8`, arm-none-eabi-gcc 13.2.1.
 - **실기 후보(친구):** 옆 계단(대각선 이동 중 말 걸기·파도타기), 2턴 기술(솔라빔·공중날기 등) 충전 턴 문장 대기, 8세대 13종 앞모습 애니(흥나숭·채키몽·고릴타·울머기·누겔레온·인텔리레온·탐리스·요씽리스·두루지벌레·레돔벌레·이올브·모래뱀·사다이사; 레돔벌레·모래뱀·사다이사·울머기는 뒷모습·색도), 기술 떠올리기 팡파르.
 
 ## 다음
