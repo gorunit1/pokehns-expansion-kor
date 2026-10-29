@@ -1,18 +1,31 @@
 # 현재 인수인계 상태
 
-## 2026-10-29 — full-sync 묶음 78(seq 512 #10390 알려진 실패 `and 0 more`·출력 형식) (현재, 클라우드 세션)
+## 2026-10-29 — full-sync 묶음 79(seq 514 #9900 1.15.2 릴리스 — 보류, 기록만) (현재, 클라우드 세션)
 
-- **요청:** 사용자 "ㄱㄱ 혼자 할수있다면"(2026-10-29). 새 질문 없음(러너·assert 화면 출력 형식, 충돌 0).
+- **요청:** 사용자 "ㄱㄱ 514 시작해 혼자해도 되는거라면"(2026-10-29). 새 질문 없음(계획서가 정한 보류, 코드 변경 0).
 - **다음 할 일**
-  1. ~~친구 문자(묶음 78 결과 + ROM `9bd02555` / `eb35fac1…`, 실기 새 후보 없음)~~ **보냄**(2026-10-29 사용자 확인).
-  2. full-sync 다음: seq 514 #9900(1.15.2 릴리스 표시; 513은 묶음 77에서 앞당겨 끝남 — `port_sequence.tsv` 14열 확인). 목표 1.17.1. 테스트 기준 **`test-baseline-seq511.txt`**(그대로, `verify_seq.sh` 반영), 한글 회귀 기대 **555/652**(K23은 FLAKY — 재확인 113), 세이브 이전 사실은 문서 커밋(이 커밋).
-  3. 친구 답 대기: 89 (1) 메모, 82, 72, 70 (a)(b), 71, 69, 실기 결과(묶음 47~65 후보 + 묶음 70 도감 + 묶음 73 콘테스트 + 묶음 74·75 크래시 화면 나오면 사진), 묶음 66 친구 PC 빌드 확인.
+  1. 친구 문자(묶음 79 결과, ROM은 묶음 78과 같은 파일) — 세션 답변 문안. 사용자가 보내면 **보냄** 표시.
+  2. full-sync 다음: seq 515 #9914(C 파일 탭 정리), 516 #9986(pret 병합 2026-05-15, XL). 목표 1.17.1. 테스트 기준 **`test-baseline-seq511.txt`**(`verify_seq.sh` 반영), 한글 회귀 기대 **555/652**(K23은 FLAKY — 재확인 113).
+  3. **전체 동기화 완료 때 사용자 확인:** `include/constants/expansion.h`를 upstream 1.17.1 값(`1.17.1`, `EXPANSION_TAGGED_RELEASE TRUE`)으로 맞출지(seq 514 보류분 — ROM 헤더 RHH 버전 필드·디버그 메뉴 표시만 바뀜). HnS `README.md` 크레딧 줄("… 1.15.1")도 같이 볼 후보.
+  4. 친구 답 대기: 89 (1) 메모, 82, 72, 70 (a)(b), 71, 69, 실기 결과(묶음 47~65 후보 + 묶음 70 도감 + 묶음 73 콘테스트 + 묶음 74·75 크래시 화면 나오면 사진), 묶음 66 친구 PC 빌드 확인.
 - **새 세션(클라우드) 준비 — full-sync 이어 하기:**
   - upstream 읽기 전용 사본: `git clone https://github.com/rh-hideout/pokeemerald-expansion.git ../pokeemerald-expansion-upstream && git -C ../pokeemerald-expansion-upstream fetch --tags`(없을 때만). seq의 upstream 커밋은 `git -C ../pokeemerald-expansion-upstream log --all --oneline --grep='(#<PR>)'`.
   - seq 하나 순서: `port_sequence.tsv`(14열 = 적용 기록)에서 행 확인 → upstream 커밋 분석·HnS 영향 → 파일별 `git merge-file -p <HnS> <base> <theirs>`(충돌은 `dev_scripts/hns_verify/port/resolve2.py`, 줄 비교는 `C=<커밋> python3 dev_scripts/hns_verify/port/dd.py`) → `make hns -j8` → 필요하면 한글 회귀 테스트 `test/hns_<PR>_*.c`(이식 전 클론에서 대조) → 코드 커밋 → `dev_scripts/hns_verify/port/verify_seq.sh <seq> <이식 전 커밋> <세션 임시 폴더>`(기준 목록 `test-baseline-seq511.txt`) → 결과 문서 `full-sync-seq-<seq>.md`·`port_sequence.tsv`·STATUS·SESSION_LOG → push → 친구 문자 문안.
   - 친구 문자는 ROM 기준 커밋·SHA1·빌드 환경을 넣고 빌드 / 자동 테스트 / 코드 대조 / 세이브 정적 비교 / mGBA 실기를 나눈 긴 형식(ROM이 같아도). 사용자가 "보냈어"라고 하면 STATUS·SESSION_LOG에 **보냄** 표시 후 커밋·push.
   - 큰 리팩터(파일 통합 등)는 upstream 결과에서 출발해 HnS hunk를 하나씩 문맥 정확히 맞는 곳(fuzz 0)에 붙이고 나머지는 손으로, 그 뒤 "HnS 변경 줄 vs 최종 변경 줄" 대조(seq 504 문서 방법). 저장소 검증이 도는 동안에는 세션 임시 폴더 클론에서 빌드한다.
   - 애니 리팩터는 `animcmp/run.sh`, INCGFX 이관 뒤 규칙 정리는 `incgfx/prune_rules.py`(깨끗한 `git archive` 트리에서). 빌드 체계 변경은 생성물 없는 내보내기 트리에서 빌드해 ROM SHA1을 비교. 창 템플릿을 바꾸는 이식 뒤엔 `port/wincheck.py`(seq 508부터 `InitWindows` 종결자 assert). 배치만 바뀌어 SHA1이 다를 때는 `port/relocmp.py <이전.elf> <이전.gba> <새.elf> <새.gba>`(seq 505).
+- **결과** [`full-sync-seq-514.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-514.md). 문서 커밋만(이 커밋).
+  - upstream 릴리스 PR의 게임 영향분은 버전 상수(`PATCH` 2 → 3)뿐. 계획서(g5 134행)대로 중간 버전으로 올리지 않고 완료 때 1.17.1 값으로 한 번에 — 그때 사용자 확인. 변경 기록·`.github` 템플릿·README는 제외.
+- **검증:** 저장소 코드·데이터 변경 0 → 빌드·테스트·세이브·한글 회귀는 묶음 78 결과 그대로(다시 돌리지 않음).
+- **ROM(실기용):** 커밋 `9bd02555`, SHA1 **`eb35fac1273b5ca925ba2d0c0c1aeb4932d38df8`**(묶음 78과 같은 파일), 사용 32,980,868 B, 파일 33,554,432 B, 클라우드 컨테이너 `make hns -j8`, arm-none-eabi-gcc 13.2.1. **실기: 새 후보 없음.**
+
+## 2026-10-29 — full-sync 묶음 78(seq 512 #10390 알려진 실패 `and 0 more`·출력 형식) (클라우드 세션)
+
+- **요청:** 사용자 "ㄱㄱ 혼자 할수있다면"(2026-10-29). 새 질문 없음(러너·assert 화면 출력 형식, 충돌 0).
+- **다음 할 일**
+  1. ~~친구 문자(묶음 78 결과 + ROM `9bd02555` / `eb35fac1…`, 실기 새 후보 없음)~~ **보냄**(2026-10-29 사용자 확인).
+  2. full-sync 다음: seq 514 — 묶음 79에서 기록(보류).
+  3. 친구 답 대기: 89 (1) 메모, 82, 72, 70 (a)(b), 71, 69, 실기 결과(묶음 47~65 후보 + 묶음 70 도감 + 묶음 73 콘테스트 + 묶음 74·75 크래시 화면 나오면 사진), 묶음 66 친구 PC 빌드 확인.
 - **결과** [`full-sync-seq-512.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-512.md). 커밋 `9bd02555`(코드), 문서·HnS 주석 이 커밋.
   - hydra "알려진 실패인데 통과" 목록의 `and 0 more...` 없앰, assert 화면 `%c`/`%C`, 테스트 러너 `%c`/`%C`/`%U`, 배틀 테스트 제안의 이름 `%U`.
   - 이전 HnS 러너는 `%C`를 몰라 기술 애니 제안 줄 뒤쪽이 깨진 바이트로 찍혔음 → 바로잡힘. HnS 특성·기술 이름은 한글이라 `%U`는 `ABILITY__`·`MOVE__`(진단 줄만, 1.17.1과 같음).
