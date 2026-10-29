@@ -522,7 +522,7 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 515	9914	1000000	1.16.0	g5_general_cleanup_docs	U-berryanim-9168	9168	S	refactor	N	N	~0	Fix stray tab in C file	이미 적용(HnS battle_anim.c 열매 애니 줄이 seq 161 이식 때부터 공백 — upstream #9914 뒤와 바이트 같음; 기록만) 문서 커밋
 516	9986	1000000	1.15.3	g5_general_cleanup_docs	U-waitstate-9986	9881	XL	build	N	N	~0	15th of May, 2026 in [#9986](https://github.com/rh-hideout/pokeemerald-expansion/pull/9986)	적용(암묵 waitstate·preproc 줄 표시·매치콜 레이블·GiveGiftRibbonToParty 분리·로머 BUGFIX; 충돌 12파일 — 배틀 애니는 HnS 형식 유지(바이트 같음), 신오 유적 아르세우스 방 3곳 callnative(이중 대기·대기 추가 방지), 매치콜 HnS 표 + upstream 이름; 스크립트 라벨 비교 port/scriptcmp.py; 어셈블러 경고 125는 517에서) 376139af
 517	10061	1000000	1.15.3	g5_general_cleanup_docs	U-waitstate-9986	9986	M	build	N	N	~0	📜 Migration script for pret#2200	적용(충돌 0; 정리 스크립트로 HnS 명시 waitstate 124 + 손 1(경고 줄 번호 어긋남) 삭제, HnS 전용 special 14개 waitstate=1 + 명시 29 삭제; 어셈블러 경고 125→0; 스크립트 라벨 비교 차이 0, ROM 바이트 같음) 6c4ca257
-518	10555	1000000	1.16.4	g5_general_cleanup_docs	U-pret-10555	10323,9986,9881	XL	refactor	Y	N	~0	Pret merge (30th of July 2026)	
+518	10555	1000000	1.16.4	g5_general_cleanup_docs	U-pret-10555	10323,9986,9881	XL	refactor	Y	N	~0	Pret merge (30th of July 2026)	적용(TextPrinterCallback·Pp→PP·조우 상수 생성·DmaCopyLarge·같은 계산 다시 쓰기; 충돌 6 — 한글 문장 유지 이름만, sprite OAM 검사 2줄로 1.17.1과 같음, 피라미드 HnS 블록; HnS 옛 이름 3곳; 함수 비교 port/objcmp.py; #10555 회귀(learnMoveState→data1)는 545 앞당김) 6a935eef
 519	10718	2000001	1.17.1	g7_1.17.1	U-10718	-	S	data	N	N	미측정	Ban Pidgey from strict-eligibility sky battles	
 520	10731	2000002	1.17.1	g7_1.17.1	U-10731	10326	S	build	N	N	미측정	Fix build error on master	
 521	10732	2000003	1.17.1	g7_1.17.1	U-10732	-	S	data	N	N	미측정	Move type changes should use `B_UPDATED_MOVE_TYPES`	
@@ -549,7 +549,7 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 542	10814	2000024	1.17.1	g7_1.17.1	U-multi-10773	-	S	fix	N	N	0(앞당김 적용 32a5fd5a, 2026-10-13)	Fix multi-battle outcome handling	앞당김 적용 32a5fd5a(풀 팀 멀티 결과 전달 — 아테나 반쪽 팀 회귀의 근거 아님, 재확인 64)
 543	10807	2000025	1.17.1	g7_1.17.1	U-10807	10374	S	fix	N	N	미측정	End instead of fallthrough for gBattleAnimMove_None and Mirror Move	
 544	10818	2000026	1.17.1	g7_1.17.1	U-10818	-	S	fix	N	N	미측정	Fix fanfare task interrupted in move relearner	
-545	10816	2000027	1.17.1	g7_1.17.1	U-10816	-	S	fix	N	N	0(HnS 동등 65388d7a)	Fix multi level move learning	
+545	10816	2000027	1.17.1	g7_1.17.1	U-10816	-	S	fix	N	N	0(HnS 동등 65388d7a)	Fix multi level move learning	앞당김 적용 0bf43797(518 바로 뒤 — #10555가 만든 다단계 레벨업 기술 배우기 회귀 수정, 1.17.1과 같음)
 546	10830	2000028	1.17.1	g7_1.17.1	U-stairs-10627	10627	S	fix	N	N	미측정	Fix player facing direction on sideways stairs	
 547	10660	2000029	1.17.1	g7_1.17.1	U-10660	9462,8647	S	fix	N	N	미측정	Fix recorded battle RNG desyncs	
 548	10837	2000030	1.17.1	g7_1.17.1	U-10837	-	S	fix	N	N	0(이미 적용 e804379040)	Fix ITEM_NONE assertion when canceling mail	앞당김 적용 e8043790

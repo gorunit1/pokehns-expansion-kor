@@ -30,6 +30,7 @@ full-sync 묶음과 HnS 수정 때 쓰는 **세이브 호환·한글 배틀 출�
 | `port/relocmp.py` | ROM 바이트는 다르지만 내용은 같고 배치만 바뀌어야 하는 이식(seq 505 #10184 타일셋 순서)에서, 이식 전·후 ELF/GBA를 심볼별로 비교 — 심볼·크기·종류가 같고 차이가 같은 대상(심볼+오프셋)을 가리키는 BL·포인터뿐인지. 링커 중계 스텁과 그걸 부르는 ARM 함수는 "unexplained"로 나옴(옮겨진 것뿐) |
 | `port/wincheck.py` | seq 508 #9892부터 `InitWindows()`가 창 템플릿 끝 `DUMMY_WIN_TEMPLATE`가 없으면 assert — `src`의 모든 `InitWindows(X)` 호출에서 X 정의의 마지막 원소를 검사(OK/BAD/MANUAL). 창 템플릿을 새로 넣거나 바꾸는 이식 뒤에 돌림 |
 | `port/scriptcmp.py` | 이벤트 스크립트 오브젝트(`build/hns/data/event_scripts.o`, `script_data`)를 이식 전·후 라벨별로 비교 — 같은 섹션 안을 가리키는 포인터는 "라벨+오프셋"으로 바꿔 배치 이동은 차이로 안 셈. seq 516 #9986(special 뒤 암묵 `waitstate`)에서 대기 명령이 늘거나 빠진 스크립트를 찾는 데 씀. 비교 대상: 이식 전 커밋을 클론에서 빌드한 같은 파일 |
+| `port/objcmp.py` | 이식 전·후 `build/hns`의 오브젝트를 함수별 디스어셈블(재배치는 심볼 이름, 주소 지움)과 데이터 섹션별로 비교해 바뀐 함수 목록을 냄(8 프로세스, 약 1시간). "같은 계산 다시 쓰기"가 많은 병합(seq 518 #10555)에서 실제로 바뀐 함수가 upstream이 손댄 곳뿐인지 확인. assert 줄 번호가 밀린 함수도 나오니 하나씩 설명 |
 
 ## 2. 환경 변수와 노트북 설정
 

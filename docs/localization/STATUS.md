@@ -1,19 +1,34 @@
 # 현재 인수인계 상태
 
-## 2026-10-29 — full-sync 묶음 82(seq 517 #10061 암묵 waitstate 정리) (현재, 클라우드 세션)
+## 2026-10-29 — full-sync 묶음 83(seq 518 #10555 pret 병합 2026-07-30 + 545 #10816 앞당김) (현재, 클라우드 세션)
 
-- **요청:** 사용자 "ㄱㄱ 517 시작해 혼자해도 되는거라면"(2026-10-29). 새 질문 없음(스크립트 바이트·ROM 같음).
+- **요청:** 사용자 "ㄱㄱ 518 시작해 혼자해도 되는거라면"(2026-10-29), 진행 중 "혼자 할 수 있는 작업은 최대한 많이 하고 한 번에 메시지" + "자러 간다, 일어나서 한 번에 확인". 새 질문 없음.
 - **다음 할 일**
-  1. ~~친구 문자(묶음 82 결과, ROM은 묶음 81과 같은 파일)~~ **보냄**(2026-10-29 사용자 확인).
-  2. full-sync 다음: seq 518 #10555(pret 병합 2026-07-30, XL — 선행 #10323(seq 271, 초기 묶음 문서에서 적용 확인)·#9986·#9881). 목표 1.17.1. 테스트 기준 **`test-baseline-seq511.txt`**, 한글 회귀 기대 **555/652**(K23은 FLAKY — 재확인 113). 스크립트가 바뀌면 `port/scriptcmp.py`.
+  1. 친구 문자: **묶음 83부터 합본 대기**(아직 안 만듦 — 멈출 때 한 통으로).
+  2. full-sync 다음: seq 519 #10718, 520 #10731, 521 #10732, 522 #10698(XL, 대부분 테스트), 524~556(545는 앞당김 끝). 목표 1.17.1. 테스트 기준 **`test-baseline-seq511.txt`**, 한글 회귀 기대 **555/652**(K23은 FLAKY — 재확인 113).
   3. **전체 동기화 완료 때 사용자 확인:** `include/constants/expansion.h`를 upstream 1.17.1 값(`1.17.1`, `EXPANSION_TAGGED_RELEASE TRUE`)으로 맞출지(seq 514 보류분 — ROM 헤더 RHH 버전 필드·디버그 메뉴 표시만 바뀜). HnS `README.md` 크레딧 줄("… 1.15.1")도 같이 볼 후보.
   4. 친구 답 대기: 89 (1) 메모, 82, 72, 70 (a)(b), 71, 69, 실기 결과(묶음 47~65 후보 + 묶음 70 도감 + 묶음 73 콘테스트 + 묶음 74·75 크래시 화면 나오면 사진 + 묶음 81 아르세우스 방 3항목), 묶음 66 친구 PC 빌드 확인.
 - **새 세션(클라우드) 준비 — full-sync 이어 하기:**
   - upstream 읽기 전용 사본: `git clone https://github.com/rh-hideout/pokeemerald-expansion.git ../pokeemerald-expansion-upstream && git -C ../pokeemerald-expansion-upstream fetch --tags`(없을 때만). seq의 upstream 커밋은 `git -C ../pokeemerald-expansion-upstream log --all --oneline --grep='(#<PR>)'`.
   - seq 하나 순서: `port_sequence.tsv`(14열 = 적용 기록)에서 행 확인 → upstream 커밋 분석·HnS 영향 → 파일별 `git merge-file -p <HnS> <base> <theirs>`(충돌은 `dev_scripts/hns_verify/port/resolve2.py`, 줄 비교는 `C=<커밋> python3 dev_scripts/hns_verify/port/dd.py`) → `make hns -j8` → 필요하면 한글 회귀 테스트 `test/hns_<PR>_*.c`(이식 전 클론에서 대조) → 코드 커밋 → `dev_scripts/hns_verify/port/verify_seq.sh <seq> <이식 전 커밋> <세션 임시 폴더>`(기준 목록 `test-baseline-seq511.txt`) → 결과 문서 `full-sync-seq-<seq>.md`·`port_sequence.tsv`·STATUS·SESSION_LOG → push → 친구 문자 문안.
+  - **친구 문자 합본(사용자 2026-10-29):** "혼자 할 수 있는 작업은 최대한 많이 하고 한 번에 메시지" — seq마다 커밋·검증·결과 문서·push는 그대로, 친구 문자는 멈출 때 묶음 여러 개를 한 통으로(묶음별 커밋·SHA1 표 + 실기용 최신 ROM). 멈추는 기준: 사용자·친구가 정할 선택, 실기 확인 없이 다음을 쌓기 어려운 변경, 원인 모를 검증 실패.
   - 친구 문자는 ROM 기준 커밋·SHA1·빌드 환경을 넣고 빌드 / 자동 테스트 / 코드 대조 / 세이브 정적 비교 / mGBA 실기를 나눈 긴 형식(ROM이 같아도). 코드 변경이 없는 seq(보류·이미 같음)도 줄이지 않는다: upstream PR·커밋 해시, 바뀐 파일과 줄 내용, HnS 판단 근거(계획서 행·이전 이식 커밋), 이식 전/후 커밋·SHA1, 다시 돌리지 않은 검증은 어느 묶음의 어떤 수치를 그대로 쓰는지 숫자까지(2026-10-29 사용자 지적 — 묶음 78~80 문자가 짧아짐). 사용자가 "보냈어"라고 하면 STATUS·SESSION_LOG에 **보냄** 표시 후 커밋·push.
   - 큰 리팩터(파일 통합 등)는 upstream 결과에서 출발해 HnS hunk를 하나씩 문맥 정확히 맞는 곳(fuzz 0)에 붙이고 나머지는 손으로, 그 뒤 "HnS 변경 줄 vs 최종 변경 줄" 대조(seq 504 문서 방법). 저장소 검증이 도는 동안에는 세션 임시 폴더 클론에서 빌드한다.
-  - 애니 리팩터는 `animcmp/run.sh`, INCGFX 이관 뒤 규칙 정리는 `incgfx/prune_rules.py`(깨끗한 `git archive` 트리에서). 빌드 체계 변경은 생성물 없는 내보내기 트리에서 빌드해 ROM SHA1을 비교. 창 템플릿을 바꾸는 이식 뒤엔 `port/wincheck.py`(seq 508부터 `InitWindows` 종결자 assert). 배치만 바뀌어 SHA1이 다를 때는 `port/relocmp.py <이전.elf> <이전.gba> <새.elf> <새.gba>`(seq 505). 스크립트(`waitstate`·special) 이식 뒤엔 `port/scriptcmp.py <클론>/build/hns/data/event_scripts.o build/hns/data/event_scripts.o`(seq 516).
+  - 애니 리팩터는 `animcmp/run.sh`, INCGFX 이관 뒤 규칙 정리는 `incgfx/prune_rules.py`(깨끗한 `git archive` 트리에서). 빌드 체계 변경은 생성물 없는 내보내기 트리에서 빌드해 ROM SHA1을 비교. 창 템플릿을 바꾸는 이식 뒤엔 `port/wincheck.py`(seq 508부터 `InitWindows` 종결자 assert). 배치만 바뀌어 SHA1이 다를 때는 `port/relocmp.py <이전.elf> <이전.gba> <새.elf> <새.gba>`(seq 505). 스크립트(`waitstate`·special) 이식 뒤엔 `port/scriptcmp.py <클론>/build/hns/data/event_scripts.o build/hns/data/event_scripts.o`(seq 516). 같은 계산 다시 쓰기가 많은 병합은 `port/objcmp.py <클론>/build/hns build/hns`(함수별, 약 1시간, seq 518)와 "이 PR이 넣은 줄이 1.17.1에 남아 있나" 대조(없으면 뒤 PR이 고친 자리 → 앞당김 후보).
+- **결과** [`full-sync-seq-518.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-518.md). 커밋 `6a935eef`(518)·`0bf43797`(545 앞당김), 문서·도구 이 커밋.
+  - 이름 정리(`TextPrinterCallback`, `Pp` → `PP`, 키우미집 special), 조우 칸 수 상수 자동 생성, `DmaCopyLarge` UB 수정, 같은 계산 다시 쓰기 다수. 충돌 6파일 — 한글 문장 줄은 이름만, `sprite.c`는 1.17.1과 같아짐, 피라미드 HnS 블록 유지. HnS 전용 옛 이름 3곳.
+  - 새 도구 `port/objcmp.py`로 바뀐 함수 전수 설명 → upstream 회귀(다단계 레벨업 기술 배우기가 끊김) 발견 → upstream 수정 #10816(seq 545) 앞당김.
+- **검증:** `make hns -j8` 종료 0, 전체 재빌드 새 경고 0. 전체 `make check` 목록이 기준(seq511)과 바이트 같음. 세이브 정적 PASS(FAIL 0, WARN 0). 한글 회귀 `kor-s518` 555/652, 상태 줄 차이 0.
+- **ROM(실기용):** 커밋 `0bf43797`, SHA1 **`78bb1362c2ed20452984cbe8d7bf2d9aee992bf0`**, 사용 32,980,836 B, 파일 33,554,432 B, 클라우드 컨테이너 `make hns -j8`, arm-none-eabi-gcc 13.2.1. **실기: 하지 않음(친구) — 맵 이동·이어하기·도구 탐지기·키우미집 비용·다단계 기술 배우기(결과 문서).**
+
+## 2026-10-29 — full-sync 묶음 82(seq 517 #10061 암묵 waitstate 정리) (클라우드 세션)
+
+- **요청:** 사용자 "ㄱㄱ 517 시작해 혼자해도 되는거라면"(2026-10-29). 새 질문 없음(스크립트 바이트·ROM 같음).
+- **다음 할 일**
+  1. ~~친구 문자(묶음 82 결과, ROM은 묶음 81과 같은 파일)~~ **보냄**(2026-10-29 사용자 확인).
+  2. full-sync 다음: seq 518 — 묶음 83에서 완료(545 앞당김 포함).
+  3. **전체 동기화 완료 때 사용자 확인:** `include/constants/expansion.h`를 upstream 1.17.1 값(`1.17.1`, `EXPANSION_TAGGED_RELEASE TRUE`)으로 맞출지(seq 514 보류분 — ROM 헤더 RHH 버전 필드·디버그 메뉴 표시만 바뀜). HnS `README.md` 크레딧 줄("… 1.15.1")도 같이 볼 후보.
+  4. 친구 답 대기: 89 (1) 메모, 82, 72, 70 (a)(b), 71, 69, 실기 결과(묶음 47~65 후보 + 묶음 70 도감 + 묶음 73 콘테스트 + 묶음 74·75 크래시 화면 나오면 사진 + 묶음 81 아르세우스 방 3항목), 묶음 66 친구 PC 빌드 확인.
 - **결과** [`full-sync-seq-517.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-517.md). 커밋 `6c4ca257`(코드), 문서 이 커밋.
   - upstream 30파일 충돌 0(`callnative waitstate=`, `def_special` 인자 순서, preproc 위치 출력, 정리 스크립트, FRLG 정리).
   - 정리 스크립트로 HnS 명시 `waitstate` 124개 삭제, 경고 줄 번호가 어긋난 1개(격투 도장)는 손으로. HnS 전용 special 14개(호출마다 바로 뒤 대기)를 `waitstate=1`로 표시하고 그 뒤 명시 29개 삭제. 어셈블러 경고 125 → 0.
