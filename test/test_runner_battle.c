@@ -2056,7 +2056,10 @@ static void TearDownBattle(void)
 {
     // Zero out the parties, data in them could potentially carry over
     for (enum BattleTrainer trainer = B_TRAINER_PLAYER; trainer < MAX_BATTLE_TRAINERS; trainer++)
+    {
         ZeroPartyMons(gParties[trainer]);
+        gPartiesCount[trainer] = 0;
+    }
     SetCurrentDifficultyLevel(DIFFICULTY_NORMAL);
 
     // Set Battle Controllers to BATTLE_CONTROLLER_NONE
@@ -2071,6 +2074,13 @@ static void TearDownBattle(void)
     // message cut off by a failed test) so the next test does not Free a
     // stale pointer.
     DeactivateAllTextPrinters();
+
+    // Set battler party indexes to zero
+    for (u32 i = 0; i < MAX_BATTLERS_COUNT; i++)
+    {
+        gBattlerPartyIndexes[i] = 0; // make PARTY_SLOT_0 in upcoming
+    }
+
     FreeMonSpritesGfx();
     FreeBattleSpritesData();
     FreeBattleResources();
