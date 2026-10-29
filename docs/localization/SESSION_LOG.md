@@ -2,6 +2,16 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-29 — full-sync 묶음 85(seq 524~528) (클라우드 세션)
+
+- 요청: 합본 방침(사용자 취침 중).
+- 판단: 524는 HnS에서 죽은 코드라 ROM 차이가 assert 줄 번호뿐임을 오브젝트 비교로 확인(계획 "변화 없음"과 SHA1이 달라 확인함). 526은 HnS `multi_do` 경로라 끝 콜백·`VAR_RESULT`·스크립트 분기를 따라가 봄 — 승패는 `ReturnFromBattleToOverworld`가 넣고, 반쪽 팀은 `0xFF`라 새 콜백은 필드 복귀만. 528은 친구 Q1 그대로(이름·설명 hunk는 HnS 한글).
+- 수정 파일: 커밋 `e1589f09`(`src/wild_encounter_ow.c`)·`1a88578b`(upstream 5파일)·`f40be415`(`include/battle_special.h`·`src/battle_setup.c`·`src/battle_special.c`)·`daf33773`(`test/test_runner.c`·`test/test_test_runner.c`)·`e6097df6`(`src/data/moves_info.h`). 문서 — `full-sync-seq-524-528.md`(새), `test-baseline-seq528.txt`(새), `verify_seq.sh` 기준, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 1행, `port_sequence.tsv` 524~528, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. `verify_seq.sh 528 e094165a <scratchpad>/v`(524~528).
+- 게임 화면 확인: 하지 않음 — 친구 실기 후보(결과 문서).
+- 친구 문자: 합본 대기.
+- 다음 시작점: seq 529 #10772.
+
 ### 2026-10-29 — full-sync 묶음 84(seq 519~522) (클라우드 세션)
 
 - 요청: 합본 방침 그대로(사용자 취침 중).

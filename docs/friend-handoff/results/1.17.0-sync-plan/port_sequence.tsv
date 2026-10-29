@@ -528,11 +528,11 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 521	10732	2000003	1.17.1	g7_1.17.1	U-10732	-	S	data	N	N	미측정	Move type changes should use `B_UPDATED_MOVE_TYPES`	적용(B_UPDATED_MOVE_TYPES = B_UPDATED_MOVE_DATA — ROM 같음) d850b057
 522	10698	2000004	1.17.1	g7_1.17.1	U-10698	9532,9494,9657,9674,9730,10091,10354,8893,10384,10151,10488,10600,10593,10630	XL	fix	Y	N	미측정	Coding TODOs and currently KNOWN_FAILING regression tests 1/3	적용(GetConfig 인라인 −7,312 B; 충돌 2 — config/battle.h HnS 블록 + 새 2줄; IsAnyTargetTurnDamaged 2인자·enum SubCheck 1.17.1 위치; 출력 변화 2행 BATTLE_MESSAGE_OUTPUT_CHANGES; HnS 10488 혼란 자해 테스트 새 동작 4cb39b0e; 기준 seq522) 3d24ae2f
 523	10747	2000005	1.17.1	g7_1.17.1	U-10747	10117	S	fix	N	N	미측정	Fix contest move page in summary screen	앞당김 적용 97dd8439(388 #10117 바로 뒤 — 요약 화면 콘테스트 기술 페이지 우선순위 버그)
-524	10753	2000006	1.17.1	g7_1.17.1	U-10753	8434	S	fix	N	N	미측정	Fix overworld encounter flee sound playing every step in towns	
-525	10741	2000007	1.17.1	g7_1.17.1	U-10741	10028,10426,10593	S	fix	N	N	미측정	Fix Sheer Force suppressing King's Rock and Razor Fang flinches	
-526	10773	2000008	1.17.1	g7_1.17.1	U-multi-10773	10711,9440	S	fix	N	N	미측정	Fix custom multi-battle return and party detection	
-527	10776	2000009	1.17.1	g7_1.17.1	U-10776	-	S	test	N	N	~0(테스트만)	Fix heap corruption in shiny wild battle tests	
-528	10777	2000010	1.17.1	g7_1.17.1	U-10777	-	M	data	Y	N	미측정	Add Regulation M-C (v1.2.0) data changes from Pokémon Champions	
+524	10753	2000006	1.17.1	g7_1.17.1	U-10753	8434	S	fix	N	N	미측정	Fix overworld encounter flee sound playing every step in towns	적용(HnS WE_OWE_DESPAWN_SOUND FALSE — 죽은 코드, assert 줄 번호만) e1589f09
+525	10741	2000007	1.17.1	g7_1.17.1	U-10741	10028,10426,10593	S	fix	N	N	미측정	Fix Sheer Force suppressing King's Rock and Razor Fang flinches	적용(우격다짐 + 왕의징표석·예리한이빨 풀죽음 — 출력 변화 1행) 1a88578b
+526	10773	2000008	1.17.1	g7_1.17.1	U-multi-10773	10711,9440	S	fix	N	N	미측정	Fix custom multi-battle return and party detection	적용(BattleSetup_StartMultiBattle 끝 콜백; AreMultiPartiesFullTeams는 #10711 때 HnS가 같은 처리 — HnS 블록 유지) f40be415
+527	10776	2000009	1.17.1	g7_1.17.1	U-10776	-	S	test	N	N	~0(테스트만)	Fix heap corruption in shiny wild battle tests	적용(테스트 러너만; HnS 한 타입 챌린지 줄 + upstream 줄) daf33773
+528	10777	2000010	1.17.1	g7_1.17.1	U-10777	-	M	data	Y	N	미측정	Add Regulation M-C (v1.2.0) data changes from Pokémon Champions	적용(Q1 수용 — 기술 5개 GEN_CHAMPIONS 수치; 상수·메가·파동의방호 HnS 같음, 이름·설명 HnS 한글) e6097df6
 529	10772	2000011	1.17.1	g7_1.17.1	U-10772	8943,9211	M	fix	N	N	미측정	Prevent out-of-bounds battler accesses	
 530	10781	2000012	1.17.1	g7_1.17.1	U-10781	-	S	data	N	N	미측정	Adds HM users to cheat start	
 531	10782	2000013	1.17.1	g7_1.17.1	U-10782	-	S	fix	N	N	미측정	Update Terastallization boost check to consider negative priority moves with less than 60 BP	
