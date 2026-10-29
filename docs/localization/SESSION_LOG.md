@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-29 — full-sync 묶음 76(seq 510 #10155) (클라우드 세션)
+
+- 요청: 사용자 "ㄱㄱ 510 시작해 혼자해도 되는거라면".
+- 판단: 러너·hydra만. HnS 쪽 `":L` 검색 → HnS `ITEM_POPUP` 메시지 1줄만 남아 같이 지움. hydra 충돌은 HnS `FAILED:` 띄어쓰기 + upstream 변수 이름. 실패 테스트 1개로 새 출력 확인. 판정 기준 = ROM 바이트 같음·목록 같음·한글 회귀 상태 줄 같음(충족).
+- 발견: 한글 회귀 요약의 hydra 실패 목록 줄 형식이 바뀌어 기대 요약과 바이트가 달라짐(판정엔 안 씀) → README "기준 갱신" 규칙대로 실행 요약으로 갱신, `summary.meta`에 기록. 코드 커밋과 따로(문서 커밋)인 점 기록.
+- 수정 파일: 커밋 `139c9931`(`include/test/battle.h`, `include/test/test.h`, `test/test_runner.c`, `test/test_runner_battle.c`, `tools/mgba-rom-test-hydra/main.c`). 문서 — `full-sync-seq-510.md`(새), `dev_scripts/hns_verify/kortests/expected/summary.txt`·`summary.meta`, `port_sequence.tsv` 510, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. `verify_seq.sh 510 0e19318a <scratchpad>/v`.
+- 게임 화면 확인: 필요 없음(ROM 같음).
+- 친구 문자: 세션 답변 문안.
+- 다음 시작점: seq 511 #9807.
+
 ### 2026-10-29 — full-sync 묶음 75(seq 509 #10156, 재확인 112) (클라우드 세션)
 
 - 요청: 사용자 "ㄱㄱ 509 시작해 혼자해도 되는거라면".

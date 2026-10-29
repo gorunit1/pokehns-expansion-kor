@@ -1,53 +1,53 @@
-  - test/battle/zz_hns9168_k1_berry.c:535: Unmatched ANIMATION - HNS9168 K25 Colbur Berry weakens a super effective Bite.
-  - test/battle/zz_hns9680_endturn2.c:257: Unmatched HP_BAR - HNS9680 2-08 Salt Cure, Octolock and Syrup Bomb end-of-turn effects 1/3.
-  - test/battle/zz_hns9680_endturn2.c:414: Unmatched MESSAGE - HNS9680 2-13 Pledge field effects: sea of fire damage and end, rainbow end, swamp end 1/3.
-  - test/battle/zz_hns9680_endturn3.c:381: Unmatched ANIMATION - HNS9680 3-16 UPSTREAM CHANGE EXPECTED (part-C 5.2): Magic Room end loop stops after White Herb, foe Sitrus waits for next turn.
-  - test/battle/zz_hns9680_endturn4.c:396: Matched ANIMATION - HNS9680 4-18 UPSTREAM CHANGE EXPECTED: last foe faints at end of turn while the player is Dynamaxed, no Dynamax end animation.
-  - test/battle/zz_hns9714_b1_defog.c:510: Unmatched MESSAGE - HNS9714 1-14 Defog check pass against minimum evasion: nothing (fails), only the user's hazards (works), only the user's own Reflect (fails) 1/3.
-  - test/battle/zz_hns9714_b3_endturn.c:179: Unmatched MESSAGE - HNS9714 3-04 Pledge fields end: sea of fire, rainbow, swamp on the player side, the foe side, both 2/12.
-  - test/battle/zz_hns9714_b4_doubles_gmax.c:101: Matched MESSAGE - HNS9714 4-03 UPSTREAM CHANGE EXPECTED: G-Max Wind Rage against foe-side screens (and the user's own) 1/2.
-  - test/battle/zz_hns9717_k1_ee.c:146: Unmatched MESSAGE - HNS9717 K1-06 UPSTREAM CHANGE EXPECTED: Leech Seed, then poison and Salt Cure still hit before Emergency Exit.
-  - test/battle/zz_hns9717_k1_ee.c:183: Unmatched ABILITY_POPUP - HNS9717 K1-07 UPSTREAM CHANGE EXPECTED: Sea of Fire with Air Balloon, no Grassy Terrain heal for the Emergency Exit mon.
-  - test/battle/zz_hns9717_k1_ee.c:273: Unmatched MESSAGE - HNS9717 K1-11 UPSTREAM CHANGE EXPECTED: Perish Song count of the Emergency Exit mon is shown before it leaves.
-  - test/battle/zz_hns9717_k1_ee.c:296: Unmatched ABILITY_POPUP - HNS9717 K1-12 UPSTREAM ORDER CHANGE EXPECTED: Octolock drops the Emergency Exit mon's stats before it leaves.
-  - test/battle/zz_hns9717_k1_ee.c:433: Unmatched ABILITY_POPUP - HNS9717 K1-18 UPSTREAM ORDER CHANGE EXPECTED: doubles, burned faster foe Emergency Exit, partner burn and player burn before replacement.
-  - test/battle/zz_hns9717_k2_eject.c:95: Unmatched ABILITY_POPUP - HNS9717 K2-04 UPSTREAM ORDER CHANGE EXPECTED: Emergency Exit (burn) and Eject Pack (Octolock) in the same end of turn.
-  - test/battle/zz_hns9717_k3_faint.c:84: Matched ABILITY_POPUP - HNS9717 K3-04 UPSTREAM CHANGE EXPECTED (softlock without the HnS KO-animation fix): faster player Emergency Exit (poison) and the last foe faints from poison.
-  - test/battle/zz_hns9717_probe.c:54: Unmatched MESSAGE - HNS9717P P4 wild: faster player Emergency Exit (poison) and the wild mon faints from poison.
-  - test/battle/zz_hns9730_k1_moves.c:1104: Unmatched MESSAGE - HNS9730 K1-58 Shift Gear.
-  - test/battle/zz_hns9730_k1_moves.c:1439: Unmatched ANIMATION - HNS9730 K1-75 Spit Up drops the Stockpile boosts.
-  - test/battle/zz_hns9730_k1_moves.c:392: Unmatched MESSAGE - HNS9730 K1-20 Contrary: Dragon Dance at -6 both.
-  - test/battle/zz_hns9730_k1_moves.c:705: Unmatched MESSAGE - HNS9730 K1-36 Noble Roar with both stats at -6.
-  - test/battle/zz_hns9730_k1_moves.c:884: Unmatched MESSAGE - HNS9730 K1-45 Defog at -6 evasion, nothing to clear.
-  - test/battle/zz_hns9730_k2_abilities.c:1143: Unmatched MESSAGE - HNS9730 K2-65 Intimidate vs Guard Dog at +6 Attack (pre: names the Intimidate user).
-  - test/battle/zz_hns9730_k2_abilities.c:429: Unmatched ANIMATION - HNS9730 K2-25 Tickle vs Mirror Armor with the user at -6 Attack.
-  - test/battle/zz_hns9730_k2_abilities.c:665: Unmatched MESSAGE - HNS9730 K2-38 Anger Shell below half.
-  - test/battle/zz_hns9730_k2_abilities.c:968: Unmatched MESSAGE - HNS9730 K2-56 Opportunist copies a foe's Swords Dance.
-  - test/battle/zz_hns9730_k3_items.c:347: Unmatched MESSAGE - HNS9730 K3-18 Weakness Policy holder with Contrary.
-  - test/battle/zz_hns9730_k3_items.c:482: Unmatched MESSAGE - HNS9730 K3-25 Adrenaline Orb with Contrary.
-  - test/battle/zz_hns9730_k4_interact.c:1047: Unmatched ABILITY_POPUP - HNS9730 K4-49 Syrup Bomb vs Mirror Armor.
-  - test/battle/zz_hns9730_k4_interact.c:110: Unmatched MESSAGE - HNS9730 K4-03 Parting Shot vs Contrary with both stats at +6.
-  - test/battle/zz_hns9730_k4_interact.c:124: Unmatched ANIMATION - HNS9730 K4-04 Parting Shot vs Clear Body (no switch).
-  - test/battle/zz_hns9730_k4_interact.c:229: TURN 1 incomplete - HNS9730 K4-10 Magic Bounce bounces Parting Shot (seq 129 interim: the user is switched).
-  - test/battle/zz_hns9730_k4_interact.c:435: Unmatched ANIMATION - HNS9730 K4-19 Howl raises user and ally.
-  - test/battle/zz_hns9730_k4_interact.c:66: Unmatched MESSAGE - HNS9730 K4-02 Parting Shot with both stats at -6 (no switch).
-  - test/battle/zz_hns9730_k4_interact.c:872: TURN 1 incomplete - HNS9730 K4-41 Magic Coat bounces Parting Shot (seq 129 interim: the user is switched).
-  - test/battle/zz_hns9730_k4_interact.c:950: Unmatched ANIMATION - HNS9730 K4-44 Growl into a Mirror Armor foe and a plain foe.
-  - test/battle/zz_hns9784_k1_items.c:213: TURN 1 incomplete - HNS9784 K2-02 CHANGE EXPECTED: Eject Button: raw-faster holder under Slow Start should activate (pre: effective-Speed holder).
-  - test/battle/zz_hns9784_k1_items.c:233: TURN 1 incomplete - HNS9784 K2-03 CHANGE EXPECTED: Eject Button: all four Speed tied, raw sort should pick the right foe (pre: left foe).
-  - test/battle/zz_hns9784_k1_items.c:352: Unmatched ANIMATION - HNS9784 K3-03 CHANGE EXPECTED: faster Eject Pack should come before slower White Herb (pre: White Herb first).
-  - test/battle/zz_hns9784_k1_items.c:396: Unmatched MESSAGE - HNS9784 K3-05 CHANGE EXPECTED: user Throat Spray, then foes Eject Pack and White Herb by raw Speed (pre: White Herb, Throat Spray, Eject Pack).
-  - test/battle/zz_hns9784_k1_items.c:410: SEND_OUT not required (is the send out random?) - HNS9784 K3-06 CHANGE EXPECTED: Weak Armor on U-turn: Eject Pack should not activate (pre: it fires at the U-turn replacement switch-in).
-  - test/battle/zz_hns9784_k1_items.c:511: Unmatched ANIMATION - HNS9784 K4-03 CHANGE EXPECTED: Snarl: user Throat Spray should come before the foe White Herb (pre: White Herb first).
-  - test/battle/zz_hns9784_k1_items.c:530: Unmatched MESSAGE - HNS9784 K4-04 CHANGE EXPECTED: two foes White Herb by raw Speed, right foe faster should go first (pre: battler order, left first).
-  - test/battle/zz_hns9784_k1_items.c:657: Unmatched ANIMATION - HNS9784 K5-03 CHANGE EXPECTED: Shell Smash: faster foe Mirror Herb should come before the user White Herb (pre: White Herb first).
-  - test/battle/zz_hns9784_k1_items.c:65: Unmatched ANIMATION - HNS9784 K1-03 CHANGE EXPECTED: Red Card: raw-faster holder under Slow Start should activate (pre: effective-Speed holder).
-  - test/battle/zz_hns9784_k1_items.c:694: Unmatched ANIMATION - HNS9784 K5-05 CHANGE EXPECTED: two Mirror Herb holders by raw Speed, right one faster should go first (pre: battler order).
-  - test/battle/zz_hns9784_k1_items.c:87: Matched MESSAGE - HNS9784 K1-04 CHANGE EXPECTED: faster Eject Button, then slower Red Card should also activate (pre: only Eject Button).
-  - test/battle/zz_hns9918_pledge.c:322: Unmatched MESSAGE - HNS9918 K12 Sea of fire on the opposing side ends; the player is faster, the foe hit last (#10214 CHANGE EXPECTED).
-  - test/battle/zz_hns9918_pledge.c:522: Unmatched MESSAGE - HNS9918 K22 Sea of fire on the player's side ends; the foe is faster, the player hit last (#10214 CHANGE EXPECTED).
-  - test/battle/zz_hns9918_pledge.c:543: Unmatched MESSAGE - HNS9918 K23 Starting status: sea of fire on the opposing side ends (#10214 CHANGE EXPECTED).
-  - test/battle/zz_hnsb2021_kor.c:838: Unmatched ANIMATION - HNSB2021 D1 Symbiosis item received during a spread move is not used again as a resistance Berry (#10653).
+  - test/battle/zz_hns9168_k1_berry.c:523: HNS9168 K25 Colbur Berry weakens a super effective Bite: 535: Unmatched ANIMATION
+  - test/battle/zz_hns9680_endturn2.c:239: HNS9680 2-08 Salt Cure, Octolock and Syrup Bomb end-of-turn effects 1/3: 257: Unmatched HP_BAR
+  - test/battle/zz_hns9680_endturn2.c:381: HNS9680 2-13 Pledge field effects: sea of fire damage and end, rainbow end, swamp end 1/3: 414: Unmatched MESSAGE
+  - test/battle/zz_hns9680_endturn3.c:360: HNS9680 3-16 UPSTREAM CHANGE EXPECTED (part-C 5.2): Magic Room end loop stops after White Herb, foe Sitrus waits for next turn: 381: Unmatched ANIMATION
+  - test/battle/zz_hns9680_endturn4.c:283: HNS9680 4-14 UPSTREAM ORDER CHANGE EXPECTED: Dynamax ends before the fainted foe is replaced: 301: Unmatched MESSAGE
+  - test/battle/zz_hns9680_endturn4.c:385: HNS9680 4-18 UPSTREAM CHANGE EXPECTED: last foe faints at end of turn while the player is Dynamaxed, no Dynamax end animation: 396: Matched ANIMATION
+  - test/battle/zz_hns9714_b1_defog.c:402: HNS9714 1-11 UPSTREAM CHANGE EXPECTED: foe Defog against a Substitute with only terrain to clear (attacker overwritten before #9714): 417: Unmatched ANIMATION
+  - test/battle/zz_hns9714_b1_defog.c:450: HNS9714 1-13 Defog reflected by Magic Bounce or Magic Coat: the reflector's Defog clears the original user's side 1/2: 472: Unmatched MESSAGE
+  - test/battle/zz_hns9714_b1_defog.c:481: HNS9714 1-14 Defog check pass against minimum evasion: nothing (fails), only the user's hazards (works), only the user's own Reflect (fails) 1/3: 510: Unmatched MESSAGE
+  - test/battle/zz_hns9714_b3_endturn.c:135: HNS9714 3-04 Pledge fields end: sea of fire, rainbow, swamp on the player side, the foe side, both 2/12: 179: Unmatched MESSAGE
+  - test/battle/zz_hns9714_b4_doubles_gmax.c:51: HNS9714 4-02 UPSTREAM CHANGE EXPECTED: right-side player Defog against a Substitute with only terrain to clear: 65: Unmatched ANIMATION
+  - test/battle/zz_hns9714_b4_doubles_gmax.c:78: HNS9714 4-03 UPSTREAM CHANGE EXPECTED: G-Max Wind Rage against foe-side screens (and the user's own) 1/2: 101: Matched MESSAGE
+  - test/battle/zz_hns9717_k1_ee.c:123: HNS9717 K1-06 UPSTREAM CHANGE EXPECTED: Leech Seed, then poison and Salt Cure still hit before Emergency Exit: 146: Unmatched MESSAGE
+  - test/battle/zz_hns9717_k1_ee.c:158: HNS9717 K1-07 UPSTREAM CHANGE EXPECTED: Sea of Fire with Air Balloon, no Grassy Terrain heal for the Emergency Exit mon: 183: Unmatched ABILITY_POPUP
+  - test/battle/zz_hns9717_k1_ee.c:190: HNS9717 K1-08 UPSTREAM CHANGE EXPECTED: Sea of Fire, Grassy Terrain and Leftovers bring HP back above half, no Emergency Exit: 190: TURN 1 incomplete
+  - test/battle/zz_hns9717_k1_ee.c:236: HNS9717 K1-10 UPSTREAM ORDER CHANGE EXPECTED: Yawn puts the Emergency Exit mon (Leech Seed) to sleep before it leaves: 254: Unmatched ABILITY_POPUP
+  - test/battle/zz_hns9717_k1_ee.c:260: HNS9717 K1-11 UPSTREAM CHANGE EXPECTED: Perish Song count of the Emergency Exit mon is shown before it leaves: 273: Unmatched MESSAGE
+  - test/battle/zz_hns9717_k1_ee.c:281: HNS9717 K1-12 UPSTREAM ORDER CHANGE EXPECTED: Octolock drops the Emergency Exit mon's stats before it leaves: 296: Unmatched ABILITY_POPUP
+  - test/battle/zz_hns9717_k1_ee.c:302: HNS9717 K1-13 UPSTREAM ORDER CHANGE EXPECTED: Taunt end text of the Emergency Exit mon comes before it leaves: 322: Unmatched ABILITY_POPUP
+  - test/battle/zz_hns9717_k1_ee.c:328: HNS9717 K1-14 UPSTREAM ORDER CHANGE EXPECTED: two foe Emergency Exits in one Sandstorm, each leaves and is replaced in turn: 347: Unmatched ABILITY_POPUP
+  - test/battle/zz_hns9717_k1_ee.c:416: HNS9717 K1-18 UPSTREAM ORDER CHANGE EXPECTED: doubles, burned faster foe Emergency Exit, partner burn and player burn before replacement: 433: Unmatched ABILITY_POPUP
+  - test/battle/zz_hns9717_k1_ee.c:41: HNS9717 K1-02 UPSTREAM ORDER CHANGE EXPECTED: Sandstorm, faster foe Emergency Exit waits for the player's hit: 55: Unmatched ABILITY_POPUP
+  - test/battle/zz_hns9717_k1_ee.c:61: HNS9717 K1-03 UPSTREAM ORDER CHANGE EXPECTED: Sandstorm, faster player Wimp Out waits for the foe's hit: 75: Unmatched ABILITY_POPUP
+  - test/battle/zz_hns9717_k1_ee.c:81: HNS9717 K1-04 UPSTREAM ORDER CHANGE EXPECTED: both burned, faster foe Emergency Exit waits for the player's burn: 94: Unmatched ABILITY_POPUP
+  - test/battle/zz_hns9717_k2_eject.c:78: HNS9717 K2-04 UPSTREAM ORDER CHANGE EXPECTED: Emergency Exit (burn) and Eject Pack (Octolock) in the same end of turn: 95: Unmatched ABILITY_POPUP
+  - test/battle/zz_hns9717_k3_faint.c:132: HNS9717 K3-07 UPSTREAM CHANGE EXPECTED (softlock without the HnS KO-animation fix): faster foe Emergency Exit (poison) and the player's last mon faints from poison: 143: Matched ABILITY_POPUP
+  - test/battle/zz_hns9717_k3_faint.c:73: HNS9717 K3-04 UPSTREAM CHANGE EXPECTED (softlock without the HnS KO-animation fix): faster player Emergency Exit (poison) and the last foe faints from poison: 84: Matched ABILITY_POPUP
+  - test/battle/zz_hns9717_probe.c:45: HNS9717P P4 wild: faster player Emergency Exit (poison) and the wild mon faints from poison: 54: Unmatched MESSAGE
+  - test/battle/zz_hns9730_k1_moves.c:1092: HNS9730 K1-58 Shift Gear: 1104: Unmatched MESSAGE
+  - test/battle/zz_hns9730_k1_moves.c:1420: HNS9730 K1-75 Spit Up drops the Stockpile boosts: 1439: Unmatched ANIMATION
+  - test/battle/zz_hns9730_k1_moves.c:227: HNS9730 K1-14 Dragon Dance with both stats at +6: 256: Unmatched MESSAGE
+  - test/battle/zz_hns9730_k1_moves.c:353: HNS9730 K1-20 Contrary: Dragon Dance at -6 both: 392: Unmatched MESSAGE
+  - test/battle/zz_hns9730_k1_moves.c:561: HNS9730 K1-30 all stats up: Ominous Wind secondary: 576: Unmatched MESSAGE
+  - test/battle/zz_hns9730_k1_moves.c:581: HNS9730 K1-31 all stats up: No Retreat: 595: Unmatched MESSAGE
+  - test/battle/zz_hns9730_k1_moves.c:601: HNS9730 K1-32 Clangorous Soul: 615: Unmatched MESSAGE
+  - test/battle/zz_hns9730_k1_moves.c:666: HNS9730 K1-36 Noble Roar with both stats at -6: 705: Unmatched MESSAGE
+  - test/battle/zz_hns9730_k1_moves.c:860: HNS9730 K1-45 Defog at -6 evasion, nothing to clear: 884: Unmatched MESSAGE
+  - test/battle/zz_hns9730_k1_moves.c:906: HNS9730 K1-47 Toxic Thread: 917: Unmatched MESSAGE
+  - test/battle/zz_hns9730_k2_abilities.c:1125: HNS9730 K2-65 Intimidate vs Guard Dog at +6 Attack (pre: names the Intimidate user): 1143: Unmatched MESSAGE
+  - test/battle/zz_hns9730_k2_abilities.c:1232: HNS9730 K2-69 Cotton Down hits everyone else, one with Mirror Armor: 1249: Unmatched ABILITY_POPUP
+  - test/battle/zz_hns9730_k2_abilities.c:405: HNS9730 K2-25 Tickle vs Mirror Armor with the user at -6 Attack: 429: Unmatched ANIMATION
+  - test/battle/zz_hns9730_k2_abilities.c:494: HNS9730 K2-29 Growl vs Defiant at +6 Attack: 510: Unmatched MESSAGE
+  - test/battle/zz_hns9730_k2_abilities.c:634: HNS9730 K2-37 Anger Point on a critical hit (pre: no 의 in TARGETSSTATWASMAXEDOUT): 647: Unmatched MESSAGE
+  - test/battle/zz_hns9730_k2_abilities.c:651: HNS9730 K2-38 Anger Shell below half: 665: Unmatched MESSAGE
+  - test/battle/zz_hns9730_k2_abilities.c:952: HNS9730 K2-56 Opportunist copies a foe's Swords Dance: 968: Unmatched MESSAGE
+  - test/battle/zz_hns9730_k3_items.c:333: HNS9730 K3-18 Weakness Policy holder with Contrary: 347: Unmatched MESSAGE
+  - test/battle/zz_hns9730_k4_interact.c:421: HNS9730 K4-19 Howl raises user and ally: 435: Unmatched ANIMATION
+  - test/battle/zz_hns9784_k1_items.c:479: HNS9784 K4-02 CHANGE EXPECTED: Shell Smash: foe Opportunist should come before the user White Herb (pre: White Herb first): 492: Unmatched ABILITY_POPUP
+  - test/battle/zz_hns9784_k1_items.c:628: HNS9784 K5-07 CHANGE EXPECTED: Clangorous Soul with Throat Spray vs Mirror Herb, reveal only (pre 708 = Mirror Herb copies before Throat Spray; 1.17.0 808): 640: EXPECT_EQ(808, 708) failed
+  - test/battle/zz_hns9784_k1_items.c:779: HNS9784 K7-01 CHANGE EXPECTED: Magician steals a Sitrus Berry below half HP: should eat it in the same move end (pre: after the foe acts): 792: Unmatched ANIMATION
 - Tests FAILED:          97    Add TESTS='X' to run tests with the defined prefix.
 - Tests PASSED:          555
 - Tests TOTAL:           652
