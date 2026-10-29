@@ -85,6 +85,12 @@ enum ItemEffect
     ITEM_STATS_CHANGE,
 };
 
+enum SubCheck
+{
+    EXCLUDING_SUBSTITUTES,
+    INCLUDING_SUBSTITUTES
+};
+
 enum ImmunityHealStatusOutcome
 {
     IMMUNITY_NO_EFFECT,
