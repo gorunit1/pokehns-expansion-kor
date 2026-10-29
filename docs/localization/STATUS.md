@@ -1,21 +1,36 @@
 # 현재 인수인계 상태
 
-## 2026-10-29 — full-sync 묶음 85(seq 524~528, 1.17.1-A 끝 — Champions M-C 포함) (현재, 클라우드 세션)
+## 2026-10-29 — full-sync 묶음 86(seq 529~546, 1.17.1-B) (현재, 클라우드 세션)
 
 - **요청:** 합본 방침(사용자 취침 중). 새 질문 없음 — 확장 계획 친구 결정 안.
 - **다음 할 일**
   1. 친구 문자: **묶음 83부터 합본 대기**(아직 안 만듦 — 멈출 때 한 통으로).
-  2. full-sync 다음: seq 529 #10772, 530 #10781, 531 #10782, 532 #10627 + 546 #10830(한 단위 — 532 바로 뒤 546 앞당김), 533 #10779, 534 #10788(출력 변화), 535~544(542·545 이미), 547 #10660(Q2 녹화 배틀 재생 비교 — 실기 필요할 수 있음), 549~556(548·551 이미). 계획 3절 표 메모 확인. 목표 1.17.1. 테스트 기준 **`test-baseline-seq528.txt`**, 한글 회귀 기대 **555/652**(K23은 FLAKY — 재확인 113).
+  2. full-sync 다음(1.17.1-C): seq 547 #10660(Q2 — 넣고, 녹화 배틀 재생 비교는 친구 실기, 재확인 56 가드 테스트 2개 다시 돌리기), 549 #10828, 550 #10839(출력 변화), 552 #10836, 553 #10843(출력 변화), 554 #10752(hydra — 한글 회귀 기대 요약 다시 만들 수 있음), 555 #10398, 556 #10826. 548·551은 이미. 목표 1.17.1. 테스트 기준 **`test-baseline-seq546.txt`**, 한글 회귀 기대 **555/652**(K23은 FLAKY — 재확인 113).
   3. **전체 동기화 완료 때 사용자 확인:** `include/constants/expansion.h`를 upstream 1.17.1 값(`1.17.1`, `EXPANSION_TAGGED_RELEASE TRUE`)으로 맞출지(seq 514 보류분 — ROM 헤더 RHH 버전 필드·디버그 메뉴 표시만 바뀜). HnS `README.md` 크레딧 줄("… 1.15.1")도 같이 볼 후보.
   4. 친구 답 대기: 89 (1) 메모, 82, 72, 70 (a)(b), 71, 69, 실기 결과(묶음 47~65 후보 + 묶음 70 도감 + 묶음 73 콘테스트 + 묶음 74·75 크래시 화면 나오면 사진 + 묶음 81 아르세우스 방 3항목), 묶음 66 친구 PC 빌드 확인.
 - **새 세션(클라우드) 준비 — full-sync 이어 하기:**
   - upstream 읽기 전용 사본: `git clone https://github.com/rh-hideout/pokeemerald-expansion.git ../pokeemerald-expansion-upstream && git -C ../pokeemerald-expansion-upstream fetch --tags`(없을 때만). seq의 upstream 커밋은 `git -C ../pokeemerald-expansion-upstream log --all --oneline --grep='(#<PR>)'`.
-  - seq 하나 순서: `port_sequence.tsv`(14열 = 적용 기록)에서 행 확인 → upstream 커밋 분석·HnS 영향 → 파일별 `git merge-file -p <HnS> <base> <theirs>`(충돌은 `dev_scripts/hns_verify/port/resolve2.py`, 줄 비교는 `C=<커밋> python3 dev_scripts/hns_verify/port/dd.py`) → `make hns -j8` → 필요하면 한글 회귀 테스트 `test/hns_<PR>_*.c`(이식 전 클론에서 대조) → 코드 커밋 → `dev_scripts/hns_verify/port/verify_seq.sh <seq> <이식 전 커밋> <세션 임시 폴더>`(기준 목록 `test-baseline-seq528.txt`) → 결과 문서 `full-sync-seq-<seq>.md`·`port_sequence.tsv`·STATUS·SESSION_LOG → push → 친구 문자 문안.
+  - seq 하나 순서: `port_sequence.tsv`(14열 = 적용 기록)에서 행 확인 → upstream 커밋 분석·HnS 영향 → 파일별 `git merge-file -p <HnS> <base> <theirs>`(충돌은 `dev_scripts/hns_verify/port/resolve2.py`, 줄 비교는 `C=<커밋> python3 dev_scripts/hns_verify/port/dd.py`) → `make hns -j8` → 필요하면 한글 회귀 테스트 `test/hns_<PR>_*.c`(이식 전 클론에서 대조) → 코드 커밋 → `dev_scripts/hns_verify/port/verify_seq.sh <seq> <이식 전 커밋> <세션 임시 폴더>`(기준 목록 `test-baseline-seq546.txt`) → 결과 문서 `full-sync-seq-<seq>.md`·`port_sequence.tsv`·STATUS·SESSION_LOG → push → 친구 문자 문안.
   - **친구 문자 합본(사용자 2026-10-29):** "혼자 할 수 있는 작업은 최대한 많이 하고 한 번에 메시지" — seq마다 커밋·검증·결과 문서·push는 그대로, 친구 문자는 멈출 때 묶음 여러 개를 한 통으로(묶음별 커밋·SHA1 표 + 실기용 최신 ROM). 멈추는 기준: 사용자·친구가 정할 선택, 실기 확인 없이 다음을 쌓기 어려운 변경, 원인 모를 검증 실패.
   - **1.17.1 구간(seq 519~556)은 [`1.17.1-extension-plan.md`](../friend-handoff/results/1.17.0-port/1.17.1-extension-plan.md) 3절 표(seq별 HnS 메모)·5절(혼자 정할 수 있는 것)·7절(친구 결정 Q1·Q2·N1·U1)을 먼저 읽는다.** 이미 앞당겨 끝난 행: 523·542·545·548·551(순서표 14열).
   - 친구 문자는 ROM 기준 커밋·SHA1·빌드 환경을 넣고 빌드 / 자동 테스트 / 코드 대조 / 세이브 정적 비교 / mGBA 실기를 나눈 긴 형식(ROM이 같아도). 코드 변경이 없는 seq(보류·이미 같음)도 줄이지 않는다: upstream PR·커밋 해시, 바뀐 파일과 줄 내용, HnS 판단 근거(계획서 행·이전 이식 커밋), 이식 전/후 커밋·SHA1, 다시 돌리지 않은 검증은 어느 묶음의 어떤 수치를 그대로 쓰는지 숫자까지(2026-10-29 사용자 지적 — 묶음 78~80 문자가 짧아짐). 사용자가 "보냈어"라고 하면 STATUS·SESSION_LOG에 **보냄** 표시 후 커밋·push.
+  - 병합은 충돌이 하나라도 있으면 파일을 복사하지 않는 방식으로(묶음 86에서 충돌 표시가 남은 파일을 커밋할 뻔함 — push 전 되돌림). 세션 임시 폴더 `pmerge.sh`는 새 세션에 없으니 같은 규칙으로 다시 만든다.
   - 큰 리팩터(파일 통합 등)는 upstream 결과에서 출발해 HnS hunk를 하나씩 문맥 정확히 맞는 곳(fuzz 0)에 붙이고 나머지는 손으로, 그 뒤 "HnS 변경 줄 vs 최종 변경 줄" 대조(seq 504 문서 방법). 저장소 검증이 도는 동안에는 세션 임시 폴더 클론에서 빌드한다.
   - 애니 리팩터는 `animcmp/run.sh`, INCGFX 이관 뒤 규칙 정리는 `incgfx/prune_rules.py`(깨끗한 `git archive` 트리에서). 빌드 체계 변경은 생성물 없는 내보내기 트리에서 빌드해 ROM SHA1을 비교. 창 템플릿을 바꾸는 이식 뒤엔 `port/wincheck.py`(seq 508부터 `InitWindows` 종결자 assert). 배치만 바뀌어 SHA1이 다를 때는 `port/relocmp.py <이전.elf> <이전.gba> <새.elf> <새.gba>`(seq 505). 스크립트(`waitstate`·special) 이식 뒤엔 `port/scriptcmp.py <클론>/build/hns/data/event_scripts.o build/hns/data/event_scripts.o`(seq 516). 같은 계산 다시 쓰기가 많은 병합은 `port/objcmp.py <클론>/build/hns build/hns`(함수별, 약 1시간, seq 518)와 "이 PR이 넣은 줄이 1.17.1에 남아 있나" 대조(없으면 뒤 PR이 고친 자리 → 앞당김 후보).
+- **결과** [`full-sync-seq-529-546.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-529-546.md). 커밋 16개(결과 문서 표), 문서 이 커밋.
+  - 작은 배틀·필드·그림·도구 수정. 532는 HnS에 같은 가드가 있어 바뀐 것 없음, 546을 532 바로 뒤로 앞당겨 한 단위. 541은 N1대로 설명 위치만(ROM 같음). 534 출력 변화 1행.
+  - 533 테스트 include 누락으로 첫 전체 검증의 테스트 빌드 실패 → 1.17.1처럼 include 2줄 넣고 다시 검증.
+- **검증:** 전체 재빌드 새 경고 0. 전체 `make check` 기준(seq528) 대비 새 PASS 7·사라진 PASS 1(이름 변경) → 새 기준 `test-baseline-seq546.txt`. 세이브 정적 PASS(FAIL 0, WARN 0). 한글 회귀 `kor-s544b` 555/652, 상태 줄 차이 0.
+- **ROM(실기용):** 커밋 `fbd2b3a9`, SHA1 **`c5518288f8ada6c05e7ed9acdc9fbaac02a977c0`**, 사용 32,977,588 B(묶음 85 대비 +4,032), 파일 33,554,432 B, 클라우드 컨테이너 `make hns -j8`, arm-none-eabi-gcc 13.2.1. **실기: 하지 않음(친구) — 옆 계단, 2턴 기술 문장 대기, 8세대 13종 애니, 기술 떠올리기 팡파르(결과 문서).**
+
+## 2026-10-29 — full-sync 묶음 85(seq 524~528, 1.17.1-A 끝 — Champions M-C 포함) (클라우드 세션)
+
+- **요청:** 합본 방침(사용자 취침 중). 새 질문 없음 — 확장 계획 친구 결정 안.
+- **다음 할 일**
+  1. 친구 문자: 묶음 83부터 합본 대기(현재 절 참고).
+  2. full-sync 다음: seq 529~546 — 묶음 86에서 완료.
+  3. **전체 동기화 완료 때 사용자 확인:** `include/constants/expansion.h`를 upstream 1.17.1 값(`1.17.1`, `EXPANSION_TAGGED_RELEASE TRUE`)으로 맞출지(seq 514 보류분 — ROM 헤더 RHH 버전 필드·디버그 메뉴 표시만 바뀜). HnS `README.md` 크레딧 줄("… 1.15.1")도 같이 볼 후보.
+  4. 친구 답 대기: 89 (1) 메모, 82, 72, 70 (a)(b), 71, 69, 실기 결과(묶음 47~65 후보 + 묶음 70 도감 + 묶음 73 콘테스트 + 묶음 74·75 크래시 화면 나오면 사진 + 묶음 81 아르세우스 방 3항목), 묶음 66 친구 PC 빌드 확인.
 - **결과** [`full-sync-seq-524-528.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-524-528.md). 커밋 `e1589f09`(524)·`1a88578b`(525)·`f40be415`(526)·`daf33773`(527)·`e6097df6`(528), 문서 이 커밋.
   - 524 죽은 코드 삭제(소리 원래 꺼짐), 525 우격다짐 + 왕의징표석 풀죽음(출력 변화 1행), 526 멀티 배틀 끝 콜백(HnS `multi_do` 경로 — 승패 분기 그대로), 527 테스트 러너, 528 Champions M-C 기술 5개(친구 Q1).
 - **검증:** 전체 재빌드 새 경고 0. 전체 `make check` 기준(seq522) 대비 새 PASS 3·사라진 PASS 0 → 새 기준 `test-baseline-seq528.txt`. 세이브 정적 PASS(FAIL 0, WARN 3 = 함수 이름 변경·assert 줄 번호). 한글 회귀 `kor-s528` 555/652, 상태 줄 차이 0.

@@ -533,24 +533,24 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 526	10773	2000008	1.17.1	g7_1.17.1	U-multi-10773	10711,9440	S	fix	N	N	미측정	Fix custom multi-battle return and party detection	적용(BattleSetup_StartMultiBattle 끝 콜백; AreMultiPartiesFullTeams는 #10711 때 HnS가 같은 처리 — HnS 블록 유지) f40be415
 527	10776	2000009	1.17.1	g7_1.17.1	U-10776	-	S	test	N	N	~0(테스트만)	Fix heap corruption in shiny wild battle tests	적용(테스트 러너만; HnS 한 타입 챌린지 줄 + upstream 줄) daf33773
 528	10777	2000010	1.17.1	g7_1.17.1	U-10777	-	M	data	Y	N	미측정	Add Regulation M-C (v1.2.0) data changes from Pokémon Champions	적용(Q1 수용 — 기술 5개 GEN_CHAMPIONS 수치; 상수·메가·파동의방호 HnS 같음, 이름·설명 HnS 한글) e6097df6
-529	10772	2000011	1.17.1	g7_1.17.1	U-10772	8943,9211	M	fix	N	N	미측정	Prevent out-of-bounds battler accesses	
-530	10781	2000012	1.17.1	g7_1.17.1	U-10781	-	S	data	N	N	미측정	Adds HM users to cheat start	
-531	10782	2000013	1.17.1	g7_1.17.1	U-10782	-	S	fix	N	N	미측정	Update Terastallization boost check to consider negative priority moves with less than 60 BP	
-532	10627	2000014	1.17.1	g7_1.17.1	U-stairs-10627	-	S	fix	N	N	미측정	Add bounds check to IsMetatileDirectionallyImpassable	
-533	10779	2000015	1.17.1	g7_1.17.1	U-10779	9466,9710,9865,10300,10326	M	fix	N	N	미측정	Fixes terrain access during ai calcs and paradox ability modifier	
-534	10788	2000016	1.17.1	g7_1.17.1	U-10788	9657,9730,10640	M	fix	Y	N	미측정	Fix two turn attack message wait and remove visual config	
-535	10792	2000017	1.17.1	g7_1.17.1	U-10792	-	S	tool	N	N	~0(도구)	Fix some move tutor scripts not beign parsed	
-536	10812	2000018	1.17.1	g7_1.17.1	U-10812	9730	S	fix	N	N	미측정	Fix not all abilities/ hold effects being read for Gooey/Tangling Hair	
-537	10791	2000019	1.17.1	g7_1.17.1	U-10791	-	M	gfx	N	N	미측정	Small Batch of Gen VIII Animation Frames	
-538	10817	2000020	1.17.1	g7_1.17.1	U-10817	9211,9807	S	fix	N	N	미측정	String test fixes	
-539	10821	2000021	1.17.1	g7_1.17.1	U-10821	9440	M	refactor	N	N	미측정	ModifyPersonalityForNature cleanup duplicate	
-540	10819	2000022	1.17.1	g7_1.17.1	U-10819	-	S	fix	N	N	미측정	do not use gStraingVar in ScriptShowItemDescription	
-541	10822	2000023	1.17.1	g7_1.17.1	U-10822	8893	S	build	Y	N	미측정	Fix compilation with certain generational move data	
+529	10772	2000011	1.17.1	g7_1.17.1	U-10772	8943,9211	M	fix	N	N	미측정	Prevent out-of-bounds battler accesses	적용(배틀러 범위 assert·gBattlerFainted) 36358dd4
+530	10781	2000012	1.17.1	g7_1.17.1	U-10781	-	S	data	N	N	미측정	Adds HM users to cheat start	적용(디버그 치트 시작) 6fe906e4
+531	10782	2000013	1.17.1	g7_1.17.1	U-10782	-	S	fix	N	N	미측정	Update Terastallization boost check to consider negative priority moves with less than 60 BP	적용(테라 60 위력 우선도 음수) 675f5b54
+532	10627	2000014	1.17.1	g7_1.17.1	U-stairs-10627	-	S	fix	N	N	미측정	Add bounds check to IsMetatileDirectionallyImpassable	이미 같음(HnS 대각선 가드가 같은 자리 — assert 없이 TRUE; 546과 한 단위, 기록만)
+533	10779	2000015	1.17.1	g7_1.17.1	U-10779	9466,9710,9865,10300,10326	M	fix	N	N	미측정	Fixes terrain access during ai calcs and paradox ability modifier	적용(충돌 1 테스트 끝 둘 다; 테스트 include 2줄 fbd2b3a9) f7c3e543
+534	10788	2000016	1.17.1	g7_1.17.1	U-10788	9657,9730,10640	M	fix	Y	N	미측정	Fix two turn attack message wait and remove visual config	적용(2턴 기술 문장 대기 — 출력 변화 1행) c48f757f
+535	10792	2000017	1.17.1	g7_1.17.1	U-10792	-	S	tool	N	N	~0(도구)	Fix some move tutor scripts not beign parsed	적용(도구 — ROM 같음) 591fc5ad
+536	10812	2000018	1.17.1	g7_1.17.1	U-10812	9730	S	fix	N	N	미측정	Fix not all abilities/ hold effects being read for Gooey/Tangling Hair	적용(미끈미끈·컬리헤어 모든 배틀러) 9c0d12cd
+537	10791	2000019	1.17.1	g7_1.17.1	U-10791	-	M	gfx	N	N	미측정	Small Batch of Gen VIII Animation Frames	적용(13종 애니·4종 뒷모습/팔레트, HnS 미수정 그림, 팔레트 CRLF) 0605b392
+538	10817	2000020	1.17.1	g7_1.17.1	U-10817	9211,9807	S	fix	N	N	미측정	String test fixes	적용(충돌 1 — HnS DeactivateAllTextPrinters + upstream 파티 번호) aeede96e
+539	10821	2000021	1.17.1	g7_1.17.1	U-10821	9440	M	refactor	N	N	미측정	ModifyPersonalityForNature cleanup duplicate	적용(재확인 51과 무관, 시설 포켓몬 성별 보존) 5d496492
+540	10819	2000022	1.17.1	g7_1.17.1	U-10819	-	S	fix	N	N	미측정	do not use gStraingVar in ScriptShowItemDescription	적용(HnS 설정 꺼짐 — ROM 같음) 2f4161b5
+541	10822	2000023	1.17.1	g7_1.17.1	U-10822	8893	S	build	Y	N	미측정	Fix compilation with certain generational move data	적용(N1 — 설명 위치만, 9개 블록 1.17.1과 같음, ROM 같음) a9e46088
 542	10814	2000024	1.17.1	g7_1.17.1	U-multi-10773	-	S	fix	N	N	0(앞당김 적용 32a5fd5a, 2026-10-13)	Fix multi-battle outcome handling	앞당김 적용 32a5fd5a(풀 팀 멀티 결과 전달 — 아테나 반쪽 팀 회귀의 근거 아님, 재확인 64)
-543	10807	2000025	1.17.1	g7_1.17.1	U-10807	10374	S	fix	N	N	미측정	End instead of fallthrough for gBattleAnimMove_None and Mirror Move	
-544	10818	2000026	1.17.1	g7_1.17.1	U-10818	-	S	fix	N	N	미측정	Fix fanfare task interrupted in move relearner	
+543	10807	2000025	1.17.1	g7_1.17.1	U-10807	10374	S	fix	N	N	미측정	End instead of fallthrough for gBattleAnimMove_None and Mirror Move	적용 f8a18c01
+544	10818	2000026	1.17.1	g7_1.17.1	U-10818	-	S	fix	N	N	미측정	Fix fanfare task interrupted in move relearner	적용 a17d238c
 545	10816	2000027	1.17.1	g7_1.17.1	U-10816	-	S	fix	N	N	0(HnS 동등 65388d7a)	Fix multi level move learning	앞당김 적용 0bf43797(518 바로 뒤 — #10555가 만든 다단계 레벨업 기술 배우기 회귀 수정, 1.17.1과 같음)
-546	10830	2000028	1.17.1	g7_1.17.1	U-stairs-10627	10627	S	fix	N	N	미측정	Fix player facing direction on sideways stairs	
+546	10830	2000028	1.17.1	g7_1.17.1	U-stairs-10627	10627	S	fix	N	N	미측정	Fix player facing direction on sideways stairs	앞당김 적용 26ca30ae(532 바로 뒤 한 단위; #10627 assert 삭제분은 HnS 가드 유지) + f9fd1b19
 547	10660	2000029	1.17.1	g7_1.17.1	U-10660	9462,8647	S	fix	N	N	미측정	Fix recorded battle RNG desyncs	
 548	10837	2000030	1.17.1	g7_1.17.1	U-10837	-	S	fix	N	N	0(이미 적용 e804379040)	Fix ITEM_NONE assertion when canceling mail	앞당김 적용 e8043790
 549	10828	2000031	1.17.1	g7_1.17.1	U-10828	-	S	test	N	N	~0(테스트만)	Fix negative berry animation assertions	
