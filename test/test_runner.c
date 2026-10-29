@@ -204,6 +204,8 @@ static void ClearSaveBlocks(void)
     // Caught mons would then go to the uninitialized PC boxes, whose names
     // have no EOS, and the box-name StringCopy overruns EWRAM.
     gSaveBlock3Ptr->challengeSettings.tx_Challenges_OneTypeChallenge = TEST_ONE_TYPE_OFF;
+    // Game strings use EOS, so a zeroed player name is not terminated.
+    gSaveBlock2Ptr->playerName[0] = EOS;
 }
 
 void CB2_TestRunner(void)
