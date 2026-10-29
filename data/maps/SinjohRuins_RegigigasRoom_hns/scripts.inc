@@ -8,7 +8,6 @@ SinjohRuins_RegigigasRoom_EventScript_Regigigas::
 	waitmoncry
 	seteventmon SPECIES_REGIGIGAS, 80
 	special BattleSetup_StartLegendaryBattle
-	waitstate
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, SinjohRuins_RegigigasRoom_EventScript_RegigigasRan
 	fadescreenswapbuffers FADE_TO_BLACK

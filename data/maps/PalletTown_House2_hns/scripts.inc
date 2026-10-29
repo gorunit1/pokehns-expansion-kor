@@ -33,7 +33,6 @@ PalletTown_House2_EventScript_DaisyGrooming::
 	goto_if_eq VAR_RESULT, FALSE, PalletTown_House2_EventScript_DaisyDeclineGrooming
 	msgbox PalletTown_House2_Text_WhichMon, MSGBOX_DEFAULT
 	special ChoosePartyMon
-	waitstate
 	lock
 	faceplayer
 	bufferpartymonnick STR_VAR_1, VAR_0x8004

@@ -59,7 +59,6 @@ GoldenrodCity_RadioTower_2F_EventScript_Buena::
 	goto_if_unset FLAG_DAILY_BUENAS_PASSWORD, GoldenrodCity_RadioTower_2F_EventScript_BuenaNoShow
 	msgbox GoldenrodCity_RadioTower_2F_Text_BuenaAskPassword, MSGBOX_DEFAULT
 	special Special_BuenaPasswordShowMultichoice
-	waitstate
 	compare VAR_RESULT, 127
 	goto_if_eq GoldenrodCity_RadioTower_2F_EventScript_BuenaCancelled
 	special Special_BuenaCheckAnswer

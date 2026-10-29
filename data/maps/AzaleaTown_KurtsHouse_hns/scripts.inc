@@ -111,7 +111,6 @@ AzaleaTown_KurtsHouse_EventScript_Kurt::
 	call_if_unset FLAG_CAUGHT_CELEBI, AzaleaTown_KurtsHouse_EventScript_KurtCheckGSBall
 AzaleaTown_KurtsHouse_EventScript_Kurt2::
 	special CreateKurtBallShop
-	waitstate
 	goto_if_eq VAR_RESULT, FALSE, AzaleaTown_KurtsHouse_EventScript_KurtCancel
 	playse SE_BANG
 	applymovement LOCALID_AZALEA_TOWN_KURT, AzaleaTownKurt_Movement_Making_Ball

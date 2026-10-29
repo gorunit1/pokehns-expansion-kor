@@ -54,7 +54,6 @@ GoldenrodCity_PokemonCenter_EventScript_ChooseTrade::
 	message gText_PleaseWaitForLink
 	waitmessage
 	special TryTradeLinkup
-	waitstate
 	goto_if_eq VAR_RESULT, LINKUP_SUCCESS, GoldenrodCity_PokemonCenter_EventScript_EnterTradeRoom
 	goto_if_eq VAR_RESULT, LINKUP_SOMEONE_NOT_READY, CableClub_EventScript_AbortLinkSomeoneNotReady
 	goto_if_eq VAR_RESULT, LINKUP_DIFF_SELECTIONS, CableClub_EventScript_AbortLinkDifferentSelections
@@ -72,7 +71,6 @@ GoldenrodCity_PokemonCenter_EventScript_EnterTradeRoom::
 	setdynamicwarp MAP_GOLDENROD_CITY_POKEMON_CENTER_HNS, 255, 14, 6
 	setwarp MAP_TRADE_CENTER_HNS, 5, 8
 	special DoCableClubWarp
-	waitstate
 	end
 
 GoldenrodCity_PokemonCenter_EventScript_ChooseBattle::
@@ -109,7 +107,6 @@ GoldenrodCity_PokemonCenter_EventScript_TryEnterColosseum::
 	message gText_PleaseWaitForLink
 	waitmessage
 	special TryBattleLinkup
-	waitstate
 	goto_if_eq VAR_RESULT, LINKUP_SUCCESS, GoldenrodCity_PokemonCenter_EventScript_EnterColosseum
 	goto_if_eq VAR_RESULT, LINKUP_SOMEONE_NOT_READY, CableClub_EventScript_AbortLinkSomeoneNotReady
 	goto_if_eq VAR_RESULT, LINKUP_DIFF_SELECTIONS, CableClub_EventScript_AbortLinkDifferentSelections
@@ -128,7 +125,6 @@ GoldenrodCity_PokemonCenter_EventScript_EnterColosseum::
 	setdynamicwarp MAP_GOLDENROD_CITY_POKEMON_CENTER_HNS, 255, 14, 6
 	setwarp MAP_BATTLE_COLOSSEUM_2P_HNS, 6, 8
 	special DoCableClubWarp
-	waitstate
 	end
 
 GoldenrodCity_PokemonCenter_EventScript_LinkNpc_Decline::

@@ -352,7 +352,6 @@ OlivineCity_Gym_EventScript_Jasmine_Trade::
 	goto_if_eq VAR_0x8004, PARTY_NOTHING_CHOSEN, OlivineCity_Gym_EventScript_JasmineDeclineTrade
 	special CreateInGameTradePokemon
 	special DoInGameTradeScene
-	waitstate
 	msgbox OlivineCity_Gym_Text_JasmineTakeCare, MSGBOX_DEFAULT
 	setflag FLAG_OLIVINE_GYM_NPC_TRADE_COMPLETED
 	release

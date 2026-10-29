@@ -124,7 +124,6 @@ MtMoon_Outside_EventScript_Jirachi::
 	waitmoncry
 	seteventmon SPECIES_JIRACHI, 50
 	special BattleSetup_StartLegendaryBattle
-	waitstate
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, MtMoon_Outside_EventScript_JirachiRan
 	fadescreenswapbuffers FADE_TO_BLACK

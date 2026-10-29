@@ -1407,7 +1407,6 @@ Common_EventScript_NameReceivedPartyMonFull::
 Common_EventScript_NameReceivedPartyMon_2::
 	fadescreen FADE_TO_BLACK
 	special ChangePokemonNickname
-	waitstate
 	return
 
 Common_EventScript_GiftMonNamed::

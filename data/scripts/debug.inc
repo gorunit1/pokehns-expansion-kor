@@ -256,7 +256,6 @@ Debug_EventScript_Lance_Multi::
 	special SavePlayerParty
 	fadescreen FADE_TO_BLACK
 	special ChooseHalfPartyForBattle
-	waitstate
 	goto_if_ne VAR_RESULT, 0, Debug_EventScript_DoLanceMultiBattle
 	special LoadPlayerParty
 	release
@@ -268,7 +267,6 @@ Debug_EventScript_DoLanceMultiBattle::
 	case 1, Debug_EventScript_LanceMultiWin
 	fadescreen FADE_TO_BLACK
 	special SetCB2WhiteOut
-	waitstate
 
 Debug_EventScript_LanceMultiWin::
 	msgbox Debug_Text_LanceMultiVictory, MSGBOX_DEFAULT
@@ -288,7 +286,6 @@ Debug_EventScript_Silver_Multi::
 	special SavePlayerParty
 	fadescreen FADE_TO_BLACK
 	special ChooseHalfPartyForBattle
-	waitstate
 	goto_if_ne VAR_RESULT, 0, Debug_EventScript_PickSilverPartner
 	special LoadPlayerParty
 	release
@@ -318,7 +315,6 @@ Debug_EventScript_SilverMultiResult::
 	case 1, Debug_EventScript_SilverMultiWin
 	fadescreen FADE_TO_BLACK
 	special SetCB2WhiteOut
-	waitstate
 
 Debug_EventScript_SilverMultiWin::
 	msgbox Debug_Text_SilverMultiVictory, MSGBOX_DEFAULT

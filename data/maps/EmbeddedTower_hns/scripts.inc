@@ -10,7 +10,6 @@ EmbeddedTower_EventScript_Rayquaza::
 	waitmoncry
 	seteventmon SPECIES_RAYQUAZA, 70
 	special BattleSetup_StartLegendaryBattle
-waitstate
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, EmbeddedTower_EventScript_RayquazaRan
 	fadescreenswapbuffers FADE_TO_BLACK

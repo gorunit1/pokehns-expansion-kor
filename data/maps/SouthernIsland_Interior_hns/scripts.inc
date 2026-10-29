@@ -19,7 +19,6 @@ SouthernIsland_Interior_hns_EventScript_Latios::
 	waitmoncry
 	seteventmon SPECIES_LATIOS, 50
 	special BattleSetup_StartLegendaryBattle
-	waitstate
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, SouthernIsland_Interior_hns_EventScript_LatiosRan
 	fadescreenswapbuffers FADE_TO_BLACK
@@ -41,7 +40,6 @@ SouthernIsland_Interior_hns_EventScript_Latias::
 	waitmoncry
 	seteventmon SPECIES_LATIAS, 50
 	special BattleSetup_StartLegendaryBattle
-	waitstate
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, SouthernIsland_Interior_hns_EventScript_LatiasRan
 	fadescreenswapbuffers FADE_TO_BLACK

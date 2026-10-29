@@ -10,7 +10,6 @@ SeafoamIslands_B1F_EventScript_Articuno::
 	waitmoncry
 	seteventmon SPECIES_ARTICUNO, 50
 	special BattleSetup_StartLegendaryBattle
-waitstate
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, SeafoamIslands_B1F_EventScript_ArticunoRan
 	fadescreenswapbuffers FADE_TO_BLACK

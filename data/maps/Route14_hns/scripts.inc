@@ -319,7 +319,6 @@ Route14_EventScript_Pidgeotto::
 	goto_if_eq VAR_RESULT, FALSE, Route14_EventScript_PidgeottoBlowPlayer
 	fadescreen FADE_TO_BLACK
 	special Bag_ChooseBerry
-	waitstate
 	goto_if_eq VAR_ITEM_ID, ITEM_NONE, Route14_EventScript_PidgeottoDislikedBerry
 	removeitem VAR_ITEM_ID, 1
 	goto_if_ne VAR_ITEM_ID, ITEM_QUALOT_BERRY, Route14_EventScript_PidgeottoDislikedBerry

@@ -104,7 +104,6 @@ Alola_Melemele_Pokecenter_Jessica_TradeWater::
 	goto_if_eq VAR_0x8004, PARTY_NOTHING_CHOSEN, Alola_Melemele_Pokecenter_Jessica_DeclineTrade
 	special CreateInGameTradePokemon
 	special DoInGameTradeScene
-	waitstate
 	msgbox Alola_Melemele_Pokecenter_Jessica_Text_TakeCare, MSGBOX_DEFAULT
 	setflag FLAG_COMPLETED_TAUROS_TRADE
 	release
@@ -120,7 +119,6 @@ Alola_Melemele_Pokecenter_Jessica_TradeFight::
 	goto_if_eq VAR_0x8004, PARTY_NOTHING_CHOSEN, Alola_Melemele_Pokecenter_Jessica_DeclineTrade
 	special CreateInGameTradePokemon
 	special DoInGameTradeScene
-	waitstate
 	msgbox Alola_Melemele_Pokecenter_Jessica_Text_TakeCare, MSGBOX_DEFAULT
 	setflag FLAG_COMPLETED_TAUROS_TRADE
 	release
@@ -136,7 +134,6 @@ Alola_Melemele_Pokecenter_Jessica_TradeFire::
 	goto_if_eq VAR_0x8004, PARTY_NOTHING_CHOSEN, Alola_Melemele_Pokecenter_Jessica_DeclineTrade
 	special CreateInGameTradePokemon
 	special DoInGameTradeScene
-	waitstate
 	msgbox Alola_Melemele_Pokecenter_Jessica_Text_TakeCare, MSGBOX_DEFAULT
 	setflag FLAG_COMPLETED_TAUROS_TRADE
 	release

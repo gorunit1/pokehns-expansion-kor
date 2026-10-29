@@ -293,7 +293,6 @@ RocketHideout_B2F_EventScript_ChoosePartyForMultiBattle::
 	special SavePlayerParty
 	fadescreen FADE_TO_BLACK
 	special ChooseHalfPartyForBattle
-	waitstate
 	goto_if_ne VAR_RESULT, 0, RocketHideout_B2F_EventScript_DoLanceMultiBattle
 	special LoadPlayerParty
 	goto RocketHideout_B2F_EventScript_ReadyForBattlePrompt
@@ -318,7 +317,6 @@ RocketHideout_B2F_EventScript_DoLanceMultiBattle::
 	setflag FLAG_HIDE_ROCKETHIDEOUT2_LANCE_DRAGONITE
 	setflag FLAG_HIDE_ROCKETHIDEOUT2_ARIANA_AND_GRUNT
 	special SetCB2WhiteOut
-	waitstate
 
 RocketHideout_B2F_EventScript_DefeatedAriana::
 	clearflag FLAG_ROCKETHIDEOUT2_BATTLE

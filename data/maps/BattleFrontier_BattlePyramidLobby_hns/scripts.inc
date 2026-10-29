@@ -136,7 +136,6 @@ BattleFrontier_BattlePyramidLobby_EventScript_TryEnterChallenge_hns::
 	copyvar VAR_0x8004, VAR_RESULT
 	setvar VAR_0x8005, FRONTIER_PARTY_SIZE
 	special ChoosePartyForBattleFrontier
-	waitstate
 	goto_if_eq VAR_RESULT, 0, BattleFrontier_BattlePyramidLobby_EventScript_LoadPartyAndCancelChallenge_hns
 	msgbox BattleFrontier_BattlePyramidLobby_Text_OkayToSaveBeforeChallenge_hns, MSGBOX_YESNO
 	switch VAR_RESULT
@@ -452,7 +451,6 @@ BattleFrontier_BattlePyramidLobby_EventScript_PickItemsToKeep_hns::
 
 BattleFrontier_BattlePyramidLobby_EventScript_PickItemsFromBag_hns::
 	special ChooseItemsToTossFromPyramidBag
-	waitstate
 	message BattleFrontier_BattlePyramidLobby_Text_PickItemsToKeep_hns
 	waitmessage
 	goto BattleFrontier_BattlePyramidLobby_EventScript_PickItemsToKeep_hns
@@ -460,7 +458,6 @@ BattleFrontier_BattlePyramidLobby_EventScript_PickItemsFromBag_hns::
 
 BattleFrontier_BattlePyramidLobby_EventScript_PickItemsFromParty_hns::
 	special BattlePyramidChooseMonHeldItems
-	waitstate
 	message BattleFrontier_BattlePyramidLobby_Text_PickItemsToKeep_hns
 	waitmessage
 	goto BattleFrontier_BattlePyramidLobby_EventScript_PickItemsToKeep_hns

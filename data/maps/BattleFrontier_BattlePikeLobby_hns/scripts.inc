@@ -124,7 +124,6 @@ BattleFrontier_BattlePikeLobby_EventScript_TryEnterChallenge_hns::
 	copyvar VAR_0x8004, VAR_RESULT
 	setvar VAR_0x8005, FRONTIER_PARTY_SIZE
 	special ChoosePartyForBattleFrontier
-	waitstate
 	goto_if_eq VAR_RESULT, 0, BattleFrontier_BattlePikeLobby_EventScript_LoadPartyAndCancelChallenge_hns
 	msgbox BattleFrontier_BattlePikeLobby_Text_SaveBeforeChallenge_hns, MSGBOX_YESNO
 	switch VAR_RESULT
@@ -269,7 +268,6 @@ BattleFrontier_BattlePikeLobby_EventScript_ExitRules_hns::
 BattleFrontier_BattlePike_EventScript_CloseCurtain_hns::
 	playse SE_PIKE_CURTAIN_CLOSE
 	special CloseBattlePikeCurtain
-	waitstate
 	waitse
 	return
 

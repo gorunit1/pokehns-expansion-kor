@@ -216,7 +216,6 @@ TrainerHill_Entrance_hns_EventScript_Records::
 	fadescreen FADE_TO_BLACK
 	setvar VAR_0x8004, 0
 	special ShowTrainerHillRecords
-	waitstate
 	releaseall
 	end
 

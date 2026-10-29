@@ -122,7 +122,6 @@ TrainerHill_Courtyard_ExchangeServiceCorner_EventScript_DecorClerk1::
 	faceplayer
 	msgbox TrainerHill_Courtyard_ExchangeServiceCorner_Text_WelcomePleaseChoosePrize, MSGBOX_DEFAULT
 	special CreateBPDecorShop1
-	waitstate
 	release
 	end
 
@@ -131,7 +130,6 @@ TrainerHill_Courtyard_ExchangeServiceCorner_EventScript_DecorClerk2::
 	faceplayer
 	msgbox TrainerHill_Courtyard_ExchangeServiceCorner_Text_WelcomePleaseChoosePrize, MSGBOX_DEFAULT
 	special CreateBPDecorShop2
-	waitstate
 	release
 	end
 
@@ -140,7 +138,6 @@ TrainerHill_Courtyard_ExchangeServiceCorner_EventScript_VitaminClerk::
 	faceplayer
 	msgbox TrainerHill_Courtyard_ExchangeServiceCorner_Text_WelcomePleaseChoosePrize, MSGBOX_DEFAULT
 	special CreateBPVitaminShop
-	waitstate
 	release
 	end
 
@@ -149,7 +146,6 @@ TrainerHill_Courtyard_ExchangeServiceCorner_EventScript_HoldItemClerk::
 	faceplayer
 	msgbox TrainerHill_Courtyard_ExchangeServiceCorner_Text_WelcomePleaseChoosePrize, MSGBOX_DEFAULT
 	special CreateBPHoldItemShop
-	waitstate
 	release
 	end
 
@@ -158,7 +154,6 @@ TrainerHill_Courtyard_ExchangeServiceCorner_EventScript_HoldItemClerk2::
 	faceplayer
 	msgbox TrainerHill_Courtyard_ExchangeServiceCorner_Text_WelcomePleaseChoosePrize, MSGBOX_DEFAULT
 	special CreateBPHoldItemShop2
-	waitstate
 	release
 	end
 
@@ -167,7 +162,6 @@ TrainerHill_Courtyard_ExchangeServiceCorner_EventScript_PowerClerk::
 	faceplayer
 	msgbox TrainerHill_Courtyard_ExchangeServiceCorner_Text_WelcomePleaseChoosePrize, MSGBOX_DEFAULT
 	special CreateBPPowerShop
-	waitstate
 	release
 	end
 

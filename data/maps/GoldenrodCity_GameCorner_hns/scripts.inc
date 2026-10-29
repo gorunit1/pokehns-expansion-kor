@@ -725,7 +725,6 @@ GoldenrodCity_GameCorner_EventScript_VF_Play::
 	setvar VAR_TEMP_5, 0
 	hidecoinsbox
 	special Special_ViewVoltorbFlip
-	waitstate
 	goto_if_eq VAR_RESULT, 0, GoldenrodCity_GameCorner_EventScript_VF_HandleLoss
 	goto_if_eq VAR_RESULT, 1, GoldenrodCity_GameCorner_EventScript_VF_HandleWin
 	goto GoldenrodCity_GameCorner_EventScript_VF_HandleQuit

@@ -27,7 +27,6 @@ EventScript_PCMainMenu::
 	message gText_WhichPCShouldBeAccessed
 	waitmessage
 	special ScriptMenu_CreatePCMultichoice
-	waitstate
 	goto_if_unset FLAG_SYS_GAME_CLEAR, EventScript_AccessPC_BeforeLeague
 	goto EventScript_AccessPC_AfterLeague
 	end
@@ -37,7 +36,6 @@ EventScript_FakePCMainMenu::
 	message gText_WhichPCShouldBeAccessed
 	waitmessage
 	special ScriptMenu_CreatePCMultichoice
-	waitstate
 	goto_if_unset FLAG_SYS_GAME_CLEAR, EventScript_AccessFakePC_BeforeLeague
 	goto EventScript_AccessFakePC_AfterLeague
 	end
@@ -105,7 +103,6 @@ EventScript_AccessPlayersFakePC::
 	playse SE_PC_LOGIN
 	msgbox gText_AccessedPlayersPC, MSGBOX_DEFAULT
 	special PlayerPC
-	waitstate
 	goto EventScript_FakePCMainMenu
 	end
 
@@ -124,7 +121,6 @@ EventScript_AccessFakePokemonStorage::
 	call_if_set FLAG_SYS_PC_LANETTE, EventScript_AccessLanettesPC
 	msgbox gText_StorageSystemOpened, MSGBOX_DEFAULT
 	special ShowPokemonStorageSystemPC
-	waitstate
 	goto EventScript_FakePCMainMenu
 	end
 
@@ -160,14 +156,12 @@ EventScript_AccessHallOfFame::
 	goto_if_unset FLAG_SYS_GAME_CLEAR, EventScript_TurnOffPC
 	playse SE_PC_LOGIN
 	special AccessHallOfFamePC
-	waitstate
 	goto EventScript_AccessPC_AfterLeague
 	end
 
 EventScript_AccessFakeHallOfFame::
 	playse SE_PC_LOGIN
 	special AccessHallOfFamePC
-	waitstate
 	goto EventScript_AccessFakePC_AfterLeague
 	end
 

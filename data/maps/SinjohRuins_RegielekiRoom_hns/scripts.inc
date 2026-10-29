@@ -8,7 +8,6 @@ SinjohRuins_RegielekiRoom_EventScript_Regieleki::
 	waitmoncry
 	seteventmon SPECIES_REGIELEKI, 80
 	special BattleSetup_StartLegendaryBattle
-	waitstate
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, SinjohRuins_RegielekiRoom_EventScript_RegielekiRan
 	fadescreenswapbuffers FADE_TO_BLACK

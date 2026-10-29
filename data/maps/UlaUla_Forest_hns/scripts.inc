@@ -303,7 +303,6 @@ Alola_Ulaula_BattleVsTapuBulu::
 	waitmoncry
 	seteventmon SPECIES_TAPU_BULU, 60
 	special BattleSetup_StartLegendaryBattle
-	waitstate
 	specialvar VAR_RESULT, GetBattleOutcome
 	compare VAR_RESULT, B_OUTCOME_CAUGHT
 	goto_if_eq Alola_Ulaula_BattleVsTapuBulu_2

@@ -93,7 +93,6 @@ NewBarkTown_PlayersHouse_1F_EventScript_Deposit::
 	goto_if_eq NewBarkTown_PlayersHouse_1F_EventScript_DepositFailed
 	closemessage
 	special Special_MomOpenDepositInput
-	waitstate
 	compare VAR_0x8000, 0
 	goto_if_eq NewBarkTown_PlayersHouse_1F_EventScript_MomSavingsMenu
 	msgbox NewBarkTown_PlayersHouse_1F_Text_DepositSuccess, MSGBOX_DEFAULT
@@ -111,7 +110,6 @@ NewBarkTown_PlayersHouse_1F_EventScript_Withdraw::
 	goto_if_eq NewBarkTown_PlayersHouse_1F_EventScript_WithdrawFailed
 	closemessage
 	special Special_MomOpenWithdrawInput
-	waitstate
 	compare VAR_0x8000, 0
 	goto_if_eq NewBarkTown_PlayersHouse_1F_EventScript_MomSavingsMenu
 	msgbox NewBarkTown_PlayersHouse_1F_Text_WithdrawSuccess, MSGBOX_DEFAULT

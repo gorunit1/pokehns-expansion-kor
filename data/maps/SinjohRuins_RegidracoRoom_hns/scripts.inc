@@ -8,7 +8,6 @@ SinjohRuins_RegidragoRoom_EventScript_Regidrago::
 	waitmoncry
 	seteventmon SPECIES_REGIDRAGO, 80
 	special BattleSetup_StartLegendaryBattle
-	waitstate
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, SinjohRuins_RegidragoRoom_EventScript_RegidragoRan
 	fadescreenswapbuffers FADE_TO_BLACK

@@ -265,7 +265,6 @@ BattleFrontier_ExchangeServiceCorner_EventScript_PokeBallClerk::
 	faceplayer
 	msgbox BattleFrontier_ExchangeServiceCorner_Text_WelcomePleaseChoosePrize, MSGBOX_DEFAULT
 	special CreateBPPokeBallShop
-	waitstate
 	release
 	end
 

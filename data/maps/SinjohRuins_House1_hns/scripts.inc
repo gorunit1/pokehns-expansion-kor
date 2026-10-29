@@ -247,7 +247,6 @@ SinjohRuins_Lab_FinalPlateScene::
 	special DoOrbEffect
 	delay 200
 	special FadeOutOrbEffect
-	waitstate
 	setvar VAR_0x8004, 2  @ vertical pan
 	setvar VAR_0x8005, 2  @ horizontal pan
 	setvar VAR_0x8006, 40  @ num shakes

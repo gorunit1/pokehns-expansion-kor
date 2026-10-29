@@ -1,12 +1,12 @@
-.macro def_special, ptr:req, waitstate=0, requests_effects=0
+.macro def_special, ptr:req, requests_effects=0, waitstate=0
 .if ALLOCATE_SPECIAL_TABLE
-  .global SPECIAL_\ptr
-  .set SPECIAL_\ptr, __special__
-  .if \requests_effects == 0
-    .4byte \ptr
-  .else
-    .4byte \ptr + ROM_SIZE
-  .endif
+	.global SPECIAL_\ptr
+	.set SPECIAL_\ptr, __special__
+	.if \requests_effects == 0
+		.4byte \ptr
+	.else
+		.4byte \ptr + ROM_SIZE
+	.endif
 .endif
 .set SPECIAL_WAITSTATE_\ptr, \waitstate
 .set __special__, __special__ + 1
@@ -480,14 +480,14 @@ gSpecials::
 	def_special GetFrontierBattlePoints
 	def_special ShowFrontierExchangeCornerItemIconWindow
 	def_special CloseFrontierExchangeCornerItemIconWindow
-	def_special CreateBPVitaminShop
-	def_special CreateBPHoldItemShop
-	def_special CreateBPDecorShop1
-	def_special CreateBPDecorShop2
-	def_special CreateBPPokeBallShop
-	def_special CreateBPHoldItemShop2
-	def_special CreateBPPowerShop
-	def_special CreateKurtBallShop
+	def_special CreateBPVitaminShop, waitstate=1
+	def_special CreateBPHoldItemShop, waitstate=1
+	def_special CreateBPDecorShop1, waitstate=1
+	def_special CreateBPDecorShop2, waitstate=1
+	def_special CreateBPPokeBallShop, waitstate=1
+	def_special CreateBPHoldItemShop2, waitstate=1
+	def_special CreateBPPowerShop, waitstate=1
+	def_special CreateKurtBallShop, waitstate=1
 	def_special DisplayBerryPowderVendorMenu
 	def_special RemoveBerryPowderVendorMenu
 	def_special HasEnoughBerryPowder
@@ -647,7 +647,7 @@ gSpecials::
 	def_special UpdateTrainerCardPhotoIcons
 	def_special StickerManGetBragFlags
 	def_special CheckAddCoins
-	def_special DoSlidingPuzzle
+	def_special DoSlidingPuzzle, waitstate=1
 	def_special CheckHooh
 	def_special CheckAerodactyl
 	def_special CheckKabuto
@@ -663,13 +663,13 @@ gSpecials::
 	def_special RemoveSportBalls
 	def_special ShowBugContestChosenMon
 	def_special SwitchMonAbility
-	def_special NameRival
+	def_special NameRival, waitstate=1
 	def_special IsNuzlockeNicknamingActive
 	def_special IsRandomMovesActivated
 	def_special IsPokecenterChallengeActivated
 	def_special IsOneTypeChallengeActive
 	def_special CheckRadioStation
-	def_special Special_BuenaPasswordShowMultichoice
+	def_special Special_BuenaPasswordShowMultichoice, waitstate=1
 	def_special Special_BuenaCheckAnswer
 	def_special Special_BuenaRollReward
 	def_special GetAlolaCatchProgress
@@ -681,7 +681,7 @@ gSpecials::
 	def_special CheckPartyForSpecies
 	def_special GetRegionalFormSpecies
 	def_special ConvertToRegionalForm
-	def_special Special_ViewVoltorbFlip
+	def_special Special_ViewVoltorbFlip, waitstate=1
 	def_special Special_MomEnableSaving
 	def_special Special_MomDisableSaving
 	def_special Special_MomGetBalance
@@ -689,8 +689,8 @@ gSpecials::
 	def_special Special_MomWithdraw
 	def_special Special_MomIsSavingEnabled
 	def_special Special_MomEnsureInitialized
-	def_special Special_MomOpenDepositInput
-	def_special Special_MomOpenWithdrawInput
+	def_special Special_MomOpenDepositInput, waitstate=1
+	def_special Special_MomOpenWithdrawInput, waitstate=1
     def_special PartyMonHasSkyRibbon
 	def_special GivePartyMonSkyRibbon
     def_special PartyMonHasLandRibbon

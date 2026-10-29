@@ -132,7 +132,6 @@ FarawayIsland_Interior_hns_EventScript_Mew::
 	seteventmon SPECIES_MEW, 50
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	special BattleSetup_StartLegendaryBattle
-	waitstate
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, FarawayIsland_Interior_hns_EventScript_MewDefeated

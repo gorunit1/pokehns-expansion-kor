@@ -103,13 +103,11 @@ RuinsOfAlph_PuzzleAndRewardChambers_EventScript_KabutoPuzzle::
 	goto_if_set FLAG_COMPLETED_KABUTO_PUZZLE, RuinsOfAlph_PuzzleAndRewardChambers_EventScript_KabutoPuzzleCompleted
 	setvar VAR_0x8005, FALSE // or TRUE if you want to display the solved puzzle
 	special DoSlidingPuzzle
-	waitstate
 	goto_if_eq VAR_RESULT, TRUE, RuinsOfAlph_PuzzleAndRewardChambers_MapScript_KabutoSuccess
 	end
 RuinsOfAlph_PuzzleAndRewardChambers_EventScript_KabutoPuzzleCompleted::
 	setvar VAR_0x8005, TRUE // or TRUE if you want to display the solved puzzle
 	special DoSlidingPuzzle
-	waitstate
 	end
 RuinsOfAlph_PuzzleAndRewardChambers_MapScript_KabutoSuccess::
 	setflag FLAG_COMPLETED_KABUTO_PUZZLE
@@ -150,13 +148,11 @@ RuinsOfAlph_PuzzleAndRewardChambers_EventScript_OmanytePuzzle::
 	goto_if_set FLAG_COMPLETED_OMANYTE_PUZZLE, RuinsOfAlph_PuzzleAndRewardChambers_EventScript_OmanytePuzzleCompleted
 	setvar VAR_0x8005, FALSE // or TRUE if you want to display the solved puzzle
 	special DoSlidingPuzzle
-	waitstate
 	goto_if_eq VAR_RESULT, TRUE, RuinsOfAlph_PuzzleAndRewardChambers_MapScript_OmanyteSuccess
 	end
 RuinsOfAlph_PuzzleAndRewardChambers_EventScript_OmanytePuzzleCompleted::
 	setvar VAR_0x8005, TRUE // or TRUE if you want to display the solved puzzle
 	special DoSlidingPuzzle
-	waitstate
 	end
 RuinsOfAlph_PuzzleAndRewardChambers_MapScript_OmanyteSuccess::
 	setflag FLAG_COMPLETED_OMANYTE_PUZZLE
@@ -190,13 +186,11 @@ RuinsOfAlph_PuzzleAndRewardChambers_EventScript_AerodactylPuzzle::
 	goto_if_set FLAG_COMPLETED_AERODACTYL_PUZZLE, RuinsOfAlph_PuzzleAndRewardChambers_EventScript_AerodactylPuzzleCompleted
 	setvar VAR_0x8005, FALSE // or TRUE if you want to display the solved puzzle
 	special DoSlidingPuzzle
-	waitstate
 	goto_if_eq VAR_RESULT, TRUE, RuinsOfAlph_PuzzleAndRewardChambers_MapScript_AerodactylSuccess
 	end
 RuinsOfAlph_PuzzleAndRewardChambers_EventScript_AerodactylPuzzleCompleted::
 	setvar VAR_0x8005, TRUE // or TRUE if you want to display the solved puzzle
 	special DoSlidingPuzzle
-	waitstate
 	end
 RuinsOfAlph_PuzzleAndRewardChambers_MapScript_AerodactylSuccess::
 	setflag FLAG_COMPLETED_AERODACTYL_PUZZLE
@@ -230,13 +224,11 @@ RuinsOfAlph_PuzzleAndRewardChambers_EventScript_HooHPuzzle::
 	goto_if_set FLAG_COMPLETED_HOOH_PUZZLE, RuinsOfAlph_PuzzleAndRewardChambers_EventScript_HoohPuzzleCompleted
 	setvar VAR_0x8005, FALSE // or TRUE if you want to display the solved puzzle
 	special DoSlidingPuzzle
-	waitstate
 	goto_if_eq VAR_RESULT, TRUE, RuinsOfAlph_PuzzleAndRewardChambers_MapScript_HoohSuccess
 	end
 RuinsOfAlph_PuzzleAndRewardChambers_EventScript_HoohPuzzleCompleted::
 	setvar VAR_0x8005, TRUE // or TRUE if you want to display the solved puzzle
 	special DoSlidingPuzzle
-	waitstate
 	end
 RuinsOfAlph_PuzzleAndRewardChambers_MapScript_HoohSuccess::
 	setflag FLAG_COMPLETED_HOOH_PUZZLE

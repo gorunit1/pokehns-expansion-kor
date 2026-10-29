@@ -43,7 +43,6 @@ TrainerHill_Elevator_hns_EventScript_EnterElevator::
 TrainerHill_Elevator_hns_EventScript_MoveElevator::
 	waitse
 	special MoveElevator
-	waitstate
 	return
 
 TrainerHill_Elevator_hns_Movement_PlayerMoveToCenterOfElevator:

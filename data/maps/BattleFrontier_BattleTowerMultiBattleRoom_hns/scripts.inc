@@ -331,7 +331,6 @@ BattleFrontier_BattleTowerMultiBattleRoom_EventScript_ContinueChallenge_hnsLink_
 	message gText_LinkStandby3_hns
 	waitmessage
 	special LinkRetireStatusWithBattleTowerPartner
-	waitstate
 	goto_if_ne VAR_RESULT, BATTLE_TOWER_LINKSTAT_CONTINUE, BattleFrontier_BattleTowerMultiBattleRoom_EventScript_WarpToLobbyLost_hns
 	goto BattleFrontier_BattleTowerMultiBattleRoom_EventScript_LinkDelayForMsg_hns
 	end
@@ -362,7 +361,6 @@ BattleFrontier_BattleTowerMultiBattleRoom_EventScript_RetireChallengeLink_hns::
 	message gText_LinkStandby3_hns
 	waitmessage
 	special LinkRetireStatusWithBattleTowerPartner
-	waitstate
 	goto BattleFrontier_BattleTowerMultiBattleRoom_EventScript_WarpToLobbyLost_hns
 	end
 

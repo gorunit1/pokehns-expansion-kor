@@ -27,7 +27,6 @@ PokemonLeague_HallOfFame_EventScript_Cutscene::
 	setrespawn HEAL_LOCATION_NEW_BARK_TOWN_HNS
 	fadescreenspeed FADE_TO_BLACK, 24
 	special GameClear
-	waitstate
 	releaseall
 	end
 
@@ -50,7 +49,6 @@ PokemonLeague_HallOfFame_EventScript_CutsceneKantoChamp::
 	setrespawn HEAL_LOCATION_NEW_BARK_TOWN_HNS
 	fadescreenspeed FADE_TO_BLACK, 24
 	special GameClear
-	waitstate
 	releaseall
 	end
 

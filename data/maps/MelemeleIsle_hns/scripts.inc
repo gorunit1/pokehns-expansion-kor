@@ -481,7 +481,6 @@ Alola_Melemele_BattleVsTapuKoko::
 	waitmoncry
 	seteventmon SPECIES_TAPU_KOKO, 60
 	special BattleSetup_StartLegendaryBattle
-	waitstate
 	specialvar VAR_RESULT, GetBattleOutcome
 	compare VAR_RESULT, B_OUTCOME_CAUGHT
 	goto_if_eq Alola_Melemele_BattleVsTapuKoko_2

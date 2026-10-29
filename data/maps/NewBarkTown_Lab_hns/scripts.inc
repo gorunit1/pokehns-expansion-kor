@@ -395,7 +395,6 @@ NewBarkTown_Lab_EventScript_PoliceNo::
 NewBarkTown_Lab_EventScript_PoliceYes::
 	closemessage
 	special NameRival
-	waitstate
 	msgbox NewBarkTown_Lab_Text_Officer2_1, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, FALSE, NewBarkTown_Lab_EventScript_PoliceYes
 	msgbox NewBarkTown_Lab_Text_Officer2, MSGBOX_DEFAULT

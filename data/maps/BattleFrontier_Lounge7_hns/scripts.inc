@@ -25,7 +25,6 @@ BattleFrontier_Lounge7_EventScript_ChooseLeftTutorMove_hns::
 	setvar VAR_0x8004, SCROLL_MULTI_BF_MOVE_TUTOR_1
 	setvar VAR_0x8006, 0
 	special ShowScrollableMultichoice
-	waitstate
 	copyvar VAR_TEMP_FRONTIER_TUTOR_SELECTION, VAR_RESULT
 	switch VAR_RESULT
 	case 0, BattleFrontier_Lounge7_EventScript_Softboiled_hns
@@ -49,7 +48,6 @@ BattleFrontier_Lounge7_EventScript_ChooseNewLeftTutorMove_hns::
 	setvar VAR_0x8004, SCROLL_MULTI_BF_MOVE_TUTOR_1
 	setvar VAR_0x8006, 1
 	special ShowScrollableMultichoice
-	waitstate
 	copyvar VAR_TEMP_FRONTIER_TUTOR_SELECTION, VAR_RESULT
 	switch VAR_RESULT
 	case 0, BattleFrontier_Lounge7_EventScript_Softboiled_hns
@@ -149,7 +147,6 @@ BattleFrontier_Lounge7_EventScript_ChooseRightTutorMove_hns::
 	setvar VAR_0x8004, SCROLL_MULTI_BF_MOVE_TUTOR_2
 	setvar VAR_0x8006, 0
 	special ShowScrollableMultichoice
-	waitstate
 	copyvar VAR_TEMP_FRONTIER_TUTOR_SELECTION, VAR_RESULT
 	switch VAR_RESULT
 	case 0, BattleFrontier_Lounge7_EventScript_DefenseCurl_hns
@@ -173,7 +170,6 @@ BattleFrontier_Lounge7_EventScript_ChooseNewRightTutorMove_hns::
 	setvar VAR_0x8004, SCROLL_MULTI_BF_MOVE_TUTOR_2
 	setvar VAR_0x8006, 1
 	special ShowScrollableMultichoice
-	waitstate
 	copyvar VAR_TEMP_FRONTIER_TUTOR_SELECTION, VAR_RESULT
 	switch VAR_RESULT
 	case 0, BattleFrontier_Lounge7_EventScript_DefenseCurl_hns
@@ -329,7 +325,6 @@ BattleFrontier_Lounge7_EventScript_ChooseElementalTutorMove::
 	setvar VAR_0x8004, SCROLL_MULTI_BF_MOVE_TUTOR_3
 	setvar VAR_0x8006, 0
 	special ShowScrollableMultichoice
-	waitstate
 	copyvar VAR_TEMP_FRONTIER_TUTOR_SELECTION, VAR_RESULT
 	switch VAR_RESULT
 	case 0, BattleFrontier_Lounge7_EventScript_FrenzyPlant
@@ -346,7 +341,6 @@ BattleFrontier_Lounge7_EventScript_ChooseNewElementalTutorMove::
 	setvar VAR_0x8004, SCROLL_MULTI_BF_MOVE_TUTOR_3
 	setvar VAR_0x8006, 1
 	special ShowScrollableMultichoice
-	waitstate
 	copyvar VAR_TEMP_FRONTIER_TUTOR_SELECTION, VAR_RESULT
 	switch VAR_RESULT
 	case 0, BattleFrontier_Lounge7_EventScript_FrenzyPlant

@@ -189,7 +189,6 @@ TinTower_RoofDay_EventScript_HoOh::
 	seteventmon SPECIES_HO_OH, 50
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	special BattleSetup_StartLegendaryBattle
-	waitstate
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
 	setvar VAR_TEMP_TINTOWER_RESUME_WIND_SE, 0
 	setvar VAR_LAST_TALKED, LOCALID_HO_OH
@@ -217,7 +216,6 @@ TinTower_RoofDay_EventScript_HoOhPostgame::
 	seteventmon SPECIES_HO_OH, 70
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	special BattleSetup_StartLegendaryBattle
-	waitstate
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
 	setvar VAR_TEMP_TINTOWER_RESUME_WIND_SE, 0
 	setvar VAR_LAST_TALKED, LOCALID_HO_OH

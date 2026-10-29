@@ -362,31 +362,26 @@ LilycoveCity_ContestLobby_EventScript_WarpToContestHall_hns::
 LilycoveCity_ContestLobby_EventScript_WarpToCoolContestHall_hns::
 	setwarp MAP_CONTEST_HALL_COOL_HNS, 7, 5
 	special DoContestHallWarp
-	waitstate
 	return
 
 LilycoveCity_ContestLobby_EventScript_WarpToBeautyContestHall_hns::
 	setwarp MAP_CONTEST_HALL_BEAUTY_HNS, 7, 5
 	special DoContestHallWarp
-	waitstate
 	return
 
 LilycoveCity_ContestLobby_EventScript_WarpToCuteContestHall_hns::
 	setwarp MAP_CONTEST_HALL_CUTE_HNS, 7, 5
 	special DoContestHallWarp
-	waitstate
 	return
 
 LilycoveCity_ContestLobby_EventScript_WarpToSmartContestHall_hns::
 	setwarp MAP_CONTEST_HALL_SMART_HNS, 7, 5
 	special DoContestHallWarp
-	waitstate
 	return
 
 LilycoveCity_ContestLobby_EventScript_WarpToToughContestHall_hns::
 	setwarp MAP_CONTEST_HALL_TOUGH_HNS, 7, 5
 	special DoContestHallWarp
-	waitstate
 	return
 
 LilycoveCity_ContestLobby_EventScript_LeadToContestHall_hns::
@@ -750,12 +745,10 @@ LilycoveCity_ContestLobby_EventScript_TrySetUpLinkContest_hns::
 
 LilycoveCity_ContestLobby_EventScript_TryLinkEMode_hns::
 	special TryContestEModeLinkup
-	waitstate
 	return
 
 LilycoveCity_ContestLobby_EventScript_TryLinkGMode_hns::
 	special TryContestGModeLinkup
-	waitstate
 	return
 
 LilycoveCity_ContestLobby_EventScript_CancelLinkDifferentContest_hns::
@@ -863,12 +856,10 @@ LilycoveCity_ContestLobby_EventScript_TryJoinGroup_hns::
 
 LilycoveCity_ContestLobby_EventScript_TryBecomeLinkLeader_hns::
 	special TryBecomeLinkLeader
-	waitstate
 	return
 
 LilycoveCity_ContestLobby_EventScript_TryJoinLinkGroup_hns::
 	special TryJoinLinkGroup
-	waitstate
 	return
 
 LilycoveCity_ContestLobby_EventScript_LinkLeaderDecided_hns::
