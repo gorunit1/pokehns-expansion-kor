@@ -1,5 +1,6 @@
-// HnS seq 485 #10488 회귀 테스트 — 승부굳히기 위력 2배 판정. 스스로 깎은 HP(배북·대타출동·아픔나누기·혼란 자해)는
-// 2배 조건이 아니고, 아이스페이스가 막아도 2배가 된다. 이름이 모두 "HnS 10488:"로 시작한다.
+// HnS seq 485 #10488 회귀 테스트 — 승부굳히기 위력 2배 판정. 스스로 깎은 HP(배북·대타출동·아픔나누기)는
+// 2배 조건이 아니고, 아이스페이스가 막아도 2배가 된다. 혼란 자해는 seq 522 #10698부터 2배(upstream이 KNOWN_FAILING을
+// 해소하며 바꿈 — 친구 1.17.1 계획 5절 "upstream 배틀 수정 수용"). 이름이 모두 "HnS 10488:"로 시작한다.
 #include "global.h"
 #include "test/battle.h"
 
@@ -68,7 +69,7 @@ SINGLE_BATTLE_TEST("HnS 10488: Assurance does not double after the target makes 
     }
 }
 
-SINGLE_BATTLE_TEST("HnS 10488: Assurance does not double after the target hurts itself in confusion")
+SINGLE_BATTLE_TEST("HnS 10488: Assurance doubles after the target hurts itself in confusion (since #10698)")
 {
     s16 hits[2];
     GIVEN {
@@ -87,7 +88,7 @@ SINGLE_BATTLE_TEST("HnS 10488: Assurance does not double after the target hurts 
         MESSAGE("상대 마자는 승부굳히기를 썼다!");
         HP_BAR(player, captureDamage: &hits[1]);
     } THEN {
-        EXPECT_EQ(hits[0], hits[1]);
+        EXPECT_MUL_EQ(hits[0], Q_4_12(2.0), hits[1]);
     }
 }
 
