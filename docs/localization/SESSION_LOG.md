@@ -10,7 +10,7 @@
 - 수정 파일: 커밋 `9bd02555`(`src/assertf.c`, `test/test_runner.c`, `test/test_runner_battle.c`, `tools/mgba-rom-test-hydra/main.c`). 문서 커밋 — `full-sync-seq-512.md`(새), `port_sequence.tsv` 512, `test/test_runner_battle.c` 주석 1줄, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. `verify_seq.sh 512 d4d845ef <scratchpad>/v`.
 - 게임 화면 확인: 새 후보 없음(assert 화면 코드만).
-- 친구 문자: 세션 답변 문안.
+- 친구 문자: 세션 답변 문안 — **보냄**(2026-10-29 사용자 확인).
 - 다음 시작점: seq 514 #9900.
 
 ### 2026-10-29 — full-sync 묶음 77(seq 511 #9807 + 513 #10537 앞당김, 재확인 113) (클라우드 세션)
