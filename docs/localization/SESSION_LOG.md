@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-29 — full-sync 묶음 71(seq 505 #10184) (클라우드 세션)
+
+- 요청: 묶음 68과 같은 요청(502부터 순서대로).
+- 판단: 지워지는 7개는 HnS 검색 0·이식 전 ELF에도 없음. 충돌 1곳은 전처리 구조(upstream `#else` 자리에 HnS Lab_Frlg + `#if IS_FRLG`) → `#endif // !IS_FRLG`로 닫고 HnS 조건 그대로. 판정 기준 = 심볼·크기 같고 차이가 배치뿐(충족).
+- 발견: SHA1이 달라 확인 → 비밀기지·컨테스트 등 타일셋 데이터 24개와 링커 중계 스텁 39개 위치만 바뀜. 처음 비교 스크립트가 4바이트 정렬만 봐서 BL 차이를 못 풀어 68개가 남아 보였고, 반 워드 단위로 고쳐 스텁·ARM 함수만 남음.
+- 수정 파일: 커밋 `1b640f80`(`src/data/tilesets/graphics.h`). 문서·도구 — `full-sync-seq-505.md`(새), `dev_scripts/hns_verify/port/relocmp.py`(새), `dev_scripts/hns_verify/README.md` 1행, `port_sequence.tsv` 505, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. 이식 전 ELF는 세션 임시 폴더 클론 `b504`(`dda68a3f`)와 `verify_seq.sh`의 `$S/v/w`(`faf5cf81`) 둘 다로 비교.
+- 게임 화면 확인: 하지 않았다(내용 같음).
+- 친구 문자: 세션 답변 문안(묶음 68~70과 함께).
+- 다음 시작점: seq 506 #10172(병합본 `<scratchpad>/s506/`에 있음 — 세션이 바뀌면 다시 만들 것: `pokedex.h` 충돌은 upstream 쪽, `pokedex_common.h`는 upstream 파일 + `OBTAINABLE_DEX_COUNT` 1줄).
+
 ### 2026-10-29 — full-sync 묶음 70(seq 504 #9518, 재확인 110) (클라우드 세션)
 
 - 요청: 묶음 68과 같은 요청(502부터 순서대로).
