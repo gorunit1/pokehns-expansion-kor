@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # usage: verify_seq.sh <seq> <pre-port commit> [work-dir]
 #   Full verification of one full-sync seq after its code commit (run from the HnS repo root):
-#   pre-port clone build (<work-dir>/w), full rebuild + warncheck, make check + testlist (baseline seq508),
+#   pre-port clone build (<work-dir>/w), full rebuild + warncheck, make check + testlist (baseline seq511),
 #   save static compare against the pre-port clone, Korean regression (kortests, expected 555/652).
 #   Prints the results; logs go to <work-dir>. Takes about 40 minutes on 4 cores.
 set -u
 seq="$1"; pre="$2"; W="${3:-${TMPDIR:-/tmp}/hns-verify}"
 R="$(pwd)"; V=dev_scripts/hns_verify
-BASE=docs/friend-handoff/results/1.17.0-port/test-baseline-seq508.txt
+BASE=docs/friend-handoff/results/1.17.0-port/test-baseline-seq511.txt
 export HNS_WORK="$W/hnswork"; mkdir -p "$W"
 [ -d "$W/w/.git" ] || git clone -q "$R" "$W/w"
 ( cd "$W/w" && git fetch -q "$R" pokehns-expansion-kor && git checkout -q --detach "$pre" && git log --oneline -1 \

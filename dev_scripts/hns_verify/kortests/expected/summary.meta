@@ -87,3 +87,8 @@ HNS9918 K07은 맹독엄니 추가 효과 판정을 실패로 고정한다(`WITH
 2026-10-29 seq 510 #10155(테스트 러너 `:L` 꼼수 대체): hydra 실패 목록 줄 형식이 "test/…:<실패 줄>: <메시지> - <테스트 이름>" →
   "test/…:<테스트 줄>: <테스트 이름>: <실패 줄>: <메시지>"로 바뀜. 클라우드 저장소 코드 139c9931에서 kortests/run.sh <저장소> kor-s510 8 →
   555/652, 상태 줄 차이 0, 실패 목록 50줄 밖의 줄은 바이트 같음. summary.txt는 이 실행 요약 그대로(실패 목록 형식만 새 것).
+2026-10-29 seq 511 #9807(배틀 테스트 실패 제안) + 앞당긴 seq 513 #10537: 실패한 배틀 테스트를 로그를 켜고 한 번 더 돌려, 두 번째
+  실패 지점이 다르면 FLAKY로 찍는다. HNS9918 K23은 테스트 본문의 SetStartingStatus(…SEA_OF_FIRE_OPPONENT_TEMPORARY)가 첫 실행에서
+  소모돼 재실행 첫 MESSAGE부터 어긋나 FAIL → FLAKY(여전히 PASS 아님, 555/652 그대로; 같은 이유로 upstream 테스트 "Teraform Zero fails
+  if overworld weather is present (Gen9)"도 FLAKY). 클라우드 저장소 코드 e4cd4538에서 kortests/run.sh <저장소> kor-s511b 8 → 555/652,
+  상태 줄 차이는 K23 하나, 실패 목록 줄은 기대 문장이 붙는 새 형식(Unmatched MESSAGE("…")). summary.txt는 이 실행 요약 그대로.

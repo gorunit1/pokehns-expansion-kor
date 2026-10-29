@@ -29,7 +29,7 @@ fi
 mkdir -p "$(dirname "$out")"
 
 LC_ALL=C sed 's/\x1b\[[0-9;]*m//g' "$log" \
-    | LC_ALL=C command grep -a -E '^\[[0-9]+\] .*: (PASS|FAIL|KNOWN_FAILING|TO_DO|EXPECTED_FAIL)$' \
+    | LC_ALL=C command grep -a -E '^\[[0-9]+\] .*: (PASS|FAIL|FLAKY|KNOWN_FAILING|TO_DO|EXPECTED_FAIL)$' \
     | LC_ALL=C sed -E 's/^\[[0-9]+\] //' | LC_ALL=C sort -u > "$out"
 echo "list: $out ($(wc -l < "$out") lines)"
 LC_ALL=C sed 's/\x1b\[[0-9;]*m//g' "$log" | LC_ALL=C command grep -a -E '^- Tests' || echo "(no '- Tests' totals in the log)"
