@@ -523,10 +523,10 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 516	9986	1000000	1.15.3	g5_general_cleanup_docs	U-waitstate-9986	9881	XL	build	N	N	~0	15th of May, 2026 in [#9986](https://github.com/rh-hideout/pokeemerald-expansion/pull/9986)	적용(암묵 waitstate·preproc 줄 표시·매치콜 레이블·GiveGiftRibbonToParty 분리·로머 BUGFIX; 충돌 12파일 — 배틀 애니는 HnS 형식 유지(바이트 같음), 신오 유적 아르세우스 방 3곳 callnative(이중 대기·대기 추가 방지), 매치콜 HnS 표 + upstream 이름; 스크립트 라벨 비교 port/scriptcmp.py; 어셈블러 경고 125는 517에서) 376139af
 517	10061	1000000	1.15.3	g5_general_cleanup_docs	U-waitstate-9986	9986	M	build	N	N	~0	📜 Migration script for pret#2200	적용(충돌 0; 정리 스크립트로 HnS 명시 waitstate 124 + 손 1(경고 줄 번호 어긋남) 삭제, HnS 전용 special 14개 waitstate=1 + 명시 29 삭제; 어셈블러 경고 125→0; 스크립트 라벨 비교 차이 0, ROM 바이트 같음) 6c4ca257
 518	10555	1000000	1.16.4	g5_general_cleanup_docs	U-pret-10555	10323,9986,9881	XL	refactor	Y	N	~0	Pret merge (30th of July 2026)	적용(TextPrinterCallback·Pp→PP·조우 상수 생성·DmaCopyLarge·같은 계산 다시 쓰기; 충돌 6 — 한글 문장 유지 이름만, sprite OAM 검사 2줄로 1.17.1과 같음, 피라미드 HnS 블록; HnS 옛 이름 3곳; 함수 비교 port/objcmp.py; #10555 회귀(learnMoveState→data1)는 545 앞당김) 6a935eef
-519	10718	2000001	1.17.1	g7_1.17.1	U-10718	-	S	data	N	N	미측정	Ban Pidgey from strict-eligibility sky battles	
-520	10731	2000002	1.17.1	g7_1.17.1	U-10731	10326	S	build	N	N	미측정	Fix build error on master	
-521	10732	2000003	1.17.1	g7_1.17.1	U-10732	-	S	data	N	N	미측정	Move type changes should use `B_UPDATED_MOVE_TYPES`	
-522	10698	2000004	1.17.1	g7_1.17.1	U-10698	9532,9494,9657,9674,9730,10091,10354,8893,10384,10151,10488,10600,10593,10630	XL	fix	Y	N	미측정	Coding TODOs and currently KNOWN_FAILING regression tests 1/3	
+519	10718	2000001	1.17.1	g7_1.17.1	U-10718	-	S	data	N	N	미측정	Ban Pidgey from strict-eligibility sky battles	적용(HnS B_SKY_BATTLE_STRICT_ELIGIBILITY FALSE — ROM 같음) 729fda6d
+520	10731	2000002	1.17.1	g7_1.17.1	U-10731	10326	S	build	N	N	미측정	Fix build error on master	적용(중괄호 — ROM 같음) 05e143f8
+521	10732	2000003	1.17.1	g7_1.17.1	U-10732	-	S	data	N	N	미측정	Move type changes should use `B_UPDATED_MOVE_TYPES`	적용(B_UPDATED_MOVE_TYPES = B_UPDATED_MOVE_DATA — ROM 같음) d850b057
+522	10698	2000004	1.17.1	g7_1.17.1	U-10698	9532,9494,9657,9674,9730,10091,10354,8893,10384,10151,10488,10600,10593,10630	XL	fix	Y	N	미측정	Coding TODOs and currently KNOWN_FAILING regression tests 1/3	적용(GetConfig 인라인 −7,312 B; 충돌 2 — config/battle.h HnS 블록 + 새 2줄; IsAnyTargetTurnDamaged 2인자·enum SubCheck 1.17.1 위치; 출력 변화 2행 BATTLE_MESSAGE_OUTPUT_CHANGES; HnS 10488 혼란 자해 테스트 새 동작 4cb39b0e; 기준 seq522) 3d24ae2f
 523	10747	2000005	1.17.1	g7_1.17.1	U-10747	10117	S	fix	N	N	미측정	Fix contest move page in summary screen	앞당김 적용 97dd8439(388 #10117 바로 뒤 — 요약 화면 콘테스트 기술 페이지 우선순위 버그)
 524	10753	2000006	1.17.1	g7_1.17.1	U-10753	8434	S	fix	N	N	미측정	Fix overworld encounter flee sound playing every step in towns	
 525	10741	2000007	1.17.1	g7_1.17.1	U-10741	10028,10426,10593	S	fix	N	N	미측정	Fix Sheer Force suppressing King's Rock and Razor Fang flinches	

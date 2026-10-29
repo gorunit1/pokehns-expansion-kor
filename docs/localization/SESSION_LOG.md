@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-29 — full-sync 묶음 84(seq 519~522) (클라우드 세션)
+
+- 요청: 합본 방침 그대로(사용자 취침 중).
+- 판단: 1.17.1 확장 계획(친구 결정 2026-10-12c)을 이번에 처음 다시 읽음 — 519~556 seq별 메모·Q1/Q2/N1/U1 결정이 있어 그대로 따름(STATUS 새 세션 준비 절에 "먼저 읽기" 추가). 519~521 ROM 같음. 522는 수용(계획 5절), `IsAnyTargetTurnDamaged` 2인자·`enum SubCheck` 이동은 1.17.1 모양.
+- 발견: 522 첫 빌드가 `IsAnyTargetTurnDamaged` 인자 수로 실패(HnS는 seq 115 때 1인자판) → 1.17.1 모양으로. `enum SubCheck` 옮기다 넣을 자리를 두 번 잘못 짚어(HnS 파일엔 `EjectPackTiming`·`WeatherFailure` 없음) 세 번째에 `ImmunityHealStatusOutcome` 앞으로. 전체 검증에서 사라진 PASS 5개를 하나씩 단독 실행해 원인 확인(이름 변경 4, HnS 테스트 1).
+- 수정 파일: 커밋 `729fda6d`·`05e143f8`·`d850b057`·`3d24ae2f`(upstream 113파일 + `include/battle.h`·`include/battle_util.h`·`include/constants/battle_util.h`·`src/battle_util.c`·`src/battle_hold_effects.c`)·`4cb39b0e`(`test/hns_10488_assurance.c`). 문서 — `full-sync-seq-519-522.md`(새), `test-baseline-seq522.txt`(새), `verify_seq.sh` 기준, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 2행 + 문단, `full-sync-seq-518.md` 한 줄(#10816 계획 메모), `port_sequence.tsv` 519~522, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. `verify_seq.sh 522 b3cf74ee <scratchpad>/v`(519~522).
+- 게임 화면 확인: 하지 않음 — 친구 실기 후보(결과 문서).
+- 친구 문자: 합본 대기.
+- 다음 시작점: seq 524 #10753(524~528은 임시 폴더에 3-way 결과 준비해 둠 — 새 세션이면 다시 만듦).
+
 ### 2026-10-29 — full-sync 묶음 83(seq 518 #10555 + 545 #10816 앞당김) (클라우드 세션)
 
 - 요청: 사용자 "ㄱㄱ 518 시작해 혼자해도 되는거라면", 진행 중 "혼자 할 수 있는 작업은 최대한 많이 하고 한 번에 메시지"(친구 문자 합본으로 바꿈 — STATUS 새 세션 준비 절에 규칙), "자러 간다".
