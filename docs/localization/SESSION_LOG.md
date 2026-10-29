@@ -10,7 +10,7 @@
 - 수정 파일: 커밋 `139c9931`(`include/test/battle.h`, `include/test/test.h`, `test/test_runner.c`, `test/test_runner_battle.c`, `tools/mgba-rom-test-hydra/main.c`). 문서 — `full-sync-seq-510.md`(새), `dev_scripts/hns_verify/kortests/expected/summary.txt`·`summary.meta`, `port_sequence.tsv` 510, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. `verify_seq.sh 510 0e19318a <scratchpad>/v`.
 - 게임 화면 확인: 필요 없음(ROM 같음).
-- 친구 문자: 세션 답변 문안.
+- 친구 문자: 세션 답변 문안 — **보냄**(2026-10-29 사용자 확인).
 - 다음 시작점: seq 511 #9807.
 
 ### 2026-10-29 — full-sync 묶음 75(seq 509 #10156, 재확인 112) (클라우드 세션)
