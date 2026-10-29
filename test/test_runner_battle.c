@@ -320,7 +320,6 @@ static void BattleTest_SetUp(void *data)
     const struct BattleTest *test = data;
     memset(STATE, 0, sizeof(*STATE));
     InitTestBattlers(test);
-    TestInitConfigData();
     InvokeTestFunction(test);
     STATE->parameters = STATE->parametersCount;
     if (STATE->parametersCount == 0 && test->resultsSize > 0)
@@ -394,6 +393,7 @@ static void BattleTest_Run(void *data)
 
     memset(&DATA, 0, sizeof(DATA));
     InitTestBattlers(test);
+    TestInitConfigData();
 
     DATA.recordedBattle.rngSeed = defaultSeed;
     DATA.recordedBattle.textSpeed = OPTIONS_TEXT_SPEED_FAST;
