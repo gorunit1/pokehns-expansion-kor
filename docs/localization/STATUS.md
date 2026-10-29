@@ -1,18 +1,32 @@
 # 현재 인수인계 상태
 
-## 2026-10-29 — full-sync 묶음 72(seq 506 #10172 `pokedex_common.h`) (현재, 클라우드 세션)
+## 2026-10-29 — full-sync 묶음 73(seq 507 #10334 콘테스트 부문 값 표) (현재, 클라우드 세션)
+
+- **요청:** 사용자 "ㄱㄱ 507 시작해 혼자해도 되는거라면"(2026-10-29). 새 질문 없음(upstream 결함 1곳은 이식 전 동작으로 — 재확인 111).
+- **다음 할 일**
+  1. 친구 문자(묶음 73 결과 + 실기용 ROM `9dbdb90d` / `29ee420b…`, 콘테스트 실기 4항목) — 세션 답변 문안. 사용자가 보냈다고 하면 **보냄** 표시.
+  2. full-sync 다음: seq 508 #9892(Misc Fixes/Cleanups, L, 1.16.1, `U-assert-9892`), 509 #10156(`fatal_assertf`), 510~512 테스트 러너. 목표 1.17.1. 테스트 기준 **`test-baseline-seq507.txt`**(`verify_seq.sh` 반영), 한글 회귀 기대 **555/652**, 세이브 이전 사실은 문서 커밋(이 커밋).
+  3. 친구 답 대기: 89 (1) 메모, 82, 72, 70 (a)(b), 71, 69, 실기 결과(묶음 47~65 후보 + 묶음 70 도감 + 묶음 73 콘테스트), 묶음 66 친구 PC 빌드 확인.
+- **새 세션(클라우드) 준비 — full-sync 이어 하기:**
+  - upstream 읽기 전용 사본: `git clone https://github.com/rh-hideout/pokeemerald-expansion.git ../pokeemerald-expansion-upstream && git -C ../pokeemerald-expansion-upstream fetch --tags`(없을 때만). seq의 upstream 커밋은 `git -C ../pokeemerald-expansion-upstream log --all --oneline --grep='(#<PR>)'`.
+  - seq 하나 순서: `port_sequence.tsv`(14열 = 적용 기록)에서 행 확인 → upstream 커밋 분석·HnS 영향 → 파일별 `git merge-file -p <HnS> <base> <theirs>`(충돌은 `dev_scripts/hns_verify/port/resolve2.py`, 줄 비교는 `C=<커밋> python3 dev_scripts/hns_verify/port/dd.py`) → `make hns -j8` → 필요하면 한글 회귀 테스트 `test/hns_<PR>_*.c`(이식 전 클론에서 대조) → 코드 커밋 → `dev_scripts/hns_verify/port/verify_seq.sh <seq> <이식 전 커밋> <세션 임시 폴더>`(기준 목록 `test-baseline-seq507.txt`) → 결과 문서 `full-sync-seq-<seq>.md`·`port_sequence.tsv`·STATUS·SESSION_LOG → push → 친구 문자 문안.
+  - 친구 문자는 ROM 기준 커밋·SHA1·빌드 환경을 넣고 빌드 / 자동 테스트 / 코드 대조 / 세이브 정적 비교 / mGBA 실기를 나눈 긴 형식(ROM이 같아도). 사용자가 "보냈어"라고 하면 STATUS·SESSION_LOG에 **보냄** 표시 후 커밋·push.
+  - 큰 리팩터(파일 통합 등)는 upstream 결과에서 출발해 HnS hunk를 하나씩 문맥 정확히 맞는 곳(fuzz 0)에 붙이고 나머지는 손으로, 그 뒤 "HnS 변경 줄 vs 최종 변경 줄" 대조(seq 504 문서 방법). 저장소 검증이 도는 동안에는 세션 임시 폴더 클론에서 빌드한다.
+  - 애니 리팩터는 `animcmp/run.sh`, INCGFX 이관 뒤 규칙 정리는 `incgfx/prune_rules.py`(깨끗한 `git archive` 트리에서). 빌드 체계 변경은 생성물 없는 내보내기 트리에서 빌드해 ROM SHA1을 비교. 배치만 바뀌어 SHA1이 다를 때는 `port/relocmp.py <이전.elf> <이전.gba> <새.elf> <새.gba>`(seq 505).
+- **결과** [`full-sync-seq-507.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-507.md). 커밋 `9dbdb90d`(코드 + 테스트), 문서 이 커밋.
+  - 부문별 switch 5종(리본·그림 액자/효과·결과 타이틀·부문 문자열·TV 상태) → `gContestCategoryInfo` 표. 3-way 충돌 0, HnS 수정과 안 겹침.
+  - HnS 보정(재확인 111, upstream 결함 1.17.1·master·upcoming 같음): `GetImageEffectForContestWinner`가 `.stdString`을 돌려줘 그림 효과가 4부문에서 바뀜(귀여움만 값이 우연히 같음) → `.imageEffect`.
+  - 콘테스트는 HnS 상록시티 콘테스트 로비(`ViridianCity_hns` 워프)로 닿음 → 실기 후보.
+- **검증:** `make hns -j8` 종료 0, 전체 재빌드 새 경고 0. 전체 `make check` 기준(seq504) 대비 새 PASS 2(새 테스트)·사라진 PASS 0 → 새 기준 `test-baseline-seq507.txt`. 새 테스트 ②는 이식 전 코드에서도 PASS(①은 이식 전엔 표 필드가 없음 — 지워진 switch 값을 옮겨 적어 비교). 세이브 정적 PASS(FAIL 0, WARN 0). 한글 회귀 `kor-s507` 555/652, 기대와 바이트 같음.
+- **ROM(실기용):** 커밋 `9dbdb90d`, SHA1 **`29ee420b58ea763a1b94bfbb2ab32ae925ced93f`**, 사용 32,976,196 B(묶음 72 대비 −800), 파일 33,554,432 B, 클라우드 컨테이너 `make hns -j8`, arm-none-eabi-gcc 13.2.1. **실기: 하지 않음(친구) — 콘테스트 4항목(결과 문서).**
+
+## 2026-10-29 — full-sync 묶음 72(seq 506 #10172 `pokedex_common.h`) (클라우드 세션)
 
 - **요청:** 사용자 "full-sync seq 502 #10116부터 port_sequence 순서대로 이어서 (목표 1.17.1)"(2026-10-29). 이 세션에서 묶음 68~72(seq 502~506, 도감 단위 `U-pokedex-9518` 끝)까지. 새 질문 없음.
 - **다음 할 일**
   1. ~~친구 문자(묶음 68~72를 한 통으로, 긴 형식)~~ **보냄**(2026-10-29 사용자 확인). ROM 최신 `d4fc70b2` / `54c559b7…`, 실기 부탁은 묶음 70 도감 전 화면 6항목 — 답 대기.
-  2. full-sync 다음: seq 507 #10334(컨테스트 값 정리, M — `U-incgfx-9881`, 컨테스트 문장·HnS 컨테스트 데이터 확인), 508 #9892(Misc Fixes/Cleanups, L, 1.16.1, `U-assert-9892`), 509 #10156(`fatal_assertf`), 510~512 테스트 러너. 목표 1.17.1. 테스트 기준 **`test-baseline-seq504.txt`**(`verify_seq.sh` 반영), 한글 회귀 기대 **555/652**, 세이브 이전 사실은 문서 커밋(이 커밋).
+  2. full-sync 다음: seq 507 — 묶음 73에서 완료.
   3. 친구 답 대기: 89 (1) 메모, 82, 72, 70 (a)(b), 71, 69, 실기 결과(묶음 47~65 후보 + 묶음 70 도감), 묶음 66 친구 PC 빌드 확인.
-- **새 세션(클라우드) 준비 — full-sync 이어 하기:**
-  - upstream 읽기 전용 사본: `git clone https://github.com/rh-hideout/pokeemerald-expansion.git ../pokeemerald-expansion-upstream && git -C ../pokeemerald-expansion-upstream fetch --tags`(없을 때만). seq의 upstream 커밋은 `git -C ../pokeemerald-expansion-upstream log --all --oneline --grep='(#<PR>)'`.
-  - seq 하나 순서: `port_sequence.tsv`(14열 = 적용 기록)에서 행 확인 → upstream 커밋 분석·HnS 영향 → 파일별 `git merge-file -p <HnS> <base> <theirs>`(충돌은 `dev_scripts/hns_verify/port/resolve2.py`, 줄 비교는 `C=<커밋> python3 dev_scripts/hns_verify/port/dd.py`) → `make hns -j8` → 필요하면 한글 회귀 테스트 `test/hns_<PR>_*.c`(이식 전 클론에서 대조) → 코드 커밋 → `dev_scripts/hns_verify/port/verify_seq.sh <seq> <이식 전 커밋> <세션 임시 폴더>`(기준 목록 `test-baseline-seq504.txt`) → 결과 문서 `full-sync-seq-<seq>.md`·`port_sequence.tsv`·STATUS·SESSION_LOG → push → 친구 문자 문안.
-  - 친구 문자는 ROM 기준 커밋·SHA1·빌드 환경을 넣고 빌드 / 자동 테스트 / 코드 대조 / 세이브 정적 비교 / mGBA 실기를 나눈 긴 형식(ROM이 같아도). 사용자가 "보냈어"라고 하면 STATUS·SESSION_LOG에 **보냄** 표시 후 커밋·push.
-  - 큰 리팩터(파일 통합 등)는 upstream 결과에서 출발해 HnS hunk를 하나씩 문맥 정확히 맞는 곳(fuzz 0)에 붙이고 나머지는 손으로, 그 뒤 "HnS 변경 줄 vs 최종 변경 줄" 대조(seq 504 문서 방법). 저장소 검증이 도는 동안에는 세션 임시 폴더 클론에서 빌드한다.
-  - 애니 리팩터는 `animcmp/run.sh`, INCGFX 이관 뒤 규칙 정리는 `incgfx/prune_rules.py`(깨끗한 `git archive` 트리에서). 빌드 체계 변경은 생성물 없는 내보내기 트리에서 빌드해 ROM SHA1을 비교. 배치만 바뀌어 SHA1이 다를 때는 `port/relocmp.py <이전.elf> <이전.gba> <새.elf> <새.gba>`(seq 505).
 - **결과** [`full-sync-seq-506.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-506.md). 커밋 `d4fc70b2`(코드), 문서 이 커밋.
   - 공통 정의를 `include/pokedex_common.h`로(충돌 1곳 = 옮겨 가는 블록 안 HnS `OBTAINABLE_DEX_COUNT` 줄 → 새 헤더로). 성도 선언 2줄은 `pokedex.h`. 두 헤더 모두 1.17.1과 같음(HnS 줄 빼고). 안 쓰는 `gUnusedPokedexU8` 삭제.
 - **검증:** `make hns -j8` 종료 0, 전체 재빌드 새 경고 0. 전체 `make check` 목록이 기준(seq504)과 바이트 같음. 세이브 정적 PASS(FAIL 0, WARN 1 = 지운 IWRAM 변수 1 B). 한글 회귀 `kor-s506` 555/652, 기대와 바이트 같음.

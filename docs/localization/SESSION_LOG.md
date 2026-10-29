@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-29 — full-sync 묶음 73(seq 507 #10334, 재확인 111) (클라우드 세션)
+
+- 요청: 사용자 "ㄱㄱ 507 시작해 혼자해도 되는거라면".
+- 판단: 3-way 충돌 0. upstream diff를 읽다가 그림 효과 함수가 `.stdString`을 돌려주는 결함을 찾음(1.17.1·master·upcoming 모두 같음) → `.imageEffect`로 HnS 보정. 박물관 액자의 `…Wram`은 smolTM이라 같은 경로라 그대로. 콘테스트가 HnS에서 닿는지 확인(상록시티 로비 워프) → 실기 후보.
+- 실수: 한글 테스트 초안에 `EXPECT_NE(imageEffect, stdString)`를 넣었는데 귀여움은 둘 다 2라 FAIL → 지움(효과 값은 `EXPECT_EQ`로 이미 확인). 표 초기화에 `_()`를 써서 컴파일 실패 → `COMPOUND_STRING`.
+- 수정 파일: 커밋 `9dbdb90d`(`include/contest.h`, `src/contest.c`, `src/contest_painting.c`(+HnS 1줄), `src/contest_util.c`, `src/tv.c`, `test/hns_10334_contest_values.c`(새)). 문서·도구 — `full-sync-seq-507.md`(새), `test-baseline-seq507.txt`(새), `verify_seq.sh` 기준 seq507, `RECHECK_BEFORE_COMPLETION.md` 111, `port_sequence.tsv` 507, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. `verify_seq.sh 507 74bff041 <scratchpad>/v`, 이식 전 테스트는 `$S/v/w`에 임시 `test/zz_hns_10334_pre.c`(지움).
+- 게임 화면 확인: 하지 않았다(친구 mGBA — 콘테스트 4항목).
+- 친구 문자: 세션 답변 문안.
+- 다음 시작점: seq 508 #9892.
+
 ### 2026-10-29 — full-sync 묶음 72(seq 506 #10172) (클라우드 세션)
 
 - 요청: 묶음 68과 같은 요청(502부터 순서대로). 이 세션은 여기서 멈춤(도감 단위 끝, 친구 문자 전달).
