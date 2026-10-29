@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-29 — full-sync 묶음 78(seq 512 #10390) (클라우드 세션)
+
+- 요청: 사용자 "ㄱㄱ 혼자 할수있다면".
+- 판단: 러너·hydra·assert 화면 출력 형식만, 4파일 3-way 충돌 0. HnS에서 `%c`/`%C`/`%U` 쓰는 곳 없음. 게임 ROM은 `assertf.c`만 +176 B.
+- 발견: 한글 회귀 로그에서 이전 러너가 `%C`를 몰라 기술 애니 제안 줄의 배틀러 자리에 기술 이름 바이트가 찍히던 것이 이식 후 바로잡힘(`MOVE__, opponent`). 한글 이름은 `%U`에서 `_`로만 나옴(진단 줄, 1.17.1과 같음 — 기록만). seq 394의 HnS `ITEM_POPUP` 주석이 seq 511 뒤로 낡아 문장만 고침.
+- 수정 파일: 커밋 `9bd02555`(`src/assertf.c`, `test/test_runner.c`, `test/test_runner_battle.c`, `tools/mgba-rom-test-hydra/main.c`). 문서 커밋 — `full-sync-seq-512.md`(새), `port_sequence.tsv` 512, `test/test_runner_battle.c` 주석 1줄, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. `verify_seq.sh 512 d4d845ef <scratchpad>/v`.
+- 게임 화면 확인: 새 후보 없음(assert 화면 코드만).
+- 친구 문자: 세션 답변 문안.
+- 다음 시작점: seq 514 #9900.
+
 ### 2026-10-29 — full-sync 묶음 77(seq 511 #9807 + 513 #10537 앞당김, 재확인 113) (클라우드 세션)
 
 - 요청: 사용자 "ㄱㄱ 511 시작해 혼자해도 되는거라면".

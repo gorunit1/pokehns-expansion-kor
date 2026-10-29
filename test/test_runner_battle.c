@@ -963,7 +963,7 @@ void TestRunner_Battle_RecordItemPopUp(enum BattlerId battlerId, enum Item item)
     {
     case QUEUE_GROUP_NONE:
     case QUEUE_GROUP_ONE_OF:
-        // HnS: no "Did you mean" suggestion yet (needs queuedEventsFailIndex from upstream #9807).
+        // HnS: no "Did you mean" suggestion for ITEM_POPUP (upstream #9807 has none to copy).
         if (TryItemPopUp(DATA.trial.queuedEvent, event->groupSize, battlerId, item) != -1)
             DATA.trial.queuedEvent += event->groupSize;
         break;
