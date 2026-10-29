@@ -2,6 +2,18 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-29 — full-sync 묶음 77(seq 511 #9807 + 513 #10537 앞당김, 재확인 113) (클라우드 세션)
+
+- 요청: 사용자 "ㄱㄱ 511 시작해 혼자해도 되는거라면".
+- 판단: 러너만. `TearDownBattle`이 upstream에서 옮겨져 충돌 → 옮겨 간 함수에 HnS `DeactivateAllTextPrinters` 다시 넣음(본문이 이식 전과 같음 확인).
+- 발견: 첫 전체 검증에서 목록 42줄이 사라짐 → 원래 FAIL이던 도구 테스트들이 FLAKY가 됐고 `testlist.sh`가 FLAKY를 몰라 줄을 버림. 원인은 재실행 때 가방이 비는 것 → upstream #10537(seq 513)이 바로 그 수정이라 앞당김(충돌 0), `testlist.sh`에 FLAKY 추가. 다시 검증하니 FLAKY는 시작 상태를 쓰는 2개(upstream Teraform Zero Gen9, 한글 회귀 K23)만 남음 — upstream도 같은 한계(재확인 113). 기준 목록·한글 회귀 기대 요약 갱신.
+- 실수: 문서 갱신 스크립트의 자리표시자 검사가 `TEST_RESULT_FLAKY`의 "RESULT"에 걸려 결과 문서·순서표·STATUS·SESSION_LOG를 쓰기 전에 멈췄는데, 같은 명령의 커밋·push(`8daedcbc`)가 그대로 나감(도구·기대 요약·기준 목록·재확인만, 결과 문서는 자리표시자 상태) → 검사를 자리표시자 이름으로 고쳐 다시 돌리고 보충 커밋.
+- 수정 파일: 커밋 `ee7fb48e`(`include/test/battle.h`, `include/test_result.h`, `test/test_runner.c`, `test/test_runner_battle.c`), `e4cd4538`(`test/battle/ghost.c`, `test/test_runner_battle.c`, `test/test_test_runner.c`). 문서·도구 — `full-sync-seq-511.md`(새), `test-baseline-seq511.txt`(새), `testlist.sh` FLAKY, `verify_seq.sh` 기준 seq511, `kortests/expected/summary.txt`·`summary.meta`, `RECHECK_BEFORE_COMPLETION.md` 113, `port_sequence.tsv` 511·513, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. `verify_seq.sh 511 fa537389`(511만, 목록 42줄 빠짐) → `verify_seq.sh 511b fa537389`(511+513).
+- 게임 화면 확인: 필요 없음(ROM 같음).
+- 친구 문자: 세션 답변 문안.
+- 다음 시작점: seq 512 #10390, 그다음 514.
+
 ### 2026-10-29 — full-sync 묶음 76(seq 510 #10155) (클라우드 세션)
 
 - 요청: 사용자 "ㄱㄱ 510 시작해 혼자해도 되는거라면".
