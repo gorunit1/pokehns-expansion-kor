@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-29 — full-sync 묶음 74(seq 508 #9892) (클라우드 세션)
+
+- 요청: 사용자 "ㄱㄱ 508 시작해 혼자해도 되는거라면".
+- 판단: upstream이 병합 커밋이라 첫 부모 대비 diff로 3-way(`git diff 3180f2767d^1 3180f2767d`). 계획서 경고대로 `InitWindows` 호출 82곳을 스캐너로 전수 검사(79 바로 OK, `UBFIX` 2곳·배틀 창 표 3종 손 확인). `BgTileAllocOp` assert는 HnS에서 켜는 경로 없음. 충돌: malloc은 seq 401에서 지운 함수라 HnS 쪽, text.c는 HnS에 본체가 없던 1.17.1 함수라 upstream 쪽, 테스트 러너 `config_changes.c` 예외는 upstream처럼 삭제, `InitTestBattlers` 유지.
+- 발견: 테스트 목록 27줄 차이 → 원래 FAIL인 글자 폭 테스트 이름의 한글 라벨이 mini_printf로 `?`가 됨(상태 같음). 세이브 WARN 2는 assert 문자열 주소 이동(내용 같음, ELF에서 확인). dd.py는 병합 커밋 diff를 못 읽어 첫 부모 기준으로 직접 비교(차이 = 위 충돌 해소뿐, `SanitizeSpeciesId`는 HnS에 이미 있었음).
+- 수정 파일: 커밋 `d84f57bf`(upstream 24파일). 문서·도구 — `full-sync-seq-508.md`(새), `test-baseline-seq508.txt`(새), `dev_scripts/hns_verify/port/wincheck.py`(새)·README 1행, `verify_seq.sh` 기준 seq508, `port_sequence.tsv` 508, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. `verify_seq.sh 508 ca00e564 <scratchpad>/v`.
+- 게임 화면 확인: 하지 않았다(화면 변화 없음, assert 화면이 나오면 친구가 사진).
+- 친구 문자: 세션 답변 문안.
+- 다음 시작점: seq 509 #10156.
+
 ### 2026-10-29 — full-sync 묶음 73(seq 507 #10334, 재확인 111) (클라우드 세션)
 
 - 요청: 사용자 "ㄱㄱ 507 시작해 혼자해도 되는거라면".
