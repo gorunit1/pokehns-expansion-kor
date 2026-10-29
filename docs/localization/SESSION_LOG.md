@@ -2,6 +2,16 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-29 — full-sync 묶음 69(seq 503 #10561) (클라우드 세션)
+
+- 요청: 묶음 68과 같은 요청(502부터 순서대로).
+- 판단: 메가찌르호크 아이콘은 seq 500 이관에서 같은 결과 → 3-way 병합이 같은 변경으로 처리(충돌 0). 마휘핑 아이콘 주석 8줄만. 판정 기준 = ROM 바이트 같음(충족).
+- 수정 파일: 커밋 `a5a0c700`(`src/data/graphics/pokemon.h` 주석 8줄). 문서 — `full-sync-seq-503.md`(새), `port_sequence.tsv` 503, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. `verify_seq.sh 503 0bf2156c <scratchpad>/v`.
+- 게임 화면 확인: 하지 않았다(ROM 바이트 같음).
+- 친구 문자: 세션 답변 문안(묶음 68과 함께).
+- 다음 시작점: seq 504 #9518.
+
 ### 2026-10-29 — full-sync 묶음 68(seq 502 #10116) (클라우드 세션)
 
 - 요청: 사용자 "full-sync seq 502 #10116부터 port_sequence 순서대로 이어서 (목표 1.17.1)". upstream 사본은 `../pokeemerald-expansion-upstream`에 이미 있었음(태그 포함, 1.17.1 확인).
