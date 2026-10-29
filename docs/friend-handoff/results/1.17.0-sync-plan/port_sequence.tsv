@@ -551,13 +551,13 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 544	10818	2000026	1.17.1	g7_1.17.1	U-10818	-	S	fix	N	N	미측정	Fix fanfare task interrupted in move relearner	적용 a17d238c
 545	10816	2000027	1.17.1	g7_1.17.1	U-10816	-	S	fix	N	N	0(HnS 동등 65388d7a)	Fix multi level move learning	앞당김 적용 0bf43797(518 바로 뒤 — #10555가 만든 다단계 레벨업 기술 배우기 회귀 수정, 1.17.1과 같음)
 546	10830	2000028	1.17.1	g7_1.17.1	U-stairs-10627	10627	S	fix	N	N	미측정	Fix player facing direction on sideways stairs	앞당김 적용 26ca30ae(532 바로 뒤 한 단위; #10627 assert 삭제분은 HnS 가드 유지) + f9fd1b19
-547	10660	2000029	1.17.1	g7_1.17.1	U-10660	9462,8647	S	fix	N	N	미측정	Fix recorded battle RNG desyncs	
+547	10660	2000029	1.17.1	g7_1.17.1	U-10660	9462,8647	S	fix	N	N	미측정	Fix recorded battle RNG desyncs	적용(Q2 수용 — 이식 전 녹화본 재생 어긋남 가능 명시, 재확인 56 가드 테스트 2개 PASS) 18a28527
 548	10837	2000030	1.17.1	g7_1.17.1	U-10837	-	S	fix	N	N	0(이미 적용 e804379040)	Fix ITEM_NONE assertion when canceling mail	앞당김 적용 e8043790
-549	10828	2000031	1.17.1	g7_1.17.1	U-10828	-	S	test	N	N	~0(테스트만)	Fix negative berry animation assertions	
-550	10839	2000032	1.17.1	g7_1.17.1	U-10839	-	L	fix	Y	N	미측정	Fix Ability replacement cleanup and Neutralizing Gas spread-move ordering	
+549	10828	2000031	1.17.1	g7_1.17.1	U-10828	-	S	test	N	N	~0(테스트만)	Fix negative berry animation assertions	적용(테스트만) 2c5dd4ee
+550	10839	2000032	1.17.1	g7_1.17.1	U-10839	-	L	fix	Y	N	미측정	Fix Ability replacement cleanup and Neutralizing Gas spread-move ordering	적용(화학변화가스 특성 교체 순서 — 출력 변화 1행) 30801c5b
 551	10829	2000033	1.17.1	g7_1.17.1	U-10829	9655,10593	M	fix	Y	N	0(앞당김 적용 6d08adc6, 2026-10-13)	Fix incorrect messages after breaking screens	앞당김 적용 6d08adc6
-552	10836	2000034	1.17.1	g7_1.17.1	U-10836	-	S	data	N	N	미측정	Adjust default debug trainers	
-553	10843	2000035	1.17.1	g7_1.17.1	U-10843	9730	M	fix	Y	N	미측정	Fix Starting Status Tailwind interactions with Wind Rider and Wind Power	
-554	10752	2000036	1.17.1	g7_1.17.1	U-10752	10155	S	tool	N	N	~0(도구)	Fix Hydra output buffering and summary memory safety	
-555	10398	2000037	1.17.1	g7_1.17.1	U-10398	-	S	build	N	N	~0(문서)	Changes to the styleguide regarding statements	
-556	10826	2000038	1.17.1	g7_1.17.1	U-10826	-	S	fix	N	N	미측정	Fix buffernumberstring formatting zero	
+552	10836	2000034	1.17.1	g7_1.17.1	U-10836	-	S	data	N	N	미측정	Adjust default debug trainers	적용(디버그 트레이너, HnS = upstream 이전판) 4330e7d1
+553	10843	2000035	1.17.1	g7_1.17.1	U-10843	9730	M	fix	Y	N	미측정	Fix Starting Status Tailwind interactions with Wind Rider and Wind Power	적용(시작 상태 순풍 + 바람타기 — 출력 변화 1행) b831d0b6
+554	10752	2000036	1.17.1	g7_1.17.1	U-10752	10155	S	tool	N	N	~0(도구)	Fix Hydra output buffering and summary memory safety	적용(hydra — 1.17.1과 같음, 한글 회귀 기대 요약 그대로) 67231a82
+555	10398	2000037	1.17.1	g7_1.17.1	U-10398	-	S	build	N	N	~0(문서)	Changes to the styleguide regarding statements	적용(문서) 4c05a4e9
+556	10826	2000038	1.17.1	g7_1.17.1	U-10826	-	S	fix	N	N	미측정	Fix buffernumberstring formatting zero	적용(숫자 0 자릿수) 1c4126d3
