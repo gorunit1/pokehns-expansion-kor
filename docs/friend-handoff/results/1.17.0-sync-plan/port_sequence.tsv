@@ -508,7 +508,7 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 501	10036	307	1.16.0	g5_general_cleanup_docs	U-incgfx-9881	9881	L	gfx	N	N	~0	Describe compressed tilemaps with INCGFX	적용(upstream 변경을 재현하는 정규식으로 HnS 타일맵 59곳 포함 446곳 변환, U8/U16·띄어 쓴 형태는 upstream처럼 INCBIN; scaninc $(SMOLTM) 규칙; 규칙 파일 변화 없음; ROM 바이트 같음) 4358b753
 502	10116	325	1.16.1	g4_ai_tests_pokemon_sprites	U-incgfx-9881	9881	S	build	N	N	~0	Fix missing incgfx for Mega Garchomp Z	적용(HnS는 seq 500에서 이미 INCGFX — 들여쓰기 없는 4줄만 upstream 줄로, 1.17.1과 같음; ROM 바이트 같음) 21825159
 503	10561	544	1.16.4	g4_ai_tests_pokemon_sprites	U-incgfx-9881	9881	S	build	N	N	~0	Converted Mega Staraptor's icon to INCGFX_U8	적용(메가찌르호크 아이콘은 HnS가 seq 500에서 이미 INCGFX, 충돌 0 — 마휘핑 아이콘 주석 8줄만, 1.17.1과 같음; ROM 바이트 같음) a5a0c700
-504	9518	624	1.17.0	g6_overworld_refactors	U-pokedex-9518	10116,9881	XL	refactor	Y	N	-10KB(추정)	Consolidation of Pokédex Files	
+504	9518	624	1.17.0	g6_overworld_refactors	U-pokedex-9518	10116,9881	XL	refactor	Y	N	-10KB(추정)	Consolidation of Pokédex Files	적용(upstream 결과에서 출발해 HnS 도감 수정 hunk 72+13개를 새 위치로 — 획득 가능 도감 번호·목록 넘어가기·요약 화면 도감·진화 화면·울음소리 한글; 줄 단위 대조 차이 = upstream 경계·프로토타입뿐; 재확인 110; ROM +16,576 B; 새 테스트 hns_9518_pokedex.c; 도감 전 화면 실기 후보) dda68a3f
 505	10184	649	1.17.0	g5_general_cleanup_docs	U-incgfx-9881	9881	S	gfx	N	N	~0	remove unused tilesets graphics	
 506	10172	673	1.17.0	g6_overworld_refactors	U-pokedex-9518	9518	M	refactor	N	N	~0	Remove functions and variable common to both pokedex from the general pokedex interface to their own file	
 507	10334	699	1.17.0	g5_general_cleanup_docs	U-incgfx-9881	9881	M	refactor	N	N	~0	Consolidate contest values	

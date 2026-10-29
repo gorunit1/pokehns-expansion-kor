@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-29 — full-sync 묶음 70(seq 504 #9518, 재확인 110) (클라우드 세션)
+
+- 요청: 묶음 68과 같은 요청(502부터 순서대로).
+- 판단: 3-way 병합은 `pokedex_plus_hgss.c` 충돌 32곳 → upstream 결과에서 출발해 HnS hunk(이식 전 upstream 기반 → HnS, `NationalPokedexNumToSpeciesHGSS` 이름만 미리 바꿈)를 하나씩 붙임. fuzz 3은 `sExternalReturnCallback`를 스프라이트 템플릿 안에, 콜백 지우기를 통계 화면에 붙이는 등 틀려서 버리고 fuzz 0만 자동, 13개는 손으로. 요약 화면 도감 진입은 정적 함수가 있는 `pokedex.c`, 진화·폼 페이드는 `pokedex_plus_hgss.c`. 판정 기준 = HnS 변경 줄 집합과 최종 변경 줄 집합이 같음(차이 = 의도한 둘).
+- 발견: (1) 공통 울음소리 이름 함수가 HGSS에도 60 px 글꼴 맞춤을 적용 → 한글 이름 모두 60 px 안(테스트로 고정). (2) ROM +16,576 B — 훅 구조라 원래 도감 경로가 링크에 남음(upstream 설계, 재확인 110). (3) 세이브 비교 WARN 1 = 도감 작업 변수 파일 이동.
+- 수정 파일: 커밋 `dda68a3f`(`include/constants/pokemon.h`, `include/pokedex.h`, `include/pokedex_plus_hgss.h`, `src/pokedex.c`, `src/pokedex_plus_hgss.c`, `test/hns_9518_pokedex.c`(새)). 문서·도구 — `full-sync-seq-504.md`(새), `test-baseline-seq504.txt`(새), `dev_scripts/hns_verify/port/verify_seq.sh` 기준 목록 seq504로, `RECHECK_BEFORE_COMPLETION.md` 110, `port_sequence.tsv` 504, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. 병합본은 먼저 세션 임시 폴더 클론 `b504`에서 빌드·테스트(저장소 검증과 겹치지 않게), 같은 클론에서 이식 전 코드 + 새 테스트도 확인. `verify_seq.sh 504 3b2694a1 <scratchpad>/v`.
+- 게임 화면 확인: 하지 않았다(친구 mGBA — 도감 전 화면 6항목).
+- 친구 문자: 세션 답변 문안(묶음 68·69와 함께).
+- 다음 시작점: seq 505 #10184.
+
 ### 2026-10-29 — full-sync 묶음 69(seq 503 #10561) (클라우드 세션)
 
 - 요청: 묶음 68과 같은 요청(502부터 순서대로).

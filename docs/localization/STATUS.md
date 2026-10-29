@@ -1,17 +1,31 @@
 # 현재 인수인계 상태
 
-## 2026-10-29 — full-sync 묶음 69(seq 503 #10561 메가찌르호크 아이콘 INCGFX) (현재, 클라우드 세션)
+## 2026-10-29 — full-sync 묶음 70(seq 504 #9518 도감 파일 통합) (현재, 클라우드 세션)
+
+- **요청:** 묶음 68과 같은 요청(502부터 순서대로). 새 질문 없음(구조 정리, HnS 도감 수정은 모두 옮김 — 도감 화면은 실기 후보).
+- **다음 할 일**
+  1. 친구 문자(묶음 68·69·70) — 세션 답변 문안. 묶음 70은 새 ROM(`ed4348cc…`)과 도감 실기 목록. 사용자가 보냈다고 하면 **보냄** 표시.
+  2. full-sync 다음: seq 505 #10184(안 쓰는 타일셋 그림 지우기 — HnS가 쓰는 타일셋인지 확인), 506 #10172(도감 공통 함수 파일 분리 — 재확인 110 HnS 함수 위치 다시 맞춤), 507 #10334. 목표 1.17.1. 테스트 기준 **`test-baseline-seq504.txt`**(`verify_seq.sh` 반영), 한글 회귀 기대 **555/652**, 세이브 이전 사실은 문서 커밋(이 커밋).
+  3. 친구 답 대기: 89 (1) 메모, 82, 72, 70 (a)(b), 71, 69, 실기 결과(묶음 47~65 후보 + 묶음 70 도감), 묶음 66 친구 PC 빌드 확인.
+- **새 세션(클라우드) 준비 — full-sync 이어 하기:**
+  - upstream 읽기 전용 사본: `git clone https://github.com/rh-hideout/pokeemerald-expansion.git ../pokeemerald-expansion-upstream && git -C ../pokeemerald-expansion-upstream fetch --tags`(없을 때만). seq의 upstream 커밋은 `git -C ../pokeemerald-expansion-upstream log --all --oneline --grep='(#<PR>)'`.
+  - seq 하나 순서: `port_sequence.tsv`(14열 = 적용 기록)에서 행 확인 → upstream 커밋 분석·HnS 영향 → 파일별 `git merge-file -p <HnS> <base> <theirs>`(충돌은 `dev_scripts/hns_verify/port/resolve2.py`, 줄 비교는 `C=<커밋> python3 dev_scripts/hns_verify/port/dd.py`) → `make hns -j8` → 필요하면 한글 회귀 테스트 `test/hns_<PR>_*.c`(이식 전 클론에서 대조) → 코드 커밋 → `dev_scripts/hns_verify/port/verify_seq.sh <seq> <이식 전 커밋> <세션 임시 폴더>`(기준 목록 `test-baseline-seq504.txt`) → 결과 문서 `full-sync-seq-<seq>.md`·`port_sequence.tsv`·STATUS·SESSION_LOG → push → 친구 문자 문안.
+  - 친구 문자는 ROM 기준 커밋·SHA1·빌드 환경을 넣고 빌드 / 자동 테스트 / 코드 대조 / 세이브 정적 비교 / mGBA 실기를 나눈 긴 형식(ROM이 같아도). 사용자가 "보냈어"라고 하면 STATUS·SESSION_LOG에 **보냄** 표시 후 커밋·push.
+  - 큰 리팩터(파일 통합 등)는 upstream 결과에서 출발해 HnS hunk를 하나씩 문맥 정확히 맞는 곳(fuzz 0)에 붙이고 나머지는 손으로, 그 뒤 "HnS 변경 줄 vs 최종 변경 줄" 대조(seq 504 문서 방법). 저장소 검증이 도는 동안에는 세션 임시 폴더 클론에서 빌드한다.
+  - 애니 리팩터는 `animcmp/run.sh`, INCGFX 이관 뒤 규칙 정리는 `incgfx/prune_rules.py`(깨끗한 `git archive` 트리에서). 빌드 체계 변경은 생성물 없는 내보내기 트리에서 빌드해 ROM SHA1을 비교.
+- **결과** [`full-sync-seq-504.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-504.md). 커밋 `dda68a3f`(코드 + 테스트), 문서 이 커밋.
+  - upstream 구조(공통부 `pokedex.c`, HGSS 화면은 `*_HGSS` 훅) 그대로. HnS 도감 수정 hunk 72개(HGSS) + 13개(원래 도감)를 새 위치로 — 자동은 문맥이 정확히 맞는 것만, 13개는 손으로. 줄 단위 대조 차이는 upstream 경계 조건·프로토타입 1줄뿐.
+  - HnS 전용 함수 배치·ROM +16,576 B(원래 도감 경로가 링크에 남음)는 재확인 110. 공통 울음소리 이름의 60 px 글꼴 맞춤은 한글 이름 모두 기본 글꼴(새 테스트).
+- **검증:** `make hns -j8` 종료 0, 전체 재빌드 새 경고 0. 전체 `make check` 기준(seq492) 대비 새 PASS 2(새 테스트)·사라진 PASS 0 → 새 기준 `test-baseline-seq504.txt`. 새 테스트는 이식 전 코드에서도 2/2 PASS. 세이브 정적 PASS(FAIL 0, WARN 1 = 도감 작업 변수 파일 이동, 합계 +0 B). 한글 회귀 `kor-s504` 555/652, 기대와 바이트 같음.
+- **ROM(실기용):** 커밋 `dda68a3f`, SHA1 **`ed4348cce5d108aef334eb22ca911b82361ca03f`**, 사용 32,977,012 B(묶음 69 대비 +16,576), 파일 33,554,432 B, 클라우드 컨테이너 `make hns -j8`, arm-none-eabi-gcc 13.2.1. **실기: 하지 않음(친구) — 도감 전 화면(결과 문서 6항목).**
+
+## 2026-10-29 — full-sync 묶음 69(seq 503 #10561 메가찌르호크 아이콘 INCGFX) (클라우드 세션)
 
 - **요청:** 묶음 68과 같은 요청(502부터 순서대로). 새 질문 없음(주석만, ROM 바이트 같음).
 - **다음 할 일**
   1. 친구 문자(묶음 68·69 결과, ROM은 묶음 65~67과 같은 파일) — 세션 답변 문안. 사용자가 보냈다고 하면 **보냄** 표시.
-  2. full-sync 다음: seq 504 #9518(도감 통합 XL, 한글 영향 Y). **진행 중:** 세션 임시 폴더 클론에서 병합본 빌드 성공(새 경고 0, ROM +16,576 B), 새 테스트 `test/hns_9518_pokedex.c` 2개 PASS. 저장소 적용·전체 검증 남음. 테스트 기준 **`test-baseline-seq492.txt`**, 한글 회귀 기대 **555/652**, 세이브 이전 사실은 문서 커밋(이 커밋).
+  2. full-sync 다음: seq 504 #9518 — 묶음 70에서 완료.
   3. 친구 답 대기: 89 (1) 메모, 82, 72, 70 (a)(b), 71, 69, 실기 결과(묶음 47~65 후보), 묶음 66 친구 PC 빌드 확인.
-- **새 세션(클라우드) 준비 — full-sync 이어 하기:**
-  - upstream 읽기 전용 사본: `git clone https://github.com/rh-hideout/pokeemerald-expansion.git ../pokeemerald-expansion-upstream && git -C ../pokeemerald-expansion-upstream fetch --tags`(없을 때만). seq의 upstream 커밋은 `git -C ../pokeemerald-expansion-upstream log --all --oneline --grep='(#<PR>)'`.
-  - seq 하나 순서: `port_sequence.tsv`(14열 = 적용 기록)에서 행 확인 → upstream 커밋 분석·HnS 영향 → 파일별 `git merge-file -p <HnS> <base> <theirs>`(충돌은 `dev_scripts/hns_verify/port/resolve2.py`, 줄 비교는 `C=<커밋> python3 dev_scripts/hns_verify/port/dd.py`) → `make hns -j8` → 필요하면 한글 회귀 테스트 `test/hns_<PR>_*.c`(이식 전 클론에서 대조) → 코드 커밋 → `dev_scripts/hns_verify/port/verify_seq.sh <seq> <이식 전 커밋> <세션 임시 폴더>` → 결과 문서 `full-sync-seq-<seq>.md`·`port_sequence.tsv`·STATUS·SESSION_LOG → push → 친구 문자 문안.
-  - 친구 문자는 ROM 기준 커밋·SHA1·빌드 환경을 넣고 빌드 / 자동 테스트 / 코드 대조 / 세이브 정적 비교 / mGBA 실기를 나눈 긴 형식(ROM이 같아도). 사용자가 "보냈어"라고 하면 STATUS·SESSION_LOG에 **보냄** 표시 후 커밋·push.
-  - 애니 리팩터는 `animcmp/run.sh`, INCGFX 이관 뒤 규칙 정리는 `incgfx/prune_rules.py`(깨끗한 `git archive` 트리에서). 빌드 체계 변경은 생성물 없는 내보내기 트리에서 빌드해 ROM SHA1을 비교.
 - **결과** [`full-sync-seq-503.md`](../friend-handoff/results/1.17.0-port/full-sync-seq-503.md). 커밋 `a5a0c700`(코드), 문서 이 커밋.
   - 메가찌르호크 아이콘은 HnS가 seq 500에서 이미 INCGFX(충돌 0). 마휘핑 아이콘 주석 8줄만 바뀜 → 1.17.1과 같음.
 - **검증:** `make hns -j8` 종료 0, 저장소 전체 재빌드 SHA1 `5ffecc87…` = 이식 전 클론(`0bf2156c`)과 바이트 같음, 새 경고 0. 전체 `make check` 목록이 기준(seq492)과 바이트 같음. 세이브 정적 PASS(FAIL 0, WARN 0). 한글 회귀 `kor-s503` 555/652, 기대와 바이트 같음.
