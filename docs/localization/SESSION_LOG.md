@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-29 — full-sync 묶음 81(seq 516 #9986 pret 병합) (클라우드 세션)
+
+- 요청: 사용자 "ㄱㄱ 516 시작해 혼자해도 되는거라면".
+- 판단: 첫 부모 대비 109파일 3-way(충돌 12파일). 배틀 애니 39곳은 HnS가 seq 496·497에서 이미 expansion 매크로로 바꾼 줄이라 HnS 유지 + `tall` → `narrow`. 스크립트 충돌은 HnS 줄과 명시 `waitstate` 유지(517에서 정리). 매치콜은 HnS 파일 + upstream 이름(1.17.1 줄 모두 포함), preproc은 HnS 출력 버퍼 + upstream 줄 표시(1.17.1과 같아짐).
+- 발견: 이식 전·후 `event_scripts.o` 라벨 비교(새 `port/scriptcmp.py`)로 대기 명령이 새로 생긴 HnS 스크립트 3곳(신오 유적 아르세우스 방) — 전설 배틀 2곳은 special 뒤 `playbgm` 다음 `waitstate`라 이중 대기(소프트락), 구슬 페이드는 대기 추가. → `callnative`로 이식 전 동작 유지, 다시 비교해 그 3곳은 인코딩만 다름 확인. 매치콜 표를 만들 때 `0xFFFE` 치환이 새 `#define`까지 바꾼 실수, 정렬을 맞출 때 들여쓰기를 바꾼 실수 — 둘 다 1.17.1 파일 대조로 잡고 다시 만듦.
+- 수정 파일: 커밋 `376139af`(upstream 109파일 중 108 + 새 3파일, `data/maps/SinjohRuins_ArceusRoom_hns/scripts.inc`). 문서·도구 — `full-sync-seq-516.md`(새), `dev_scripts/hns_verify/port/scriptcmp.py`(새)·README, `port_sequence.tsv` 516, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. `verify_seq.sh 516 1cd6f5e3 <scratchpad>/v`.
+- 게임 화면 확인: 하지 않음 — 친구 실기 3항목(아르세우스 방 우선).
+- 친구 문자: 세션 답변 문안.
+- 다음 시작점: seq 517 #10061.
+
 ### 2026-10-29 — full-sync 묶음 80(seq 515 #9914 — 이미 같음) (클라우드 세션)
 
 - 요청: 사용자 "ㄱㄱ 515 시작해 혼자해도 되는거라면".

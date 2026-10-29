@@ -520,7 +520,7 @@ seq	pr	order	version	group	unit	deps	size	kind	korean_touch	save_impact	rom_est	
 513	10537	501	1.16.4	g4_ai_tests_pokemon_sprites	U-runnerinfra-10155	9805,9642,9807	S	test	N	N	~0(테스트 ELF만)	Move ResetTestInventory to fix flaky error	적용(seq 511 묶음 77에서 앞당김 — 재실행 가방 다시 채움, 도구 테스트 42개 FLAKY → FAIL 복구; 충돌 0) e4cd4538
 514	9900	1000000	1.15.3	g5_general_cleanup_docs	U-9900	-	S	build	N	N	~0	Expansion 1.15.2 release	보류(기록만 — 계획서대로 중간 버전 1.15.3으로 올리지 않음; 전체 동기화 완료 때 expansion.h를 1.17.1·TAGGED_RELEASE TRUE로 맞출지 사용자 확인; changelog·README·.github 제외) 문서 커밋
 515	9914	1000000	1.16.0	g5_general_cleanup_docs	U-berryanim-9168	9168	S	refactor	N	N	~0	Fix stray tab in C file	이미 적용(HnS battle_anim.c 열매 애니 줄이 seq 161 이식 때부터 공백 — upstream #9914 뒤와 바이트 같음; 기록만) 문서 커밋
-516	9986	1000000	1.15.3	g5_general_cleanup_docs	U-waitstate-9986	9881	XL	build	N	N	~0	15th of May, 2026 in [#9986](https://github.com/rh-hideout/pokeemerald-expansion/pull/9986)	
+516	9986	1000000	1.15.3	g5_general_cleanup_docs	U-waitstate-9986	9881	XL	build	N	N	~0	15th of May, 2026 in [#9986](https://github.com/rh-hideout/pokeemerald-expansion/pull/9986)	적용(암묵 waitstate·preproc 줄 표시·매치콜 레이블·GiveGiftRibbonToParty 분리·로머 BUGFIX; 충돌 12파일 — 배틀 애니는 HnS 형식 유지(바이트 같음), 신오 유적 아르세우스 방 3곳 callnative(이중 대기·대기 추가 방지), 매치콜 HnS 표 + upstream 이름; 스크립트 라벨 비교 port/scriptcmp.py; 어셈블러 경고 125는 517에서) 376139af
 517	10061	1000000	1.15.3	g5_general_cleanup_docs	U-waitstate-9986	9986	M	build	N	N	~0	📜 Migration script for pret#2200	
 518	10555	1000000	1.16.4	g5_general_cleanup_docs	U-pret-10555	10323,9986,9881	XL	refactor	Y	N	~0	Pret merge (30th of July 2026)	
 519	10718	2000001	1.17.1	g7_1.17.1	U-10718	-	S	data	N	N	미측정	Ban Pidgey from strict-eligibility sky battles	
