@@ -2,6 +2,16 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-29 — full-sync 묶음 75(seq 509 #10156, 재확인 112) (클라우드 세션)
+
+- 요청: 사용자 "ㄱㄱ 509 시작해 혼자해도 되는거라면".
+- 판단: 충돌 1곳(`CreateSpriteAtEnd`) — HnS에는 #9766(HnS 역사에 이미 있는 PR)의 슬롯 검사가 이식 전부터 없음 → 새 멈춤 화면을 만들지 않게 HnS 그대로(재확인 112). 호출부는 seq 349에서 이미 정리됨(HnS 전용 줄 1곳). `palette.pal`은 CRLF만 달라 HnS 파일을 `git mv`.
+- 수정 파일: 커밋 `9ecda50d`(`include/assertf.h`, `src/assertf.c`·`bg.c`·`malloc.c`·`sprite.c`(+HnS 주석)·`window.c`, `test/test_test_runner.c`, `graphics/crash_screen/assertf.pal`(이름 바꿈)·`fatalf.pal`(새)). 문서 — `full-sync-seq-509.md`(새), `RECHECK_BEFORE_COMPLETION.md` 112, `port_sequence.tsv` 509, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. `verify_seq.sh 509 8859e5c0 <scratchpad>/v`.
+- 게임 화면 확인: 하지 않았다(화면 변화 없음).
+- 친구 문자: 세션 답변 문안.
+- 다음 시작점: seq 510 #10155.
+
 ### 2026-10-29 — full-sync 묶음 74(seq 508 #9892) (클라우드 세션)
 
 - 요청: 사용자 "ㄱㄱ 508 시작해 혼자해도 되는거라면".
