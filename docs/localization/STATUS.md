@@ -6,7 +6,7 @@
 - **다음 할 일**
   1. ~~친구 문자(완료 단계, 긴 형식)~~ **보냄**(2026-10-30 사용자 확인). 친구 답·실기 대기(아래 3).
   2. **사용자 확인:** HnS `README.md` 38행 크레딧 줄("… Based off RHH's pokeemerald-expansion version 1.15.1 …")을 1.17.1로 바꿀지(HnS 문장이라 손대지 않음).
-  3. 친구 답·실기 대기: [`full-sync-completion-1.17.1.md`](../friend-handoff/results/1.17.0-port/full-sync-completion-1.17.1.md) 4절 — 결정 3b·23·**34**·37·70 (a)(b)·71·72·82·89 (1)·108, 한글 문구 9·10·10c·10g·11·42·47, 실기(이번 8m 팝업 순서·디버그 메뉴 버전 표시 + 재확인 25·60·65·81·104·111 + 묶음 47~87 후보), 묶음 66 친구 PC 빌드 확인. 답이 오면 행별로 반영(새 seq 없음 — 1.17.2·upcoming은 범위 밖).
+  3. 친구 답·실기 대기: [`full-sync-completion-1.17.1.md`](../friend-handoff/results/1.17.0-port/full-sync-completion-1.17.1.md) 4절 — 결정 3b·23·**34**·37·70 (a)(b)·71·72·82·89 (1)(108은 2026-10-30 반영), 한글 문구 9·10·10c·10g·11·42·47, 실기(이번 8m 팝업 순서·디버그 메뉴 버전 표시 + 재확인 25·60·65·81·104·111 + 묶음 47~87 후보), 묶음 66 친구 PC 빌드 확인. 답이 오면 행별로 반영(새 seq 없음 — 1.17.2·upcoming은 범위 밖).
 - **결과** [`full-sync-completion-1.17.1.md`](../friend-handoff/results/1.17.0-port/full-sync-completion-1.17.1.md), [`RECHECK_BEFORE_COMPLETION.md`](../friend-handoff/results/1.17.0-port/RECHECK_BEFORE_COMPLETION.md) 0절(점검 요약)·각 행 끝 "1.17.1 완료 점검 2026-10-30". 커밋 `17ec8742`(버전 상수 1.17.1)·`8436136c`(재확인 88 (1) 테스트 러너 `ITEM_POPUP` 제안, 테스트만)·`1fee21fa`(재확인 8m `waitabilitypopup` 3곳, 출력 변화 1행), 문서 이 커밋.
   - 닫은 행 17개(+60 코드 부분), 점검 중 찾은 빠뜨림 2건(88 (1)·8m — 계획에 있었는데 seq 511·394 때 안 넣음) 고침. 재확인 1은 1.17.1 코드에서 임시 테스트로 다시 재현(열어 둠).
 - **검증:** 버전 상수 `verify_seq.sh 514v 9aecbc8e`, 점검 수정 `verify_seq.sh 557c 17ec8742` — 둘 다 전체 재빌드 새 경고 0, 전체 테스트 목록 `test-baseline-seq556.txt`와 바이트 같음, 세이브 정적 PASS(FAIL 0, WARN 0), 한글 회귀 555/652 상태 줄 차이 0.

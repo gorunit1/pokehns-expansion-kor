@@ -38,4 +38,4 @@ ROM은 묶음 78과 같은 파일(커밋 `9bd02555`, SHA1 `eb35fac1…`).
 - 바뀌는 오브젝트는 `build/hns/src/debug.o`·`rom_header_rhh.o`뿐. 디버그 메뉴의 "Development Build" 문자열이 빠져 ROM 사용량 −16 B(32,977,940 B), 그 뒤 데이터 위치가 밀려 바이트 차이가 큼(배치 이동만).
 - 검증(`verify_seq.sh 514v 9aecbc8e`): 빌드 종료 0, SHA1 `d224fea6de4df1bea41ecf1267a9fb32ee3f1fd3`, 새 컴파일 경고 0, 테스트 목록 `test-baseline-seq556.txt`와 **바이트 같음**, 세이브 정적 비교 PASS(FAIL 0, WARN 0), 한글 회귀 555/652 `PASS (기대와 같음)`.
 - README의 "Based off … 1.15.1" 크레딧 줄은 HnS 문장이라 그대로(사용자 확인 대상).
-
+- 친구 답 2026-10-30: 버전 숫자 1.17.1 동의, `EXPANSION_TAGGED_RELEASE`는 FALSE 유지 → `6f13ac74`(디버그 메뉴 "Development Build" 다시 표시, `RHHEXP` flags 0). `full-sync-completion-1.17.1.md` 6절.
