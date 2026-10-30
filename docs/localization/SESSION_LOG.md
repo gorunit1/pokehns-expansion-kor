@@ -9,7 +9,7 @@
 - 수정 파일: 커밋 `860292b1`(`data/battle_anim_scripts.s`)·`6f13ac74`(`include/constants/expansion.h`)·`dddceca7`(`src/battle_gfx_sfx_util.c`)·`77888fde`(`include/battle.h`·`src/battle_hold_effects.c`·`src/battle_util.c`·테스트 2파일)·`9cfa17b2`(`src/battle_move_resolution.c`)·`aa04eeef`(`test/hns_post1171_bugfixes.c`)·`4c447b25`(`include/battle.h`·`src/battle_script_commands.c`·`src/battle_util.c`·테스트). 문서 — `post-1.17.1-bugfixes.md`(새), `FRIEND_REPLY/REQUEST_2026-10-30.md`(새), `test-baseline-post1171.txt`(새), `verify_seq.sh` 기준, `full-sync-completion-1.17.1.md` 6절, `RECHECK_BEFORE_COMPLETION.md` 108, `full-sync-seq-514.md`, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 2행, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. `verify_seq.sh post1171 cc6fe552 <scratchpad>/v3`.
 - 게임 화면 확인: 하지 않음 — 친구 실기(결과 문서 4절).
-- 친구 문자: 세션 답변 문안(보냄 표시 대기).
+- 친구 문자: 세션 답변 문안 — **보냄**(2026-10-30 사용자 확인).
 - 다음 시작점: 친구 실기·결정 답 반영.
 
 ### 2026-10-30 — full-sync 완료 단계(1.17.1): 버전 상수 + 재확인 표 점검 (클라우드 세션)

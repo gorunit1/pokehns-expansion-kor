@@ -4,7 +4,7 @@
 
 - **요청:** 친구 메시지 2통(사용자 전달) — [`FRIEND_REPLY_2026-10-30.md`](../friend-handoff/FRIEND_REPLY_2026-10-30.md)(재확인 108 매지컬리프 upstream 22프레임, 엔진 버전 숫자 1.17.1 + `EXPANSION_TAGGED_RELEASE` FALSE 유지), [`FRIEND_REQUEST_2026-10-30.md`](../friend-handoff/FRIEND_REQUEST_2026-10-30.md)(1.17.1 뒤 upstream 버그 수정 8건 — 먼저 대조·재현, 필요한 것만).
 - **다음 할 일**
-  1. **친구 문자(긴 형식)** — 세션 답변 문안(두 요청 결과를 구분). 사용자가 보냈다고 하면 여기와 SESSION_LOG에 **보냄** 표시.
+  1. ~~친구 문자(긴 형식, 두 요청 결과 구분)~~ **보냄**(2026-10-30 사용자 확인). 친구 실기·결정 답 대기(아래 2).
   2. 친구 실기 대기: [`post-1.17.1-bugfixes.md`](../friend-handoff/results/1.17.0-port/post-1.17.1-bugfixes.md) 4절(2대1 HP 박스·구슬·난기류·훔친 야생 도구) + 매지컬리프 타이밍·디버그 메뉴 버전 표시 + 아래 완료 단계 절 3의 남은 결정·한글 문구·실기.
   3. 사용자 확인(그대로): HnS `README.md` 38행 크레딧 줄("… 1.15.1").
 - **결과**
