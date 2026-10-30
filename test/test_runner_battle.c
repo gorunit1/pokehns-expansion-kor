@@ -963,9 +963,20 @@ void TestRunner_Battle_RecordItemPopUp(enum BattlerId battlerId, enum Item item)
     {
     case QUEUE_GROUP_NONE:
     case QUEUE_GROUP_ONE_OF:
-        // HnS: no "Did you mean" suggestion for ITEM_POPUP (upstream #9807 has none to copy).
         if (TryItemPopUp(DATA.trial.queuedEvent, event->groupSize, battlerId, item) != -1)
+        {
             DATA.trial.queuedEvent += event->groupSize;
+        }
+        else if (DATA.trial.queuedEvent == DATA.queuedEventsFailIndex
+              && DATA.queuedEvents[DATA.queuedEventsFailIndex].type == QUEUED_ITEM_POPUP_EVENT)
+        {
+            const char *filename = gTestRunnerState.test->filename;
+            u32 line = SourceLine(DATA.queuedEvents[DATA.queuedEventsFailIndex].sourceLineOffset);
+            if (DATA.queuedEvents[DATA.queuedEventsFailIndex].as.item.item == ITEM_NONE)
+                Test_MgbaPrintf("%s:%d: Did you mean: ITEM_POPUP(%s)", filename, line, BattlerIdentifier(battlerId));
+            else
+                Test_MgbaPrintf("%s:%d: Did you mean: ITEM_POPUP(%s, ITEM_%C)", filename, line, BattlerIdentifier(battlerId), gAbilitiesInfo[item].name);
+        }
         break;
     case QUEUE_GROUP_NONE_OF:
         queuedEvent = DATA.trial.queuedEvent;
