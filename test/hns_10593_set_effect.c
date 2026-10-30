@@ -50,10 +50,11 @@ SINGLE_BATTLE_TEST("HnS 10593: Incinerate does not burn a Sticky Hold Pokemon's 
         TURN { MOVE(player, MOVE_INCINERATE); }
     } SCENE {
         MESSAGE("마자용은 불태우기를 썼다!");
+        // 2026-10-30 재확인 47(친구 요청): 도구 이름 뒤 목적격 조사 — "오랭열매는" → "오랭열매를"
         if (ability == ABILITY_STICKY_HOLD)
-            NOT MESSAGE("상대 꼴깍몬의 오랭열매는 녹여 버렸다!");
+            NOT MESSAGE("상대 꼴깍몬의 오랭열매를 녹여 버렸다!");
         else
-            MESSAGE("상대 꼴깍몬의 오랭열매는 녹여 버렸다!");
+            MESSAGE("상대 꼴깍몬의 오랭열매를 녹여 버렸다!");
     } THEN {
         if (ability == ABILITY_STICKY_HOLD)
             EXPECT_EQ(opponent->item, ITEM_ORAN_BERRY);
