@@ -10,7 +10,7 @@
 - 수정 파일: 커밋 `17ec8742`(`include/constants/expansion.h`)·`8436136c`(`test/test_runner_battle.c`)·`1fee21fa`(`data/battle_scripts_1.s`). 문서 — `full-sync-completion-1.17.1.md`(새), `RECHECK_BEFORE_COMPLETION.md`(0절 + 행 33개), `full-sync-seq-514.md` 뒤이어, `port_sequence.tsv` 514, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 1행, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. `verify_seq.sh 514v 9aecbc8e <scratchpad>/v`, `verify_seq.sh 557c 17ec8742 <scratchpad>/v2`.
 - 게임 화면 확인: 하지 않음 — 친구 실기(8m 팝업 순서 등, 결과 문서 4절).
-- 친구 문자: 완료 단계 — 세션 답변 문안(보냄 표시 대기).
+- 친구 문자: 완료 단계 — 세션 답변 문안 — **보냄**(2026-10-30 사용자 확인).
 - 다음 시작점: 친구 답·실기 결과 반영, README 크레딧 줄 사용자 확인.
 
 ### 2026-10-29 — full-sync 묶음 87(seq 547~556) — 순서표 끝 (클라우드 세션)
