@@ -1,12 +1,25 @@
 # 현재 인수인계 상태
 
-## 2026-10-29 — full-sync 묶음 87(seq 547~556, 1.17.1-C) — **순서표 seq 1~556 이식 끝(목표 1.17.1)** (현재, 클라우드 세션)
+## 2026-10-30 — full-sync 완료 단계(1.17.1 기준): 버전 상수 + 재확인 표 점검 (현재, 클라우드 세션)
+
+- **요청:** 사용자 "버전 상수 맞추고 완료 단계도 혼자 할 수 있는 거라면 ㄱㄱ"(2026-10-30). 혼자 할 수 있는 것은 끝냄 — 남은 것은 친구 결정·한글 문구·실기.
+- **다음 할 일**
+  1. **친구 문자(완료 단계, 긴 형식)** — 세션 답변 문안. 사용자가 보냈다고 하면 여기와 SESSION_LOG에 **보냄** 표시.
+  2. **사용자 확인:** HnS `README.md` 38행 크레딧 줄("… Based off RHH's pokeemerald-expansion version 1.15.1 …")을 1.17.1로 바꿀지(HnS 문장이라 손대지 않음).
+  3. 친구 답·실기 대기: [`full-sync-completion-1.17.1.md`](../friend-handoff/results/1.17.0-port/full-sync-completion-1.17.1.md) 4절 — 결정 3b·23·**34**·37·70 (a)(b)·71·72·82·89 (1)·108, 한글 문구 9·10·10c·10g·11·42·47, 실기(이번 8m 팝업 순서·디버그 메뉴 버전 표시 + 재확인 25·60·65·81·104·111 + 묶음 47~87 후보), 묶음 66 친구 PC 빌드 확인. 답이 오면 행별로 반영(새 seq 없음 — 1.17.2·upcoming은 범위 밖).
+- **결과** [`full-sync-completion-1.17.1.md`](../friend-handoff/results/1.17.0-port/full-sync-completion-1.17.1.md), [`RECHECK_BEFORE_COMPLETION.md`](../friend-handoff/results/1.17.0-port/RECHECK_BEFORE_COMPLETION.md) 0절(점검 요약)·각 행 끝 "1.17.1 완료 점검 2026-10-30". 커밋 `17ec8742`(버전 상수 1.17.1)·`8436136c`(재확인 88 (1) 테스트 러너 `ITEM_POPUP` 제안, 테스트만)·`1fee21fa`(재확인 8m `waitabilitypopup` 3곳, 출력 변화 1행), 문서 이 커밋.
+  - 닫은 행 17개(+60 코드 부분), 점검 중 찾은 빠뜨림 2건(88 (1)·8m — 계획에 있었는데 seq 511·394 때 안 넣음) 고침. 재확인 1은 1.17.1 코드에서 임시 테스트로 다시 재현(열어 둠).
+- **검증:** 버전 상수 `verify_seq.sh 514v 9aecbc8e`, 점검 수정 `verify_seq.sh 557c 17ec8742` — 둘 다 전체 재빌드 새 경고 0, 전체 테스트 목록 `test-baseline-seq556.txt`와 바이트 같음, 세이브 정적 PASS(FAIL 0, WARN 0), 한글 회귀 555/652 상태 줄 차이 0.
+- **ROM(실기용, 최신):** 커밋 `1fee21fa`, SHA1 **`39f00d95b8414660879502db9f13a1ebed377a31`**, 사용 32,977,956 B, 파일 33,554,432 B, 클라우드 컨테이너 `make hns -j8`, arm-none-eabi-gcc 13.2.1. **실기: 하지 않음(친구).**
+- 새 세션 준비·작업 규칙은 아래 묶음 87 절 그대로.
+
+## 2026-10-29 — full-sync 묶음 87(seq 547~556, 1.17.1-C) — **순서표 seq 1~556 이식 끝(목표 1.17.1)** (클라우드 세션)
 
 - **요청:** 사용자 "혼자 할 수 있는 작업은 최대한 많이 하고 한 번에 메시지", "자러 간다, 일어나서 한 번에 확인"(2026-10-29). 묶음 83~87을 혼자 진행하고 여기서 멈춤 — 남은 일은 사용자 확인·친구 실기가 필요한 완료 단계.
 - **다음 할 일**
   1. ~~친구 문자 합본(묶음 83~87, 긴 형식)~~ **보냄**(2026-10-30 사용자 확인). 실기 답 대기.
-  2. **동기화 완료 단계(확장 계획 6절 4):** [`RECHECK_BEFORE_COMPLETION.md`](../friend-handoff/results/1.17.0-port/RECHECK_BEFORE_COMPLETION.md) 전체 재확인 → 최종 인계(1.17.1 기준). 친구 답·실기 결과가 필요한 항목이 많음.
-  3. **사용자 확인:** `include/constants/expansion.h`를 upstream 1.17.1 값(`1.17.1`, `EXPANSION_TAGGED_RELEASE TRUE`)으로 맞출지(seq 514 보류분 — ROM 헤더 RHH 버전 필드·디버그 메뉴 표시만 바뀜). HnS `README.md` 크레딧 줄("… 1.15.1")도 같이 볼 후보.
+  2. ~~동기화 완료 단계~~ → 2026-10-30 위 절에서 함. **(옛 메모)** [`RECHECK_BEFORE_COMPLETION.md`](../friend-handoff/results/1.17.0-port/RECHECK_BEFORE_COMPLETION.md) 전체 재확인 → 최종 인계(1.17.1 기준). 친구 답·실기 결과가 필요한 항목이 많음.
+  3. ~~사용자 확인: 버전 상수~~ → 2026-10-30 `17ec8742`. **(옛 메모)** `include/constants/expansion.h`를 upstream 1.17.1 값(`1.17.1`, `EXPANSION_TAGGED_RELEASE TRUE`)으로 맞출지(seq 514 보류분 — ROM 헤더 RHH 버전 필드·디버그 메뉴 표시만 바뀜). HnS `README.md` 크레딧 줄("… 1.15.1")도 같이 볼 후보.
   4. 친구 답 대기: 89 (1) 메모, 82, 72, 70 (a)(b), 71, 69, 실기 결과(묶음 47~65 후보 + 묶음 70 도감 + 묶음 73 콘테스트 + 묶음 74·75 크래시 화면 나오면 사진 + 묶음 81 아르세우스 방 3항목 + 묶음 83~87 실기 후보 — 합본 문자), 묶음 66 친구 PC 빌드 확인.
 - **새 세션(클라우드) 준비 — full-sync 이어 하기:**
   - upstream 읽기 전용 사본: `git clone https://github.com/rh-hideout/pokeemerald-expansion.git ../pokeemerald-expansion-upstream && git -C ../pokeemerald-expansion-upstream fetch --tags`(없을 때만). seq의 upstream 커밋은 `git -C ../pokeemerald-expansion-upstream log --all --oneline --grep='(#<PR>)'`.

@@ -2,6 +2,17 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-30 — full-sync 완료 단계(1.17.1): 버전 상수 + 재확인 표 점검 (클라우드 세션)
+
+- 요청: 사용자 "버전 상수 맞추고 완료 단계도 혼자 할 수 있는 거라면 ㄱㄱ".
+- 판단: `expansion.h`는 1.17.1 파일 그대로(README 크레딧 줄은 HnS 문장이라 그대로, 사용자 확인). 재확인 표는 해결 칸이 빈 행을 1.17.1 태그·HEAD와 대조 — 닫을 수 있는 17행 닫고, upstream 미수정 행은 HnS 줄 유지로 적음. 88 (1)·8m은 계획에 있던 일을 그 seq 때 빠뜨린 것이라 고침(8m은 친구 Q10 결정 그대로라 혼자 넣음, 실기 확인 필요로 표시). 재확인 1은 임시 테스트로 1.17.1 코드에서 재현 확인만(친구 결정대로 고치지 않음).
+- 작업 방식 메모: 버전 상수 검증이 저장소에서 `make check`를 도는 중에 테스트 러너를 고쳤다가, 검증에 섞이지 않게 그 파일만 되돌리고(패치는 세션 임시 폴더) 검증 뒤 다시 적용함.
+- 수정 파일: 커밋 `17ec8742`(`include/constants/expansion.h`)·`8436136c`(`test/test_runner_battle.c`)·`1fee21fa`(`data/battle_scripts_1.s`). 문서 — `full-sync-completion-1.17.1.md`(새), `RECHECK_BEFORE_COMPLETION.md`(0절 + 행 33개), `full-sync-seq-514.md` 뒤이어, `port_sequence.tsv` 514, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 1행, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. `verify_seq.sh 514v 9aecbc8e <scratchpad>/v`, `verify_seq.sh 557c 17ec8742 <scratchpad>/v2`.
+- 게임 화면 확인: 하지 않음 — 친구 실기(8m 팝업 순서 등, 결과 문서 4절).
+- 친구 문자: 완료 단계 — 세션 답변 문안(보냄 표시 대기).
+- 다음 시작점: 친구 답·실기 결과 반영, README 크레딧 줄 사용자 확인.
+
 ### 2026-10-29 — full-sync 묶음 87(seq 547~556) — 순서표 끝 (클라우드 세션)
 
 - 요청: 합본 방침(사용자 취침 중). 여기서 멈춤 — 남은 완료 단계는 사용자 확인·친구 실기 필요.

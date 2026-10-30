@@ -31,3 +31,11 @@ ROM은 묶음 78과 같은 파일(커밋 `9bd02555`, SHA1 `eb35fac1…`).
 
 - seq 515 #9914(C 파일의 남은 탭 문자 정리), 516 #9986(pret 병합 2026-05-15, XL). 목표 1.17.1.
 - 전체 동기화 완료 때: 버전 상수 1.17.1 맞춤 여부 사용자 확인(위).
+
+## 뒤이어 (2026-10-30, 동기화 완료 단계)
+
+- 사용자 "버전 상수 맞추고 완료 단계도 혼자 할 수 있는 거라면 ㄱㄱ"(2026-10-30) → `17ec8742`: `include/constants/expansion.h`를 1.17.1 파일 그대로(`EXPANSION_VERSION_*` 1·17·1, `EXPANSION_TAGGED_RELEASE TRUE`, 주석 `// Last version: 1.17.1`).
+- 바뀌는 오브젝트는 `build/hns/src/debug.o`·`rom_header_rhh.o`뿐. 디버그 메뉴의 "Development Build" 문자열이 빠져 ROM 사용량 −16 B(32,977,940 B), 그 뒤 데이터 위치가 밀려 바이트 차이가 큼(배치 이동만).
+- 검증(`verify_seq.sh 514v 9aecbc8e`): 빌드 종료 0, SHA1 `d224fea6de4df1bea41ecf1267a9fb32ee3f1fd3`, 새 컴파일 경고 0, 테스트 목록 `test-baseline-seq556.txt`와 **바이트 같음**, 세이브 정적 비교 PASS(FAIL 0, WARN 0), 한글 회귀 555/652 `PASS (기대와 같음)`.
+- README의 "Based off … 1.15.1" 크레딧 줄은 HnS 문장이라 그대로(사용자 확인 대상).
+
