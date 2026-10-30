@@ -56,20 +56,26 @@ static bool32 ShouldRunTrainerSlideLastLowHp(u32 lastId, enum BattlerId battler,
 static void SetTrainerSlideParameters(enum BattlerId battler, u32* lastId, u32* trainerId, u32* retValue);
 static bool32 IsSlideInitalizedOrPlayed(enum BattlerId battler, enum TrainerSlideType slideId);
 
-// Partner trainers must be added as TRAINER_PARTNER(PARTNER_XXXX)
-static const u8* const sTrainerSlides[DIFFICULTY_COUNT][TRAINER_PARTNER(PARTNER_COUNT)][TRAINER_SLIDE_COUNT] =
+// HnS: no trainer has slide messages, so upstream's [DIFFICULTY_COUNT][trainer][slide] pointer tables
+// (sTrainerSlides 271,440 B, sFrontierTrainerSlides 99,840 B, all NULL) are replaced by this list of trainers that
+// have them, ended by TRAINER_SLIDE_LIST_END (recheck 71, friend 2026-10-30). Everyone else reads sNoTrainerSlides.
+// Partner trainers must be added as TRAINER_PARTNER(PARTNER_XXXX); Frontier trainers use isFrontier = TRUE.
+#define TRAINER_SLIDE_LIST_END 0xFFFF
+
+struct HnsTrainerSlides
 {
-    [DIFFICULTY_NORMAL] =
-    {
-    },
+    u16 trainerId;
+    u8 difficulty;
+    bool8 isFrontier;
+    const u8 *slides[TRAINER_SLIDE_COUNT];
 };
 
-static const u8* const sFrontierTrainerSlides[DIFFICULTY_COUNT][FRONTIER_TRAINERS_COUNT][TRAINER_SLIDE_COUNT] =
+static const struct HnsTrainerSlides sHnsTrainerSlides[] =
 {
-    [DIFFICULTY_NORMAL] =
-    {
-    },
+    { .trainerId = TRAINER_SLIDE_LIST_END },
 };
+
+static const u8 *const sNoTrainerSlides[TRAINER_SLIDE_COUNT] = {0};
 
 #define TRAINER_RED_TEST    1
 #define TRAINER_LEAF_TEST   2
@@ -125,10 +131,14 @@ static const u8* const *GetTrainerSlideArray(enum DifficultyLevel difficulty, u3
 #if TESTING
     return (FlagGet(TESTING_FLAG_TRAINER_SLIDES) ? sTestTrainerSlides[difficulty][trainerId] : NULL);
 #else
-    if (gBattleTypeFlags & BATTLE_TYPE_FRONTIER)
-        return sFrontierTrainerSlides[difficulty][trainerId];
-    else
-        return sTrainerSlides[difficulty][trainerId];
+    bool32 isFrontier = (gBattleTypeFlags & BATTLE_TYPE_FRONTIER) != 0;
+
+    for (const struct HnsTrainerSlides *entry = sHnsTrainerSlides; entry->trainerId != TRAINER_SLIDE_LIST_END; entry++)
+    {
+        if (entry->trainerId == trainerId && entry->difficulty == difficulty && entry->isFrontier == isFrontier)
+            return entry->slides;
+    }
+    return sNoTrainerSlides;
 #endif // TESTING
 }
 
