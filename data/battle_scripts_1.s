@@ -234,6 +234,8 @@ BattleScript_ConsumableBerryStatRaiseRipen::
 	return
 
 BattleScript_ConsumableItemStatRaise::
+	@ HnS: let an ability pop-up on screen leave before the item pop-up (friend Q10, recheck 8m)
+	waitabilitypopup
 	call BattleScript_ItemPopUp_Scripting
 BattleScript_ConsumableItemStatRaiseNoPopup:
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT
@@ -5595,6 +5597,8 @@ BattleScript_BerryPPHeal_Anim:
 
 BattleScript_AirBalloonMsgInRet::
 	@ HnS: item pop-up as in Champions (none in upstream 1.17.0; upcoming #10759 adds the same call here)
+	@ HnS: let an ability pop-up on screen leave before the item pop-up (friend Q10, recheck 8m)
+	waitabilitypopup
 	call BattleScript_ItemPopUp_Scripting
 	printstring STRINGID_AIRBALLOONFLOAT
 	waitmessage B_WAIT_TIME_LONG
@@ -5631,6 +5635,8 @@ BattleScript_ItemHurtWithAnim::
 	return
 
 BattleScript_ItemHealHP_Ret::
+	@ HnS: let an ability pop-up on screen leave before the item pop-up (friend Q10, recheck 8m)
+	waitabilitypopup
 	call BattleScript_ItemPopUp_Attacker
 	playanimation BS_ATTACKER, B_ANIM_HELD_ITEM_EFFECT
 	playanimation BS_ATTACKER, B_ANIM_SIMPLE_HEAL
