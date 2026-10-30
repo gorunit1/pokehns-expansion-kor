@@ -9,7 +9,7 @@
 - 수정 파일: 커밋 8개(결과 문서 표). 문서 — `full-sync-seq-547-556.md`(새), `test-baseline-seq556.txt`(새), `verify_seq.sh` 기준, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 2행 + 문단, `port_sequence.tsv` 547~556, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. `verify_seq.sh 556 b8fca148 <scratchpad>/v`.
 - 게임 화면 확인: 하지 않음 — 친구 실기 후보(결과 문서·합본 문자).
-- 친구 문자: 묶음 83~87 합본 — 세션 답변 문안.
+- 친구 문자: 묶음 83~87 합본 — 세션 답변 문안 — **보냄**(2026-10-30 사용자 확인).
 - 다음 시작점: 완료 단계(`RECHECK_BEFORE_COMPLETION.md` 전체 재확인), 사용자 확인(버전 상수).
 
 ### 2026-10-29 — full-sync 묶음 86(seq 529~546) (클라우드 세션)
