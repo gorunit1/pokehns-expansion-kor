@@ -10,7 +10,7 @@
 - 수정 파일: 결과 문서 표. 문서 — `followup-2026-10-30b.md`(새), `FRIEND_REPLY_2026-10-30b.md`(새), `RECHECK_BEFORE_COMPLETION.md`(0절 + 17행 + 새 114), `test-baseline-f1030b.txt`(새), `verify_seq.sh` 기준, STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. `verify_seq.sh f1030b 5ec37f82 <scratchpad>/v4`.
 - 게임 화면 확인: 하지 않음 — 친구 QA.
-- 친구 문자: 세션 답변 문안(보냄 표시 대기).
+- 친구 문자: **보냄**(2026-10-30 사용자 확인).
 - 다음 시작점: 친구 결정·실기 결과 반영.
 
 ### 2026-10-30 — README 크레딧 줄 1.17.1 (클라우드 세션)
