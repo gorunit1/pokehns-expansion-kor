@@ -823,8 +823,18 @@ bool8 BattleLoadAllHealthBoxesGfx(u8 state)
             }
             else if (state == 4)
             {
-                GetDoublesOpponentHealthbox(doublesSheets);
-                LoadCompressedSpriteSheet(&doublesSheets[0]);
+                // HnS: from upstream #10866 (2 vs 1 with one opposing mon uses the singles opponent box), keeping the HnS sheet getters
+                switch (GetBattlerCoordsIndex(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)))
+                {
+                default:
+                    GetDoublesOpponentHealthbox(doublesSheets);
+                    LoadCompressedSpriteSheet(&doublesSheets[0]);
+                    break;
+                case BATTLE_COORDS_SINGLES:
+                    sheet = GetSinglesOpponentHealthbox();
+                    LoadCompressedSpriteSheet(&sheet);
+                    break;
+                }
             }
             else if (state == 5)
             {
