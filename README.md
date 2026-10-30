@@ -35,8 +35,10 @@ For example:
 
 <!-- TODO: confirm the closest applicable expansion version number -->
 ```
-pokemonHnS-expansion 2.0 is Based off RHH's pokeemerald-expansion version 1.17.1 https://github.com/rh-hideout/pokemonHnS-expansion/
+pokemonHnS-expansion 2.0 is Based off RHH's pokeemerald-expansion version 1.15.1 https://github.com/rh-hideout/pokemonHnS-expansion/
 ```
+
+이 한국어 패치는 pokeemerald-expansion 1.17.1까지의 변경 사항을 통합한 HnS를 기반으로 합니다.
 
 Finally, please consider [crediting all contributors](CREDITS.md) involved in the project!
 
