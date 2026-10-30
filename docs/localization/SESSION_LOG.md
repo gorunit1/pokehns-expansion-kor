@@ -2,6 +2,16 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-10-30 — 친구 답(매지컬리프·엔진 버전) + upstream 버그 수정 8건 (클라우드 세션)
+
+- 요청: 친구 메시지 2통(사용자 전달, `FRIEND_REPLY_2026-10-30.md`·`FRIEND_REQUEST_2026-10-30.md`). 사용자 "두 개 다 확인하고 작업하는 거지?" → 둘 다.
+- 판단: 매지컬리프는 친구 결정대로 upstream 형태(타격은 앞당기지 않음). 버전은 숫자는 이미 1.17.1이라 플래그만 FALSE로. 버그 수정은 PR마다 diff·HnS 대조 → 테스트로 수정 전 재현 → 필요한 줄만. #10953·#10933은 upcoming에서 생긴 회귀라 HnS(1.17.1)에 없음, #10910·#10596은 HnS가 이미 막아 둠(재확인 86·20). #10866은 HnS getter로 상대 쪽 갈래만, #10878은 재현된 도둑질+포획 복제만(upstream과 같은 결과, 구조 변경은 안 받음). upstream 테스트 중 영문 문장·볼 사용 규칙 때문에 HnS에서 의미 없거나 INVALID인 것은 HnS 한글 테스트로 같은 장면을 씀.
+- 수정 파일: 커밋 `860292b1`(`data/battle_anim_scripts.s`)·`6f13ac74`(`include/constants/expansion.h`)·`dddceca7`(`src/battle_gfx_sfx_util.c`)·`77888fde`(`include/battle.h`·`src/battle_hold_effects.c`·`src/battle_util.c`·테스트 2파일)·`9cfa17b2`(`src/battle_move_resolution.c`)·`aa04eeef`(`test/hns_post1171_bugfixes.c`)·`4c447b25`(`include/battle.h`·`src/battle_script_commands.c`·`src/battle_util.c`·테스트). 문서 — `post-1.17.1-bugfixes.md`(새), `FRIEND_REPLY/REQUEST_2026-10-30.md`(새), `test-baseline-post1171.txt`(새), `verify_seq.sh` 기준, `full-sync-completion-1.17.1.md` 6절, `RECHECK_BEFORE_COMPLETION.md` 108, `full-sync-seq-514.md`, `BATTLE_MESSAGE_OUTPUT_CHANGES.md` 2행, STATUS·SESSION_LOG.
+- 검증: STATUS 현재 절. `verify_seq.sh post1171 cc6fe552 <scratchpad>/v3`.
+- 게임 화면 확인: 하지 않음 — 친구 실기(결과 문서 4절).
+- 친구 문자: 세션 답변 문안(보냄 표시 대기).
+- 다음 시작점: 친구 실기·결정 답 반영.
+
 ### 2026-10-30 — full-sync 완료 단계(1.17.1): 버전 상수 + 재확인 표 점검 (클라우드 세션)
 
 - 요청: 사용자 "버전 상수 맞추고 완료 단계도 혼자 할 수 있는 거라면 ㄱㄱ".

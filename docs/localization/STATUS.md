@@ -1,6 +1,20 @@
 # 현재 인수인계 상태
 
-## 2026-10-30 — full-sync 완료 단계(1.17.1 기준): 버전 상수 + 재확인 표 점검 (현재, 클라우드 세션)
+## 2026-10-30 — 친구 답(매지컬리프·엔진 버전) + 1.17.1 뒤 upstream 버그 수정 8건 선택 이식 (현재, 클라우드 세션)
+
+- **요청:** 친구 메시지 2통(사용자 전달) — [`FRIEND_REPLY_2026-10-30.md`](../friend-handoff/FRIEND_REPLY_2026-10-30.md)(재확인 108 매지컬리프 upstream 22프레임, 엔진 버전 숫자 1.17.1 + `EXPANSION_TAGGED_RELEASE` FALSE 유지), [`FRIEND_REQUEST_2026-10-30.md`](../friend-handoff/FRIEND_REQUEST_2026-10-30.md)(1.17.1 뒤 upstream 버그 수정 8건 — 먼저 대조·재현, 필요한 것만).
+- **다음 할 일**
+  1. **친구 문자(긴 형식)** — 세션 답변 문안(두 요청 결과를 구분). 사용자가 보냈다고 하면 여기와 SESSION_LOG에 **보냄** 표시.
+  2. 친구 실기 대기: [`post-1.17.1-bugfixes.md`](../friend-handoff/results/1.17.0-port/post-1.17.1-bugfixes.md) 4절(2대1 HP 박스·구슬·난기류·훔친 야생 도구) + 매지컬리프 타이밍·디버그 메뉴 버전 표시 + 아래 완료 단계 절 3의 남은 결정·한글 문구·실기.
+  3. 사용자 확인(그대로): HnS `README.md` 38행 크레딧 줄("… 1.15.1").
+- **결과**
+  - 친구 답: `860292b1`(매지컬리프 = 1.17.1 애니 블록·매크로와 같음, `delay 30`·`target_both=FALSE` 유지), `6f13ac74`(`EXPANSION_TAGGED_RELEASE FALSE` — 숫자 1.17.1은 `17ec8742`). 정적 확인: `RHHEXP` 헤더 `[1, 17, 1, 0]`, 디버그 `BufferExpansionVersion` = 1·17·1 + `Development Build`. 빌드만(전체 검사는 아래 버그 수정 묶음 검증에 포함), 실기 미실행. [`full-sync-completion-1.17.1.md`](../friend-handoff/results/1.17.0-port/full-sync-completion-1.17.1.md) 6절. 엔진 버전 1.17.1 표시 ≠ 최종 검증·통합·배포 완료.
+  - 버그 수정 8건: APPLIED #10866 `dddceca7`(상대 쪽만, HnS getter)·#10974 `77888fde`(+ upstream 테스트 2)·#10972 `9cfa17b2`·#10878 일부 `4c447b25`(훔친 야생 도구 + 포획 복제만), NOT AFFECTED #10953·#10933(upcoming 회귀), ALREADY FIXED #10910(재확인 86)·#10596(재확인 20). HnS 회귀 테스트 `test/hns_post1171_bugfixes.c`(`aa04eeef`·`4c447b25`, 6개). 출력 변화 2행(#10972·#10974).
+- **검증(`verify_seq.sh post1171 cc6fe552`, 코드 `4c447b25`):** 전체 재빌드 새 경고 0, 전체 테스트 기준(seq556) 대비 새 PASS 8·사라진 PASS 0 → 새 기준 `test-baseline-post1171.txt`, 세이브 정적 PASS(FAIL 0, WARN 0), 한글 회귀 555/652 상태 줄 차이 0.
+- **ROM(실기용, 최신):** 커밋 `4c447b25`, SHA1 **`c5132aa0808210d23b4ab52d4cc2e3d13adfe080`**, 사용 32,978,292 B, 파일 33,554,432 B, 클라우드 컨테이너 `make hns -j8`, arm-none-eabi-gcc 13.2.1. **실기: 하지 않음(친구).**
+- 새 세션 준비·작업 규칙은 아래 묶음 87 절 그대로. upstream 사본은 `git -C ../pokeemerald-expansion-upstream fetch origin`(master·upcoming 필요).
+
+## 2026-10-30 — full-sync 완료 단계(1.17.1 기준): 버전 상수 + 재확인 표 점검 (클라우드 세션)
 
 - **요청:** 사용자 "버전 상수 맞추고 완료 단계도 혼자 할 수 있는 거라면 ㄱㄱ"(2026-10-30). 혼자 할 수 있는 것은 끝냄 — 남은 것은 친구 결정·한글 문구·실기.
 - **다음 할 일**
