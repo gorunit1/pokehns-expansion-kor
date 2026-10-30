@@ -353,6 +353,8 @@
 #define B_OVERWORLD_SNOW                GEN_LATEST // In Gen9+, overworld snow will summon snow instead of hail in battle.
 #define B_SNOW_WARNING                  GEN_LATEST // In Gen9+, Snow Warning will summon snow instead of hail.
 #define B_PREFERRED_ICE_WEATHER         B_ICE_WEATHER_BOTH // Toggles hail move effects to snow and vice versa.
+// HnS: GEN_8 keeps the overworld weather overridable by weather moves and abilities, as in HGSS and HnS before #10454.
+// The Gen9 rule is supported but off here (recheck 82, friend 2026-10-30). Upstream uses GEN_LATEST.
 #define B_OVERWORLD_WEATHER_OVERRIDE    GEN_8 // In Gen9+, overworld weather cannot be overridden.
 
 // Terrain settings
