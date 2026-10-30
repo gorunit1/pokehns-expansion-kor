@@ -1,6 +1,20 @@
 # 현재 인수인계 상태
 
-## 2026-10-30 — 친구 답(매지컬리프·엔진 버전) + 1.17.1 뒤 upstream 버그 수정 8건 선택 이식 (현재, 클라우드 세션)
+## 2026-10-30 — 친구 후속 요청(2): README 복원, 승인 항목 70·71·72·82, 한글 문구 7개, 34·37·89(1) 설명 (현재, 클라우드 세션)
+
+- **요청:** [`FRIEND_REPLY_2026-10-30b.md`](../friend-handoff/FRIEND_REPLY_2026-10-30b.md)(사용자 전달). 이 작업환경(클라우드)에서만 — 친구 QA 환경·메인 로컬과 별개.
+- **다음 할 일**
+  1. **친구 문자(긴 형식)** — 세션 답변 문안. 사용자가 보냈다고 하면 여기와 SESSION_LOG에 **보냄** 표시.
+  2. 친구 결정 대기: 34(노가드×프리폴 hunk)·37(팝업 등장 대기 수정 2)·89 (1)(원인 확정 — 테스트 세이브의 페어리 타입 설정 0, 게임 코드 문제 아님; 테스트 쪽에서 설정을 켤지), 70 PC 꽉 참 설계(권장: 보충 안 함 = 지금 동작), 9·47 공식 본문 교체(텔레키네시스 `허공에 띄웠다`, 불사르기 `불타 없어졌다`), 114 훔친 도구 + 가방 꽉 참(권장: PC 도구 보관함), 82 별도 설정 이름이 필요한지.
+  3. 친구 실기 대기: [`followup-2026-10-30b.md`](../friend-handoff/results/1.17.0-port/followup-2026-10-30b.md) 8절 + [`post-1.17.1-bugfixes.md`](../friend-handoff/results/1.17.0-port/post-1.17.1-bugfixes.md) 4절 + 23·3b 등.
+- **결과** [`followup-2026-10-30b.md`](../friend-handoff/results/1.17.0-port/followup-2026-10-30b.md). 커밋 `5ec37f82`(README 원문 복원 + 한국어 패치 한 줄)·`338a5ebd`(70)·`5a6b3cf4`(72)·`832b1a51`(71, ROM −371,424 B)·`2771db5c`(문구 6-1·6-2·6-5·6-7 + 테스트)·`099344de`(6-6)·`77633a52`(82 주석 + 기준 목록), 문서 이 커밋.
+  - 89 (1) 드래곤애로우 AI 테스트 FAIL 원인: HnS 챌린지 설정 "페어리 타입"(`tx_Mode_Fairy_Types`)이 자동 테스트 세이브에선 0 → 푸크린이 노말 단일 타입이라 드래곤 무효가 아님. 새 게임 기본 1로 같은 장면을 돌리면 PASS(임시 사본, 커밋 안 함). upstream 1.17.1은 Emerald·`GEN_CHAMPIONS`·AI 굴림 MEDIAN 모두 PASS(세션 임시 worktree, 지움).
+  - 6-3 거다이맥스: 공식 시스템 문장 없음 → 영문 유지. 6-4 클래스명 공백: 현재 한글 경로에서 재현 안 됨(코드 수정 없음). 6-7 참고 행(Champions 1496~1499)은 부식가스 문장이었음 — 불사르기 공식은 SV 7709.
+- **검증(`verify_seq.sh f1030b 5ec37f82`, 코드 `099344de`):** 새 경고 0, 전체 테스트 새 PASS 20·사라진 PASS 4(= 이름 바뀐 너즐록 테스트 4, 새 이름으로 PASS) → 새 기준 `test-baseline-f1030b.txt`, 세이브 정적 PASS, 한글 회귀 555/652 상태 줄 차이 0. `77633a52`(주석) 뒤 SHA1 같음.
+- **ROM(실기용, 최신):** 커밋 `77633a52`, SHA1 **`898191bc7f1c4d06e99292981b1f86298cb64d90`**, 사용 32,607,012 B, 파일 33,554,432 B, 클라우드 컨테이너 `make hns -j8`, arm-none-eabi-gcc 13.2.1. **실기: 하지 않음(친구).**
+- 새 세션 준비·작업 규칙은 아래 묶음 87 절 그대로. Poké Corpus 대조는 `https://raw.githubusercontent.com/abcboy101/poke-corpus/57e5078074a6d4eca8333556d7778f9c29c476a8/corpus/<게임>/ko_common.txt`(SV=`ScarletViolet`, PLZA=`LegendsZA`, SwSh=`SwordShield`, USUM=`UltraSunUltraMoon`, Champions=`Champions/ko_ms.txt`, 영문은 `en_*`) — 같은 행 번호가 같은 문장.
+
+## 2026-10-30 — 친구 답(매지컬리프·엔진 버전) + 1.17.1 뒤 upstream 버그 수정 8건 선택 이식 (클라우드 세션)
 
 - **요청:** 친구 메시지 2통(사용자 전달) — [`FRIEND_REPLY_2026-10-30.md`](../friend-handoff/FRIEND_REPLY_2026-10-30.md)(재확인 108 매지컬리프 upstream 22프레임, 엔진 버전 숫자 1.17.1 + `EXPANSION_TAGGED_RELEASE` FALSE 유지), [`FRIEND_REQUEST_2026-10-30.md`](../friend-handoff/FRIEND_REQUEST_2026-10-30.md)(1.17.1 뒤 upstream 버그 수정 8건 — 먼저 대조·재현, 필요한 것만).
 - **다음 할 일**
