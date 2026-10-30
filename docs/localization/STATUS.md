@@ -6,7 +6,7 @@
 - **다음 할 일**
   1. ~~친구 문자(긴 형식, 두 요청 결과 구분)~~ **보냄**(2026-10-30 사용자 확인). 친구 실기·결정 답 대기(아래 2).
   2. 친구 실기 대기: [`post-1.17.1-bugfixes.md`](../friend-handoff/results/1.17.0-port/post-1.17.1-bugfixes.md) 4절(2대1 HP 박스·구슬·난기류·훔친 야생 도구) + 매지컬리프 타이밍·디버그 메뉴 버전 표시 + 아래 완료 단계 절 3의 남은 결정·한글 문구·실기.
-  3. 사용자 확인(그대로): HnS `README.md` 38행 크레딧 줄("… 1.15.1").
+  3. ~~사용자 확인: README 크레딧 줄~~ → 2026-10-30 사용자 "README 크레딧 줄도 1.17.1로" — 38행 버전 숫자만 1.15.1 → 1.17.1(나머지 문장·TODO 주석 그대로, ROM 무관).
 - **결과**
   - 친구 답: `860292b1`(매지컬리프 = 1.17.1 애니 블록·매크로와 같음, `delay 30`·`target_both=FALSE` 유지), `6f13ac74`(`EXPANSION_TAGGED_RELEASE FALSE` — 숫자 1.17.1은 `17ec8742`). 정적 확인: `RHHEXP` 헤더 `[1, 17, 1, 0]`, 디버그 `BufferExpansionVersion` = 1·17·1 + `Development Build`. 빌드만(전체 검사는 아래 버그 수정 묶음 검증에 포함), 실기 미실행. [`full-sync-completion-1.17.1.md`](../friend-handoff/results/1.17.0-port/full-sync-completion-1.17.1.md) 6절. 엔진 버전 1.17.1 표시 ≠ 최종 검증·통합·배포 완료.
   - 버그 수정 8건: APPLIED #10866 `dddceca7`(상대 쪽만, HnS getter)·#10974 `77888fde`(+ upstream 테스트 2)·#10972 `9cfa17b2`·#10878 일부 `4c447b25`(훔친 야생 도구 + 포획 복제만), NOT AFFECTED #10953·#10933(upcoming 회귀), ALREADY FIXED #10910(재확인 86)·#10596(재확인 20). HnS 회귀 테스트 `test/hns_post1171_bugfixes.c`(`aa04eeef`·`4c447b25`, 6개). 출력 변화 2행(#10972·#10974).
