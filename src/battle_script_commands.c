@@ -1594,7 +1594,9 @@ void StealTargetItem(enum BattlerId battlerStealer, enum BattlerId itemBattler, 
      && GetMoveEffect(gCurrentMove) == EFFECT_STEAL_ITEM
      && battlerStealer == gBattlerAttacker) // ensure that Pickpocket isn't activating this
     {
-        AddBagItem(gLastUsedItem, 1);
+        // HnS: from upstream #10878 - add it to the Bag at battle end (TryRestoreHeldItems) unless the mon is caught,
+        // which gets the item back. Adding it now duplicated it when the mon was caught (the caught mon's item is restored).
+        gBattleStruct->itemLost[GetBattlerTrainer(itemBattler)][gBattlerPartyIndexes[itemBattler]].wildItemPending = TRUE;
     }
     else
     {
@@ -8470,7 +8472,15 @@ static void Cmd_givecaughtmon(void)
     case GIVECAUGHTMON_GIVE_AND_SHOW_MSG:
     {
         struct Pokemon *caughtMon = GetBattlerMon(GetCatchingBattler());
-        if (B_RESTORE_HELD_BATTLE_ITEMS >= GEN_9)
+        struct LostItem *caughtLostItem = &gBattleStruct->itemLost[GetBattlerTrainer(GetCatchingBattler())][gBattlerPartyIndexes[GetCatchingBattler()]];
+        if (caughtLostItem->wildItemPending)
+        {
+            // HnS: from upstream #10878 - the item stolen for the Bag goes back to the caught mon instead
+            enum Item stolenItem = caughtLostItem->originalItem;
+            SetMonData(caughtMon, MON_DATA_HELD_ITEM, &stolenItem);
+            caughtLostItem->wildItemPending = FALSE;
+        }
+        else if (B_RESTORE_HELD_BATTLE_ITEMS >= GEN_9)
         {
             enum Item lostItem = gBattleStruct->itemLost[B_TRAINER_OPPONENT_A][gBattlerPartyIndexes[GetCatchingBattler()]].originalItem;
             if (lostItem != ITEM_NONE && GetItemPocket(lostItem) != POCKET_BERRIES)

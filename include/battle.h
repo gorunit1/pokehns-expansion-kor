@@ -482,6 +482,7 @@ struct LostItem
 {
     enum Item originalItem:15;
     u16 stolen:1;
+    u16 wildItemPending:1; // HnS: from upstream #10878 - wild item stolen for the Bag, added at battle end unless the mon is caught
 };
 
 struct BattleVideo {

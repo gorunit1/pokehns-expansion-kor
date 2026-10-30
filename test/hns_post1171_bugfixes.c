@@ -92,3 +92,64 @@ SINGLE_BATTLE_TEST("HnS post-1.17.1 #10974: Flame Orb and Toxic Orb still respec
         EXPECT_EQ(player->status1, STATUS1_NONE);
     }
 }
+
+// #10878 확인용(HnS는 볼이 볼 바꾸기 때문에 파티 메뉴형 도구라 USE_ITEM에 partyIndex가 필요하다 — upstream 테스트와 같은 장면).
+// 1.17.1(이식 전 HnS)은 훔치는 순간 가방에 넣고, 잡으면 잡은 포켓몬의 원래 도구도 되돌려 같은 도구가 둘이 됐다.
+// upstream #10878처럼 가방에는 배틀 끝에 넣고, 잡으면 그 포켓몬에게 돌려준다.
+WILD_BATTLE_TEST("HnS post-1.17.1 #10878: a wild item stolen with Thief or Covet comes back if the mon is caught")
+{
+    enum Move move;
+    PARAMETRIZE { move = MOVE_THIEF; }
+    PARAMETRIZE { move = MOVE_COVET; }
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET) { Item(ITEM_HYPER_POTION); }
+    } WHEN {
+        TURN { MOVE(player, move); }
+        TURN { USE_ITEM(player, ITEM_MASTER_BALL, partyIndex: 0); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, move, player);
+        HP_BAR(opponent);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_ITEM_STEAL, opponent);
+    } THEN {
+        EXPECT_EQ(player->item, ITEM_NONE);
+        EXPECT_EQ(FALSE, CheckBagHasItem(ITEM_HYPER_POTION, 1));
+        EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][1], MON_DATA_HELD_ITEM), ITEM_HYPER_POTION);
+    }
+}
+
+WILD_BATTLE_TEST("HnS post-1.17.1 #10878: a wild item stolen with Thief goes to the Bag if the mon is not caught")
+{
+    GIVEN {
+        PLAYER(SPECIES_WOBBUFFET);
+        OPPONENT(SPECIES_WOBBUFFET) { Item(ITEM_HYPER_POTION); }
+    } WHEN {
+        TURN { MOVE(player, MOVE_THIEF); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_THIEF, player);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_ITEM_STEAL, opponent);
+    } THEN {
+        EXPECT_EQ(player->item, ITEM_NONE);
+        EXPECT_EQ(opponent->item, ITEM_NONE);
+        EXPECT_EQ(TRUE, CheckBagHasItem(ITEM_HYPER_POTION, 1));
+    }
+}
+
+WILD_BATTLE_TEST("HnS post-1.17.1 #10878: an item tricked onto a wild mon is not duplicated if the mon is caught")
+{
+    GIVEN {
+        ASSUME(GetMoveEffect(MOVE_TRICK) == EFFECT_TRICK);
+        PLAYER(SPECIES_WOBBUFFET) { Item(ITEM_SUPER_POTION); }
+        OPPONENT(SPECIES_WOBBUFFET) { Item(ITEM_HYPER_POTION); }
+    } WHEN {
+        TURN { MOVE(player, MOVE_TRICK); }
+        TURN { USE_ITEM(player, ITEM_MASTER_BALL, partyIndex: 0); }
+    } SCENE {
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_TRICK, player);
+    } THEN {
+        EXPECT_EQ(FALSE, CheckBagHasItem(ITEM_HYPER_POTION, 1));
+        EXPECT_EQ(FALSE, CheckBagHasItem(ITEM_SUPER_POTION, 1));
+        EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_HELD_ITEM), ITEM_SUPER_POTION);
+        EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][1], MON_DATA_HELD_ITEM), ITEM_HYPER_POTION);
+    }
+}

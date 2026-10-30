@@ -9457,6 +9457,20 @@ void SortBattlersBySpeed(enum BattlerId *battlers, bool32 slowToFast)
 
 void TryRestoreHeldItems(void)
 {
+    // HnS: from upstream #10878 - wild items stolen for the Bag (the mon was not caught)
+    for (enum BattleTrainer trainer = B_TRAINER_PLAYER; trainer < MAX_BATTLE_TRAINERS; trainer++)
+    {
+        for (u32 i = 0; i < PARTY_SIZE; i++)
+        {
+            struct LostItem *lostItem = &gBattleStruct->itemLost[trainer][i];
+            if (lostItem->wildItemPending)
+            {
+                AddBagItem(lostItem->originalItem, 1);
+                lostItem->wildItemPending = FALSE;
+            }
+        }
+    }
+
     if (!B_TRAINERS_KNOCK_OFF_ITEMS && B_RESTORE_HELD_BATTLE_ITEMS < GEN_9)
         return;
 
