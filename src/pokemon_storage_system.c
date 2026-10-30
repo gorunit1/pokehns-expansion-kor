@@ -10315,14 +10315,16 @@ u16 GetFirstAliveBoxPokemon(void)
     return IN_BOX_COUNT * TOTAL_BOXES_COUNT;
 }
 
-void MoveFirstBoxPokemonToParty(void)
+// Takes the first living non-egg box mon out of the PC into dst (Nuzlocke whiteout refill).
+bool32 TakeFirstAliveBoxPokemon(struct Pokemon *dst)
 {
     u16 position = GetFirstAliveBoxPokemon();
-    if (position != IN_BOX_COUNT * TOTAL_BOXES_COUNT)
-    {
-        u16 boxNum = position / IN_BOX_COUNT;
-        u16 boxIndex = position - (boxNum * IN_BOX_COUNT);
-        BoxMonAtToMon(boxNum, boxIndex, &gParties[B_TRAINER_PLAYER][0]);
-        PurgeMonOrBoxMon(boxNum, boxIndex);
-    }
+    if (position == IN_BOX_COUNT * TOTAL_BOXES_COUNT)
+        return FALSE;
+
+    u16 boxNum = position / IN_BOX_COUNT;
+    u16 boxIndex = position - (boxNum * IN_BOX_COUNT);
+    BoxMonAtToMon(boxNum, boxIndex, dst);
+    PurgeMonOrBoxMon(boxNum, boxIndex);
+    return TRUE;
 }
