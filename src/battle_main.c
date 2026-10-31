@@ -5472,6 +5472,9 @@ static void HandleEndTurn_FinishBattle(void)
         // party restore and the Nuzlocke fainted-mon deletion below both reorder it.
         // Held items must be restored before the form revert, since item-based form changes
         // (plates, drives, Rusted Sword, Griseous Orb) read the mon's held item.
+        // HnS (recheck 114): first the stolen wild items still waiting, one PC message at a time.
+        if (TryGiveNextStolenWildItem(FALSE))
+            return;
         TryRestoreHeldItems();
 
         for (u32 i = 0; i < PARTY_SIZE; i++)

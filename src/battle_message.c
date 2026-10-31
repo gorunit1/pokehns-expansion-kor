@@ -934,6 +934,9 @@ const u8 *const gBattleStringsTable[STRINGID_COUNT] =
     [STRINGID_S]                                    = COMPOUND_STRING("s"), //영문 전용 복수형
     [STRINGID_LOSTSOMEOFITSHP]                      = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX}의\n생명이 조금 깎였다!"),
     [STRINGID_BELCHCANTUSE]                         = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX}{B_TXT_EUNNEUN}\n나무열매를 먹지 않아서 기술을 쓸 수 없다!"), // Champions BTL_STRID_SET_GeppuFail(_E)
+    // HnS new-feature lines (recheck 114, friend 2026-10-31): worded after official lines, not taken from one official scene
+    [STRINGID_HNSSTOLENITEMSENTTOPC]                = COMPOUND_STRING("{B_LAST_ITEM}{B_TXT_EULREUL}\nPC로 보냈다!"),
+    [STRINGID_HNSSTEALITEMNOROOM]                   = COMPOUND_STRING("도구가 가득 차서\n빼앗을 수 없다!"),
 };
 
 const u16 gTrainerUsedItemStringIds[] =

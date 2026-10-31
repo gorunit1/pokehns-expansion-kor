@@ -482,7 +482,17 @@ struct LostItem
 {
     enum Item originalItem:15;
     u16 stolen:1;
-    u16 wildItemPending:1; // HnS: from upstream #10878 - wild item stolen for the Bag, added at battle end unless the mon is caught
+};
+
+// HnS (recheck 114, from upstream #10878): a wild mon's item stolen with Thief or Covet for the Bag. Given at battle
+// end (Bag, else PC) unless that mon is caught, which gets back the first item stolen from it.
+#define HNS_STOLEN_WILD_ITEMS_MAX 8
+
+struct HnsStolenWildItem
+{
+    u16 item;
+    u8 trainer;
+    u8 partyIndex;
 };
 
 struct BattleVideo {
@@ -683,6 +693,8 @@ struct BattleStruct
     struct Illusion illusion[MAX_BATTLERS_COUNT];
     enum BattlerId soulheartBattlerId;
     struct LostItem itemLost[MAX_BATTLE_TRAINERS][PARTY_SIZE];  // Pokemon that had items consumed or stolen (two bytes per party member per side)
+    struct HnsStolenWildItem hnsStolenWildItems[HNS_STOLEN_WILD_ITEMS_MAX]; // HnS (recheck 114): in steal order
+    u8 hnsStolenWildItemCount;
     u8 blunderPolicy:1; // should blunder policy activate
     u8 redCardActivated :1;
     u8 snatchedMoveIsUsed:1;

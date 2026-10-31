@@ -4588,7 +4588,7 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
                         break;
                     }
 
-                    StealTargetItem(battler, targetBattler, ITEM_NONE);
+                    StealTargetItem(battler, targetBattler, ITEM_NONE, FALSE);
                     gBattlerAbility = battler;
                     gEffectBattler = targetBattler;
                     BattleScriptCall(BattleScript_MagicianActivates);
@@ -9455,22 +9455,75 @@ void SortBattlersBySpeed(enum BattlerId *battlers, bool32 slowToFast)
     }
 }
 
-void TryRestoreHeldItems(void)
+// HnS (recheck 114): removes and returns the first item stolen for the Bag from this mon (ITEM_NONE if none), for
+// the mon to hold again when it is caught. Any later one stolen from it stays for the Bag.
+enum Item TakeStolenWildItemBack(enum BattleTrainer trainer, u32 partyIndex)
 {
-    // HnS: from upstream #10878 - wild items stolen for the Bag (the mon was not caught)
-    for (enum BattleTrainer trainer = B_TRAINER_PLAYER; trainer < MAX_BATTLE_TRAINERS; trainer++)
+    for (u32 i = 0; i < gBattleStruct->hnsStolenWildItemCount; i++)
     {
-        for (u32 i = 0; i < PARTY_SIZE; i++)
+        struct HnsStolenWildItem *stolen = &gBattleStruct->hnsStolenWildItems[i];
+        if (stolen->trainer == trainer && stolen->partyIndex == partyIndex)
         {
-            struct LostItem *lostItem = &gBattleStruct->itemLost[trainer][i];
-            if (lostItem->wildItemPending)
-            {
-                AddBagItem(lostItem->originalItem, 1);
-                lostItem->wildItemPending = FALSE;
-            }
+            enum Item item = stolen->item;
+            for (u32 j = i + 1; j < gBattleStruct->hnsStolenWildItemCount; j++)
+                gBattleStruct->hnsStolenWildItems[j - 1] = gBattleStruct->hnsStolenWildItems[j];
+            gBattleStruct->hnsStolenWildItemCount--;
+            return item;
         }
     }
+    return ITEM_NONE;
+}
 
+// HnS (recheck 114): gives the stolen wild items waiting for battle end, in steal order: the Bag (the Pyramid Bag in the
+// Battle Pyramid), else the PC with a message. Returns TRUE after starting that message's script (called from a
+// battle script if fromScript, else run as the end-of-battle script); call again once it is done. A recorded battle
+// being quit (CB2_QuitRecordedBattle, which the test runner also uses) finishes at once, so there the items are
+// given without the message.
+// CanStoreStolenWildItem tried these same adds, in this order, when each item was stolen. Until here the Bag and PC
+// can only lose items (nothing else adds to them during a battle, and the wild mon's dropped item is given after
+// this), and with more room the same adds still succeed. So the last branch is not reached; if it ever were, the
+// wild mon keeps the item, as when there is no room to steal it.
+bool32 TryGiveNextStolenWildItem(bool32 fromScript)
+{
+    bool32 inPyramid = CurrentBattlePyramidLocation() != PYRAMID_LOCATION_NONE || FlagGet(FLAG_STORING_ITEMS_IN_PYRAMID_BAG) == TRUE;
+
+    while (gBattleStruct->hnsStolenWildItemCount != 0)
+    {
+        struct HnsStolenWildItem stolen = gBattleStruct->hnsStolenWildItems[0];
+
+        for (u32 i = 1; i < gBattleStruct->hnsStolenWildItemCount; i++)
+            gBattleStruct->hnsStolenWildItems[i - 1] = gBattleStruct->hnsStolenWildItems[i];
+        gBattleStruct->hnsStolenWildItemCount--;
+
+        if (AddBagItem(stolen.item, 1))
+            continue;
+
+        if (inPyramid || !AddPCItem(stolen.item, 1))
+        {
+            SetMonData(&gParties[stolen.trainer][stolen.partyIndex], MON_DATA_HELD_ITEM, &stolen.item);
+            continue;
+        }
+
+        if (gMain.callback2 == CB2_QuitRecordedBattle)
+            continue;
+
+        gLastUsedItem = stolen.item;
+        if (fromScript)
+        {
+            BattleScriptCall(BattleScript_HnsStolenItemSentToPC);
+        }
+        else
+        {
+            gBattlescriptCurrInstr = BattleScript_HnsStolenItemSentToPCEnd;
+            gCurrentActionFuncId = 0;
+        }
+        return TRUE;
+    }
+    return FALSE;
+}
+
+void TryRestoreHeldItems(void)
+{
     if (!B_TRAINERS_KNOCK_OFF_ITEMS && B_RESTORE_HELD_BATTLE_ITEMS < GEN_9)
         return;
 

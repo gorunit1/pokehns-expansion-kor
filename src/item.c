@@ -491,6 +491,38 @@ bool32 AddPCItem(enum Item itemId, u16 count)
     return BagPocket_AddItem(&dummyPocket, itemId, count);
 }
 
+// HnS (recheck 114): TRUE if one of each item in items[] can be stored, in order, the way the end of a wild battle
+// gives stolen items: the Bag (the Pyramid Bag in the Battle Pyramid) first, else the PC (not from the Pyramid).
+// Tried with AddBagItem/AddPCItem on the real Bag, Pyramid Bag and PC, which are then put back as they were, so
+// pockets, stacks, free slots and two items needing the same last slot count exactly as when the items are given.
+bool32 CanStoreItemsInBagOrPC(const enum Item *items, u32 count)
+{
+    bool32 inPyramid = CurrentBattlePyramidLocation() != PYRAMID_LOCATION_NONE || FlagGet(FLAG_STORING_ITEMS_IN_PYRAMID_BAG) == TRUE;
+    struct Bag *bag = Alloc(sizeof(struct Bag));
+    struct ItemSlot *pcItems = Alloc(sizeof(gSaveBlock1Ptr->pcItems));
+    struct PyramidBag *pyramidBag = Alloc(sizeof(struct PyramidBag));
+    bool32 fits = (bag != NULL && pcItems != NULL && pyramidBag != NULL);
+
+    if (fits)
+    {
+        *bag = gSaveBlock1Ptr->bag;
+        memcpy(pcItems, gSaveBlock1Ptr->pcItems, sizeof(gSaveBlock1Ptr->pcItems));
+        *pyramidBag = gSaveBlock2Ptr->frontier.pyramidBag;
+
+        for (u32 i = 0; i < count && fits; i++)
+            fits = AddBagItem(items[i], 1) || (!inPyramid && AddPCItem(items[i], 1));
+
+        gSaveBlock1Ptr->bag = *bag;
+        memcpy(gSaveBlock1Ptr->pcItems, pcItems, sizeof(gSaveBlock1Ptr->pcItems));
+        gSaveBlock2Ptr->frontier.pyramidBag = *pyramidBag;
+    }
+
+    Free(pyramidBag);
+    Free(pcItems);
+    Free(bag);
+    return fits;
+}
+
 static void NONNULL BagPocket_CompactItems(struct BagPocket *pocket)
 {
     struct ItemSlot tempItem;

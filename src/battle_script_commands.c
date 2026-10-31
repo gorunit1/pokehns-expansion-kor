@@ -1577,7 +1577,29 @@ u32 GetBattlerRawSpeedOrder(enum BattlerId battler)
 }
 
 // battlerStealer steals the item of itemBattler
-void StealTargetItem(enum BattlerId battlerStealer, enum BattlerId itemBattler, enum Item itemOverride)
+// HnS (recheck 114, from upstream #10878): Thief or Covet taking a wild mon's item sends it to the Bag at battle end.
+bool32 IsStealingWildItemForBag(enum BattlerId itemBattler)
+{
+    return GetConfig(B_STEAL_WILD_ITEMS) >= GEN_9
+        && !(gBattleTypeFlags & (BATTLE_TYPE_TRAINER | BATTLE_TYPE_PALACE))
+        && !IsOnPlayerSide(itemBattler);
+}
+
+// HnS (recheck 114): the stolen wild items already waiting for battle end and `item` will all fit in the Bag or PC.
+bool32 CanStoreStolenWildItem(enum Item item)
+{
+    enum Item items[HNS_STOLEN_WILD_ITEMS_MAX];
+    u32 count = gBattleStruct->hnsStolenWildItemCount;
+
+    if (count >= HNS_STOLEN_WILD_ITEMS_MAX)
+        return FALSE;
+    for (u32 i = 0; i < count; i++)
+        items[i] = gBattleStruct->hnsStolenWildItems[i].item;
+    items[count] = item;
+    return CanStoreItemsInBagOrPC(items, count + 1);
+}
+
+void StealTargetItem(enum BattlerId battlerStealer, enum BattlerId itemBattler, enum Item itemOverride, bool32 stealWildItem)
 {
     if (itemOverride)
     {
@@ -1589,14 +1611,15 @@ void StealTargetItem(enum BattlerId battlerStealer, enum BattlerId itemBattler, 
         gBattleMons[itemBattler].item = ITEM_NONE;
     }
 
-    if (GetConfig(B_STEAL_WILD_ITEMS) >= GEN_9
-     && !(gBattleTypeFlags & (BATTLE_TYPE_TRAINER | BATTLE_TYPE_PALACE))
-     && GetMoveEffect(gCurrentMove) == EFFECT_STEAL_ITEM
-     && battlerStealer == gBattlerAttacker) // ensure that Pickpocket isn't activating this
+    if (stealWildItem)
     {
-        // HnS: from upstream #10878 - add it to the Bag at battle end (TryRestoreHeldItems) unless the mon is caught,
-        // which gets the item back. Adding it now duplicated it when the mon was caught (the caught mon's item is restored).
-        gBattleStruct->itemLost[GetBattlerTrainer(itemBattler)][gBattlerPartyIndexes[itemBattler]].wildItemPending = TRUE;
+        // HnS (recheck 114, from upstream #10878): given at battle end (TryGiveNextStolenWildItem) unless the mon is
+        // caught, which gets it back. Adding it now duplicated it when the mon was caught. The caller checked with
+        // CanStoreStolenWildItem that it will fit.
+        struct HnsStolenWildItem *stolen = &gBattleStruct->hnsStolenWildItems[gBattleStruct->hnsStolenWildItemCount++];
+        stolen->item = gLastUsedItem;
+        stolen->trainer = GetBattlerTrainer(itemBattler);
+        stolen->partyIndex = gBattlerPartyIndexes[itemBattler];
     }
     else
     {
@@ -8474,13 +8497,11 @@ static void Cmd_givecaughtmon(void)
     case GIVECAUGHTMON_GIVE_AND_SHOW_MSG:
     {
         struct Pokemon *caughtMon = GetBattlerMon(GetCatchingBattler());
-        struct LostItem *caughtLostItem = &gBattleStruct->itemLost[GetBattlerTrainer(GetCatchingBattler())][gBattlerPartyIndexes[GetCatchingBattler()]];
-        if (caughtLostItem->wildItemPending)
+        enum Item stolenItem = TakeStolenWildItemBack(GetBattlerTrainer(GetCatchingBattler()), gBattlerPartyIndexes[GetCatchingBattler()]);
+        if (stolenItem != ITEM_NONE)
         {
-            // HnS: from upstream #10878 - the item stolen for the Bag goes back to the caught mon instead
-            enum Item stolenItem = caughtLostItem->originalItem;
+            // HnS (recheck 114, from upstream #10878): the item stolen for the Bag goes back to the caught mon instead
             SetMonData(caughtMon, MON_DATA_HELD_ITEM, &stolenItem);
-            caughtLostItem->wildItemPending = FALSE;
         }
         else if (B_RESTORE_HELD_BATTLE_ITEMS >= GEN_9)
         {
@@ -12356,6 +12377,10 @@ void BS_UndoDynamax(void)
 void BS_TryGiveDroppedItems(void)
 {
     NATIVE_ARGS();
+
+    // HnS (recheck 114): stolen wild items first, so the dropped items cannot take the room kept for them
+    if (TryGiveNextStolenWildItem(TRUE))
+        return;
 
     if (gSaveBlock3Ptr->challengeSettings.tx_Features_WildMonDropItems
         && !(gBattleTypeFlags & (BATTLE_TYPE_TRAINER | BATTLE_TYPE_FIRST_BATTLE)))

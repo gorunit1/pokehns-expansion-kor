@@ -2940,6 +2940,22 @@ BattleScript_PayDayMoneyAndPickUpItems::
 	pickup
 	end
 
+@ HnS (recheck 114): a stolen wild item given at battle end went to the PC (the Bag had no room)
+BattleScript_HnsStolenItemSentToPC::
+	printstring STRINGID_HNSSTOLENITEMSENTTOPC
+	waitmessage B_WAIT_TIME_LONG
+	return
+
+BattleScript_HnsStolenItemSentToPCEnd::
+	call BattleScript_HnsStolenItemSentToPC
+	end
+
+@ HnS (recheck 114): Thief/Covet hit, but neither the Bag nor the PC has room for the wild mon's item after the battle
+BattleScript_HnsStealItemNoRoom::
+	printstring STRINGID_HNSSTEALITEMNOROOM
+	waitmessage B_WAIT_TIME_LONG
+	return
+
 BattleScript_DroppedItemObtained::
 	playse SE_BALL_BOUNCE_1
 	printstring STRINGID_WILDPKMNDROPPEDITEM

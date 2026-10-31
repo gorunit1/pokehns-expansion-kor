@@ -4369,10 +4369,19 @@ static enum MoveEndResult MoveEndMoveBlock(struct BattleCalcValues *cv)
             }
             else
             {
-                StealTargetItem(gBattlerAttacker, battlerDef, ITEM_NONE);  // Attacker steals target item
+                bool32 stealWildItem = IsStealingWildItemForBag(battlerDef);
 
-                if (!(GetConfig(B_STEAL_WILD_ITEMS) >= GEN_9
-                 && !(gBattleTypeFlags & (BATTLE_TYPE_TRAINER | BATTLE_TYPE_PALACE))))
+                // HnS (recheck 114): with no room for it in the Bag or PC after the battle, the wild mon keeps its item.
+                // The hit and its other effects stand; only the steal (and its message) is skipped.
+                if (stealWildItem && !CanStoreStolenWildItem(gBattleMons[battlerDef].item))
+                {
+                    BattleScriptCall(BattleScript_HnsStealItemNoRoom);
+                    return MOVEEND_RESULT_RUN_SCRIPT;
+                }
+
+                StealTargetItem(gBattlerAttacker, battlerDef, ITEM_NONE, stealWildItem);  // Attacker steals target item
+
+                if (!stealWildItem)
                 {
                     gBattleMons[cv->battlerAtk].item = gLastUsedItem;
                 }
@@ -4917,11 +4926,11 @@ static enum MoveEndResult MoveEndPickpocket(struct BattleCalcValues *cv)
                 {
                     if (originalAttackerOnField)
                     {
-                        StealTargetItem(battlerDef, gBattlerAttacker, ITEM_NONE);  // Target takes attacker's item
+                        StealTargetItem(battlerDef, gBattlerAttacker, ITEM_NONE, FALSE);  // Target takes attacker's item
                     }
                     else
                     {
-                        StealTargetItem(battlerDef, gBattlerAttacker, itemToSteal); // Don't change gBattlerAttacker's item
+                        StealTargetItem(battlerDef, gBattlerAttacker, itemToSteal, FALSE); // Don't change gBattlerAttacker's item
 
                         PREPARE_MON_NICK_WITH_PREFIX_LOWER_BUFFER(gBattleTextBuff2, gBattlerAttacker, originalAttackerPartyId);
 
