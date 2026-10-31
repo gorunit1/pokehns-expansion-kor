@@ -422,6 +422,8 @@ static void HnsNuz_WipedPartyRattata(u32 mode)
 
 // 케이스 7: 전멸 뒤 기절 포켓몬이 지워지고 알 2개만 남음(산 비알 포켓몬 0) → 알을 산 포켓몬으로 세지 않고 보충.
 // (이전 배치 "기절 포켓몬 1번 칸 + 알"은 재확인 70 (b) 뒤 보충하지 않는 경우라 N5b·E5b로 옮김.)
+// 2026-10-31 친구 결정(재확인 70 (a) 원본 복원): 박스 포켓몬은 0번 칸에 바로 들어가 그 칸의 알(토게피)을 덮어쓴다.
+// 2026-10-30의 "알을 뒤로 밀어 보존" 기대는 그 결정으로 바뀜.
 static void HnsNuz_EggsDoNotCount(u32 mode)
 {
     HnsNuz_SetupState(mode);
@@ -437,10 +439,11 @@ static void HnsNuz_EggsDoNotCount(u32 mode)
     EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_SPECIES), SPECIES_SENTRET);
     EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_PERSONALITY), BOX_CANDIDATE_PERSONALITY);
     EXPECT_EQ(GetBoxMonDataAt(0, 2, MON_DATA_SPECIES), SPECIES_NONE);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_IS_EGG), FALSE);       // 0번 칸 알(토게피)은 덮어써짐
     EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][1], MON_DATA_IS_EGG), TRUE);
-    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][1], MON_DATA_SPECIES), SPECIES_TOGEPI);
-    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][2], MON_DATA_IS_EGG), TRUE);
-    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][2], MON_DATA_SPECIES), SPECIES_PICHU);
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][1], MON_DATA_SPECIES), SPECIES_PICHU); // 1번 칸 알은 그 자리 그대로
+    EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][2], MON_DATA_SPECIES), SPECIES_NONE);
+    EXPECT_EQ(gPartiesCount[B_TRAINER_PLAYER], 2);
     HnsNuz_ExpectNormalWhiteoutEffects();
 }
 
@@ -533,19 +536,23 @@ TEST("Nuzlocke whiteout (HnS): E5c easy Nuzlocke: wiped, no box candidate -> Rat
 }
 
 // ---- 7. 알은 산 전투 가능 포켓몬으로 세지 않는다 ----
-TEST("Nuzlocke whiteout (HnS): N7 normal Nuzlocke: wiped, only eggs left -> refill happens, eggs kept")
+TEST("Nuzlocke whiteout (HnS): N7 normal Nuzlocke: wiped, only eggs left -> refill happens, the egg in slot 0 is overwritten")
 {
     HnsNuz_EggsDoNotCount(NUZ_NORMAL);
     HnsNuz_Cleanup();
 }
 
-TEST("Nuzlocke whiteout (HnS): E7 easy Nuzlocke: wiped, only eggs left -> refill happens, eggs kept")
+TEST("Nuzlocke whiteout (HnS): E7 easy Nuzlocke: wiped, only eggs left -> refill happens, the egg in slot 0 is overwritten")
 {
     HnsNuz_EggsDoNotCount(NUZ_EASY);
     HnsNuz_Cleanup();
 }
 
-// ---- 8~11. 재확인 70 (a)(친구 2026-10-30): 알만 남은 전멸 — 알 보존, 보충 포켓몬 0번 칸, 회복 ----
+// ---- 8~11. 재확인 70 (a): 알만 남은 전멸 — 원본 HnS 보충(친구 결정 2026-10-31) ----
+// 박스 후보가 있으면 0번 칸에 바로(그 칸의 알은 덮어써짐, 나머지 알은 제자리), 없으면 파티를 비우고 꼬렛 Lv1(알 모두 사라짐).
+// 보충 포켓몬은 회복되고 마릿수가 맞다. 파티 제한·PC 포화와 상관없이 보충한다.
+// 2026-10-30 결정(알을 뒤로 밀어 보존, 제한이 꽉 차면 마지막 알을 PC로, PC 포화면 보충 중단)을 기대하던 테스트를
+// 이 결정에 맞게 바꿨다(이름도 바뀜).
 #define HNSNUZ_EGG_PERSONALITY(slot) (0xE9900000u + (slot))
 
 static void HnsNuz_GiveEggs(u32 count)
@@ -590,82 +597,89 @@ static void HnsNuz_EggsOnlyRefill(u32 mode, u32 limit, u32 eggs, bool32 candidat
         HnsNuz_FillBoxWithoutCandidate();
     }
     HnsNuz_ExpectMode(mode);
-    u32 maxSize = GetMaxPartySize();
-    bool32 full = (eggs >= maxSize);
+    u32 boxHash = HnsNuz_BoxHash();
 
     DoWhiteOut();
 
     // 보충 포켓몬이 0번 칸, HP 가득(회복됨)
     struct Pokemon *lead = &gParties[B_TRAINER_PLAYER][0];
     EXPECT_EQ(GetMonData(lead, MON_DATA_SPECIES), candidate ? SPECIES_SENTRET : SPECIES_RATTATA);
+    EXPECT_EQ(GetMonData(lead, MON_DATA_IS_EGG), FALSE);
+    EXPECT_EQ(GetMonData(lead, MON_DATA_HP), GetMonData(lead, MON_DATA_MAX_HP));
     if (candidate)
     {
         EXPECT_EQ(GetMonData(lead, MON_DATA_PERSONALITY), BOX_CANDIDATE_PERSONALITY);
-        EXPECT_EQ(GetBoxMonDataAt(0, 2, MON_DATA_SPECIES) == SPECIES_NONE || full, TRUE); // 빠진 자리(알이 들어갈 수도 있음)
+        EXPECT_EQ(GetBoxMonDataAt(0, 2, MON_DATA_SPECIES), SPECIES_NONE); // 박스에서 빠짐
+        // 0번 칸 알은 덮어써지고 나머지 알은 제자리
+        for (u32 i = 1; i < eggs; i++)
+            HnsNuz_ExpectEggAt(i, i);
+        for (u32 i = (eggs > 1 ? eggs : 1); i < PARTY_SIZE; i++)
+            EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES), SPECIES_NONE);
+        EXPECT_EQ(gPartiesCount[B_TRAINER_PLAYER], eggs > 1 ? eggs : 1);
     }
-    EXPECT_EQ(GetMonData(lead, MON_DATA_HP), GetMonData(lead, MON_DATA_MAX_HP));
-    // 알은 순서대로 한 칸씩 뒤로. 파티 제한이 꽉 찼으면 마지막 알은 PC로
-    u32 keptEggs = full ? maxSize - 1 : eggs;
-    for (u32 i = 0; i < keptEggs; i++)
-        HnsNuz_ExpectEggAt(i + 1, i);
-    for (u32 i = keptEggs + 1; i < PARTY_SIZE; i++)
-        EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES), SPECIES_NONE);
-    if (full)
-        EXPECT(HnsNuz_BoxHasPersonality(HNSNUZ_EGG_PERSONALITY(eggs - 1)));
-    EXPECT_EQ(gPartiesCount[B_TRAINER_PLAYER], keptEggs + 1);
+    else
+    {
+        EXPECT_EQ(GetMonData(lead, MON_DATA_LEVEL), 1);
+        // 파티를 비우고 꼬렛만 — 알은 모두 사라짐
+        for (u32 i = 1; i < PARTY_SIZE; i++)
+            EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES), SPECIES_NONE);
+        EXPECT_EQ(gPartiesCount[B_TRAINER_PLAYER], 1);
+        EXPECT_EQ(HnsNuz_BoxHash(), boxHash); // PC 그대로(알을 PC로 보내지 않음)
+    }
+    // 알을 PC로 보내지 않는다
+    for (u32 i = 0; i < eggs; i++)
+        EXPECT(!HnsNuz_BoxHasPersonality(HNSNUZ_EGG_PERSONALITY(i)));
     EXPECT_EQ(CountPartyAliveNonEggMonsExcept(PARTY_SIZE), 1);
     HnsNuz_ExpectNormalWhiteoutEffects();
 }
 
-TEST("Nuzlocke whiteout (HnS): N8 normal Nuzlocke: only eggs, box candidate -> candidate to slot 0 healed, eggs moved back")
+TEST("Nuzlocke whiteout (HnS): N8 normal Nuzlocke: only eggs, box candidate -> candidate to slot 0 healed, slot 0 egg overwritten")
 {
     HnsNuz_EggsOnlyRefill(NUZ_NORMAL, 0, 3, TRUE);
     HnsNuz_Cleanup();
 }
 
-TEST("Nuzlocke whiteout (HnS): E8 easy Nuzlocke: only eggs, box candidate -> candidate to slot 0 healed, eggs moved back")
+TEST("Nuzlocke whiteout (HnS): E8 easy Nuzlocke: only eggs, box candidate -> candidate to slot 0 healed, slot 0 egg overwritten")
 {
     HnsNuz_EggsOnlyRefill(NUZ_EASY, 0, 3, TRUE);
     HnsNuz_Cleanup();
 }
 
-TEST("Nuzlocke whiteout (HnS): N9 normal Nuzlocke: only eggs, no box candidate -> Rattata to slot 0, eggs kept")
+TEST("Nuzlocke whiteout (HnS): N9 normal Nuzlocke: only eggs, no box candidate -> party cleared, Rattata Lv1")
 {
     HnsNuz_EggsOnlyRefill(NUZ_NORMAL, 0, 2, FALSE);
     HnsNuz_Cleanup();
 }
 
-TEST("Nuzlocke whiteout (HnS): E9 easy Nuzlocke: only eggs, no box candidate -> Rattata to slot 0, eggs kept")
+TEST("Nuzlocke whiteout (HnS): E9 easy Nuzlocke: only eggs, no box candidate -> party cleared, Rattata Lv1")
 {
     HnsNuz_EggsOnlyRefill(NUZ_EASY, 0, 2, FALSE);
     HnsNuz_Cleanup();
 }
 
-TEST("Nuzlocke whiteout (HnS): N10 normal Nuzlocke: eggs fill the party (6), box candidate -> last egg to PC")
+TEST("Nuzlocke whiteout (HnS): N10 normal Nuzlocke: eggs fill the party (6), box candidate -> candidate to slot 0, other eggs kept")
 {
     HnsNuz_EggsOnlyRefill(NUZ_NORMAL, 0, PARTY_SIZE, TRUE);
     HnsNuz_Cleanup();
 }
 
-TEST("Nuzlocke whiteout (HnS): N10L normal Nuzlocke: eggs fill party limit 3, box candidate -> last egg to PC")
+TEST("Nuzlocke whiteout (HnS): N10L normal Nuzlocke: eggs fill party limit 3, box candidate -> candidate to slot 0, no egg to PC")
 {
     HnsNuz_EggsOnlyRefill(NUZ_NORMAL, 3, 3, TRUE);
     HnsNuz_Cleanup();
 }
 
-TEST("Nuzlocke whiteout (HnS): E10L easy Nuzlocke: eggs fill party limit 5, no box candidate -> last egg to PC, Rattata")
+TEST("Nuzlocke whiteout (HnS): E10L easy Nuzlocke: one egg, party limit 5, no box candidate -> party cleared, Rattata Lv1")
 {
     HnsNuz_EggsOnlyRefill(NUZ_EASY, 5, 1, FALSE);
     HnsNuz_Cleanup();
 }
 
-// PC가 꽉 차고 보충 후보도 없음: 알을 지우지 않고 아무것도 바꾸지 않는다(설계 결정 대기 — 친구 2026-10-30)
-TEST("Nuzlocke whiteout (HnS): N11 normal Nuzlocke: eggs fill the party, PC full, no box candidate -> nothing deleted, no refill")
+// PC가 꽉 차도 보충은 멈추지 않는다(원본 HnS): 후보가 없으면 파티를 비우고 꼬렛, PC는 그대로.
+// 2026-10-30에는 "아무것도 지우지 않고 보충 안 함"을 기대했다 — 2026-10-31 결정으로 바뀜.
+static void HnsNuz_FillPCWithDead(void)
 {
-    struct HnsNuzMonSnap before[PARTY_SIZE];
     struct Pokemon dead;
-    HnsNuz_SetupState(NUZ_NORMAL);
-    HnsNuz_GiveEggs(PARTY_SIZE);
     CreateMon(&dead, SPECIES_SPEAROW, 7, 0xDEAD02u, OTID_STRUCT_PLAYER_ID);
     CalculateMonStats(&dead);
     u32 hp = 0;
@@ -673,14 +687,55 @@ TEST("Nuzlocke whiteout (HnS): N11 normal Nuzlocke: eggs fill the party, PC full
     for (u32 b = 0; b < TOTAL_BOXES_COUNT; b++)
         for (u32 p = 0; p < IN_BOX_COUNT; p++)
             SetBoxMonAt(b, p, &dead.box);
-    EXPECT_EQ(GetFirstAliveBoxPokemon(), IN_BOX_COUNT * TOTAL_BOXES_COUNT);
-    HnsNuz_Snap(before);
+}
+
+static void HnsNuz_PCFull(u32 mode, bool32 candidate)
+{
+    HnsNuz_SetupState(mode);
+    HnsNuz_GiveEggs(PARTY_SIZE);
+    HnsNuz_FillPCWithDead();
+    if (candidate)
+        HnsNuz_PutBoxMon(TOTAL_BOXES_COUNT - 1, IN_BOX_COUNT - 1, SPECIES_SENTRET, BOX_CANDIDATE_PERSONALITY, FALSE, FALSE); // 마지막 칸에 산 포켓몬 하나
+    EXPECT_EQ(GetFirstAliveBoxPokemon(), candidate ? (IN_BOX_COUNT * TOTAL_BOXES_COUNT - 1) : IN_BOX_COUNT * TOTAL_BOXES_COUNT);
     u32 boxHash = HnsNuz_BoxHash();
 
     DoWhiteOut();
 
-    HnsNuz_ExpectPartySame(before, PARTY_SIZE);
-    EXPECT_EQ(HnsNuz_BoxHash(), boxHash);
+    struct Pokemon *lead = &gParties[B_TRAINER_PLAYER][0];
+    EXPECT_EQ(GetMonData(lead, MON_DATA_SPECIES), candidate ? SPECIES_SENTRET : SPECIES_RATTATA);
+    EXPECT_EQ(GetMonData(lead, MON_DATA_HP), GetMonData(lead, MON_DATA_MAX_HP));
+    if (candidate)
+    {
+        EXPECT_EQ(GetBoxMonDataAt(TOTAL_BOXES_COUNT - 1, IN_BOX_COUNT - 1, MON_DATA_SPECIES), SPECIES_NONE);
+        for (u32 i = 1; i < PARTY_SIZE; i++)
+            HnsNuz_ExpectEggAt(i, i);
+        EXPECT_EQ(gPartiesCount[B_TRAINER_PLAYER], PARTY_SIZE);
+    }
+    else
+    {
+        for (u32 i = 1; i < PARTY_SIZE; i++)
+            EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][i], MON_DATA_SPECIES), SPECIES_NONE);
+        EXPECT_EQ(gPartiesCount[B_TRAINER_PLAYER], 1);
+        EXPECT_EQ(HnsNuz_BoxHash(), boxHash); // 묘지(기절 포켓몬)는 그대로 — 지워서 자리를 만들지 않음
+    }
+    HnsNuz_ExpectNormalWhiteoutEffects();
+}
+
+TEST("Nuzlocke whiteout (HnS): N11 normal Nuzlocke: eggs fill the party, PC full, no box candidate -> party cleared, Rattata, PC kept")
+{
+    HnsNuz_PCFull(NUZ_NORMAL, FALSE);
+    HnsNuz_Cleanup();
+}
+
+TEST("Nuzlocke whiteout (HnS): E11 easy Nuzlocke: eggs fill the party, PC full, no box candidate -> party cleared, Rattata, PC kept")
+{
+    HnsNuz_PCFull(NUZ_EASY, FALSE);
+    HnsNuz_Cleanup();
+}
+
+TEST("Nuzlocke whiteout (HnS): N11C normal Nuzlocke: eggs fill the party, PC full with one living mon -> it goes to slot 0")
+{
+    HnsNuz_PCFull(NUZ_NORMAL, TRUE);
     HnsNuz_Cleanup();
 }
 

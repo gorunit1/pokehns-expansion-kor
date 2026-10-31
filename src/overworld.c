@@ -87,7 +87,6 @@
 #include "constants/trainer_hill.h"
 #include "constants/weather.h"
 #include "constants/vars_hns.h"
-#include "challenge_menu.h"
 #include "nuzlocke.h"
 #include "pokemon_storage_system.h"
 
@@ -408,36 +407,18 @@ static bool32 IsPlayerPartyEggsOnly(void)
     return TRUE;
 }
 
-// HnS: puts the first living box mon (or a Rattata if there is none) in slot 0 and moves the eggs left in the
-// party back one slot, so no egg is lost (recheck 70 (a), friend 2026-10-30). If the eggs fill the party limit,
-// the last egg goes to the PC first. If it cannot (PC full, no box mon taken out), nothing changes and no egg is
-// deleted; that case waits for a design decision.
+// HnS: the Nuzlocke whiteout refill as in the original HnS (recheck 70 (a), friend 2026-10-31): the first living box mon
+// goes straight into slot 0, and with none the party is cleared and a Rattata Lv1 given. An egg in slot 0, or every
+// egg when the party is cleared, is lost; the friend chose the original rule knowing that. The full PC does not
+// matter here: the box mon leaves the PC and the Rattata goes to the party.
 static void NuzlockeWhiteOutRefill(void)
 {
-    struct Pokemon refill;
-    bool32 fromBox = TakeFirstAliveBoxPokemon(&refill);
-    u32 count = 0;
-
-    while (count < PARTY_SIZE && GetMonData(&gParties[B_TRAINER_PLAYER][count], MON_DATA_SPECIES) != SPECIES_NONE)
-        count++;
-
-    while (count >= GetMaxPartySize())
+    if (!TakeFirstAliveBoxPokemon(&gParties[B_TRAINER_PLAYER][0]))
     {
-        if (CopyMonToPC(&gParties[B_TRAINER_PLAYER][count - 1]) != MON_GIVEN_TO_PC)
-            return; // Only possible without a box mon (taking one out frees a PC slot)
-        ZeroMonData(&gParties[B_TRAINER_PLAYER][count - 1]);
-        count--;
+        ZeroPlayerPartyMons();
+        CreateMon(&gParties[B_TRAINER_PLAYER][0], SPECIES_RATTATA, 1, 0, OTID_STRUCT_PLAYER_ID);
+        CalculateMonStats(&gParties[B_TRAINER_PLAYER][0]);
     }
-
-    if (!fromBox)
-    {
-        CreateMon(&refill, SPECIES_RATTATA, 1, 0, OTID_STRUCT_PLAYER_ID);
-        CalculateMonStats(&refill);
-    }
-
-    for (u32 i = count; i > 0; i--)
-        gParties[B_TRAINER_PLAYER][i] = gParties[B_TRAINER_PLAYER][i - 1];
-    gParties[B_TRAINER_PLAYER][0] = refill;
     CalculatePlayerPartyCount(); // HealPlayerParty below only heals the counted mons
 }
 
@@ -447,7 +428,7 @@ void DoWhiteOut(void)
     // A whiteout can also come with a living party: a lost Mirror Challenge trainer battle (the original party is
     // restored), a lost Mirror rematch, a forfeit. And battles that skip the Nuzlocke deletion (in-game partner)
     // leave the fainted mons in the party, which HealPlayerParty revives (recheck 70 (b)). Only refill when the
-    // party has nothing but eggs, so no mon is overwritten.
+    // party has nothing but eggs, so no non-egg mon is overwritten (eggs can be, see NuzlockeWhiteOutRefill).
     if ((IsNuzlockeActive() || IsNuzlockeEasyActive()) && CountPartyAliveNonEggMonsExcept(PARTY_SIZE) == 0
      && IsPlayerPartyEggsOnly())
         NuzlockeWhiteOutRefill();
