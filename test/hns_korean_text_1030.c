@@ -10,15 +10,18 @@
 
 #define MSG_WINDOW_WIDTH_PX BATTLE_MSG_MAX_WIDTH // 208 px = B_WIN_MSG 26칸(파티 메뉴 문장 창도 같은 폭 기준)
 
-// 6-1 재확인 9: 텔레키네시스 — 이름 뒤 조사
-SINGLE_BATTLE_TEST("HnS text 1030: Telekinesis message uses the right topic particle")
+// 6-1 재확인 9: 텔레키네시스 — 2026-10-31 친구 결정으로 공식 본문 "[이름]을(를)\n허공에 띄웠다!"(USUM 8386).
+// 이전(2026-10-30) 본문은 "[이름]은(는)\n높이 뛰어올랐다!"(BW 뛰어오르다 문장)였다.
+SINGLE_BATTLE_TEST("HnS text 1030: Telekinesis message uses the official text and object particle")
 {
     enum Species species;
     bool32 opponentTarget;
-    PARAMETRIZE { species = SPECIES_WOBBUFFET; opponentTarget = TRUE; }   // 상대 마자용은
-    PARAMETRIZE { species = SPECIES_PIKACHU;   opponentTarget = TRUE; }   // 상대 피카츄는
-    PARAMETRIZE { species = SPECIES_MARILL;    opponentTarget = TRUE; }   // 상대 마릴은
-    PARAMETRIZE { species = SPECIES_PIKACHU;   opponentTarget = FALSE; }  // 피카츄는(플레이어 쪽)
+    PARAMETRIZE { species = SPECIES_WOBBUFFET; opponentTarget = FALSE; }  // 마자용을(플레이어 쪽)
+    PARAMETRIZE { species = SPECIES_PIKACHU;   opponentTarget = FALSE; }  // 피카츄를
+    PARAMETRIZE { species = SPECIES_MARILL;    opponentTarget = FALSE; }  // 마릴을
+    PARAMETRIZE { species = SPECIES_WOBBUFFET; opponentTarget = TRUE; }   // 상대 마자용을
+    PARAMETRIZE { species = SPECIES_PIKACHU;   opponentTarget = TRUE; }   // 상대 피카츄를
+    PARAMETRIZE { species = SPECIES_MARILL;    opponentTarget = TRUE; }   // 상대 마릴을
 
     GIVEN {
         ASSUME(GetMoveEffect(MOVE_TELEKINESIS) == EFFECT_TELEKINESIS);
@@ -30,14 +33,18 @@ SINGLE_BATTLE_TEST("HnS text 1030: Telekinesis message uses the right topic part
         else
             TURN { MOVE(opponent, MOVE_TELEKINESIS); }
     } SCENE {
-        if (!opponentTarget)
-            MESSAGE("피카츄는 높이 뛰어올랐다!");
+        if (!opponentTarget && species == SPECIES_WOBBUFFET)
+            MESSAGE("마자용을 허공에 띄웠다!");
+        else if (!opponentTarget && species == SPECIES_PIKACHU)
+            MESSAGE("피카츄를 허공에 띄웠다!");
+        else if (!opponentTarget)
+            MESSAGE("마릴을 허공에 띄웠다!");
         else if (species == SPECIES_WOBBUFFET)
-            MESSAGE("상대 마자용은 높이 뛰어올랐다!");
+            MESSAGE("상대 마자용을 허공에 띄웠다!");
         else if (species == SPECIES_PIKACHU)
-            MESSAGE("상대 피카츄는 높이 뛰어올랐다!");
+            MESSAGE("상대 피카츄를 허공에 띄웠다!");
         else
-            MESSAGE("상대 마릴은 높이 뛰어올랐다!");
+            MESSAGE("상대 마릴을 허공에 띄웠다!");
     }
 }
 
@@ -88,14 +95,16 @@ SINGLE_BATTLE_TEST("HnS text 1030: Perish Body prints the official Korean line")
     }
 }
 
-// 6-7 재확인 47: 불사르기 — 도구 이름 뒤 목적격 조사
-SINGLE_BATTLE_TEST("HnS text 1030: Incinerate uses the object particle after the item")
+// 6-7 재확인 47: 불사르기 — 2026-10-31 친구 결정으로 공식 본문 "[이름]의\n[도구]이(가) 불타 없어졌다!"(SV 7709~7712).
+// 이전(2026-10-30) 본문은 "…[도구]을(를) 녹여 버렸다!"였다. 부식가스(STRINGID_PKMNITEMMELTED)와는 다른 문자열.
+SINGLE_BATTLE_TEST("HnS text 1030: Incinerate uses the official text and subject particle after the item")
 {
     enum Item item;
     bool32 targetOpponent;
-    PARAMETRIZE { item = ITEM_ORAN_BERRY; targetOpponent = TRUE; }   // 상대 마자용의 오랭열매를
-    PARAMETRIZE { item = ITEM_GHOST_GEM;  targetOpponent = TRUE; }   // 상대 마자용의 고스트주얼을
-    PARAMETRIZE { item = ITEM_ORAN_BERRY; targetOpponent = FALSE; }  // 마자의 오랭열매를(플레이어 쪽)
+    PARAMETRIZE { item = ITEM_ORAN_BERRY; targetOpponent = TRUE; }   // 상대 마자용의 오랭열매가
+    PARAMETRIZE { item = ITEM_GHOST_GEM;  targetOpponent = TRUE; }   // 상대 마자용의 고스트주얼이(ㄹ 받침도 "이")
+    PARAMETRIZE { item = ITEM_ORAN_BERRY; targetOpponent = FALSE; }  // 마자의 오랭열매가(플레이어 쪽)
+    PARAMETRIZE { item = ITEM_GHOST_GEM;  targetOpponent = FALSE; }  // 마자의 고스트주얼이
 
     GIVEN {
         ASSUME(GetItemPocket(ITEM_ORAN_BERRY) == POCKET_BERRIES);
@@ -107,12 +116,14 @@ SINGLE_BATTLE_TEST("HnS text 1030: Incinerate uses the object particle after the
         else
             TURN { MOVE(opponent, MOVE_INCINERATE); }
     } SCENE {
-        if (!targetOpponent)
-            MESSAGE("마자의 오랭열매를 녹여 버렸다!");
+        if (!targetOpponent && item == ITEM_ORAN_BERRY)
+            MESSAGE("마자의 오랭열매가 불타 없어졌다!");
+        else if (!targetOpponent)
+            MESSAGE("마자의 고스트주얼이 불타 없어졌다!");
         else if (item == ITEM_ORAN_BERRY)
-            MESSAGE("상대 마자용의 오랭열매를 녹여 버렸다!");
+            MESSAGE("상대 마자용의 오랭열매가 불타 없어졌다!");
         else
-            MESSAGE("상대 마자용의 고스트주얼을 녹여 버렸다!");
+            MESSAGE("상대 마자용의 고스트주얼이 불타 없어졌다!");
     }
 }
 
@@ -164,11 +175,11 @@ TEST("HnS text 1030: ball swap message particles and width")
 // 바뀐 배틀 문장의 가장 긴 줄(6글자 이름 + "상대 ", 10글자 도구 이름)이 문장 창 폭 안
 TEST("HnS text 1030: longest lines of the changed battle messages fit the message window")
 {
-    EXPECT_LE(GetStringWidth(FONT_NORMAL, COMPOUND_STRING("상대 가나다라마바은"), 0), MSG_WINDOW_WIDTH_PX);           // 6-1 1줄
-    EXPECT_LE(GetStringWidth(FONT_NORMAL, COMPOUND_STRING("높이 뛰어올랐다!"), 0), MSG_WINDOW_WIDTH_PX);              // 6-1 2줄
+    EXPECT_LE(GetStringWidth(FONT_NORMAL, COMPOUND_STRING("상대 가나다라마바을"), 0), MSG_WINDOW_WIDTH_PX);           // 6-1 1줄
+    EXPECT_LE(GetStringWidth(FONT_NORMAL, COMPOUND_STRING("허공에 띄웠다!"), 0), MSG_WINDOW_WIDTH_PX);                // 6-1 2줄
     EXPECT_LE(GetStringWidth(FONT_NORMAL, COMPOUND_STRING("상대 가나다라마바으로부터"), 0), MSG_WINDOW_WIDTH_PX);     // 6-2 1줄
     EXPECT_LE(GetStringWidth(FONT_NORMAL, COMPOUND_STRING("눈부신 빛이 넘쳐흐른다!"), 0), MSG_WINDOW_WIDTH_PX);       // 6-2 2줄
     EXPECT_LE(GetStringWidth(FONT_NORMAL, COMPOUND_STRING("두 포켓몬 모두 3턴 후에 쓰러져 버린다!"), 0), MSG_WINDOW_WIDTH_PX); // 6-5 한 줄
     EXPECT_LE(GetStringWidth(FONT_NORMAL, COMPOUND_STRING("상대 가나다라마바의"), 0), MSG_WINDOW_WIDTH_PX);           // 6-7 1줄
-    EXPECT_LE(GetStringWidth(FONT_NORMAL, COMPOUND_STRING("가나다라마바사아자차을 녹여 버렸다!"), 0), MSG_WINDOW_WIDTH_PX); // 6-7 2줄
+    EXPECT_LE(GetStringWidth(FONT_NORMAL, COMPOUND_STRING("가나다라마바사아자차이 불타 없어졌다!"), 0), MSG_WINDOW_WIDTH_PX); // 6-7 2줄
 }

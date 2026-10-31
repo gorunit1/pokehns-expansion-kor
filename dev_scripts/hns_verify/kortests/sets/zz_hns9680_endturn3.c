@@ -162,8 +162,9 @@ SINGLE_BATTLE_TEST("HNS9680 3-07 Telekinesis ends, Magnet Rise ends (name token 
         TURN {}
     } SCENE {
         MESSAGE("마자용은 전자력으로 떠올랐다!");
-        // 2026-10-30 재확인 9(친구 요청): 이름 뒤 조사 {B_TXT_EUNNEUN} — 이전 기대는 고정 "는"("마자용는")
-        MESSAGE("마자용은 높이 뛰어올랐다!");
+        // 2026-10-30 재확인 9(친구 요청): 이름 뒤 조사 — 이전 기대는 고정 "는"("마자용는"),
+        // 2026-10-31(친구 결정) 공식 본문 "[이름]을(를)\n허공에 띄웠다!"(USUM 8386)
+        MESSAGE("마자용을 허공에 띄웠다!");
         MESSAGE("마자용은 텔레키네시스에서 풀려났다!");
         // 2026-10-04 HnS fix (owner decision): HandleEndTurnMagnetRise sets gBattleScripting.battler, so the Magnet Rise user is named.
         MESSAGE("마자용은 전자부유의 효과가 풀렸다!");
