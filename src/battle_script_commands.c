@@ -2981,7 +2981,9 @@ static void Cmd_pause(void)
     if (gBattleControllerExecFlags == 0)
     {
         u16 value = cmd->frames;
-        if (gTestRunnerHeadless || !gSaveBlock3Ptr->challengeSettings.fastBattle)
+        // HnS (recheck 37): with battle delays skipped, still wait (at most `frames`) while the newest ability or
+        // item pop-up slides in, so the HP bar or message after it does not start before the pop-up is in place.
+        if (gTestRunnerHeadless || (!gSaveBlock3Ptr->challengeSettings.fastBattle && !IsNewestPopUpSlidingIn()))
             gPauseCounterBattle = value;
         if (++gPauseCounterBattle >= value)
         {

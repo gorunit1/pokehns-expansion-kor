@@ -1,0 +1,52 @@
+--- a/src/battle_script_commands.c	2026-10-31 06:06:41.548754571 +0000
++++ b/src/battle_script_commands.c	2026-10-31 06:06:41.550742050 +0000
+@@ -1217,6 +1217,10 @@
+     if (gBattleControllerExecFlags)
+         return;
+ 
++#if TESTING
++    { extern s32 Test_MgbaPrintf(const char *fmt, ...); extern u32 gTmp37PopUpFrame;
++      if (!gTestRunnerHeadless) Test_MgbaPrintf("TMP37 hpbar battler=%d sliding=%d framesSincePopUp=%d", battler, IsNewestPopUpSlidingIn(), gMain.vblankCounter1 - gTmp37PopUpFrame); }
++#endif
+     BtlController_EmitHealthBarUpdate(battler, B_COMM_TO_CONTROLLER, min(gBattleStruct->passiveHpUpdate[battler], 10000));
+     MarkBattlerForControllerExec(battler);
+     gBattlescriptCurrInstr = cmd->nextInstr;
+@@ -2981,12 +2985,20 @@
+     if (gBattleControllerExecFlags == 0)
+     {
+         u16 value = cmd->frames;
++#if TESTING
++        static u32 sTmp37Start; extern s32 Test_MgbaPrintf(const char *fmt, ...); extern u32 gTmp37PopUpFrame;
++        bool32 tmpSlidingAtStart = IsNewestPopUpSlidingIn();
++        if (gPauseCounterBattle == 0) sTmp37Start = gMain.vblankCounter1;
++#endif
+         // HnS (recheck 37): with battle delays skipped, still wait (at most `frames`) while the newest ability or
+         // item pop-up slides in, so the HP bar or message after it does not start before the pop-up is in place.
+         if (gTestRunnerHeadless || (!gSaveBlock3Ptr->challengeSettings.fastBattle && !IsNewestPopUpSlidingIn()))
+             gPauseCounterBattle = value;
+         if (++gPauseCounterBattle >= value)
+         {
++#if TESTING
++            if (!gTestRunnerHeadless) Test_MgbaPrintf("TMP37 pause value=%d waited=%d slidingNow=%d sincePopUp=%d", value, gMain.vblankCounter1 - sTmp37Start, tmpSlidingAtStart, gMain.vblankCounter1 - gTmp37PopUpFrame);
++#endif
+             gPauseCounterBattle = 0;
+             gBattlescriptCurrInstr = cmd->nextInstr;
+         }
+--- a/src/battle_interface.c	2026-10-31 06:06:41.548939218 +0000
++++ b/src/battle_interface.c	2026-10-31 06:06:41.566360687 +0000
+@@ -2853,6 +2853,7 @@
+ 
+ // HnS (recheck 37): battler of the ability or item pop-up created last, for IsNewestPopUpSlidingIn.
+ static EWRAM_DATA u8 sNewestPopUpBattler = 0;
++u32 gTmp37PopUpFrame;
+ 
+ // HnS: the battler's newest pop-up is really on screen. Checked on the sprite because a party or bag screen
+ // resets the sprites without clearing activeAbilityPopUps.
+@@ -2968,6 +2969,7 @@
+ 
+     gBattleStruct->battlerState[battler].activeAbilityPopUps = TRUE;
+     sNewestPopUpBattler = battler;
++    { extern u32 gTmp37PopUpFrame; gTmp37PopUpFrame = gMain.vblankCounter1; }
+ 
+     gSprites[spriteIds[0]].sIsMain = TRUE;
+     gSprites[spriteIds[0]].sBattlerId = battler;

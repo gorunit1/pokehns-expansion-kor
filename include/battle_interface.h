@@ -138,6 +138,7 @@ void UpdateAbilityPopup(enum BattlerId battlerId);
 void CreateItemPopUp(enum BattlerId battlerId);
 bool32 IsBattlerPopUpShown(enum BattlerId battlerId);
 bool32 IsBattlerItemPopUpShown(enum BattlerId battlerId);
+bool32 IsNewestPopUpSlidingIn(void);
 void CategoryIcons_LoadSpritesGfx(void);
 u16 GetBattleMoveDescriptionButton(void);
 void TryToAddMoveInfoWindow(void);

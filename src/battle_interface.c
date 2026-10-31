@@ -2851,6 +2851,9 @@ static void PrintItemOnItemPopUp(enum Item item, u8 spriteId1, u8 spriteId2)
     PrintOnAbilityPopUp(GetItemName(item), spriteId1, spriteId2, x, y, FALSE);
 }
 
+// HnS (recheck 37): battler of the ability or item pop-up created last, for IsNewestPopUpSlidingIn.
+static EWRAM_DATA u8 sNewestPopUpBattler = 0;
+
 // HnS: the battler's newest pop-up is really on screen. Checked on the sprite because a party or bag screen
 // resets the sprites without clearing activeAbilityPopUps.
 static bool32 IsBattlerPopUpSpriteLive(enum BattlerId battler)
@@ -2896,6 +2899,17 @@ bool32 IsBattlerPopUpShown(enum BattlerId battler)
 bool32 IsBattlerItemPopUpShown(enum BattlerId battler)
 {
     return IsBattlerPopUpSpriteLive(battler) && gSprites[gBattleStruct->abilityPopUpSpriteIds[battler][0]].sIsItemPopUp;
+}
+
+// HnS (recheck 37): the pop-up created last is still sliding in. Only that pop-up counts, so an older one of
+// another battler is not waited on, and the sprite check ignores marks left by a party or bag screen reset.
+bool32 IsNewestPopUpSlidingIn(void)
+{
+    enum BattlerId battler = sNewestPopUpBattler;
+
+    return battler < gBattlersCount
+        && IsBattlerPopUpSpriteLive(battler)
+        && gSprites[gBattleStruct->abilityPopUpSpriteIds[battler][0]].sState == APU_STATE_SLIDE_IN;
 }
 
 void CreateAbilityPopUp(enum BattlerId battler, enum Ability ability, bool32 isDoubleBattle)
@@ -2953,6 +2967,7 @@ void CreateAbilityPopUp(enum BattlerId battler, enum Ability ability, bool32 isD
         CreateTask(Task_FreeAbilityPopUpGfx, 5);
 
     gBattleStruct->battlerState[battler].activeAbilityPopUps = TRUE;
+    sNewestPopUpBattler = battler;
 
     gSprites[spriteIds[0]].sIsMain = TRUE;
     gSprites[spriteIds[0]].sBattlerId = battler;
@@ -3023,6 +3038,7 @@ void CreateItemPopUp(enum BattlerId battler)
         CreateTask(Task_FreeAbilityPopUpGfx, 5);
 
     gBattleStruct->battlerState[battler].activeAbilityPopUps = TRUE;
+    sNewestPopUpBattler = battler;
     gSprites[spriteIds[0]].sIsMain = TRUE;
     gSprites[spriteIds[0]].sBattlerId = battler;
     gSprites[spriteIds[1]].sBattlerId = battler;
