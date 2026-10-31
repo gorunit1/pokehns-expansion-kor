@@ -11,7 +11,7 @@
 - 수정 파일: 결과 문서 1절 표. 문서 — `followup-2026-10-31.md`(새), `FRIEND_REPLY_2026-10-31.md`(새), `RECHECK_BEFORE_COMPLETION.md`(0절 + 9·34·37·47·70·89·114 행), `followup-2026-10-30b.md`(순증 16 명시), `test-baseline-f1031.txt`(새), `verify_seq.sh` 기준, `dev_scripts/hns_verify/probe/`(새 3폴더), STATUS·SESSION_LOG.
 - 검증: STATUS 현재 절. `verify_seq.sh f1031 f9e68547 <scratchpad>/v4`.
 - 게임 화면 확인: 하지 않음 — 친구 QA.
-- 친구 문자: 세션 답변 문안(보냄 표시 대기).
+- 친구 문자: **보냄**(2026-10-31 사용자 확인).
 - 다음 시작점: 친구 결정(70 복구 설계·114)·실기 결과 반영.
 
 ### 2026-10-30 — 보고 뒤 조사 2건(페어리 설정·노가드×프리폴) (클라우드 세션)
