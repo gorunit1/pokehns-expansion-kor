@@ -206,6 +206,9 @@ static void ClearSaveBlocks(void)
     gSaveBlock3Ptr->challengeSettings.tx_Challenges_OneTypeChallenge = TEST_ONE_TYPE_OFF;
     // Game strings use EOS, so a zeroed player name is not terminated.
     gSaveBlock2Ptr->playerName[0] = EOS;
+    // HnS: match the new-game default (src/new_game.c). A zeroed setting means "no Fairy type"
+    // (pre-Fairy species types and Fairy moves as other types); tests that need that mode set it themselves.
+    gSaveBlock3Ptr->challengeSettings.tx_Mode_Fairy_Types = 1;
 }
 
 void CB2_TestRunner(void)
