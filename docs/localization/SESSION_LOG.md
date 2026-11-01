@@ -12,7 +12,7 @@
 - 검증: STATUS 현재 절. 작업 폴더 `<scratchpad>/v114`(라벨 f1101).
 - 수정 파일: `test/hns_stolen_item_supply.c`(새), `test/hns_stolen_item_storage.c`, `dev_scripts/hns_verify/check_wild_doubles.py`(새), `verify_seq.sh`(검사 추가·기준 f1101), `probe/stolen114/README.md`, `followup-2026-10-31b.md`(4-2·4-3·4-7·8-1·8-2 표기 + 9절), `RECHECK_BEFORE_COMPLETION.md` 114 행, `FRIEND_REPLY_2026-11-01.md`(새), `test-baseline-f1101.txt`(새), STATUS·SESSION_LOG. 게임 코드 변화 없음.
 - 게임 화면 확인: 하지 않음 — 이번엔 새 화면 없음.
-- 친구 문자: 문안 작성(세션 답변). 보내면 "보냄" 표시.
+- 친구 문자: **보냄**(2026-11-01 사용자 확인).
 
 ### 2026-10-31(3) — 114 추가 설명(대기 8개·최종 지급 실패) (클라우드 세션)
 
