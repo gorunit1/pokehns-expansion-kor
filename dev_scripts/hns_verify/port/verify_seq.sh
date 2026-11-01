@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 # usage: verify_seq.sh <seq> <pre-port commit> [work-dir]
 #   Full verification of one full-sync seq after its code commit (run from the HnS repo root):
-#   pre-port clone build (<work-dir>/w), full rebuild + warncheck, make check + testlist (baseline seq556),
+#   pre-port clone build (<work-dir>/w), full rebuild + warncheck, scripted wild doubles catch check (check_wild_doubles.py),
+#   make check + testlist (baseline seq556),
 #   save static compare against the pre-port clone, Korean regression (kortests, expected 555/652).
 #   Prints the results; logs go to <work-dir>. Takes about 40 minutes on 4 cores.
 set -u
 seq="$1"; pre="$2"; W="${3:-${TMPDIR:-/tmp}/hns-verify}"
 R="$(pwd)"; V=dev_scripts/hns_verify
-BASE=docs/friend-handoff/results/1.17.0-port/test-baseline-f1031b.txt
+BASE=docs/friend-handoff/results/1.17.0-port/test-baseline-f1101.txt
 export HNS_WORK="$W/hnswork"; mkdir -p "$W"
 [ -d "$W/w/.git" ] || git clone -q "$R" "$W/w"
 ( cd "$W/w" && git fetch -q "$R" pokehns-expansion-kor && git checkout -q --detach "$pre" && git log --oneline -1 \
@@ -15,6 +16,7 @@ export HNS_WORK="$W/hnswork"; mkdir -p "$W"
 rm -rf build/hns
 make hns -j8 > "$W/fb$seq.log" 2>&1; echo "fullbuild rc=$?"; sha1sum pokehns.gba
 $V/warncheck.sh "$W/fb$seq.log"; echo "warncheck rc=$?"
+python3 $V/check_wild_doubles.py > "$W/wd$seq.log" 2>&1; echo "wilddoubles rc=$?"; tail -1 "$W/wd$seq.log"
 GITHUB_ACTION=1 make check BUILD=hns -j8 > "$W/check$seq.log" 2>&1; echo "check rc=$? (2 is normal)"
 $V/testlist.sh "$W/check$seq.log" "$BASE"; echo "testlist rc=$?"
 rm -rf "$W/save-pre" "$W/save-run"

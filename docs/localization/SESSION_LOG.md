@@ -2,6 +2,18 @@
 
 오래된 기록은 이력으로 유지하고, 현재 상태는 STATUS.md에서 확인한다.
 
+### 2026-11-01 — 114 대기 8개 유지·실패 분기 기록 구분·자동 검사 보강 (클라우드 세션)
+
+- 요청: 친구 답(사용자 전달, `FRIEND_REPLY_2026-11-01.md`) — 8개 유지(확장·압축·새 문장 없음), 실패 분기는 순서를 바꾼 시험 결과로 구분·복구 규칙 없음, 기존 회귀 검사 유지, 공급 상한·재생성 중복 방지·8/9 경계를 정식 자동 검사로, 테스트 전용 조건과 정상 도달 조건을 구분해 보고.
+- 다시 따진 결과(코드·데이터): 8-1의 "최대 7"은 기본 설정 싱글 기준이었음. 랜덤화(야생·특성)면 볼 줍기 1회(`gHasFetchedBall`, 양쪽 합쳐 한 번)로 8. 이벤트 야생 더블 7곳(알로라 맵, `setwildbattle` 두 마리)은 야생 2 + 6 = 8이고 모두 `FLAG_NO_WILD_CATCHING`이라 볼 줍기 없음. → 정상 최대 8, 9번째 없음(여유 0).
+- 테스트 작성 중 알게 된 테스트 러너 성질(임시 계측 테스트 `test/zz_tmp_supply_dbg.c`, 지움; `src/item.c` 임시 계측도 되돌림): ① 야생 배틀 테스트는 `MOVE(opponent, …)`가 적용되지 않음(싱글 야생 상대는 일반 컨트롤러) → 야생 기술 하나만. ② 한 테스트 16턴까지. ③ 도구 없는 야생은 배틀 시작 때 종 도구를 무작위로 받음(지그제구리 상처약) → 빈손 야생은 종 도구 없는 마자용에 줍기. ④ 분노의앞니 PP 10 → `MovesWithPP` 30. ⑤ 회복 뒤에도 절반 아래면 되살린 자뭉열매를 곧바로 또 먹음 → 자연의은혜로 소비.
+- 기존 테스트 수정: `hns_stolen_item_storage.c` 두 번 훔치기·드롭보다 먼저 — 지그제구리 기술을 분노의앞니 하나로(1턴째 분노의앞니 난수에 기대던 것, 검사 내용 같음).
+- 민감도 확인(임시, 모두 되돌림, `git diff --stat src include` 빈 것 확인): THEN `EXPECT(FALSE)`·매개변수별 횟수, `StealTargetItem`이 쓴 도구 기록을 남기게, `HNS_STOLEN_WILD_ITEMS_MAX` 7. 방법은 `probe/stolen114/README.md`.
+- 검증: STATUS 현재 절. 작업 폴더 `<scratchpad>/v114`(라벨 f1101).
+- 수정 파일: `test/hns_stolen_item_supply.c`(새), `test/hns_stolen_item_storage.c`, `dev_scripts/hns_verify/check_wild_doubles.py`(새), `verify_seq.sh`(검사 추가·기준 f1101), `probe/stolen114/README.md`, `followup-2026-10-31b.md`(4-2·4-3·4-7·8-1·8-2 표기 + 9절), `RECHECK_BEFORE_COMPLETION.md` 114 행, `FRIEND_REPLY_2026-11-01.md`(새), `test-baseline-f1101.txt`(새), STATUS·SESSION_LOG. 게임 코드 변화 없음.
+- 게임 화면 확인: 하지 않음 — 이번엔 새 화면 없음.
+- 친구 문자: 문안 작성(세션 답변). 보내면 "보냄" 표시.
+
 ### 2026-10-31(3) — 114 추가 설명(대기 8개·최종 지급 실패) (클라우드 세션)
 
 - 요청: 친구 질문(사용자 전달) — 설명·코드 확인만.

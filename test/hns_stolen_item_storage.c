@@ -314,6 +314,8 @@ WILD_BATTLE_TEST("HnS stolen item storage: the item is given whichever way the b
 // 플레이어 마자용이 자뭉열매를 먹은 뒤(분노의앞니) 도둑질로 버치열매를 훔치고, 줍기 지그제구리가 자뭉열매를 주움 → 다시 도둑질.
 // 두 열매 모두 가방에 999개라 PC로만 갈 수 있음. PC 빈 칸 2 → 둘 다 PC(이름·순서대로 안내), 1 → 둘째는 막힘
 // (첫째가 예약한 마지막 칸을 둘째가 다시 쓰지 않음). 가방에 자뭉열매가 없으면 둘째는 가방.
+// 야생 배틀 테스트는 MOVE(opponent, …) 지정이 적용되지 않고 야생이 가진 기술 중에서 고르므로, 지그제구리에게는 분노의앞니만 준다
+// (2026-11-01: 처음 판은 분노의앞니·축하를 주고 1턴째 분노의앞니를 고른 난수에 기대고 있었음 — 검사 내용은 같음).
 WILD_BATTLE_TEST("HnS stolen item storage: a second steal while one is waiting cannot use the same last slot")
 {
     u32 pcSlots, sitrusInBag;
@@ -328,11 +330,11 @@ WILD_BATTLE_TEST("HnS stolen item storage: a second steal while one is waiting c
             GIVE_PLAYER_ITEM(ITEM_SITRUS_BERRY, MAX_BAG_ITEM_CAPACITY);
         FillPC(pcSlots, FILLER_ITEM);
         PLAYER(SPECIES_WOBBUFFET) { Speed(1); HP(300); MaxHP(400); Item(ITEM_SITRUS_BERRY); }
-        OPPONENT(SPECIES_ZIGZAGOON) { Speed(10); Ability(ABILITY_PICKUP); Item(BERRY_STOLEN); Moves(MOVE_SUPER_FANG, MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_ZIGZAGOON) { Speed(10); Ability(ABILITY_PICKUP); Item(BERRY_STOLEN); Moves(MOVE_SUPER_FANG); }
     } WHEN {
         TURN { MOVE(opponent, MOVE_SUPER_FANG); MOVE(player, MOVE_THIEF); }
-        TURN { MOVE(opponent, MOVE_CELEBRATE); MOVE(player, MOVE_THIEF); }
-        TURN { MOVE(opponent, MOVE_CELEBRATE); MOVE(player, MOVE_ROAR); }
+        TURN { MOVE(opponent, MOVE_SUPER_FANG); MOVE(player, MOVE_THIEF); }
+        TURN { MOVE(opponent, MOVE_SUPER_FANG); MOVE(player, MOVE_ROAR); }
     } SCENE {
         MESSAGE("마자용은 야생 지그제구리로부터 버치열매를 빼앗았다!");
         ABILITY_POPUP(opponent, ABILITY_PICKUP);
@@ -373,10 +375,10 @@ WILD_BATTLE_TEST("HnS stolen item storage: the stolen item is given before the w
         GIVE_PLAYER_ITEM(ITEM_SITRUS_BERRY, MAX_BAG_ITEM_CAPACITY - 1);
         FillPC(0, FILLER_ITEM);
         PLAYER(SPECIES_WOBBUFFET) { Speed(1); HP(300); MaxHP(400); Item(ITEM_SITRUS_BERRY); }
-        OPPONENT(SPECIES_ZIGZAGOON) { Speed(10); Ability(ABILITY_PICKUP); Item(ITEM_SITRUS_BERRY); Moves(MOVE_SUPER_FANG, MOVE_CELEBRATE); }
+        OPPONENT(SPECIES_ZIGZAGOON) { Speed(10); Ability(ABILITY_PICKUP); Item(ITEM_SITRUS_BERRY); Moves(MOVE_SUPER_FANG); }
     } WHEN {
         TURN { MOVE(opponent, MOVE_SUPER_FANG); MOVE(player, MOVE_THIEF); }
-        TURN { MOVE(opponent, MOVE_CELEBRATE); MOVE(player, MOVE_FISSURE, hit: TRUE); }
+        TURN { MOVE(opponent, MOVE_SUPER_FANG); MOVE(player, MOVE_FISSURE, hit: TRUE); }
     } SCENE {
         MESSAGE("마자용은 야생 지그제구리로부터 자뭉열매를 빼앗았다!");
         ABILITY_POPUP(opponent, ABILITY_PICKUP);
