@@ -79,6 +79,8 @@ NewBarkTown_Lab_EventScript_Elm::
 	@ HGSS: "has that EGG changed any?" only while the Egg from the aide is still unhatched
 	callnative HnsCheckPlayerHasTogepiEgg
 	goto_if_eq VAR_RESULT, TRUE, NewBarkTown_Lab_EventScript_Elm_Check_WhereIsEgg
+	@ HGSS: hatched, but none of the Togepi line is in the party
+	goto NewBarkTown_Lab_EventScript_Elm_ThoughtEggHatched
 NewBarkTown_Lab_EventScript_Elm_AfterEggCheck:
 	goto_if_eq VAR_NEWBARKTOWN_LABSTATE, 5, NewBarkTown_Lab_EventScript_ElmState5
 
@@ -510,6 +512,12 @@ NewBarkTown_Lab_EventScript_TriggerAideGiveBalls::
 
 NewBarkTown_Lab_EventScript_Elm_Check_WhereIsEgg::
 	msgbox NewBarkTown_Lab_Text_ElmWaitingEggHatch, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+
+NewBarkTown_Lab_EventScript_Elm_ThoughtEggHatched::
+	msgbox NewBarkTown_Lab_Text_ElmThoughtEggHatched, MSGBOX_DEFAULT
 	closemessage
 	release
 	end
