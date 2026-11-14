@@ -4533,6 +4533,34 @@ bool32 CheckObjectAtXY(u32 x, u32 y)
     return FALSE;
 }
 
+// HnS: TRUE while the player still has an unhatched Togepi Egg in the party or a PC BOX (the Egg from Elm's aide).
+// HnS has no "Egg hatched" flag, so Elm's "has that Egg changed any?" line asks this instead.
+bool32 HnsPlayerHasTogepiEgg(void)
+{
+    for (u32 i = 0; i < PARTY_SIZE; i++)
+    {
+        struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][i];
+        if (GetMonData(mon, MON_DATA_SANITY_HAS_SPECIES) && GetMonData(mon, MON_DATA_IS_EGG) && GetMonData(mon, MON_DATA_SPECIES) == SPECIES_TOGEPI)
+            return TRUE;
+    }
+    for (u32 box = 0; box < TOTAL_BOXES_COUNT; box++)
+    {
+        for (u32 pos = 0; pos < IN_BOX_COUNT; pos++)
+        {
+            struct BoxPokemon *boxMon = GetBoxedMonPtr(box, pos);
+            if (GetBoxMonData(boxMon, MON_DATA_SANITY_HAS_SPECIES) && GetBoxMonData(boxMon, MON_DATA_IS_EGG) && GetBoxMonData(boxMon, MON_DATA_SPECIES) == SPECIES_TOGEPI)
+                return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+// callnative: VAR_RESULT = HnsPlayerHasTogepiEgg()
+void HnsCheckPlayerHasTogepiEgg(void)
+{
+    gSpecialVar_Result = HnsPlayerHasTogepiEgg();
+}
+
 bool32 CheckPartyHasSpecies(enum Species givenSpecies)
 {
     u32 partyIndex;

@@ -493,7 +493,8 @@ s32 LearnMove(const struct MoveLearnUI *ui, u8 taskId)
         StringCopy(gStringVar2, GetMoveName(move));
         gSpecialVar_Result = TRUE;
         ui->printMessage(gText_PkmnLearnedMove4);
-        return LEARN_MOVE_END;
+        // HnS: play the fanfare after replacing a move too, as the move relearner did before upstream #8491.
+        return LEARNED_MOVE_2;
     }
     case DID_NOT_LEARN_1:
         GetBoxMonNickname(boxmon, gStringVar1);
