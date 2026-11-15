@@ -12,7 +12,7 @@
 | 437 | #10452 | `8aaadb00` | 동적 선택지에 포켓몬 아이콘 콜백(`DYN_MULTICHOICE_CB_SHOW_PKMN`, `CreateTaggedMonIcon`). HnS 스크립트는 안 씀. 스프라이트 슬롯이 없을 때의 HnS 가드는 `ChangeSpriteOnSelection` 안에 유지 |
 | 439 | #10443 | `e81ae8cd` | 부리캐논·집중펀치·트랩셸 준비 처리 정리(아래) — 한글 문장 3개의 이름 토큰만 `B_ATK`→`B_SCR`(정책 74) |
 | 440 | #10471 | `98a3b6fc` | `infiniteConfusion` 삭제 — 혼란 타이머 하나(`confusionTimer`), 버서크유전자는 `PERMANENT_VOLATILE` |
-| 441 일부 | #10467 | `d7b990b4` | 와이드가드가 싱글 배틀에서도 막음(대상 종류 직접 비교). **"방어함" 애니메이션은 보류(친구 질문)**, `CancelerTargetFailure` 반복 범위는 HnS 구조가 달라 해당 없음 |
+| 441 일부 | #10467 | `d7b990b4` | 와이드가드가 싱글 배틀에서도 막음(대상 종류 직접 비교). **"방어함" 애니메이션은 보류(친구 질문)**, ~~`CancelerTargetFailure` 반복 범위는 HnS 구조가 달라 해당 없음~~ → **정정(2026-11-14): 잘못된 판정. 해당 hunk 6곳은 HnS에도 그대로 있었고 빼먹어서 싱글에서 꿈먹기·죽기살기·싱크로노이즈 실패 문장이 3번 나왔다(QA b4048-24). `ad7fb887`에서 넣음 — [`followup-2026-11-14.md`](followup-2026-11-14.md) 2절** |
 | 442 | #10523 | `dcd28c3f` | 파트너 생성기 `smartTera` 1비트에 마스크를 넣던 결함 — HnS는 `smartTera`를 읽지 않아(재확인 86) 동작 변화 0 |
 | 443 | #10531 | `a4d0b7c4` | `sBattleWeatherInfo` → `gBattleWeatherInfo` 이름만 |
 | 444 | #10521 | **보류** | 아래 "친구 질문" |

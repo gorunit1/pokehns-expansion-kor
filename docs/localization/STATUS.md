@@ -1,5 +1,23 @@
 # 현재 인수인계 상태
 
+## 2026-11-15 — 친구 답: 성공음 범위 좁히기·조사 커밋 제외 브랜치 `hns-1114-fixes` (현재, 클라우드 세션)
+
+- **요청:** [`FRIEND_REPLY_2026-11-14.md`](../friend-handoff/FRIEND_REPLY_2026-11-14.md)(3묶음) → [`FRIEND_REPLY_2026-11-15.md`](../friend-handoff/FRIEND_REPLY_2026-11-15.md)(후속). **결과** [`followup-2026-11-14.md`](../friend-handoff/results/1.17.0-port/followup-2026-11-14.md) — 최종 상태는 7절.
+- **브랜치:** 친구 지시로 대사 조사 커밋 2개(`44a4337a`·`d256f766`)를 뺀 **`hns-1114-fixes`**(기준 `3b19978c`)에 올림. 조사 기록·산출물은 작업 브랜치 `pokehns-expansion-kor`의 이 환경 로컬 커밋에만 있음(push 안 함, 컨테이너가 정리되면 사라짐 — 엑셀·보고서는 2026-11-02 디스코드로 전달됨).
+- **수정(이 브랜치 커밋 `6341b4e3`·`2ef315b3`·`d1e58233`)**
+  - 교체 학습 성공음: 기술 떠올리기에만(`MoveLearnUI.fanfareAfterReplace`). 포팅 전 HnS(`c339f2b7`)와 같음 — 기술 떠올리기는 있음, 필드 기술 가르침은 없음. #8491 공통화 포팅 회귀였음.
+  - 꿈먹기 문장 3번(QA b4048-24): `CancelerTargetFailure` 반복 6곳 `gBattlersCount`. seq 441 #10467 hunk 누락(기록 정정). 죽기살기·싱크로노이즈 같은 원인.
+  - 공박사: 알 대사 조건 = `FLAG_RECEIVED_TOGEPI_EGG` + 토게피 알 보유(파티+PC). 부화 뒤 파티에 없으면 기존 `ElmThoughtEggHatched`. 대사 본문 변화 없음.
+  - 새 테스트 12개: `test/hns_learn_move_fanfare.c`(7), `test/hns_target_failure_singles.c`(4), `test/hns_elm_togepi_egg.c`(1).
+- **포팅 회귀 점검:** 일부 범위만(followup 4절 + 진화·레벨업 7-5). 추가 문제 없음. 보지 않은 범위가 넓음. 재확인 115.
+- **검증(최종 `d1e58233`):** `verify_seq.sh r1115 3b19978c` — 빌드 성공·새 경고 0, 이벤트 더블 검사 PASS, 새 PASS 12·사라진 PASS 0, 세이브 PASS, 한글 회귀 555/652. 새 기준 `test-baseline-r1115.txt`. **실기: 하지 않음(친구 QA).**
+- **ROM(실기용, 최신):** 코드 커밋 `d1e58233`, SHA1 **`dafcc3a9a6b61c16cd559295a66df96559cfdc7a`**, SHA256 **`c38e7111689da0feab5edb19dde51b113c2831983740fd6e53cd0e4848ac7b0d`**. ELF SHA1 `95a1b7e83b3f8c541992ee10f0f4394df6e3c927`. 사용량 32,608,804 B.
+- **다음 할 일**
+  1. 친구 문자(최종 보고) → 사용자가 보내면 **보냄** 표시. ROM·ELF는 작업 폴더의 `pokehns.gba`·`pokehns.elf`를 내려받아 전달(브랜치 `hns-1114-fixes`를 체크아웃한 상태에서 빌드한 것).
+  2. 친구 실기(followup 7-8) 답 대기. 추가 회귀 점검 범위는 친구가 정함.
+  3. `hns-1114-fixes`와 `pokehns-expansion-kor`를 어떻게 합칠지는 친구·사용자 결정(조사 커밋을 원격에 올릴지에 달림).
+  4. 다음 검증 명령 예: `dev_scripts/hns_verify/port/verify_seq.sh <라벨> <직전 커밋> <작업 폴더>`(스크립트 안 기준은 아직 `test-baseline-f1101.txt` — r1115로 바꾸면 새 PASS 0이 정상).
+
 ## 2026-11-01 — 친구 답: 114 대기 8개 유지·실패 분기 기록 구분·분석 항목 자동 검사 보강 (현재, 클라우드 세션)
 
 - **요청:** [`FRIEND_REPLY_2026-11-01.md`](../friend-handoff/FRIEND_REPLY_2026-11-01.md)(사용자 전달). **결과** [`followup-2026-10-31b.md`](../friend-handoff/results/1.17.0-port/followup-2026-10-31b.md) 9절.
