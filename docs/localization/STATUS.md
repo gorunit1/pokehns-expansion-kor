@@ -13,7 +13,7 @@
 - **검증(최종 `d1e58233`):** `verify_seq.sh r1115 3b19978c` — 빌드 성공·새 경고 0, 이벤트 더블 검사 PASS, 새 PASS 12·사라진 PASS 0, 세이브 PASS, 한글 회귀 555/652. 새 기준 `test-baseline-r1115.txt`. **실기: 하지 않음(친구 QA).**
 - **ROM(실기용, 최신):** 코드 커밋 `d1e58233`, SHA1 **`dafcc3a9a6b61c16cd559295a66df96559cfdc7a`**, SHA256 **`c38e7111689da0feab5edb19dde51b113c2831983740fd6e53cd0e4848ac7b0d`**. ELF SHA1 `95a1b7e83b3f8c541992ee10f0f4394df6e3c927`. 사용량 32,608,804 B.
 - **다음 할 일**
-  1. 친구 문자(최종 보고) → 사용자가 보내면 **보냄** 표시. ROM·ELF는 작업 폴더의 `pokehns.gba`·`pokehns.elf`를 내려받아 전달(브랜치 `hns-1114-fixes`를 체크아웃한 상태에서 빌드한 것).
+  1. ~~친구 문자(최종 보고)~~ **보냄**(2026-11-15 사용자 확인). ROM·ELF는 작업 폴더의 `pokehns.gba`·`pokehns.elf`를 내려받아 전달(브랜치 `hns-1114-fixes`를 체크아웃한 상태에서 빌드한 것).
   2. 친구 실기(followup 7-8) 답 대기. 추가 회귀 점검 범위는 친구가 정함.
   3. `hns-1114-fixes`와 `pokehns-expansion-kor`를 어떻게 합칠지는 친구·사용자 결정(조사 커밋을 원격에 올릴지에 달림).
   4. 다음 검증 명령 예: `dev_scripts/hns_verify/port/verify_seq.sh <라벨> <직전 커밋> <작업 폴더>`(스크립트 안 기준은 아직 `test-baseline-f1101.txt` — r1115로 바꾸면 새 PASS 0이 정상).
