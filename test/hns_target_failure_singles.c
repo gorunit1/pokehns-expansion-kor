@@ -75,3 +75,29 @@ SINGLE_BATTLE_TEST("HnS target failure: Endeavor that cannot lower HP prints the
         EXPECT_EQ(opponent->hp, 1);
     }
 }
+
+// 같은 공통 처리: 싱크로노이즈(사용자와 타입을 공유하지 않는 대상에게 무효)
+SINGLE_BATTLE_TEST("HnS target failure: Synchronoise on a target that shares no type prints the no-effect message once")
+{
+    GIVEN {
+        ASSUME(GetMoveEffect(MOVE_SYNCHRONOISE) == EFFECT_SYNCHRONOISE);
+        ASSUME(GetSpeciesType(SPECIES_GARCHOMP, 0) != GetSpeciesType(SPECIES_GYARADOS, 0));
+        ASSUME(GetSpeciesType(SPECIES_GARCHOMP, 0) != GetSpeciesType(SPECIES_GYARADOS, 1));
+        ASSUME(GetSpeciesType(SPECIES_GARCHOMP, 1) != GetSpeciesType(SPECIES_GYARADOS, 0));
+        ASSUME(GetSpeciesType(SPECIES_GARCHOMP, 1) != GetSpeciesType(SPECIES_GYARADOS, 1));
+        PLAYER(SPECIES_GARCHOMP);
+        OPPONENT(SPECIES_GYARADOS);
+    } WHEN {
+        TURN { MOVE(player, MOVE_SYNCHRONOISE); }
+    } SCENE {
+        MESSAGE("상대 갸라도스에게는 효과가 없는 것 같다...");
+        NONE_OF {
+            MESSAGE("상대 갸라도스에게는 효과가 없는 것 같다...");
+            MESSAGE("상대 한카리아스에게는 효과가 없는 것 같다...");
+            MESSAGE("한카리아스에게는 효과가 없는 것 같다...");
+            HP_BAR(opponent);
+        }
+    } THEN {
+        EXPECT_EQ(opponent->hp, opponent->maxHP);
+    }
+}

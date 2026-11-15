@@ -1,6 +1,7 @@
 // 기술 떠올리기·필드 기술 가르침 공용 LearnMove()의 성공음(친구 요청 2026-11-14).
 // 포팅 전 HnS 기술 떠올리기는 교체 학습에서도 PlayFanfare(MUS_LEVEL_UP)를 불렀다. upstream #8491 공통화 뒤
 // 교체 분기(REPLACE_MOVE_1)만 성공음 없이 끝났다. 이름이 모두 "HnS learn move:"로 시작한다.
+// 2026-11-15(친구 답): 교체 학습 성공음은 기술 떠올리기에만(MoveLearnUI.fanfareAfterReplace). 필드 기술 가르침은 포팅 전처럼 없음.
 // 실제 UI 대신 호출을 세는 MoveLearnUI를 넣고, 기술 떠올리기가 쓰는 시작 상태(확인 질문)부터 상태 머신을 그대로 돌린다.
 // 소리 자체(스피커 출력)는 확인하지 않는다 — 요청한 곡 번호·횟수·종료 대기만 확인한다.
 #include "global.h"
@@ -32,6 +33,7 @@ static void TestShowMoveList(u8 taskId) { sShowListCount++; }
 static void TestEnd(u8 taskId) { sEndCount++; }
 static void TestTaskDummy(u8 taskId) { }
 
+// 기술 떠올리기와 같은 설정(교체 학습 뒤에도 성공음)
 static const struct MoveLearnUI sTestUI =
 {
     .askConfirmation = TestAsk,
@@ -40,6 +42,19 @@ static const struct MoveLearnUI sTestUI =
     .playFanfare = TestFanfare,
     .showMoveList = TestShowMoveList,
     .endTask = TestEnd,
+    .fanfareAfterReplace = TRUE,
+};
+
+// 필드 기술 가르침과 같은 설정(교체 학습 뒤 성공음 없음, 포팅 전과 같음)
+static const struct MoveLearnUI sTestTutorUI =
+{
+    .askConfirmation = TestAsk,
+    .waitConfirmation = TestWait,
+    .printMessage = TestPrint,
+    .playFanfare = TestFanfare,
+    .showMoveList = TestShowMoveList,
+    .endTask = TestEnd,
+    .fanfareAfterReplace = FALSE,
 };
 
 #define NEW_MOVE MOVE_THUNDERBOLT
@@ -202,5 +217,53 @@ TEST("HnS learn move: a second learn after the first requests its own single fan
     EXPECT_EQ(sEndCount, 0);
     EXPECT_EQ(GetMonData(&gParties[B_TRAINER_PLAYER][0], MON_DATA_MOVE4), MOVE_ICE_BEAM);
     ExpectWaitsForFanfareThenEnds(taskId);
+    DestroyTask(taskId);
+}
+
+TEST("HnS learn move: the move relearner asks for the fanfare after a replacement, the field move tutors do not")
+{
+    EXPECT_EQ(GetMoveRelearnerLearnUI()->fanfareAfterReplace, TRUE);
+    EXPECT_EQ(GetFieldMoveTutorLearnUI()->fanfareAfterReplace, FALSE);
+}
+
+TEST("HnS learn move: a field move tutor replacement teaches the move and ends without a fanfare")
+{
+    u8 taskId = Setup(MAX_MON_MOVES, TRUE);
+    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][0];
+    u32 slot = GetMoveSlotToReplace();
+    ASSUME(slot < MAX_MON_MOVES);
+    sAnswers[0] = 0; // 배우겠습니까? 예
+    sAnswers[1] = 0; // 다른 기술을 잊게 하겠습니까? 예
+
+    for (u32 i = 0; i < 16 && sShowListCount == 0; i++)
+        gTasks[taskId].data[0] = LearnMove(&sTestTutorUI, taskId);
+    EXPECT_EQ(sShowListCount, 1);
+    gTasks[taskId].data[0] = GetLearnMoveResumeAfterSummaryScreenState();
+    u32 printsBefore = sPrintCount;
+    for (u32 i = 0; i < 64 && sEndCount == 0; i++)
+        gTasks[taskId].data[0] = LearnMove(&sTestTutorUI, taskId);
+
+    EXPECT_EQ(sFanfareCount, 0);
+    EXPECT_EQ(sEndCount, 1);
+    EXPECT_EQ(sPrintCount, printsBefore + 2); // "…잊었다" + "…배웠다"
+    EXPECT_EQ(gSpecialVar_Result, TRUE);
+    EXPECT_EQ(GetMonData(mon, MON_DATA_MOVE1 + slot), NEW_MOVE);
+    EXPECT_EQ(GetMonData(mon, MON_DATA_PP1 + slot), GetMovePP(NEW_MOVE));
+    DestroyTask(taskId);
+}
+
+TEST("HnS learn move: a field move tutor still requests the fanfare once when the move goes into an empty slot")
+{
+    u8 taskId = Setup(3, TRUE);
+    sAnswers[0] = 0;
+    for (u32 i = 0; i < 64 && sFanfareCount == 0 && sEndCount == 0; i++)
+        gTasks[taskId].data[0] = LearnMove(&sTestTutorUI, taskId);
+    EXPECT_EQ(sFanfareCount, 1);
+    EXPECT_EQ(sFanfareSong, MUS_LEVEL_UP);
+    EXPECT_EQ(sEndCount, 0);
+    RunTasks();
+    gTasks[taskId].data[0] = LearnMove(&sTestTutorUI, taskId);
+    EXPECT_EQ(sEndCount, 1);
+    EXPECT_EQ(sFanfareCount, 1);
     DestroyTask(taskId);
 }

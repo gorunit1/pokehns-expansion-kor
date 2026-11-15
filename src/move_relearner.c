@@ -555,8 +555,16 @@ static const struct MoveLearnUI sMoveLearnUI =
     .printMessage = UIPrintMessage,
     .playFanfare = UIPlayFanfare,
     .showMoveList = UIShowMoveList,
-    .endTask = UIEndTask
+    .endTask = UIEndTask,
+    .fanfareAfterReplace = TRUE, // HnS: as the HnS move relearner did before upstream #8491
 };
+
+#if TESTING
+const struct MoveLearnUI *GetMoveRelearnerLearnUI(void)
+{
+    return &sMoveLearnUI;
+}
+#endif
 
 static void Task_MoveRelearner_Quit(u8 taskId)
 {

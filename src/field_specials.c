@@ -4629,6 +4629,13 @@ static const struct MoveLearnUI sMoveLearnUI =
     .endTask = UIEndTask
 };
 
+#if TESTING
+const struct MoveLearnUI *GetFieldMoveTutorLearnUI(void)
+{
+    return &sMoveLearnUI;
+}
+#endif
+
 static void Task_LearnMove(u8 taskId)
 {
     if (IsTextPrinterActiveOnWindow(0))
