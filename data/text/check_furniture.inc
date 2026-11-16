@@ -1,27 +1,27 @@
 Text_PictureBookShelf:
-	.string "There's a set of POKéMON picture books.$"
+	.string "포켓몬 그림책이 죽 진열되어 있다!!$"
 
 Text_BookShelf:
-	.string "It's filled with all sorts of books.$"
+	.string "다양한 책이 가득 있다!$"
 
 Text_PokemonCenterBookShelf:
-	.string "POKéMON magazines!\n"
-	.string "POKéMON PAL…\p"
-	.string "POKéMON HANDBOOK…\n"
-	.string "ADORABLE POKéMON…$"
+	.string "포켓몬 잡지가 진열되어 있다!\p"
+	.string "...“포켓몬의 친구”\n"
+	.string "...“포켓몬수첩”\l"
+	.string "...“귀여운 포켓몬”$"
 
 Text_Vase:
-	.string "This vase looks expensive…\n"
-	.string "Peered inside…\p"
-	.string "But, it was empty.$"
+	.string "비싸 보이는 항아리가 있다!\n"
+	.string "들여다보니...\p"
+	.string "안은 텅 비었다!$"
 
 Text_EmptyTrashCan:
-	.string "It's empty.$"
+	.string "쓰레기통 안은 텅 비었다!$"
 
 Text_ShopShelf:
-	.string "The shelves brim with all sorts of\n"
-	.string "POKéMON merchandise.$"
+	.string "가지각색의 포켓몬 상품이\n"
+	.string "빽빽하게 진열되어 있다!$"
 
 Text_Blueprint:
-	.string "A blueprint of some sort?\n"
-	.string "It's too complicated!$"
+	.string "무언가의 설계도...?\n"
+	.string "봐도 뭐가 뭔지 모르겠다!$"

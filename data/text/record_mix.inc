@@ -1,6 +1,7 @@
 Text_WouldYouLikeToMixRecords:
-	.string "Would you like to mix records with\n"
-	.string "other TRAINERS?$"
+	.string "친구와 리포트를\n"
+	.string "섞으시겠습니까?$"
 
 Text_WeHopeToSeeYouAgain:
-	.string "We hope to see you again!$"
+	.string "다음번\n"
+	.string "방문을 기다리고 있겠습니다!$"
