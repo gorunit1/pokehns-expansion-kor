@@ -1,33 +1,37 @@
 	.align 2
 gText_ConfirmSave::
-	.string "Would you like to save the game?$"
+	.string "여기까지의 모험을\n"
+	.string "리포트에 기록하겠습니까?$"
 
 gText_AlreadySavedFile::
-	.string "There is already a saved file.\n"
-	.string "Is it okay to overwrite it?$"
+	.string "전에 작성한 리포트에\n"
+	.string "덮어써도 괜찮습니까?$"
 
 gText_SavingDontTurnOff::
-	.string "SAVING…\n"
-	.string "DON'T TURN OFF THE POWER.$"
+	.string "리포트를 작성하고 있습니다\n"
+	.string "전원을 끄지 않도록 해주십시오...$"
 
 gText_PlayerSavedGame::
-	.string "{PLAYER} saved the game.$"
+	.string "{PLAYER}{K_EUNNEUN}\n"
+	.string "리포트를 꼼꼼히 기록했다!$"
 
 gText_DifferentSaveFile::
-	.string "WARNING!\p"
-	.string "There is a different game file that\n"
-	.string "is already saved.\p"
-	.string "If you save now, the other file's\n"
-	.string "adventure, including items and\l"
-	.string "POKéMON, will be entirely lost.\p"
-	.string "Are you sure you want to save now\n"
-	.string "and overwrite the other save file?$"
+	.string "주의!!\p"
+	.string "“모험을 계속한다”로\n"
+	.string "모험을 한 리포트가\l"
+	.string "작성되어 있습니다!\p"
+	.string "저장된 모험과\n"
+	.string "모든 포켓몬 및 도구 등이\l"
+	.string "사라집니다...\p"
+	.string "정말로\n"
+	.string "덮어쓰기를 하겠습니까?$"
 
 gText_SaveError::
-	.string "Save error.\p"
-	.string "Please exchange the\n"
-	.string "backup memory.$"
+	.string "리포트를\n"
+	.string "기록하지 못했습니다\p"
+	.string "백업 메모리를\n"
+	.string "교환해 주십시오!$"
 
 gText_SavingDontTurnOffPower::
-	.string "SAVING…\n"
-	.string "DON'T TURN OFF THE POWER.$"
+	.string "리포트를 작성하고 있습니다\n"
+	.string "전원을 끄지 않도록 해주십시오...$"

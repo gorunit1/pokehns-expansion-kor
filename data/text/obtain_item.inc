@@ -1,57 +1,60 @@
 gText_ObtainedTheItem::
-	.string "Obtained the {STR_VAR_2}!$"
+	.string "{STR_VAR_2}{K_EULREUL} 손에 넣었다!$"
 
 gText_TheBagIsFull::
-	.string "The BAG is full…$"
+	.string "가방이 가득 차 있다...$"
 
 gText_PutItemInPocket::
-	.string "{PLAYER} put away the {STR_VAR_2}\n"
-	.string "in the {STR_VAR_3} POCKET.$"
+	.string "{PLAYER}{K_EUNNEUN} {STR_VAR_2}{K_EULREUL}\n"
+	.string "{STR_VAR_3} 포켓에 넣었다.$"
 
 gText_PlayerFoundOneItem::
-	.string "{PLAYER} found one {STR_VAR_2}!$"
+	.string "{PLAYER}{K_EUNNEUN}\n"
+	.string "{STR_VAR_2}{K_EULREUL} 발견했다!$"
 
 gText_TooBadBagIsFull::
-	.string "Too bad!\n"
-	.string "The BAG is full…$"
+	.string "아쉽다!\n"
+	.string "가방이 가득 차 있다...$"
 
 gText_PlayerPutItemInBag::
-	.string "{PLAYER} put away the {STR_VAR_2}\n"
-	.string "in the BAG.$"
+	.string "{PLAYER}{K_EUNNEUN} {STR_VAR_2}{K_EULREUL}\n"
+	.string "가방에 넣었다!$"
 
 gText_ObtainedTheDecor::
-	.string "Obtained the {STR_VAR_2}!$"
+	.string "{STR_VAR_2}{K_EULREUL} 손에 넣었다!$"
 
 gText_NoRoomLeftForAnother::
-	.string "Too bad! There's no room left for\n"
-	.string "another {STR_VAR_2}…$"
+	.string "아쉽다! {STR_VAR_2}{K_EULREUL}\n"
+	.string "넣을 공간이 없다...$"
 
 gText_TheDecorWasTransferredToThePC::
-	.string "The {STR_VAR_2} was transferred\n"
-	.string "to the PC.$"
+	.string "{STR_VAR_2}{K_EUNNEUN}\n"
+	.string "PC로 전송되었다!$"
 
 gText_ObtainedTheItems::
-	.string "Obtained {STR_VAR_1} {STR_VAR_2}!$"
+	.string "{STR_VAR_2}{K_EULREUL}\n"
+	.string "{STR_VAR_1}개 손에 넣었다!$"
 
 gText_PlayerFoundItems::
-	.string "{PLAYER} found {STR_VAR_1} {STR_VAR_2}!$"
+	.string "{PLAYER}{K_EUNNEUN}\n"
+	.string "{STR_VAR_2}{K_EULREUL} {STR_VAR_1}개 발견했다!$"
 
 gText_PutCoinsAwayInCoinCase::
-	.string "{PLAYER} put the COINS away in\n"
-	.string "the COIN CASE.$"
+	.string "{PLAYER}{K_EUNNEUN} 동전을\n"
+	.string "동전케이스에 넣었다!$"
 
 gText_FoundXCoins::
-	.string "{PLAYER} found\n"
-	.string "{STR_VAR_1} {STR_VAR_2}!$"
+	.string "{PLAYER}{K_EUNNEUN}\n"
+	.string "{STR_VAR_1} {STR_VAR_2}{K_EULREUL} 발견했다!$"
 
 gText_FoundXItems::
-	.string "{PLAYER} found\n"
-	.string "{STR_VAR_1} {STR_VAR_2}(s)!$"
+	.string "{PLAYER}{K_EUNNEUN}\n"
+	.string "{STR_VAR_1}개의 {STR_VAR_2}{K_EULREUL} 발견했다!$"
 
 gText_CoinCaseIsFull::
-	.string "Too bad!\n"
-	.string "The COIN CASE is full…$"
+	.string "아쉽다!\n"
+	.string "동전케이스가 가득 찼다...$"
 
 gText_NothingToPutThemIn::
-	.string "Too bad!\n"
-	.string "There's nothing to put them in…$"
+	.string "아쉽다!\n"
+	.string "동전을 넣을 곳이 없다...$"
