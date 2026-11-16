@@ -1,20 +1,22 @@
 Text_BootUpPC:
-	.string "{PLAYER} booted up the PC.$"
+	.string "{PLAYER}{K_EUNNEUN}\n"
+	.string "PC 전원을 켰다!$"
 
 gText_WhichPCShouldBeAccessed::
-	.string "Which PC should be accessed?$"
+	.string "어느 PC에 접속할까요?$"
 
 gText_AccessedSomeonesPC::
-	.string "Accessed SOMEONE'S PC.$"
+	.string "누군가의 PC에 접속했다!$"
 
 gText_StorageSystemOpened::
-	.string "POKéMON Storage System opened.$"
+	.string "포켓몬 보관 시스템을\n"
+	.string "불러왔습니다!$"
 
 gText_AccessedPlayersPC::
-	.string "Accessed {PLAYER}'s PC.$"
+	.string "{PLAYER}의 PC에 접속했다!$"
 
 gText_AccessedLanettesPC::
-	.string "Accessed LANETTE's PC.$"
+	.string "유미의 PC에 접속했다!$"
 
 gText_AccessedBillsPC::
-	.string "Accessed BILL's PC.$"
+	.string "이수재의 PC에 접속했다!$"

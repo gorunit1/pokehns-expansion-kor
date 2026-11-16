@@ -1,50 +1,52 @@
 gText_PkmnTransferredSomeonesPC::
-	.string "{STR_VAR_2} was transferred to\n"
-	.string "SOMEONE'S PC.\p"
-	.string "It was placed in \n"
-	.string "BOX “{STR_VAR_1}.”$"
+	.string "{STR_VAR_2}{K_EUNNEUN} 누군가의 PC\n"
+	.string "박스 “{STR_VAR_1}”에\l"
+	.string "전송되었다!$"
 
 gText_PkmnTransferredLanettesPC::
-	.string "{STR_VAR_2} was transferred to\n"
+	.string "{STR_VAR_2}{K_EUNNEUN}\n"
 #if IS_FRLG || IS_HNS
-	.string "BILL'S PC.\p"
+	.string "이수재의 PC\n"
 #else
-	.string "LANETTE'S PC.\p"
+	.string "유미의 PC\n"
 #endif
-	.string "It was placed in \n"
-	.string "BOX “{STR_VAR_1}.”$"
+	.string "박스 “{STR_VAR_1}”에\l"
+	.string "전송되었다!$"
 
 gText_PkmnTransferredSomeonesPCBoxFull::
-	.string "BOX “{STR_VAR_3}” on\n"
-	.string "SOMEONE'S PC was full.\p"
-	.string "{STR_VAR_2} was transferred to\n"
-	.string "BOX “{STR_VAR_1}.”$"
+	.string "누군가의 PC\n"
+	.string "박스 “{STR_VAR_3}”{K_EUNNEUN}\l"
+	.string "가득 찼다!\p"
+	.string "{STR_VAR_2}{K_EUNNEUN}\n"
+	.string "박스 “{STR_VAR_1}”에\l"
+	.string "전송되었다!$"
 
 gText_PkmnTransferredLanettesPCBoxFull::
-	.string "BOX “{STR_VAR_3}” on\n"
 #if IS_FRLG || IS_HNS
-	.string "BILL'S PC was full.\p"
+	.string "이수재의 PC\n"
 #else
-	.string "LANETTE'S PC was full.\p"
+	.string "유미의 PC\n"
 #endif
-	.string "{STR_VAR_2} was transferred to\n"
-	.string "BOX “{STR_VAR_1}.”$"
+	.string "박스 “{STR_VAR_3}”{K_EUNNEUN}\l"
+	.string "가득 찼다!\p"
+	.string "{STR_VAR_2}{K_EUNNEUN}\n"
+	.string "박스 “{STR_VAR_1}”에\l"
+	.string "전송되었다!$"
 
 gText_PkmnSentToPCAfterCatch::
-	.string "{STR_VAR_2} was sent to\n"
-	.string "{B_PC_CREATOR_NAME} PC.\p"
-	.string "It was placed in \n"
-	.string "BOX “{STR_VAR_1}”.$"
+	.string "{STR_VAR_2}{K_EUNNEUN}\n"
+	.string "{B_PC_CREATOR_NAME} PC로 전송되었다!\p"
+	.string "박스 “{STR_VAR_1}”에 들어갔다!$"
 
 gText_PlayerObtainedTheMon::
-	.string "{PLAYER} obtained\n"
-	.string "the {STR_VAR_1}!$"
+	.string "{PLAYER}{K_EUNNEUN}\n"
+	.string "{STR_VAR_1}{K_EULREUL} 손에 넣었다!$"
 
 gText_NoMoreRoomForPokemon::
-	.string "There's no more room for POKéMON!\p"
-	.string "The POKéMON BOXES are full and\n"
-	.string "can't accept any more!$"
+	.string "포켓몬을 잡을 수 없습니다!\p"
+	.string "박스가 가득 차서\n"
+	.string "전송할 수 없습니다!$"
 
 gText_NicknameThisPokemon::
-	.string "Do you want to give a nickname to\n"
-	.string "this {STR_VAR_1}?$"
+	.string "잡은 {STR_VAR_1}에게\n"
+	.string "닉네임을 붙이겠습니까?$"
