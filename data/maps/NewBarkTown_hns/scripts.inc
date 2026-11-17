@@ -225,55 +225,58 @@ NewBarkTown_Movement_FaceDown:
 	step_end
 
 NewBarkTown_Text_LabSign:
-	.string "PROF.ELM'S LAB$"
+	.string "공박사 포켓몬 연구소$"
 
 NewBarkTown_Text_Door:
-	.string "The door is locked.$"
+	.string "문이 잠겨 있다.$"
 
 NewBarkTown_Text_Wooper:
-	.string "WOOPER: Woooooop.$"
+	.string "우파: 웅팟!$"
 
 NewBarkTown_Text_FatManState2:
-	.string "Wow, your POKéGEAR is impressive!\n"
-	.string "Did your mom get it for you?$"
+	.string "네가 가지고 있는 포켓기어\n"
+	.string "무척 멋있구나!\p"
+	.string "혹시... 최신형?$"
 
 NewBarkTown_Text_FatManState3:
-	.string "Yo, {PLAYER}!\p"
-	.string "I hear PROF.ELM discovered\n"
-	.string "some new POKéMON.$"
+	.string "여! {PLAYER}\p"
+	.string "공박사님이 새로운\n"
+	.string "포켓몬을 발견했대.$"
 
 NewBarkTown_Text_LassState2:
-	.string "Wait, {PLAYER}!\p"
-	.string "It's dangerous to go out\n"
-	.string "without a POKéMON!\p"
-	.string "Wild POKéMON jump out of the grass\n"
-	.string "on the way to the next town.$"
+	.string "이런! 포켓몬도 없이\n"
+	.string "도로에 나가다니 위험해!\p"
+	.string "근처 마을까지는\n"
+	.string "야생의 포켓몬이 튀어나오는\l"
+	.string "풀숲뿐이니까!$"
 
 NewBarkTown_Text_LassState3:
-	.string "Oh! Your POKéMON is adorable!\n"
-	.string "I wish I had one!$"
+	.string "어머! 귀여운 포켓몬!\n"
+	.string "나도 갖고 싶어.$"
 
 NewBarkTown_Text_LassState4:
-	.string "Hi, {PLAYER}! Leaving again?\p"
-	.string "You should tell your mom if\n"
-	.string "you are leaving.$"
+	.string "어머 {PLAYER}\n"
+	.string "또 외출하니?\p"
+	.string "외출할 때는 엄마한테\n"
+	.string "꼭 말해야지!$"
 
 NewBarkTown_Text_LassState5:
-	.string "Call your mom on your POKéGEAR\n"
-	.string "to let her know how you're doing.$\p"
+	.string "포켓기어가 있으면 언제라도\n"
+	.string "엄마한테 건강한 목소리를\l"
+	.string "들려줄 수 있어.$"
 
 NewBarkTown_Text_Silver1:
-	.string ". . .\p"
-	.string "So this is the famous ELM\n"
-	.string "POKéMON LAB…$"
+	.string "...... ...... ......\p"
+	.string "여기가 유명한\n"
+	.string "공박사 포켓몬 연구소...$"
 
 NewBarkTown_Text_Silver2:
-	.string "…What are you staring at?$"
+	.string "...뭐야\n"
+	.string "사람을 빤히 쳐다보지 말라고.$"
 
 NewBarkTown_Text_Sign:
-	.string "NEW BARK TOWN\p"
-	.string "The Town Where the Winds of\n"
-	.string "a New Beginning Blow$"
+	.string "여기는 연두마을\n"
+	.string "시작을 알리는 바람의 마을$"
 
 NewBarkTown_EventScript_PlayersHouseMailbox::
 	msgbox NewBarkTown_Text_PlayersHouse, MSGBOX_SIGN
@@ -284,8 +287,8 @@ NewBarkTown_EventScript_ElmsHouseMailbox::
 	end
 
 NewBarkTown_Text_PlayersHouse:
-	.string "{PLAYER}'S HOUSE$"
+	.string "여기는 {PLAYER}의 집$"
 
 NewBarkTown_Text_ElmsHouse:
-	.string "PROF.ELM'S HOUSE$"
+	.string "여기는 공박사의 집$"
 
