@@ -40,7 +40,7 @@ gText_Oak_Night::
 	.string "흐음 흐음 흠흠...\n"
 	.string "..... ..... .....\p"
 	.string "음? 어허 이런 미안 미안!\p"
-	.string "지금 책을 읽고 있었단다\p"
+	.string "지금 책을 읽고 있었단다.\p"
 	.string "$"	
 
 gText_Oak_Welcome::
@@ -49,7 +49,7 @@ gText_Oak_Welcome::
 	.string "잘 왔다!\p"
 	.string "내 이름은 오박사\p"
 	.string "모두에게는 포켓몬 박사라고\n"
-	.string "알려져 있단다\p"
+	.string "알려져 있단다.\p"
 	.string "그건 그렇고 너는\n"
 	.string "모험이 처음인 게냐?\p"
 	.string "우선 내가\n"
@@ -66,7 +66,7 @@ gText_Oak_Pokemon::
 
 gText_Oak_MainSpeech::
 	.string "우리 인간은\n"
-	.string "포켓몬과 사이좋게 살고 있지\p"
+	.string "포켓몬과 사이좋게 살고 있지.\p"
 	.string "함께 놀기도 하고\n"
 	.string "힘을 합쳐 일하기도 하고\p"
 	.string "그리고 포켓몬끼리 싸우게 하여\n"
@@ -84,11 +84,11 @@ gText_Oak_AndYouAre::
 gText_Oak_BoyOrGirl::
 	.string "자네는 남자인가?\n"
 	.string "아니면 여자인가?\l"
-	.string "어느 쪽인가를 알려주게나$"
+	.string "어느 쪽인가를 알려주게나.$"
 
 gText_Oak_WhatChallenge::
 	.string "어느 정도의 도전을\n"
-	.string "원하는지도 알려주게나$"
+	.string "원하는지도 알려주게나.$"
 
 gText_Oak_ChallengeSelected::
 	.string "챌린지 설정이 완료되었습니다!\n$"
@@ -101,7 +101,7 @@ gText_Oak_SoItsPlayer::
 
 gText_Oak_YourePlayer::
 	.string "{PLAYER}!!\n"
-	.string "준비는 되었는가?\n"
+	.string "준비는 되었는가?\p"
 	.string "드디어 이제부터\n"
 	.string "너만의 이야기가 시작된다!\p"
 	.string "$"
