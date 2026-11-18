@@ -57,8 +57,8 @@ LittlerootTown_MaysHouse_2F_EventScript_WallClock::
 	end
 
 PlayersHouse_2F_Text_ClockChange:
-	.string "Press the R Button to set the\n"
-	.string "clock when looking at the time.$"
+	.string "시계 화면에서 R 버튼을 누르면\n"
+	.string "시간을 다시 맞출 수 있다.$"
 
 PlayersHouse_2F_EventScript_WallClock::
 	goto_if_set FLAG_SET_WALL_CLOCK, PlayersHouse_2F_EventScript_CheckWallClock
