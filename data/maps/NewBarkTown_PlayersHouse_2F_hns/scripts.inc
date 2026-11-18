@@ -82,6 +82,6 @@ NewBarkTown_PlayersHouse_2F_EventScript_TurnOffPlayerPC::
 	end
 
 NewBarkTown_PlayersHouse_2F_Text_NES:
-    .string "{PLAYER} played with the NES.\p"
-    .string "…Okay!\n"
-    .string "It's time to go!$"
+    .string "{PLAYER}{K_EUNNEUN} 현대 컴보이로 게임을 했다.\p"
+    .string "…좋아!\n"
+    .string "슬슬 가야지!$"
