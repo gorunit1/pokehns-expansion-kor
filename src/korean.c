@@ -40,7 +40,7 @@ u8 GetJongCode(u16 ch)
     else
     {
         singleByteChar = (u8)ch & 0x00ff;
-        for (i = 0; i < sizeof(sSingleByteJongTable); i++)
+        for (i = 0; i < ARRAY_COUNT(sSingleByteJongTable); i++)
         {
             if (singleByteChar == sSingleByteJongTable[i][0])
                 return sSingleByteJongTable[i][1];
