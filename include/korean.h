@@ -6,6 +6,7 @@ bool8 IsJaum(u8 glyph);
 bool8 IsMoum(u8 glyph);
 
 u8 GetJongCode(u16 ch);
+u8 GetStringJongCode(const u8 *start, const u8 *end);
 
 u8 GetCho(u8 index);
 u8 GetJung(u8 index);

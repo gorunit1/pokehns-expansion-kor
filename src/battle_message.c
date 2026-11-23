@@ -3190,7 +3190,7 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
             case B_TXT_WAGWA:
             case B_TXT_AYA:
             {
-                u8 jong = dstID >= 2 ? GetJongCode((dst[dstID - 2] << 8) | dst[dstID - 1]) : 0;
+                u8 jong = GetStringJongCode(dst, dst + dstID);
 
                 switch (*src)
                 {

@@ -347,23 +347,21 @@ u8 *ConvertIntToHexStringN(u8 *dest, s32 value, enum StringConvertMode mode, u8 
     return dest;
 }
 
-u8 *StringExpandPlaceholders(u8 *dest, const u8 *src)
+static u8 *StringExpandPlaceholdersInternal(u8 *dest, const u8 *src, const u8 *outputStart)
 {
     for (;;)
     {
         u8 c = *src++;
         u8 placeholderId;
-        u16 prevChar;
         const u8 *expandedString;
 
         switch (c)
         {
         case PLACEHOLDER_BEGIN:
-            prevChar = (*(dest - 2) << 8) | *(dest - 1);
-            gJongCode = GetJongCode(prevChar);
+            gJongCode = GetStringJongCode(outputStart, dest);
             placeholderId = *src++;
             expandedString = GetExpandedPlaceholder(placeholderId);
-            dest = StringExpandPlaceholders(dest, expandedString);
+            dest = StringExpandPlaceholdersInternal(dest, expandedString, outputStart);
             break;
         case EXT_CTRL_CODE_BEGIN:
             *dest++ = c;
@@ -399,6 +397,13 @@ u8 *StringExpandPlaceholders(u8 *dest, const u8 *src)
             *dest++ = c;
         }
     }
+}
+
+u8 *StringExpandPlaceholders(u8 *dest, const u8 *src)
+{
+    // dest may be an append position. Only inspect bytes written by this call;
+    // the two-argument API does not provide the preceding allocation's bounds.
+    return StringExpandPlaceholdersInternal(dest, src, dest);
 }
 
 u8 *StringBraille(u8 *dest, const u8 *src)

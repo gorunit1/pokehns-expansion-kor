@@ -2,6 +2,7 @@
 #include "text.h"
 #include "korean.h"
 #include "korean_table.h"
+#include "string_util.h"
 
 // NOTE: 첫 항목에는 처리할 문자, 두번째 항목에는 종성 코드
 static const u8 sSingleByteJongTable[][2] = 
@@ -31,7 +32,19 @@ bool8 IsMoum(u8 glyph)
 
 u8 GetJongCode(u16 ch)
 {
+    // Keyboard order: ㄱ ㄲ ㄴ ㄷ ㄸ ㄹ ㅁ ㅂ ㅃ ㅅ ㅆ ㅇ ㅈ ㅉ ㅊ ㅋ ㅌ ㅍ ㅎ.
+    // ㄸ/ㅃ/ㅉ have no final form; use the corresponding ㄷ/ㅂ/ㅈ final.
+    static const u8 standaloneJaumJong[] =
+    {
+         1,  2,  4,  7,  7,  8, 16, 17, 17, 19,
+        20, 21, 22, 22, 23, 24, 25, 26, 27,
+    };
     u8 i, singleByteChar;
+
+    if (ch >= 0x4101 && ch <= 0x4113)
+        return standaloneJaumJong[ch - 0x4101];
+    if (ch >= 0x4114 && ch <= 0x4128)
+        return 0;
 
     if (IsKoreanGlyph((ch & 0xff00) >> 8))
     {
@@ -48,6 +61,65 @@ u8 GetJongCode(u16 ch)
     }
 
     return 0;
+}
+
+// Inspect an expanded output span, not the two raw bytes preceding end.
+// Neither end nor bytes before start are read, including for partial tokens.
+u8 GetStringJongCode(const u8 *start, const u8 *end)
+{
+    u16 lastChar = 0;
+    bool8 japanese = FALSE;
+
+    while (start < end)
+    {
+        u8 c = *start++;
+
+        if (c == EOS)
+            break;
+        if (!japanese && IsKoreanGlyph(c))
+        {
+            if (start == end)
+                return 0;
+            lastChar = (c << 8) | *start++;
+        }
+        else if (c == EXT_CTRL_CODE_BEGIN)
+        {
+            u8 code, length;
+
+            if (start == end)
+                return 0;
+            code = *start;
+            length = GetExtCtrlCodeLength(code);
+            // The renderer consumes a speaker ID, unlike the legacy length table.
+            if (code == EXT_CTRL_CODE_SPEAKER)
+                length = 2;
+            if (length == 0 || end - start < length)
+                return 0;
+            if (code == EXT_CTRL_CODE_JPN)
+                japanese = TRUE;
+            else if (code == EXT_CTRL_CODE_ENG)
+                japanese = FALSE;
+            else if (code == EXT_CTRL_CODE_ESCAPE || code == EXT_CTRL_CODE_FILL_WINDOW)
+                lastChar = 0;
+            start += length;
+        }
+        else if (c == CHAR_DYNAMIC || c == PLACEHOLDER_BEGIN
+              || c == CHAR_KEYPAD_ICON || c == CHAR_EXTRA_SYMBOL)
+        {
+            if (start == end)
+                return 0;
+            // An unresolved token or a symbol is not its one-byte argument.
+            start++;
+            lastChar = 0;
+        }
+        else if (c != CHAR_ZWS || japanese)
+        {
+            // Single-byte characters retain the existing digit/fallback policy.
+            lastChar = c;
+        }
+    }
+
+    return GetJongCode(lastChar);
 }
 
 u8 GetCho(u8 index)
