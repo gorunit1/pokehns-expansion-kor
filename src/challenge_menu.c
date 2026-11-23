@@ -490,7 +490,7 @@ static const struct ChallengeMenuItem sTabItems_Mode[] = {
         .choiceNames  = sChoices_OffOn,
     },
     [ITEM_MODE_GEN_ONE_RECHARGE] = {
-        .name         = COMPOUND_STRING("반동 무효화"),
+        .name         = COMPOUND_STRING("반동 상태"),
         .descriptions = sDesc_GenOneRecharge,
         .numChoices   = 2,
         .choiceNames  = sChoices_Gen3Gen1,
@@ -585,7 +585,7 @@ static const u8 *const sChoices_ExpMult[] = {
 static const u8 *const sChoices_TrainerIVs[] = {
     COMPOUND_STRING("OFF"),
     COMPOUND_STRING("비례"),
-    COMPOUND_STRING("어려움"),
+    COMPOUND_STRING("하드"),
 };
 
 static const u8 *const sChoices_TrainerEVs[] = {
@@ -596,8 +596,8 @@ static const u8 *const sChoices_TrainerEVs[] = {
 };
 
 static const u8 *const sChoices_PlayerIVs[] = {
-    COMPOUND_STRING("예"),
-    COMPOUND_STRING("아니오"),
+    COMPOUND_STRING("기존"),
+    COMPOUND_STRING("최대"),
     COMPOUND_STRING("잠재파워"),
 };
 
@@ -902,8 +902,8 @@ static const u8 *const sDesc_ShinyClause[] = {
     COMPOUND_STRING("색이 다른 포켓몬도\n처음 만났을 때만 잡을 수 있습니다."),
 };
 static const u8 *const sDesc_Nicknaming[] = {
-    COMPOUND_STRING("모든 포켓몬에게\n반드시 별명을 붙입니다 (권장)"),
-    COMPOUND_STRING("별명을 자유롭게 붙일 수 있습니다"),
+    COMPOUND_STRING("모든 포켓몬에게\n반드시 별명을 붙입니다. (권장)"),
+    COMPOUND_STRING("별명을 자유롭게 붙일 수 있습니다."),
 };
 static const u8 *const sDesc_Deletion[] = {
     COMPOUND_STRING("쓰러진 포켓몬을 배틀 후 PC로 보냅니다.\n다시 데려올 수 없습니다."),
@@ -943,7 +943,7 @@ static const struct ChallengeMenuItem sTabItems_Nuzlocke[] = {
         .choiceNames  = sChoices_OnOff,
     },
     [ITEM_NUZLOCKE_DELETION] = {
-        .name         = COMPOUND_STRING("기절한 포켓몬"),
+        .name         = COMPOUND_STRING("쓰러진 포켓몬"),
         .descriptions = sDesc_Deletion,
         .numChoices   = 2,
         .choiceNames  = sChoices_CemeteryRelease,

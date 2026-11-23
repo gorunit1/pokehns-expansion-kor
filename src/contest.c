@@ -365,8 +365,8 @@ COMMON_DATA rng_value_t gContestRngValue = {0};
 //Text
 const u8 gText_LinkStandby4[] = _("통신 대기 중!");
 
-const u8 gText_AppealNumWhichMoveWillBePlayed[] = _("Appeal no. {STR_VAR_1}!\nWhich move will be played?");
-const u8 gText_AppealNumButItCantParticipate[] = _("Appeal no. {STR_VAR_1}!\nBut it can't participate!");
+const u8 gText_AppealNumWhichMoveWillBePlayed[] = _("{STR_VAR_1}번째 어필!\n어느 기술을 쓸까?");
+const u8 gText_AppealNumButItCantParticipate[] = _("{STR_VAR_1}번째 어필에는\n참가할 수 없다!");
 const u8 gText_MonAppealedWithMove[] = _("{STR_VAR_1} appealed with\n{STR_VAR_2}!");
 const u8 gText_MonWasWatchingOthers[] = _("{STR_VAR_1} was watching\nthe others.{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}");
 const u8 gText_AllOutOfAppealTime[] = _("어필 타임이\n모두 끝났다!{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}");

@@ -651,8 +651,8 @@ static void SpriteCB_ReelTimeSmoke(struct Sprite *);
 static void SpriteCB_PikaPowerBolt(struct Sprite *);
 
 static const u8 sText_QuitTheGame[] = _("게임을 그만두겠습니까?");
-static const u8 sText_YouveGot9999Coins[] = _("You've got 9,999 COINS.");
-static const u8 sText_YouveRunOutOfCoins[] = _("You've run out of COINS.\nGame over!");
+static const u8 sText_YouveGot9999Coins[] = _("동전이 9999개\n담겨 있습니다.");
+static const u8 sText_YouveRunOutOfCoins[] = _("동전이 없습니다.\n게임을 종료합니다.");
 static const u8 sText_YouDontHaveThreeCoins[] = _("동전 3개가 없습니다!");
 static const u8 sText_ReelTimeHelp[] = _("   BD 타임\n   차분히 노리면 어느 마크든\n   멈출 수 있는 찬스 게임!\n   물론 뽑은 횟수만큼\n   BD 타임을 즐길 수 있어!\n   빅 보너스가 나오면 종료");
 

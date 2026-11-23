@@ -86,16 +86,16 @@ static bool32 IsValidLocationForVsSeeker(void);
 static const u8 sText_CantDismountBike[] = _("여기서는 내릴 수 없다!{PAUSE_UNTIL_PRESS}");
 static const u8 sText_ItemFinderNearby[] = _("앗!\n다우징머신이 반응하고 있어!\p근처에 도구가 묻혀 있어!{PAUSE_UNTIL_PRESS}");
 static const u8 sText_ItemFinderOnTop[] = _("어라?\n다우징머신이 강하게 반응하고 있어!\p발밑에 도구가 묻혀 있어!{PAUSE_UNTIL_PRESS}");
-static const u8 sText_ItemFinderNothing[] = _("… … … …Nope!\nThere's no response.{PAUSE_UNTIL_PRESS}");
-static const u8 sText_CoinCase[] = _("Your COINS:\n{STR_VAR_1}{PAUSE_UNTIL_PRESS}");
-static const u8 sText_PowderQty[] = _("POWDER QTY: {STR_VAR_1}{PAUSE_UNTIL_PRESS}");
+static const u8 sText_ItemFinderNothing[] = _("...... ...... 휴우!\n...아무 반응이 없다.{PAUSE_UNTIL_PRESS}");
+static const u8 sText_CoinCase[] = _("당신의 동전: {STR_VAR_1}개{PAUSE_UNTIL_PRESS}");
+static const u8 sText_PowderQty[] = _("가루의 양: {STR_VAR_1}{PAUSE_UNTIL_PRESS}");
 static const u8 sText_BootedUpTM[] = _("기술머신을 켰다!");
 static const u8 sText_BootedUpHM[] = _("비전머신을 켰다!");
 static const u8 sText_TMHMContainedVar1[] = _("It contained\n{STR_VAR_1}.\pTeach {STR_VAR_1}\nto a POKéMON?");
 static const u8 sText_UsedVar2WildLured[] = _("{PLAYER} used the\n{STR_VAR_2}.\pWild POKéMON will be lured.{PAUSE_UNTIL_PRESS}");
 static const u8 sText_UsedVar2WildRepelled[] = _("{PLAYER} used the\n{STR_VAR_2}.\pWild POKéMON will be repelled.{PAUSE_UNTIL_PRESS}");
 static const u8 sText_PlayedPokeFluteCatchy[] = _("포켓몬피리를 사용했다!\p정말 귀에 쏙 들어오는 곡이다!{PAUSE_UNTIL_PRESS}");
-static const u8 sText_PlayedPokeFlute[] = _("Played the POKé FLUTE.");
+static const u8 sText_PlayedPokeFlute[] = _("{PLAYER}{K_EUNNEUN}\n포켓몬피리를 사용했다!");
 static const u8 sText_PokeFluteAwakenedMon[] = _("포켓몬피리가 잠자고 있던\n포켓몬을 깨웠다!{PAUSE_UNTIL_PRESS}");
 
 // EWRAM variables

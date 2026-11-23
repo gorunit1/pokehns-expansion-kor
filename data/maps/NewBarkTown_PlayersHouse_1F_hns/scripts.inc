@@ -336,12 +336,13 @@ NewBarkTown_PlayersHouse_1F_Text_MomHurryUpElmIsWaiting:
 	.string "Hurry up, baby!$"
 
 NewBarkTown_PlayersHouse_1F_Text_MomsFriend:
-	.string "Hi, {PLAYER}!\p"
-	.string "I'm visiting!\p"
-	.string "Have you heard?\p"
-	.string "My daughter is adamant about\n"
-	.string "becoming PROF.ELM's assistant.\p"
-	.string "She really loves POKéMON!$"
+	.string "안녕, {PLAYER}!\n"
+	.string "놀러왔어!\p"
+	.string "{PLAYER}{K_AYA}, 알고 있니?\p"
+	.string "우리 딸이 말이야,\n"
+	.string "공박사님의 조수가 되고 싶다고\l"
+	.string "고집을 부리는 거 있지!\p"
+	.string "정말 포켓몬을 좋아하나 봐!$"
 
 NewBarkTown_PlayersHouse_1F_Text_MomLeaving:
 	.string "MOM: Wow, that's a cute POKéMON.\n"

@@ -524,7 +524,7 @@ BerryTree_Text_WeedIsGrowing:
 	.string "뽑겠습니까?$"
 
 BerryTree_Text_PulledOutTheWeed:
-	.string "{PLAYER} pulled out the weed!$"
+	.string "{PLAYER}{K_EUNNEUN} 잡초를 뽑았다!$"
 .endif
 
 .if OW_BERRY_PESTS == TRUE

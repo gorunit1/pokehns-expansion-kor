@@ -252,7 +252,7 @@ static const u16 sBlenderOuter_Pal[] = INCGFX_U16("graphics/berry_blender/outer.
 static const u16 sUnused_Pal[] = INCGFX_U16("graphics/berry_blender/unused.pal", ".gbapal");
 static const u16 sEmpty_Pal[16 * 14] = {0};
 
-static const u8 sText_BerryBlenderStart[] = _("Starting up the BERRY BLENDER.\pPlease select a BERRY from your BAG\nto put in the BERRY BLENDER.\p");
+static const u8 sText_BerryBlenderStart[] = _("나무열매블렌더를 작동시킵니다.\p섞을 나무열매를 선택해 주십시오.\p");
 static const u8 sText_NewParagraph[] = _("\p");
 static const u8 sText_WasMade[] = _(" was made!");
 
@@ -266,7 +266,7 @@ static const u8 *const sBlenderOpponentsNames[] =
     [BLENDER_MISS]   = COMPOUND_STRING("MISS"),
 };
 
-static const u8 sText_CommunicationStandby[] = _("Communication standby…");
+static const u8 sText_CommunicationStandby[] = _("통신 대기 중입니다.");
 static const u8 sText_WouldLikeToBlendAnotherBerry[] = _("한 번 더 나무열매를 섞으시겠습니까?");
 static const u8 sText_RunOutOfBerriesForBlending[] = _("You've run out of BERRIES for\nblending in the BERRY BLENDER.\p");
 static const u8 sText_YourPokeblockCaseIsFull[] = _("Your {POKEBLOCK} CASE is full.\p");

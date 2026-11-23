@@ -419,13 +419,13 @@ static const struct OptionMenuItem sTabItems_Main[] = {
         .choiceNames  = sChoices_OnOff,
     },
     [ITEM_MAIN_FISHING] = {
-        .name         = COMPOUND_STRING("빠른 낚시"),
+        .name         = COMPOUND_STRING("자동 낚시"),
         .descriptions = sDesc_Fishing,
         .numChoices   = 2,
         .choiceNames  = sChoices_OnOff,
     },
     [ITEM_MAIN_FASTER_JOY] = {
-        .name         = COMPOUND_STRING("빠른 간호순 회복"),
+        .name         = COMPOUND_STRING("빠른 회복"),
         .descriptions = sDesc_FasterJoy,
         .numChoices   = 2,
         .choiceNames  = sChoices_OnOff,
@@ -437,7 +437,7 @@ static const struct OptionMenuItem sTabItems_Main[] = {
         .choiceNames  = sChoices_MetricImperial,
     },
     [ITEM_MAIN_MATCHCALL] = {
-        .name         = COMPOUND_STRING("전화번호 등록"),
+        .name         = COMPOUND_STRING("트레이너 전화"),
         .descriptions = sDesc_MatchCall,
         .numChoices   = 2,
         .choiceNames  = sChoices_OnOff,
@@ -503,19 +503,19 @@ static const struct OptionMenuItem sTabItems_Sound[] = {
         .choiceNames  = sChoices_MonoStereo,
     },
     [ITEM_SOUND_MUSIC] = {
-        .name         = COMPOUND_STRING("배경음악"),
+        .name         = COMPOUND_STRING("BGM"),
         .descriptions = sDesc_Music,
         .numChoices   = 2,
         .choiceNames  = sChoices_OnOff,
     },
     [ITEM_SOUND_BIKE_MUSIC] = {
-        .name         = COMPOUND_STRING("자전거 배경음악"),
+        .name         = COMPOUND_STRING("자전거 BGM"),
         .descriptions = sDesc_BikeMusic,
         .numChoices   = 2,
         .choiceNames  = sChoices_OnOff,
     },
     [ITEM_SOUND_SURF_MUSIC] = {
-        .name         = COMPOUND_STRING("파도타기 배경음악"),
+        .name         = COMPOUND_STRING("파도타기 BGM"),
         .descriptions = sDesc_SurfMusic,
         .numChoices   = 2,
         .choiceNames  = sChoices_OnOff,

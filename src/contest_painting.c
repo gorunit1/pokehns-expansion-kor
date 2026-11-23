@@ -50,11 +50,11 @@ static const u32 sPictureFrameTilemap_HallLobby[] = INCGFX_U32("graphics/picture
 
 static const u8 *const sContestRankNames[] =
 {
-    [CONTEST_RANK_NORMAL] = COMPOUND_STRING("NORMAL RANK"),
-    [CONTEST_RANK_SUPER]  = COMPOUND_STRING("SUPER RANK"),
-    [CONTEST_RANK_HYPER]  = COMPOUND_STRING("HYPER RANK"),
-    [CONTEST_RANK_MASTER] = COMPOUND_STRING("MASTER RANK"),
-    [CONTEST_RANK_LINK]   = COMPOUND_STRING("LINK"),
+    [CONTEST_RANK_NORMAL] = COMPOUND_STRING("노말랭크"),
+    [CONTEST_RANK_SUPER]  = COMPOUND_STRING("슈퍼랭크"),
+    [CONTEST_RANK_HYPER]  = COMPOUND_STRING("하이퍼랭크"),
+    [CONTEST_RANK_MASTER] = COMPOUND_STRING("마스터랭크"),
+    [CONTEST_RANK_LINK]   = COMPOUND_STRING("통신"),
 };
 
 static const struct BgTemplate sBgTemplates[] =
