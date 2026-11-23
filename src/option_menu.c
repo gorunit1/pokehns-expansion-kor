@@ -263,7 +263,7 @@ static const u8 sText_TopBar_Right[] = _("{R_BUTTON}");
 // Descriptions
 // =============================================================================
 
-static const u8 sText_Desc_TextSpeed[] = _("메시지의 속도를\n4종류 중에서 선택할 수 있습니다");
+static const u8 sText_Desc_TextSpeed[] = _("메시지의 표시 속도를\n4종류 중에서 선택할 수 있습니다.");
 static const u8 *const sDesc_TextSpeed[] = {
     sText_Desc_TextSpeed,
     sText_Desc_TextSpeed,
@@ -271,98 +271,98 @@ static const u8 *const sDesc_TextSpeed[] = {
     sText_Desc_TextSpeed,
 };
 static const u8 *const sDesc_BattleScene[] = {
-    COMPOUND_STRING("전투에서 포켓몬의 등장\n애니메이션과 기술 애니메이션을 봅니다"),
-    COMPOUND_STRING("전투에서 포켓몬의 등장\n애니메이션과 기술 애니메이션을 보지 않습니다"),
+    COMPOUND_STRING("전투에서 포켓몬의 등장\n애니메이션과 기술 애니메이션을 봅니다."),
+    COMPOUND_STRING("전투에서 포켓몬의 등장\n애니메이션과 기술 애니메이션을 보지 않습니다."),
 };
 static const u8 *const sDesc_BattleStyle[] = {
-    COMPOUND_STRING("상대의 포켓몬이 쓰려졌을 때\n포켓몬을 교체할 수 있습니다"),
-    COMPOUND_STRING("상대의 포켓몬이 쓰러져도\n포켓몬을 교체할 수 없습니다"),
+    COMPOUND_STRING("상대의 포켓몬이 쓰러졌을 때\n포켓몬을 교체할 수 있습니다."),
+    COMPOUND_STRING("상대의 포켓몬이 쓰러져도\n포켓몬을 교체할 수 없습니다."),
 };
 static const u8 *const sDesc_ButtonMode[] = {
-    COMPOUND_STRING("모든 버튼을\n보통 때처럼 사용합니다 "),
-    COMPOUND_STRING("일부 화면에서\nL과 R버튼을 좌우 버튼처럼 사용합니다"),
-    COMPOUND_STRING("L버튼을 A버튼처럼 사용하여\n한 손으로 플레이할 수 있습니다"),
+    COMPOUND_STRING("모든 버튼을\n보통 때처럼 사용합니다."),
+    COMPOUND_STRING("일부 화면에서\nL과 R버튼을 좌우 버튼처럼 사용합니다."),
+    COMPOUND_STRING("L버튼을 A버튼처럼 사용하여\n한 손으로 플레이할 수 있습니다."),
 };
 static const u8 *const sDesc_Follower[] = {
-    COMPOUND_STRING("지닌 포켓몬 중 선두\n포켓몬을 데리고 걷습니다"),
-    COMPOUND_STRING("혼자서 걷습니다"),
+    COMPOUND_STRING("지닌 포켓몬 중 선두\n포켓몬을 데리고 걷습니다."),
+    COMPOUND_STRING("혼자서 걷습니다."),
 };
 static const u8 *const sDesc_LargeFollower[] = {
-    COMPOUND_STRING("거대한 포켓몬을 데리고 걷습니다\n그래픽 문제가 발생할 수 있습니다"),
-    COMPOUND_STRING("거대한 포켓몬을 데리고 걷지 않습니다\n이 설정을 권장합니다"),
+    COMPOUND_STRING("거대한 포켓몬을 데리고 걷습니다.\n그래픽 문제가 발생할 수 있습니다."),
+    COMPOUND_STRING("거대한 포켓몬을 데리고 걷지 않습니다.\n이 설정을 권장합니다."),
 };
 static const u8 *const sDesc_Autorun[] = {
-    COMPOUND_STRING("B버튼을 누르지 않아도\n자동으로 대시합니다"),
+    COMPOUND_STRING("B버튼을 누르지 않아도\n자동으로 대시합니다."),
     COMPOUND_STRING("B버튼을 누른 상태로 대시합니다"),
 };
 static const u8 *const sDesc_AutorunSurf[] = {
-    COMPOUND_STRING("B버튼을 누르지 않아도\n자동으로 파도타기로 빠르게 대시합니다"),
-    COMPOUND_STRING("B버튼을 누른 상태로\n파도타기로 빠르게 대시합니다"),
+    COMPOUND_STRING("B버튼을 누르지 않아도\n자동으로 파도타기로 빠르게 대시합니다."),
+    COMPOUND_STRING("B버튼을 누른 상태로\n파도타기로 빠르게 대시합니다."),
 };
 static const u8 *const sDesc_Fishing[] = {
-    COMPOUND_STRING("낚시를 할 때 자동으로 낚아챕니다"),
+    COMPOUND_STRING("낚시를 할 때 자동으로 낚아챕니다."),
     COMPOUND_STRING("낚시를 할 때 직접 낚아챕니다\n원래 방식대로 낚시를 즐기세요!"),
 };
 static const u8 *const sDesc_FasterJoy[] = {
-    COMPOUND_STRING("간호순이 포켓몬을\n빠르게 회복시킵니다"),
-    COMPOUND_STRING("간호순이 포켓몬을\n평범하게 회복시킵니다"),
+    COMPOUND_STRING("간호순이 포켓몬을\n빠르게 회복시킵니다."),
+    COMPOUND_STRING("간호순이 포켓몬을\n평범하게 회복시킵니다."),
 };
 static const u8 *const sDesc_UnitType[] = {
-    COMPOUND_STRING("나무열매와 포켓몬의 무게와\n크기를 킬로그램과 미터로 표시합니다"),
-    COMPOUND_STRING("나무열매와 포켓몬의 무게와\n크기를 파운드와 인치로 표시합니다"),
+    COMPOUND_STRING("나무열매와 포켓몬의 무게와\n크기를 킬로그램과 미터로 표시합니다."),
+    COMPOUND_STRING("나무열매와 포켓몬의 무게와\n크기를 파운드와 인치로 표시합니다."),
 };
 static const u8 *const sDesc_MatchCall[] = {
-    COMPOUND_STRING("트레이너가 전화를 걸어와\n재대결을 신청하거나 정보를 제공합니다"),
-    COMPOUND_STRING("전화를 받지 않습니다\n단, 특수한 이벤트 전화는 걸려옵니다"),
+    COMPOUND_STRING("트레이너가 전화를 걸어와\n재대결을 신청하거나 정보를 제공합니다."),
+    COMPOUND_STRING("전화를 받지 않습니다.\n단, 특수한 이벤트 전화는 걸려옵니다."),
 };
 static const u8 *const sDesc_FrameType[] = {
-    COMPOUND_STRING("윈도우의 디자인을\n선택할 수 있습니다"),
+    COMPOUND_STRING("윈도우의 디자인을\n선택할 수 있습니다."),
 };
 static const u8 *const sDesc_FastIntro[] = {
-    COMPOUND_STRING("인트로 애니메이션을 생략하고\n빠르게 야생 포켓몬과 배틀합니다"),
-    COMPOUND_STRING("인트로 애니메이션을 생략하지 않습니다"),
+    COMPOUND_STRING("인트로 애니메이션을 생략하고\n빠르게 배틀을 시작합니다."),
+    COMPOUND_STRING("인트로 애니메이션을 생략하지 않습니다."),
 };
 static const u8 *const sDesc_FastBattles[] = {
-    COMPOUND_STRING("배틀 중 모든 딜레이를\n생략하여 빠르게 진행합니다"),
-    COMPOUND_STRING("직접 딜레이를 생략합니다.\nA 또는 B버튼을 누르면 생략됩니다"),
+    COMPOUND_STRING("배틀 중 모든 딜레이를\n생략하여 빠르게 진행합니다."),
+    COMPOUND_STRING("직접 딜레이를 생략합니다.\nA 또는 B버튼을 누르면 생략됩니다."),
 };
 static const u8 *const sDesc_NewBackgrounds[] = {
-    COMPOUND_STRING("3세대의 기존\n배틀 배경을 사용합니다"),
-    COMPOUND_STRING("HnS의 현대화된\n배틀 배경을 사용합니다"),
+    COMPOUND_STRING("3세대의 기존\n배틀 배경을 사용합니다."),
+    COMPOUND_STRING("HnS의 현대화된\n배틀 배경을 사용합니다."),
 };
 static const u8 *const sDesc_NewBattleUI[] = {
-    COMPOUND_STRING("3세대의 기존\n배틀 UI를 사용합니다"),
-    COMPOUND_STRING("4세대의 현대화된\n배틀 UI를 사용합니다"),
+    COMPOUND_STRING("3세대의 기존\n배틀 UI를 사용합니다."),
+    COMPOUND_STRING("4세대의 현대화된\n배틀 UI를 사용합니다."),
 };
 static const u8 *const sDesc_BallPrompt[] = {
-    COMPOUND_STRING("배틀 중 {R_BUTTON}을 눌러 볼을 사용합니다\n{L_BUTTON}/{R_BUTTON}을 길게 눌러 볼을 교체합니다"),
-    COMPOUND_STRING("몬스터볼을 바로\n사용하는 버튼을 비활성화합니다"),
+    COMPOUND_STRING("배틀 중 {R_BUTTON}을 눌러 볼을 사용합니다.\n{L_BUTTON}/{R_BUTTON}을 길게 눌러 볼을 교체합니다."),
+    COMPOUND_STRING("몬스터볼을 바로\n사용하는 버튼을 비활성화합니다."),
 };
 static const u8 *const sDesc_RunType[] = {
-    COMPOUND_STRING("빠른 도망가기를 사용하지 않습니다"),
-    COMPOUND_STRING("배틀 시작 전\n{L_BUTTON}+{R_BUTTON}을 누른 채로 {A_BUTTON}를 눌러 도망갑니다"),
-    COMPOUND_STRING("배틀 시작 후\n{B_BUTTON}를 누르면 도망간다로 커서가 이동합니다"),
-    COMPOUND_STRING("배틀 시작 전\n{B_BUTTON}를 눌러 배틀에서 도망갑니다"),
+    COMPOUND_STRING("빠른 도망가기를 사용하지 않습니다."),
+    COMPOUND_STRING("배틀 시작 전\n{L_BUTTON}+{R_BUTTON}을 누른 채로 {A_BUTTON}를 눌러 도망갑니다."),
+    COMPOUND_STRING("배틀 시작 후\n{B_BUTTON}를 누르면 도망간다로 커서가 이동합니다."),
+    COMPOUND_STRING("배틀 시작 전\n{B_BUTTON}를 눌러 배틀에서 도망갑니다."),
 };
 static const u8 *const sDesc_LRRun[] = {
-    COMPOUND_STRING("빠른 도망가기 프롬프트를 활성화합니다"),
-    COMPOUND_STRING("해당 프롬프트를 비활성화합니다\n버튼 커맨드는 그대로 작동합니다"),
+    COMPOUND_STRING("빠른 도망가기 프롬프트를 활성화합니다."),
+    COMPOUND_STRING("해당 프롬프트를 비활성화합니다\n버튼 커맨드는 그대로 작동합니다."),
 };
 static const u8 *const sDesc_Sound[] = {
-    COMPOUND_STRING("좌우 스피커에서 동일한 소리가 나옵니다\n실기 플레이 시 권장합니다"),
-    COMPOUND_STRING("좌우 스피커에서 각각 다른 소리가 나옵니다\n이어폰 사용 시 권장합니다"),
+    COMPOUND_STRING("좌우 스피커에서 동일한 소리가 나옵니다\n실기 플레이 시 권장합니다."),
+    COMPOUND_STRING("좌우 스피커에서 각각 다른 소리가 나옵니다\n이어폰 사용 시 권장합니다."),
 };
 static const u8 *const sDesc_Music[] = {
-    COMPOUND_STRING("배경음악을 켭니다\n맵 이동 시 설정이 적용됩니다"),
-    COMPOUND_STRING("배경음악을 끕니다\n맵 이동 시 설정이 적용됩니다"),
+    COMPOUND_STRING("배경음악을 켭니다\n맵 이동 시 설정이 적용됩니다."),
+    COMPOUND_STRING("배경음악을 끕니다\n맵 이동 시 설정이 적용됩니다."),
 };
 static const u8 *const sDesc_BikeMusic[] = {
-    COMPOUND_STRING("자전거 배경음악을 켭니다"),
-    COMPOUND_STRING("자전거 배경음악을 끕니다"),
+    COMPOUND_STRING("자전거 배경음악을 켭니다."),
+    COMPOUND_STRING("자전거 배경음악을 끕니다."),
 };
 static const u8 *const sDesc_SurfMusic[] = {
-    COMPOUND_STRING("파도타기 배경음악을 켭니다"),
-    COMPOUND_STRING("자전거 배경음악을 끕니다"),
+    COMPOUND_STRING("파도타기 배경음악을 켭니다."),
+    COMPOUND_STRING("파도타기 배경음악을 끕니다."),
 };
 
 // =============================================================================

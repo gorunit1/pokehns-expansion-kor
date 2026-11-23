@@ -334,32 +334,32 @@ static const struct WindowTemplate sOptionDescWindowTemplate =
 };
 
 #if IS_HNS
-static const u8 *const sHnSMapPageDescriptionJohto = COMPOUND_STRING("Check the map of the JOHTO region");
-static const u8 *const sHnSMapPageDescriptionJohtoKanto = COMPOUND_STRING("Check the combined region map");
+static const u8 *const sHnSMapPageDescriptionJohto = COMPOUND_STRING("성도지방의 지도를 봅니다.");
+static const u8 *const sHnSMapPageDescriptionJohtoKanto = COMPOUND_STRING("성도지방과 관동지방의 지도를 봅니다.");
 #endif
 
 static const u8 *const sPageDescriptions[] =
 {
-    [POKENAV_MENUITEM_MAP]                     = COMPOUND_STRING("Check the map of the HOENN region"),
-    [POKENAV_MENUITEM_CONDITION]               = COMPOUND_STRING("Check POKéMON in detail."),
-    [POKENAV_MENUITEM_MATCH_CALL]              = COMPOUND_STRING("Call a registered TRAINER."),
-    [POKENAV_MENUITEM_RIBBONS]                 = COMPOUND_STRING("Check obtained RIBBONS."),
+    [POKENAV_MENUITEM_MAP]                     = COMPOUND_STRING("호연지방의 지도를 봅니다."),
+    [POKENAV_MENUITEM_CONDITION]               = COMPOUND_STRING("포켓몬을 자세히 조사합니다."),
+    [POKENAV_MENUITEM_MATCH_CALL]              = COMPOUND_STRING("등록한 트레이너에게 전화를 겁니다."),
+    [POKENAV_MENUITEM_RIBBONS]                 = COMPOUND_STRING("손에 넣은 리본을 봅니다."),
 #if IS_HNS
-    [POKENAV_MENUITEM_RADIO]                   = COMPOUND_STRING("Listen to the radio."),
-    [POKENAV_MENUITEM_SWITCH_OFF]              = COMPOUND_STRING("Put away the POKéGEAR."),
-    [POKENAV_MENUITEM_CONDITION_CANCEL]        = COMPOUND_STRING("Return to the POKéGEAR menu."),
+    [POKENAV_MENUITEM_RADIO]                   = COMPOUND_STRING("라디오를 듣습니다."),
+    [POKENAV_MENUITEM_SWITCH_OFF]              = COMPOUND_STRING("포켓기어를 종료합니다."),
+    [POKENAV_MENUITEM_CONDITION_CANCEL]        = COMPOUND_STRING("포켓기어 메뉴로 돌아갑니다."),
 #else
-    [POKENAV_MENUITEM_SWITCH_OFF]              = COMPOUND_STRING("Put away the POKéNAV."),
-    [POKENAV_MENUITEM_CONDITION_CANCEL]        = COMPOUND_STRING("Return to the POKéNAV menu."),
+    [POKENAV_MENUITEM_SWITCH_OFF]              = COMPOUND_STRING("포켓내비를 종료합니다."),
+    [POKENAV_MENUITEM_CONDITION_CANCEL]        = COMPOUND_STRING("포켓내비 메뉴로 돌아갑니다."),
 #endif
-    [POKENAV_MENUITEM_CONDITION_PARTY]         = COMPOUND_STRING("Check party POKéMON in detail."),
-    [POKENAV_MENUITEM_CONDITION_SEARCH]        = COMPOUND_STRING("Check all POKéMON in detail."),
-    [POKENAV_MENUITEM_CONDITION_SEARCH_COOL]   = COMPOUND_STRING("Find cool POKéMON."),
-    [POKENAV_MENUITEM_CONDITION_SEARCH_BEAUTY] = COMPOUND_STRING("Find beautiful POKéMON."),
-    [POKENAV_MENUITEM_CONDITION_SEARCH_CUTE]   = COMPOUND_STRING("Find cute POKéMON."),
-    [POKENAV_MENUITEM_CONDITION_SEARCH_SMART]  = COMPOUND_STRING("Find smart POKéMON."),
-    [POKENAV_MENUITEM_CONDITION_SEARCH_TOUGH]  = COMPOUND_STRING("Find tough POKéMON."),
-    [POKENAV_MENUITEM_CONDITION_SEARCH_CANCEL] = COMPOUND_STRING("Return to the CONDITION menu.")
+    [POKENAV_MENUITEM_CONDITION_PARTY]         = COMPOUND_STRING("지닌 포켓몬을 자세히 조사합니다."),
+    [POKENAV_MENUITEM_CONDITION_SEARCH]        = COMPOUND_STRING("모든 포켓몬을 자세히 조사합니다."),
+    [POKENAV_MENUITEM_CONDITION_SEARCH_COOL]   = COMPOUND_STRING("근사한 포켓몬을 찾습니다."),
+    [POKENAV_MENUITEM_CONDITION_SEARCH_BEAUTY] = COMPOUND_STRING("아름다운 포켓몬을 찾습니다."),
+    [POKENAV_MENUITEM_CONDITION_SEARCH_CUTE]   = COMPOUND_STRING("귀여운 포켓몬을 찾습니다."),
+    [POKENAV_MENUITEM_CONDITION_SEARCH_SMART]  = COMPOUND_STRING("슬기로운 포켓몬을 찾습니다."),
+    [POKENAV_MENUITEM_CONDITION_SEARCH_TOUGH]  = COMPOUND_STRING("강인한 포켓몬을 찾습니다."),
+    [POKENAV_MENUITEM_CONDITION_SEARCH_CANCEL] = COMPOUND_STRING("컨디션 메뉴로 돌아갑니다.")
 };
 
 static const u8 sOptionDescTextColors[]  = {TEXT_COLOR_GREEN, TEXT_COLOR_BLUE, TEXT_COLOR_LIGHT_GREEN};

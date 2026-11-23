@@ -663,7 +663,7 @@ NewBarkTown_Lab_Movement_ElmStepForward:
 	step_end
 
 NewBarkTown_Lab_Text_ShouldntTouch:
-	.string "Probably shouldn't touch!$"
+	.string "...만지지는 말자!$"
 
 NewBarkTown_Lab_Text_ElmIntro:
 	.string "ELM: {PLAYER}! There you are!\p"
@@ -686,21 +686,19 @@ NewBarkTown_Lab_Text_ElmAccepted:
 	.string "You're a great help!$"
 
 NewBarkTown_Lab_Text_ElmRefused:
-	.string "But… Please, I need your\n"
-	.string "help!$"
+	.string "그런 말 하지 말고!\n"
+	.string "부탁한다!$"
 
 NewBarkTown_Lab_Text_ElmResearchAmbitions:
-	.string "When I announce my findings,\n"
-	.string "I'm sure we'll delve deeper\p"
-	.string "into the many mysteries of\n"
-	.string "POKéMON.\p"
-	.string "You can count on it!$"
+	.string "이 연구를 발표하면\n"
+	.string "포켓몬의 수수께끼를 푸는 데\l"
+	.string "한 걸음 더 다가갈 게 틀림없단다!\p"
+	.string "기대해 주렴!$"
 
 NewBarkTown_Lab_Text_ElmGotAnEmail:
-	.string "Oh, hey! I got an e-mail!\p"
-	.string "… … … … … … … …\n"
-	.string "Hm… Uh-huh…\p"
-	.string "Okay…$"
+	.string "아 메일이다!\p"
+	.string "흠흠\n"
+	.string "호- 그렇구나…$"
 
 NewBarkTown_Lab_Text_ElmMissionFromMrPokemon:
 	.string "Hey, listen.\p"
@@ -726,8 +724,8 @@ NewBarkTown_Lab_Text_ElmChooseAPokemon:
 	.string "Go on. Pick one!$"
 
 NewBarkTown_Lab_Text_ElmWhereGoing:
-	.string "ELM: Wait! Where are you\n"
-	.string "going?$"
+	.string "공박사: 잠깐!\n"
+	.string "어디 가느냐?$"
 
 NewBarkTown_Lab_Text_ChooseCyndaquil:
 	.string "ELM: You'll take {STR_VAR_1},\n"
@@ -742,12 +740,12 @@ NewBarkTown_Lab_Text_ChooseChikorita:
 	.string "the {STR_VAR_2} POKéMON?$"
 
 NewBarkTown_Lab_Text_DidntChooseStarter:
-	.string "ELM: Think it over carefully.\p"
-	.string "Your partner is important.$"
+	.string "공박사: 신중하게 골라 보렴.\p"
+	.string "소중한 파트너가 될 테니까!$"
 
 NewBarkTown_Lab_Text_ChoseStarter:
-	.string "ELM: I think that's a great\n"
-	.string "POKéMON too!$"
+	.string "공박사: 나도 그 포켓몬은\n"
+	.string "좋은 포켓몬이라고 생각한다!$"
 
 NewBarkTown_Lab_Text_ReceivedStarter:
 	.string "{PLAYER} received {STR_VAR_1}!$"
@@ -757,24 +755,26 @@ NewBarkTown_Lab_Text_Nickname:
 	.string "{STR_VAR_1} a nickname?$"
 
 NewBarkTown_Lab_Text_ElmDirections1:
-	.string "MR. POKéMON lives a little bit\n"
-	.string "beyond CHERRYGROVE, the next\l"
-	.string "city over.\p"
-	.string "It's almost a direct route\n"
-	.string "there, so you can't miss it.\p"
-	.string "But just in case, you have my\n"
-	.string "phone number. Call me if\l"
-	.string "anything comes up!$"
+	.string "공박사: 포켓몬 할아버지는\n"
+	.string "여러 장소에 가서\l"
+	.string "희귀한 것을 발견해 온단다.\p"
+	.string "무궁시티를 빠져나가서\n"
+	.string "조금 북쪽에 살고 있지.\p"
+	.string "혹시 모르니 내\n"
+	.string "전화번호를 알려주지!\p"
+	.string "무슨 일이 있으면\n"
+	.string "연락하거라!$"
 
 NewBarkTown_Lab_Text_ElmDirections1_Register:
-	.string "MR. POKéMON lives a little bit\n"
-	.string "beyond CHERRYGROVE, the next\l"
-	.string "city over.\p"
-	.string "It's almost a direct route\n"
-	.string "there, so you can't miss it.\p"
-	.string "But just in case, here's my\n"
-	.string "phone number. Call me if\l"
-	.string "anything comes up!$"
+	.string "공박사: 포켓몬 할아버지는\n"
+	.string "여러 장소에 가서\l"
+	.string "희귀한 것을 발견해 온단다.\p"
+	.string "무궁시티를 빠져나가서\n"
+	.string "조금 북쪽에 살고 있지.\p"
+	.string "혹시 모르니 내\n"
+	.string "전화번호를 알려주지!\p"
+	.string "무슨 일이 있으면\n"
+	.string "연락하거라!$"
 
 NewBarkTown_Lab_Text_RegisteredElm:
 	.string "Registered PROF.ELM\n"
@@ -819,7 +819,19 @@ NewBarkTown_Lab_Text_ElmAfterTheft2:
 	.string "to PROF.ELM.$"
 
 NewBarkTown_Lab_Text_ElmAfterTheft3:
-	.string "ELM: This?$"
+	.string "공박사: 응? 뭐라고?\n"
+	.string "이건 알...이지?\p"
+	.string "확실히 이건 본 적이 없는\n"
+	.string "종류인 것 같은데...\p"
+	.string "이제 와서 포켓몬알을 보고\n"
+	.string "놀라다니 포켓몬 할아버지도\l"
+	.string "여전하구나...\p"
+	.string "그런데... 모처럼 받은 알이고\n"
+	.string "혹시 뭔가 비밀이\l"
+	.string "있을지도 모른다.\p"
+	.string "좋아!\n"
+	.string "당분간 내가 맡아두고\l"
+	.string "조사해 보겠다-$"
 
 NewBarkTown_Lab_Text_ElmAfterTheft4:
 	.string "But… Is it a POKéMON EGG?\p"
@@ -845,9 +857,9 @@ NewBarkTown_Lab_Text_ElmAfterTheft4:
 	.string "that you talk to your mom.$"
 
 NewBarkTown_Lab_Text_ElmStudyingEgg:
-	.string "ELM: Don't give up!\n"
-	.string "I'll call if I learn anything\l"
-	.string "about that EGG!$"
+	.string "공박사: 열심히 하거라!\n"
+	.string "나도 알에 대해 아는 대로\l"
+	.string "연락하겠다!$"
 
 NewBarkTown_Lab_Text_ElmAideHasEgg:
 	.string "ELM: {PLAYER}? Didn't you meet\n"
@@ -871,7 +883,8 @@ NewBarkTown_Lab_Text_ShowTogepi1:
 	.string "ELM: {PLAYER}, you look great!$"
 
 NewBarkTown_Lab_Text_ShowTogepi2:
-	.string "What? That POKéMON!?!$"
+	.string "엥?\n"
+	.string "그 포켓몬은...!$"
 
 NewBarkTown_Lab_Text_ShowTogepi3:
 	.string "The EGG hatched! So, POKéMON\n"
@@ -882,19 +895,21 @@ NewBarkTown_Lab_Text_ShowTogepi3:
 	.string "research to be done.$"
 
 NewBarkTown_Lab_Text_ElmGiveEverstone1:
-	.string "Thanks, {PLAYER}! You're helping\n"
-	.string "unravel POKéMON mysteries for us!\p"
-	.string "I want you to have this as a\n"
-	.string "token of our appreciation.$"
+	.string "좋-아! 이렇게\n"
+	.string "두근두근하게 해주는 너에게\l"
+	.string "선물을 주겠다!\l"
+	.string "사양 말고 가지고 가거라!$"
 
 NewBarkTown_Lab_Text_ElmGiveEverstone2:
-	.string "That's an EVERSTONE.\p"
-	.string "Some species of POKéMON evolve\n"
-	.string "when they grow to certain levels.\p"
-	.string "A POKéMON holding the EVERSTONE\n"
-	.string "won't evolve.\p"
-	.string "Give it to a POKéMON you don't\n"
-	.string "want to evolve.$"
+	.string "그것은 변함없는돌!\p"
+	.string "어떤 포켓몬은 일정 레벨에\n"
+	.string "도달하면 진화한단다.\p"
+	.string "하지만 변함없는돌을\n"
+	.string "지니게 하면 진화를\l"
+	.string "막을 수 있지.\p"
+	.string "진화시키고 싶지 않은\n"
+	.string "포켓몬이 있다면\l"
+	.string "사용해 보거라!$"
 
 NewBarkTown_Lab_Text_ElmCallYou:
 	.string "ELM: {PLAYER}, I'll call you if\n"
@@ -923,39 +938,41 @@ NewBarkTown_Lab_Text_ElmGiveMasterBall2:
 	.string "use of it than I can, {PLAYER}!$"
 
 NewBarkTown_Lab_Text_KimonoGirls:
-	.string "By the way...\n"
-	.string "A group of beautiful KIMONO\l"
-	.string "GIRLS were looking for you.\p"
-	.string "They told me they are\n"
-	.string "waiting for you at the\l" 
-	.string "ECRUTEAK DANCE THEATER.\p"
-	.string "I know you've gone through many\n"
-	.string "things since that EGG got you\l"
-	.string "involved in all this...\p"
-	.string "I hope you'll carry through it.$"
+	.string "그런데...\n"
+	.string "아름다운 전통무용수들이\l"
+	.string "너를 찾으러 왔었단다.\p"
+	.string "인주시티의 예술극장에서\n"
+	.string "널 기다린다고 하더구나.\p"
+	.string "그 알 때문에 여러 가지\n"
+	.string "일에 휘말려서\l"
+	.string "힘들었을 테지만...\p"
+	.string "끝까지 해냈으면 좋겠구나!$"
 
 NewBarkTown_Lab_Text_KimonoWaiting:
-	.string "PROF.ELM: The KIMONO\n"
-	.string "GIRLS are waiting for you at\l"
-	.string "the ECRUTEAK DANCE THEATER.$"
+	.string "공박사: 전통무용수들이\n"
+	.string "인주시티의 예술극장에서\l"
+	.string "널 기다리고 있단다!$"
 
 NewBarkTown_Lab_Text_League:
-	.string "PROF.ELM: Hahaha...\n"
-	.string "Good job!\p"
-	.string "That rare EGG has brought you\n"
-	.string "a lot of trouble, huh?\p"
-	.string "The KIMONO GIRLS said something\n"
-	.string "about me?\p"
-	.string "I have nothing to do with it.\p"
-	.string "You made your decision and went\n"
-	.string "through with it.\p"
-	.string "Having done so much, you should\n"
-	.string "be able to face the LEAGUE now!\p"
-	.string "You should head for INDIGO\n"
-	.string "PLATEAU!\p"
-	.string "Do you know how to get there?\n"
-	.string "Follow ROUTE 27 to ROUTE 26.\p"
-	.string "Once there, go straight north!$"
+	.string "공박사: 후후...\n"
+	.string "수고했다!\p"
+	.string "그 희귀한 알 때문에\n"
+	.string "큰일을 겪게 되었구나.\p"
+	.string "전통무용수들이\n"
+	.string "나에 대해 뭐라고 했느냐?\p"
+	.string "하지만 나는 그 일과\n"
+	.string "아무 관계도 없다.\p"
+	.string "모든 것은 네 스스로\n"
+	.string "결정하고 해낸 일이다.\p"
+	.string "여기까지 해낸 너라면\n"
+	.string "포켓몬리그에도\l"
+	.string "도전할 수 있을 거다!\p"
+	.string "자! 석영고원으로 가거라!\p"
+	.string "가는 길은 알고 있느냐?\n"
+	.string "27번도로를 지나서\l"
+	.string "26번도로로 들어가거라.\p"
+	.string "거기서 곧장\n"
+	.string "북쪽으로 나아가거라!$"
 
 
 NewBarkTown_Lab_Text_ElmGiveTicket1:
@@ -985,26 +1002,25 @@ NewBarkTown_Lab_Text_AideGivePotion:
 	.string "this for your errand.$"
 
 NewBarkTown_Lab_Text_AideAlwaysBusy:
-	.string "There are only three of us, so\n"
-	.string "we're always busy.$"
+	.string "연구소에는 저희 셋뿐이라\n"
+	.string "늘 바쁘답니다.$"
 
 NewBarkTown_Lab_Text_AideSave:
-	.string "Don't forget to save your game\n"
-	.string "regularly!\p"
-	.string "Press the START button, then\n"
-	.string "SAVE the game!$"
+	.string "리포트를 자주 작성해\n"
+	.string "모험을 기록해 두세요!\p"
+	.string "START 버튼을 누른 다음\n"
+	.string "리포트를 기록하면 됩니다!$"
 
 NewBarkTown_Lab_Text_AideTheftTestimony:
-	.string "There was a loud noise\n"
-	.string "outside…\p"
-	.string "When we went to look,\n"
-	.string "someone stole a POKéMON.\p"
-	.string "It's unbelievable that anyone\n"
-	.string "would do that!\p"
-	.string "…sigh… That stolen POKéMON.\p"
-	.string "I wonder how it's doing.\p"
-	.string "They say a POKéMON raised by a\n"
-	.string "bad person turns bad itself.$"
+	.string "밖에서 큰 소리가 났어요...\p"
+	.string "확인하러 나간 사이에\n"
+	.string "누군가 포켓몬을 훔쳤어요.\p"
+	.string "어떻게 그런 짓을 할 수 있죠!?\p"
+	.string "...하아...\n"
+	.string "도난당한 포켓몬은\l"
+	.string "지금쯤 어떻게 지낼까요...\p"
+	.string "나쁜 사람이 키우면\n"
+	.string "포켓몬도 나빠진다던데...$"
 
 NewBarkTown_Lab_Text_AideGiveBalls:
 	.string "{PLAYER}!\p"
@@ -1018,27 +1034,27 @@ NewBarkTown_Lab_Text_AideExplainBalls:
 	.string "POKéMON to get them.$"
 
 NewBarkTown_Lab_Text_Officer1:
-	.string "I heard a POKéMON was stolen\n"
-	.string "here…\p"
-	.string "I was just getting some\n"
-	.string "information from PROF.ELM.\p"
-	.string "Apparently, it was a young\n"
-	.string "male with long, red hair…\p"
-	.string "What?\p"
-	.string "You battled a trainer like\n"
-	.string "that?\p"
-	.string "Did you happen to get his\n"
-	.string "name?$"
+	.string "이 연구소에서 포켓몬이\n"
+	.string "도난당했다고 하더군…\p"
+	.string "방금 공박사님께\n"
+	.string "사건 이야기를 듣고 있었지.\p"
+	.string "범인은 새빨간 머리의\n"
+	.string "남자아이라 하더군…\p"
+	.string "뭐라고?\p"
+	.string "자네는 그런 트레이너와\n"
+	.string "싸웠다는 겐가?\p"
+	.string "그런데 그 소년의\n"
+	.string "이름은 알고 있나?$"
 
 NewBarkTown_Lab_Text_Officer2_1:
 	.string "OK! So {RIVAL} was his name?$"
 
 NewBarkTown_Lab_Text_Officer2:
-	.string "Thanks for helping my\n"
-	.string "investigation!$"
+	.string "협력해 줘서 고맙네!$"
 
 NewBarkTown_Lab_Text_OfficerNo:
-	.string "Surely you got his name?!$"
+	.string "그 소년의 이름을\n"
+	.string "알고 있지 않나?$"
 
 NewBarkTown_Lab_Text_Elm_CallMe:
 	.string "Ah, {PLAYER}!\p"

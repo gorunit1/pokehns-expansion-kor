@@ -225,8 +225,8 @@ static void Task_FadeAndCloseBagMenuIfMulch(u8 taskId);
 static const u8 sText_Var1CantBeHeldHere[] = _("The {STR_VAR_1} can't be held\nhere.");
 static const u8 sText_DepositHowManyVar1[] = _("Deposit how many\n{STR_VAR_1}?");
 static const u8 sText_DepositedVar2Var1s[] = _("Deposited {STR_VAR_2}\n{STR_VAR_1}.");
-static const u8 sText_NoRoomForItems[] = _("There's no room to\nstore items.");
-static const u8 sText_CantStoreImportantItems[] = _("Important items\ncan't be stored in\nthe PC!");
+static const u8 sText_NoRoomForItems[] = _("더 이상\n맡길 수 없습니다!");
+static const u8 sText_CantStoreImportantItems[] = _("중요한 물건은\nPC에 맡길 수 없습니다!");
 
 static void Task_LoadBagSortOptions(u8 taskId);
 static void ItemMenu_SortByName(u8 taskId);
@@ -335,7 +335,7 @@ static const u8 sRegisterOptions[] = {
     ACTION_REGISTER_TAP, ACTION_REGISTER_HOLD,
 };
 
-static const u8 sText_RegisterHow[] = _("Register this\nitem by tapping or\nholding SELECT?");
+static const u8 sText_RegisterHow[] = _("이 도구를 SELECT 버튼에\n어떻게 등록하겠습니까?");
 
 static const u8 sContextMenuItems_BallsPocket[] = {
     ACTION_USE,         ACTION_GIVE,
@@ -1336,7 +1336,7 @@ static void Task_BagMenu_HandleInput(u8 taskId)
             {
                 if ((gBagMenu->numItemStacks[gBagPosition.pocket] - 1) <= 1) //can't sort with 0 or 1 item in bag
                 {
-                    static const u8 sText_NothingToSort[] = _("There's nothing to sort!");
+                    static const u8 sText_NothingToSort[] = _("순서를 바꿀 수 없습니다!");
                     PlaySE(SE_FAILURE);
                     DisplayItemMessage(taskId, 1, sText_NothingToSort, HandleErrorMessage);
                     break;
@@ -2205,7 +2205,7 @@ static void ItemMenu_Cancel(u8 taskId)
     ReturnToItemList(taskId);
 }
 
-static const u8 sText_NoItemsInBattle[] = _("Battle items are not allowed\nunder current rules!");
+static const u8 sText_NoItemsInBattle[] = _("현재 룰에서는\n배틀 중 도구를 사용할 수 없습니다!");
 
 static void ItemMenu_UseInBattle(u8 taskId)
 {
@@ -2859,14 +2859,14 @@ static void PrintTMHMMoveData(enum Item itemId)
     }
 }
 
-static const u8 sText_SortItemsHow[] = _("Sort items how?");
+static const u8 sText_SortItemsHow[] = _("어떤 순서로 바꾸겠습니까?");
 static const u8 sText_ItemsSorted[] = _("Items sorted by {STR_VAR_1}!");
 static const u8 *const sSortTypeStrings[] =
 {
-    [SORT_ALPHABETICALLY] = COMPOUND_STRING("NAME"),
-    [SORT_BY_TYPE] = COMPOUND_STRING("TYPE"),
-    [SORT_BY_AMOUNT] = COMPOUND_STRING("AMOUNT"),
-    [SORT_BY_INDEX] = COMPOUND_STRING("INDEX")
+    [SORT_ALPHABETICALLY] = COMPOUND_STRING("이름순"),
+    [SORT_BY_TYPE] = COMPOUND_STRING("종류순"),
+    [SORT_BY_AMOUNT] = COMPOUND_STRING("개수순"),
+    [SORT_BY_INDEX] = COMPOUND_STRING("번호순")
 };
 
 static const u8 sBagMenuSortItems[] =

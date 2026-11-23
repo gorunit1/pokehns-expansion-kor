@@ -407,12 +407,12 @@ enum
     INSTRUCTION_CONTINUE,
 };
 
-static const u8 sText_MoveQuit[]            = _("{DPAD_NONE} Move {B_BUTTON} Quit");
-static const u8 sText_MovePickUpQuit[]      = _("{DPAD_NONE} Move {A_BUTTON} Pick Up {B_BUTTON} Quit");
-static const u8 sText_MovePlaceRotateQuit[] = _("{DPAD_NONE} Move {A_BUTTON} Place {L_BUTTON}{R_BUTTON} Rotate {B_BUTTON} Quit");
-static const u8 sText_MoveSwapRotateQuit[]  = _("{DPAD_NONE} Move {A_BUTTON} Swap {L_BUTTON}{R_BUTTON} Rotate {B_BUTTON} Quit");
-static const u8 sText_MoveRotateQuit[]      = _("{DPAD_NONE} Move {L_BUTTON}{R_BUTTON} Rotate {B_BUTTON} Quit");
-static const u8 sText_Continue[]            = _("{A_BUTTON}{B_BUTTON} Continue");
+static const u8 sText_MoveQuit[]            = _("{DPAD_NONE} 이동 {B_BUTTON} 그만두기");
+static const u8 sText_MovePickUpQuit[]      = _("{DPAD_NONE} 이동 {A_BUTTON} 집기 {B_BUTTON} 그만두기");
+static const u8 sText_MovePlaceRotateQuit[] = _("{DPAD_NONE} 이동 {A_BUTTON} 놓기 {L_BUTTON}{R_BUTTON} 회전 {B_BUTTON} 그만두기");
+static const u8 sText_MoveSwapRotateQuit[]  = _("{DPAD_NONE} 이동 {A_BUTTON} 교환 {L_BUTTON}{R_BUTTON} 회전 {B_BUTTON} 그만두기");
+static const u8 sText_MoveRotateQuit[]      = _("{DPAD_NONE} 이동 {L_BUTTON}{R_BUTTON} 회전 {B_BUTTON} 그만두기");
+static const u8 sText_Continue[]            = _("{A_BUTTON}{B_BUTTON} 계속");
 
 static const u8 *const sInstructions[] =
 {

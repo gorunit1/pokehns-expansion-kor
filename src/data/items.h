@@ -14468,7 +14468,7 @@ const struct ItemInfo gItemsInfo[] =
 
     [ITEM_POKEBLOCK_CASE] =
     {
-        .name = ITEM_NAME("{POKEBLOCK} 케이스"),
+        .name = ITEM_NAME("포켓몬스낵케이스"),
         .price = 0,
         .description = COMPOUND_STRING(
             "A case for holding\n"

@@ -363,48 +363,48 @@ static const u8 sText_TopBar_Cancel[] = _("{B_BUTTON}취소");
 // =============================================================================
 
 static const u8 *const sDesc_Gamemode[] = {
-    COMPOUND_STRING("추천 설정으로 플레이합니다"),
-    COMPOUND_STRING("원하는 규칙을 직접 설정합니다"),
+    COMPOUND_STRING("추천 설정으로 플레이합니다."),
+    COMPOUND_STRING("원하는 규칙을 직접 설정합니다."),
 };
 static const u8 *const sDesc_ModernMoves[] = {
-    COMPOUND_STRING("3세대의 배우는 기술과\n유전기를 그대로 사용합니다"),
-    COMPOUND_STRING("7세대의 배우는 기술과\n유전기를 일부 조정하여 사용합니다"),
+    COMPOUND_STRING("3세대의 배우는 기술과\n유전기를 그대로 사용합니다."),
+    COMPOUND_STRING("7세대의 배우는 기술과\n유전기를 일부 조정하여 사용합니다."),
 };
 static const u8 *const sDesc_Synchronize[] = {
-    COMPOUND_STRING("3세대의 싱크로를 사용합니다\n50% 확률로 같은 성격이 됩니다"),
-    COMPOUND_STRING("8세대 이후의 싱크로를 사용합니다\n반드시 같은 성격이 됩니다"),
+    COMPOUND_STRING("3세대의 싱크로를 사용합니다.\n50% 확률로 같은 성격이 됩니다."),
+    COMPOUND_STRING("8세대 이후의 싱크로를 사용합니다.\n반드시 같은 성격이 됩니다."),
 };
 static const u8 *const sDesc_Sturdy[] = {
-    COMPOUND_STRING("3세대의 옹골참을 사용합니다\n가위자르기 등 일격필살기만 막습니다"),
-    COMPOUND_STRING("5세대 이후의 옹골참을 사용합니다\nHP가 가득 차면 일격에 쓰러지지 않습니다"),
+    COMPOUND_STRING("3세대의 옹골참을 사용합니다.\n가위자르기 등 일격기만 막습니다."),
+    COMPOUND_STRING("5세대 이후의 옹골참을 사용합니다.\nHP가 가득 차면 일격에 쓰러지지 않습니다."),
 };
 static const u8 *const sDesc_NewCitrus[] = {
-    COMPOUND_STRING("3세대처럼 자뭉열매가\nHP를 30 회복합니다"),
-    COMPOUND_STRING("4세대 이후처럼 자뭉열매가\n최대 HP의 1/4을 회복합니다"),
+    COMPOUND_STRING("3세대처럼 자뭉열매가\nHP를 30 회복합니다."),
+    COMPOUND_STRING("4세대 이후처럼 자뭉열매가\n최대 HP의 1/4을 회복합니다."),
 };
 static const u8 *const sDesc_FairyTypes[] = {
-    COMPOUND_STRING("6세대에 페어리타입이 된\n포켓몬도 기존 타입을 유지합니다"),
-    COMPOUND_STRING("6세대처럼 일부 포켓몬의\n타입에 페어리를 추가하거나 변경합니다"),
+    COMPOUND_STRING("6세대에 페어리타입이 된\n포켓몬도 기존 타입을 유지합니다."),
+    COMPOUND_STRING("6세대처럼 일부 포켓몬의\n타입에 페어리를 추가하거나 변경합니다."),
 };
 static const u8 *const sDesc_LegAbilities[] = {
-    COMPOUND_STRING("일부 전설의 포켓몬의\n특성을 프레셔로 유지합니다"),
-    COMPOUND_STRING("전설의 포켓몬의 프레셔를\n더 좋은 특성으로 변경합니다"),
+    COMPOUND_STRING("일부 전설의 포켓몬의\n특성을 프레셔로 유지합니다."),
+    COMPOUND_STRING("전설의 포켓몬의 프레셔를\n더 좋은 특성으로 변경합니다."),
 };
 static const u8 *const sDesc_InfiniteTMs[] = {
-    COMPOUND_STRING("기술머신은 한 번\n사용하면 없어집니다"),
-    COMPOUND_STRING("기술머신을 여러번\n사용할 수 있습니다"),
+    COMPOUND_STRING("기술머신은 한 번\n사용하면 없어집니다."),
+    COMPOUND_STRING("기술머신을 여러 번\n사용할 수 있습니다."),
 };
 static const u8 *const sDesc_Mints[] = {
-    COMPOUND_STRING("게임을 클리어하기 전에는\n민트를 구할 수 없습니다"),
-    COMPOUND_STRING("배지를 3개 모으면\n꽃집에서 민트를 살 수 있습니다"),
+    COMPOUND_STRING("게임을 클리어하기 전에는\n민트를 구할 수 없습니다."),
+    COMPOUND_STRING("배지를 3개 모으면\n꽃집에서 민트를 살 수 있습니다."),
 };
 static const u8 *const sDesc_SurvivePoison[] = {
-    COMPOUND_STRING("독에 걸린 포켓몬은\n이동 중 HP가 다하면 쓰러집니다"),
-    COMPOUND_STRING("독에 걸려도 이동 중에는\nHP가 1 남아 쓰러지지 않습니다"),
+    COMPOUND_STRING("독에 걸린 포켓몬은\n이동 중 HP가 다하면 쓰러집니다."),
+    COMPOUND_STRING("독에 걸려도 이동 중에는\nHP가 1 남아 쓰러지지 않습니다."),
 };
 static const u8 *const sDesc_Split[] = {
-    COMPOUND_STRING("기술의 타입에 따라\n물리와 특수를 구분합니다"),
-    COMPOUND_STRING("기술마다 물리와 특수를 구분합니다"),
+    COMPOUND_STRING("기술의 타입에 따라\n물리와 특수를 구분합니다."),
+    COMPOUND_STRING("기술마다 물리와 특수를 구분합니다."),
 };
 static const u8 *const sChoices_Gen3Gen7[] = {
     COMPOUND_STRING("3세대"),
@@ -415,11 +415,11 @@ static const u8 *const sChoices_Gen3Gen1[] = {
     COMPOUND_STRING("1세대"),
 };
 static const u8 *const sDesc_GenOneRecharge[] = {
-    COMPOUND_STRING("파괴광선 등 반동으로 쉬는\n기술은 사용한 뒤 반드시 한 턴 쉽니다"),
-    COMPOUND_STRING("반동으로 쉬는 기술로 상대를\n쓰러뜨리면 다음 턴에 쉬지 않고 행동합니다"),
+    COMPOUND_STRING("파괴광선 등의 기술을 사용한\n다음 턴에 반드시 반동 상태가 됩니다."),
+    COMPOUND_STRING("파괴광선 등의 기술로 상대를 쓰러뜨리면\n다음 턴에 반동 상태가 되지 않습니다."),
 };
 static const u8 *const sDesc_Next[] = {
-    COMPOUND_STRING("다음 페이지로 넘어갑니다"),
+    COMPOUND_STRING("다음 페이지로 넘어갑니다."),
 };
 
 static const struct ChallengeMenuItem sTabItems_Mode[] = {
@@ -503,7 +503,7 @@ static const struct ChallengeMenuItem sTabItems_Mode[] = {
     },
 };
 
-static const u8 *const sDesc_SaveExit[] = { COMPOUND_STRING("설정을 저장하고 계속합니다") };
+static const u8 *const sDesc_SaveExit[] = { COMPOUND_STRING("설정을 저장하고 계속합니다.") };
 static const u8 sText_ConfirmSave[] = _("이 설정으로 결정하겠습니까?");
 
 // =============================================================================
@@ -631,30 +631,30 @@ static const u8 *const sChoices_BstEqual[] = {
 // =============================================================================
 
 static const u8 *const sDesc_RtcType[] = {
-    COMPOUND_STRING("실제 시각에 맞추어\n게임의 시간이 흐릅니다"),
-    COMPOUND_STRING("가상 시계를 사용합니다\n현실의 1시간이 게임의 하루가 됩니다"),
+    COMPOUND_STRING("실제 시각에 맞추어\n게임의 시간이 흐릅니다."),
+    COMPOUND_STRING("가상 시계를 사용합니다\n현실의 1시간이 게임의 하루가 됩니다."),
 };
 static const u8 *const sDesc_ShinyChance[] = {
-    COMPOUND_STRING("색이 다른 포켓몬이 매우 드물게 나옵니다\n3세대의 기본 확률입니다"),
-    COMPOUND_STRING("색이 다른 포켓몬이 드물게 나옵니다\n6세대 이후의 기본 확률입니다"),
-    COMPOUND_STRING("색이 다른 포켓몬이\n비교적 자주 나옵니다"),
-    COMPOUND_STRING("색이 다른 포켓몬이\n자주 나옵니다"),
-    COMPOUND_STRING("색이 다른 포켓몬이\n매우 자주 나옵니다"),
+    COMPOUND_STRING("색이 다른 포켓몬이 매우 드물게 나옵니다\n3세대의 기본 확률입니다."),
+    COMPOUND_STRING("색이 다른 포켓몬이 드물게 나옵니다\n6세대 이후의 기본 확률입니다."),
+    COMPOUND_STRING("색이 다른 포켓몬이\n비교적 자주 나옵니다."),
+    COMPOUND_STRING("색이 다른 포켓몬이\n자주 나옵니다."),
+    COMPOUND_STRING("색이 다른 포켓몬이\n매우 자주 나옵니다."),
 };
 static const u8 *const sDesc_ItemDrop[] = {
-    COMPOUND_STRING("야생 포켓몬이 지닌 도구는\n잡거나 도둑질 등으로 얻습니다"),
-    COMPOUND_STRING("야생 포켓몬을 쓰러뜨리면\n지닌 도구를 떨어뜨립니다"),
+    COMPOUND_STRING("야생 포켓몬이 지닌 도구는\n잡거나 도둑질 등으로 얻습니다."),
+    COMPOUND_STRING("야생 포켓몬을 쓰러뜨리면\n지닌 도구를 떨어뜨립니다."),
 };
 static const u8 *const sDesc_FrontierBans[] = {
-    COMPOUND_STRING("일부 강력한 전설의 포켓몬은\n배틀프런티어에 참가할 수 없습니다"),
-    COMPOUND_STRING("모든 전설의 포켓몬이\n배틀프런티어에 참가할 수 있습니다"),
+    COMPOUND_STRING("일부 강력한 전설의 포켓몬은\n배틀프런티어에 참가할 수 없습니다."),
+    COMPOUND_STRING("모든 전설의 포켓몬이\n배틀프런티어에 참가할 수 있습니다."),
 };
 static const u8 *const sDesc_ShinyColor[] = {
-    COMPOUND_STRING("색이 다른 포켓몬의 색상을\n기존과 같게 합니다"),
-    COMPOUND_STRING("일부 색이 다른 포켓몬에게\n새로운 색상을 적용합니다"),
+    COMPOUND_STRING("색이 다른 포켓몬의 색상을\n기존과 같게 합니다."),
+    COMPOUND_STRING("일부 색이 다른 포켓몬에게\n새로운 색상을 적용합니다."),
 };
 static const u8 *const sDesc_FeaturesNext[] = {
-    COMPOUND_STRING("랜더마이저 설정으로 넘어갑니다"),
+    COMPOUND_STRING("랜더마이저 설정으로 넘어갑니다."),
 };
 
 static const struct ChallengeMenuItem sTabItems_Features[] = {
@@ -701,75 +701,75 @@ static const struct ChallengeMenuItem sTabItems_Features[] = {
 // =============================================================================
 
 static const u8 *const sDesc_RandomOffOn[] = {
-    COMPOUND_STRING("랜더마이저를 활성화하지 않습니다"),
-    COMPOUND_STRING("랜더마이저를 활성화합니다\n아래 항목에서 규칙을 설정합니다"),
+    COMPOUND_STRING("랜더마이저를 활성화하지 않습니다."),
+    COMPOUND_STRING("랜더마이저를 활성화합니다\n아래 항목에서 규칙을 설정합니다."),
 };
 static const u8 *const sDesc_RandomStarter[] = {
-    COMPOUND_STRING("스타팅 포켓몬이\n기존과 동일합니다"),
-    COMPOUND_STRING("스타팅 포켓몬을\n랜덤으로 변경합니다"),
+    COMPOUND_STRING("스타팅 포켓몬이\n기존과 동일합니다."),
+    COMPOUND_STRING("스타팅 포켓몬을\n랜덤으로 변경합니다."),
 };
 static const u8 *const sDesc_RandomWild[] = {
-    COMPOUND_STRING("야생 포켓몬이\n기존과 동일합니다"),
+    COMPOUND_STRING("야생 포켓몬이\n기존과 동일합니다."),
     COMPOUND_STRING("야생 포켓몬을\n랜덤으로 변경합니다"),
 };
 static const u8 *const sDesc_RandomMapBased[] = {
-    COMPOUND_STRING("야생 포켓몬이\n매번 랜덤으로 정해집니다"),
-    COMPOUND_STRING("야생 포켓몬이 구역별로 정해집니다\n같은 구역에서는 같은 포켓몬이 나옵니다"),
+    COMPOUND_STRING("야생 포켓몬이\n매번 랜덤으로 정해집니다."),
+    COMPOUND_STRING("야생 포켓몬이 구역별로 정해집니다\n같은 구역에서는 같은 포켓몬이 나옵니다."),
 };
 static const u8 *const sDesc_RandomTrainer[] = {
-    COMPOUND_STRING("트레이너의 포켓몬이\n기존과 동일합니다"),
-    COMPOUND_STRING("상대 트레이너의\n포켓몬을 랜덤으로 변경합니다"),
+    COMPOUND_STRING("트레이너의 포켓몬이\n기존과 동일합니다."),
+    COMPOUND_STRING("상대 트레이너의\n포켓몬을 랜덤으로 변경합니다."),
 };
 static const u8 *const sDesc_RandomStatic[] = {
     COMPOUND_STRING("고정된 장소에서\n만나는 포켓몬을 유지합니다"),
     COMPOUND_STRING("이름이 정해진 포켓몬과 선물받는 포켓몬\n등 일부 특별한 포켓몬은 변경되지 않습니다"),
 };
 static const u8 *const sDesc_RandomSimilar[] = {
-    COMPOUND_STRING("진화 단계가 비슷한\n포켓몬으로 바뀌도록 조정합니다"),
-    COMPOUND_STRING("포켓몬의 강함을\n고려하지 않고 랜덤으로 변경합니다"),
+    COMPOUND_STRING("진화 단계가 비슷한\n포켓몬으로 바뀌도록 조정합니다."),
+    COMPOUND_STRING("포켓몬의 강함을\n고려하지 않고 랜덤으로 변경합니다."),
 };
 static const u8 *const sDesc_RandomLegendaries[] = {
-    COMPOUND_STRING("전설의 포켓몬은\n랜덤 변경 대상에서 제외합니다"),
-    COMPOUND_STRING("전설의 포켓몬도\n랜덤 변경 대상에 포함합니다"),
+    COMPOUND_STRING("전설의 포켓몬은\n랜덤 변경 대상에서 제외합니다."),
+    COMPOUND_STRING("전설의 포켓몬도\n랜덤 변경 대상에 포함합니다."),
 };
 static const u8 *const sDesc_RandomGenScope[] = {
-    COMPOUND_STRING("모든 세대의\n포켓몬을 랜덤으로 변경합니다"),
-    COMPOUND_STRING("1-3세대 포켓몬과 이후 세대에\n추가된 진화형만 랜덤으로 변경합니다"),
+    COMPOUND_STRING("모든 세대의\n포켓몬을 랜덤으로 변경합니다."),
+    COMPOUND_STRING("1-3세대 포켓몬과 이후 세대에\n추가된 진화형만 랜덤으로 변경합니다."),
 };
 static const u8 *const sDesc_RandomType[] = {
-    COMPOUND_STRING("포켓몬의 타입이\n기존과 동일합니다"),
-    COMPOUND_STRING("모든 포켓몬의\n타입을 랜덤으로 변경합니다"),
+    COMPOUND_STRING("포켓몬의 타입이\n기존과 동일합니다."),
+    COMPOUND_STRING("모든 포켓몬의\n타입을 랜덤으로 변경합니다."),
 };
 static const u8 *const sDesc_RandomMoves[] = {
-    COMPOUND_STRING("포켓몬의 기술이\n기존과 동일합니다"),
-    COMPOUND_STRING("모든 포켓몬의\n기술을 랜덤으로 변경합니다"),
+    COMPOUND_STRING("포켓몬의 기술이\n기존과 동일합니다."),
+    COMPOUND_STRING("모든 포켓몬의\n기술을 랜덤으로 변경합니다."),
 };
 static const u8 *const sDesc_RandomAbilities[] = {
-    COMPOUND_STRING("포켓몬의 특성이\n기존과 동일합니다"),
-    COMPOUND_STRING("모든 포켓몬의\n특성을 랜덤으로 변경합니다"),
+    COMPOUND_STRING("포켓몬의 특성이\n기존과 동일합니다."),
+    COMPOUND_STRING("모든 포켓몬의\n특성을 랜덤으로 변경합니다."),
 };
 static const u8 *const sDesc_RandomEvolutions[] = {
-    COMPOUND_STRING("포켓몬의 진화가\n기존과 동일합니다"),
-    COMPOUND_STRING("모든 포켓몬의\n진화를 랜덤으로 변경합니다"),
+    COMPOUND_STRING("포켓몬의 진화가\n기존과 동일합니다."),
+    COMPOUND_STRING("모든 포켓몬의\n진화를 랜덤으로 변경합니다."),
 };
 static const u8 *const sDesc_RandomEvoMethods[] = {
-    COMPOUND_STRING("진화 가능한 포켓몬이\n기존과 동일합니다"),
-    COMPOUND_STRING("진화 계보를 랜덤으로 변경하여\n새로운 진화 계보가 만들어집니다"),
+    COMPOUND_STRING("진화 가능한 포켓몬이\n기존과 동일합니다."),
+    COMPOUND_STRING("진화 계보를 랜덤으로 변경하여\n새로운 진화 계보가 만들어집니다."),
 };
 static const u8 *const sDesc_RandomTypeEffec[] = {
-    COMPOUND_STRING("타입의 상성이\n기존과 동일합니다"),
-    COMPOUND_STRING("타입의 상성을 랜덤으로 변경합니다\n오류가 발생할 수 있습니다"),
+    COMPOUND_STRING("타입의 상성이\n기존과 동일합니다."),
+    COMPOUND_STRING("타입의 상성을 랜덤으로 변경합니다.\n오류가 발생할 수 있습니다."),
 };
 static const u8 *const sDesc_RandomItems[] = {
-    COMPOUND_STRING("발견하거나 받는 도구가\n기존과 동일합니다"),
-    COMPOUND_STRING("발견하거나 받는 도구를 랜덤으로 변경합니다\n숨겨진 도구도 포함하며 중요한 도구는 제외합니다"),
+    COMPOUND_STRING("발견하거나 받는 도구가\n기존과 동일합니다."),
+    COMPOUND_STRING("발견하거나 받는 도구를 랜덤으로 변경합니다.\n숨겨진 도구도 포함하며 중요한 도구는 제외합니다."),
 };
 static const u8 *const sDesc_RandomChaos[] = {
-    COMPOUND_STRING("카오스 모드를 사용하지 않습니다"),
-    COMPOUND_STRING("위에서 선택한 규칙을 크게 뒤섞습니다\n권장하지 않는 설정입니다"),
+    COMPOUND_STRING("카오스 모드를 사용하지 않습니다."),
+    COMPOUND_STRING("위에서 선택한 규칙을 크게 뒤섞습니다.\n권장하지 않는 설정입니다."),
 };
 static const u8 *const sDesc_RandomNext[] = {
-    COMPOUND_STRING("너즐록 설정으로 넘어갑니다"),
+    COMPOUND_STRING("너즐록 설정으로 넘어갑니다."),
 };
 
 static const struct ChallengeMenuItem sTabItems_Randomizer[] = {
@@ -888,33 +888,33 @@ static const struct ChallengeMenuItem sTabItems_Randomizer[] = {
 // =============================================================================
 
 static const u8 *const sDesc_Nuzlocke[] = {
-    COMPOUND_STRING("너즐록 룰을 활성화하지 않습니다"),
-    COMPOUND_STRING("쓰러진 포켓몬을 다시 사용할 수 없습니다\n그 외의 규칙은 적용하지 않습니다"),
-    COMPOUND_STRING("구역마다 한 마리만 잡을 수 있습니다\n쓰러진 포켓몬을 다시 사용할 수 없습니다"),
-    COMPOUND_STRING("노말 모드와 같은 규칙을 적용하지만\n배틀에서 지면 저장 데이터도 삭제됩니다"),
+    COMPOUND_STRING("너즐록 룰을 활성화하지 않습니다."),
+    COMPOUND_STRING("쓰러진 포켓몬을 다시 사용할 수 없습니다.\n그 외의 규칙은 적용하지 않습니다."),
+    COMPOUND_STRING("구역마다 한 마리만 잡을 수 있습니다\n쓰러진 포켓몬을 다시 사용할 수 없습니다."),
+    COMPOUND_STRING("노말 모드와 같은 규칙을 적용하지만\n배틀에서 지면 저장 데이터도 삭제됩니다."),
 };
 static const u8 *const sDesc_SpeciesClause[] = {
-    COMPOUND_STRING("잡은 적 없는 포켓몬만\n첫 만남으로 판단합니다 (권장)"),
-    COMPOUND_STRING("지역마다 처음 만난\n포켓몬만 잡을 수 있습니다"),
+    COMPOUND_STRING("잡은 적 없는 포켓몬만\n첫 만남으로 판단합니다. (권장)"),
+    COMPOUND_STRING("지역마다 처음 만난\n포켓몬만 잡을 수 있습니다."),
 };
 static const u8 *const sDesc_ShinyClause[] = {
-    COMPOUND_STRING("색이 다른 포켓몬은\n언제든 잡을 수 있습니다 (권장)"),
-    COMPOUND_STRING("색이 다른 포켓몬도\n처음 만났을 때만 잡을 수 있습니다"),
+    COMPOUND_STRING("색이 다른 포켓몬은\n언제든 잡을 수 있습니다. (권장)"),
+    COMPOUND_STRING("색이 다른 포켓몬도\n처음 만났을 때만 잡을 수 있습니다."),
 };
 static const u8 *const sDesc_Nicknaming[] = {
     COMPOUND_STRING("모든 포켓몬에게\n반드시 별명을 붙입니다 (권장)"),
     COMPOUND_STRING("별명을 자유롭게 붙일 수 있습니다"),
 };
 static const u8 *const sDesc_Deletion[] = {
-    COMPOUND_STRING("쓰러진 포켓몬을 배틀 후 PC로 보냅니다\n다시 데려올 수 없습니다"),
-    COMPOUND_STRING("쓰러진 포켓몬을\n배틀 후 놓아줍니다"),
+    COMPOUND_STRING("쓰러진 포켓몬을 배틀 후 PC로 보냅니다.\n다시 데려올 수 없습니다."),
+    COMPOUND_STRING("쓰러진 포켓몬을\n배틀 후 놓아줍니다."),
 };
 static const u8 *const sDesc_RareCandy[] = {
-    COMPOUND_STRING("게임을 시작할 때 PC에\n무한 이상한사탕을 넣어둡니다"),
-    COMPOUND_STRING("무한 이상한사탕을\n사용할 수 없습니다"),
+    COMPOUND_STRING("게임을 시작할 때 PC에\n무한 이상한사탕을 넣어둡니다."),
+    COMPOUND_STRING("무한 이상한사탕을\n사용할 수 없습니다."),
 };
 static const u8 *const sDesc_NuzlockeNext[] = {
-    COMPOUND_STRING("난이도 설정으로 넘어갑니다"),
+    COMPOUND_STRING("난이도 설정으로 넘어갑니다."),
 };
 
 static const struct ChallengeMenuItem sTabItems_Nuzlocke[] = {
@@ -972,54 +972,54 @@ static const u8 *const sDesc_PartyLimit[] = {
     sText_Desc_PartyLimit, sText_Desc_PartyLimit, sText_Desc_PartyLimit,
 };
 static const u8 *const sDesc_LevelCap[] = {
-    COMPOUND_STRING("레벨캡을 설정하지 않습니다"),
-    COMPOUND_STRING("다음 체육관의 가장 높은\n포켓몬 레벨까지 올릴 수 있습니다"),
-    COMPOUND_STRING("다음 체육관의 가장 낮은\n포켓몬 레벨까지 올릴 수 있습니다"),
+    COMPOUND_STRING("레벨캡을 설정하지 않습니다."),
+    COMPOUND_STRING("다음 체육관의 가장 높은\n포켓몬 레벨까지 올릴 수 있습니다."),
+    COMPOUND_STRING("다음 체육관의 가장 낮은\n포켓몬 레벨까지 올릴 수 있습니다."),
 };
 static const u8 *const sDesc_ExpMult[] = {
-    COMPOUND_STRING("경험치를 기존대로 얻습니다\n하드 모드의 경험치 설정과 함께 적용됩니다"),
-    COMPOUND_STRING("경험치를 1.5배 얻습니다\n하드 모드의 경험치 설정과 함께 적용됩니다"),
-    COMPOUND_STRING("경험치를 2배 얻습니다\n하드 모드의 경험치 설정과 함께 적용됩니다"),
-    COMPOUND_STRING("경험치를 얻을 수 없습니다\n하드 모드에도 적용됩니다"),
+    COMPOUND_STRING("경험치를 기존대로 얻습니다.\n하드 모드의 경험치 설정과 함께 적용됩니다."),
+    COMPOUND_STRING("경험치를 1.5배 얻습니다.\n하드 모드의 경험치 설정과 함께 적용됩니다."),
+    COMPOUND_STRING("경험치를 2배 얻습니다.\n하드 모드의 경험치 설정과 함께 적용됩니다."),
+    COMPOUND_STRING("경험치를 얻을 수 없습니다.\n하드 모드에도 적용됩니다."),
 };
 static const u8 *const sDesc_ItemPlayer[] = {
-    COMPOUND_STRING("플레이어가 배틀 중\n도구를 사용할 수 있습니다"),
-    COMPOUND_STRING("플레이어가 배틀 중 도구를 쓸 수 없습니다\n포켓몬이 지닌 도구는 사용할 수 있습니다"),
+    COMPOUND_STRING("플레이어가 배틀 중\n도구를 사용할 수 있습니다."),
+    COMPOUND_STRING("플레이어가 배틀 중 도구를 쓸 수 없습니다.\n포켓몬이 지닌 도구는 사용할 수 있습니다."),
 };
 static const u8 *const sDesc_ItemTrainer[] = {
-    COMPOUND_STRING("상대 트레이너가 배틀 중\n도구를 사용할 수 있습니다"),
-    COMPOUND_STRING("상대 트레이너가 배틀 중\n도구를 사용할 수 없습니다"),
+    COMPOUND_STRING("상대 트레이너가 배틀 중\n도구를 사용할 수 있습니다."),
+    COMPOUND_STRING("상대 트레이너가 배틀 중\n도구를 사용할 수 없습니다."),
 };
 static const u8 *const sDesc_NoEVs[] = {
-    COMPOUND_STRING("플레이어의 포켓몬이\n노력치를 얻습니다"),
-    COMPOUND_STRING("플레이어의 포켓몬이\n노력치를 얻지 않습니다"),
+    COMPOUND_STRING("플레이어의 포켓몬이\n노력치를 얻습니다."),
+    COMPOUND_STRING("플레이어의 포켓몬이\n노력치를 얻지 않습니다."),
 };
 static const u8 *const sDesc_ScalingIVs[] = {
-    COMPOUND_STRING("상대 포켓몬의\n개체값을 기존과 같게 합니다"),
-    COMPOUND_STRING("배지가 늘어날수록\n상대 포켓몬의 개체값이 높아집니다"),
-    COMPOUND_STRING("상대 포켓몬의\n개체값을 최대로 합니다"),
+    COMPOUND_STRING("상대 포켓몬의\n개체값을 기존과 같게 합니다."),
+    COMPOUND_STRING("배지가 늘어날수록\n상대 포켓몬의 개체값이 높아집니다."),
+    COMPOUND_STRING("상대 포켓몬의\n개체값을 최대로 합니다."),
 };
 static const u8 *const sDesc_ScalingEVs[] = {
-    COMPOUND_STRING("상대 포켓몬에게\n노력치를 주지 않습니다"),
-    COMPOUND_STRING("배지가 늘어날수록\n상대 포켓몬의 노력치가 높아집니다"),
-    COMPOUND_STRING("상대 포켓몬에게\n높은 노력치를 줍니다"),
+    COMPOUND_STRING("상대 포켓몬에게\n노력치를 주지 않습니다."),
+    COMPOUND_STRING("배지가 늘어날수록\n상대 포켓몬의 노력치가 높아집니다."),
+    COMPOUND_STRING("상대 포켓몬에게\n높은 노력치를 줍니다."),
     COMPOUND_STRING("상대 포켓몬의 모든 노력치를 252로 합니다\n매우 어렵습니다!"),
 };
 static const u8 *const sDesc_MaxPartyIVs[] = {
-    COMPOUND_STRING("플레이어 포켓몬의 개체값을\n기존과 같이 0-31로 정합니다"),
-    COMPOUND_STRING("플레이어 포켓몬의 개체값을\n항상 최대인 31로 합니다"),
-    COMPOUND_STRING("잠재파워의 타입 차이를\n위해 개체값을 30-31로 정합니다"),
+    COMPOUND_STRING("플레이어 포켓몬의 개체값을\n기존과 같이 0-31로 정합니다."),
+    COMPOUND_STRING("플레이어 포켓몬의 개체값을\n항상 최대인 31로 합니다."),
+    COMPOUND_STRING("잠재파워의 타입 차이를\n위해 개체값을 30-31로 정합니다."),
 };
 static const u8 *const sDesc_LessEscapes[] = {
-    COMPOUND_STRING("기존과 동일하게\n야생 포켓몬에게서 쉽게 도망칠 수 있습니다"),
-    COMPOUND_STRING("야생 포켓몬에게서 도망치기 어려워집니다\n벌레회피스프레이를 활용하세요"),
+    COMPOUND_STRING("기존과 동일하게\n야생 포켓몬에게서 쉽게 도망칠 수 있습니다."),
+    COMPOUND_STRING("야생 포켓몬에게서 도망치기 어려워집니다\n벌레회피스프레이를 활용하세요."),
 };
 static const u8 *const sDesc_EscapeRopeDig[] = {
-    COMPOUND_STRING("동굴탈출로프와 구멍파기로\n동굴 등에서 빠져나올 수 있습니다"),
-    COMPOUND_STRING("동굴탈출로프와 구멍파기로\n동굴 등에서 빠져나올 수 없습니다"),
+    COMPOUND_STRING("동굴탈출로프와 구멍파기로\n동굴 등에서 빠져나올 수 있습니다."),
+    COMPOUND_STRING("동굴탈출로프와 구멍파기로\n동굴 등에서 빠져나올 수 없습니다."),
 };
 static const u8 *const sDesc_DifficultyNext[] = {
-    COMPOUND_STRING("챌린지 설정으로 넘어갑니다"),
+    COMPOUND_STRING("챌린지 설정으로 넘어갑니다."),
 };
 
 static const struct ChallengeMenuItem sTabItems_Difficulty[] = {
@@ -1102,25 +1102,25 @@ static const struct ChallengeMenuItem sTabItems_Difficulty[] = {
 // =============================================================================
 
 static const u8 *const sDesc_Pokecenter[] = {
-    COMPOUND_STRING("포켓몬센터 등에서\n포켓몬을 회복시킬 수 있습니다"),
-    COMPOUND_STRING("포켓몬센터 등에서\n포켓몬을 회복시킬 수 없습니다"),
+    COMPOUND_STRING("포켓몬센터 등에서\n포켓몬을 회복시킬 수 있습니다."),
+    COMPOUND_STRING("포켓몬센터 등에서\n포켓몬을 회복시킬 수 없습니다."),
 };
 static const u8 *const sDesc_Expensive[] = {
-    COMPOUND_STRING("도구의 가격이\n기존과 동일합니다"),
-    COMPOUND_STRING("도구의 가격이\n5배가 됩니다"),
-    COMPOUND_STRING("도구의 가격이\n10배가 됩니다"),
-    COMPOUND_STRING("도구의 가격이\n50배가 됩니다"),
+    COMPOUND_STRING("도구의 가격이\n기존과 동일합니다."),
+    COMPOUND_STRING("도구의 가격이\n5배가 됩니다."),
+    COMPOUND_STRING("도구의 가격이\n10배가 됩니다."),
+    COMPOUND_STRING("도구의 가격이\n50배가 됩니다."),
 };
 static const u8 *const sDesc_EvoLimit[] = {
-    COMPOUND_STRING("포켓몬이 기존과 동일하게 진화합니다"),
-    COMPOUND_STRING("포켓몬이 첫 번째\n진화형까지만 진화할 수 있습니다"),
-    COMPOUND_STRING("포켓몬이 진화할 수 없습니다"),
+    COMPOUND_STRING("포켓몬이 기존과 동일하게 진화합니다."),
+    COMPOUND_STRING("포켓몬이 첫 번째\n진화형까지만 진화할 수 있습니다."),
+    COMPOUND_STRING("포켓몬이 진화할 수 없습니다."),
 };
 #define NUM_ONE_TYPE_CHOICES 20
 #define ONE_TYPE_OFF 31
 #define EVO_LINE_TYPE_SEARCH_DEPTH 4 // deepest evolution chain worth walking
 
-static const u8 sText_Desc_OneType[] = _("한 가지 타입의 포켓몬만\n잡거나 사용할 수 있습니다");
+static const u8 sText_Desc_OneType[] = _("한 가지 타입의 포켓몬만\n잡거나 사용할 수 있습니다.");
 static const u8 *const sDesc_OneType[] = {
     sText_Desc_OneType, sText_Desc_OneType, sText_Desc_OneType, sText_Desc_OneType,
     sText_Desc_OneType, sText_Desc_OneType, sText_Desc_OneType, sText_Desc_OneType,
@@ -1129,18 +1129,18 @@ static const u8 *const sDesc_OneType[] = {
     sText_Desc_OneType, sText_Desc_OneType, sText_Desc_OneType, sText_Desc_OneType,
 };
 static const u8 *const sDesc_BstEqualizer[] = {
-    COMPOUND_STRING("모든 포켓몬의\n종족값이 기존과 동일합니다"),
-    COMPOUND_STRING("모든 포켓몬의\n각 종족값을 100으로 계산합니다"),
-    COMPOUND_STRING("모든 포켓몬의\n각 종족값을 255로 계산합니다"),
-    COMPOUND_STRING("모든 포켓몬의\n각 종족값을 500으로 계산합니다"),
+    COMPOUND_STRING("모든 포켓몬의\n종족값이 기존과 동일합니다."),
+    COMPOUND_STRING("모든 포켓몬의\n각 종족값을 100으로 계산합니다."),
+    COMPOUND_STRING("모든 포켓몬의\n각 종족값을 255로 계산합니다."),
+    COMPOUND_STRING("모든 포켓몬의\n각 종족값을 500으로 계산합니다."),
 };
 static const u8 *const sDesc_Mirror[] = {
-    COMPOUND_STRING("자신의 포켓몬으로 배틀합니다"),
-    COMPOUND_STRING("트레이너와 배틀할 때\n상대와 같은 포켓몬을 사용합니다"),
+    COMPOUND_STRING("자신의 포켓몬으로 배틀합니다."),
+    COMPOUND_STRING("트레이너와 배틀할 때\n상대와 같은 포켓몬을 사용합니다."),
 };
 static const u8 *const sDesc_MirrorThief[] = {
-    COMPOUND_STRING("배틀이 끝나면\n원래 포켓몬으로 돌아옵니다"),
-    COMPOUND_STRING("배틀이 끝나도\n상대의 포켓몬을 그대로 가집니다"),
+    COMPOUND_STRING("배틀이 끝나면\n원래 포켓몬으로 돌아옵니다."),
+    COMPOUND_STRING("배틀이 끝나도\n상대의 포켓몬을 그대로 가집니다."),
 };
 
 static const struct ChallengeMenuItem sTabItems_Challenges[] = {

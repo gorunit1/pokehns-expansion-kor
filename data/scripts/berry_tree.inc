@@ -63,8 +63,8 @@ BerryTree_EventScript_ItemUseWailmerPail::
 	end
 
 BerryTree_Text_Hns_NotRipe:
-	.string "It's a BERRY tree!\n"
-	.string "These BERRIES aren't ripe yet.$"
+	.string "나무열매가 열린 나무다!\n"
+	.string "열매는 아직 안 익은 듯하다.$"
 
 BerryTree_Text_Hns_Picked:
 	.string "{PLAYER} picked the {STR_VAR_2} {STR_VAR_1}.$"
@@ -74,7 +74,7 @@ BerryTree_Text_Hns_BagFull:
 	.string "The {STR_VAR_1} couldn't be taken.$"
 
 BerryTree_Text_Hns_Sprouted:
-	.string "The berry tree suddenly sprouted!$"
+	.string "나무열매가 갑자기 싹을 틔웠다!$"
 
 #else
 
@@ -335,11 +335,11 @@ BerryTree_EventScript_PlantBerry::
 	return
 
 BerryTree_Text_ItsSoftLoamySoil:
-	.string "It's soft, loamy soil.$"
+	.string "푹신푹신한 흙이다.$"
 
 BerryTree_Text_WantToPlant:
-	.string "It's soft, loamy soil.\n"
-	.string "Want to plant a BERRY?$"
+	.string "푹신푹신한 흙이다.\n"
+	.string "나무열매를 심겠습니까?$"
 
 BerryTree_Text_PlantedOneBerry:
 	.string "{PLAYER} planted one {STR_VAR_1} in\n"
@@ -419,7 +419,7 @@ BerryTree_Text_WateredTheBerry:
 	.string "{PLAYER} watered the {STR_VAR_1}.$"
 
 BerryTree_Text_PlantIsDelighted:
-	.string "The plant seems to be delighted.$"
+	.string "식물이 기뻐하는 것 같다.$"
 
 BerryTree_Text_ExclamationPoint:
 	.string "!$"
@@ -493,8 +493,8 @@ BerryTree_EventScript_UseMulch::
 	return
 
 BerryTree_Text_WantToMulch:
-	.string "It's soft, loamy soil.\n"
-	.string "Put down some fertilizer?$"
+	.string "푹신푹신한 흙이다.\n"
+	.string "비료를 뿌리겠습니까?$"
 
 BerryTree_Text_ScatteredMulch:
 	.string "{PLAYER} scattered the {STR_VAR_1}\n"
@@ -520,8 +520,8 @@ BerryTree_EventScript_PullOutWeed::
 	return
 
 BerryTree_Text_WeedIsGrowing:
-	.string "A weed is growing here.\n"
-	.string "Do you want to pull it out?$"
+	.string "잡초가 자라고 있다.\n"
+	.string "뽑겠습니까?$"
 
 BerryTree_Text_PulledOutTheWeed:
 	.string "{PLAYER} pulled out the weed!$"
@@ -541,7 +541,7 @@ BerryTree_EventScript_EncounterPests::
 	return
 
 BerryTree_Text_APokemonAppeared:
-	.string "A Pokémon appeared!$"
+	.string "야생 포켓몬이 나타났다!$"
 .endif
 
 #endif

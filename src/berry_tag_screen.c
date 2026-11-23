@@ -145,11 +145,11 @@ static const struct WindowTemplate sWindowTemplates[] =
 static const u8 *const sBerryFirmnessStrings[] =
 {
     [BERRY_FIRMNESS_UNKNOWN]    = COMPOUND_STRING("???"),
-    [BERRY_FIRMNESS_VERY_SOFT]  = COMPOUND_STRING("Very soft"),
-    [BERRY_FIRMNESS_SOFT]       = COMPOUND_STRING("Soft"),
-    [BERRY_FIRMNESS_HARD]       = COMPOUND_STRING("Hard"),
-    [BERRY_FIRMNESS_VERY_HARD]  = COMPOUND_STRING("Very hard"),
-    [BERRY_FIRMNESS_SUPER_HARD] = COMPOUND_STRING("Super hard")
+    [BERRY_FIRMNESS_VERY_SOFT]  = COMPOUND_STRING("매우 부드럽다"),
+    [BERRY_FIRMNESS_SOFT]       = COMPOUND_STRING("부드럽다"),
+    [BERRY_FIRMNESS_HARD]       = COMPOUND_STRING("딱딱하다"),
+    [BERRY_FIRMNESS_VERY_HARD]  = COMPOUND_STRING("매우 딱딱하다"),
+    [BERRY_FIRMNESS_SUPER_HARD] = COMPOUND_STRING("엄청나게 딱딱하다")
 };
 
 // this file's functions
@@ -174,15 +174,15 @@ static void Task_DisplayAnotherBerry(u8 taskId);
 static void TryChangeDisplayedBerry(u8 taskId, s8 toMove);
 static void HandleBagCursorPositionChange(s8 toMove);
 
-static const u8 sText_SizeSlash[] = _("SIZE /");
-static const u8 sText_FirmSlash[] = _("FIRM /");
+static const u8 sText_SizeSlash[] = _("크기 /");
+static const u8 sText_FirmSlash[] = _("경도 /");
 static const u8 sText_Var1DotVar2[] = {PLACEHOLDER_BEGIN, 0x02, CHAR_PERIOD, PLACEHOLDER_BEGIN, 0x03, CHAR_DBL_QUOTE_RIGHT, EOS};
 static const u8 sText_Var1DotVar2_Metric[] = {PLACEHOLDER_BEGIN, 0x02, CHAR_PERIOD, PLACEHOLDER_BEGIN, 0x03, CHAR_c, CHAR_m, EOS};
 static const u8 sText_NumberVar1Var2[] = _("{NO}{STR_VAR_1} {STR_VAR_2}");
-static const u8 sText_BerryTag[] = _("BERRY TAG");
+static const u8 sText_BerryTag[] = _("나무열매 태그");
 static const u8 sText_ThreeMarks[] = _("???");
-static const u8 sText_WatmelDesc1_Metric[] = _("A huge Berry, with some over half a");
-static const u8 sText_WatmelDesc2_Metric[] = _("meter discovered. Exceedingly sweet.");
+static const u8 sText_WatmelDesc1_Metric[] = _("한없이 달콤한 자연의 은혜다.");
+static const u8 sText_WatmelDesc2_Metric[] = _("50cm를 넘는 것도 발견된다.");
 
 // code
 void DoBerryTagScreen(void)
