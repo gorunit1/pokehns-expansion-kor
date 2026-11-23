@@ -507,14 +507,14 @@ static const u8 sRegionMapSectionId_To_PopUpThemeIdMapping_BW[] =
 #endif
 };
 
-static const u8 sText_PyramidFloor1[] = _("PYRAMID FLOOR 1");
-static const u8 sText_PyramidFloor2[] = _("PYRAMID FLOOR 2");
-static const u8 sText_PyramidFloor3[] = _("PYRAMID FLOOR 3");
-static const u8 sText_PyramidFloor4[] = _("PYRAMID FLOOR 4");
-static const u8 sText_PyramidFloor5[] = _("PYRAMID FLOOR 5");
-static const u8 sText_PyramidFloor6[] = _("PYRAMID FLOOR 6");
-static const u8 sText_PyramidFloor7[] = _("PYRAMID FLOOR 7");
-static const u8 sText_Pyramid[] = _("PYRAMID");
+static const u8 sText_PyramidFloor1[] = _("배틀피라미드 1층");
+static const u8 sText_PyramidFloor2[] = _("배틀피라미드 2층");
+static const u8 sText_PyramidFloor3[] = _("배틀피라미드 3층");
+static const u8 sText_PyramidFloor4[] = _("배틀피라미드 4층");
+static const u8 sText_PyramidFloor5[] = _("배틀피라미드 5층");
+static const u8 sText_PyramidFloor6[] = _("배틀피라미드 6층");
+static const u8 sText_PyramidFloor7[] = _("배틀피라미드 7층");
+static const u8 sText_Pyramid[] = _("배틀피라미드");
 
 static const u8 *const sBattlePyramid_MapHeaderStrings[FRONTIER_STAGES_PER_CHALLENGE + 1] =
 {
