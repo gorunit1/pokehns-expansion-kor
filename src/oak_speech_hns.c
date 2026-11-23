@@ -249,7 +249,7 @@ static const u8 *const sMalePresetNames[] = {
 };
 
 static const u8 *const sFemalePresetNames[] = {
-    COMPOUND_STRING("크리스"),
+    COMPOUND_STRING("금선"),
 };
 
 #define NUM_PRESET_NAMES min(ARRAY_COUNT(sMalePresetNames), ARRAY_COUNT(sFemalePresetNames))
@@ -825,9 +825,10 @@ static void NewGameHnsSpeech_SetDefaultPlayerName(u8 nameId)
         name = sMalePresetNames[nameId];
     else
         name = sFemalePresetNames[nameId];
-    for (i = 0; i < PLAYER_NAME_LENGTH; i++)
+    for (i = 0; i < PLAYER_NAME_LENGTH && name[i] != EOS; i++)
         gSaveBlock2Ptr->playerName[i] = name[i];
-    gSaveBlock2Ptr->playerName[PLAYER_NAME_LENGTH] = EOS;
+    for (; i <= PLAYER_NAME_LENGTH; i++)
+        gSaveBlock2Ptr->playerName[i] = EOS;
 }
 
 static void Task_NewGameHnsSpeech_StartNamingScreen(u8 taskId)

@@ -504,7 +504,7 @@ static const u8 *const sMalePresetNames[] = {
 };
 
 static const u8 *const sFemalePresetNames[] = {
-    COMPOUND_STRING("크리스"),
+    COMPOUND_STRING("금선"),
     COMPOUND_STRING("하트"),
     COMPOUND_STRING("소울"),
     COMPOUND_STRING("링링"),
@@ -2156,9 +2156,10 @@ void NewGameBirchSpeech_SetDefaultPlayerName(u8 nameId)
         name = sMalePresetNames[nameId];
     else
         name = sFemalePresetNames[nameId];
-    for (i = 0; i < PLAYER_NAME_LENGTH; i++)
+    for (i = 0; i < PLAYER_NAME_LENGTH && name[i] != EOS; i++)
         gSaveBlock2Ptr->playerName[i] = name[i];
-    gSaveBlock2Ptr->playerName[PLAYER_NAME_LENGTH] = EOS;
+    for (; i <= PLAYER_NAME_LENGTH; i++)
+        gSaveBlock2Ptr->playerName[i] = EOS;
 }
 
 static void CreateMainMenuErrorWindow(const u8 *str)
