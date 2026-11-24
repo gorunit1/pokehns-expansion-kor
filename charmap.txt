@@ -3530,7 +3530,7 @@ EMOJI_BIGANGER = F9 FE
 'ㅢ' = 41 27
 'ㅣ' = 41 28
 
-K_BOY_CALL = FD 0E @ "형" / "누나"
+K_BOY_CALL = FD 17 @ "형" / "누나"
 K_GIRL_CALL = FD 0F @ "오빠" / "언니"
 K_EUNNEUN = FD 10 @ "은(는)"
 K_IGA = FD 11 @ "이(가)"

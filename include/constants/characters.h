@@ -277,6 +277,7 @@
 #define PLACEHOLDER_ID_I             0x13
 #define PLACEHOLDER_ID_WAGWA         0x14
 #define PLACEHOLDER_ID_AYA           0x15
+#define PLACEHOLDER_ID_BOY_CALL      0x17
 
 // battle placeholders are located in battle_message.h
 

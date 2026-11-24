@@ -631,7 +631,7 @@ const u8 *GetExpandedPlaceholder(u32 id)
         [PLACEHOLDER_ID_KYOGRE]       = ExpandPlaceholder_Kyogre,
         [PLACEHOLDER_ID_GROUDON]      = ExpandPlaceholder_Groudon,
         [PLACEHOLDER_ID_REGION]       = ExpandPlaceholder_Region,
-        [0x0E]                        = ExpandPlaceholder_BoyCall,
+        [PLACEHOLDER_ID_BOY_CALL]     = ExpandPlaceholder_BoyCall,
         [0x0F]                        = ExpandPlaceholder_GirlCall,
         [0x10]                        = ExpandPlaceholder_EunNeun,
         [0x11]                        = ExpandPlaceholder_Iga,
