@@ -2,7 +2,7 @@
 static const struct MenuAction MultichoiceList_BrineyOnDewford[] =
 {
     {COMPOUND_STRING("등화도시")},
-    {COMPOUND_STRING("잿빛도")},
+    {COMPOUND_STRING("잿빛도시")},
     {gText_Exit},
 };
 
@@ -10,7 +10,7 @@ const u8 gText_Info2[] = _("설명을 듣는다");
 
 static const struct MenuAction MultichoiceList_EnterInfo[] =
 {
-    {COMPOUND_STRING("참가한")},
+    {COMPOUND_STRING("참가한다")},
     {gText_Info2},
     {gText_Exit},
 };
@@ -161,7 +161,7 @@ static const struct MenuAction MultichoiceList_Mechadoll3_Q1[] =
 static const struct MenuAction MultichoiceList_Mechadoll3_Q2[] =
 {
     {COMPOUND_STRING("60원")},
-    {COMPOUND_STRING("¥55원")},
+    {COMPOUND_STRING("55원")},
     {COMPOUND_STRING("남지 않는다")},
 };
 
@@ -494,7 +494,7 @@ static const struct MenuAction MultichoiceList_TourneyNoRecord[] =
 static const struct MenuAction MultichoiceList_Tent[] =
 {
     {COMPOUND_STRING("빨강텐트")},
-    {COMPOUND_STRING("파랑텐")},
+    {COMPOUND_STRING("파랑텐트")},
 };
 
 const u8 gText_TradeCenter[] = _("트레이드센터");
@@ -520,7 +520,7 @@ static const struct MenuAction MultichoiceList_BattleMode[] =
 {
     {COMPOUND_STRING("싱글배틀")},
     {COMPOUND_STRING("더블배틀")},
-    {COMPOUND_STRING("멀티배")},
+    {COMPOUND_STRING("멀티배틀")},
     {gText_Info2},
     {gText_Exit},
 };
@@ -583,7 +583,7 @@ static const struct MenuAction MultichoiceList_FrontierItemChoose[] =
 
 static const struct MenuAction MultichoiceList_LinkContestInfo[] =
 {
-    {COMPOUND_STRING("통신 콘테스")},
+    {COMPOUND_STRING("통신 콘테스트")},
     {COMPOUND_STRING("에메랄드 모드에 대해서")},
     {COMPOUND_STRING("글로벌 모드에 대해서")},
     {gText_Cancel2},
@@ -672,7 +672,7 @@ static const struct MenuAction MultichoiceList_FrontierRules[] =
 {
     {COMPOUND_STRING("2개의 코스")},
     {COMPOUND_STRING("레벨 50")},
-    {COMPOUND_STRING("오픈 레")},
+    {COMPOUND_STRING("오픈 레벨")},
     {COMPOUND_STRING("포켓몬의 종류와 수")},
     {COMPOUND_STRING("지닌물건")},
     {gText_Exit},
@@ -728,7 +728,7 @@ static const struct MenuAction MultichoiceList_BattleFactoryRules[] =
     {gText_SwapPartners},
     {gText_SwapNumber},
     {gText_SwapNotes},
-    {COMPOUND_STRING("오픈 레")},
+    {COMPOUND_STRING("오픈 레벨")},
     {gText_Exit},
 };
 
@@ -755,7 +755,7 @@ static const struct MenuAction MultichoiceList_BattlePikeRules[] =
 {
     {COMPOUND_STRING("포켓내비와 가방")},
     {COMPOUND_STRING("지닌물건")},
-    {COMPOUND_STRING("포켓몬의 순")},
+    {COMPOUND_STRING("포켓몬의 순서")},
     {gText_Exit},
 };
 

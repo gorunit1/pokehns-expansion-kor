@@ -1,13 +1,13 @@
 gText_HowMayIServeYou::
-	.string "Welcome!\p"
-	.string "How may I serve you?$"
+	.string "어서 오세요!\p"
+	.string "무엇을 도와드릴까요?$"
 
 gText_PleaseComeAgain::
-	.string "Please come again!$"
+	.string "또 이용해 주세요!$"
 
 gText_PlayerWhatCanIDoForYou::
-	.string "{PLAYER}{KUN}, welcome!\p"
-	.string "What can I do for you?$"
+	.string "{PLAYER}{KUN}, 어서 오세요!\p"
+	.string "무엇을 도와드릴까요?$"
 
 Pokemart_DefaultItemList::
 	.2byte ITEM_ULTRA_BALL

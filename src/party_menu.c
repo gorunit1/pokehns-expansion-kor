@@ -508,11 +508,11 @@ static void Task_FirstBattleEnterParty_WaitFadeNormal(u8 taskId);
 static u8 CombinedToIndividualPartyId(u8 index);
 static u8 IndividualToCombinedPartyId(u8 index, enum BattlerId battler);
 
-static const u8 sText_askText[] = _("Would you like to change {STR_VAR_1}'s\nability to {STR_VAR_2}?");
-static const u8 sText_doneText[] = _("{STR_VAR_1}'s ability became\n{STR_VAR_2}!{PAUSE_UNTIL_PRESS}");
-static const u8 sText_BasePointsResetToZero[] = _("{STR_VAR_1}'s base points\nwere all reset to zero!{PAUSE_UNTIL_PRESS}");
-static const u8 sText_CannotSendMonToBoxHM[] = _("Cannot send that mon to the box,\nbecause it knows a HM move.{PAUSE_UNTIL_PRESS}");
-static const u8 sText_CannotSendMonToBoxPartner[] = _("Cannot send a mon that doesn't\nbelong to you to the box.{PAUSE_UNTIL_PRESS}");
+static const u8 sText_askText[] = _("{STR_VAR_1}의 특성을\n{STR_VAR_2}로 바꾸겠습니까?");
+static const u8 sText_doneText[] = _("{STR_VAR_1}의 특성이\n{STR_VAR_2}로 변화했다!{PAUSE_UNTIL_PRESS}");
+static const u8 sText_BasePointsResetToZero[] = _("{STR_VAR_1}의\n기초 포인트가 전부 초기화되었다!{PAUSE_UNTIL_PRESS}");
+static const u8 sText_CannotSendMonToBoxHM[] = _("그 포켓몬은 비전기술을\n배우고 있어서 박스로 보낼 수 없습니다!{PAUSE_UNTIL_PRESS}");
+static const u8 sText_CannotSendMonToBoxPartner[] = _("자신의 포켓몬이 아니므로\n박스로 보낼 수 없습니다!{PAUSE_UNTIL_PRESS}");
 
 // static const data
 #include "data/party_menu.h"
@@ -5287,8 +5287,8 @@ void ItemUseCB_AbilityPatch(u8 taskId, TaskFunc task)
 
 void Task_Mint(u8 taskId)
 {
-    static const u8 sText_askText[] = _("It might affect {STR_VAR_1}'s stats.\nAre you sure you want to use it?");
-    static const u8 sText_doneText[] = _("{STR_VAR_1}'s stats may have changed due\nto the effects of the {STR_VAR_2}!{PAUSE_UNTIL_PRESS}");
+    static const u8 sText_askText[] = _("{STR_VAR_1}의 능력치에\n영향을 줄 수도 있습니다.\p정말로 사용하겠습니까?");
+    static const u8 sText_doneText[] = _("{STR_VAR_1}의 능력치가\n{STR_VAR_2}의 효과로 변한 것 같다!{PAUSE_UNTIL_PRESS}");
     s16 *data = gTasks[taskId].data;
 
     switch (tState)
@@ -6251,7 +6251,7 @@ static void BufferMonStatsToTaskData(struct Pokemon *mon, s16 *data)
 
 void Task_DynamaxCandy(u8 taskId)
 {
-    static const u8 sText_doneText[] = _("{STR_VAR_1}'s Dynamax Level\nincreased by 1!{PAUSE_UNTIL_PRESS}");
+    static const u8 sText_doneText[] = _("{STR_VAR_1}의 다이맥스 레벨이\n1 올랐다!{PAUSE_UNTIL_PRESS}");
     s16 *data = gTasks[taskId].data;
 
     switch (tState)
