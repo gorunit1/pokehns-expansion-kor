@@ -999,12 +999,12 @@ static const u8 *const sBattleDomeMatchNumberTexts[DOME_TOURNAMENT_MATCHES_COUNT
 static const u8 *const sBattleDomeWinTexts[] =
 {
     [DOME_TEXT_NO_WINNER_YET]    = COMPOUND_STRING("지금부터 대결 시작!"),
-    [DOME_TEXT_WON_USING_MOVE]   = COMPOUND_STRING("{STR_VAR_1} won using {STR_VAR_2}!"),
-    [DOME_TEXT_CHAMP_USING_MOVE] = COMPOUND_STRING("{STR_VAR_1} became the champ!"),
-    [DOME_TEXT_WON_ON_FORFEIT]   = COMPOUND_STRING("{STR_VAR_1} won by default!"),
-    [DOME_TEXT_CHAMP_ON_FORFEIT] = COMPOUND_STRING("{STR_VAR_1} won outright by default!"),
-    [DOME_TEXT_WON_NO_MOVES]     = COMPOUND_STRING("{STR_VAR_1} won without using a move!"),
-    [DOME_TEXT_CHAMP_NO_MOVES]   = COMPOUND_STRING("{STR_VAR_1} won outright with no moves!"),
+    [DOME_TEXT_WON_USING_MOVE]   = COMPOUND_STRING("{STR_VAR_2}{K_EU}로 {STR_VAR_1}의 승리!"),
+    [DOME_TEXT_CHAMP_USING_MOVE] = COMPOUND_STRING("{STR_VAR_2}{K_EU}로 {STR_VAR_1}의 우승!"),
+    [DOME_TEXT_WON_ON_FORFEIT]   = COMPOUND_STRING("상대의 기권으로 {STR_VAR_1}의 승리!"),
+    [DOME_TEXT_CHAMP_ON_FORFEIT] = COMPOUND_STRING("상대의 기권으로 {STR_VAR_1}의 우승!"),
+    [DOME_TEXT_WON_NO_MOVES]     = COMPOUND_STRING("기술을 쓰지 않고 {STR_VAR_1}의 승리!"),
+    [DOME_TEXT_CHAMP_NO_MOVES]   = COMPOUND_STRING("기술을 쓰지 않고 {STR_VAR_1}의 우승!"),
 };
 
 static const u8 sLeftTrainerMonX[FRONTIER_PARTY_SIZE]  = { 96,  96,  96};

@@ -222,9 +222,9 @@ static void ConfirmSell(u8);
 static void CancelSell(u8);
 static void Task_FadeAndCloseBagMenuIfMulch(u8 taskId);
 
-static const u8 sText_Var1CantBeHeldHere[] = _("The {STR_VAR_1} can't be held\nhere.");
-static const u8 sText_DepositHowManyVar1[] = _("Deposit how many\n{STR_VAR_1}?");
-static const u8 sText_DepositedVar2Var1s[] = _("Deposited {STR_VAR_2}\n{STR_VAR_1}.");
+static const u8 sText_Var1CantBeHeldHere[] = _("{STR_VAR_1}{K_EULREUL}\n지니게 할 수 없습니다!");
+static const u8 sText_DepositHowManyVar1[] = _("{STR_VAR_1}{K_EULREUL}\n몇 개 맡기겠습니까?");
+static const u8 sText_DepositedVar2Var1s[] = _("{STR_VAR_1}{K_EULREUL}\n{STR_VAR_2}개 맡겼습니다!");
 static const u8 sText_NoRoomForItems[] = _("더 이상\n맡길 수 없습니다!");
 static const u8 sText_CantStoreImportantItems[] = _("중요한 물건은\nPC에 맡길 수 없습니다!");
 
@@ -2860,7 +2860,7 @@ static void PrintTMHMMoveData(enum Item itemId)
 }
 
 static const u8 sText_SortItemsHow[] = _("어떤 순서로 바꾸겠습니까?");
-static const u8 sText_ItemsSorted[] = _("Items sorted by {STR_VAR_1}!");
+static const u8 sText_ItemsSorted[] = _("{STR_VAR_1}으로\n지닌 물건을 정리했습니다!");
 static const u8 *const sSortTypeStrings[] =
 {
     [SORT_ALPHABETICALLY] = COMPOUND_STRING("이름순"),

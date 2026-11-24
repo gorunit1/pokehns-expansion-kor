@@ -731,16 +731,16 @@ NewBarkTown_Lab_Text_ElmWhereGoing:
 	.string "어디 가느냐?$"
 
 NewBarkTown_Lab_Text_ChooseCyndaquil:
-	.string "ELM: You'll take {STR_VAR_1},\n"
-	.string "the {STR_VAR_2} POKéMON?$"
+	.string "공박사: {STR_VAR_2}포켓몬\n"
+	.string "{STR_VAR_1}{K_EU}로 하겠니?$"
 
 NewBarkTown_Lab_Text_ChooseTotodile:
-	.string "ELM: Do you want {STR_VAR_1},\n"
-	.string "the {STR_VAR_2} POKéMON?$"
+	.string "공박사: {STR_VAR_2}포켓몬\n"
+	.string "{STR_VAR_1}{K_EU}로 하겠니?$"
 
 NewBarkTown_Lab_Text_ChooseChikorita:
-	.string "ELM: So, you like {STR_VAR_1},\n"
-	.string "the {STR_VAR_2} POKéMON?$"
+	.string "공박사: {STR_VAR_2}포켓몬\n"
+	.string "{STR_VAR_1}{K_EU}로 하겠니?$"
 
 NewBarkTown_Lab_Text_DidntChooseStarter:
 	.string "공박사: 신중하게 골라 보렴.\p"
@@ -751,11 +751,12 @@ NewBarkTown_Lab_Text_ChoseStarter:
 	.string "좋은 포켓몬이라고 생각한다!$"
 
 NewBarkTown_Lab_Text_ReceivedStarter:
-	.string "{PLAYER} received {STR_VAR_1}!$"
+	.string "{PLAYER}{K_EUNNEUN} 공박사에게\n"
+	.string "{STR_VAR_1}{K_EULREUL} 받았다!$"
 
 NewBarkTown_Lab_Text_Nickname:
-	.string "Would you like to give your\n"
-	.string "{STR_VAR_1} a nickname?$"
+	.string "{STR_VAR_1}에게\n"
+	.string "별명을 붙이겠습니까?$"
 
 NewBarkTown_Lab_Text_ElmDirections1:
 	.string "공박사: 포켓몬 할아버지는\n"

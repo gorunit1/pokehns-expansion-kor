@@ -729,7 +729,7 @@ static void NewGameHnsSpeech_HideUnselectedGenderSprite(u8 taskId)
 
 static void Task_NewGameHnsSpeech_ChallengeDisclaimer(u8 taskId)
 {
-    static const u8 sText_Disclaimer[] = _("먼저 어느 정도의 도전을\n원하는지 알려주십시오\p{COLOR RED}챌린지 설정은 게임을 시작한 뒤\nPC에서 언제든 변경할 수 있습니다\p단, 게임 시작 이후에는\n너즐록, 랜더마이저, 난이도, 챌린지 설정의 강도를\l더 낮출 수만 있으며\l더 높일 수는 없습니다");
+    static const u8 sText_Disclaimer[] = _("먼저 어느 정도의 도전을\n원하는지 알려주십시오.\p{COLOR RED}챌린지 설정은 게임을 시작한 뒤\nPC에서 언제든 변경할 수 있습니다.\p단, 게임 시작 이후에는\n너즐록, 랜더마이저, 난이도, 챌린지 설정의\l강도를 더 낮출 수만 있으며\l더 높일 수는 없습니다.");
     if (gPaletteFade.active)
         return;
 

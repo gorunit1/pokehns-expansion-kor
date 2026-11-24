@@ -966,7 +966,7 @@ static const struct ChallengeMenuItem sTabItems_Nuzlocke[] = {
 // DIFFICULTY descriptions + table
 // =============================================================================
 
-static const u8 sText_Desc_PartyLimit[] = _("지닐 수 있는 포켓몬 수를 제한합니다\n1마리는 더블배틀에서 표시 오류가 있습니다");
+static const u8 sText_Desc_PartyLimit[] = _("지닐 수 있는 포켓몬 수를 제한합니다.\n1마리는 더블배틀에서 표시 오류가 있습니다.");
 static const u8 *const sDesc_PartyLimit[] = {
     sText_Desc_PartyLimit, sText_Desc_PartyLimit, sText_Desc_PartyLimit,
     sText_Desc_PartyLimit, sText_Desc_PartyLimit, sText_Desc_PartyLimit,

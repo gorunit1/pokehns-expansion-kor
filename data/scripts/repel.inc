@@ -137,16 +137,16 @@ EventScript_UseSpray::
 
 
 Text_SprayWoreOff::
-	.string "{STR_VAR_1}'s effect wore off…$"
+	.string "{STR_VAR_1}의 효과가 사라졌다.$"
 
 Text_SprayWoreOffAskUseAnother::
-	.string "{STR_VAR_1}'s effect wore off!\n"
-	.string "Use another?$"
+	.string "{STR_VAR_1}의 효과가 사라졌다!\n"
+	.string "계속해서 쓰겠습니까?$"
 
 Text_SprayWoreOffAskUseX::
-	.string "{STR_VAR_1}'s effect wore off…\n"
-	.string "Use a {STR_VAR_2}?$"
+	.string "{STR_VAR_1}의 효과가 사라졌다!\n"
+	.string "{STR_VAR_2}{K_EULREUL} 쓰겠습니까?$"
 
 Text_SprayWoreOffUseX::
-	.string "{PLAYER} used the\n"
-	.string "{STR_VAR_2}.$"
+	.string "{PLAYER}{K_EUNNEUN}\n"
+	.string "{STR_VAR_2}{K_EULREUL} 썼다!$"

@@ -367,7 +367,7 @@ const u8 gText_LinkStandby4[] = _("통신 대기 중!");
 
 const u8 gText_AppealNumWhichMoveWillBePlayed[] = _("{STR_VAR_1}번째 어필!\n어느 기술을 쓸까?");
 const u8 gText_AppealNumButItCantParticipate[] = _("{STR_VAR_1}번째 어필에는\n참가할 수 없다!");
-const u8 gText_MonAppealedWithMove[] = _("{STR_VAR_1} appealed with\n{STR_VAR_2}!");
+const u8 gText_MonAppealedWithMove[] = _("{STR_VAR_1}{K_EUNNEUN}\n{STR_VAR_2}{K_EU}로 어필!");
 const u8 gText_MonWasWatchingOthers[] = _("{STR_VAR_1} was watching\nthe others.{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}");
 const u8 gText_AllOutOfAppealTime[] = _("어필 타임이\n모두 끝났다!{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}");
 const u8 gText_JudgeLookedAtMonExpectantly[] = _("The JUDGE looked at\n{STR_VAR_1} expectantly.{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}");
@@ -377,7 +377,7 @@ const u8 gText_AppealComboWentOverExcellently[] = _("앞에 보인 어필과의 
 const u8 gText_MonWasTooNervousToMove[] = _("{STR_VAR_1} was too\nnervous to move.{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}");
 const u8 gText_CouldntImproveItsCondition[] = _("그러나 컨디션이\n좋아지지 않았다...{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}");
 const u8 gText_BadConditionResultedInWeakAppeal[] = _("컨디션이 좋지 않아서\n그리 잘하지 못했다...{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}");
-const u8 gText_MonWasUnaffected[] = _("{STR_VAR_1} was\nunaffected.{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}");
+const u8 gText_MonWasUnaffected[] = _("{STR_VAR_1}{K_EUNNEUN}\n괜찮다!{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}");
 const u8 gText_RepeatedAppeal[] = _("{STR_VAR_1} disappointed\nby repeating an appeal.{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}");
 const u8 gText_MonsXWentOverGreat[] = _("{STR_VAR_1}'s {STR_VAR_3}\nwent over great.{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}");
 const u8 gText_MonsXDidntGoOverWell[] = _("{STR_VAR_1}'s {STR_VAR_3}\ndidn't go over well here…{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}{PAUSE 0x0F}");

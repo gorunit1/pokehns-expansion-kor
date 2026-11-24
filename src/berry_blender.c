@@ -254,7 +254,7 @@ static const u16 sEmpty_Pal[16 * 14] = {0};
 
 static const u8 sText_BerryBlenderStart[] = _("나무열매블렌더를 작동시킵니다.\p섞을 나무열매를 선택해 주십시오.\p");
 static const u8 sText_NewParagraph[] = _("\p");
-static const u8 sText_WasMade[] = _(" was made!");
+static const u8 sText_WasMade[] = _("이 만들어졌다!");
 
 static const u8 *const sBlenderOpponentsNames[] =
 {
@@ -268,10 +268,10 @@ static const u8 *const sBlenderOpponentsNames[] =
 
 static const u8 sText_CommunicationStandby[] = _("통신 대기 중입니다.");
 static const u8 sText_WouldLikeToBlendAnotherBerry[] = _("한 번 더 나무열매를 섞으시겠습니까?");
-static const u8 sText_RunOutOfBerriesForBlending[] = _("You've run out of BERRIES for\nblending in the BERRY BLENDER.\p");
-static const u8 sText_YourPokeblockCaseIsFull[] = _("Your {POKEBLOCK} CASE is full.\p");
-static const u8 sText_HasNoBerriesToPut[] = _(" has no BERRIES to put in\nthe BERRY BLENDER.");
-static const u8 sText_ApostropheSPokeblockCaseIsFull[] = _("'s {POKEBLOCK} CASE is full.\p");
+static const u8 sText_RunOutOfBerriesForBlending[] = _("{FONT_SHORT}나무열매블렌더에 넣을 나무열매가\n없으므로 더 이상 할 수 없습니다.\p{FONT_NORMAL}");
+static const u8 sText_YourPokeblockCaseIsFull[] = _("{FONT_SHORT}포켓몬스낵케이스가\n가득 찬 것 같습니다.\p{FONT_NORMAL}");
+static const u8 sText_HasNoBerriesToPut[] = _("{FONT_SHORT}에게는 나무열매블렌더에\n넣을 나무열매가 없는 것 같습니다.{FONT_NORMAL}");
+static const u8 sText_ApostropheSPokeblockCaseIsFull[] = _("{FONT_SHORT}의 포켓몬스낵케이스가\n가득 찬 것 같습니다.\p{FONT_NORMAL}");
 static const u8 sText_BlendingResults[] = _("섞은 결과");
 static const u8 sText_SpaceBerry[] = _("열매");
 static const u8 sText_Time[] = _("시간");
@@ -282,11 +282,11 @@ static const u8 sText_RPM[] = _(" rpm");
 static const u8 sText_Dot[] = _(".");
 static const u8 sText_NewLine[] = _("\n");
 static const u8 sText_Ranking[] = _("랭킹");
-static const u8 sText_TheLevelIs[] = _("The level is ");
-static const u8 sText_TheFeelIs[] = _(", and the feel is ");
-static const u8 sText_Dot2[] = _(".");
+static const u8 sText_TheLevelIs[] = _("{FONT_SHORT}레벨은 ");
+static const u8 sText_TheFeelIs[] = _("이고 부드러움은 ");
+static const u8 sText_Dot2[] = _("이다.{FONT_NORMAL}");
 
-static const u8 sText_SavingDontTurnOff2[] = _("SAVING…\nDON'T TURN OFF THE POWER.");
+static const u8 sText_SavingDontTurnOff2[] = _("{FONT_SHORT}리포트를 작성하고 있습니다.\n전원을 끄지 않도록 해주십시오.{FONT_NORMAL}");
 static const u8 sText_BlenderMaxSpeedRecord[] = _("나무열매블렌더\n최고 속도 랭킹!");
 static const u8 sText_234Players[] = _("2명\n3명\n4명");
 

@@ -31,13 +31,13 @@ const struct HelpWindow gHelpWindowInfo[] =
     [HELP_TRADE_WINDOW] =
     {
         .header = COMPOUND_STRING("경고: 통신 호환성"),
-        .desc = COMPOUND_STRING("Attempting to link incorrectly may result\n"
-                                "in permanent damage to your save file.\n"
-                                "Only link with another player if:\n"
-                                "You are both playing Heart & Soul.\n"
-                                "You are both on the same version.\n"
-                                "You both have the same challenge settings.\n"
-                                "You are NOT using any randomizer settings."
+        .desc = COMPOUND_STRING("잘못된 통신은 저장 데이터에\n"
+                                "돌이킬 수 없는 문제를 일으킬 수 있습니다.\n"
+                                "다음 조건을 모두 만족할 때만 통신하세요.\n"
+                                "둘 다 하트&소울을 플레이 중\n"
+                                "둘 다 같은 버전\n"
+                                "둘 다 같은 챌린지 설정\n"
+                                "랜더마이저 설정을 사용하지 않음"
                             ),
         .headerFont = FONT_NORMAL,
         .descFont = FONT_SMALL,
@@ -147,14 +147,14 @@ const struct HelpWindow gHelpWindowInfo[] =
     [HELP_POKEBLOCK_WINDOW] =
     {
         .header = COMPOUND_STRING("먹이통: 일반 포켓몬스낵"),
-        .desc = COMPOUND_STRING("POKéBLOCK colors attract perfect IVs:\n"
-                                "RED: HP,ATK,SPE   BLU: HP,SPA,SPE\n"
-                                "PNK: ATK,SPA,SPE  GRN: HP,DEF,SPD\n"
-                                "YEL: HP,ATK,DEF   PUR: ATK,DEF,SPD\n"
-                                "IND: HP,SPA,SPD   BRN: DEF,SPE,SPD\n"
-                                "LBL: SPA,SPE,SPD  OLV: ATK,DEF,SPE\n"
-                                "GRY: HP,ATK,SPA\n"
-                                "Every POKéBLOCK attracts HIDDEN ABILITY."
+        .desc = COMPOUND_STRING("색에 따라 최고 개체값이 정해집니다:\n빨:HP/공/스핏{CLEAR_TO "
+                                "72}파:HP/특공/스핏{CLEAR_TO 144}노:HP/공/방\n담:공/특공/스핏{CLEAR_TO "
+                                "72}초:HP/방/특방{CLEAR_TO 144}보:공/방/특방\n남:HP/특공/특방{CLEAR_TO "
+                                "72}갈:방/스핏/특방{CLEAR_TO "
+                                "144}황:공/방/스핏\n회:HP/공/특공{CLEAR_TO "
+                                "72}하:특공/스핏/특방\n모두 "
+                                "숨겨진 특성을 "
+                                "끌어들입니다."
 
                             ),
         .headerFont = FONT_NORMAL,

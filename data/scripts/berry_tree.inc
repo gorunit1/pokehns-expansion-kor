@@ -67,11 +67,12 @@ BerryTree_Text_Hns_NotRipe:
 	.string "열매는 아직 안 익은 듯하다.$"
 
 BerryTree_Text_Hns_Picked:
-	.string "{PLAYER} picked the {STR_VAR_2} {STR_VAR_1}.$"
+	.string "{PLAYER}{K_EUNNEUN}\n"
+	.string "{STR_VAR_1}{K_EULREUL} {STR_VAR_2}개 땄다!$"
 
 BerryTree_Text_Hns_BagFull:
-	.string "The BAG's BERRIES POCKET is full.\p"
-	.string "The {STR_VAR_1} couldn't be taken.$"
+	.string "가방이 가득 찼다.\p"
+	.string "{STR_VAR_1}{K_EULREUL} 포기했다.$"
 
 BerryTree_Text_Hns_Sprouted:
 	.string "나무열매가 갑자기 싹을 틔웠다!$"
@@ -342,81 +343,85 @@ BerryTree_Text_WantToPlant:
 	.string "나무열매를 심겠습니까?$"
 
 BerryTree_Text_PlantedOneBerry:
-	.string "{PLAYER} planted one {STR_VAR_1} in\n"
-	.string "the soft, loamy soil.$"
+	.string "{PLAYER}{K_EUNNEUN} 푹신푹신한 흙에\n"
+	.string "{STR_VAR_1}{K_EULREUL} 하나 심었다!$"
 
 BerryTree_Text_BerryGrowthStage1:
 .if OW_BERRY_SIX_STAGES == TRUE
-	.string "This is where you planted the\n{STR_VAR_1}!$"
+	.string "{STR_VAR_1}{K_EULREUL} 심었던 장소다!$"
 .else
-	.string "One {STR_VAR_1} was planted here.$"
+	.string "{STR_VAR_1}{K_EULREUL} 심었던 장소다!$"
 .endif
 
 BerryTree_Text_BerryGrowthStage2:
 .if OW_BERRY_SIX_STAGES == TRUE
-	.string "The {STR_VAR_1} is sprouting!$"
+	.string "{STR_VAR_1}의 싹이 나왔다!$"
 .else
-	.string "{STR_VAR_1} has sprouted.$"
+	.string "{STR_VAR_1}의 싹이 나왔다!$"
 .endif
 
 BerryTree_Text_BerryGrowthStage3:
 .if OW_BERRY_SIX_STAGES == TRUE
-	.string "The {STR_VAR_1}'s seedling is growing well!$"
+	.string "{STR_VAR_1}의 새싹이\n"
+	.string "잘 자라고 있다!$"
 .else
-	.string "This {STR_VAR_1} plant is growing taller.$"
+	.string "{STR_VAR_1}의 줄기가\n"
+	.string "커다랗게 자랐다!$"
 .endif
 
 BerryTree_Text_BerryGrowthStageTrunk:
-	.string "The {STR_VAR_1}'s trunk is getting bigger!$"
+	.string "{STR_VAR_1}의 줄기가\n"
+	.string "커다랗게 자랐다!$"
 
 BerryTree_Text_BerryGrowthStageBudding:
-	.string "The {STR_VAR_1} tree has buds!$"
+	.string "{STR_VAR_1}의 꽃봉오리가 맺혔다!$"
 
 BerryTree_Text_BerryGrowthStage4:
 .if OW_BERRY_SIX_STAGES == TRUE
-	.string "The {STR_VAR_1} tree is in bloom!$"
+	.string "{STR_VAR_1}의\n"
+	.string "꽃이 피어 있다!$"
 .else
-	.string "These {STR_VAR_1} flowers are blooming\n"
-	.string "{STR_VAR_2}.$"
+	.string "{STR_VAR_1}의 꽃이\n"
+	.string "{STR_VAR_2} 피어 있다!$"
 .endif
 
 BerryTree_Text_CareAdverbGreat:
-	.string "very beautifully$"
+	.string "아주 예쁘게$"
 
 BerryTree_Text_CareAdverbPoor:
-	.string "cutely$"
+	.string "귀엽게$"
 
 BerryTree_Text_CareAdverbGood:
-	.string "prettily$"
+	.string "예쁘게$"
 
 BerryTree_Text_WantToPick:
-	.string "You found {STR_VAR_2} {STR_VAR_1}!\p"
-	.string "Do you want to pick the\n"
-	.string "{STR_VAR_1}?$"
+	.string "{STR_VAR_1}{K_IGA} {STR_VAR_2}개 열려 있다!\p"
+	.string "{STR_VAR_1}{K_EULREUL} 따겠습니까?$"
 
 BerryTree_Text_PickedTheBerry:
-	.string "{PLAYER} picked the {STR_VAR_2} {STR_VAR_1}.$"
+	.string "{PLAYER}{K_EUNNEUN}\n"
+	.string "{STR_VAR_1}{K_EULREUL} {STR_VAR_2}개 땄다!$"
 
 BerryTree_Text_PutAwayBerry:
-	.string "{PLAYER} put away the {STR_VAR_1}\n"
-	.string "in the BAG's BERRIES POCKET.\p"
-	.string "The soil returned to its soft and\n"
-	.string "loamy state.$"
+	.string "{PLAYER}{K_EUNNEUN} {STR_VAR_1}{K_EULREUL}\n"
+	.string "가방에 넣었다!\p"
+	.string "푹신푹신한 흙으로 돌아왔다.$"
 
 BerryTree_Text_BerryPocketFull:
-	.string "The BAG's BERRIES POCKET is full.\p"
-	.string "The {STR_VAR_1} couldn't be taken.$"
+	.string "가방이 가득 찼다.\p"
+	.string "{STR_VAR_1}{K_EULREUL} 포기했다.$"
 
 BerryTree_Text_BerryLeftUnpicked:
-	.string "{PLAYER} left the {STR_VAR_1}\n"
-	.string "unpicked.$"
+	.string "{PLAYER}{K_EUNNEUN} {STR_VAR_1}{K_EULREUL}\n"
+	.string "따지 않고 그대로 놔두었다.$"
 
 BerryTree_Text_WantToWater:
-	.string "Want to water the {STR_VAR_1} with the\n"
-	.string "WAILMER PAIL?$"
+	.string "{STR_VAR_1}에 고래왕자물뿌리개로\n"
+	.string "물을 주겠습니까?$"
 
 BerryTree_Text_WateredTheBerry:
-	.string "{PLAYER} watered the {STR_VAR_1}.$"
+	.string "{PLAYER}{K_EUNNEUN} {STR_VAR_1}에\n"
+	.string "물을 줬다!$"
 
 BerryTree_Text_PlantIsDelighted:
 	.string "식물이 기뻐하는 것 같다.$"
@@ -497,8 +502,8 @@ BerryTree_Text_WantToMulch:
 	.string "비료를 뿌리겠습니까?$"
 
 BerryTree_Text_ScatteredMulch:
-	.string "{PLAYER} scattered the {STR_VAR_1}\n"
-	.string "on the soft, loamy soil.$"
+	.string "{PLAYER}{K_EUNNEUN} 푹신푹신한 흙에\n"
+	.string "{STR_VAR_1}{K_EULREUL} 뿌렸다!$"
 .endif
 
 .if OW_BERRY_WEEDS == TRUE

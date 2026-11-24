@@ -1768,8 +1768,8 @@ static void MoveSelectionDisplayMoveDescription(enum BattlerId battler)
     }
 
     u8 pwr_num[3], acc_num[3];
-    u8 cat_desc[7] = _("CAT: ");
-    u8 pwr_desc[7] = _("PWR: ");
+    u8 cat_desc[7] = _("분류: ");
+    u8 pwr_desc[7] = _("위력: ");
     u8 acc_desc[7] = _("ACC: ");
     u8 cat_start[] = _("{CLEAR_TO 3}");
     u8 pwr_start[] = _("{CLEAR_TO 56}");
@@ -1990,8 +1990,8 @@ static void HandleChooseActionAfterDma3(enum BattlerId battler)
         {
             if (DEBUG_AI_DELAY_TIMER)
             {
-                static const u8 sFramesText[] = _(" frames thinking\n");
-                static const u8 sCyclesText[] = _(" cycles");
+                static const u8 sFramesText[] = _("프레임 동안 계산\n");
+                static const u8 sCyclesText[] = _("사이클");
                 ConvertIntToDecimalStringN(gDisplayedStringBattle, gBattleStruct->aiDelayFrames, STR_CONV_MODE_RIGHT_ALIGN, 3);
                 u8* end = StringAppend(gDisplayedStringBattle, sFramesText);
                 ConvertIntToDecimalStringN(end, gBattleStruct->aiDelayCycles, STR_CONV_MODE_RIGHT_ALIGN, 8);
@@ -2026,7 +2026,7 @@ static void PlayerHandleChooseAction(enum BattlerId battler)
     enum BattlerId partner = GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT);
     if (B_SHOW_PARTNER_TARGET && gBattleTypeFlags & BATTLE_TYPE_INGAME_PARTNER && IsBattlerAlive(partner))
     {
-        StringCopy(gStringVar1, COMPOUND_STRING("Partner will use:\n"));
+        StringCopy(gStringVar1, COMPOUND_STRING("파트너가 사용할 기술:\n"));
         enum Move move = GetBattlerChosenMove(partner);
         StringAppend(gStringVar1, GetMoveName(move));
         enum MoveTarget moveTarget = GetBattlerMoveSelectionTargetType(partner, move);
