@@ -333,7 +333,7 @@ enum {
     TEXT_WORD_SELECT,
 };
 
-#define NUM_ALPHABET_ROWS    4
+#define NUM_ALPHABET_ROWS    3
 #define NUM_GROUP_NAME_ROWS  4
 #define NUM_WORD_SELECT_ROWS 4
 #define NUM_BUTTON_ROWS      3
@@ -682,13 +682,12 @@ static const struct EasyChatScreenTemplate sEasyChatScreenTemplates[] = {
 };
 
 // IDs are used indirectly as indexes into gEasyChatWordsByLetterPointers
-// 0 is 'Others', 1-26 are the letters A-Z
+// 0 is 'Others', 1-19 are Korean initials; IDs 20-26 are unused.
 // This array maps the group IDs to the alphabet keyboard
 static const u8 sAlphabetGroupIdMap[NUM_ALPHABET_ROWS][NUM_ALPHABET_COLUMNS] = {
     { 1,  2,  3,  4,  5,  6,  0},
     { 7,  8,  9, 10, 11, 12,  0},
     {13, 14, 15, 16, 17, 18, 19},
-    {20, 21, 22, 23, 24, 25, 26},
 };
 
 static const u16 sMysteryGiftPhrase[NUM_QUESTIONNAIRE_WORDS] = {
@@ -874,7 +873,6 @@ static const u8 *const sEasyChatKeyboardAlphabet[NUM_ALPHABET_ROWS] =
     gText_EasyChatKeyboard_ABCDEFothers,
     gText_EasyChatKeyboard_GHIJKL,
     gText_EasyChatKeyboard_MNOPQRS,
-    gText_EasyChatKeyboard_TUVWXYZ,
 };
 
 static const struct SpriteSheet sSpriteSheets[] = {
@@ -939,7 +937,7 @@ static const struct CompressedSpriteSheet sCompressedSpriteSheets[] = {
     },
 };
 
-static const u8 sAlphabetKeyboardColumnOffsets[NUM_ALPHABET_COLUMNS] = {0, 12, 24, 56, 68, 80, 92};
+static const u8 sAlphabetKeyboardColumnOffsets[NUM_ALPHABET_COLUMNS] = {0, 17, 34, 77, 94, 111, 128};
 
 static const struct OamData sOamData_TriangleCursor = {
     .y = 0,
@@ -4733,11 +4731,11 @@ static void SetRectangleCursorPos_AlphabetMode(s8 column, s8 row)
     if (column != -1)
     {
         y = row * 16 + 96;
-        x = 32;
+        x = 28;
         if (column == NUM_ALPHABET_COLUMNS - 1 && row == 0)
         {
             // Cursor is on 'Others'
-            x = 158;
+            x = 162;
             anim = RECTCURSOR_ANIM_ON_OTHERS;
         }
         else
@@ -5209,7 +5207,7 @@ u8 *CopyEasyChatWord(u8 *dest, u16 easyChatWord)
     {
         u16 index = EC_INDEX(easyChatWord);
         u8 groupId = EC_GROUP(easyChatWord);
-        resultStr = StringCopyUppercase(dest, GetEasyChatWord(groupId, index));
+        resultStr = StringCopy(dest, GetEasyChatWord(groupId, index));
     }
     else
     {

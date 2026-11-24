@@ -66,7 +66,7 @@ struct TrainerCardData
     bool8 unused_F;
     bool8 hasTrades;
     u8 badgeCount[NUM_BADGES];
-    u8 easyChatProfile[TRAINER_CARD_PROFILE_LENGTH][13];
+    u8 easyChatProfile[TRAINER_CARD_PROFILE_LENGTH][EC_WORD_BUFFER_LENGTH];
     u8 textPlayersCard[70];
     u8 textHofTime[70];
     u8 textLinkBattleType[140];
