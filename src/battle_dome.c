@@ -4296,7 +4296,7 @@ static void DisplayTrainerInfoOnCard(u8 flags, u8 trainerTourneyId)
                     allocatedArray[k] = IsStatLoweringMove(move) ? 1 : 0;
                     break;
                 case MOVE_POINTS_RARE:
-                    allocatedArray[k] = IsDomeRareMove(move) ? 1 : 0;
+                    allocatedArray[k] += (move != MOVE_NONE && IsDomeRareMove(move)) ? 1 : 0;
                     break;
                 case MOVE_POINTS_HEAL:
                     allocatedArray[k] = IsDomeHealingMove(move) ? 1 : 0;
