@@ -147,14 +147,12 @@ const struct HelpWindow gHelpWindowInfo[] =
     [HELP_POKEBLOCK_WINDOW] =
     {
         .header = COMPOUND_STRING("먹이통: 일반 포켓몬스낵"),
-        .desc = COMPOUND_STRING("색에 따라 최고 개체값이 정해집니다:\n빨:HP/공/스핏{CLEAR_TO "
-                                "72}파:HP/특공/스핏{CLEAR_TO 144}노:HP/공/방\n담:공/특공/스핏{CLEAR_TO "
-                                "72}초:HP/방/특방{CLEAR_TO 144}보:공/방/특방\n남:HP/특공/특방{CLEAR_TO "
-                                "72}갈:방/스핏/특방{CLEAR_TO "
-                                "144}황:공/방/스핏\n회:HP/공/특공{CLEAR_TO "
-                                "72}하:특공/스핏/특방\n모두 "
-                                "숨겨진 특성을 "
-                                "끌어들입니다."
+        .desc = COMPOUND_STRING("색에 따라 최고 개체값이 정해집니다:\n"
+                                "빨:HP/공/스핏{CLEAR_TO 72}파:HP/특공/스핏{CLEAR_TO 144}노:HP/공/방\n"
+                                "담:공/특공/스핏{CLEAR_TO 72}초:HP/방/특방{CLEAR_TO 144}보:공/방/특방\n"
+                                "남:HP/특공/특방{CLEAR_TO 72}갈:방/스핏/특방{CLEAR_TO 144}황:공/방/스핏\n"
+                                "회:HP/공/특공{CLEAR_TO 72}하:특공/스핏/특방\n"
+                                "모두 숨겨진 특성을 끌어들입니다."
 
                             ),
         .headerFont = FONT_NORMAL,
