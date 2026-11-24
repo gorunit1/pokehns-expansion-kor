@@ -7,6 +7,7 @@
 #include "string_util.h"
 #include "text.h"
 #include "easy_chat.h"
+#include "korean.h"
 #include "script.h"
 #include "random.h"
 #include "event_scripts.h"
@@ -168,6 +169,41 @@ void SaveBardSongLyrics(void)
     bard->hasChangedSong = TRUE;
 }
 
+// A delimiter byte can also be part of a Korean glyph. Keep its position
+// separately so the song task never interprets a glyph byte as a delimiter.
+static EWRAM_DATA u8 sBardWordDelimiters[(sizeof(gStringVar4) + 7) / 8] = {0};
+
+static bool8 IsBardWordDelimiter(const u8 *str)
+{
+    u32 offset = str - gStringVar4;
+
+    return offset < sizeof(gStringVar4)
+        && (sBardWordDelimiters[offset / 8] & (1 << (offset % 8))) != 0;
+}
+
+static u8 *MarkBardWordDelimiters(u8 *str, const u8 *end)
+{
+    while (str < end)
+    {
+        if (IsKoreanGlyph(*str) && str + 1 < end)
+        {
+            str += 2;
+        }
+        else
+        {
+            if (*str == CHAR_SPACE)
+            {
+                u32 offset = str - gStringVar4;
+                sBardWordDelimiters[offset / 8] |= 1 << (offset % 8);
+                *str = CHAR_BARD_WORD_DELIMIT;
+            }
+            str++;
+        }
+    }
+
+    return str;
+}
+
 // Copies lyrics into gStringVar4.
 // gSpecialVar_0x8004 is used in these functions to indicate which song should be played.
 // If it's set to 0 the Bard's current song should be played, otherwise the new user-provided song should be played.
@@ -180,6 +216,8 @@ static void PrepareSongText(void)
     u8 *str = wordEnd;
     u16 paragraphNum;
 
+    memset(sBardWordDelimiters, 0, sizeof(sBardWordDelimiters));
+
     // Easy chat "words" aren't strictly single words, e.g. EC_WORD_MATCH_UP is the string "MATCH UP".
     // The bard song needs to know when it's at the end of an easy chat word and not just at a space in
     // the middle of one, so the loop below will replace spaces in each easy chat word with CHAR_BARD_WORD_DELIMIT.
@@ -190,36 +228,21 @@ static void PrepareSongText(void)
     {
         // Line 1, 1st word
         wordEnd = CopyEasyChatWord(wordEnd, *(lyrics++));
-        while (wordEnd != str)
-        {
-            if (*str == CHAR_SPACE)
-                *str = CHAR_BARD_WORD_DELIMIT;
-            str++;
-        }
+        str = MarkBardWordDelimiters(str, wordEnd);
 
         str++;
         *(wordEnd++) = CHAR_SPACE;
 
         // Line 1, 2nd word
         wordEnd = CopyEasyChatWord(wordEnd, *(lyrics++));
-        while (wordEnd != str)
-        {
-            if (*str == CHAR_SPACE)
-                *str = CHAR_BARD_WORD_DELIMIT;
-            str++;
-        }
+        str = MarkBardWordDelimiters(str, wordEnd);
 
         str++;
         *(wordEnd++) = CHAR_NEWLINE;
 
         // Line 2, 1st word
         wordEnd = CopyEasyChatWord(wordEnd, *(lyrics++));
-        while (wordEnd != str)
-        {
-            if (*str == CHAR_SPACE)
-                *str = CHAR_BARD_WORD_DELIMIT;
-            str++;
-        }
+        str = MarkBardWordDelimiters(str, wordEnd);
 
         if (paragraphNum == 0)
         {
@@ -227,6 +250,7 @@ static void PrepareSongText(void)
             // The == 0 check assumes there are only 2 paragraphs.
             *(wordEnd++) = EXT_CTRL_CODE_BEGIN;
             *(wordEnd++) = EXT_CTRL_CODE_FILL_WINDOW;
+            str = wordEnd;
         }
     }
 }
@@ -629,11 +653,14 @@ static void Task_BardSong(u8 taskId)
             && *str != EXT_CTRL_CODE_BEGIN
             && *str != EOS)
         {
-            str++;
+            str += !IsBardWordDelimiter(str) && IsKoreanGlyph(*str) ? 2 : 1;
             wordLen++;
         }
 
-        gBardSong.length /= wordLen;
+        if (wordLen != 0)
+            gBardSong.length /= wordLen;
+        else
+            gBardSong.length = 1;
         if (gBardSong.length <= 0)
             gBardSong.length = 1;
 
@@ -692,7 +719,7 @@ static void Task_BardSong(u8 taskId)
             task->tState = BARD_STATE_GET_WORD;
             task->tDelay = 8;
         }
-        else if (gStringVar4[task->tCharIndex] == CHAR_BARD_WORD_DELIMIT)
+        else if (IsBardWordDelimiter(&gStringVar4[task->tCharIndex]))
         {
             // Space within the current easy chat word (see PrepareSongText), just replace it with a real space.
             gStringVar4[task->tCharIndex] = CHAR_SPACE;
@@ -713,7 +740,7 @@ static void Task_BardSong(u8 taskId)
                 task->tWordState++;
                 break;
             case 2:
-                task->tCharIndex++;
+                task->tCharIndex += IsKoreanGlyph(gStringVar4[task->tCharIndex]) ? 2 : 1;
                 task->tWordState = 0;
                 task->tDelay = gBardSong.length;
                 task->tState = BARD_STATE_WAIT_WORD;

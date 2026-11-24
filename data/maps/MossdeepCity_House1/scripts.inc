@@ -26,10 +26,10 @@ MossdeepCity_House1_Text_HmmYourPokemon:
 	.string "Your {STR_VAR_1}…$"
 
 MossdeepCity_House1_Text_ItLikesXPokeblocks:
-	.string "It likes {STR_VAR_1}S,\n"
-	.string "doesn't it?\p"
-	.string "No, I'm positive of it! It definitely\n"
-	.string "likes {STR_VAR_1}S!$"
+	.string "{STR_VAR_1}{K_EULREUL}\n"
+	.string "좋아하는 거지?\p"
+	.string "아니, 틀림없어! 분명히\n"
+	.string "{STR_VAR_1}{K_EULREUL} 좋아할 거야!$"
 
 MossdeepCity_House1_Text_DoesntLikeOrDislikePokeblocks:
 	.string "It doesn't appear to like or dislike\n"

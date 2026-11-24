@@ -722,7 +722,7 @@ static const u8 *const sDesc_RandomTrainer[] = {
 };
 static const u8 *const sDesc_RandomStatic[] = {
     COMPOUND_STRING("고정된 장소에서\n만나는 포켓몬을 유지합니다"),
-    COMPOUND_STRING("이름이 정해진 포켓몬과 선물받는 포켓몬\n등 일부 특별한 포켓몬은 변경되지 않습니다"),
+    COMPOUND_STRING("고정·선물 포켓몬을 바꿉니다.\n첫 포켓몬은 별도 설정을 따릅니다."),
 };
 static const u8 *const sDesc_RandomSimilar[] = {
     COMPOUND_STRING("진화 단계가 비슷한\n포켓몬으로 바뀌도록 조정합니다."),

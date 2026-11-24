@@ -464,29 +464,27 @@ BerryTree_EventScript_PickBerry_Mutation::
 	end
 
 BerryTree_Text_WantToPick_Mutation:
-	.string "You found {STR_VAR_2} {STR_VAR_1}\n"
-	.string "and 1 {STR_VAR_3}!\p"
-	.string "Do you want to pick them?$"
+	.string "{STR_VAR_1} {STR_VAR_2}개와\n"
+	.string "{STR_VAR_3} 1개가 열려 있다!\p"
+	.string "둘 다 따겠습니까?$"
 
 BerryTree_Text_BerryLeftUnpicked_Mutation:
-	.string "{PLAYER} left the {STR_VAR_1}\n"
-	.string "and the {STR_VAR_3} unpicked.$"
+	.string "{PLAYER}{K_EUNNEUN} {STR_VAR_1}{K_WAGWA}\n"
+	.string "{STR_VAR_3}{K_EULREUL} 따지 않고 그대로 놔두었다.$"
 
 BerryTree_Text_BerryPocketFull_Mutation:
-	.string "The BAG's BERRIES POCKET is full.\p"
-	.string "The {STR_VAR_1} and the\n"
-	.string "{STR_VAR_3} couldn't be taken.$"
+	.string "가방이 가득 찼다.\p"
+	.string "{STR_VAR_1}{K_WAGWA} {STR_VAR_3}{K_EULREUL}\n"
+	.string "포기했다.$"
 
 BerryTree_Text_PickedTheBerry_Mutation:
-	.string "{PLAYER} picked the {STR_VAR_2} {STR_VAR_1}\n"
-	.string "and the {STR_VAR_3}.$"
+	.string "{PLAYER}{K_EUNNEUN}\n"
+	.string "{STR_VAR_1} {STR_VAR_2}개와 {STR_VAR_3} 1개를 땄다!$"
 
 BerryTree_Text_PutAwayBerry_Mutation:
-	.string "{PLAYER} put away the {STR_VAR_1}\n"
-	.string "and the {STR_VAR_3} in the BAG's\l"
-	.string "BERRIES POCKET.\p"
-	.string "The soil returned to its soft and\n"
-	.string "loamy state.$"
+	.string "{PLAYER}{K_EUNNEUN}\n"
+	.string "{STR_VAR_1}{K_WAGWA} {STR_VAR_3}{K_EULREUL} 가방에 넣었다!\p"
+	.string "푹신푹신한 흙으로 돌아왔다.$"
 .endif
 
 .if OW_BERRY_MULCH_USAGE == TRUE
