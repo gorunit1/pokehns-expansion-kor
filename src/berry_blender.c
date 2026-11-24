@@ -216,6 +216,7 @@ static void CB2_PlayBlender(void);
 static void DrawBlenderCenter(struct BgAffineSrcData *);
 static bool8 UpdateBlenderLandScreenShake(void);
 static void SetPlayerIdMaps(void);
+static const u8 *GetBlenderDisplayName(u8 playerId);
 static void PrintPlayerNames(void);
 static void InitBlenderBgs(void);
 static void SetPlayerBerryData(u8 playerId, enum Item itemId);
@@ -265,6 +266,12 @@ static const u8 *const sBlenderOpponentsNames[] =
     [BLENDER_DUDE]   = COMPOUND_STRING("형"),
     [BLENDER_MISS]   = COMPOUND_STRING("MISS"),
 };
+
+// NPC display names are separate from the fixed-size link/player names.
+static const u8 sText_BlenderMisterName[] = _("할아버지");
+static const u8 sText_BlenderLaddieName[] = _("남자아이");
+static const u8 sText_BlenderLassieName[] = _("여자아이");
+static const u8 sText_BlenderMissName[] = _("아주머니");
 
 static const u8 sText_CommunicationStandby[] = _("통신 대기 중입니다.");
 static const u8 sText_WouldLikeToBlendAnotherBerry[] = _("한 번 더 나무열매를 섞으시겠습니까?");
@@ -1594,6 +1601,31 @@ static void SetPlayerIdMaps(void)
     }
 }
 
+static const u8 *GetBlenderDisplayName(u8 playerId)
+{
+    const u8 *name;
+
+    if (playerId >= BLENDER_MAX_PLAYERS)
+        return gText_EmptyString2;
+
+    name = gLinkPlayers[playerId].name;
+
+    // Link participants and the local player retain their stored names.
+    if (gReceivedRemoteLinkPlayers || gInGameOpponentsNo == 0 || playerId == 0)
+        return name;
+
+    if (StringCompare(name, sBlenderOpponentsNames[BLENDER_MISTER]) == 0)
+        return sText_BlenderMisterName;
+    if (StringCompare(name, sBlenderOpponentsNames[BLENDER_LADDIE]) == 0)
+        return sText_BlenderLaddieName;
+    if (StringCompare(name, sBlenderOpponentsNames[BLENDER_LASSIE]) == 0)
+        return sText_BlenderLassieName;
+    if (StringCompare(name, sBlenderOpponentsNames[BLENDER_MISS]) == 0)
+        return sText_BlenderMissName;
+
+    return name;
+}
+
 static void PrintPlayerNames(void)
 {
     s32 i, xPos;
@@ -1611,7 +1643,7 @@ static void PrintPlayerNames(void)
             StartSpriteAnim(&gSprites[sBerryBlender->playerArrowSpriteIds[sBerryBlender->arrowIdToPlayerId[i]]], i);
 
             text[0] = EOS;
-            StringCopy(text, gLinkPlayers[sBerryBlender->arrowIdToPlayerId[i]].name);
+            StringCopy(text, GetBlenderDisplayName(sBerryBlender->arrowIdToPlayerId[i]));
             xPos = GetStringCenterAlignXOffset(FONT_NORMAL, text, 0x38);
 
             if (playerId == sBerryBlender->arrowIdToPlayerId[i])
@@ -3491,7 +3523,7 @@ static bool8 PrintBlendingResults(void)
                 ConvertIntToDecimalStringN(sBerryBlender->stringVar, i + 1, STR_CONV_MODE_LEFT_ALIGN, 1);
                 StringAppend(sBerryBlender->stringVar, sText_Dot);
                 StringAppend(sBerryBlender->stringVar, gText_Space);
-                StringAppend(sBerryBlender->stringVar, gLinkPlayers[place].name);
+                StringAppend(sBerryBlender->stringVar, GetBlenderDisplayName(place));
                 Blender_AddTextPrinter(WIN_RESULTS, sBerryBlender->stringVar, 8, yPos, TEXT_SKIP_DRAW, 3);
 
                 StringCopy(sBerryBlender->stringVar, sBerryBlender->blendedBerries[place].name);
@@ -3697,7 +3729,7 @@ static bool8 PrintBlendingRanking(void)
             ConvertIntToDecimalStringN(sBerryBlender->stringVar, i + 1, STR_CONV_MODE_LEFT_ALIGN, 1);
             StringAppend(sBerryBlender->stringVar, sText_Dot);
             StringAppend(sBerryBlender->stringVar, gText_Space);
-            StringAppend(sBerryBlender->stringVar, gLinkPlayers[place].name);
+            StringAppend(sBerryBlender->stringVar, GetBlenderDisplayName(place));
             Blender_AddTextPrinter(WIN_RESULTS, sBerryBlender->stringVar, 0, yPos, TEXT_SKIP_DRAW, 3);
 
             ConvertIntToDecimalStringN(sBerryBlender->stringVar, sBerryBlender->scores[place][SCORE_BEST], STR_CONV_MODE_RIGHT_ALIGN, 3);

@@ -1767,13 +1767,13 @@ static void MoveSelectionDisplayMoveDescription(enum BattlerId battler)
         acc = 0;
     }
 
-    u8 pwr_num[3], acc_num[3];
+    u8 pwr_num[4], acc_num[4];
     u8 cat_desc[7] = _("분류: ");
     u8 pwr_desc[7] = _("위력: ");
-    u8 acc_desc[7] = _("ACC: ");
+    u8 acc_desc[9] = _("명중률: ");
     u8 cat_start[] = _("{CLEAR_TO 3}");
     u8 pwr_start[] = _("{CLEAR_TO 56}");
-    u8 acc_start[] = _("{CLEAR_TO 108}");
+    u8 acc_start[] = _("{CLEAR_TO 96}");
     LoadMessageBoxAndBorderGfx();
     DrawStdWindowFrame(B_WIN_MOVE_DESCRIPTION, FALSE);
     if (pwr < 2)

@@ -204,6 +204,11 @@ static const u8 *const sChoices_OnOff[] = {
     COMPOUND_STRING("OFF"),
 };
 
+static const u8 *const sChoices_BattleScene[] = {
+    COMPOUND_STRING("본다"),
+    COMPOUND_STRING("안 본다"),
+};
+
 static const u8 *const sChoices_ShiftSet[] = {
     COMPOUND_STRING("교체"),
     COMPOUND_STRING("토너먼트"),
@@ -380,7 +385,7 @@ static const struct OptionMenuItem sTabItems_Main[] = {
         .name         = COMPOUND_STRING("배틀 애니메이션"),
         .descriptions = sDesc_BattleScene,
         .numChoices   = 2,
-        .choiceNames  = sChoices_OnOff,
+        .choiceNames  = sChoices_BattleScene,
     },
     [ITEM_MAIN_BATTLESTYLE] = {
         .name         = COMPOUND_STRING("시합 룰"),
